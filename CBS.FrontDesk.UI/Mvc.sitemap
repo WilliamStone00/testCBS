@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="Home" controller="Home" action="Index">
+    <mvcSiteMapNode title="Users" controller="UserManagement" action="Index">
+      <mvcSiteMapNode title="Create user" controller="UserManagement" action="Create" />
+      <mvcSiteMapNode title="Profile" controller="UserManagement" action="UserProfile" preservedRouteParameters="KEY"/>
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Savings" controller="Saving" action="Index">
+      <mvcSiteMapNode title="Account Details" controller="Operation" action="AccountDetails" preservedRouteParameters="KEY"/>
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Customer" controller="Individual" action="Create">
+      <mvcSiteMapNode title="List" controller="Individual" action="List"/>
+      <mvcSiteMapNode title="Profile" controller="Individual" action="CustomerProfile" preservedRouteParameters="KEY"/>
+      <mvcSiteMapNode title="Account" controller="Individual" action="Account" preservedRouteParameters="KEY"/>
+    </mvcSiteMapNode>
+    
+    <mvcSiteMapNode title="Global Configuration" controller="GlobalConfiguration" action="Index">
+      <mvcSiteMapNode title="Country" controller="Country" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Create period" controller="Period" action="Index">
+        <mvcSiteMapNode title="List" controller="Period" action="List"/>
+        <mvcSiteMapNode title="Update" controller="Period" action="Update" preservedRouteParameters="KEY"/>
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Create document" controller="Document" action="Index">
+        <mvcSiteMapNode title="List" controller="Document" action="List"/>
+        <mvcSiteMapNode title="Update" controller="Document" action="Update" preservedRouteParameters="KEY"/>
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Period" controller="Period" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Document" controller="Document" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Loan product" controller="LoanProduct" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Guaranty" controller="Guaranty" action="Index">
+        <mvcSiteMapNode title="Guaranty pack" controller="GuarantyPack" action="Index"/>
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Create Collateral" controller="Collateral" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Alert profile" controller="AlertProfile" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Service fee" controller="Fee" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Installment Type" controller="InstallmentType" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Funding-line" controller="FundingLine" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Penalty" controller="Penalty" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Loan purpose" controller="LoanPurpose" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Tax" controller="Tax" action="Index">
+      </mvcSiteMapNode>
+    </mvcSiteMapNode>
+  </mvcSiteMapNode>
+  
+
+
+</mvcSiteMap>

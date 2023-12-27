@@ -1,0 +1,78 @@
+﻿
+@model CBS.FrontDesk.Data.UserManagement.UserList
+<div class="card-body pt-2 mt-1">
+    @using (Html.BeginForm("Update", "UserManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+
+        <input type="hidden" name="Option" value="Profile" id="Option" />
+        
+        <div class="row mt-2 gy-4">
+            <div class="col-md-8">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.firstName, new { @class = "form-control", @placeholder = "First name" })
+                    @Html.ValidationMessageFor(m => m.firstName, "", new { @class = "text-danger" })
+                    <label>First Name</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.lastName, new { @class = "form-control", @placeholder = "Last name" })
+                    @Html.ValidationMessageFor(m => m.lastName, "", new { @class = "text-danger" })
+                    <label>Last Name</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.email, new { @class = "form-control", @placeholder = "email" })
+                    @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
+                    <label>E-mail</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.phoneNumber, new { @class = "form-control", @placeholder = "+237650535634" })
+                    @Html.ValidationMessageFor(m => m.phoneNumber, "", new { @class = "text-danger" })
+                    <label>Telephone number</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextAreaFor(m => m.address, new { @class = "form-control", @placeholder = "Yaounde" })
+                    @Html.ValidationMessageFor(m => m.address, "", new { @class = "text-danger" })
+                    <label>Address</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.allowedIP, new { @class = "form-control", @placeholder = "192.168.11.1" })
+                    @Html.ValidationMessageFor(m => m.allowedIP, "", new { @class = "text-danger" })
+                    <label>White list ip address</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.ListBoxFor(m => m.roleID, new MultiSelectList(ViewBag.Roles, "id", "name"), new { @class = "select2 form-select" })                    @Html.ValidationMessageFor(m => m.roleID, "", new { @class = "text-danger " })
+                    @Html.ValidationMessageFor(m => m.roleID, "", new { @class = "text-danger " })
+                    <label>Role</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.BranchID, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select branch---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.BranchID, "", new { @class = "text-danger " })
+                    <label>Branch</label>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.isActive, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="isActive">Set account status active</label>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary me-2">Update account</button>
+        </div>
+    }
+</div>

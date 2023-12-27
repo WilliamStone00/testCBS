@@ -1,0 +1,63 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.FundingLine
+<div class="card-body">
+
+    @using (Html.BeginForm("Update", "FundingLine", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {@Html.HiddenFor(model => model.id)
+    <div class="row mt-2 gy-4">
+        <div class="col-md-8">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
+                <label>Credit-line name</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.amount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.amount, "", new { @class = "text-danger" })
+                <label>Amount</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.beginDate, new { @class = "form-control flatpickr-validation", @placeholder = "Date of birth" })
+                @Html.ValidationMessageFor(m => m.beginDate, "", new { @class = "text-danger" })
+                <label>Begin date</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.endDate, new { @class = "form-control flatpickr-validation", @placeholder = "Date of birth" })
+                @Html.ValidationMessageFor(m => m.endDate, "", new { @class = "text-danger" })
+                <label>End date</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                <label>Description</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.AccountingRuleId, new SelectList(ViewBag.Roles, "id", "ruleName"), "---Select accounting roles---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.AccountingRuleId, "", new { @class = "text-danger " })
+                <label>Accounting role</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.currencyId, new SelectList(ViewBag.Currencies, "Id", "Code"), "---Select currency---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.currencyId, "", new { @class = "text-danger " })
+                <label>Currency</label>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4">
+
+        <button type="submit" class="btn btn-primary me-2">Update</button>
+
+    </div>
+}
+</div>

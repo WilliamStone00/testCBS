@@ -1,0 +1,53 @@
+﻿@{
+    var menuItems = ViewBag.MenuItems as List<CBS.FrontDesk.Data.Entity.Menu.MenuMaster>;
+}
+
+<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+    <!-- Other parts of your menu HTML -->
+    <div class="app-brand demo">
+        <a href="/" class="app-brand-link">
+            <span class="app-brand-text demo menu-text fw-bold ms-2">C B S 4 U</span>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+    <ul class="menu-inner py-1">
+        @foreach (var group in menuItems.Select(m => m.MenuGroup).Distinct()) // Loop through distinct menu groups
+        {
+            <li class="menu-header fw-medium mt-4">
+                <span class="menu-header-text">@group</span>
+            </li>
+
+            foreach (var menuItem in menuItems.Where(m => m.ParentId == "0" && m.MenuGroup == group)) // Filtering root items by group
+            {
+                @RenderSubMenu(menuItem, menuItems)
+            }
+        }
+    </ul>
+</aside>
+
+@helper RenderSubMenu(CBS.FrontDesk.Data.Entity.Menu.MenuMaster menuItem, List<CBS.FrontDesk.Data.Entity.Menu.MenuMaster> menuItems)
+{
+    <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="@menuItem.IconClass"></i> <div> @menuItem.MenuText</div>
+        </a>
+        @if (menuItems.Any(m => m.ParentId == menuItem.Id))
+        {
+            <ul class="menu-sub">
+                @foreach (var childItem in menuItems.Where(m => m.ParentId == menuItem.Id))
+                {
+                    <li class="menu-item">
+                        <a href="@Url.Action(childItem.ActionName, childItem.ControllerName)" class="menu-link">
+                            <div>@childItem.MenuText</div>
+                        </a>
+                        @if (menuItems.Any(m => m.ParentId == childItem.Id))
+                        {
+                            @RenderSubMenu(childItem, menuItems)// Recursive call for submenus
+                        }
+                    </li>
+                }
+            </ul>
+        }
+    </li>
+}

@@ -1,0 +1,214 @@
+﻿@using CBS.FrontDesk.UI.Helper
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed layout-compact" dir="ltr"
+      data-theme="theme-default"
+      data-assets-path="~/CBSTemp/ui/assets/"
+      data-template="vertical-menu-template">
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>@ViewBag.Title-C. B S 4 U</title>
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="~/CBSTemp/ui/assets/img/favicon/favicon.ico" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap"
+          rel="stylesheet" type="text/css">
+
+    <!-- Icons -->
+
+    <link href="~/CBSTemp/ui/assets/vendor/fonts/flag-icons.css" rel="stylesheet" type="text/css" />
+    <link href="~/CBSTemp/ui/assets/vendor/fonts/materialdesignicons.css" rel="stylesheet" type="text/css" />
+    <!-- Menu waves for no-customizer fix -->
+    <link href="~/CBSTemp/ui/assets/vendor/libs/node-waves/node-waves.css" rel="stylesheet" type="text/css" />
+    <!-- Core CSS -->
+
+    <link href="~/CBSTemp/ui/assets/vendor/css/rtl/core.css" rel="stylesheet" type="text/css" />
+    <link href="~/CBSTemp/ui/assets/vendor/css/rtl/theme-default.css" rel="stylesheet" type="text/css" />
+    <link href="~/CBSTemp/ui/assets/css/demo.css" rel="stylesheet" type="text/css" />
+    <link href="~/CBSTemp/ui/assets/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+    <style>
+        .btn-space {
+            margin-right: 10px; /* Adjust the value to increase or decrease the space */
+        }
+    </style>
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css" />
+
+
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/select2/select2.css" />
+
+
+    <!-- Vendors CSS -->
+    <link href="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
+    <link href="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.css" rel="stylesheet" type="text/css" />
+    <link href="~/CBSTemp/ui/assets/vendor/libs/apex-charts/apex-charts.css" rel="stylesheet" type="text/css" />
+    <link href="~/CBSTemp/ui/assets/vendor/libs/swiper/swiper.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/toastr/toastr.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/animate-css/animate.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/flatpickr/flatpickr.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/pickr/pickr-themes.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
+
+
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/tagify/tagify.css" />
+
+
+
+    <!-- Page CSS -->
+
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/pages/cards-statistics.css" type="text/css">
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/pages/cards-analytics.css" type="text/css">
+    <link href="~/Loaders/CSSJS/Spin.css" rel="stylesheet" />
+    <!-- Helpers -->
+    <script src="~/CBSTemp/ui/assets/vendor/js/helpers.js"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+    <script src="~/CBSTemp/ui/assets/vendor/js/template-customizer.js"></script>
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="~/CBSTemp/ui/assets/js/config.js"></script>
+
+</head>
+
+<body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            <!-- Menu -->
+            @Html.Partial("_Menu")
+            <!-- / Menu -->
+            <!-- Layout container -->
+            <div class="layout-page">
+                <!-- Navbar -->
+
+                @Html.Partial("_NavBar")
+                <!-- / Navbar -->
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+                    <!-- Content -->
+                    <div class="container-xxl flex-grow-1 container-p-y">
+                        @*@Html.Partial("_Alert")*@
+                        <!-- #region Breadcrumb -->
+                        @*@Html.Raw(Html.BuildBreadcrumbNavigation())*@
+                        <div class="col-12">
+                            <div class="card mb-4">
+                                <div class="card-body d-sm-flex d-block">
+                                    <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                                        @Html.MvcSiteMap().SiteMapPath()
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- #endregion -->
+
+                        @if (ViewBag.Status == "Show")
+                        {
+                            <div class="row justify-content-end">
+                                <div class="col-lg-6 p-4">
+                                    <div class="demo-inline-spacing text-end">
+                                        <a type="button" href="@ViewBag.List" class="btn btn-icon btn-label-primary btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                            <span class="tf-icons mdi mdi-view-list mdi-24px"></span>
+                                        </a>
+                                        <a type="button" href="@ViewBag.Add" class="btn btn-icon btn-label-secondary btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                            <span class="tf-icons mdi mdi-plus mdi-24px"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @RenderBody()
+                    </div>
+                    @Html.Partial("_AjaxSpinner")
+                    @Html.Partial("_Footer")
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- Content wrapper -->
+            </div>
+            <!-- / Layout page -->
+        </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+
+        <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+        <div class="drag-target"></div>
+    </div>
+    <!-- / Layout wrapper -->
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="~/CBSTemp/ui/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/popper/popper.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/js/bootstrap.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/node-waves/node-waves.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/hammer/hammer.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/i18n/i18n.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/js/menu.js"></script>
+    <script src="~/Loaders/CSSJS/Spin.js"></script>
+    <script src="~/CBSTemp/ui/assets/alertifyjs/notify.js"></script>
+    <script src="~/CBSTemp/ui/assets/alertifyjs/alertify.js"></script>
+    <!-- endbuild -->
+    <!-- Vendors JS -->
+    <script src="~/CBSTemp/ui/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/swiper/swiper.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/toastr/toastr.js"></script>
+    <!-- Main JS -->
+    <script src="~/CBSTemp/ui/assets/js/main.js"></script>
+    <!-- Page JS -->
+    <script src="~/CBSTemp/ui/assets/js/dashboards-analytics.js"></script>
+
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <!-- Vendors JS -->
+    <script src="~/CBSTemp/ui/assets/vendor/libs/moment/moment.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/cleavejs/cleave.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/cleavejs/cleave-phone.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/select2/select2.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/bootstrap-select/bootstrap-select.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/tagify/tagify.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/flatpickr/flatpickr.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/pickr/pickr.js"></script>
+    <!-- Main JS -->
+    <script src="~/CBSTemp/ui/assets/js/main.js"></script>
+
+
+    @*<script src="~/CBSTemp/ui/assets/js/form-validation.js"></script>*@
+
+    <script src="~/CBSTemp/ui/assets/js/form-layouts.js"></script>
+
+    <script src="~/Scripts/Js/main.js/App.js"></script>
+    <script src="~/CBSTemp/ui/assets/js/ui-toasts.js"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+
+
+</html>

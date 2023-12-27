@@ -1,0 +1,273 @@
+﻿@model CBS.FrontDesk.Data.Entity.CustomerManagement.IndividualProfile
+
+        <div class="card-body">
+
+
+            @using (Html.BeginForm("Create", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+            {
+                <!-- Account Details -->
+                <div class="col-12">
+                    <h5><b>1. Profile Details</b></h5>
+                    <hr class="mt-0" />
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.firstName, new { @class = "form-control", @placeholder = "First name" })
+                        @Html.ValidationMessageFor(m => m.firstName, "", new { @class = "text-danger" })
+                        <label>First Name</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.lastName, new { @class = "form-control", @placeholder = "Last name" })
+                        @Html.ValidationMessageFor(m => m.lastName, "", new { @class = "text-danger" })
+                        <label>Last Name</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.dateOfBirth, new { @class = "form-control date-picker", @placeholder = "Date of birth" })
+                        @Html.ValidationMessageFor(m => m.dateOfBirth, "", new { @class = "text-danger" })
+                        <label>Date of birth</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.gender, new SelectList(ViewBag.Genders, "Text", "Value"), "---Select gender---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.gender, "", new { @class = "text-danger" })
+                        <label>Gender</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.phone, new { @class = "form-control", @placeholder = "Pnone number" })
+                        @Html.ValidationMessageFor(m => m.phone, "", new { @class = "text-danger" })
+                        <label>Phone number</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.idNumber, new { @class = "form-control", @placeholder = "National ID Card Number" })
+                        @Html.ValidationMessageFor(m => m.idNumber, "", new { @class = "text-danger" })
+                        <label>National id card</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.taxIdentificationNumber, new { @class = "form-control", @placeholder = "Personnal Identification Number" })
+                        @Html.ValidationMessageFor(m => m.taxIdentificationNumber, "", new { @class = "text-danger" })
+                        <label>Personal identification number</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.economicActivitesId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), "---Select Economic activity---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.economicActivitesId, "", new { @class = "text-danger " })
+                        <label for="formValidationDob">Econimic activity</label>
+                    </div>
+                </div>
+                <!-- Address Info -->
+                <div class="col-12">
+                    <h5 class="mt-2"><b>2. Address Info</b></h5>
+                    <hr class="mt-0" />
+                </div>
+                @*<div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input class="form-control" type="file" id="formValidationFile" name="formValidationFile" />
+                            <label for="formValidationFile">Profile Pic</label>
+                        </div>
+                    </div>*@
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.zipCode, new { @class = "form-control", @placeholder = "237" })
+                        @Html.ValidationMessageFor(m => m.zipCode, "", new { @class = "text-danger" })
+                        <label>Zip code</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.countryId, new SelectList(ViewBag.Countries, "Id", "Name"), "---Select Country---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.countryId, "", new { @class = "text-danger " })
+                        <label for="formValidationDob">Country</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.regionId, new SelectList(ViewBag.Regions, "Id", "Name"), "---Select Region---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.regionId, "", new { @class = "text-danger " })
+                        <label for="formValidationDob">Region</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.divisionId, new SelectList(ViewBag.Divisions, "Id", "Name"), "---Select Division---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.divisionId, "", new { @class = "text-danger " })
+                        <label for="formValidationDob">Division</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.subdivisionId, new SelectList(ViewBag.SubDivisions, "Id", "Name"), "---Select Sub-Division---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.subdivisionId, "", new { @class = "text-danger " })
+                        <label for="formValidationDob">Sub-Division</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.townId, new SelectList(ViewBag.Towns, "Id", "Name"), "---Select Town---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.townId, "", new { @class = "text-danger " })
+                        <label for="formValidationDob">Town</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextAreaFor(m => m.address, new { @class = "form-control", @placeholder = "Address" })
+                        @Html.ValidationMessageFor(m => m.address, "", new { @class = "text-danger" })
+                        <label>Address</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.email, new { @class = "form-control", @placeholder = "Email" })
+                        @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
+                        <label>Email</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.personalPhone, new { @class = "form-control", @placeholder = "Personal phone number" })
+                        @Html.ValidationMessageFor(m => m.personalPhone, "", new { @class = "text-danger" })
+                        <label>Personal phone number</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.homePhone, new { @class = "form-control", @placeholder = "Home phone number" })
+                        @Html.ValidationMessageFor(m => m.homePhone, "", new { @class = "text-danger" })
+                        <label>Home phone number</label>
+                    </div>
+                </div>
+
+                <!-- Address Info -->
+                <div class="col-12">
+                    <h5 class="mt-2"><b>2. Bank Info</b></h5>
+                    <hr class="mt-0" />
+                </div>
+                @*<div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input class="form-control" type="file" id="formValidationFile" name="formValidationFile" />
+                            <label for="formValidationFile">Profile Pic</label>
+                        </div>
+                    </div>*@
+
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.organisationId, new SelectList(ViewBag.Organizations, "Id", "Name"), "---Select Organization---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.organisationId, "", new { @class = "text-danger " })
+                        <label for="formValidationDob">Organization</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.bankId, new SelectList(ViewBag.Banks, "Id", "Name"), "---Select Branch head office---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.bankId, "", new { @class = "text-danger " })
+                        <label for="formValidationDob">Branch Head office</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.branchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select Branch offce---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.branchId, "", new { @class = "text-danger " })
+                        <label for="formValidationDob">Branch offce</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.accountType, new SelectList(ViewBag.Savings, "Id", "Name"), "---Select account typ---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.accountType, "", new { @class = "text-danger " })
+                        <label for="formValidationDob">Account type</label>
+                    </div>
+                </div>
+                <!-- Choose Your Plan -->
+
+                @*<div class="col-12">
+                        <h6 class="mt-2">3. Customer subcription Plan</h6>
+                        <hr class="mt-0" />
+                    </div>*@
+
+                @*<div class="row gy-3 mt-0">
+                        <div class="col-xl-3 col-md-5 col-sm-6 col-12">
+                            <div class="form-check custom-option custom-option-icon">
+                                <label class="form-check-label custom-option-content" for="basicPlanMain1">
+                                    <span class="custom-option-body">
+                                        <i class="mdi mdi-rocket-launch-outline"></i>
+                                        <span class="custom-option-title"> Starter </span>
+                                        <small> Get 5gb of space and 1 team member. </small>
+                                    </span>
+                                    <input name="formValidationPlan"
+                                           class="form-check-input"
+                                           type="radio"
+                                           value=""
+                                           id="basicPlanMain1"
+                                           checked />
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-5 col-sm-6 col-12">
+                            <div class="form-check custom-option custom-option-icon">
+                                <label class="form-check-label custom-option-content" for="basicPlanMain2">
+                                    <span class="custom-option-body">
+                                        <i class="mdi mdi-account-outline"></i>
+                                        <span class="custom-option-title"> Personal </span>
+                                        <small> Get 15gb of space and 5 team member. </small>
+                                    </span>
+                                    <input name="formValidationPlan"
+                                           class="form-check-input"
+                                           type="radio"
+                                           value=""
+                                           id="basicPlanMain2" />
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-5 col-sm-6 col-12">
+                            <div class="form-check custom-option custom-option-icon">
+                                <label class="form-check-label custom-option-content" for="basicPlanMain3">
+                                    <span class="custom-option-body">
+                                        <i class="mdi mdi-crown-outline"></i>
+                                        <span class="custom-option-title"> Premium </span>
+                                        <small> Get 25gb of space and 15 members. </small>
+                                    </span>
+                                    <input name="formValidationPlan"
+                                           class="form-check-input"
+                                           type="radio"
+                                           value=""
+                                           id="basicPlanMain3" />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="switch switch-primary">
+                            <input type="checkbox" class="switch-input" name="formValidationSwitch" />
+                            <span class="switch-toggle-slider">
+                                <span class="switch-on"></span>
+                                <span class="switch-off"></span>
+                            </span>
+                            <span class="switch-label">Send me related emails</span>
+                        </label>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input type="checkbox"
+                                   class="form-check-input"
+                                   id="formValidationCheckbox"
+                                   name="formValidationCheckbox" />
+                            <label class="form-check-label" for="formValidationCheckbox">Agree to our terms and conditions</label>
+                        </div>
+                    </div>*@
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            }
+        </div>

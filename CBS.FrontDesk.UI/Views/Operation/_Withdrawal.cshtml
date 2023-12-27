@@ -1,0 +1,79 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+
+<div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+    <div class="accordion-item active">
+        <h2 class="accordion-header text-body d-flex justify-content-between"
+            id="accordionPopoutIconThree">
+            <button type="button"
+                    class="accordion-button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordionPopoutIcon-3"
+                    aria-expanded="true"
+                    aria-controls="accordionPopoutIcon-3">
+                <i class="mdi mdi-outdoor-lamp me-2"></i>
+                WITHDRAWAL
+            </button>
+        </h2>
+        <div id="accordionPopoutIcon-3"
+             class="accordion-collapse collapse show"
+             data-bs-parent="#accordionPopoutIcon">
+            <div class="accordion-body">
+                <div id="mainviewChange">
+                    @Html.Partial("_TotalBalance")
+                    <div class="change-group">
+                        @using (Html.BeginForm("Deposit", "Operation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return PostData(this);" }))
+                        {
+                            <input type="hidden" name="OperationType" value="Withdrawal" id="OperationType" />
+                            <input type="hidden" name="partialView" value="_Withdrawal" id="partialView" />
+                            <input type="hidden" name="accountNumber" value="@Model.accountNumber" id="accountNumber" />
+                            <input type="hidden" name="divID" value="datalistingview" id="divID" />
+                            <input type="hidden" name="controller" value="Operation" id="controller" />
+                            <input type="hidden" name="actionMethod" value="InitializeData" id="actionMethod" />
+                            <div class="row mt-2 gy-4">
+                                @Html.HiddenFor(model => model.WithdrawalRequest.accountNumber)
+
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.WithdrawalRequest.amount, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.WithdrawalRequest.amount, "", new { @class = "text-danger" })
+                                        <label style="color:blue">Enter amount to withdraw (min: @Model.product.withdrawalLimits.FirstOrDefault().minAmount, max: @Model.product.withdrawalLimits.FirstOrDefault().maxAmount)</label>
+                                    </div>
+                                </div>
+                                @*<div class="col-md-4">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.createdDate, new { @class = "form-control", @readonly = true })
+                            <label>Creation date</label>
+                        </div>
+                    </div>*@
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.WithdrawalRequest.withDrawalType, new SelectList(ViewBag.Sources, "Text", "Value"), "---Select type of withdrawal---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.WithdrawalRequest.withDrawalType, "", new { @class = "text-danger " })
+                                        <label>Type of withdrawal</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextAreaFor(m => m.WithdrawalRequest.note, new { @class = "form-control", @style = "height: 200px;" })
+                                        @Html.ValidationMessageFor(m => m.WithdrawalRequest.note, "", new { @class = "text-danger " })
+                                        <label>Withdrawal Note</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-primary me-2">Withdrawal</button>
+                            </div>
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

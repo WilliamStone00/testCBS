@@ -1,0 +1,86 @@
+﻿using CBS.BusinessService.Loan.Config;
+using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Message;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using CBS.BusinessService.Accounting;
+
+namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
+{
+    public class FeeController : BaseController
+    {
+        // GET: Fee
+        private readonly FeeServices _FeeServices;
+        private readonly AccountingServices _accountingServices;
+        public FeeController(FeeServices FeeServices, AccountingServices accountingServices)
+        {
+            _FeeServices = FeeServices;
+            _accountingServices = accountingServices;
+        }
+
+        public async Task<ActionResult> Index()
+        {
+            await GetList();
+            return View();
+        }
+        [HttpPost]
+        public async Task<ActionResult> Create(Fee model)
+        {
+            if (ModelState.IsValid)
+            {
+                var data = await _FeeServices.Create(model);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            }
+
+            return Json(new { success = false, status = false, message = "Fill the required fields." });
+        }
+        [HttpPost]
+        public async Task<ActionResult> Update(Fee model)
+        {
+            if (ModelState.IsValid)
+            {
+                var data = await _FeeServices.Update(model);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            }
+
+            return Json(new { success = false, status = false, message = "Fill the required fields." });
+        }
+
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
+        {
+            await GetList();
+            if (path == "list")
+            {
+                var data = await _FeeServices.GetFees();
+                return PartialView(partialView, data);
+            }
+
+            else if (path == "new")
+            {
+                return PartialView(partialView, new Fee());
+            }
+            else
+            {
+                var Fee = await _FeeServices.GetFee(KEY);
+                return PartialView(partialView, Fee);
+
+            }
+        }
+
+        public async Task<ActionResult> Delete(string KEY)
+        {
+            var data = await _FeeServices.Delete(KEY);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+        }
+        public async Task<bool> GetList()
+        {
+            ViewBag.Languages = _FeeServices.GetLanguages();
+            ViewBag.Roles = await _accountingServices.GetAccountingRoles();
+            return true;
+        }
+    }
+}

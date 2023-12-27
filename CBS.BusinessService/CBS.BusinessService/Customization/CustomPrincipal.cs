@@ -1,0 +1,51 @@
+﻿using System;
+using System.Linq;
+using System.Security.Principal;
+
+namespace CBS.FrontDesk.Service
+{
+    public class CustomPrincipal : IPrincipal
+    {
+       
+
+        #region Identity Properties
+        public string UserId { get; set; }
+        public string Email { get; set; }
+        public string FullName { get; set; }
+        public string UserName { get; set; }
+        public string[] Roles { get; set; }
+        public string SessionID { get; set; }
+        public string Phonenumber { get; set; }
+        public string Token { get; set; }
+        public string RefresherID { get; set; }
+        public string Password { get; set; }
+ 
+
+        #endregion
+
+        public IIdentity Identity
+        {
+            get; private set;
+        }
+
+        public bool IsInRole(string role)
+        {
+            if (Roles.Any(r => role.Contains(r)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+          
+        }
+
+        public CustomPrincipal(string username)
+        {
+            Identity = new GenericIdentity(username);
+        }
+       
+    }
+}

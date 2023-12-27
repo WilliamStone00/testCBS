@@ -1,0 +1,194 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@{
+    var status = false;
+    string comment = "No initial deposit has been made.";
+    if (Model.AccountBalance.accounts.Any())
+    {
+        status = true;
+    }
+}
+
+<div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+    <div class="accordion-item active">
+        <h2 class="accordion-header text-body d-flex justify-content-between"
+            id="accordionPopoutIconThree">
+            <button type="button"
+                    class="accordion-button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordionPopoutIcon-3"
+                    aria-expanded="true"
+                    aria-controls="accordionPopoutIcon-3">
+                <i class="mdi mdi-folder-information-outline me-2"></i>
+                ACCOUNT INFORMATION
+            </button>
+        </h2>
+        <div id="accordionPopoutIcon-3"
+             class="accordion-collapse collapse show"
+             data-bs-parent="#accordionPopoutIcon">
+            <div class="accordion-body">
+                <div id="mainviewChange">
+                    <div class="change-group">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <div class="card-info">
+                                            <div class="d-flex align-items-center">
+                                                <h4 class="mb-0">@Model.AccountBalance.totalBalance</h4>
+                                            </div>
+                                            @if (status)
+                                            {
+                                                <small>Total account balance</small>
+                                            }
+                                            else
+                                            {
+                                                @comment;
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if (Model.status == "INPROGRESS")
+                            {
+                                <br />
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center flex-wrap gap-2">
+                                            <div class="card-info">
+                                                @Html.Partial("_OpenAccount")
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                            }
+                            else
+                            {
+                                <br />
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center flex-wrap gap-2">
+                                                <div class="card-info">
+                                                    <div class="d-flex align-items-center">
+                                                        <h5 class="mb-0">Balance: @Model.balance</h5>
+                                                    </div>
+                                                    <small>Account Number: <b>@Model.accountNumber</b></small><br />
+                                                    <small class="mb-0">Account Name: <b>@Model.product.name</b></small><br />
+                                                    <small class="mb-0">Account Status: <b>@Model.status</b></small><br />
+                                                    <small class="mb-0">Date created: <b>@Model.createdDate</b></small>
+                                                    @if (Model.status == "INPROGRESS")
+                                                    {
+                                                        <hr />
+                                                        <a href="javascript:;" class="btn btn-primary me-3" data-bs-target="#openAccount" data-bs-toggle="modal">Open account</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                            <br />
+                            <div class="card mb-4">
+                                <h5 class="card-header">Accounts</h5>
+                                <div class="card-body">
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="myDataTableT">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Account Type</th>
+                                                    <th>Status</th>
+                                                    <th>Balance</th>
+                                                    <th>P.BALANCE</th>
+                                                    <th>Account Number</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var d in Model.Accounts)
+                                                {
+                                                    <tr onclick="navigateToDetails('@Url.Action("AccountDetails", "Operation", new { KEY = @d.accountNumber })')">
+                                                        <td>
+                                                            <a href="@Url.Action("AccountDetails", "Operation", new { KEY = @d.accountNumber })">
+                                                                @d.product.name
+                                                            </a>
+                                                        </td>
+                                                        <td>@d.status</td>
+                                                        <td>@d.balance</td>
+                                                        <td>@d.previousBalance</td>
+                                                        <td>@d.accountNumber</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="accordion-item">
+        <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconTwo">
+            <button type="button"
+                    class="accordion-button collapsed"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordionPopoutIcon-2"
+                    aria-controls="accordionPopoutIcon-2">
+                <i class="mdi mdi-lock-alert me-2"></i>
+                ACTUALIZE ACCOUNT
+            </button>
+        </h2>
+        <div id="accordionPopoutIcon-2"
+             class="accordion-collapse collapse"
+             data-bs-parent="#accordionPopoutIcon">
+            <div class="accordion-body">
+                <div id="mainviewReset">
+                    <div class="reset-group">
+                        To be implemented
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconOne">
+            <button type="button"
+                    class="accordion-button collapsed"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordionPopoutIcon-1"
+                    aria-controls="accordionPopoutIcon-1">
+                <i class="mdi mdi-two-factor-authentication me-2"></i>
+                CLOSE/RE-OPEN ACCOUNT
+            </button>
+        </h2>
+
+        <div id="accordionPopoutIcon-1"
+             class="accordion-collapse collapse"
+             data-bs-parent="#accordionPopoutIcon">
+            <div class="accordion-body">
+                <div id="mainview_mfa">
+                    <div class="reset-group">
+                        To be added.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+

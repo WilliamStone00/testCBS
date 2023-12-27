@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0D7085DF-13B8-4FCE-9E8F-F0FA88FCE730}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CBS.FrontDesk.Data</RootNamespace>
+    <AssemblyName>CBS.FrontDesk.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entity\Accounting\Class1.cs" />
+    <Compile Include="Entity\CustomerManagement\Class1.cs" />
+    <Compile Include="Entity\LoanConf\AlertProfile.cs" />
+    <Compile Include="Entity\LoanConf\Collateral.cs" />
+    <Compile Include="Entity\LoanConf\Fee.cs" />
+    <Compile Include="Entity\LoanConf\LoanCommiteeValidation.cs" />
+    <Compile Include="Entity\LoanConf\LoanCommiteeValidationCriteria.cs" />
+    <Compile Include="Entity\LoanConf\CustomerLoanAccount.cs" />
+    <Compile Include="Entity\LoanConf\Document.cs" />
+    <Compile Include="Entity\LoanConf\DocumentAttachedToLoan.cs" />
+    <Compile Include="Entity\LoanConf\DocumentPack.cs" />
+    <Compile Include="Entity\LoanConf\FundingLine.cs" />
+    <Compile Include="Entity\LoanConf\Guaranty.cs" />
+    <Compile Include="Entity\LoanConf\GurantiPack.cs" />
+    <Compile Include="Entity\LoanConf\InstallmentType.cs" />
+    <Compile Include="Entity\LoanConf\Loan.cs" />
+    <Compile Include="Entity\LoanConf\LoanApplication.cs" />
+    <Compile Include="Entity\LoanConf\LoanCollatera.cs" />
+    <Compile Include="Entity\LoanConf\LoanCommentry.cs" />
+    <Compile Include="Entity\LoanConf\LoanCommeteeMember.cs" />
+    <Compile Include="Entity\LoanConf\LoanDeliquencyConfiguration.cs" />
+    <Compile Include="Entity\LoanConf\LoanGuarantor.cs" />
+    <Compile Include="Entity\LoanConf\LoanOtherFee.cs" />
+    <Compile Include="Entity\LoanConf\LoanProduct.cs" />
+    <Compile Include="Entity\LoanConf\LoanPurpose.cs" />
+    <Compile Include="Entity\LoanConf\OtherFee.cs" />
+    <Compile Include="Entity\LoanConf\Period.cs" />
+    <Compile Include="Entity\LoanConf\RescheduleLoan.cs" />
+    <Compile Include="Entity\LoanConf\Tax.cs" />
+    <Compile Include="Entity\LoanConf\WriteOffLoan.cs" />
+    <Compile Include="Entity\Menu\Menu.cs" />
+    <Compile Include="Entity\SavingProducts\AccountOperation\AccountTransfer.cs" />
+    <Compile Include="Entity\SavingProducts\AccountOperation\TransactionHistory.cs" />
+    <Compile Include="Entity\StringValues.cs" />
+    <Compile Include="Entity\Config\Organization\Bank.cs" />
+    <Compile Include="Entity\Config\Organization\Branch.cs" />
+    <Compile Include="Entity\Config\Localization\Country.cs" />
+    <Compile Include="Entity\Config\Others\Currency.cs" />
+    <Compile Include="Entity\Config\Localization\Division.cs" />
+    <Compile Include="Entity\Config\Others\EconomicActivity.cs" />
+    <Compile Include="Entity\Config\Organization\Organization.cs" />
+    <Compile Include="Entity\Config\Localization\Region.cs" />
+    <Compile Include="Entity\Config\Others\SubcriptionPackage.cs" />
+    <Compile Include="Entity\Config\Localization\SubDivision.cs" />
+    <Compile Include="Entity\Config\Localization\Town.cs" />
+    <Compile Include="Entity\Organization\Oranization.cs" />
+    <Compile Include="Entity\SavingProducts\AccountOperation\AccountDepositRequest.cs" />
+    <Compile Include="Entity\SavingProducts\AccountOperation\TransactionRespose.cs" />
+    <Compile Include="Entity\UserSession.cs" />
+    <Compile Include="Entity\Config\Aggregrate.cs" />
+    <Compile Include="Entity\CustomerManagement\Group\GroupProfile.cs" />
+    <Compile Include="Entity\CustomerManagement\Individual\CustomerList.cs" />
+    <Compile Include="Entity\CustomerManagement\Individual\IndividualCustomerProfile.cs" />
+    <Compile Include="Entity\CustomerManagement\Individual\IndividualProfile.cs" />
+    <Compile Include="Entity\CustomerManagement\Organization\Class1.cs" />
+    <Compile Include="Entity\DataTable\DatatableHelper.cs" />
+    <Compile Include="Entity\DataTable\DataTableOptions.cs" />
+    <Compile Include="Entity\DataTable\ICustomDataTable.cs" />
+    <Compile Include="Entity\SavingProducts\AccountBalance.cs" />
+    <Compile Include="Entity\SavingProducts\CustomerAccount\CustomerAccount.cs" />
+    <Compile Include="Entity\SavingProducts\Saving.cs" />
+    <Compile Include="Entity\User\UserDto.cs" />
+    <Compile Include="ImageProperties\ImagesProperties.cs" />
+    <Compile Include="Message\Messaging.cs" />
+    <Compile Include="PropertiesBuilder\PropertyBuilder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserManagement\Request\User.cs" />
+    <Compile Include="UserManagement\Request\UserAllowedIP.cs" />
+    <Compile Include="UserManagement\Response\UserClaim.cs" />
+    <Compile Include="UserManagement\Response\UserList.cs" />
+    <Compile Include="UserManagement\Request\UserRole.cs" />
+    <Compile Include="UserManagement\Roles\Role.cs" />
+    <Compile Include="UserManagement\Roles\RoleClaim.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

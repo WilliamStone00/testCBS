@@ -1,0 +1,49 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+<h4 class="card-header">Account initialization</h4>
+<div class="card-body pt-2 mt-1">
+    @using (Html.BeginForm("Deposit", "Operation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return PostData(this);" }))
+    {<input type="hidden" name="OperationType" value="InitialDeposit" id="OperationType" />
+        <input type="hidden" name="partialView" value="_AccountInfo" id="partialView" />
+        <input type="hidden" name="accountNumber" value="@Model.accountNumber" id="accountNumber" />
+        <input type="hidden" name="divID" value="mainview" id="divID" />
+        <input type="hidden" name="controller" value="TransactionManagement" id="controller" />
+        <input type="hidden" name="actionMethod" value="InitializeData" id="actionMethod" />
+        <div class="row mt-2 gy-4">
+            <div class="col-md-4">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.accountNumber, new { @class = "form-control", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.AccountActivationRequest.accountNumber, "", new { @class = "text-danger" })
+                    <label>Account number</label>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.Customer.name, new { @class = "form-control", @readonly = true })
+                    <label>Account name</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.product.name, new { @class = "form-control", @readonly = true })
+                    <label>Account type</label>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.amount, new { @class = "form-control"})
+                    @Html.ValidationMessageFor(m => m.AccountActivationRequest.amount, "", new { @class = "text-danger" })
+                    <label style="color:blue">Enter initial deposit (min: @Model.product.minAmount, max: @Model.product.maxAmount)</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.createdDate, new { @class = "form-control", @readonly = true })
+                    <label>Creation date</label>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary me-2">Open account</button>
+        </div>
+    }
+</div>

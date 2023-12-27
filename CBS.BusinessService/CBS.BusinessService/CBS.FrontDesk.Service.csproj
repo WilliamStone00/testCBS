@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C8E30E49-FC55-431E-9832-CF6F28E30C30}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CBS.BusinessService</RootNamespace>
+    <AssemblyName>CBS.BusinessService</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Accounting\AccountingServices.cs" />
+    <Compile Include="Accounts\AccountServices.cs" />
+    <Compile Include="BaseService\BaseService.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="Config\Localization\SubDivisionServices.cs" />
+    <Compile Include="Config\Localization\TownServices.cs" />
+    <Compile Include="Config\Localization\DivisionServices.cs" />
+    <Compile Include="Config\Localization\RegionServices.cs" />
+    <Compile Include="Config\Organization\BankServices.cs" />
+    <Compile Include="Config\Organization\BranchServices.cs" />
+    <Compile Include="Config\Organization\OrganizationServices.cs" />
+    <Compile Include="CustomerManagement\IIndividualProfileServices.cs" />
+    <Compile Include="CustomerManagement\IndividualProfileServices.cs" />
+    <Compile Include="Customization\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Customization\CustomClasses.cs" />
+    <Compile Include="Customization\CustomMembership.cs" />
+    <Compile Include="Customization\CustomMembershipUser.cs" />
+    <Compile Include="Customization\CustomPrincipal.cs" />
+    <Compile Include="Customization\CustomRole.cs" />
+    <Compile Include="Authentication\AuthenticationServices.cs" />
+    <Compile Include="Config\Localization\CountryServices.cs" />
+    <Compile Include="Loan\Config\DocumentServices.cs" />
+    <Compile Include="Loan\Config\DocumentPackServices.cs" />
+    <Compile Include="Loan\Config\LoanCollateralServices.cs" />
+    <Compile Include="Loan\Config\LoanCommentryServices.cs" />
+    <Compile Include="Loan\Config\AlertProfileServices.cs" />
+    <Compile Include="Loan\Config\LoanCommeteeMemberServices.cs" />
+    <Compile Include="Loan\Config\LoanCommiteeValidationServices.cs" />
+    <Compile Include="Loan\Config\FeeServices.cs" />
+    <Compile Include="Loan\Config\CustomerLoanAccountServices.cs" />
+    <Compile Include="Loan\Config\OtherFeeServices.cs" />
+    <Compile Include="Loan\Config\LoanGuarantorServices.cs" />
+    <Compile Include="Loan\Config\LoanCommiteeValidationCriteriaServices.cs" />
+    <Compile Include="Loan\Config\PenaltyServices.cs" />
+    <Compile Include="Loan\Config\LoanPurposeServices.cs" />
+    <Compile Include="Loan\Config\TaxServices.cs" />
+    <Compile Include="Loan\Config\WriteOffLoanServices.cs" />
+    <Compile Include="Loan\Config\GuaranteeServices.cs" />
+    <Compile Include="Loan\Config\GurantyPackServices.cs" />
+    <Compile Include="Loan\Config\AttachedDocumentServices.cs" />
+    <Compile Include="Loan\Config\InstallmentTypeServices.cs" />
+    <Compile Include="Loan\Config\FundingLineConfigurationServices.cs" />
+    <Compile Include="Loan\Config\LoanProductServices.cs" />
+    <Compile Include="Loan\Config\CollateralServices.cs" />
+    <Compile Include="Loan\Config\LoanDeliquencyConfigurationServices.cs" />
+    <Compile Include="Loan\Config\PeriodServices.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Session\SessionHelper.cs" />
+    <Compile Include="Session\LocalSession.cs" />
+    <Compile Include="UserManagement\IUserManagementServices.cs" />
+    <Compile Include="UserManagement\UserManagementServices.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CBS.API.Helper\CBS.API.Helper\CBS.API.Helper.csproj">
+      <Project>{7789DE1E-5232-46A6-9A96-1DD39E708EEB}</Project>
+      <Name>CBS.API.Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CBS.FrontDesk.Data\CBS.FrontDesk.Data\CBS.FrontDesk.Data.csproj">
+      <Project>{0d7085df-13b8-4fce-9e8f-f0fa88fce730}</Project>
+      <Name>CBS.FrontDesk.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper.csproj">
+      <Project>{192960F3-C2BA-4286-A4E6-F0B94DA85450}</Project>
+      <Name>CBS.FrontDesk.Helper</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

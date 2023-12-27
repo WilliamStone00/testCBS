@@ -1,0 +1,27 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@{
+    ViewBag.Title = "Account Details";
+}
+
+<h5 class="py-3 mb-4"><span class="text-muted fw-light">Profile: /@Model.customerId >> ACC: @Model.accountNumber</span></h5>
+<div class="row">
+    <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
+        @Html.Partial("_CustomerCard")
+    </div>
+    <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+        @Html.Partial("_Tabs")
+    <div class="card">
+     
+            <div id="datalistingview">
+                @Html.Partial("_Product")
+            </div>
+
+    </div>
+    </div>
+
+</div>
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/Js/Crud/Operation/Operation.js"></script>
+
+}

@@ -1,0 +1,324 @@
+﻿using BusinessServices;
+using CBS.API.Helper;
+using CBS.BusinessService.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.CustomerManagement.Individual;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Helper;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
+
+namespace CBS.BusinessService.Accounts
+{
+
+    public class AccountServices : BaseService
+    {
+        private readonly ApiCallerHelper _customerApiHelper;
+        private readonly ApiCallerHelper _transactionApiHelper;
+        public AccountServices()
+        {
+            _customerApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["CustomerBaseUrl"].ToString());
+            _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
+        }
+        public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions)
+        {
+            Func<Task<List<CustomerAccountDto>>> getDataFunc = async () => (await GetAllAccounts()).ToList();
+            var dataTable = await DatatableHelper.GenerateDataTable<CustomerAccountDto>(dataTableOptions, getDataFunc);
+            return dataTable;
+        }
+        public async Task<IEnumerable<CustomerAccountDto>> GetAllAccounts()
+        {
+            try
+            {
+                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<CustomerList>>>(APICallHelper.GetAllIndividualProfile);
+                var accounts = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(APICallHelper.GetAllAccounts);
+                var data = (from a in individualProfiles.ApiResponseData.Data
+                            join ca in accounts.ApiResponseData.Data on a.customerId equals ca.customerId
+                            select MapCustomersToAccounts(a, ca)).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        private async Task<AccountBalance> GetCustomerBalance(string customerID)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<AccountBalance>>(string.Format(APICallHelper.GetCustomerBalance, customerID));
+                return cusResponseObject.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        private async Task<List<TransactionHistory>> GetCustomerTransactionsByAccountNumber(string accountNumber)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<List<TransactionHistory>>>(string.Format(APICallHelper.GetTransactionHistoryByAccountNumber, accountNumber));
+                return cusResponseObject.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        private async Task<List<TransactionHistory>> GetCustomerTransactionsByCustomerNumber(string customerNumber)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<List<TransactionHistory>>>(string.Format(APICallHelper.GetTransactionHistoryByCustomerNumber, customerNumber));
+                return cusResponseObject.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        private async Task<List<TransactionHistory>> GetAllTransactions()
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<List<TransactionHistory>>>(APICallHelper.GetAllTransactions);
+                return cusResponseObject.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        private async Task<List<CustomerAccount>> GetCustomerAccounts(string customerID)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(string.Format(APICallHelper.GetCustomerAccounts, customerID));
+                return cusResponseObject.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        private CustomerAccountDto MapCustomersToAccounts(CustomerList a, CustomerAccount caAccount)
+        {
+            return new CustomerAccountDto
+            {
+                customerName = $"{a.firstName} {a.lastName}",
+                status = caAccount.status,
+                createdBy = a.createdBy,
+                createdDate = a.createdDate.ToString("dd-MMM-yyyy hh:mm:ss"),
+                customerId = a.customerId,
+                accountNumber = caAccount.accountNumber,
+                accountId = caAccount.id,
+                productId = caAccount.productId,
+                productName = caAccount.product.name,
+                profileType = "Individual"
+            };
+        }
+        private async Task<CustomerList> GetCustomer(string id)
+        {
+            try
+            {
+                var cusResponseObject = await _customerApiHelper.GetAsync<ResponseObject<CustomerList>>(string.Format(APICallHelper.GetCustomerByID, id));
+                return cusResponseObject.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<ExecutionMessages> MakeInitialDeposit(AccountDepositRequest model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+                var response = await _transactionApiHelper.PutAsync<ServiceResponse<TransactionRespose>>(string.Format(APICallHelper.InitialDeposit, model.accountNumber), model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{model.amount}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public bool IsCurrencySumValid(CurrencyNotes currencyNotes, int amount)
+        {
+            int totalNotesValue = currencyNotes.note10000 * 10000 +
+                                  currencyNotes.note5000 * 5000 +
+                                  currencyNotes.note2000 * 2000 +
+                                  currencyNotes.note1000 * 1000 +
+                                  currencyNotes.note500 * 500 +
+                                  currencyNotes.coin500 * 500 +
+                                  currencyNotes.coin100 * 100 +
+                                  currencyNotes.coin50 * 50 +
+                                  currencyNotes.coin25 * 25 +
+                                  currencyNotes.coin10 * 10 +
+                                  currencyNotes.coin5 * 5 +
+                                  currencyNotes.coin1;
+
+            return totalNotesValue == amount;
+        }
+        public async Task<ExecutionMessages> Deposit(DepositRequest model)
+        {
+            try
+            {
+                if (IsCurrencySumValid(model.currencyNotes,model.amount))
+                {
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionRespose>>(APICallHelper.MakeDepoit, model);
+                    if (response.IsSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"{model.amount}", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+                else
+                {
+                    GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Sum of notes and coins must be equal to deposit amount.");
+
+                }
+                // Make an API call to create an individual profile
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> Withdrawal(WithdrawalRequest model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionRespose>>(APICallHelper.MakeWithdrawal, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{model.amount}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task<Account> GetAccountByAccountNumber(string accountNumber)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<Account>>(string.Format(APICallHelper.MakeTrGetAccountByAccountNumber, accountNumber));
+                if (cusResponseObject.IsSuccess)
+                {
+                    if (cusResponseObject.ApiResponseData.Data != null)
+                    {
+                        var account = cusResponseObject.ApiResponseData.Data;
+
+                        var customer = await GetCustomer(cusResponseObject.ApiResponseData.Data.customerId);
+                        cusResponseObject.ApiResponseData.Data.Customer = customer;
+                        customer.name = $"{customer.firstName} {customer.lastName}";
+                        var balance = await GetCustomerBalance(cusResponseObject.ApiResponseData.Data.customerId);
+                        var Accounts = await GetCustomerAccounts(cusResponseObject.ApiResponseData.Data.customerId);
+                        var transactionHistories = await GetCustomerTransactionsByAccountNumber(cusResponseObject.ApiResponseData.Data.accountNumber);
+                        account.AccountBalance = balance;
+                        account.Accounts = Accounts;
+                        account.AccountActivationRequest = new AccountDepositRequest
+                        {
+                            accountNumber = account.accountNumber,
+                            amount = 0,
+                        };
+                        account.DepositRequest = new DepositRequest
+                        {
+                            accountNumber = account.accountNumber,
+                            amount = 0,
+                            note = string.Empty, currencyNotes = new CurrencyNotes(),
+                                depositType = string.Empty, 
+                        };
+                        account.WithdrawalRequest = new WithdrawalRequest
+                        {
+                            accountNumber = account.accountNumber,
+                            amount = 0,
+                            note = string.Empty,
+                            withDrawalType = string.Empty,
+                        };
+                        account.TransferRequest = new TransferRequest
+                        {
+                            receiverAccountNumber = string.Empty,
+                            amount = 0,
+                            note = string.Empty,
+                            senderAccountNumber = account.accountNumber, sourceDetails = string.Empty,
+                        };
+                        account.TransactionHistories = transactionHistories;
+                        return account;
+                    }
+                }
+
+                return new Account();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+    }
+
+}

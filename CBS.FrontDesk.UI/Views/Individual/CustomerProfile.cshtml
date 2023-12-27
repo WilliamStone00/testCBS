@@ -1,0 +1,16 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+@{
+    ViewBag.Title = "Profile";
+}
+
+
+@Html.Partial("_ProfileHeader")
+<div class="card">
+    <div id="mainview">
+        @Html.Partial("_UpdateProfile")
+    </div>
+</div>
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/Crud/CustomerManagement/Customers/CustomersProfile.js"></script>
+}
