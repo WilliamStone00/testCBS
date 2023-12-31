@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity;
 
 namespace CBS.FrontDesk.Data.Entity.User
 {
@@ -37,8 +38,9 @@ namespace CBS.FrontDesk.Data.Entity.User
         public Bank Bank { get; set; } = new Bank();
         public Branch Branch { get; set; } = new Branch();
         public Organization Organization { get; set; }=new Organization();
-        public List<Claim> claims { get; set; }
+        public List<Claim> claims { get; set; }=new List<Claim>();
         public List<UserRoleDto> Roles { get; set; }=new List<UserRoleDto>();
+        public List<DatabaseMenus> Permissions { get; set; } = new List<DatabaseMenus>();
         public bool IsSuccess { get; set; }
     }
     public class CustomSerializeModel
@@ -61,5 +63,4 @@ namespace CBS.FrontDesk.Data.Entity.User
         public string LastName { get; set; }
         public string RoleName { get; set; }
     }
-    //userRoles.Select(role => role.RoleName).ToList();
 }

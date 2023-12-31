@@ -1,5 +1,5 @@
 ﻿@{
-    var menuItems = ViewBag.MenuItems as List<CBS.FrontDesk.Data.Entity.Menu.MenuMaster>;
+    var menuItems = ViewBag.MenuItems as List<CBS.FrontDesk.Data.Entity.DatabaseMenus>;
 }
 
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
@@ -18,7 +18,7 @@
                 <span class="menu-header-text">@group</span>
             </li>
 
-            foreach (var menuItem in menuItems.Where(m => m.ParentId == "0" && m.MenuGroup == group)) // Filtering root items by group
+            foreach (var menuItem in menuItems.Where(m => m.ParentId == 0 && m.MenuGroup == group)) // Filtering root items by group
             {
                 @RenderSubMenu(menuItem, menuItems)
             }
@@ -26,22 +26,22 @@
     </ul>
 </aside>
 
-@helper RenderSubMenu(CBS.FrontDesk.Data.Entity.Menu.MenuMaster menuItem, List<CBS.FrontDesk.Data.Entity.Menu.MenuMaster> menuItems)
+@helper RenderSubMenu(CBS.FrontDesk.Data.Entity.DatabaseMenus menuItem, List<CBS.FrontDesk.Data.Entity.DatabaseMenus> menuItems)
 {
     <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
             <i class="@menuItem.IconClass"></i> <div> @menuItem.MenuText</div>
         </a>
-        @if (menuItems.Any(m => m.ParentId == menuItem.Id))
+        @if (menuItems.Any(m => m.ParentId == menuItem.MenuMasterId))
         {
             <ul class="menu-sub">
-                @foreach (var childItem in menuItems.Where(m => m.ParentId == menuItem.Id))
+                @foreach (var childItem in menuItems.Where(m => m.ParentId == menuItem.MenuMasterId))
                 {
                     <li class="menu-item">
                         <a href="@Url.Action(childItem.ActionName, childItem.ControllerName)" class="menu-link">
                             <div>@childItem.MenuText</div>
                         </a>
-                        @if (menuItems.Any(m => m.ParentId == childItem.Id))
+                        @if (menuItems.Any(m => m.ParentId == childItem.MenuMasterId))
                         {
                             @RenderSubMenu(childItem, menuItems)// Recursive call for submenus
                         }

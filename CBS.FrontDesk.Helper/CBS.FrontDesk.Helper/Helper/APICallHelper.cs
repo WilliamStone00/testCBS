@@ -118,6 +118,15 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllLoanProduct = "/api/v1/LoanProducts";
         public static string CreateLoanProduct = "/api/v1/LoanProduct";
         public static string GetLoanProductConfigurationAgregates = "/api/v1/LoanProductConfigurationAgregates";
+        //Loan Application
+        public static string Get_Update_Delete_LoanApplication = "/api/v1/LoanApplication/{0}";
+        public static string GetAllLoanApplication = "/api/v1/LoanApplications";
+        public static string CreateLoanApplication = "/api/v1/LoanApplication";
+        public static string GetLoanApplicationInstallment = "/api/v1/LoanApplication/Installment/{0}";
+        public static string LoanSimulation = "/api/v1/LoanApplication/Simulation";
+        public static string ApproveLoanApplication = "/api/v1/LoanApplication/ChangeStatus/{0}";
+
+
         //Tax  
         public static string Get_Update_Delete_Tax = "/api/v1/Tax/{0}";
         public static string GetAllTax = "/api/v1/Taxs";

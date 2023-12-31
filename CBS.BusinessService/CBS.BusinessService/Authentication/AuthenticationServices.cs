@@ -34,13 +34,13 @@ namespace CBS.FrontDesk.Service
             string errormessage = null;
             try
             {
-                var response = await _identityServer.PostAsync<UserDto>(APICallHelper.Authentication, request);
+                var response = await _identityServer.PostAsync<ResponseObject<UserDto>>(APICallHelper.Authentication, request);
                 if (response.IsSuccess)
                 {
-                    if (response.ApiResponseData.BranchID!=null)
+                    if (response.ApiResponseData.Data.BranchID!=null)
                     {
-                        HttpContext.Current.Session["Token"] = response.ApiResponseData.bearerToken;
-                        var branchApiResponse = await _BankServer.GetAsync<ResponseObject<Branch>>(string.Format(APICallHelper.Get_Update_Delete_Branch,response.ApiResponseData.BranchID));
+                        HttpContext.Current.Session["Token"] = response.ApiResponseData.Data.bearerToken;
+                        var branchApiResponse = await _BankServer.GetAsync<ResponseObject<Branch>>(string.Format(APICallHelper.Get_Update_Delete_Branch,response.ApiResponseData.Data.BranchID));
                         
                         if (branchApiResponse.ApiResponseData!=null)
                         {
@@ -48,16 +48,16 @@ namespace CBS.FrontDesk.Service
                             {
                                 var bank = branchApiResponse.ApiResponseData.Data.Bank;
                                 var branch = branchApiResponse.ApiResponseData.Data;
-                                response.ApiResponseData.Bank = bank;
-                                response.ApiResponseData.BankID = bank.Id;
-                                response.ApiResponseData.Branch = branch;
+                                response.ApiResponseData.Data.Bank = bank;
+                                response.ApiResponseData.Data.BankID = bank.Id;
+                                response.ApiResponseData.Data.Branch = branch;
                             }
                         }
                     }
-                    response.ApiResponseData.password = request.Password;
-                    GetExecutionMessages(response.ApiResponseData, true, request.UserName, MessagesResults.Success,
+                    response.ApiResponseData.Data.password = request.Password;
+                    GetExecutionMessages(response.ApiResponseData.Data, true, request.UserName, MessagesResults.Success,
                         ExecutionProcessOption.LoginSuccessful, SystemMessageStatus.Success.ToString(), null,
-                        response.ApiResponseData.refreshToken);
+                        response.ApiResponseData.Data.refreshToken);
                     return ExecutionMessage;
 
                 }

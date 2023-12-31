@@ -73,7 +73,8 @@
     <Compile Include="Entity\LoanConf\RescheduleLoan.cs" />
     <Compile Include="Entity\LoanConf\Tax.cs" />
     <Compile Include="Entity\LoanConf\WriteOffLoan.cs" />
-    <Compile Include="Entity\Menu\Menu.cs" />
+    <Compile Include="Entity\Menu\MenuMaster.cs" />
+    <Compile Include="Entity\Role\Role.cs" />
     <Compile Include="Entity\SavingProducts\AccountOperation\AccountTransfer.cs" />
     <Compile Include="Entity\SavingProducts\AccountOperation\TransactionHistory.cs" />
     <Compile Include="Entity\StringValues.cs" />
