@@ -2,26 +2,31 @@
 @{
     ViewBag.Title = "Customers";
 }
-<h4 class="py-3 mb-4"><span class="text-muted fw-light">Customer/</span> List</h4>
-<div class="col-12">
-    <div class="card mb-4">
-        <div class="card-body d-sm-flex d-block">
-            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                <a href="/Individual/Create" class="footer-link me-4">Add new account</a>
-                <a href="/Individual/List" class="footer-link me-4">Reload list</a>
-            </div>
+
+
+<div class="row justify-content-end">
+    <div class="demo-inline-spacing text-end">
+        <a type="button" onclick="LoadDataGen('Individual', 'myDataTable', '_IndividualData', 0, 'datalistingview',null)" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+            <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+        </a>
+        @*<a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','Guaranty')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+            <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+        </a>*@
+    </div>
+</div>
+<br />
+<div class="card">
+    <div class="card-body">
+        <div id="datalistingview">
+           
+
         </div>
     </div>
 </div>
-    <div class="card">
-        <div class="card-datatable table-responsive">
-            <div id="datalistingview">
-                @Html.Partial("_IndividualData")
-            </div>
-        </div>
-    </div>
+
+
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/Crud/CustomerManagement/Customers/Customers.js"></script>
+@*<script src="~/Scripts/Js/Crud/CustomerManagement/Customers/Customers.js"></script>*@
 }
 

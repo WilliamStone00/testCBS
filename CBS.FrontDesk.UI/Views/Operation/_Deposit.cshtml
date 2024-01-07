@@ -35,25 +35,7 @@
                             @Html.HiddenFor(model => model.DepositRequest.accountNumber)
                             <div class="row mt-2 gy-4">
 
-                                @*<div class="col-md-4">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.DepositRequest.accountNumber, new { @class = "form-control", @readonly = true })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.accountNumber, "", new { @class = "text-danger" })
-                                        <label>Account number</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.Customer.name, new { @class = "form-control", @readonly = true })
-                                        <label>Account name</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.product.name, new { @class = "form-control", @readonly = true })
-                                        <label>Account type</label>
-                                    </div>
-                                </div>*@
+                              
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.DepositRequest.amount, new { @class = "form-control" })
@@ -61,12 +43,7 @@
                                         <label style="color:blue">Enter amount (min: @Model.product.minAmount, max: @Model.product.maxAmount)</label>
                                     </div>
                                 </div>
-                                @*<div class="col-md-4">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.createdDate, new { @class = "form-control", @readonly = true })
-                                        <label>Creation date</label>
-                                    </div>
-                                </div>*@
+                               
                                 <div class="col-md-3">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.note10000, new { @class = "form-control" })

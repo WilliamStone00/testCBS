@@ -32,34 +32,121 @@
                             <input type="hidden" name="actionMethod" value="InitializeData" id="actionMethod" />
                             <div class="row mt-2 gy-4">
                                 @Html.HiddenFor(model => model.WithdrawalRequest.accountNumber)
+                                @if (Model.product.withdrawalLimits.Count() > 0)
+                                {
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.WithdrawalRequest.amount, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.amount, "", new { @class = "text-danger" })
+                                            <label style="color:blue">Enter amount to withdraw (min: @Model.product.withdrawalLimits.FirstOrDefault().minAmount, max: @Model.product.withdrawalLimits.FirstOrDefault().maxAmount)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.WithdrawalRequest.withDrawalType, new SelectList(ViewBag.Sources, "Text", "Value"), "---Select type of withdrawal---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.withDrawalType, "", new { @class = "text-danger " })
+                                            <label>Type of withdrawal</label>
+                                        </div>
+                                    </div>
 
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.WithdrawalRequest.amount, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.WithdrawalRequest.amount, "", new { @class = "text-danger" })
-                                        <label style="color:blue">Enter amount to withdraw (min: @Model.product.withdrawalLimits.FirstOrDefault().minAmount, max: @Model.product.withdrawalLimits.FirstOrDefault().maxAmount)</label>
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.WithdrawalRequest.currencyNotes.note10000, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.currencyNotes.note10000, "", new { @class = "text-danger " })
+                                            <label>Note-10,000</label>
+                                        </div>
                                     </div>
-                                </div>
-                                @*<div class="col-md-4">
-                        <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.createdDate, new { @class = "form-control", @readonly = true })
-                            <label>Creation date</label>
-                        </div>
-                    </div>*@
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.WithdrawalRequest.withDrawalType, new SelectList(ViewBag.Sources, "Text", "Value"), "---Select type of withdrawal---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.WithdrawalRequest.withDrawalType, "", new { @class = "text-danger " })
-                                        <label>Type of withdrawal</label>
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.WithdrawalRequest.currencyNotes.note5000, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.currencyNotes.note5000, "", new { @class = "text-danger " })
+                                            <label>Note-5,000</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextAreaFor(m => m.WithdrawalRequest.note, new { @class = "form-control", @style = "height: 200px;" })
-                                        @Html.ValidationMessageFor(m => m.WithdrawalRequest.note, "", new { @class = "text-danger " })
-                                        <label>Withdrawal Note</label>
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.WithdrawalRequest.currencyNotes.note2000, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.currencyNotes.note2000, "", new { @class = "text-danger " })
+                                            <label>Note-2,000</label>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.WithdrawalRequest.currencyNotes.note1000, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.currencyNotes.note1000, "", new { @class = "text-danger " })
+                                            <label>Note-1,000</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.WithdrawalRequest.currencyNotes.note500, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.currencyNotes.note500, "", new { @class = "text-danger " })
+                                            <label>Note-500</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.WithdrawalRequest.currencyNotes.coin500, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.currencyNotes.coin500, "", new { @class = "text-danger " })
+                                            <label>Coin-500</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.WithdrawalRequest.currencyNotes.coin100, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.currencyNotes.coin100, "", new { @class = "text-danger " })
+                                            <label>Coin-100</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.WithdrawalRequest.currencyNotes.coin50, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.currencyNotes.coin50, "", new { @class = "text-danger " })
+                                            <label>Coin-50</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.WithdrawalRequest.currencyNotes.coin25, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.currencyNotes.coin25, "", new { @class = "text-danger " })
+                                            <label>Coin-25</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.WithdrawalRequest.currencyNotes.coin10, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.currencyNotes.coin10, "", new { @class = "text-danger " })
+                                            <label>Coin-10</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.WithdrawalRequest.currencyNotes.coin5, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.currencyNotes.coin5, "", new { @class = "text-danger " })
+                                            <label>Coin-5</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.WithdrawalRequest.currencyNotes.coin1, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.currencyNotes.coin1, "", new { @class = "text-danger " })
+                                            <label>Coin-1</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextAreaFor(m => m.WithdrawalRequest.note, new { @class = "form-control", @style = "height: 200px;" })
+                                            @Html.ValidationMessageFor(m => m.WithdrawalRequest.note, "", new { @class = "text-danger " })
+                                            <label>Withdrawal Note</label>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <label style="color:blue">Withrawal policy is not set</label>
+
+                                }
+
 
                             </div>
                             <div class="mt-4">

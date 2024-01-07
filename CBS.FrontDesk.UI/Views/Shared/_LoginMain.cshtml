@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/node-waves/node-waves.css" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/rtl/core.css"/>
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/rtl/core.css" />
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/rtl/theme-default.css" />
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/css/demo.css" />
 
@@ -51,6 +51,186 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
     <script src="~/CBSTemp/ui/assets/vendor/js/template-customizer.js"></script>
+    <style>
+        .upload-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            overflow: hidden;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+            .image-preview img {
+                width: auto;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .custom-file-upload {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #f5f5f5;
+            text-align: center;
+            padding: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+            border-top: 1px solid #ccc;
+        }
+
+            .custom-file-upload i {
+                margin-right: 5px;
+            }
+
+        .image-upload-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .image-upload-container img {
+                width: 100%;
+                height: auto;
+                display: block;
+                object-fit: contain;
+            }
+
+        .card-title {
+            font-size: 1.25rem; /* Adjust the font size as needed */
+            color: #333; /* Text color */
+            margin-bottom: 0.75rem; /* Spacing below the title */
+            text-align: center; /* Center align the title */
+            text-transform: uppercase; /* Uppercase text */
+            letter-spacing: 1px; /* Letter spacing for style */
+            font-weight: bold; /* Bold font weight */
+        }
+
+        .custom-file-input {
+            display: none;
+        }
+
+        .custom-file-label::after {
+            content: 'Browse';
+        }
+
+        .custom-file-input::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+
+        .custom-file-input::before {
+            content: 'Choose file';
+            display: inline-block;
+            background: #007bff;
+            color: #fff;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            padding: 8px 12px;
+            outline: none;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .custom-file-input:hover::before {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .custom-file-label {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: pointer;
+            display: block;
+            padding: .375rem .75rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+
+            .custom-file-label::after {
+                content: 'Choose file';
+                display: inline-block;
+                background: #007bff;
+                color: #fff;
+                border: 1px solid #007bff;
+                border-radius: 5px;
+                padding: 8px 12px;
+                outline: none;
+                white-space: nowrap;
+                cursor: pointer;
+            }
+        /* Style for smaller forms */
+        .form-control,
+        .form-floating-outline select {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            border-radius: 0.25rem;
+        }
+
+        .form-floating-outline label {
+            font-size: 0.875rem;
+            padding: 0.3rem 0.6rem;
+        }
+
+        /* Style for smaller buttons */
+        .btn {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+        /* Style for smaller form inputs */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select,
+        textarea {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            border-radius: 0.25rem;
+        }
+        /* Style for buttons with shadows */
+        .btn {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            /* Customize the shadow values as per your preference */
+        }
+        /* Add this in your CSS file or style tag */
+        .group-title {
+            font-size: 18px; /* Define your preferred font size */
+            font-family: 'Roboto', sans-serif; /* Choose a suitable font family */
+            /* Add any other desired styling */
+        }
+
+        .highlight-text {
+            color: #FFA500; /* Change color to your desired highlight color */
+            /* Add any other desired styling for the highlighted text */
+        }
+
+        .group-title small {
+            font-size: 12px; /* Define the font size for small elements */
+            font-weight: bold; /* Add any other desired styling for small elements */
+            /* Add any other desired styling */
+        }
+    </style>
+
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="~/CBSTemp/ui/assets/js/config.js"></script>
 </head>

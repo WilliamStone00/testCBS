@@ -44,7 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity\Accounting\Class1.cs" />
-    <Compile Include="Entity\CustomerManagement\Class1.cs" />
+    <Compile Include="Entity\CustomerManagement\MembershipNextOfKingsMember.cs" />
+    <Compile Include="Entity\CustomerManagement\CustomerDocument.cs" />
+    <Compile Include="Entity\CustomerManagement\SecretQuestion.cs" />
     <Compile Include="Entity\LoanConf\AlertProfile.cs" />
     <Compile Include="Entity\LoanConf\Collateral.cs" />
     <Compile Include="Entity\LoanConf\Fee.cs" />
@@ -74,7 +76,7 @@
     <Compile Include="Entity\LoanConf\Tax.cs" />
     <Compile Include="Entity\LoanConf\WriteOffLoan.cs" />
     <Compile Include="Entity\Menu\MenuMaster.cs" />
-    <Compile Include="Entity\Role\Role.cs" />
+    <Compile Include="Entity\RoleManagement\Role.cs" />
     <Compile Include="Entity\SavingProducts\AccountOperation\AccountTransfer.cs" />
     <Compile Include="Entity\SavingProducts\AccountOperation\TransactionHistory.cs" />
     <Compile Include="Entity\StringValues.cs" />
@@ -95,7 +97,6 @@
     <Compile Include="Entity\UserSession.cs" />
     <Compile Include="Entity\Config\Aggregrate.cs" />
     <Compile Include="Entity\CustomerManagement\Group\GroupProfile.cs" />
-    <Compile Include="Entity\CustomerManagement\Individual\CustomerList.cs" />
     <Compile Include="Entity\CustomerManagement\Individual\IndividualCustomerProfile.cs" />
     <Compile Include="Entity\CustomerManagement\Individual\IndividualProfile.cs" />
     <Compile Include="Entity\CustomerManagement\Organization\Class1.cs" />
@@ -115,8 +116,6 @@
     <Compile Include="UserManagement\Response\UserClaim.cs" />
     <Compile Include="UserManagement\Response\UserList.cs" />
     <Compile Include="UserManagement\Request\UserRole.cs" />
-    <Compile Include="UserManagement\Roles\Role.cs" />
-    <Compile Include="UserManagement\Roles\RoleClaim.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

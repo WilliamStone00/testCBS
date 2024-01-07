@@ -10,9 +10,13 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
     public class AccountDepositRequest
     {
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
-        public double amount { get; set; }
+        public int amount { get; set; }
         [Required(ErrorMessage = "Account number is required")]
         public string accountNumber { get; set; }
+        public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
+        public string bankId { get; set; }
+        public string branchId { get; set; }
+       
     }
     public class WithdrawalRequest
     {
@@ -25,6 +29,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string withDrawalType { get; set; }
         [Required(ErrorMessage = "Withdrawal note is required")]
         public string note { get; set; }
+        public string bankId { get; set; }
+        public string branchId { get; set; }
+        public CurrencyNotes currencyNotes { get; set; }=new CurrencyNotes();
     }
     public class DepositRequest
     {
@@ -38,7 +45,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string depositType { get; set; }
         [Required(ErrorMessage = "Deposit note is required")]
         public string note { get; set; }
-        public CurrencyNotes currencyNotes { get; set; }
+        public string bankId { get; set; }
+        public string branchId { get; set; }
+        public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
     }
     public class TransferRequest
     {
@@ -54,6 +63,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string sourceDetails { get; set; }
         [Required(ErrorMessage = "Tranfer note is required")]
         public string note { get; set; }
+        public string bankId { get; set; }
+        public string branchId { get; set; }
     }
 
     //

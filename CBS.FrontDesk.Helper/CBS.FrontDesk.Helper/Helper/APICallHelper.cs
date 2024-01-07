@@ -23,7 +23,33 @@ namespace CBS.FrontDesk.Helper
         public static string UploadProfilePhoto = "/api/User/UpdateUserProfilePhoto";
         public static string GetRecentRegisteredUsers = "/api/User/GetRecentlyRegisteredUsers";
         public static string UpdateUser = "/api/User/{0}";
-        public static string Role = "/api/Role";
+
+        //Role
+        public static string Get_Update_Delete_Role = "/api/Role/{0}";
+        public static string GetAllRoles = "/api/Role";
+        public static string CreateRole = "/api/Role";
+
+        //UserPermission
+        public static string Get_Update_Delete_UserPermission = "/api/UserPermission/{0}";
+        public static string GetAllUserPermission = "/api/UserPermissions";
+        public static string CreateUserPermission = "/api/UserPermission";
+        public static string GetUserPermissions = "/api/UserPermission/User/{0}";
+
+        //RolePermission
+        public static string Get_Update_Delete_RolePermission = "/api/RolePermission/{0}";
+        public static string GetAllRolePermission = "/api/RolePermissions";
+        public static string CreateRolePermission = "/api/RolePermission";
+        public static string GetRolePermissions = "/api/RolePermission/Role/{0}";
+
+
+        //MenuMaster
+        public static string Get_Update_Delete_MenuMaster = "/api/MenuMaster/{0}";
+        public static string GetAllMenuMaster = "/api/MenuMasters";
+        public static string GetAllMenuMasterToAssignPermission = "/api/MenuMasters/AssignPemission";
+        public static string CreateMenuMaster = "/api/MenuMaster";
+        public static string GetMenuMasterByParentID = "/api/MenuMaster/Parent/{0}";
+
+
         //Customer
         public static string CreateIndividualProfile = "/api/v1/Customer";
         public static string GetAllIndividualProfile = "/api/v1/Customers";
@@ -31,6 +57,13 @@ namespace CBS.FrontDesk.Helper
         public static string DeleteCustomer = "/api/v1/Customer/{0}";
         public static string GetCustomerByID = "/api/v1/Customer/{0}";
         public static string UploadCustomerDocument = "/api/v1/uploadCustomerDocuments";
+        public static string GetCustomerDefaultEnums = "/api/v1/SubscriptionAggregates/GetAll";
+
+        public static string ResetPin = "/api/v1/Customer/Pin/Reset";
+
+        public static string Get_Update_Delete_Question = "/api/v1/Questions/{0}";
+        public static string CreateQuestion = "/api/v1/CreateQuestion";
+        public static string GetAllQuestions = "/api/v1/Questions";
 
         //Saving
         public static string GetSavingProducts = "/api/v1/SavingProduct";
@@ -46,9 +79,41 @@ namespace CBS.FrontDesk.Helper
         public static string GetTransactionHistoryByAccountNumber = "/api/v1/Transaction/AccountNumber/{0}";
         public static string GetTransactionHistoryByCustomerNumber = "/api/v1/Transaction/Customer/{0}";
         public static string GetAllTransactions = "/api/v1/Transaction";
+
+        public static string PrimaryTellerProvisioning = "/api/v1/Teller/Provision/PrimaryTeller";
+
+        //
+
+        //Account
+        public static string AddCustomerSavingAccount = "/api/v1/Account";
         
+
+        //Teller
+        public static string Get_Update_Delete_Teller = "/api/v1/Teller/{0}";
+        public static string GetAllTeller = "/api/v1/Teller";
+        public static string CreateTeller = "/api/v1/Teller";
+
+        //SavingProduct
+        public static string Get_Update_Delete_SavingProduct = "/api/v1/SavingProduct/{0}";
+        public static string GetAllSavingProducts = "/api/v1/SavingProduct";
+        public static string CreateSavingProduct = "/api/v1/SavingProduct";
         
-        
+        //DepositLimit
+        public static string Get_Update_Delete_DepositLimit = "/api/v1/DepositLimits/{0}";
+        public static string GetAllDepositLimits = "/api/v1/DepositLimits";
+        public static string CreateDepositLimit = "/api/v1/DepositLimits";
+        //TransferLimits
+        public static string Get_Update_Delete_TransferLimits = "/api/v1/TransferLimits/{0}";
+        public static string GetAllTransferLimits = "/api/v1/v1/TransferLimits";
+        public static string CreateTransferLimits = "/api/TransferLimits";
+        //WithdrawalLimitss
+        public static string Get_Update_Delete_WithdrawalLimits = "/api/v1/WithdrawalLimits/{0}";
+        public static string GetAllWithdrawalLimits = "/api/v1/WithdrawalLimits";
+        public static string CreateWithdrawalLimits = "/api/v1/WithdrawalLimits";
+
+        //Configuration
+        public static string GetAllConfigurationEnums = "/api/v1/Config/EnumData";
+
         //Country
         public static string Get_Update_Delete_Country = "/api/v1/Country/{0}";
         public static string GetAllCountry = "/api/v1/Countrys";
@@ -118,6 +183,10 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllLoanProduct = "/api/v1/LoanProducts";
         public static string CreateLoanProduct = "/api/v1/LoanProduct";
         public static string GetLoanProductConfigurationAgregates = "/api/v1/LoanProductConfigurationAgregates";
+
+        //Upload FIles
+        public static string UploadFile = "/api/FIleManagement/Upload";
+
         //Loan Application
         public static string Get_Update_Delete_LoanApplication = "/api/v1/LoanApplication/{0}";
         public static string GetAllLoanApplication = "/api/v1/LoanApplications";

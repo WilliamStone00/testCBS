@@ -75,6 +75,12 @@
   <ItemGroup>
     <Compile Include="Accounting\AccountingServices.cs" />
     <Compile Include="Accounts\AccountServices.cs" />
+    <Compile Include="Accounts\DepositLimitServices.cs" />
+    <Compile Include="Accounts\TellerProvissioningServices.cs" />
+    <Compile Include="Accounts\SavingProductServices.cs" />
+    <Compile Include="Accounts\TellerServices.cs" />
+    <Compile Include="Accounts\TransferLimitServices.cs" />
+    <Compile Include="Accounts\WithdrawalLimitServices.cs" />
     <Compile Include="BaseService\BaseService.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Config\Localization\SubDivisionServices.cs" />
@@ -86,6 +92,7 @@
     <Compile Include="Config\Organization\OrganizationServices.cs" />
     <Compile Include="CustomerManagement\IIndividualProfileServices.cs" />
     <Compile Include="CustomerManagement\IndividualProfileServices.cs" />
+    <Compile Include="CustomerManagement\SecretQuestionServices.cs" />
     <Compile Include="Customization\CustomAuthorizeAttribute.cs" />
     <Compile Include="Customization\CustomClasses.cs" />
     <Compile Include="Customization\CustomMembership.cs" />
@@ -121,10 +128,13 @@
     <Compile Include="Loan\Config\LoanDeliquencyConfigurationServices.cs" />
     <Compile Include="Loan\Config\PeriodServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleManagement\RolePermissionServices.cs" />
+    <Compile Include="RoleManagement\RoleServices.cs" />
     <Compile Include="Session\SessionHelper.cs" />
     <Compile Include="Session\LocalSession.cs" />
     <Compile Include="UserManagement\IUserManagementServices.cs" />
     <Compile Include="UserManagement\UserManagementServices.cs" />
+    <Compile Include="UserManagement\UserPermissionServices.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\CBS.API.Helper\CBS.API.Helper\CBS.API.Helper.csproj">

@@ -62,6 +62,8 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             try
             {
+                if (token == null)
+                    return true;
                 var handler = new JwtSecurityTokenHandler();
                 var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
 
@@ -138,7 +140,7 @@ namespace CBS.FrontDesk.UI.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 GetMenus();
-                ProcessAuthenticationCookie("CBS4U");
+                //ProcessAuthenticationCookie("CBS4U");
             }
         }
 
@@ -246,6 +248,8 @@ namespace CBS.FrontDesk.UI.Controllers
             Session["BankID"] = userSession.BankID;
             Session["BankName"] = userSession.Bank.Name;
             Session["BranchName"] = userSession.Branch.Name;
+            Session["BranchCode"] = userSession.Branch.BranchCode;
+            Session["BankCode"] = userSession.Bank.BankCode;
         }
 
         [NonAction]

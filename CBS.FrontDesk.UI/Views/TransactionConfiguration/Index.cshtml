@@ -1,0 +1,153 @@
+﻿
+
+@{
+    ViewBag.Title = "Transaction Configuration";
+}
+
+
+<div class="card mb-12">
+    <div class="card-header">
+        <h5 class="card-title mb-0">SAVING PRODUCT CONFIGURATION</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <!-- Navigation -->
+            <div class="col-12 col-md-3 mx-auto card-separator">
+                <div class="d-flex justify-content-between flex-column mb-3 mb-md-0 pe-md-3">
+                    <ul class="nav nav-align-left nav-pills flex-column">
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#restock">
+                                <i class="mdi mdi-cube-outline me-2"></i>
+                                <span class="align-middle">Product</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#shipping">
+                                <i class="mdi mdi-car-estate me-2"></i>
+                                <span class="align-middle">Deposit Limit</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#global-delivery">
+                                <i class="mdi mdi-web me-2"></i>
+                                <span class="align-middle">Withdrawal limit</span>
+                            </button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#attributes">
+                                <i class="mdi mdi-link-variant me-2"></i>
+                                <span class="align-middle">Transfer limit</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#advanced">
+                                <i class="mdi mdi-lock me-2"></i>
+                                <span class="align-middle">Teller</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-md-9 pt-4 pt-md-0">
+                <div class="tab-content p-0 pe-xl-0 ps-md-3">
+                    <div class="tab-pane fade show active" id="restock" role="tabpanel">
+                        <div class="row justify-content-end">
+                            <div class="demo-inline-spacing text-end">
+                                <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_product','_ProductData',0,'datalistingview_product',null,'savingproduct')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                </a>
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_product','_ProductConfig','new','TransactionConfiguration','savingproduct')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <br />
+                        <div id="datalistingview_product">
+                            @Html.Partial("_ProductConfig")
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="shipping" role="tabpanel">
+                        <div class="row justify-content-end">
+                            <div class="demo-inline-spacing text-end">
+                                <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit',null,'depositlimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                </a>
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Deposit','_DepositConfig','new','TransactionConfiguration','depositlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <br />
+                        <div id="datalistingview_Deposit">
+                            @Html.Partial("_DepositConfig")
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="global-delivery" role="tabpanel">
+                        <div class="row justify-content-end">
+                            <div class="demo-inline-spacing text-end">
+                                <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Withdrawal','_WithdrawalData',0,'datalistingview_Withdrawal',null,'withdrawallimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                </a>
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Withdrawal','_WithdrawalConfig','new','TransactionConfiguration','withdrawallimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <br />
+                        <div id="datalistingview_Withdrawal">
+                            @Html.Partial("_WithdrawalConfig")
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="attributes" role="tabpanel">
+                        <div class="row justify-content-end">
+                            <div class="demo-inline-spacing text-end">
+                                <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Transfer','_TransferData',0,'datalistingview_Transfer',null,'transferlimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                </a>
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Transfer','_TransferConfig','new','TransactionConfiguration','transferlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <br />
+                        <div id="datalistingview_Transfer">
+                            @Html.Partial("_TransferConfig")
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="advanced" role="tabpanel">
+                        <div class="row justify-content-end">
+                            <div class="demo-inline-spacing text-end">
+                                <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Teller','_TellerData',0,'datalistingview_Teller',null,'teller')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                </a>
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Teller','_TellerConfig','new','TransactionConfiguration','teller')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <br />
+                        <div id="datalistingview_Teller">
+                            @Html.Partial("_TellerConfig")
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")}
+
+

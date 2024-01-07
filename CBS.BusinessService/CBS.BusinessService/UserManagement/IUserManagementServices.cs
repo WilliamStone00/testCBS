@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
-using CBS.FrontDesk.Data.UserManagement.Roles;
 
 namespace CBS.BusinessService.UserManagement
 {

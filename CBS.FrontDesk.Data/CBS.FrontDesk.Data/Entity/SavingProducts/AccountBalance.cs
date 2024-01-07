@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CBS.FrontDesk.Data.Entity.CustomerManagement.Individual;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 
@@ -27,10 +27,10 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string previousBalance { get; set; }
         public string status { get; set; }
         public string productId { get; set; }
-        public Product product { get; set; }
-        public CustomerList Customer { get; set; }
+        public SavingProduct product { get; set; }
         public string customerId { get; set; }
         public string encryptedBalance { get; set; }
+        public IndividualProfile Customer { get; set; }
         public AccountDepositRequest AccountActivationRequest { get; set; }=new AccountDepositRequest();
         public List<CustomerAccount> Accounts { get; set; }=new List<CustomerAccount>();
         public List<TransactionHistory> TransactionHistories { get; set; } = new List<TransactionHistory>();

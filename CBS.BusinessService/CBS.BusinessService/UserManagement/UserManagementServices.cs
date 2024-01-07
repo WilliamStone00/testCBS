@@ -6,15 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using BusinessServices;
-using CBS.FrontDesk.Data.UserManagement.Roles;
-using System.Web.Security;
 using CBS.FrontDesk.Data.Entity.DataTable;
-using System.Xml.Linq;
 using System.Web;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity;
 
 namespace CBS.BusinessService.UserManagement
 {
@@ -29,14 +26,10 @@ namespace CBS.BusinessService.UserManagement
                 {
                     user.userAllowedIPs = new List<UserAllowedIP> { new UserAllowedIP() { ipAddress = user.allowedIP } };
                 }
-
-                foreach (var id in user.roleID)
-                {
-                    user.userRoles.Add(new UserRole{roleId = id});
-                }
+                user.userRoles.Add(new UserRole { roleId = user.roleID });
                 user.userAllowedIPs = new List<UserAllowedIP>();
                 var ApiCallerHelper =new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var reUser = await ApiCallerHelper.PostAsync<UserList>(APICallHelper.createUserUrl, user);
+                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<UserList>>(APICallHelper.createUserUrl, user);
                 if (reUser.IsSuccess)
                 {
                     GetExecutionMessages(reUser, true, user.firstName+" "+ user.lastName, MessagesResults.Success,
@@ -61,8 +54,8 @@ namespace CBS.BusinessService.UserManagement
             try
             {
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var roles = await ApiCallerHelper.GetAsync<IEnumerable<Role>>(APICallHelper.Role);
-                return roles.ApiResponseData;
+                var roles = await ApiCallerHelper.GetAsync<ResponseObject<List<Role>>>(APICallHelper.GetAllRoles);
+                return roles.ApiResponseData.Data;
             }
             catch (Exception ex)
             {
@@ -74,7 +67,7 @@ namespace CBS.BusinessService.UserManagement
             try
             {
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var userLists = await ApiCallerHelper.GetAsync<IEnumerable<UserList>>(APICallHelper.GetUsers);
+                var userLists = await ApiCallerHelper.GetAsync<ResponseObject<List<UserList>>>(APICallHelper.GetUsers);
                 var newList = new List<UserList>();
                 
                 if (userLists!=null)
@@ -82,7 +75,7 @@ namespace CBS.BusinessService.UserManagement
                     var braches = await GetBranches();
 
 
-                    foreach (var a in userLists.ApiResponseData)
+                    foreach (var a in userLists.ApiResponseData.Data)
                     {
                         a.name = $"{a.firstName} {a.lastName}";
                         a.strlastLoginDate = a.lastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
@@ -110,7 +103,7 @@ namespace CBS.BusinessService.UserManagement
 
                
                 
-                return userLists.ApiResponseData;
+                return userLists.ApiResponseData.Data;
             }
             catch (Exception ex)
             {
@@ -137,16 +130,16 @@ namespace CBS.BusinessService.UserManagement
             try
             {
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var user = await ApiCallerHelper.GetAsync<UserList>(string.Format(APICallHelper.GetUserByID, userid));
+                var user = await ApiCallerHelper.GetAsync<ResponseObject<UserList>>(string.Format(APICallHelper.GetUserByID, userid));
                 if (user.IsSuccess)
                 {
-                    user.ApiResponseData.name = $"{user.ApiResponseData.firstName} {user.ApiResponseData.lastName}";
-                    user.ApiResponseData.strlastLoginDate = user.ApiResponseData.lastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
-                    user.ApiResponseData.status = user.ApiResponseData.isActive ? "Active" : "In-active";
-                    user.ApiResponseData.ChangePassword.userName = user.ApiResponseData.userName;
-                    user.ApiResponseData.roleID= user.ApiResponseData.userRoles.Select(role => role.roleId).ToList();
+                    user.ApiResponseData.Data.name = $"{user.ApiResponseData.Data.firstName} {user.ApiResponseData.Data.lastName}";
+                    user.ApiResponseData.Data.strlastLoginDate = user.ApiResponseData.Data.lastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
+                    user.ApiResponseData.Data.status = user.ApiResponseData.Data.isActive ? "Active" : "In-active";
+                    user.ApiResponseData.Data.ChangePassword.userName = user.ApiResponseData.Data.userName;
+                    user.ApiResponseData.Data.roleID= user.ApiResponseData.Data.userRoles.Select(role => role.roleId).First();
                 }
-                return user.ApiResponseData;
+                return user.ApiResponseData.Data;
             }
             catch (Exception ex)
             {
@@ -158,7 +151,7 @@ namespace CBS.BusinessService.UserManagement
             try
             {
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var staus = await ApiCallerHelper.DeleteAsync<bool>(string.Format(APICallHelper.DeleteUser, userid));
+                var staus = await ApiCallerHelper.DeleteAsync<ResponseObject<bool>>(string.Format(APICallHelper.DeleteUser, userid));
                 if (staus.IsSuccess)
                 {
                     GetExecutionMessages(staus, true, "", MessagesResults.Success,
@@ -195,16 +188,13 @@ namespace CBS.BusinessService.UserManagement
 
                 }
                 user.id = Guid.Parse(GetUserToDoAction());
-                foreach (var id in user.roleID)
-                {
-                    user.userRoles.Add(new UserRole{roleId = id, userId = user.id }); 
-                }
-       
+                user.userRoles.Add(new UserRole { roleId = user.roleID, userId = user.id });
+
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var reUser = await ApiCallerHelper.PutAsync<UserList>(string.Format(APICallHelper.UpdateUser, user.id), user);
+                var reUser = await ApiCallerHelper.PutAsync<ResponseObject<UserList>>(string.Format(APICallHelper.UpdateUser, user.id), user);
                 if (reUser.IsSuccess)
                 {
-                    GetExecutionMessages(reUser, true, reUser.ApiResponseData.firstName, MessagesResults.Success,
+                    GetExecutionMessages(reUser, true, reUser.ApiResponseData.Data.firstName, MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null,
                         null);
                     return ExecutionMessage;
@@ -227,7 +217,7 @@ namespace CBS.BusinessService.UserManagement
             {
                 
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var reUser = await ApiCallerHelper.PostAsync<UserList>(APICallHelper.ChangePassword, user.ChangePassword);
+                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<UserList>>(APICallHelper.ChangePassword, user.ChangePassword);
                 if (reUser.IsSuccess)
                 {
                     GetExecutionMessages(reUser, true, user.ChangePassword.userName, MessagesResults.Success,
@@ -253,7 +243,7 @@ namespace CBS.BusinessService.UserManagement
             {
 
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var reUser = await ApiCallerHelper.PostAsync<UserList>(APICallHelper.ResetPassword, user.ChangePassword);
+                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<UserList>>(APICallHelper.ResetPassword, user.ChangePassword);
                 if (reUser.IsSuccess)
                 {
                     GetExecutionMessages(reUser, true, user.ChangePassword.userName, MessagesResults.Success,
@@ -284,7 +274,7 @@ namespace CBS.BusinessService.UserManagement
                 List<HttpPostedFileBase> image =new List<HttpPostedFileBase>();
                 image.Add(user);
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var reUser = await ApiCallerHelper.PostFilesAndParamsAsync<UserList>(APICallHelper.UploadProfilePhoto, additionalParams, image);
+                var reUser = await ApiCallerHelper.PostFilesAndParamsAsync<ResponseObject<UserList>>(APICallHelper.UploadProfilePhoto, additionalParams, image);
                 if (reUser.IsSuccess)
                 {
                     GetExecutionMessages(reUser, true, null, MessagesResults.Success,
