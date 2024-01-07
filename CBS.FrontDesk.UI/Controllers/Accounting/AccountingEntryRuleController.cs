@@ -12,7 +12,7 @@ using CBS.FrontDesk.Data.Entity.Accounting;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
-    public class AccountingEntryRuleController : Controller
+    public class AccountingEntryRuleController : BaseController
     {
         private readonly AccountingEntryRuleService _Service;
         private readonly OperationEventAttributeServices _OperationEventService;

@@ -8,7 +8,7 @@
                
                             @Html.DropDownListFor(m => m.OperationEventId, new SelectList(ViewBag.OperationEvents==null?"": ViewBag.OperationEvents,  "id","operationEventName"), "---Select OperationEvent---", new { @class = "form-control select2", @search = "true" })
                             @Html.ValidationMessageFor(m => m.OperationEventId, "", new { @class = "text-danger " })
-                         <label>OperationEvent</label>
+                         <label>Operation Event</label>
                 </div>
             </div>
             <div class="col-12">
