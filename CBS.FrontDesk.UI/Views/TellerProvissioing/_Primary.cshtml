@@ -13,7 +13,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-octagram-plus me-2"></i>
-               PROVISSIONING PRIMARY TELLER
+               PROVISIONING OPERATION ACCOUNT (Primary teller)
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"
@@ -130,6 +130,13 @@
                                         @Html.DropDownListFor(m => m.PrimaryTellerProvissioning.userId, new SelectList(ViewBag.TellerRoles, "id", "name"), "---Select user---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.PrimaryTellerProvissioning.userId, "", new { @class = "text-danger " })
                                         <label for="formValidationDob">Select teller user</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextAreaFor(m => m.PrimaryTellerProvissioning.note, new { @class = "form-control", @style = "height: 150px;" })
+                                        @Html.ValidationMessageFor(m => m.PrimaryTellerProvissioning.note, "", new { @class = "text-danger " })
+                                        <label for="formValidationDob">Provisioing Note</label>
                                     </div>
                                 </div>
                             </div>

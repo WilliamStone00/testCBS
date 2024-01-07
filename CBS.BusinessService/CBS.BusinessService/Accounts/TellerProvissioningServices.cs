@@ -164,6 +164,11 @@ namespace CBS.BusinessService.Accounts
                                 { 
                                  name=$"{r.Name}-{a.firstName} {a.lastName}", id=a.id.ToString(),
                                 }).ToList();
+
+                if (!pTellers.Any())
+                {
+                    pTellers.Add(new Teller { name = $"Primary Teller-Default Admin", id = "4b352b37-332a-40c6-ab05-e38fcf109719" });
+                }
                 return pTellers.ToList();
 
             }
