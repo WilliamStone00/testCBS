@@ -385,6 +385,7 @@ namespace CBS.API.Helper
 
 
                         }
+                        
                         else if (response.StatusCode == HttpStatusCode.Conflict || response.StatusCode == HttpStatusCode.NotFound)
                         {
                             jsonResponse = JObject.Parse(responseData);
@@ -401,26 +402,46 @@ namespace CBS.API.Helper
                         }
                         else if (response.StatusCode == HttpStatusCode.BadRequest)
                         {
+                            T data;
                             try
                             {
-                                jsonResponse = JObject.Parse(responseData);
-
-                                if (jsonResponse["errors"] != null)
+                                if (responseData.Contains("\"data\":null"))
                                 {
-                                    var errorResponse = jsonResponse["errors"].ToObject<Dictionary<string, List<string>>>();
+                                    // Handle the case where "data" is null in the JSON response
+                                    data = default(T); // Assign default value for T (typically null for reference types)
 
-                                    var errorMessages = errorResponse
-                                        .SelectMany(error => error.Value) // Flatten the list of error messages
-                                        .ToList();
-
-                                    var errorMessage = string.Join(". ", errorMessages);
-
+                                    // Extract other necessary information if available
+                                    jsonResponse = JObject.Parse(responseData);
+                                    message = jsonResponse["message"]?.ToString();
+                                    statusDescription = jsonResponse["statusDescription"]?.ToString();
                                     return new ApiResponse<T>
                                     {
                                         IsSuccess = false,
-                                        Message = string.IsNullOrEmpty(errorMessage) ? "Validation error occurred" : errorMessage
+                                        Message = string.IsNullOrEmpty(message) ? "Bad request" : "Message: "+ message+"Description: " + statusDescription
                                     };
                                 }
+                                else
+                                {
+                                    jsonResponse = JObject.Parse(responseData);
+
+                                    if (jsonResponse["errors"] != null)
+                                    {
+                                        var errorResponse = jsonResponse["errors"].ToObject<Dictionary<string, List<string>>>();
+
+                                        var errorMessages = errorResponse
+                                            .SelectMany(error => error.Value) // Flatten the list of error messages
+                                            .ToList();
+
+                                        var errorMessage = string.Join(". ", errorMessages);
+
+                                        return new ApiResponse<T>
+                                        {
+                                            IsSuccess = false,
+                                            Message = string.IsNullOrEmpty(errorMessage) ? "Validation error occurred" : errorMessage
+                                        };
+                                    }
+                                }
+                                
 
                                 // If the error structure doesn't match the expected format or errors object not found
                                 return new ApiResponse<T>

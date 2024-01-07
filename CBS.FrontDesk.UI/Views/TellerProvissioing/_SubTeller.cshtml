@@ -26,6 +26,7 @@
                         @using (Html.BeginForm("SubTeller", "TellerProvissioing", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
                             <div class="row mt-2 gy-4">
+
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.SubTellerProvissioning.initialAmount, new { @class = "form-control" })
@@ -116,6 +117,20 @@
                                         @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin1, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin1, "", new { @class = "text-danger " })
                                         <label>Coin-1</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.startTime, new { @class = "form-control date-picker", @placeholder = "Date start" })
+                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.startTime, "", new { @class = "text-danger" })
+                                        <label>Start date</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.endTime, new { @class = "form-control date-picker", @placeholder = "Date end" })
+                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.endTime, "", new { @class = "text-danger" })
+                                        <label>End date</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
