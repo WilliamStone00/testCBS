@@ -1,0 +1,41 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.Accounting.ChartOfAccountDto>
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>AccountNumber</th>
+            <th>Description</th>
+            <th>BalanceSheetAccount</th>
+            <th>IsDirectAccount</th>
+            <th>RootAccount</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    @{
+        if (Model != null)
+        {
+            foreach (var d in Model)
+            {
+                <tr>
+                
+                    <td style="width:35%">@d.AccountNumber : @d.Label</td>
+                    <td style="width:5%">@d.IsBSAccount</td>
+                    <td style="width:5%">@d.IsDebit</td>
+                    <td style="width:5%">@d.IsDirect</td>
+                    <td style="width:35<%">@d.AccountNumberParentAccount</td>
+                    <td style="width:15%">
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Update','update','AccountingChart')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountNumber to edit">Edit</a>
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountNumber" onclick="DeleteRecordDataTable('ChartOfAccount','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+                
+        }
+         
+        }
+    </tbody>
+</table>
+

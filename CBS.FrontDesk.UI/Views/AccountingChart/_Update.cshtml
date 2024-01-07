@@ -1,0 +1,47 @@
+﻿@using CBS.FrontDesk.Data.Entity.Accounting
+@model CBS.FrontDesk.Data.Entity.Accounting.ChartOfAccount
+
+@{
+    ViewBag.Title = "ChartOfAccount";
+
+}
+
+<div class="row">
+<!-- Context Menu -->
+<div class="col-12 card-body">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Update Account Info: </h5>
+            <small class="text-body float-end">@Model.AccountNumber-@Model.LabelEn</small>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Update", "AccountingChart", FormMethod.Post, new { id = "chartOfAccountForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+            {
+                @Html.HiddenFor(model => model.ParentAccountId) <!-- Hidden field for AccountNumber -->
+
+                <div class="form-floating form-floating-outline mb-4">
+                    @Html.TextBoxFor(model => model.AccountNumber, new { @class = "form-control", @readonly=true, placeholder = "Account Number" })
+                    @Html.LabelFor(model => model.AccountNumber, new { @for = "accountNumber" })
+                </div>
+
+                <div class="form-floating form-floating-outline mb-4">
+                    @Html.TextBoxFor(model => model.LabelEn, new { @class = "form-control", placeholder = "Account Label" })
+                    @Html.LabelFor(model => model.LabelEn, new { @for = "label" })
+                </div>
+                <div class="form-floating form-floating-outline mb-4">
+                    @Html.TextBoxFor(model => model.LabelFr, new { @class = "form-control", placeholder = "Account Label" })
+                    @Html.LabelFor(model => model.LabelFr, new { @for = "label" })
+                </div>
+
+                <div class="form-check mb-4">
+                    @Html.CheckBoxFor(model => model.IsBalanceAccount, new { @class = "form-check-input" })
+                    @Html.LabelFor(model => model.IsBalanceAccount, new { @class = "form-check-label" })
+                </div>
+                <button type="submit"  class="btn btn-default waves-effect waves-light">Update</button>
+
+            }
+        </div>
+    </div>
+</div>
+</div>
+ 

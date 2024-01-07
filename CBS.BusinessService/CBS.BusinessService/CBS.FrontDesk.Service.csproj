@@ -73,7 +73,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounting\AccountCategoryServices.cs" />
+    <Compile Include="Accounting\AccountClassServices.cs" />
+    <Compile Include="Accounting\AccountingEntryRuleService.cs" />
+    <Compile Include="Accounting\AccountingRuleService.cs" />
     <Compile Include="Accounting\AccountingServices.cs" />
+    <Compile Include="Accounting\ChartOfAccountServices.cs" />
+    <Compile Include="Accounting\OperationEventAttributeServices.cs" />
+    <Compile Include="Accounting\OperationEventServices.cs" />
     <Compile Include="Accounts\AccountServices.cs" />
     <Compile Include="Accounts\DepositLimitServices.cs" />
     <Compile Include="Accounts\TellerProvissioningServices.cs" />
@@ -82,7 +89,7 @@
     <Compile Include="Accounts\TransferLimitServices.cs" />
     <Compile Include="Accounts\WithdrawalLimitServices.cs" />
     <Compile Include="BaseService\BaseService.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="BaseApiServices.cs" />
     <Compile Include="Config\Localization\SubDivisionServices.cs" />
     <Compile Include="Config\Localization\TownServices.cs" />
     <Compile Include="Config\Localization\DivisionServices.cs" />

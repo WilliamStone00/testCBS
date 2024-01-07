@@ -43,7 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entity\Accounting\Class1.cs" />
+    <Compile Include="Entity\Accounting\AccountCategory.cs" />
+    <Compile Include="Entity\Accounting\AccountClass.cs" />
+    <Compile Include="Entity\Accounting\AccountClassDto.cs" />
+    <Compile Include="Entity\Accounting\AccountingRole.cs" />
+    <Compile Include="Entity\Accounting\AccountingRule.cs" />
+    <Compile Include="Entity\Accounting\AccountingRuleDto.cs" />
+    <Compile Include="Entity\Accounting\AccountingRuleEntry.cs" />
+    <Compile Include="Entity\Accounting\AccountTreeNode.cs" />
+    <Compile Include="Entity\Accounting\ChartOfAccount.cs" />
+    <Compile Include="Entity\Accounting\ChartOfAccountDto.cs" />
+    <Compile Include="Entity\Accounting\OperationEvent.cs" />
+    <Compile Include="Entity\Accounting\OperationEventAttribute.cs" />
+    <Compile Include="Entity\Accounting\OperationEventAttributeDto.cs" />
+    <Compile Include="Entity\Accounting\OperationEventDto.cs" />
     <Compile Include="Entity\CustomerManagement\MembershipNextOfKingsMember.cs" />
     <Compile Include="Entity\CustomerManagement\CustomerDocument.cs" />
     <Compile Include="Entity\CustomerManagement\SecretQuestion.cs" />
