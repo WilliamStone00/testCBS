@@ -17,7 +17,7 @@
                     @Html.DropDownListFor(m => m.OperationEventId, new SelectList(( ViewBag.OperationEvents==null)?"": ViewBag.OperationEvents, "Id", "OperationEventName"),
                         "---Select OperationEvent---", new { @class = "form-control select2", @search = "true" })
                     @Html.ValidationMessageFor(m => m.OperationEventId, "", new { @class = "text-danger " })
-                    <label>Language</label>
+                    <label>Operation Event</label>
                 </div>
             </div>
       

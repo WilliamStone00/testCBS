@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
-    public class BankingOperationController : Controller
+    public class BankingOperationController : BaseController
     {
         // GET: BankingOperation
         public ActionResult Index()
