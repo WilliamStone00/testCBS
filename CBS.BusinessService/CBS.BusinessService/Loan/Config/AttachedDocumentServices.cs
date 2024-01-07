@@ -62,7 +62,7 @@ namespace CBS.BusinessService.Loan.Config
                     {"IsPhoto ","true"},
                     {"IsSignature","false"}
                 };
-                var response = await _customerApiHelper.PostFilesAndParamsAsync<CustomerDocument>(APICallHelper.UploadCustomerDocument, additionalParams, attachedToLoan.AttachedFiles);
+                var response = await _customerApiHelper.PostFilesAndParamsAsync<DocumentUploadResponse>(APICallHelper.UploadCustomerDocument, additionalParams, attachedToLoan.AttachedFiles);
                 if (response.IsSuccess)
                 {
                     GetExecutionMessages(response, true, null, MessagesResults.Success,

@@ -1523,6 +1523,16 @@ namespace BusinessServices
             string str = HttpContext.Current.Session["BankID"].ToString();
             return str;
         }
+        public string GetBankCode()
+        {
+            string str = HttpContext.Current.Session["BankCode"].ToString();
+            return str;
+        }
+        public string GetBranchCode()
+        {
+            string str = HttpContext.Current.Session["BranchCode"].ToString();
+            return str;
+        }
         public string GetBranchID()
         {
             string str = HttpContext.Current.Session["BranchID"].ToString();

@@ -16,7 +16,10 @@
       <mvcSiteMapNode title="Profile" controller="Individual" action="CustomerProfile" preservedRouteParameters="KEY"/>
       <mvcSiteMapNode title="Account" controller="Individual" action="Account" preservedRouteParameters="KEY"/>
     </mvcSiteMapNode>
-    
+    <mvcSiteMapNode title="Primary teller provissioning" controller="TellerProvissioing" action="Primary">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Sub teller provissioning" controller="TellerProvissioing" action="SubTeller">
+    </mvcSiteMapNode>
     <mvcSiteMapNode title="Global Configuration" controller="GlobalConfiguration" action="Index">
       <mvcSiteMapNode title="Country" controller="Country" action="Index">
       </mvcSiteMapNode>
@@ -53,9 +56,12 @@
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Tax" controller="Tax" action="Index">
       </mvcSiteMapNode>
+      <mvcSiteMapNode title="Transaction configuration" controller="TransactionConfiguration" action="Index">
+      </mvcSiteMapNode>
+     
     </mvcSiteMapNode>
   </mvcSiteMapNode>
-  
 
+  
 
 </mvcSiteMap>

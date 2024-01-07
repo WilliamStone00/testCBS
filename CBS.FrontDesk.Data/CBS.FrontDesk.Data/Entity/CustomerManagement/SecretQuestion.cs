@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CBS.FrontDesk.Data.UserManagement.Roles
+namespace CBS.FrontDesk.Data.Entity.CustomerManagement
 {
-   
-    public class Role
+    public class SecretQuestion
     {
         public string id { get; set; }
-        public string name { get; set; }
-        public List<RoleClaim> roleClaims { get; set; }
+        public string secretQuestion { get; set; }
     }
 }

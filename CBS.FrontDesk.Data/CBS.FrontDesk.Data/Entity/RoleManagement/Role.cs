@@ -7,13 +7,8 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity
 {
-    public class Role
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public bool IsTeller { get; set; }
-    }
-    public class PermissionLoaderDto
+    
+    public class PermissionMenuLoader
     {
         public int MenuMasterId { get; set; }
         public string MenuText { get; set; }
@@ -33,7 +28,7 @@ namespace CBS.FrontDesk.Data.Entity
 
     }
 
-    public class RolePermissionDto
+    public class RolePermission
     {
         public Guid Id { get; set; }
         public int MenuMasterId { get; set; }
@@ -48,7 +43,16 @@ namespace CBS.FrontDesk.Data.Entity
         public MenuMaster MenuMaster { get; set; }
 
     }
-    public class UserPermissionDto
+    public class DeleteUserPermissionCommand
+    {
+        public DeleteUserPermissionCommand(List<string> ids)
+        {
+            Ids = ids;
+        }
+
+        public List<string> Ids { get; set; }
+    }
+    public class UserPermission
     {
         public Guid Id { get; set; }
         public int MenuMasterId { get; set; }
@@ -63,9 +67,9 @@ namespace CBS.FrontDesk.Data.Entity
         public MenuMaster MenuMaster { get; set; }
 
     }
-    public class RolePermissionRequest
+    public class PermissionRequest
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public int MenuMasterId { get; set; }
         public bool Create { get; set; }
         public bool Read { get; set; }
@@ -74,8 +78,30 @@ namespace CBS.FrontDesk.Data.Entity
         public bool Download { get; set; }
         public bool Upload { get; set; }
     }
-    public class UserPermissionRequestDto : RolePermissionRequest
+    
+    public class UserPermissionRequestCommand
     {
-
+        public Guid userID { get; set; }
+        public List<PermissionRequest> userPermissionRequests { get; set; }
+    }
+    public class RolePermissionRequestCommand
+    {
+        public Guid roleID { get; set; }
+        public string roleName { get; set; }
+        public List<Permission> Permissions { get; set; }
+        public List<PermissionRequest> rolePermissionRequests { get; set; }
+    }
+    public class RolePermissionRequestModel
+    {
+        public Guid roleID { get; set; }
+        public string roleName { get; set; }
+        public List<Permission> Permissions { get; set; }
+    }
+    public class Role
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public bool IsTeller { get; set; }
+        public List<Permission> Permissions { get; set; } = new List<Permission>();
     }
 }

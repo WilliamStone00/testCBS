@@ -30,7 +30,7 @@
             </div>
             <div class="col-md-8">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.AccountActivationRequest.amount, new { @class = "form-control"})
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.amount, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.AccountActivationRequest.amount, "", new { @class = "text-danger" })
                     <label style="color:blue">Enter initial deposit (min: @Model.product.minAmount, max: @Model.product.maxAmount)</label>
                 </div>
@@ -39,6 +39,90 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.createdDate, new { @class = "form-control", @readonly = true })
                     <label>Creation date</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.currencyNotes.note10000, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AccountActivationRequest.currencyNotes.note10000, "", new { @class = "text-danger " })
+                    <label>Note-10,000</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.currencyNotes.note5000, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AccountActivationRequest.currencyNotes.note5000, "", new { @class = "text-danger " })
+                    <label>Note-5,000</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.currencyNotes.note2000, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AccountActivationRequest.currencyNotes.note2000, "", new { @class = "text-danger " })
+                    <label>Note-2,000</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.currencyNotes.note1000, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AccountActivationRequest.currencyNotes.note1000, "", new { @class = "text-danger " })
+                    <label>Note-1,000</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.currencyNotes.note500, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AccountActivationRequest.currencyNotes.note500, "", new { @class = "text-danger " })
+                    <label>Note-500</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.currencyNotes.coin500, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AccountActivationRequest.currencyNotes.coin500, "", new { @class = "text-danger " })
+                    <label>Coin-500</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.currencyNotes.coin100, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AccountActivationRequest.currencyNotes.coin100, "", new { @class = "text-danger " })
+                    <label>Coin-100</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.currencyNotes.coin50, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AccountActivationRequest.currencyNotes.coin50, "", new { @class = "text-danger " })
+                    <label>Coin-50</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.currencyNotes.coin25, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AccountActivationRequest.currencyNotes.coin25, "", new { @class = "text-danger " })
+                    <label>Coin-25</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.currencyNotes.coin10, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AccountActivationRequest.currencyNotes.coin10, "", new { @class = "text-danger " })
+                    <label>Coin-10</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.currencyNotes.coin5, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AccountActivationRequest.currencyNotes.coin5, "", new { @class = "text-danger " })
+                    <label>Coin-5</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AccountActivationRequest.currencyNotes.coin1, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AccountActivationRequest.currencyNotes.coin1, "", new { @class = "text-danger " })
+                    <label>Coin-1</label>
                 </div>
             </div>
         </div>

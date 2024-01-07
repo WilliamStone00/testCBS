@@ -1,17 +1,11 @@
-﻿using CBS.FrontDesk.Data.Entity.User;
-using CBS.FrontDesk.Data.UserManagement.Roles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace CBS.FrontDesk.Data.Entity
 {
-   
 
 
-  
+
+
     public class MenuMaster
     {
         public int Id { get; set; }
@@ -48,6 +42,13 @@ namespace CBS.FrontDesk.Data.Entity
         public bool IsVisible { get; set; }
 
     }
+    public class Permission: DatabaseMenus
+    {
+        public Guid Id { get; set; }
+        public bool IsAllRowSelected { get; set; }
+
+    }
+
 
 
 

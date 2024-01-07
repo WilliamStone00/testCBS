@@ -235,9 +235,13 @@
     <Compile Include="Controllers\Loan\Configuration\PeriodController.cs" />
     <Compile Include="Controllers\Loan\Configuration\DocumentController.cs" />
     <Compile Include="Controllers\Loan\Configuration\TaxController.cs" />
+    <Compile Include="Controllers\RoleManagement\RoleController.cs" />
+    <Compile Include="Controllers\RoleManagement\RolePermissionController.cs" />
     <Compile Include="Controllers\Settings\GlobalConfigurationController.cs" />
     <Compile Include="Controllers\TransactionManagement\OperationController.cs" />
     <Compile Include="Controllers\TransactionManagement\SavingController.cs" />
+    <Compile Include="Controllers\TransactionManagement\TellerProvissioingController.cs" />
+    <Compile Include="Controllers\TransactionManagement\TransactionConfigurationController.cs" />
     <Compile Include="Controllers\UserManagement\UserManagementController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -248,10 +252,18 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppFiles\Images\no signature.png" />
+    <Content Include="AppFiles\Images\noimage.jpg" />
     <Content Include="AppFiles\Images\p.jpg" />
+    <Content Include="AppFiles\Images\s.jpg" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\alertify.js" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\alertify.min.js" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\css\alertify.css" />
@@ -1965,6 +1977,10 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -2029,7 +2045,6 @@
     <Content Include="Views\Shared\_model.cshtml" />
     <Content Include="Views\Shared\_modalFooter.cshtml" />
     <Content Include="Views\Country\_Update.cshtml" />
-    <Content Include="Views\Individual\_ProfileHeader.cshtml" />
     <Content Include="Views\Individual\Account.cshtml" />
     <Content Include="Views\Operation\AccountDetails.cshtml" />
     <Content Include="Views\Operation\_CustomerCard.cshtml" />
@@ -2113,11 +2128,43 @@
     <Content Include="Views\Tax\_Data.cshtml" />
     <Content Include="Views\Tax\_Update.cshtml" />
     <Content Include="Views\Tax\Index.cshtml" />
+    <Content Include="Views\Role\_Create.cshtml" />
+    <Content Include="Views\Role\_Data.cshtml" />
+    <Content Include="Views\Role\_Update.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\_SetRolePermission.cshtml" />
+    <Content Include="Views\Role\RolePermission.cshtml" />
+    <Content Include="Views\Individual\_MaritalStatus.cshtml" />
+    <Content Include="Views\Individual\_EmploymentDetails.cshtml" />
+    <Content Include="Views\Individual\_BankInformation.cshtml" />
+    <Content Include="Views\Individual\_ImageUploader.cshtml" />
+    <Content Include="Views\TransactionConfiguration\Index.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_ProductData.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_ProductConfig.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_TransferConfig.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_DepositConfig.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_WithdrawalConfig.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_TellerConfig.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_WithdrawalData.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_DepositData.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_TellerData.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_TransferData.cshtml" />
+    <Content Include="Views\Individual\_AddCustomerAccount.cshtml" />
+    <Content Include="Views\Individual\_ResetPin.cshtml" />
+    <Content Include="Views\Individual\_SecurityQuestionAndAnswer.cshtml" />
+    <Content Include="Views\Individual\_SignatureUploader.cshtml" />
+    <Content Include="Views\Individual\_FilesUploader.cshtml" />
+    <Content Include="Views\Individual\_UploadedFiles.cshtml" />
+    <Content Include="Views\TellerProvissioing\Primary.cshtml" />
+    <Content Include="Views\TellerProvissioing\_Primary.cshtml" />
+    <Content Include="Views\TellerProvissioing\_SubTeller.cshtml" />
+    <Content Include="Views\TellerProvissioing\SubTeller.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\Configuration\Organ\" />
     <Folder Include="Views\DocumentPack\" />
+    <Folder Include="Views\RolePermission\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

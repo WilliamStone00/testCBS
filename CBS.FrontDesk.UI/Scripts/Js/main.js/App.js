@@ -732,22 +732,22 @@ function EditResetModal(KEY, modalBodyID, ModalcontentID, controller, actionMeth
     });
 }
 
-function LoadDataGen(controller, tableID, partialView, order, datalistingview) {
-    LoadDataTableNew(controller, tableID, "InitializeData", null, partialView, order, "list", datalistingview);
+function LoadDataGen(controller, tableID, partialView, order, datalistingview,KEY,serviceOption) {
+    LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, "list", datalistingview, serviceOption);
 
 }
-function AddORUpdateGen(KEY, divToLoadData, partialView, path, controller) {
-    EditResetMain(KEY, partialView, divToLoadData, controller, "InitializeData", null, path, null);
+function AddORUpdateGen(KEY, divToLoadData, partialView, path, controller,serviceOption) {
+    EditResetMain(KEY, partialView, divToLoadData, controller, "InitializeData", null, path, null, serviceOption);
     $('.select2').select2();
 }
 
 function navigateToDetails(url) {
     window.location.href = url;
 }
-function EditResetMain(KEY, partialView, divID, controller, action, div1, path, div2) {
+function EditResetMain(KEY, partialView, divID, controller, action, div1, path, div2, serviceOption) {
     $.ajax({
         type: "GET",
-        url: '/' + controller + '/' + action + '?KEY=' + KEY + '&partialView=' + partialView + '&path=' + path,
+        url: '/' + controller + '/' + action + '?KEY=' + KEY + '&partialView=' + partialView + '&path=' + path + '&serviceOption=' + serviceOption,
         success: function (data) {
             $('#' + divID).html(data);
             $('#' + div2).hide();
@@ -884,10 +884,11 @@ function LoadDataNoSelectAutodebit(controller, option, divLoader, tableID, actio
 
 
 }
-function LoadDataTableNew(controller, tableID, action, KEY, partialView, order, path, diveToloadtheData) {
+function LoadDataTableNew(controller, tableID, action, KEY, partialView, order, path, diveToloadtheData,serviceOption) {
     var encodedURL = '/' + controller + '/' + action +
         '?KEY=' + encodeURIComponent(KEY) +
         '&partialView=' + encodeURIComponent(partialView) +
+        '&serviceOption=' + encodeURIComponent(serviceOption) +
         '&path=' + encodeURIComponent(path);
 
     $.ajax({

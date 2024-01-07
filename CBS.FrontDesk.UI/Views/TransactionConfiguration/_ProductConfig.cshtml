@@ -1,0 +1,98 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+
+    @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+    <input type="hidden" name="ServiceOption" value="savingproduct" id="ServiceOption" />
+    <div class="row mt-2 gy-4">
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SavingProduct.name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SavingProduct.name, "", new { @class = "text-danger" })
+                <label>Product name</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SavingProduct.minAmount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SavingProduct.minAmount, "", new { @class = "text-danger" })
+                <label>Min amount</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SavingProduct.maxAmount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SavingProduct.maxAmount, "", new { @class = "text-danger" })
+                <label>Max amount</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SavingProduct.yearlyInterestRate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SavingProduct.yearlyInterestRate, "", new { @class = "text-danger" })
+                <label>Yearly rate</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SavingProduct.interestCalculationFrequency, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SavingProduct.interestCalculationFrequency, "", new { @class = "text-danger" })
+                <label>Interest calculation frequency</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SavingProduct.postingFrequency, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SavingProduct.postingFrequency, "", new { @class = "text-danger" })
+                <label>Posting frequency</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SavingProduct.entryFee, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SavingProduct.entryFee, "", new { @class = "text-danger" })
+                <label>Entry fee</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SavingProduct.closingFee, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SavingProduct.closingFee, "", new { @class = "text-danger" })
+                <label>Clossing</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SavingProduct.reopeningFee, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SavingProduct.reopeningFee, "", new { @class = "text-danger" })
+                <label>Re-open fee</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SavingProduct.managementFee, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SavingProduct.managementFee, "", new { @class = "text-danger" })
+                <label>Management fee</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SavingProduct.managementFeeFrequency, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SavingProduct.managementFeeFrequency, "", new { @class = "text-danger" })
+                <label>Management frequency</label>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4">
+        @if (Model.SavingProduct.id==null)
+        {
+            <button type="submit" class="btn btn-primary me-2">Save</button>
+            <input type="hidden" name="Action" value="insert" id="Action" />
+        }
+        else
+        { <button type="submit" class="btn btn-primary me-2">Update</button>
+            @Html.HiddenFor(m => m.SavingProduct.id)
+            <input type="hidden" name="Action" value="update" id="Action" />
+        }
+
+    </div>
+}

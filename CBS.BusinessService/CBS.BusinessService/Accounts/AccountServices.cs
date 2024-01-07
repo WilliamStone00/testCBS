@@ -2,7 +2,7 @@
 using CBS.API.Helper;
 using CBS.BusinessService.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.Config;
-using CBS.FrontDesk.Data.Entity.CustomerManagement.Individual;
+
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
@@ -32,20 +32,33 @@ namespace CBS.BusinessService.Accounts
         }
         public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions)
         {
-            Func<Task<List<CustomerAccountDto>>> getDataFunc = async () => (await GetAllAccounts()).ToList();
+            Func<Task<List<CustomerAccountDto>>> getDataFunc = async () => (await GetCustomersAccounts()).ToList();
             var dataTable = await DatatableHelper.GenerateDataTable<CustomerAccountDto>(dataTableOptions, getDataFunc);
             return dataTable;
         }
-        public async Task<IEnumerable<CustomerAccountDto>> GetAllAccounts()
+        public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccounts()
         {
             try
             {
-                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<CustomerList>>>(APICallHelper.GetAllIndividualProfile);
+                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.GetAllIndividualProfile);
                 var accounts = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(APICallHelper.GetAllAccounts);
                 var data = (from a in individualProfiles.ApiResponseData.Data
                             join ca in accounts.ApiResponseData.Data on a.customerId equals ca.customerId
                             select MapCustomersToAccounts(a, ca)).ToList();
                 return data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public async Task<IEnumerable<CustomerAccount>> GetAllAccounts()
+        {
+            try
+            {
+                var accounts = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(APICallHelper.GetAllAccounts);
+                return accounts.ApiResponseData.Data;
             }
             catch (Exception ex)
             {
@@ -118,14 +131,14 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-        private CustomerAccountDto MapCustomersToAccounts(CustomerList a, CustomerAccount caAccount)
+        private CustomerAccountDto MapCustomersToAccounts(IndividualProfile a, CustomerAccount caAccount)
         {
             return new CustomerAccountDto
             {
                 customerName = $"{a.firstName} {a.lastName}",
                 status = caAccount.status,
-                createdBy = a.createdBy,
-                createdDate = a.createdDate.ToString("dd-MMM-yyyy hh:mm:ss"),
+                //createdBy = a.createdBy,
+                //createdDate = a.createdDate.ToString("dd-MMM-yyyy hh:mm:ss"),
                 customerId = a.customerId,
                 accountNumber = caAccount.accountNumber,
                 accountId = caAccount.id,
@@ -134,11 +147,12 @@ namespace CBS.BusinessService.Accounts
                 profileType = "Individual"
             };
         }
-        private async Task<CustomerList> GetCustomer(string id)
+        
+        private async Task<IndividualProfile> GetCustomer(string id)
         {
             try
             {
-                var cusResponseObject = await _customerApiHelper.GetAsync<ResponseObject<CustomerList>>(string.Format(APICallHelper.GetCustomerByID, id));
+                var cusResponseObject = await _customerApiHelper.GetAsync<ResponseObject<IndividualProfile>>(string.Format(APICallHelper.GetCustomerByID, id));
                 return cusResponseObject.ApiResponseData.Data;
             }
             catch (Exception ex)
@@ -151,22 +165,33 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-
-                // Make an API call to create an individual profile
-                var response = await _transactionApiHelper.PutAsync<ServiceResponse<TransactionRespose>>(string.Format(APICallHelper.InitialDeposit, model.accountNumber), model);
-                if (response.IsSuccess)
+                model.bankId = GetBankID();
+                model.branchId = GetBranchID();
+                if (IsCurrencySumValid(model.currencyNotes, model.amount))
                 {
-                    // Successful creation
-                    GetExecutionMessages(response, true, $"{model.amount}", MessagesResults.Success,
-                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
-                    return ExecutionMessage;
+                    var response = await _transactionApiHelper.PutAsync<ServiceResponse<TransactionRespose>>(string.Format(APICallHelper.InitialDeposit, model.accountNumber), model);
+                    if (response.IsSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"{model.amount}", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
                 }
                 else
                 {
-                    // Failed creation
                     GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Sum of notes and coins must be equal to deposit amount.");
+
                 }
+                // Make an API call to create an individual profile
+                
             }
             catch (Exception ex)
             {
@@ -199,6 +224,8 @@ namespace CBS.BusinessService.Accounts
             {
                 if (IsCurrencySumValid(model.currencyNotes,model.amount))
                 {
+                    model.bankId = GetBankID();
+                    model.branchId = GetBranchID();
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionRespose>>(APICallHelper.MakeDepoit, model);
                     if (response.IsSuccess)
                     {
@@ -235,22 +262,33 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-
-                // Make an API call to create an individual profile
-                var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionRespose>>(APICallHelper.MakeWithdrawal, model);
-                if (response.IsSuccess)
+                if (IsCurrencySumValid(model.currencyNotes, model.amount))
                 {
-                    // Successful creation
-                    GetExecutionMessages(response, true, $"{model.amount}", MessagesResults.Success,
-                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
-                    return ExecutionMessage;
+                    model.bankId = GetBankID();
+                    model.branchId = GetBranchID();
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionRespose>>(APICallHelper.MakeWithdrawal, model);
+                    if (response.IsSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"{model.amount}", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
                 }
                 else
                 {
-                    // Failed creation
                     GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Sum of notes and coins must be equal to deposit amount.");
+
                 }
+                // Make an API call to create an individual profile
+               
             }
             catch (Exception ex)
             {

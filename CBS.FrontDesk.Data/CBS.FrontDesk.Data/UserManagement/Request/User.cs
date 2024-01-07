@@ -37,7 +37,7 @@ namespace CBS.FrontDesk.Data.UserManagement
         public bool isActive { get; set; }
         [Display(Name = "Address")]
         public string address { get; set; }
-        public List<Guid> roleID { get; set; }
+        public Guid roleID { get; set; }
         [Required]
         [Display(Name = "Bank")]
         public string BankID { get; set; }

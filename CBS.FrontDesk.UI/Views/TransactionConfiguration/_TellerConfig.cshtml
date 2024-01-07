@@ -1,0 +1,56 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+
+    @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {<input type="hidden" name="ServiceOption" value="teller" id="ServiceOption" />
+        
+        <div class="row mt-2 gy-4">
+            <div class="row mt-2 gy-4">
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Teller.name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Teller.name, "", new { @class = "text-danger" })
+                        <label>Teller name</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Teller.code, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Teller.code, "", new { @class = "text-danger" })
+                        <label>Teller code</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Teller.minAlertBalance, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Teller.code, "", new { @class = "text-danger" })
+                        <label>Min amount teller can hold</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Teller.maxAlertBalance, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Teller.maxAlertBalance, "", new { @class = "text-danger" })
+                        <label>Max amount teller can hold</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.Teller.isPrimary, new { @class = "form-check-input" })
+                        <label class="form-check-label" for="isActive">Set primary teller</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            @if (Model.Teller.id == null)
+            {
+                <button type="submit" class="btn btn-primary me-2">Save</button>
+                <input type="hidden" name="Action" value="insert" id="Action" />
+            }
+            else
+            { <button type="submit" class="btn btn-primary me-2">Update</button>
+                @Html.HiddenFor(m => m.Teller.id)
+                <input type="hidden" name="Action" value="update" id="Action" />
+            }
+        </div>
+    }

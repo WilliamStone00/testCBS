@@ -8,13 +8,18 @@ using System.Web;
 
 namespace CBS.FrontDesk.Data.Entity.CustomerManagement
 {
-    public class CustomerDocument
+    public class DocumentUploadResponse
     {
         public string Id { get; set; }
         public string UrlPath { get; set; }
         public string DocumentName { get; set; }
         public string Extension { get; set; }
-        public string CustomerId { get; set; }
+        public string BaseUrl { get; set; }
+        public string OperationId { get; set; }
+        public string FullPath { get; set; }
+        public string ServiceType { get; set; }
+        public bool ResponseFromClientService { get; set; }
+        public string DocumentType { get; set; }
     }
     public class CustomerDocumentRequest
     {
@@ -22,5 +27,8 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string CustomerID { get; set; }
         [Required]
         public List<HttpPostedFileBase> AttachedFiles { get; set; }
+        [Required]
+        public string DocumentType { get; set; }
+        public string ServiceTypeType { get; set; }
     }
 }
