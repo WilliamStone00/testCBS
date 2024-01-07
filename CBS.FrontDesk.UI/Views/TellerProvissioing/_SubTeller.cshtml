@@ -120,9 +120,16 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.SubTellerProvissioning.primaryTellerId, new SelectList(ViewBag.PrimaryTeller, "id", "name"), "---Select teller---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.SubTellerProvissioning.primaryTellerId, new SelectList(ViewBag.PrimaryTeller, "id", "name"), "---Select primary teller---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.SubTellerProvissioning.primaryTellerId, "", new { @class = "text-danger " })
-                                        <label for="formValidationDob">Select teller account</label>
+                                        <label for="formValidationDob">Select primary teller</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.SubTellerProvissioning.subTellerId, new SelectList(ViewBag.SubTellers, "id", "name"), "---Select teller box---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.subTellerId, "", new { @class = "text-danger " })
+                                        <label for="formValidationDob">Select teller box</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
