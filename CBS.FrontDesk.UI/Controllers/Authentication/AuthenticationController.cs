@@ -73,6 +73,7 @@ namespace CBS.FrontDesk.UI.Controllers
                                     {
                                         CreateToken(Data, "CBS4U", 10);
                                         ViewBag.Success = true;
+                                        ViewBag.StartSessionWarning = true;
                                         ViewBag.Message = Messaging.MessageResult(result);
                                         return RedirectToLocal(returnUrl);
 

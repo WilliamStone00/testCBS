@@ -227,6 +227,7 @@
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\Configuration\Localization\CountryController.cs" />
     <Compile Include="Controllers\CustomerManagement\IndividualController.cs" />
+    <Compile Include="Controllers\ErrorHandler\ErrorController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Loan\Configuration\AlertProfileController.cs" />
     <Compile Include="Controllers\Loan\Configuration\AttachedLoanDocumentsController.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="Controllers\Loan\Configuration\TaxController.cs" />
     <Compile Include="Controllers\RoleManagement\RoleController.cs" />
     <Compile Include="Controllers\RoleManagement\RolePermissionController.cs" />
+    <Compile Include="Controllers\Session\SessionController.cs" />
     <Compile Include="Controllers\Settings\GlobalConfigurationController.cs" />
     <Compile Include="Controllers\TransactionManagement\OperationController.cs" />
     <Compile Include="Controllers\TransactionManagement\SavingController.cs" />
@@ -2023,7 +2025,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_ErrorLayout.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
@@ -2200,12 +2202,16 @@
     <Content Include="Views\OperationEvent\_Create.cshtml" />
     <Content Include="Views\OperationEvent\_Data.cshtml" />
     <Content Include="Views\OperationEvent\_Update.cshtml" />
+    <Content Include="Views\Error\InternalServer.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\ServiceUnavailable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\Configuration\Organ\" />
     <Folder Include="Views\DocumentPack\" />
     <Folder Include="Views\RolePermission\" />
+    <Folder Include="Views\Session\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

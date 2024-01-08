@@ -56,6 +56,21 @@ namespace CBS.FrontDesk.UI.Controllers
 
 
         }
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            // Check if the request is going to the login page to avoid redirection loops
+            if (!filterContext.HttpContext.Request.RawUrl.StartsWith("/Authentication/Login", StringComparison.OrdinalIgnoreCase))
+            {
+                if (Session["UserID"] == null) // Replace "UserID" with your session key
+                {
+                    // Redirect to login or show a session expired message
+                    filterContext.Result = new RedirectResult("~/Authentication/Login");
+                    return;
+                }
+            }
+            //GetUserSession();
+            base.OnActionExecuting(filterContext);
+        }
 
 
         public static bool IsTokenExpired(string token)
@@ -122,14 +137,15 @@ namespace CBS.FrontDesk.UI.Controllers
                 1,
                 reqDto.email,
                 DateTime.Now,
-                cookieName == "CBS4U" ? DateTime.Now.AddHours(Convert.ToInt32(timetoExpire)) : DateTime.Now.AddMinutes(Convert.ToInt32(minutes_to_live)),
+                cookieName == "CBS4U" ? DateTime.Now.AddMinutes(Convert.ToInt32(timetoExpire)) : DateTime.Now.AddMinutes(Convert.ToInt32(minutes_to_live)),
                 false,
                 userData
             );
-            authTicket.Expiration.AddHours(Convert.ToInt32(timetoExpire));
+            authTicket.Expiration.AddMinutes(Convert.ToInt32(timetoExpire));
             authTicket.IssueDate.AddSeconds(0);
             string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
             HttpCookie faCookie = new HttpCookie(cookieName, encryptedTicket);
+            Session.Timeout = 30;
             HttpContext.Session["Token"] = reqDto.bearerToken;
             HttpContext.Session["menu"]=reqDto.Permissions.ToList();
             Response.Cookies.Add(faCookie);

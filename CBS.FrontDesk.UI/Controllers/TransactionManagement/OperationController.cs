@@ -30,21 +30,30 @@ namespace CBS.FrontDesk.UI.Controllers
             var account = await _acountServices.GetAccountByAccountNumber(KEY);
             return View(account);
         }
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path=null)
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
-            ViewBag.KEY = KEY;
-            if (path=="transactions")
+            try
             {
-                
+                ViewBag.KEY = KEY;
+                if (path == "transactions")
+                {
+
+                }
+                else
+                {
+                    var account = await _acountServices.GetAccountByAccountNumber(KEY);
+                    ViewBag.Sources = _acountServices.GetPaymentSources();
+                    return PartialView(partialView, account);
+                }
+
+                return PartialView(KEY, partialView);
             }
-            else
+            catch (Exception ex)
             {
-                var account = await _acountServices.GetAccountByAccountNumber(KEY);
-                ViewBag.Sources = _acountServices.GetPaymentSources();
-                return PartialView(partialView, account);
+
+                TempData["ErrorMessage"] = ex.Message; // Store error message
+                return RedirectToAction("Index", "Error"); // Redirect to error page
             }
-            
-            return PartialView(KEY, partialView);
         }
 
         [HttpPost]
@@ -52,7 +61,7 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             if (model.OperationType == "Deposit")
             {
-                
+
                 var data = await _acountServices.Deposit(model.DepositRequest);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
