@@ -78,10 +78,11 @@
         });
     }
 })();
+// Call extendSessionTimeout every 5 minutes (300,000 milliseconds)
+//setInterval(extendSessionTimeout, 300000);
 
 function FillDropDownAjaxCall(url, affecteddropdownID, select_option) {
     var data = "<option value='0'> Please wait loading...</option>";
-
     var T = '#' + affecteddropdownID;
     $(T).html(data).show();
     $.ajax({

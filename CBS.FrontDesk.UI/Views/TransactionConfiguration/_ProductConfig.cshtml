@@ -4,7 +4,14 @@
     {
     <input type="hidden" name="ServiceOption" value="savingproduct" id="ServiceOption" />
     <div class="row mt-2 gy-4">
-        <div class="col-md-12">
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SavingProduct.code, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SavingProduct.code, "", new { @class = "text-danger" })
+                <label>Product Code</label>
+            </div>
+        </div>
+        <div class="col-md-9">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.SavingProduct.name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.SavingProduct.name, "", new { @class = "text-danger" })

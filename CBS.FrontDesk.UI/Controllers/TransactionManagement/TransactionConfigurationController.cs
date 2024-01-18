@@ -268,7 +268,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {   var conf = await _savingProductServices.GetSavingConfigurationAggregates();
             ViewBag.Products = await _savingProductServices.GetSavingProducts();
             ViewBag.DepositLimitTypes = conf.depositTypes.ToList();
-            ViewBag.TransferLimitTypes = conf.transactionTypes.ToList();
+            ViewBag.TransferLimitTypes = conf.transferTypes.ToList();
             ViewBag.WithdrawalLimitTypes = conf.withdrawalTypes.ToList();
             return true;
         }

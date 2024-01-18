@@ -26,6 +26,7 @@
                         @using (Html.BeginForm("SubTeller", "TellerProvissioing", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
                             <div class="row mt-2 gy-4">
+
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.SubTellerProvissioning.initialAmount, new { @class = "form-control" })

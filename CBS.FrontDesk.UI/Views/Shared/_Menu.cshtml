@@ -2,29 +2,27 @@
     var menuItems = ViewBag.MenuItems as List<CBS.FrontDesk.Data.Entity.DatabaseMenus>;
 }
 
-<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-    <!-- Other parts of your menu HTML -->
-    <div class="app-brand demo">
-        <a href="/" class="app-brand-link">
-            <span class="app-brand-text demo menu-text fw-bold ms-2">C B S 4 U</span>
-        </a>
-    </div>
-
-    <div class="menu-inner-shadow"></div>
-    <ul class="menu-inner py-1">
-        @foreach (var group in menuItems.Select(m => m.MenuGroup).Distinct()) // Loop through distinct menu groups
-        {
-            <li class="menu-header fw-medium mt-4">
-                <span class="menu-header-text">@group</span>
-            </li>
-
-            foreach (var menuItem in menuItems.Where(m => m.ParentId == 0 && m.MenuGroup == group)) // Filtering root items by group
+@if (menuItems != null && menuItems.Any())
+{
+    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+        <!-- Rest of your menu HTML -->
+        <div class="menu-inner-shadow"></div>
+        <ul class="menu-inner py-1">
+            @foreach (var group in menuItems.Select(m => m.MenuGroup).Distinct()) // Loop through distinct menu groups
             {
-                @RenderSubMenu(menuItem, menuItems)
+                <li class="menu-header fw-medium mt-4">
+                    <span class="menu-header-text">@group</span>
+                </li>
+
+                foreach (var menuItem in menuItems.Where(m => m.ParentId == 0 && m.MenuGroup == group)) // Filtering root items by group
+                {
+                    @RenderSubMenu(menuItem, menuItems)
+                }
             }
-        }
-    </ul>
-</aside>
+        </ul>
+    </aside>
+}
+
 
 @helper RenderSubMenu(CBS.FrontDesk.Data.Entity.DatabaseMenus menuItem, List<CBS.FrontDesk.Data.Entity.DatabaseMenus> menuItems)
 {

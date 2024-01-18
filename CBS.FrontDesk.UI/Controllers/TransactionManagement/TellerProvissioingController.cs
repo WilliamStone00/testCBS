@@ -24,18 +24,18 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         public async Task<ActionResult> Index()
         {
             await GetList();
-            return View(new SavingConfiguration());
+            return View(new OpeningOfTheDay());
         }
 
         public async Task<ActionResult> Primary()
         {
             await GetList();
-            return View();
+            return View(new OpeningOfTheDay());
         }
         public async Task<ActionResult> SubTeller()
         {
             await GetList();
-            return View();
+            return View(new OpeningOfTheDay());
         }
 
         [HttpPost]

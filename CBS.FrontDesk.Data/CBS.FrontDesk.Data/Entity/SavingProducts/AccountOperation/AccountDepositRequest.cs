@@ -16,7 +16,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
         public string bankId { get; set; }
         public string branchId { get; set; }
-       
+        [Required(ErrorMessage = "Teller is required")]
+        public string tellerId { get; set; }
+
     }
     public class WithdrawalRequest
     {
@@ -31,6 +33,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string note { get; set; }
         public string bankId { get; set; }
         public string branchId { get; set; }
+        [Required(ErrorMessage = "Teller is required")]
+        public string tellerId { get; set; }
         public CurrencyNotes currencyNotes { get; set; }=new CurrencyNotes();
     }
     public class DepositRequest
@@ -43,8 +47,16 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
 
         [Required(ErrorMessage = "Deposit type is required")]
         public string depositType { get; set; }
-        [Required(ErrorMessage = "Deposit note is required")]
         public string note { get; set; }
+        public bool isDepositDoneByAccountOwner { get; set; }=true;
+        public string depositerNote { get; set; }
+
+        public string depositerTelephone { get; set; }
+        public string depositorIDNumber { get; set; }
+        public string depositorName { get; set; }
+        public string depositorIDIssueDate { get; set; }
+        public string depositorIDExpiryDate { get; set; }
+        public string depositorIDNumberPlaceOfIssue { get; set; }
         public string bankId { get; set; }
         public string branchId { get; set; }
         public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
@@ -58,13 +70,14 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string senderAccountNumber { get; set; }
         [Required(ErrorMessage = "Receiver account number is required")]
         public string receiverAccountNumber { get; set; }
-
         [Required(ErrorMessage = "Source type is required")]
-        public string sourceDetails { get; set; }
+        public string transferType { get; set; }
         [Required(ErrorMessage = "Tranfer note is required")]
         public string note { get; set; }
-        public string bankId { get; set; }
-        public string branchId { get; set; }
+        [Required(ErrorMessage = "Teller is required")]
+        public string tellerId { get; set; }
+        [Required(ErrorMessage = "Currency is required")]
+        public string currency { get; set; }
     }
 
     //

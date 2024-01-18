@@ -227,6 +227,7 @@
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\Configuration\Localization\CountryController.cs" />
     <Compile Include="Controllers\CustomerManagement\IndividualController.cs" />
+    <Compile Include="Controllers\ErrorHandler\ErrorController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Loan\Configuration\AlertProfileController.cs" />
     <Compile Include="Controllers\Loan\Configuration\AttachedLoanDocumentsController.cs" />
@@ -245,7 +246,9 @@
     <Compile Include="Controllers\Loan\Configuration\TaxController.cs" />
     <Compile Include="Controllers\RoleManagement\RoleController.cs" />
     <Compile Include="Controllers\RoleManagement\RolePermissionController.cs" />
+    <Compile Include="Controllers\Session\SessionController.cs" />
     <Compile Include="Controllers\Settings\GlobalConfigurationController.cs" />
+    <Compile Include="Controllers\TransactionManagement\EndOfDayOperationController.cs" />
     <Compile Include="Controllers\TransactionManagement\OperationController.cs" />
     <Compile Include="Controllers\TransactionManagement\SavingController.cs" />
     <Compile Include="Controllers\TransactionManagement\TellerProvissioingController.cs" />
@@ -2024,7 +2027,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_ErrorLayout.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
@@ -2035,7 +2038,7 @@
     <Content Include="Views\Shared\_Content.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_LoginMain.cshtml" />
-    <Content Include="Views\Authentication\Login.cshtml" />
+    <Content Include="Views\Authentication\LoginBasic.cshtml" />
     <Content Include="Views\UserManagement\Create.cshtml" />
     <Content Include="Views\Shared\_AjaxSpinner.cshtml" />
     <Content Include="Views\Shared\_Alert.cshtml" />
@@ -2201,12 +2204,29 @@
     <Content Include="Views\OperationEvent\_Create.cshtml" />
     <Content Include="Views\OperationEvent\_Data.cshtml" />
     <Content Include="Views\OperationEvent\_Update.cshtml" />
+    <Content Include="Views\Error\InternalServer.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\ServiceUnavailable.cshtml" />
+    <Content Include="Views\Shared\_LoginMainCover.cshtml" />
+    <Content Include="Views\Authentication\Login.cshtml" />
+    <Content Include="Views\Operation\_Depositer.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_Primary.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_SubTeller.cshtml" />
+    <Content Include="Views\EndOfDayOperation\Primary.cshtml" />
+    <Content Include="Views\EndOfDayOperation\SubTeller.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_PrimaryTellerViewOfSubTellerHistoryData.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_PrimaryTellerViewOfOwnHistoryData.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_SubTellerTellerViewOfOwnHistoryData.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_AccountantViewOfPrimaryTellerHistoryData.cshtml" />
+    <Content Include="Views\Operation\Transfer.cshtml" />
+    <Content Include="Views\Operation\_Transfer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\Configuration\Organ\" />
     <Folder Include="Views\DocumentPack\" />
     <Folder Include="Views\RolePermission\" />
+    <Folder Include="Views\Session\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

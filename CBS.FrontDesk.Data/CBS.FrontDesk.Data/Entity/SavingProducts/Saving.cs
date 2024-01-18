@@ -65,6 +65,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string name { get; set; }
         [Required]
+        public string code { get; set; }
+        [Required]
         public double minAmount { get; set; }
         [Required]
         public double maxAmount { get; set; }
@@ -115,6 +117,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string withdrawalType { get; set; }
         [Required]
         public double feePercentage { get; set; }
+        [Required]
+        public double tax { get; set; }
         public SavingProduct product { get; set; }
     }
     public class Teller
@@ -148,13 +152,11 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string code { get; set; }
         public string bankId { get; set; }
         public string branchId { get; set; }
-        public int initialAmount { get; set; }
-        public int minAlertBalance { get; set; }
-        public int maxAlertBalance { get; set; }
+        public double initialAmount { get; set; }
+        public double minAlertBalance { get; set; }
+        public double maxAlertBalance { get; set; }
         public bool isPrimary { get; set; }
         public string userId { get; set; }
-        public DateTime startTime { get; set; }
-        public DateTime endTime { get; set; }
         public DateTime createdDate { get; set; }
         public string createdBy { get; set; }
         public DateTime modifiedDate { get; set; }
@@ -172,8 +174,6 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string userId { get; set; }
         [Required]
-        public DateTime startTime { get; set; }
-        public DateTime endTime { get; set; }
         public string bankId { get; set; }
         public string branchId { get; set; }
         public CurrencyNotes currencyNotes { get; set; }=new CurrencyNotes();

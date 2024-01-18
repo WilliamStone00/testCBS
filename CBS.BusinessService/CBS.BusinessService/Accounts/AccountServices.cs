@@ -66,6 +66,38 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
+        public async Task<IEnumerable<StringValues>> SourceAndDestinationAccount()
+        {
+            try
+            {
+                var accounts = from a in await GetCustomersAccounts() select new StringValues {
+                    Text =$"{a.accountNumber}-{a.productName}-{a.customerName}", Value = a.accountNumber,
+                };
+                return accounts;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public async Task<SavingConfigurationAggregates> GetSavingConfigurationAggregates()
+        {
+            try
+            {
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<SavingConfigurationAggregates>>(APICallHelper.GetAllConfigurationEnums);
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new SavingConfigurationAggregates();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         private async Task<AccountBalance> GetCustomerBalance(string customerID)
         {
             try
@@ -137,8 +169,6 @@ namespace CBS.BusinessService.Accounts
             {
                 customerName = $"{a.firstName} {a.lastName}",
                 status = caAccount.status,
-                //createdBy = a.createdBy,
-                //createdDate = a.createdDate.ToString("dd-MMM-yyyy hh:mm:ss"),
                 customerId = a.customerId,
                 accountNumber = caAccount.accountNumber,
                 accountId = caAccount.id,
@@ -258,6 +288,35 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> Transfer(TransferRequest model)
+        {
+            try
+            {
+               
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionRespose>>(APICallHelper.MakeTransfer, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{model.amount}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
         public async Task<ExecutionMessages> Withdrawal(WithdrawalRequest model)
         {
             try
@@ -342,7 +401,7 @@ namespace CBS.BusinessService.Accounts
                             receiverAccountNumber = string.Empty,
                             amount = 0,
                             note = string.Empty,
-                            senderAccountNumber = account.accountNumber, sourceDetails = string.Empty,
+                            senderAccountNumber = account.accountNumber, transferType = string.Empty,
                         };
                         account.TransactionHistories = transactionHistories;
                         return account;

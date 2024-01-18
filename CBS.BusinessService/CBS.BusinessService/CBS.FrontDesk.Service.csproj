@@ -83,6 +83,8 @@
     <Compile Include="Accounting\OperationEventServices.cs" />
     <Compile Include="Accounts\AccountServices.cs" />
     <Compile Include="Accounts\DepositLimitServices.cs" />
+    <Compile Include="Accounts\PrimaryTellerEndOfDayServices.cs" />
+    <Compile Include="Accounts\SubTellerEndOfDayServices.cs" />
     <Compile Include="Accounts\TellerProvissioningServices.cs" />
     <Compile Include="Accounts\SavingProductServices.cs" />
     <Compile Include="Accounts\TellerServices.cs" />

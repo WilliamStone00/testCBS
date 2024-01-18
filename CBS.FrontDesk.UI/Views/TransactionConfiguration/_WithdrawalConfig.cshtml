@@ -40,6 +40,13 @@
                         <label>Percentage fee</label>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.WithdrawalLimit.tax, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.WithdrawalLimit.tax, "", new { @class = "text-danger" })
+                        <label>Apply tax charge</label>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="mt-4">

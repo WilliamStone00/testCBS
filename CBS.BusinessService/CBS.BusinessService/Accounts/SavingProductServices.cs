@@ -137,6 +137,7 @@ namespace CBS.BusinessService.Accounts
                 if (SavingProduct != null)
                 {
                     SavingProduct.name = model.name;
+                    SavingProduct.code = model.code;
                     SavingProduct.managementFee = model.managementFee;
                     SavingProduct.managementFeeFrequency = model.managementFeeFrequency;
                     SavingProduct.postingFrequency = model.postingFrequency;

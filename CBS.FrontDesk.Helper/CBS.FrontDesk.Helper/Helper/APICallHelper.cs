@@ -81,7 +81,10 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllTransactions = "/api/v1/Transaction";
 
         public static string PrimaryTellerProvisioning = "/api/v1/Teller/Provision/PrimaryTeller";
-
+        public static string SubTellerProvisioning = "/api/v1/Teller/Provision/SubTeller";
+        public static string SubTellerEndOfDay = "/api/v1/Teller/SubTellerEndOfDay";
+        public static string PrimaryTellerEndOfDay = "/api/v1/Teller/PrimaryTellerEndOfDay";
+        ///api/v1/Teller/SubTellerEndOfDay
         //
 
         //Account
@@ -105,7 +108,7 @@ namespace CBS.FrontDesk.Helper
         //TransferLimits
         public static string Get_Update_Delete_TransferLimits = "/api/v1/TransferLimits/{0}";
         public static string GetAllTransferLimits = "/api/v1/v1/TransferLimits";
-        public static string CreateTransferLimits = "/api/TransferLimits";
+        public static string CreateTransferLimits = "/api/v1/TransferLimits";
         //WithdrawalLimitss
         public static string Get_Update_Delete_WithdrawalLimits = "/api/v1/WithdrawalLimits/{0}";
         public static string GetAllWithdrawalLimits = "/api/v1/WithdrawalLimits";
