@@ -51,7 +51,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             return Json(new { success = false, status = false, message = "Fill the required fields." });
         }
-
+        [HttpGet]
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
             GetList();
@@ -64,6 +64,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var data = ConvertToDtos(AccountingRules.ToList(), events.ToList());
                 return PartialView(partialView, data);
             }
+            //else if (path == "LoadAccountingRules")
+            //{
+               
+            //}
 
             else if (path == "new")
             {

@@ -7,7 +7,8 @@
                 <div class="form-floating form-floating-outline">
                
                             @Html.DropDownListFor(m => m.OperationEventId, new SelectList(ViewBag.OperationEvents==null?"": ViewBag.OperationEvents,  "id","operationEventName"), "---Select OperationEvent---", new { @class = "form-control select2", @search = "true" })
-                            @Html.ValidationMessageFor(m => m.OperationEventId, "", new { @class = "text-danger " })
+                           
+                    @Html.ValidationMessageFor(m => m.OperationEventId, "", new { @class = "text-danger " })
                          <label>Operation Event</label>
                 </div>
             </div>

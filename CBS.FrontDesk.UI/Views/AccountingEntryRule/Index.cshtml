@@ -5,7 +5,7 @@
 }
 <div class="row justify-content-end">
     <div class="demo-inline-spacing text-end">
-        <a type="button"  onclick="LoadDataGen('AccountingEntryRule','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+        <a type="button" onclick="LoadDataGen('AccountingEntryRule','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
             <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
         </a>
         <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','AccountingEntryRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
@@ -13,21 +13,35 @@
         </a>
     </div>
 </div>
-<br/>
-    <div class="card">
-        <div class="card-body">
-            <div id="datalistingview">
-                @Html.Partial("_Create")
-            </div>
+<br />
+<div class="card">
+    <div class="card-body">
+        <div id="datalistingview">
+            @Html.Partial("_Create")
         </div>
     </div>
+</div>
 
 
 
 
 
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @*<script>
+    
 
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")}
+
+        function loadOperationEventAttributeDropdown(id) {
+
+            var url = "/AccountingEntryRule/LoadComboboxOfOperationEventAttributeByEventID?id=" + id ;
+            FillDropDownAjaxCall(url, "OperationEventAttributeId", "---Select a OperationEventAttribute from list---")
+        }
+    
+    </script>*@
+
+}
 
 
+<!-- Your existing HTML code -->

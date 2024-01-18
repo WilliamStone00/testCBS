@@ -81,56 +81,29 @@
 // Call extendSessionTimeout every 5 minutes (300,000 milliseconds)
 //setInterval(extendSessionTimeout, 300000);
 
-// Function to extend session timeout
-//$(document).ready(function () {
-//    // Attach click event to document or specific elements
-//    $(document).on('click', function () {
-//        extendSessionTimeout();
-//    });
-//});
-
-//function extendSessionTimeout() {
-//    $.ajax({
-//        url: '/Session/ExtendSessionTimeout', // Controller action to extend session
-//        type: 'GET',
-//        success: function (response) {
-//            // Success handling
-//        },
-//        error: function (xhr, status, error) {
-//            // Error handling
-//        }
-//    });
-//}
-//var warningTimer;
-
-//function startSessionWarning() {
-//    // Display a warning message 25 minutes after login (5 minutes before session timeout)
-//    warningTimer = setTimeout(function () {
-//        // Show a modal, alert, or any notification to warn the user about the session timeout
-//        alert("Your session will expire in 5 minutes. Click OK to extend your session.");
-
-//        // Optionally, call the function to extend the session if the user interacts with the notification
-//        // extendSessionTimeout();
-//    }, 25 * 60 * 1000); // 25 minutes in milliseconds
-//}
-//var loader = $('#loading');
-//// Reset the warning timer on user activity (e.g., mouse click)
-//$(document).ready(function () {
-//    $(document).on('click', function () {
-//        clearTimeout(warningTimer); // Reset the warning timer on user activity
-//        startSessionWarning();
-//        //loader.hide();// Restart the warning timer after user activity
-//    });
-//});
-
- // Assuming 'loader' is the ID of the loader element
+function FillDropDownAjaxCall(url, affecteddropdownID, select_option) {
+    var data = "<option value='0'> Please wait loading...</option>";
+    var T = '#' + affecteddropdownID;
+    $(T).html(data).show();
+    $.ajax({
+        type: "Get",
+        url: url,
+        cache: false,
+        success: function (data) {
+            var markup = "<option value='0'>" + select_option + "</option>";
+            for (var x = 0; x < data.length; x++) {
+                markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                console.log(markup);
+            }
+            $(T).html(markup).show();
+        }
+        , error: function (err) {
+            appalert(err.statusText, 1, 3);
+        }
+    });
 
 
-
-
-
-// Start the warning timer after successful login
-
+}
 
 function ShowImagePreview(imageUploader, previewImage) {
 

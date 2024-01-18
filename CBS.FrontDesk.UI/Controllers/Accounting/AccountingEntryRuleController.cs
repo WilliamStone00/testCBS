@@ -9,18 +9,26 @@ using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Message;
 using CBS.BusinessService.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using System.Web.Services.Description;
+using CBS.BusinessService.OperationEvent;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
     public class AccountingEntryRuleController : BaseController
     {
+        
         private readonly AccountingEntryRuleService _Service;
-        private readonly OperationEventAttributeServices _OperationEventService;
+
+        private readonly OperationEventAttributeServices _OperationEventAttributeService;
         private readonly ChartOfAccountServices _chartOfAccountServices;
-        public AccountingEntryRuleController(ChartOfAccountServices chartOfAccountServices,AccountingEntryRuleService services, OperationEventAttributeServices OperationEventService)
+        private readonly AccountingRuleService _ServiceRule;
+        private readonly OperationEventServices _OperationEventService;
+        public AccountingEntryRuleController(OperationEventServices eventServices, AccountingRuleService servicesRule,ChartOfAccountServices chartOfAccountServices,AccountingEntryRuleService services, OperationEventAttributeServices OperationEventAttributeService)
         {
+            _ServiceRule = servicesRule;
             _Service = services;
-            _OperationEventService = OperationEventService;
+            _OperationEventService = eventServices;
+            _OperationEventAttributeService = OperationEventAttributeService;
             _chartOfAccountServices = chartOfAccountServices;
         }
         // GET: AccountingEntryRule
@@ -29,7 +37,27 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             await GetList();
             return View();
         }
-    
+        [HttpGet]
+        public async Task<ActionResult> LoadComboboxOfOperationEventAttributeByEventID(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                var listOfOperation = await _OperationEventAttributeService.GetOperationEventAttributes();
+
+                SelectList data = new SelectList(_OperationEventAttributeService.ConvertToSelectedList( listOfOperation.ToList()), "Text", "Value", 0);
+
+                //SelectList data = new SelectList(AccountingRules.ToList(), "Text", "Value", 0);
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+                
+            }
+            else
+            {
+                return Json(new { success = "", status = "notOk" });
+            }
+
+            return Json(new { success = false, status = false, message = "Fill the required fields." });
+        }
         [HttpPost]
         public async Task<ActionResult> Create(AccountingRuleEntry model)
         {
@@ -55,19 +83,24 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
-            await GetList();
+           // await GetList();
             if (path == "list")
             {
-                var data = await _Service.GetAccountingEntryRules();
+            
+                var  OperationEventList = await _OperationEventService.GetOperationEvents();
+                var OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
+                var DebitAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+                var dataList = await _Service.GetAccountingEntryRules();
+                var data = await _Service.GetAccountingEntryRulesDto(dataList, OperationEventList, OperationEventAttributes, DebitAccounts);
                 return PartialView(partialView, data);
             }
-
             else if (path == "new")
             {
-                return PartialView(partialView, new AccountingRule());
+                return PartialView(partialView, new AccountingRuleEntry());
             }
             else
             {
+                await GetList();
                 var OperationEventAttribute = await _Service.GetAccountingRuleEntryById(KEY);
                 return PartialView(partialView, OperationEventAttribute);
 
@@ -81,10 +114,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
         public async Task GetList(string language="En")
         {
-             ViewBag.AccountingRules=await _Service.GetAccountingEntryRules();
-             ViewBag.BookingDirections= new SelectListItem[] { new SelectListItem { Text = "Debit", Value = "Debit" }, new SelectListItem { Text = "Credit", Value = "Credit" } };
-             ViewBag.OperationEventAttributes = await _OperationEventService.GetOperationEventAttributes();
-             var DebitAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+             ViewBag.OperationEvent = await _OperationEventService.GetOperationEvents();
+            ViewBag.BookingDirections = await _ServiceRule.GetBookingDirections();
+            ViewBag.OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
+            var DebitAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
             var CreditAccounts =  BuildMenuViewBag (DebitAccounts, language);
            ViewBag.CreditAccounts = CreditAccounts;
            ViewBag.DebitAccounts = CreditAccounts;

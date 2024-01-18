@@ -9,6 +9,9 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using System.Web.Mvc;
 
 namespace CBS.BusinessService.Accounting
 {
@@ -170,5 +173,15 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
+        public IEnumerable ConvertToSelectedList(List<OperationEventAttribute> operationEventAttributes)
+        {
+            var data = from operationEventAttribute in operationEventAttributes
+                       select new SelectListItem
+                       {
+                           Text = operationEventAttribute.Name,
+                           Value = operationEventAttribute.Id
+                       };
+            return data;
+        }
     }
 }
