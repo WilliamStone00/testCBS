@@ -1,57 +1,63 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingRuleEntry
+ 
 <div class="card-body">
-    @using (Html.BeginForm("Create", "AccountingRuleEntry", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    @using (Html.BeginForm("Create", "AccountingEntryRule", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
         <div class="row mt-2 gy-4">
             <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.AccountingRuleId, new SelectList((ViewBag.AccountingRules==null)?"": ViewBag.AccountingRules, "Id", "Value"), "---Select AccountingRules---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.AccountingRuleId, "", new { @class = "text-danger " })
-                    <label>Accounting Rule</label>
-                </div>
+                <label for="AccountingRuleEntryName">Accounting RuleEntry Name</label>
+                @Html.TextBoxFor(model => model.AccountingRuleEntryName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AccountingRuleEntryName, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="col-md-6">
+
+                <label for="OperationEventId">Operation Event</label>
+                @Html.DropDownListFor(m => m.OperationEventId, new SelectList(ViewBag.OperationEvent == null ? "" : ViewBag.OperationEvent, "Id", "OperationEventName"), "---Select Operation EventAttribute---", new { @class = "form-control select2", @search = "true" })
+
+                @Html.ValidationMessageFor(model => model.OperationEventId, "", new { @class = "text-danger" })
+
             </div>
             <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.AccountingRuleEntryName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.AccountingRuleEntryName, "", new { @class = "text-danger" })
-                    <label>Rule Entry Name</label>
-                </div>
+
+                <label for="OperationEventAttributeId">Operation EventAttribute </label>
+                @Html.DropDownListFor(m => m.OperationEventAttributeId, new SelectList(ViewBag.OperationEventAttributes == null ? "" : ViewBag.OperationEventAttributes, "Id", "Name"), "---Select Operation EventAttribute---", new { @class = "form-control select2", @search = "true" })
+
+                @Html.ValidationMessageFor(model => model.OperationEventAttributeId, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="col-md-6">
+                <label for="BookingDirection">Booking Direction</label>
+                @Html.DropDownListFor(m => m.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(model => model.BookingDirection, "", new { @class = "text-danger" })
+
             </div>
             <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.BookingDirection, new SelectList(ViewBag.BookingDirections, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.BookingDirection, "", new { @class = "text-danger " })
-                    <label>Booking Direction</label>
-                </div>
+
+                <label for="CreditAccountId">CreditAccount</label>
+                @Html.DropDownListFor(m => m.CreditAccountId, new SelectList(ViewBag.CreditAccounts == null ? "" : ViewBag.CreditAccounts, "Text", "Value"), "---Select Account ---", new { @class = "form-control select2", @search = "true" })
+
+                @Html.ValidationMessageFor(model => model.CreditAccountId, "", new { @class = "text-danger" })
+
             </div>
+
             <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.OperationEventAttributeId, new SelectList((ViewBag.OperationEventAttributes == null) ? "" : ViewBag.OperationEventAttributes, "Id", "Name"), "---Select OperationEventAttribute---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.OperationEventAttributeId, "", new { @class = "text-danger " })
-                    <label>Operation Event Attribute</label>
-                </div>
+                <label for="DebitAccountId">DebitAccount</label>
+                @Html.DropDownListFor(m => m.DebitAccountId, new SelectList(ViewBag.DebitAccounts == null ? "" : ViewBag.DebitAccounts, "Text", "Value"), "---Select Account ---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(model => model.DebitAccountId, "", new { @class = "text-danger" })
+
             </div>
-            
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.CreditAccountId, new SelectList((ViewBag.CreditAccounts == null) ? "" : ViewBag.CreditAccounts, "Text", "Value"), "---Select Account---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.CreditAccountId, "", new { @class = "text-danger " })
-                    <label>Credit Account</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.DebitAccountId, new SelectList((ViewBag.DebitAccounts == null) ? "" : ViewBag.DebitAccounts, "Text", "Value"), "---Select Account---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.DebitAccountId, "", new { @class = "text-danger " })
-                    <label>Debit Account</label>
-                </div>
-            </div>
+
         </div>
-   
+
         <div class="mt-4">
             <button type="submit" class="btn btn-primary me-2">Save</button>
             <button type="reset" class="btn btn-outline-secondary">Reset</button>
         </div>
-      
     }
 </div>
+
+
+

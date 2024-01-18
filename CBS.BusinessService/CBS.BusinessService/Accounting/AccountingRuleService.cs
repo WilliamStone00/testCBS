@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 using CBS.FrontDesk.Helper.Helper;
 using CBS.FrontDesk.Service;
+using System.Web.Mvc;
+using CBS.FrontDesk.Data.Entity;
 
 namespace CBS.BusinessService.Accounting
 {
@@ -160,6 +162,11 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
+        public Task<List<SelectListItem>> GetBookingDirections()
+        {
+            var bookingDirections = new SelectListItem[] { new SelectListItem { Text = "Debit", Value = "Debit" }, new SelectListItem { Text = "Credit", Value = "Credit" } }.ToList();
+            return Task.FromResult(bookingDirections);
+        }
     }
 
 }

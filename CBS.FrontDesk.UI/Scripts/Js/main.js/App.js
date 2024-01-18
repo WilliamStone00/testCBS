@@ -79,7 +79,30 @@
     }
 })();
 
+function FillDropDownAjaxCall(url, affecteddropdownID, select_option) {
+    var data = "<option value='0'> Please wait loading...</option>";
 
+    var T = '#' + affecteddropdownID;
+    $(T).html(data).show();
+    $.ajax({
+        type: "Get",
+        url: url,
+        cache: false,
+        success: function (data) {
+            var markup = "<option value='0'>" + select_option + "</option>";
+            for (var x = 0; x < data.length; x++) {
+                markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                console.log(markup);
+            }
+            $(T).html(markup).show();
+        }
+        , error: function (err) {
+            appalert(err.statusText, 1, 3);
+        }
+    });
+
+
+}
 
 function ShowImagePreview(imageUploader, previewImage) {
 

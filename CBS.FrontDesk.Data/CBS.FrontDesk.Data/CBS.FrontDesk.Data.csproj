@@ -53,6 +53,7 @@
     <Compile Include="Entity\Accounting\AccountTreeNode.cs" />
     <Compile Include="Entity\Accounting\ChartOfAccount.cs" />
     <Compile Include="Entity\Accounting\ChartOfAccountDto.cs" />
+    <Compile Include="Entity\Accounting\Class1.cs" />
     <Compile Include="Entity\Accounting\OperationEvent.cs" />
     <Compile Include="Entity\Accounting\OperationEventAttribute.cs" />
     <Compile Include="Entity\Accounting\OperationEventAttributeDto.cs" />

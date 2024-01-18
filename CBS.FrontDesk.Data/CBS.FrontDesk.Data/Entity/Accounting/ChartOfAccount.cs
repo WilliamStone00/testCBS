@@ -16,8 +16,6 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string ParentAccountNumber { get; set; }
         public string ParentAccountId { get; set; }
 
-        
-        
-
+      
     }
 }

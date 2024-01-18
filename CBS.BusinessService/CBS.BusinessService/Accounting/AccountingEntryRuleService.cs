@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBS.FrontDesk.Data.Entity.Accounting;
 
 namespace CBS.BusinessService.Accounting
 {
@@ -100,15 +101,13 @@ namespace CBS.BusinessService.Accounting
                 // Make an API call to create an individual profile
 
                 model.BankId = this.BankId;
-                model.BranchId = this.BranchId;
-                model.OrganizationId = this.OrganizationId;
-            
+              
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry>>(APICallHelper.CreateAccountingRuleEntry, model);
 
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.AccountingRuleEntryName}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"AccountingEntry Rule  {model.AccountingRuleEntryName} successfully ", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
@@ -122,8 +121,7 @@ namespace CBS.BusinessService.Accounting
             catch (Exception ex)
             {
                 // Log and handle exception
-                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
-                    SystemMessageStatus.Failed.ToString(), ex);
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,SystemMessageStatus.Failed.ToString(), ex);
             }
             return ExecutionMessage;
         }
@@ -136,13 +134,13 @@ namespace CBS.BusinessService.Accounting
                 if (OperationEvent != null)
                 {
                     model.BankId = this.BankId;
-                    model.BranchId = this.BranchId;
-                    model.OrganizationId = this.OrganizationId;
+                    //model.BranchId = this.BranchId;
+                    //model.OrganizationId = this.OrganizationId;
                     OperationEvent.CreditAccountId =model.CreditAccountId;
                     OperationEvent.DebitAccountId= model.DebitAccountId;
                     OperationEvent.AccountingRuleEntryName = model.AccountingRuleEntryName;
                     OperationEvent.BookingDirection= model.BookingDirection;
-                    OperationEvent.AccountingRuleId= model.AccountingRuleId;
+                    OperationEvent.BankId= model.BankId;
                     OperationEvent.OperationEventAttributeId= model.OperationEventAttributeId;
                 
                     var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry>>(string.Format(APICallHelper.Get_Update_Delete_AccountingRuleEntry, model.Id), OperationEvent);
@@ -158,6 +156,7 @@ namespace CBS.BusinessService.Accounting
                         // Failed creation
                         GetExecutionMessages(model, false, (string)model.AccountingRuleEntryName, MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                        return ExecutionMessage;
                     }
                 }
 
@@ -171,6 +170,28 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
+        public Task<List<FrontDesk.Data.Entity.Accounting.AccountingRuleEntryDto>> GetAccountingEntryRulesDto(IEnumerable<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry> accountingRuleEntries, IEnumerable<FrontDesk.Data.Entity.Accounting.OperationEvent> operationEvents, IEnumerable<OperationEventAttribute> operationEventAttributes, IEnumerable<ChartOfAccount> chartOfAccounts)
+        {
+            var query = from accountingRuleEntry in accountingRuleEntries
+                        join debitAccount in chartOfAccounts on accountingRuleEntry.DebitAccountId equals debitAccount.Id
+                        join creditAccount in chartOfAccounts on accountingRuleEntry.CreditAccountId equals creditAccount.Id
+                        join operationEventAttribute in operationEventAttributes on accountingRuleEntry.OperationEventAttributeId equals operationEventAttribute.Id
+                        join operationEvent in operationEvents on accountingRuleEntry.OperationEventId equals operationEvent.Id
+                        select new AccountingRuleEntryDto
+                        {
+                            Id = accountingRuleEntry.Id,
+                            AccountingRuleEntryName = accountingRuleEntry.AccountingRuleEntryName,
+                            BookingDirection = accountingRuleEntry.BookingDirection, // Add your logic for BookingDirection
+                            OperationEventAttributeName = operationEventAttribute.Name,
+                            OperationEventName = operationEvent.OperationEventName,
+                            DebitAccountLabel = debitAccount.LabelEn,
+                            CreditAccountLabel = creditAccount.LabelEn
+                        };
+
+            List<AccountingRuleEntryDto> result = query.ToList();
+
+            return Task.FromResult(result);
+        }
     }
 
 }
