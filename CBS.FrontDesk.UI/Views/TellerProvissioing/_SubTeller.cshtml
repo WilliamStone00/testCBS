@@ -119,20 +119,6 @@
                                         <label>Coin-1</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.startTime, new { @class = "form-control date-picker", @placeholder = "Date start" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.startTime, "", new { @class = "text-danger" })
-                                        <label>Start date</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.endTime, new { @class = "form-control date-picker", @placeholder = "Date end" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.endTime, "", new { @class = "text-danger" })
-                                        <label>End date</label>
-                                    </div>
-                                </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.SubTellerProvissioning.primaryTellerId, new SelectList(ViewBag.PrimaryTeller, "id", "name"), "---Select primary teller---", new { @class = "form-control select2", @search = "true" })

@@ -92,6 +92,7 @@
     <Compile Include="Entity\RoleManagement\Role.cs" />
     <Compile Include="Entity\SavingProducts\AccountOperation\AccountTransfer.cs" />
     <Compile Include="Entity\SavingProducts\AccountOperation\TransactionHistory.cs" />
+    <Compile Include="Entity\SavingProducts\TellersEndOfDay.cs" />
     <Compile Include="Entity\StringValues.cs" />
     <Compile Include="Entity\Config\Organization\Bank.cs" />
     <Compile Include="Entity\Config\Organization\Branch.cs" />

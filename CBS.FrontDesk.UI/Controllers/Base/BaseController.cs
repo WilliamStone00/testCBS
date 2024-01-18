@@ -26,51 +26,48 @@ namespace CBS.FrontDesk.UI.Controllers
         private string domain = ConfigurationManager.AppSettings["domain"];
         private string timetoExpire = ConfigurationManager.AppSettings["timetoExpire"];
 
-        protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
-        {
-
-
-            try
-            {
-                //if (!VerifyCookies("CBS4U") || !VerifyCookies("PWD") || !VerifyCookies("MFA"))
-                //{
-                //    // Handle invalid/expired cookies here
-                //    // Optionally, redirect to a login page or perform any other action
-                //}
-                //else
-                //{
-                GetUserSession();
-                //}
-
-                return base.BeginExecuteCore(callback, state);
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-
-
-
-
-
-
-        }
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            // Check if the request is going to the login page to avoid redirection loops
-            if (!filterContext.HttpContext.Request.RawUrl.StartsWith("/Authentication/Login", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                if (Session["UserID"] == null) // Replace "UserID" with your session key
+                var request = filterContext.HttpContext.Request;
+
+                // Check if the request is not for the login page and the user is not authenticated
+                if (!request.RawUrl.StartsWith("/Authentication/Login", StringComparison.OrdinalIgnoreCase) && Session["UserID"] == null)
                 {
-                    // Redirect to login or show a session expired message
+                    // Redirect to the login page
                     filterContext.Result = new RedirectResult("~/Authentication/Login");
                     return;
                 }
+
+                // User is authenticated, proceed with getting the user session
+                GetUserSession();
+
+                // Continue with the action execution
+                base.OnActionExecuting(filterContext);
             }
-            //GetUserSession();
-            base.OnActionExecuting(filterContext);
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                throw;
+            }
         }
+
+        //protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        //{
+        //    // Check if the request is going to the login page to avoid redirection loops
+        //    if (!filterContext.HttpContext.Request.RawUrl.StartsWith("/Authentication/Login", StringComparison.OrdinalIgnoreCase))
+        //    {
+        //        if (Session["UserID"] == null) // Replace "UserID" with your session key
+        //        {
+        //            // Redirect to login or show a session expired message
+        //            filterContext.Result = new RedirectResult("~/Authentication/Login");
+        //            return;
+        //        }
+        //    }
+        //    GetUserSession();
+        //    base.OnActionExecuting(filterContext);
+        //}
 
 
         public static bool IsTokenExpired(string token)
@@ -147,7 +144,7 @@ namespace CBS.FrontDesk.UI.Controllers
             HttpCookie faCookie = new HttpCookie(cookieName, encryptedTicket);
             Session.Timeout = 30;
             HttpContext.Session["Token"] = reqDto.bearerToken;
-            HttpContext.Session["menu"]=reqDto.Permissions.ToList();
+            HttpContext.Session["menu"] = reqDto.Permissions.ToList();
             Response.Cookies.Add(faCookie);
         }
 

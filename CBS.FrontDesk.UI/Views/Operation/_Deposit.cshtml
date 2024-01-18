@@ -13,7 +13,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-octagram-plus me-2"></i>
-               DEPOSIT
+                DEPOSIT
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"
@@ -26,126 +26,136 @@
 
                         @using (Html.BeginForm("Deposit", "Operation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return PostData(this);" }))
                         {
-                            <input type="hidden" name="OperationType" value="Deposit" id="OperationType"/>
-                            <input type="hidden" name="partialView" value="_Deposit" id="partialView"/>
-                            <input type="hidden" name="accountNumber" value="@Model.accountNumber" id="accountNumber"/>
-                            <input type="hidden" name="divID" value="datalistingview" id="divID"/>
-                            <input type="hidden" name="controller" value="Operation" id="controller"/>
-                            <input type="hidden" name="actionMethod" value="InitializeData" id="actionMethod"/>
+                            <input type="hidden" name="OperationType" value="Deposit" id="OperationType" />
+                            <input type="hidden" name="partialView" value="_Deposit" id="partialView" />
+                            <input type="hidden" name="accountNumber" value="@Model.accountNumber" id="accountNumber" />
+                            <input type="hidden" name="divID" value="datalistingview" id="divID" />
+                            <input type="hidden" name="controller" value="Operation" id="controller" />
+                            <input type="hidden" name="actionMethod" value="InitializeData" id="actionMethod" />
                             @Html.HiddenFor(model => model.DepositRequest.accountNumber)
-                            <div class="row mt-2 gy-4">
-
-                              
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.DepositRequest.amount, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.amount, "", new { @class = "text-danger" })
-                                        <label style="color:blue">Enter amount (min: @Model.product.minAmount, max: @Model.product.maxAmount)</label>
-                                    </div>
-                                </div>
-                               
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.note10000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.note10000, "", new { @class = "text-danger " })
-                                        <label>Note-10,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.note5000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.note5000, "", new { @class = "text-danger " })
-                                        <label>Note-5,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.note2000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.note2000, "", new { @class = "text-danger " })
-                                        <label>Note-2,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.note1000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.note1000, "", new { @class = "text-danger " })
-                                        <label>Note-1,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.note500, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.note500, "", new { @class = "text-danger " })
-                                        <label>Note-500</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.coin500, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.coin500, "", new { @class = "text-danger " })
-                                        <label>Coin-500</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.coin100, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.coin100, "", new { @class = "text-danger " })
-                                        <label>Coin-100</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.coin50, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.coin50, "", new { @class = "text-danger " })
-                                        <label>Coin-50</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.coin25, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.coin25, "", new { @class = "text-danger " })
-                                        <label>Coin-25</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.coin10, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.coin10, "", new { @class = "text-danger " })
-                                        <label>Coin-10</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.coin5, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.coin5, "", new { @class = "text-danger " })
-                                        <label>Coin-5</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.coin1, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.coin1, "", new { @class = "text-danger " })
-                                        <label>Coin-1</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.DepositRequest.depositType, new SelectList(ViewBag.Sources, "Text", "Value"), "---Select deposit type---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.depositType, "", new { @class = "text-danger " })
-                                        <label for="formValidationDob">Deposit type</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextAreaFor(m => m.DepositRequest.note, new { @class = "form-control", @style = "height: 75px;" })
-                                        @Html.ValidationMessageFor(m => m.DepositRequest.note, "", new { @class = "text-danger " })
-                                        <label for="formValidationDob">Deposit Note</label>
-                                    </div>
-                                </div>
-
+                    <div class="row mt-2 gy-4">
+                        <div class="col-12">
+                            <div class="form-check">
+                                @Html.CheckBoxFor(m => m.DepositRequest.isDepositDoneByAccountOwner, new { @class = "form-check-input", @onchange = "toggleDepositer(this.checked)" })
+                                <label class="form-check-label" for="isActive">Uncheck if deposit is not done be account owner</label>
                             </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.DepositRequest.amount, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.amount, "", new { @class = "text-danger" })
+                                <label style="color:blue">Enter amount (min: @Model.product.minAmount, max: @Model.product.maxAmount)</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.note10000, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.note10000, "", new { @class = "text-danger " })
+                                <label>Note-10,000</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.note5000, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.note5000, "", new { @class = "text-danger " })
+                                <label>Note-5,000</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.note2000, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.note2000, "", new { @class = "text-danger " })
+                                <label>Note-2,000</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.note1000, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.note1000, "", new { @class = "text-danger " })
+                                <label>Note-1,000</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.note500, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.note500, "", new { @class = "text-danger " })
+                                <label>Note-500</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.coin500, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.coin500, "", new { @class = "text-danger " })
+                                <label>Coin-500</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.coin100, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.coin100, "", new { @class = "text-danger " })
+                                <label>Coin-100</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.coin50, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.coin50, "", new { @class = "text-danger " })
+                                <label>Coin-50</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.coin25, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.coin25, "", new { @class = "text-danger " })
+                                <label>Coin-25</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.coin10, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.coin10, "", new { @class = "text-danger " })
+                                <label>Coin-10</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.coin5, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.coin5, "", new { @class = "text-danger " })
+                                <label>Coin-5</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.DepositRequest.currencyNotes.coin1, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.currencyNotes.coin1, "", new { @class = "text-danger " })
+                                <label>Coin-1</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.DepositRequest.depositType, new SelectList(ViewBag.Sources, "Text", "Value"), "---Select deposit type---", new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.depositType, "", new { @class = "text-danger " })
+                                <label for="formValidationDob">Deposit type</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextAreaFor(m => m.DepositRequest.note, new { @class = "form-control", @style = "height: 75px;" })
+                                @Html.ValidationMessageFor(m => m.DepositRequest.note, "", new { @class = "text-danger " })
+                                <label for="formValidationDob">Teller note</label>
+                            </div>
+                        </div>
+                        @Html.Partial("_Depositer")
+
+
+                    </div>
+
+
+
                             <div class="mt-4">
                                 <button type="submit" class="btn btn-primary me-2">Deposit</button>
                             </div>

@@ -295,20 +295,12 @@ namespace CBS.API.Helper
 
                     if (string.IsNullOrEmpty(responseData))
                     {
-                        if (response.StatusCode == HttpStatusCode.Unauthorized)
-                        {
-                            message = "Unauthorized";
-                            return new ApiResponse<T>
-                            {
-                                IsSuccess = false,
-                                Message = $"Request failed with status code {(int)response.StatusCode}, Message: The server is requesting authorization token."
-                            };
-                        }
                         return new ApiResponse<T>
                         {
-                            IsSuccess = true,
-                            Message = "Empty response data received"
+                            IsSuccess = false,
+                            Message = "Empty response received"
                         };
+
                     }
 
                     if (response.IsSuccessStatusCode)
@@ -386,38 +378,32 @@ namespace CBS.API.Helper
 
                         }
                         
-                        else if (response.StatusCode == HttpStatusCode.Conflict || response.StatusCode == HttpStatusCode.NotFound)
+                        else if (response.StatusCode == HttpStatusCode.BadRequest||response.StatusCode == HttpStatusCode.Conflict || response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.Forbidden)
                         {
-                            jsonResponse = JObject.Parse(responseData);
-                            message = jsonResponse["message"]?.ToString();
-                            statusDescription = jsonResponse["statusDescription"]?.ToString();
-                            //List<string> errorMessages = JsonConvert.DeserializeObject<List<string>>(responseData);
-                            return new ApiResponse<T>
-                            {
-                                IsSuccess = false,
-                                Message = $"Request failed with status code {(int)response.StatusCode}, Message: {message}, Description: {statusDescription}"
-                            };
+                            //jsonResponse = JObject.Parse(responseData);
+                            //message = jsonResponse["message"]?.ToString();
+                            //statusDescription = jsonResponse["statusDescription"]?.ToString();
+                            ////List<string> errorMessages = JsonConvert.DeserializeObject<List<string>>(responseData);
+                            //return new ApiResponse<T>
+                            //{
+                            //    IsSuccess = false,
+                            //    Message = $"Request failed with status code {(int)response.StatusCode}, Message: {message}, Description: {statusDescription}"
+                            //};
 
-
-                        }
-                        else if (response.StatusCode == HttpStatusCode.BadRequest)
-                        {
                             T data;
                             try
                             {
                                 if (responseData.Contains("\"data\":null"))
                                 {
-                                    // Handle the case where "data" is null in the JSON response
                                     data = default(T); // Assign default value for T (typically null for reference types)
 
-                                    // Extract other necessary information if available
                                     jsonResponse = JObject.Parse(responseData);
                                     message = jsonResponse["message"]?.ToString();
                                     statusDescription = jsonResponse["statusDescription"]?.ToString();
                                     return new ApiResponse<T>
                                     {
                                         IsSuccess = false,
-                                        Message = string.IsNullOrEmpty(message) ? "Bad request" : "Message: "+ message+"Description: " + statusDescription
+                                        Message = $"Request failed with status code {(int)response.StatusCode}. Description: {statusDescription}, Message: {message}"
                                     };
                                 }
                                 else
@@ -427,11 +413,9 @@ namespace CBS.API.Helper
                                     if (jsonResponse["errors"] != null)
                                     {
                                         var errorResponse = jsonResponse["errors"].ToObject<Dictionary<string, List<string>>>();
-
                                         var errorMessages = errorResponse
                                             .SelectMany(error => error.Value) // Flatten the list of error messages
                                             .ToList();
-
                                         var errorMessage = string.Join(". ", errorMessages);
 
                                         return new ApiResponse<T>
@@ -441,7 +425,7 @@ namespace CBS.API.Helper
                                         };
                                     }
                                 }
-                                
+
 
                                 // If the error structure doesn't match the expected format or errors object not found
                                 return new ApiResponse<T>
@@ -461,6 +445,7 @@ namespace CBS.API.Helper
 
 
                         }
+
                         else if (response.StatusCode == HttpStatusCode.InternalServerError)
                         {
                             jsonResponse = JObject.Parse(responseData);

@@ -95,7 +95,7 @@ namespace CBS.BusinessService.Accounts
                 {
                     model.bankId = GetBankID();
                     model.branchId = GetBranchID();
-                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<OpeningOfTheDayResponse>>(APICallHelper.PrimaryTellerProvisioning, model);
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<OpeningOfTheDayResponse>>(APICallHelper.SubTellerProvisioning, model);
                     if (response.IsSuccess)
                     {
 
