@@ -1,0 +1,59 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+
+@if (true)
+{
+    <table class="table table-hover" id="myDataTable_ChartOfAccount">
+        <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.ChartOfAccounts)
+            {
+                <tr>
+                    <td style="width:35%">@d.AccountNumber</td>
+                    <td style="width:35%">@d.LabelEn</td>
+
+                    <td style="width:30%">
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_ChartOfAccount','_CreateChartOfAccount','','AccountingConfiguration','chartOfAccount')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.LabelEn to edit">Edit</a>
+                        <a href="#" class="mr-2 btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete @d.LabelEn" onclick="DeleteDataConfiguration('AccountingConfiguration',''@d.Id'','myDataTable_ChartOfAccount','_ChartOfAccountDtoDataChart',0,'datalistingview_ChartOfAccount','chartOfAccount')">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <table class="table table-hover" id="myDataTable_ChartOfAccount">
+        <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+                @foreach (var d in Model.ChartOfAccounts)
+                {
+                    <tr>
+                        <td style="width:35%">@d.AccountNumber</td>
+                        <td style="width:35%">@d.LabelEn</td>
+
+                        <td style="width:30%">
+                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_ChartOfAccount','_CreateChartOfAccount','','AccountingConfiguration','chartOfAccount')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.LabelEn to edit">Edit</a>
+                            <a href="#" class="mr-2 btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete @d.LabelEn" onclick="DeleteDataConfiguration('AccountingConfiguration',''@d.Id'','myDataTable_ChartOfAccount','_ChartOfAccountDtoDataChart',0,'datalistingview_ChartOfAccount','chartOfAccount')">Delete</a>
+                        </td>
+                    </tr>
+                }
+           
+        </tbody>
+    </table>
+}
+

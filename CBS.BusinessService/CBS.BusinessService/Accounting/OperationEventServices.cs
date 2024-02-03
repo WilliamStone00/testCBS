@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 
 using CBS.FrontDesk.Helper.Helper;
 using CBS.FrontDesk.Service;
+using CBS.FrontDesk.Data.Entity.Accounting;
 
-namespace CBS.BusinessService.OperationEvent
+namespace CBS.BusinessService
 {
     public class OperationEventServices : BaseApiServices
     {
@@ -58,16 +59,16 @@ namespace CBS.BusinessService.OperationEvent
             return ExecutionMessage;
         }
 
-        public async Task<IEnumerable<FrontDesk.Data.Entity.Accounting.OperationEvent>> GetOperationEvents()
+        public async Task<List<OperationEvent>> GetOperationEvents()
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.Accounting.OperationEvent>>>(APICallHelper.GetAllOperationEvent);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<OperationEvent>>>(APICallHelper.GetAllOperationEvent);
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
                 }
-                return new List<FrontDesk.Data.Entity.Accounting.OperationEvent>();
+                return new List<OperationEvent>();
             }
             catch (Exception ex)
             {
@@ -75,11 +76,11 @@ namespace CBS.BusinessService.OperationEvent
                 throw;
             }
         }
-        public async Task<FrontDesk.Data.Entity.Accounting.OperationEvent> GetOperationEvent(string id)
+        public async Task< OperationEvent> GetOperationEvent(string id)
         {
             try
             {
-                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<FrontDesk.Data.Entity.Accounting.OperationEvent>>(string.Format(APICallHelper.Get_Update_Delete_OperationEvent, id));
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<OperationEvent>>(string.Format(APICallHelper.Get_Update_Delete_OperationEvent, id));
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;
@@ -92,7 +93,7 @@ namespace CBS.BusinessService.OperationEvent
                 throw ex;
             }
         }
-        public async Task<ExecutionMessages> Create(FrontDesk.Data.Entity.Accounting.OperationEventDto model)
+        public async Task<ExecutionMessages> Create(OperationEvent model)
         {
             try
             {
@@ -102,7 +103,7 @@ namespace CBS.BusinessService.OperationEvent
                 //model.BankId = this.BankId;
                 //model.BranchId= this .BranchId;
                 //model.OrganizationId= this .OrganizationId;
-                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.OperationEventDto>>(APICallHelper.CreateOperationEvent, model);
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<OperationEventDto>>(APICallHelper.CreateOperationEvent, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
@@ -125,7 +126,7 @@ namespace CBS.BusinessService.OperationEvent
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> Update(FrontDesk.Data.Entity.Accounting.OperationEvent model)
+        public async Task<ExecutionMessages> Update(OperationEvent model)
         {
             try
             {
@@ -141,7 +142,7 @@ namespace CBS.BusinessService.OperationEvent
                     OperationEvent.Id = model.Id;
                     OperationEvent.Description = model.Description;
                  
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.OperationEvent>>(string.Format(APICallHelper.Get_Update_Delete_OperationEvent, model.Id), OperationEvent);
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<OperationEvent>>(string.Format(APICallHelper.Get_Update_Delete_OperationEvent, model.Id), OperationEvent);
                     if (response.IsSuccess)
                     {
                         // Successful creation

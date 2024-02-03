@@ -38,7 +38,7 @@ namespace CBS.BusinessService.Accounting
             try
             {
                 var objOperationEvent = await GetOperationEventAttribute(id);
-                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_OperationEvent, id), id));
+                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.Get_Update_Delete_OperationEventAttribute, id));
                 if (inResponse.IsSuccess)
                 {
 
@@ -61,16 +61,16 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
-        public async Task<IEnumerable<FrontDesk.Data.Entity.Accounting.OperationEventAttribute>> GetOperationEventAttributes()
+        public async Task<List<OperationEventAttribute>> GetOperationEventAttributes()
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.Accounting.OperationEventAttribute>>>(APICallHelper.GetAllOperationEventAttribute);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<OperationEventAttribute>>>(APICallHelper.GetAllOperationEventAttribute);
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData==null)
                     {
-                        return new List<FrontDesk.Data.Entity.Accounting.OperationEventAttribute>();
+                        return new List< OperationEventAttribute>();
                     }
                     else
                     {
@@ -78,7 +78,7 @@ namespace CBS.BusinessService.Accounting
                     }
                 
                 }
-                return new List<FrontDesk.Data.Entity.Accounting.OperationEventAttribute>();
+                return new List<OperationEventAttribute>();
             }
             catch (Exception ex)
             {

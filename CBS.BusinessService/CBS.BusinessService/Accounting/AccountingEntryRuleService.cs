@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data;
 
 namespace CBS.BusinessService.Accounting
 {
@@ -36,7 +37,7 @@ namespace CBS.BusinessService.Accounting
             try
             {
                 var objOperationEvent = await GetAccountingRuleEntryById(id);
-                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_AccountingRuleEntry, id), id));
+                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.Get_Update_Delete_AccountingRuleEntry, id));
                 if (inResponse.IsSuccess)
                 {
 
@@ -59,16 +60,16 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
-        public async Task<IEnumerable<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry>> GetAccountingEntryRules()
+        public async Task<IEnumerable<AccountingRuleEntry>> GetAccountingEntryRules()
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry>>>(APICallHelper.GetAllAccountingRuleEntry);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<AccountingRuleEntry>>>(APICallHelper.GetAllAccountingRuleEntry);
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
                 }
-                return new List<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry>();
+                return new List<    AccountingRuleEntry>();
             }
             catch (Exception ex)
             {
@@ -76,11 +77,11 @@ namespace CBS.BusinessService.Accounting
                 throw;
             }
         }
-        public async Task<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry> GetAccountingRuleEntryById(string id)
+        public async Task<AccountingRuleEntry> GetAccountingRuleEntryById(string id)
         {
             try
             {
-                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry>>(string.Format(APICallHelper.Get_Update_Delete_AccountingRuleEntry, id));
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<AccountingRuleEntry>>(string.Format(APICallHelper.Get_Update_Delete_AccountingRuleEntry, id));
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;
@@ -93,7 +94,7 @@ namespace CBS.BusinessService.Accounting
                 throw ex;
             }
         }
-        public async Task<ExecutionMessages> Create(FrontDesk.Data.Entity.Accounting.AccountingRuleEntry model)
+        public async Task<ExecutionMessages> Create(AccountingRuleEntry model)
         {
             try
             {
@@ -102,7 +103,7 @@ namespace CBS.BusinessService.Accounting
 
                 model.BankId = this.BankId;
               
-                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry>>(APICallHelper.CreateAccountingRuleEntry, model);
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<AccountingRuleEntry>>(APICallHelper.CreateAccountingRuleEntry, model);
 
                 if (response.IsSuccess)
                 {
@@ -125,7 +126,7 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> Update(FrontDesk.Data.Entity.Accounting.AccountingRuleEntry model)
+        public async Task<ExecutionMessages> Update(AccountingRuleEntry model)
         {
             try
             {
@@ -136,14 +137,14 @@ namespace CBS.BusinessService.Accounting
                     model.BankId = this.BankId;
                     //model.BranchId = this.BranchId;
                     //model.OrganizationId = this.OrganizationId;
-                    OperationEvent.CreditAccountId =model.CreditAccountId;
-                    OperationEvent.DebitAccountId= model.DebitAccountId;
+                    OperationEvent.DeterminationAccountId =model.DeterminationAccountId;
+                    OperationEvent.BalancingAccountId= model.BalancingAccountId;
                     OperationEvent.AccountingRuleEntryName = model.AccountingRuleEntryName;
                     OperationEvent.BookingDirection= model.BookingDirection;
                     OperationEvent.BankId= model.BankId;
                     OperationEvent.OperationEventAttributeId= model.OperationEventAttributeId;
                 
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry>>(string.Format(APICallHelper.Get_Update_Delete_AccountingRuleEntry, model.Id), OperationEvent);
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<AccountingRuleEntry>>(string.Format(APICallHelper.Get_Update_Delete_AccountingRuleEntry, model.Id), OperationEvent);
                     if (response.IsSuccess)
                     {
                         // Successful creation
@@ -170,27 +171,32 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
-        public Task<List<FrontDesk.Data.Entity.Accounting.AccountingRuleEntryDto>> GetAccountingEntryRulesDto(IEnumerable<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry> accountingRuleEntries, IEnumerable<FrontDesk.Data.Entity.Accounting.OperationEvent> operationEvents, IEnumerable<OperationEventAttribute> operationEventAttributes, IEnumerable<ChartOfAccount> chartOfAccounts)
+        public Task<List<FrontDesk.Data.Entity.Accounting.AccountingRuleEntryDto>> GetAccountingEntryRulesDto(IEnumerable<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry> accountingRuleEntries, IEnumerable<FrontDesk.Data.Entity.Accounting.OperationEvent> operationEvents, IEnumerable<OperationEventAttribute> operationEventAttributes, IEnumerable<Account> chartOfAccounts)
         {
             var query = from accountingRuleEntry in accountingRuleEntries
-                        join debitAccount in chartOfAccounts on accountingRuleEntry.DebitAccountId equals debitAccount.Id
-                        join creditAccount in chartOfAccounts on accountingRuleEntry.CreditAccountId equals creditAccount.Id
+                        join debitAccount in chartOfAccounts on accountingRuleEntry.DeterminationAccountId equals debitAccount.Id
+                        join creditAccount in chartOfAccounts on accountingRuleEntry.BalancingAccountId equals creditAccount.Id
                         join operationEventAttribute in operationEventAttributes on accountingRuleEntry.OperationEventAttributeId equals operationEventAttribute.Id
-                        join operationEvent in operationEvents on accountingRuleEntry.OperationEventId equals operationEvent.Id
+            //            join operationEvent in operationEvents on accountingRuleEntry.OperationEventId equals operationEvent.Id
                         select new AccountingRuleEntryDto
                         {
                             Id = accountingRuleEntry.Id,
                             AccountingRuleEntryName = accountingRuleEntry.AccountingRuleEntryName,
                             BookingDirection = accountingRuleEntry.BookingDirection, // Add your logic for BookingDirection
                             OperationEventAttributeName = operationEventAttribute.Name,
-                            OperationEventName = operationEvent.OperationEventName,
-                            DebitAccountLabel = debitAccount.LabelEn,
-                            CreditAccountLabel = creditAccount.LabelEn
+                            OperationEventName = operationEventAttribute.Name,
+                            DebitAccountLabel = debitAccount.AccountHolder,
+                            CreditAccountLabel = creditAccount.AccountHolder
                         };
 
             List<AccountingRuleEntryDto> result = query.ToList();
 
             return Task.FromResult(result);
+        }
+
+        public async Task<List<AccountingRuleEntry>> GetaccountingEntryRuleService()
+        {
+            throw new NotImplementedException();
         }
     }
 

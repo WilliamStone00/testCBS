@@ -125,13 +125,6 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 return null;
             }
         }
-
-
-
-
-
-
-
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption=null)
         {
             await GetList();
@@ -149,7 +142,6 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
             return HttpNotFound(); // Or return a default view for handling unknown paths
         }
-
         private Func<Task<PartialViewResult>> GetServiceAction(string path, string partialView, string key,string serviceOption)
         {
             if (serviceOption == "savingproduct")

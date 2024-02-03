@@ -14,7 +14,6 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string LabelFr { get; set; }
         public bool IsBalanceAccount { get; set; }
 
-
     }
 
     public class JsData

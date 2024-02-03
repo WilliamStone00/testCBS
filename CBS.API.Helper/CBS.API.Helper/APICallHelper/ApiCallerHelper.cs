@@ -47,9 +47,17 @@ namespace CBS.API.Helper
 
         public async Task<ApiResponse<T>> GetAsync<T>(string apiUrl)
         {
-            AddAuthorizationHeader(_httpClient);
-            HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
-            return await HandleResponse<T>(response);
+            try
+            {
+                AddAuthorizationHeader(_httpClient);
+                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+                return await HandleResponse<T>(response);
+            }
+            catch (Exception ex)
+            {
+
+                throw(ex);
+            }
         }
         public async Task<ApiResponse<T>> PostImageAsync<T>(string apiUrl, HttpPostedFileBase imageFile)
         {
@@ -304,11 +312,23 @@ namespace CBS.API.Helper
                                 Message = $"Request failed with status code {(int)response.StatusCode}, Message: The server is requesting authorization token."
                             };
                         }
-                        return new ApiResponse<T>
+                        else if (response.StatusCode == HttpStatusCode.InternalServerError)
                         {
-                            IsSuccess = true,
-                            Message = "Empty response data received"
-                        };
+                            return new ApiResponse<T>
+                            {
+                                IsSuccess = false,
+                                Message = "InternalServerError upexpected error"
+                            };
+                        }
+                        else
+                        {
+                            return new ApiResponse<T>
+                            {
+                                IsSuccess = true,
+                                Message = "Empty response data received"
+                            };
+                        }
+                    
                     }
 
                     if (response.IsSuccessStatusCode)
