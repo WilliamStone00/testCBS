@@ -37,8 +37,8 @@ namespace CBS.BusinessService
                 // Make an API call to create an individual profile
 
 
-                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<ManualAccountingEntry>>(APICallHelper.ManualEntriePosting, model.ConvertToManualAccountingEntryDto());
-                if (response.IsSuccess)
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.ManualEntriePosting, model.ConvertToManualAccountingEntryDto());
+                if (response.ApiResponseData.Data)
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
@@ -91,6 +91,24 @@ namespace CBS.BusinessService
                     SystemMessageStatus.Failed.ToString(), ex);
             }
             return ExecutionMessage;
+        }
+
+        public async Task<List<AccountingEntry>> GetAllAccountingEntries()
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<AccountingEntry>>>(APICallHelper.AccountingEntry_Entries);
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<AccountingEntry>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw(ex);
+            }
         }
     }
 }

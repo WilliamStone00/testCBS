@@ -48,6 +48,7 @@
     <Compile Include="Entity\Accounting\AccountClass.cs" />
     <Compile Include="Entity\Accounting\AccountClassDto.cs" />
     <Compile Include="Entity\Accounting\AccountingConfiguration.cs" />
+    <Compile Include="Entity\Accounting\AccountingEntry.cs" />
     <Compile Include="Entity\Accounting\AccountType.cs" />
     <Compile Include="Entity\Accounting\AccountValidator.cs" />
     <Compile Include="Entity\Accounting\CashFlowManagement.cs" />

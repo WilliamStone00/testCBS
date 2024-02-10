@@ -26,8 +26,15 @@
                         <div class="form-check mb-4">
                             @Html.CheckBoxFor(model => model.ChartOfAccount.IsForUpdate, new { @class = "form-check-input" })
 
+                            @if (Model.ChartOfAccount != null)
+                            {
+                                <label>If you wish to update informations on the chart of account: @Model.ChartOfAccount.AccountNumber-@Model.ChartOfAccount.LabelEn</label>
 
-                            <label>If you wish to update informations on the chart of account: @Model.ChartOfAccount.AccountNumber-@Model.ChartOfAccount.LabelEn</label>
+                            }
+                            else
+                            {
+
+                            }
                         </div>
                         <div class="form-floating form-floating-outline mb-4">
                             @Html.TextBoxFor(model => model.ChartOfAccount.AccountNumber, new { @class = "form-control", placeholder = "Account Number" })

@@ -12,7 +12,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            int amount = Convert.ToInt32(value);
+            Decimal amount = Convert.ToDecimal(value);
 
             if (amount <= 0)
             {

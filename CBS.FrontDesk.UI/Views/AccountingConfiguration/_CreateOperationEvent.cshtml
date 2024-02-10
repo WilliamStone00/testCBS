@@ -16,18 +16,20 @@
                     @Html.ValidationMessageFor(m => m.OperationEvent.EventCode, "", new { @class = "text-danger" })
                     <label>EventCode</label>
                 </div>
+
             </div>
+
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    
-                        @Html.TextAreaFor(m => m.OperationEvent.Description, new { @class = "form-control", @style = "height: 200px;" })
-                        @Html.ValidationMessageFor(m => m.OperationEvent.Description, "", new { @class = "text-danger" })
-                        <label>Description</label>
-                  
+
+                    @Html.TextAreaFor(m => m.OperationEvent.Description, new { @class = "form-control", @style = "height: 200px;" })
+                    @Html.ValidationMessageFor(m => m.OperationEvent.Description, "", new { @class = "text-danger" })
+                    <label>Description</label>
+
                 </div>
             </div>
 
-       
+
 
 
 
@@ -35,8 +37,16 @@
         </div>
 
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary me-2">Save</button>
-            <button type="reset" class="btn btn-outline-secondary">Reset</button>
+            @if (Model.OperationEvent.Id == null)
+            {
+                <button type="submit" class="btn btn-primary me-2">Save</button>
+                <input type="hidden" name="Action" value="insert" id="Action" />
+            }
+            else
+            { <button type="submit" class="btn btn-primary me-2">Update</button>
+                @Html.HiddenFor(m => m.OperationEvent.Id)
+                <input type="hidden" name="Action" value="update" id="Action" />
+            }
         </div>
     }
 </div>

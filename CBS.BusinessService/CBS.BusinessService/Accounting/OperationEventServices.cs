@@ -36,7 +36,7 @@ namespace CBS.BusinessService
             try
             {
                 var objOperationEvent = await GetOperationEvent(id);
-                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_OperationEvent, id), id));
+                var inResponse = await _loanConfigApiHelper.DeleteAsync<FrontDesk.Helper.ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_OperationEvent, id), id));
                 if (inResponse.IsSuccess)
                 {
 
@@ -103,7 +103,7 @@ namespace CBS.BusinessService
                 //model.BankId = this.BankId;
                 //model.BranchId= this .BranchId;
                 //model.OrganizationId= this .OrganizationId;
-                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<OperationEventDto>>(APICallHelper.CreateOperationEvent, model);
+                var response = await _loanConfigApiHelper.PostAsync<FrontDesk.Helper.ServiceResponse<OperationEventDto>>(APICallHelper.CreateOperationEvent, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation

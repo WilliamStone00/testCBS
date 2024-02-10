@@ -76,6 +76,7 @@
     <Compile Include="Accounting\AccountCategoryServices.cs" />
     <Compile Include="Accounting\AccountClassServices.cs" />
     <Compile Include="Accounting\AccountingEntryRuleService.cs" />
+    <Compile Include="Accounting\AccountingStatementService.cs" />
     <Compile Include="Accounting\AccountTypeServices.cs" />
     <Compile Include="Accounting\AccountingEntryServices.cs" />
     <Compile Include="Accounting\BankingOperationServices.cs" />

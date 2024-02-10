@@ -23,7 +23,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<ChartOfAccountDto> ChartOfAccountDtos { get; set; } = new List<ChartOfAccountDto>();
         public Account Account { get; set; } = new Account();
         public List<ChartOfAccount> ChartOfAccounts { get; set; } = new List<ChartOfAccount>();
-
+        public List<AccountType> AccountTypes { get; set; } = new List<AccountType>();
         public List<Account> Accounts { get; set; } = new List<Account>();
         public List<AccountHoDto> AccountHoDtos { get; set; } = new List<AccountHoDto>();
         public List<AccountTreeNode> AccountTreeNodes { get; set; } = new List<AccountTreeNode>();

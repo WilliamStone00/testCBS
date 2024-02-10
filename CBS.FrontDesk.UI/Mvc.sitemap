@@ -70,6 +70,8 @@
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Banking-Operations" controller="CashFlowManagement" action="Index">
     </mvcSiteMapNode>
+    <mvcSiteMapNode title="General Ledger" controller="AccountingStatements" action="Index">
+    </mvcSiteMapNode>
   </mvcSiteMapNode>
 
   

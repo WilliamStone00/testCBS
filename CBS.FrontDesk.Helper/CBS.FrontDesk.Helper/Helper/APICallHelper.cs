@@ -355,7 +355,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAccountType = "/api/v1/AccountType/{0}";
         public static string GetOperationEventAttributes = "/api/v1/AccountType/GetOperationEventAttributes/{0}";
         public static string GetAccountTypeAccountRubrique = "/api/v1/AccountType/AccountRubrique/{0}";
-        public static string GetAllAccountType = "/api/v1/AccountTypes";
+        public static string GetAllAccountType = "/api/v1/AccountTypes/AllSystemAccountTypes";
         public static string GetAllAccountTypeAccountRubrique = "/api/v1/AccountTypes/AccountRubrique";
         public static string Create_AccountTypeForSystem = "/api/v1/AccountType/AccountTypeForSystem";
         public static string Create_update_AccountTypeAccountRubrique = "/api/v1/AccountType/AccountRubrique";
@@ -363,6 +363,27 @@ namespace CBS.FrontDesk.Helper
         public static string Update_AccountType = "/api/v1/AccountType/{0}";
         public static string Delete_AccountType = "/api/v1/AccountType/{0}";
         public static string Delete_AccountTypeAccountRubrique = "/api/v1/AccountType/AccountRubrique/{0}";
+      
+        
+        public static string AccountingEntry_Get_Update_delete = "/api/v1/AccountingEntry/{0}";
+        public static string AccountingEntry_Get_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdQuery/{0}";
+        public static string AccountingEntry_ReverseEntry = "/api/v1/AccountingEntry/ReverseAccountingEntry";
+        public static string AccountingEntry_Entries = "/api/v1/AccountingEntries";
+
+
+        //
+        ///api/v1/AccountingEntry/AddCashInfusionCommand
+        ///api/v1/AccountingEntries
+        ///api/v1/AccountingEntries/RetrieveEntries
+        ///api/v1/AccountingEntries/Generate4ColumnTrialBalance
+        ///api/v1/AccountingEntries/Generate6ColumnTrialBalance
+        ///api/v1/AccountingEntry/MakeAccountPosting
+        ///api/v1/AccountingEntry/OpeningAndClosingOfDayPostingEventPosting
+        ///api/v1/AccountingEntry/DepositPostingEventCommand
+        ///api/v1/AccountingEntry/ManualPostingEventCommand
+        ///api/v1/AccountingEntry/FinancialStatement
+        ///api/v1/AccountingEntry/{referenceId}
+
 
     }
 }

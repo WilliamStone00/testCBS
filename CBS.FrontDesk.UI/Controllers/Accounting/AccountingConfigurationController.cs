@@ -14,6 +14,8 @@ using CBS.FrontDesk.Data.Entity.Accounting;
 using System.Web.Services.Description;
 using CBS.FrontDesk.Data;
 using System.Reflection;
+using System.Web.WebPages.Html;
+using Microsoft.Ajax.Utilities;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -47,36 +49,74 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         private async Task GetList()
         {
-            List<SelectListItem> list = new List<SelectListItem>();
-            list.Add(new SelectListItem { Text = "IncomeId", Value = "Income" });
-            list.Add(new SelectListItem { Text = "ExpenseId", Value = "Expense" });
-            ViewBag.AccountTypes = list;
+            ViewBag.AccountTypes = await GetAccountTypesAsync();
+          
             var DebitAccounts = await _AccountServices.GetAllAccounting();
             var CreditAccounts = BuildMenuViewBag(DebitAccounts);
             ViewBag.Accounts = CreditAccounts;
-
+            var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+            ViewBag.ChartOfAccounts= BuildMenuAccountViewBag(listAccounts.ToList());
             ViewBag.OperationEvent = await _OperationEventService.GetOperationEvents();
             ViewBag.BookingDirections = await this.GetBookingDirections();
             ViewBag.OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
             ViewBag.CreditAccounts = CreditAccounts;
             ViewBag.DebitAccounts = CreditAccounts;
         }
-        private Task<List<SelectListItem>> GetBookingDirections()
+
+        private dynamic BuildMenuAccountViewBag(List<ChartOfAccount> ListchartOfAccounts)
         {
-            var bookingDirections = new SelectListItem[] { new SelectListItem { Text = "Debit", Value = "Debit" }, new SelectListItem { Text = "Credit", Value = "Credit" } }.ToList();
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            
+            foreach (var item in ListchartOfAccounts)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.AccountNumber} - {item.LabelEn}" });
+            }
+            return selectListItems;
+        }
+
+        private async Task<List<System.Web.WebPages.Html.SelectListItem>> GetAccountTypesAsync()
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            var models =await _AccountTypeServices.GetAllAccountTypes();
+            foreach ( var item in models )
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.name });
+            }
+            return selectListItems;
+        }
+
+        private Task<List<System.Web.WebPages.Html.SelectListItem>> GetBookingDirections()
+        {
+            var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" } }.ToList();
             return Task.FromResult(bookingDirections);
         }
         private dynamic BuildMenuViewBag(IEnumerable<Data.Account> debitAccounts)
         {
-            List<SelectListItem> list = new List<SelectListItem>();
+            List<System.Web.WebPages.Html.SelectListItem> list = new List<System.Web.WebPages.Html.SelectListItem>();
             foreach (var item in debitAccounts)
             {
 
-                list.Add(new SelectListItem { Text = item.Id, Value = item.AccountNumber + "-" + item.AccountHolder });
+                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.AccountNumber + "-" + item.AccountHolder });
 
             }
 
             return list;
+        }
+
+        public async Task<ActionResult> GetOperationEventAttribute(string operationEventId)
+        {
+            
+
+            try
+            {
+               var data = await _OperationEventAttributeService.GetOperationEventAttributes();
+                 var dataList = data.Where(x=>x.OperationEventId.Equals(operationEventId)).ToList();
+                return Json(dataList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
         }
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(AccountingConfiguration model)
@@ -179,7 +219,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             return Json(new { success = false, status = false, message = "Invalid option selected." });
         }
-
         private async Task<Func<Task<ExecutionMessages>>> GetInsertServiceActionAsync(string serviceOption, AccountingConfiguration model)
         {
             if (serviceOption == "account")
@@ -240,7 +279,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return null;
             }
         }
-
         private Func<Task<ExecutionMessages>> GetUpdateServiceAction(string serviceOption, AccountingConfiguration model)
         {
             if (serviceOption == "account")
@@ -264,6 +302,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
 
                 return () => _chartOfAccountServices.Update(model.ChartOfAccount);
+            }
+            else if (serviceOption == "accountType")
+            {
+
+                return () => _AccountTypeServices.Update(model.AccountType);
             }
             else
             {
@@ -313,6 +356,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
 
             }
+            else if (serviceOption == "accountType")
+            {
+
+                var data = await _AccountTypeServices.Delete(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
             else
             {
                 return null;
@@ -335,16 +385,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else if (path == "new")
                 {
                     var chartOfAccount = await _AccountServices.GetAccount(key);
-                    Data.Account account = new Data.Account
-                    {
-                        ChartOfAccountId = (chartOfAccount == null) ? "xxxxxxxxxx" : chartOfAccount.Id,
-                        AccountNumber = (chartOfAccount == null) ? "xxxxxxxxxx" : chartOfAccount.AccountNumber,
+                    //Data.Account account = new Data.Account
+                    //{
+                    //    ChartOfAccountId =  chartOfAccount.Id,
+                    //    AccountNumber =  chartOfAccount.AccountNumber,
 
-                    };
-                    return PartialView(partialView, new AccountingConfiguration { Account = account });
+                    //};
+                    return PartialView(partialView, new AccountingConfiguration {  });
+                }
+                else
+                {
+                    var data = await _AccountServices.GetAccount(key);
+                    return PartialView(partialView, new AccountingConfiguration { Account = data });
+
                 }
 
-                return PartialView(partialView, new AccountingConfiguration { Account = await _AccountServices.GetAccount(key) });
 
             }
             else if (serviceOption == "chartOfAccount")
@@ -393,7 +448,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
                 else
                 {
-                    return PartialView(partialView, new AccountingConfiguration { OperationEvent = await _OperationEventService.GetOperationEvent(key) });
+                    var data = await _OperationEventService.GetOperationEvent(key);
+                    return PartialView(partialView, new AccountingConfiguration { OperationEvent = data });
 
 
                 }
@@ -445,14 +501,36 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
                 else
                 {
-                    return PartialView(partialView, new AccountingConfiguration { AccountingRuleEntry = await _accountingEntryRuleService.GetAccountingRuleEntryById(key) });
+                    
+                    var data = await _accountingEntryRuleService.GetAccountingRuleEntryById(key);
+                    return PartialView(partialView, new AccountingConfiguration { AccountingRuleEntry =data});
                 }
 
             }
+            else if (serviceOption == "accountType")
+            {
+                if (path == "list")
+                {
 
+                    var data = await _AccountTypeServices.GetAllAccountTypes();
+               
+                    var sysData = new AccountingConfiguration { AccountTypes = data.ToList()};
+                    return PartialView(partialView, sysData);
+
+                }
+                else if (path == "new")
+                {
+                    return PartialView(partialView, new AccountingConfiguration { });
+                }
+                else
+                {
+                    var data = await _AccountTypeServices.GetAccountType(key);
+                    return PartialView(partialView, new AccountingConfiguration { AccountType = data });
+                }
+
+            }
             return null;
         }
-
         public List<OperationEventAttributeDto> ConvertToOperationEventAttributeDtos(List<OperationEventAttribute> attributes, List<OperationEvent> events)
         {
             return (from a in attributes

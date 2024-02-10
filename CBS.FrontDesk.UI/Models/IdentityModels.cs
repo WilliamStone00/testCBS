@@ -29,5 +29,7 @@ namespace CBS.FrontDesk.UI.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<CBS.FrontDesk.Data.Entity.Accounting.AccountingRuleEntry> AccountingRuleEntries { get; set; }
     }
 }

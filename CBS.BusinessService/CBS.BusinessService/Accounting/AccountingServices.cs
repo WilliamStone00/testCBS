@@ -32,19 +32,19 @@ namespace CBS.BusinessService.Accounting
                 // Make an API call to create an individual profile
 
                 model.AccountOwnerId=GetBranchID();
-                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<Account>>(APICallHelper.CreateAccount, model);
-                if (response.IsSuccess)
+                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.CreateAccount, model);
+                if (response.ApiResponseData.IsSuccess)
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, $"Account {model.AccountNumber + " " + model.AccountHolder} has been created successfully", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, "");
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
                     GetExecutionMessages(model, false, $"Account {model.AccountNumber + " " + model.AccountHolder} failed to be created ", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData.Message);
                 }
             }
             catch (Exception ex)
@@ -100,7 +100,7 @@ namespace CBS.BusinessService.Accounting
             catch (Exception ex)
             {
                 // Log and handle exception
-                throw;
+                throw(ex);
             }
         }
         public async Task<IEnumerable<AccountingRole>> GetAccountingRoles()
