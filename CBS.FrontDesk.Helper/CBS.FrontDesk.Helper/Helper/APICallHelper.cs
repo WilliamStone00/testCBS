@@ -386,7 +386,6 @@ namespace CBS.FrontDesk.Helper
 
 
         public static string GetAccountType = "/api/v1/AccountType/{0}";
-        public static string GetOperationEventAttributes = "/api/v1/AccountType/GetOperationEventAttributes/{0}";
         public static string GetAccountTypeAccountRubrique = "/api/v1/AccountType/AccountRubrique/{0}";
         public static string GetAllAccountType = "/api/v1/AccountTypes/AllSystemAccountTypes";
         public static string GetAllAccountTypeAccountRubrique = "/api/v1/AccountTypes/AccountRubrique";

@@ -189,7 +189,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 grid.DataBind();
 
                 response.ClearContent();
-                response.AddHeader("content-disposition", $"attachment; filename={fileName}_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xls");
+                response.AddHeader("content-disposition", $"attachment; filename={strtitle}_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xls");
                 response.ContentType = "application/excel";
 
                 using (StringWriter sw = new StringWriter())
