@@ -10,7 +10,13 @@
                     <label>Name</label>
                 </div>
             </div>
-           
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.EventCode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.EventCode, "", new { @class = "text-danger" })
+                    <label>EventCode</label>
+                </div>
+            </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
@@ -18,8 +24,18 @@
                     <label>Description</label>
                 </div>
             </div>
-      
-    
+
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.CheckBoxFor(m => m.HasMultipleEntries, new { @class = "form-check-input" })
+                        <label class="form-check-label" for="isActive">&nbsp;&nbsp; &nbsp;&nbsp;Check this box if event Has Multiple Entries</label>
+                    </div>
+                   
+                </div>
+
+            
+
+
         </div>
    
         <div class="mt-4">

@@ -7,8 +7,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using CBS.BusinessService.OperationEvent;
+
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.BusinessService;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -27,7 +28,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> Create(OperationEventDto model)
+        public async Task<ActionResult> Create(OperationEvent model)
         {
             if (ModelState.IsValid)
             {

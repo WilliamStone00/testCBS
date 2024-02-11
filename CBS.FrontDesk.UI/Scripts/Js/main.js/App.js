@@ -565,11 +565,42 @@ function DeleteDynamicRolePermission(controller, deleteActionName, KEY, tableID,
 
 }
 
-function DeleteData(controller, KEY) {
+
+function DeleteDataConfiguration(controller, KEY, tableID, partialView, order, divToLoadTheData, serviceOption) {
 
     alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
         function () {
-            var url = "/" + controller + "/Delete?KEY=" + KEY;
+            var url = "/" + controller + "/Delete?KEY=" + KEY + "&serviceOption=" + serviceOption;
+            $.ajax({
+                type: "Get",
+                url: url,
+                success: function (response) {
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, "list", divToLoadTheData)
+                    }
+                    else {
+                        appalert(response.message, 3, 1);
+                    }
+
+                }, error: function (err) {
+
+                    appalert(err.statusText, 3, 1);
+                }
+            });
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
+
+        });
+
+
+}
+function DeleteData(controller, KEY, serviceOption) {
+
+    alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
+        function () {
+            var url = "/" + controller + "/Delete?KEY=" + KEY + "&serviceOption=" + serviceOption;
             $.ajax({
                 type: "Get",
                 url: url,
@@ -734,8 +765,7 @@ function PageReload() {
 }
 
 function AjaxPostAndUpdate(form) {
-
-    $.validator.unobtrusive.parse(form);
+$.validator.unobtrusive.parse(form);
     if ($(form).valid()) {
         var ajaxConfig = {
             type: 'POST',
@@ -827,11 +857,13 @@ function AjaxPostAndUpdateValidationDecision(form) {
 }
 
 
-function EditResetModal(KEY, modalBodyID, ModalcontentID, controller, actionMethod, partialView, modallabelName, labelID) {
-    $('#' + labelID).html(modallabelName);
+function EditResetModal(KEY, modalBodyID, ModalcontentID, controller, actionMethod, partialView, path, modallabelName, labelID) {
+    var modeline = $('#' + labelID).val();
+    console.log(modeline);
+    console.log(modallabelName);
     $.ajax({
         type: "GET",
-        url: '/' + controller + '/' + actionMethod + '?KEY=' + KEY + '&partialView=' + partialView,
+        url: '/' + controller + '/' + actionMethod + '?KEY=' + KEY + '&partialView=' + partialView + '&path=' + partialView,
         success: function (data) {
             $('#' + ModalcontentID).html(data);
             $('#' + modalBodyID).modal('show');

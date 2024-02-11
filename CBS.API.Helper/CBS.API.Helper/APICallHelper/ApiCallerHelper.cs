@@ -17,7 +17,6 @@ using System.IO;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using System.Net.Http.Headers;
 using System.Web.UI.WebControls;
-using CBS.FrontDesk.Data.Entity.Accounting;
 
 namespace CBS.API.Helper
 {
@@ -48,9 +47,17 @@ namespace CBS.API.Helper
 
         public async Task<ApiResponse<T>> GetAsync<T>(string apiUrl)
         {
-            AddAuthorizationHeader(_httpClient);
-            HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
-            return await HandleResponse<T>(response);
+            try
+            {
+                AddAuthorizationHeader(_httpClient);
+                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+                return await HandleResponse<T>(response);
+            }
+            catch (Exception ex)
+            {
+
+                throw(ex);
+            }
         }
         public async Task<ApiResponse<T>> PostImageAsync<T>(string apiUrl, HttpPostedFileBase imageFile)
         {
@@ -238,6 +245,16 @@ namespace CBS.API.Helper
             HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
             return await HandleResponse<T>(response);
         }
+
+        public async Task<ServiceResponseXX<T>> PostxxAsync<T>(string apiUrl, object data)
+        {
+            string jsonData = JsonConvert.SerializeObject(data);
+            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            AddAuthorizationHeader(_httpClient);
+            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+            return await HandleResponsed<T>(response);
+        }
+
         public ApiResponse<T> Post<T>(string apiUrl, object data)
         {
             string jsonData = JsonConvert.SerializeObject(data);
@@ -300,12 +317,39 @@ namespace CBS.API.Helper
 
                     if (string.IsNullOrEmpty(responseData))
                     {
+
+                        if (response.StatusCode == HttpStatusCode.Unauthorized)
+                        {
+                            message = "Unauthorized";
+                            return new ApiResponse<T>
+                            {
+                                IsSuccess = false,
+                                Message = $"Request failed with status code {(int)response.StatusCode}, Message: The server is requesting authorization token."
+                            };
+                        }
+                        else if (response.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            return new ApiResponse<T>
+                            {
+                                IsSuccess = false,
+                                Message = "InternalServerError upexpected error"
+                            };
+                        }
+                        else
+                        {
+                            return new ApiResponse<T>
+                            {
+                                IsSuccess = true,
+                                Message = "Empty response data received"
+                            };
+                        }
+                    
+
                         return new ApiResponse<T>
                         {
                             IsSuccess = false,
                             Message = "Empty response received"
                         };
-
                     }
 
                     if (response.IsSuccessStatusCode)
@@ -503,6 +547,235 @@ namespace CBS.API.Helper
                 return new ApiResponse<T>
                 {
                     IsSuccess = false,
+                    Message = $"Error in handling response: {ex.Message}"
+                };
+            }
+        }
+
+        private async Task<ServiceResponseXX<T>> HandleResponsed<T>(HttpResponseMessage response)
+        {
+            string message = null;
+            string statusDescription = null;
+            JObject jsonResponse = null;
+
+            try
+            {
+                if (response.Content != null)
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    if (string.IsNullOrEmpty(responseData))
+                    {
+                        if (response.StatusCode == HttpStatusCode.Unauthorized)
+                        {
+                            message = "Unauthorized";
+                            return new ServiceResponseXX<T>
+                            {
+                                StatusCode = 401,
+                                Message = $"Request failed with status code {(int)response.StatusCode}, Message: The server is requesting authorization token."
+                            };
+                        }
+                        else if (response.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            return new ServiceResponseXX<T>
+                            {
+                                StatusCode = 500,
+                                Message = "InternalServerError upexpected error"
+                            };
+                        }
+                        else
+                        {
+                            return new ServiceResponseXX<T>
+                            {
+                                StatusCode = 200,
+                                Message = "Empty response data received"
+                            };
+                        }
+
+                    }
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        T data = JsonConvert.DeserializeObject<T>(responseData, new JsonSerializerSettings
+                        {
+                            Converters = new List<JsonConverter> { new NullableDoubleConverter() },
+                            DateParseHandling = DateParseHandling.DateTimeOffset // Depending on your date format
+                        });
+                        if (responseData.StartsWith("[") && responseData.EndsWith("]"))
+                        {
+                            return new ServiceResponseXX<T>
+                            {
+                                StatusCode = 200,
+                                Data = data
+                            };
+                        }
+                        else
+                        {
+                            if (bool.TryParse(responseData, out bool isBooleanResponse) && isBooleanResponse)
+                            {
+                                // If responseData is a boolean, convert it to a JSON string representation
+                                string boolResponseJson = JsonConvert.SerializeObject(responseData);
+
+                                // Deserialize the JSON string
+                                data = JsonConvert.DeserializeObject<T>(boolResponseJson, new JsonSerializerSettings
+                                {
+                                    Converters = new List<JsonConverter> { new NullableDoubleConverter() },
+                                    DateParseHandling = DateParseHandling.DateTimeOffset // Depending on your date format
+                                });
+
+                                return new ServiceResponseXX<T>
+                                {
+                                    StatusCode = 200,
+                                    Data = data,
+                                    Message = $"Operation completed successfully"
+                                };
+
+                            }
+                            else
+                            {
+                                jsonResponse = JObject.Parse(responseData);
+                                message = jsonResponse["message"]?.ToString();
+                                statusDescription = jsonResponse["statusDescription"]?.ToString();
+                                return new ServiceResponseXX<T>
+                                {
+                                    StatusCode = 200,
+                                    Data = data,
+                                    Message = $"Success: {message}, Description: {statusDescription}"
+                                };
+                            }
+
+
+                        }
+                    }
+                    else
+                    {
+                        if (response.StatusCode == HttpStatusCode.Unauthorized)
+                        {
+                            message = "Unauthorized";
+                            return new ServiceResponseXX<T>
+                            {
+                                StatusCode = 401,
+                                Message = $"Request failed with status code {(int)response.StatusCode}, Message: {message}"
+                            };
+                        }
+                        else if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+                        {
+                            return new ServiceResponseXX<T>
+                            {
+                                StatusCode = (int)response.StatusCode,
+                                Message = $"Request failed with status code {(int)response.StatusCode}, Message: The server {_baseURL} is temporally unavailable/unreachable."
+                            };
+
+
+                        }
+                        else if (response.StatusCode == HttpStatusCode.Conflict || response.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            jsonResponse = JObject.Parse(responseData);
+                            message = jsonResponse["message"]?.ToString();
+                            statusDescription = jsonResponse["statusDescription"]?.ToString();
+                            //List<string> errorMessages = JsonConvert.DeserializeObject<List<string>>(responseData);
+                            return new ServiceResponseXX<T>
+                            {
+                                StatusCode = (int)response.StatusCode,
+                                Message = $"Request failed with status code {(int)response.StatusCode}, Message: {message}, Description: {statusDescription}"
+                            };
+
+
+                        }
+                        else if (response.StatusCode == HttpStatusCode.BadRequest)
+                        {
+                            try
+                            {
+                                jsonResponse = JObject.Parse(responseData);
+
+                                if (jsonResponse["errors"] != null)
+                                {
+                                    var errorResponse = jsonResponse["errors"].ToObject<Dictionary<string, List<string>>>();
+
+                                    var errorMessages = errorResponse
+                                        .SelectMany(error => error.Value) // Flatten the list of error messages
+                                        .ToList();
+
+                                    var errorMessage = string.Join(". ", errorMessages);
+
+                                    return new ServiceResponseXX<T>
+                                    {
+                                        StatusCode = (int)response.StatusCode,
+                                        Message = string.IsNullOrEmpty(errorMessage) ? "Validation error occurred" : errorMessage
+                                    };
+                                }
+
+                                // If the error structure doesn't match the expected format or errors object not found
+                                return new ServiceResponseXX<T>
+                                {
+                                    StatusCode = (int)response.StatusCode,
+                                    Message = "Error in request" // Set a generic error message
+                                };
+                            }
+                            catch (Exception ex)
+                            {
+                                return new ServiceResponseXX<T>
+                                {
+                                    StatusCode = (int)response.StatusCode,
+                                    Message = $"Error in handling response: {ex.Message}"
+                                };
+                            }
+
+
+                        }
+                        else if (response.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            jsonResponse = JObject.Parse(responseData);
+                            string errorMessage = jsonResponse["message"]?.ToString() ?? "An unexpected fault happened.";
+                            return new ServiceResponseXX<T>
+                            {
+                                StatusCode = (int)response.StatusCode,
+
+                                Message = errorMessage
+                            };
+                        }
+                        if (jsonResponse != null && jsonResponse["data"] == null)
+                        {
+                            return new ServiceResponseXX<T>
+                            {
+                                StatusCode = (int)response.StatusCode,
+                                Message = $"Request failed with status code {(int)response.StatusCode}, Message: {message}, Description: {statusDescription}"
+                            };
+                        }
+                        else
+                        {
+                            List<string> errorMessages = JsonConvert.DeserializeObject<List<string>>(responseData);
+                            if (errorMessages != null && errorMessages.Count > 0)
+                            {
+                                return new ServiceResponseXX<T>
+                                {
+                                    StatusCode = (int)response.StatusCode,
+                                    Message = $"Request failed with status code {(int)response.StatusCode}. Error: {string.Join(", ", errorMessages)}"
+                                };
+                            }
+                        }
+
+                        return new ServiceResponseXX<T>
+                        {
+                            StatusCode = (int)response.StatusCode,
+                            Message = $"Request failed with status code {(int)response.StatusCode}"
+                        };
+                    }
+                }
+                else
+                {
+                    return new ServiceResponseXX<T>
+                    {
+                        StatusCode = (int)response.StatusCode,
+                        Message = "No content in the response"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponseXX<T>
+                {
+                    StatusCode = (int)response.StatusCode,
                     Message = $"Error in handling response: {ex.Message}"
                 };
             }

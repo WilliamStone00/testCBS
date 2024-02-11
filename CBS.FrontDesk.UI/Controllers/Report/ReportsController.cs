@@ -1,4 +1,5 @@
-﻿using CrystalDecisions.CrystalReports.Engine;
+
+using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
     public class ReportsController : Controller
     {
-        // GET: Reports
+
         public void ReportParameterLess()
         {
             try
@@ -164,7 +165,6 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
             string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
-            string strReportName = System.Web.HttpContext.Current.Session["ReportName"].ToString();
             var model = rptSource;
             Export export = new Export();
             export.ToExcel(Response, model as IEnumerable<object>, strtitle);
@@ -176,7 +176,7 @@ namespace CBS.FrontDesk.UI.Controllers
     }
     public class Export
     {
-        public void ToExcel(HttpResponseBase response, IEnumerable<object> object_list, string fileName)
+        public void ToExcel(HttpResponseBase response, IEnumerable<object> object_list, string strtitle)
         {
             try
             {
@@ -210,5 +210,5 @@ namespace CBS.FrontDesk.UI.Controllers
         }
     }
 
-   
+
 }

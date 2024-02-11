@@ -9,6 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBS.FrontDesk.Service;
+using System.Web.Mvc;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.API.Helper.APICallHelper;
 
 namespace CBS.BusinessService.Accounting
 {
@@ -27,7 +30,11 @@ namespace CBS.BusinessService.Accounting
             this.BankId = GetBankID();
             this.OrganizationId = GetOrganizationID();
         }
-
+        public Task<List<SelectListItem>> GetBookingDirections()
+        {
+            var bookingDirections = new SelectListItem[] { new SelectListItem { Text = "Debit", Value = "Debit" }, new SelectListItem { Text = "Credit", Value = "Credit" } }.ToList();
+            return Task.FromResult(bookingDirections);
+        }
         public async Task<ExecutionMessages> Delete(string id)
         {
             try
@@ -55,7 +62,7 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
-        public async Task<IEnumerable<FrontDesk.Data.Entity.Accounting.AccountTreeNode>> GetAllChartOfAccountTreeNodes()
+        public async Task<IEnumerable<AccountTreeNode>> GetAllChartOfAccountTreeNodes()
         {
             try
             {
@@ -72,16 +79,25 @@ namespace CBS.BusinessService.Accounting
                 throw;
             }
         }
-        public async Task<IEnumerable<FrontDesk.Data.Entity.Accounting.ChartOfAccount>> GetAllChartOfAccounts()
+        public async Task<IEnumerable<ChartOfAccount>> GetAllChartOfAccounts()
         {
             try
             {
-                var couApiResponse = await _ConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.Accounting.ChartOfAccount>>>(APICallHelper.GetAllChartOfAccount);
-                if (couApiResponse.IsSuccess)
+
+                try
                 {
-                    return couApiResponse.ApiResponseData.Data;
+                    var couApiResponse = await _ConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.Accounting.ChartOfAccount>>>(APICallHelper.GetAllChartOfAccount);
+                    if (couApiResponse.IsSuccess)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+                    return new List<ChartOfAccount>();
                 }
-                return new List<FrontDesk.Data.Entity.Accounting.ChartOfAccount>();
+                catch (Exception ex)
+                {
+
+                    throw(ex);
+                }
             }
             catch (Exception ex)
             {
@@ -89,7 +105,7 @@ namespace CBS.BusinessService.Accounting
                 throw;
             }
         }
-        public async Task<FrontDesk.Data.Entity.Accounting.ChartOfAccount> GetChartOfAccountById(string id)
+        public async Task<ChartOfAccount> GetChartOfAccountById(string id)
         {
             try
             {
@@ -114,7 +130,7 @@ namespace CBS.BusinessService.Accounting
                 throw ex;
             }
         }
-        public async Task<ExecutionMessages> Create(FrontDesk.Data.Entity.Accounting.ChartOfAccountDto model)
+        public async Task<ExecutionMessages> Create(ChartOfAccountDto model)
         {
             try
             {
@@ -122,7 +138,7 @@ namespace CBS.BusinessService.Accounting
                 // Make an API call to create an individual profile
 
              
-                var response = await _ConfigApiHelper.PostAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.ChartOfAccount>>(APICallHelper.CreateChartOfAccount, model);
+                var response = await _ConfigApiHelper.PostAsync<ServiceResponse<ChartOfAccount>>(APICallHelper.CreateChartOfAccount, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
@@ -133,7 +149,7 @@ namespace CBS.BusinessService.Accounting
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, $"{model.AccountNumber + " " + model.LabelEn}", MessagesResults.Failed,
+                    GetExecutionMessages(model, false, $"{model.AccountNumber+ " " + model.LabelEn}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -145,7 +161,7 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> Update(FrontDesk.Data.Entity.Accounting.ChartOfAccount model)
+        public async Task<ExecutionMessages> Update(ChartOfAccount model)
         {
             try
             {
@@ -153,26 +169,36 @@ namespace CBS.BusinessService.Accounting
                 var Account = await GetChartOfAccountByAccountNumber (model.AccountNumber);
                 if (model != null)
                 {
- 
-                    Account.AccountNumber = model.AccountNumber;
-                    Account.LabelEn = model.LabelEn;
-                    Account.LabelFr = model.LabelFr;
-                    Account.IsBalanceAccount = model.IsBalanceAccount;
 
-
-                    var response = await _ConfigApiHelper.PutAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.ChartOfAccount>>(string.Format(APICallHelper.Get_Update_Delete_ChartOfAccount, Account.Id), Account);
-                    if (response.IsSuccess)
+                    if (Account!=null)
                     {
-                        // Successful creation
-                        GetExecutionMessages(response, true, $"{model.AccountNumber + " " + model.LabelEn}", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
-                        return ExecutionMessage;
+
+                        Account.AccountNumber = model.AccountNumber;
+                        Account.LabelEn = model.LabelEn;
+                        Account.LabelFr = model.LabelFr;
+                        Account.IsBalanceAccount = model.IsBalanceAccount;
+                        var response = await _ConfigApiHelper.PutAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.ChartOfAccount>>(string.Format(APICallHelper.Get_Update_Delete_ChartOfAccount, Account.Id), Account);
+                        if (response.IsSuccess)
+                        {
+                            // Successful creation
+                            GetExecutionMessages(response, true, $"{model.AccountNumber + " " + model.LabelEn}", MessagesResults.Success,
+                                ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                            return ExecutionMessage;
+                        }
+                        else
+                        {
+                            // Failed creation
+                            GetExecutionMessages(model, false, $"{model.AccountNumber + " " + model.LabelEn}", MessagesResults.Failed,
+                                ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                        }
                     }
                     else
                     {
-                        // Failed creation
-                        GetExecutionMessages(model, false, $"{model.AccountNumber + " " + model.LabelEn}", MessagesResults.Failed,
-                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                        var response = new ApiResponse<ServiceResponse<ChartOfAccount>>();
+                        response.Message= $"{model.AccountNumber} cannot be updated because it doesn't exist in the system kindly create";
+                        GetExecutionMessages(model, false, $"{model.AccountNumber} cannot be updated because it doesn't exist in the system kindly create", MessagesResults.Failed,
+                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+
                     }
                 }
 
@@ -186,7 +212,7 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
-        public async Task<FrontDesk.Data.Entity.Accounting.ChartOfAccount> GetChartOfAccountByAccountNumber(string accountNumber)
+        public async Task<ChartOfAccount> GetChartOfAccountByAccountNumber(string accountNumber)
         {
             try
             {

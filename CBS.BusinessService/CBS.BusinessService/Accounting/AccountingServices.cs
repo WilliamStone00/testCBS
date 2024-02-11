@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 using BusinessServices;
 using CBS.API.Helper;
 using System.Configuration;
+using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data;
 
 namespace CBS.BusinessService.Accounting
 {
-    public class AccountingServices:BaseService
+    public class AccountingServices : BaseService
     {
         private readonly ApiCallerHelper _accountingApiCallerHelper;
 
@@ -20,6 +22,87 @@ namespace CBS.BusinessService.Accounting
             _accountingApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
 
         }
+
+
+        public async Task<ExecutionMessages> Create(Account model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+                model.AccountOwnerId=GetBranchID();
+                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.CreateAccount, model);
+                if (response.ApiResponseData.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Account {model.AccountNumber + " " + model.AccountHolder} has been created successfully", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, "");
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Account {model.AccountNumber + " " + model.AccountHolder} failed to be created ", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<Account> GetAccount(string id)
+        {
+            try
+            {
+                var cusResponseObject = await _accountingApiCallerHelper.GetAsync<ResponseObject<Account>>(string.Format(APICallHelper.GetAccount, id));
+                if (cusResponseObject.IsSuccess)
+                {
+                    if (cusResponseObject.ApiResponseData == null)
+                    {
+
+                    }
+                    else
+                    {
+                        return cusResponseObject.ApiResponseData.Data;
+                    }
+
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+
+
+        public async Task<List<Account>> GetAllAccounting()
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<Account>>>(APICallHelper.GetAlAccounts);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData != null)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<Account>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw(ex);
+            }
+        }
         public async Task<IEnumerable<AccountingRole>> GetAccountingRoles()
         {
             try
@@ -27,11 +110,11 @@ namespace CBS.BusinessService.Accounting
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<AccountingRole>>>(APICallHelper.GetAllAccountingRules);
                 if (couApiResponse.IsSuccess)
                 {
-                    if (couApiResponse.ApiResponseData!=null)
+                    if (couApiResponse.ApiResponseData != null)
                     {
                         return couApiResponse.ApiResponseData.Data;
                     }
-                    
+
                 }
                 return new List<AccountingRole>();
             }
@@ -41,8 +124,66 @@ namespace CBS.BusinessService.Accounting
                 throw;
             }
         }
+        public async Task<ExecutionMessages> Update(Account account)
+        {
+            try
+            {
+                account.AccountOwnerId = GetBranchID();
+                var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<Account>>(string.Format(APICallHelper.PutAccount, account.Id), account);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Account {account.AccountNumber + " " + account.AccountHolder} has been updated successfully", MessagesResults.Success,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(response.ApiResponseData, false, $"{account.AccountNumber + " " + account.AccountHolder} has been updated", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
 
 
+        public async Task<ExecutionMessages> Delete(string id)
+        {
+            try
+            {
+                var account = await GetAccount(id);
+                var inResponse = await _accountingApiCallerHelper.DeleteAsync<ResponseObject<bool>>(string.Format(APICallHelper.Delete_Account, id));
+                if (inResponse.IsSuccess)
+                {
+
+
+                    return GetExecutionMessages(inResponse, true, $"{account.AccountNumber + " " + account.AccountHolder}", MessagesResults.Success,
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
+                   
+
+                }
+                else
+                {
+                    // Handle failure scenario
+                    return GetExecutionMessages(account, false, $"{account.AccountNumber + " " + account.AccountHolder}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+            }
+            return null;
+        }
 
     }
 }

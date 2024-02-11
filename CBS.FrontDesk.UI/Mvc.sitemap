@@ -68,13 +68,19 @@
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Transaction configuration" controller="TransactionConfiguration" action="Index">
       </mvcSiteMapNode>
-      <mvcSiteMapNode title="Accounting Configurations" controller="AccountingChart" action="Index">
-        <mvcSiteMapNode title="OperationEvent" controller="OperationEvent" action="Index"/>
+      <mvcSiteMapNode title="Accounting Configurations" controller="AccountingConfiguration" action="Index">
+        <mvcSiteMapNode title="Accounting Event" controller="OperationEvent" action="Index"/>
         <mvcSiteMapNode title="OperationEventAttribute" controller="OperationEventAttribute" action="Index"/>
-        <mvcSiteMapNode title="ChartOfAccount " controller="AccountingChart" action="Index"/>
-        <mvcSiteMapNode title="AccountingEntryRule " controller="AccountingEntryRule" action="Index"/>
+        <mvcSiteMapNode title="Chart Of Account " controller="AccountingChart" action="Index"/>
+        <mvcSiteMapNode title="Entry Rule " controller="AccountingEntryRule" action="Index"/>
         <mvcSiteMapNode title="AccountingRule" controller="AccountingRule" action="Index" preservedRouteParameters="KEY"/>
       </mvcSiteMapNode>
+      <mvcSiteMapNode title="Accounting-Configuration" controller="AccountingConfiguration" action="Index">
+      </mvcSiteMapNode>
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Banking-Operations" controller="CashFlowManagement" action="Index">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="General Ledger" controller="AccountingStatements" action="Index">
     </mvcSiteMapNode>
   </mvcSiteMapNode>
 

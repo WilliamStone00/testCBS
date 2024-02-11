@@ -13,6 +13,7 @@ using CBS.FrontDesk.Helper.Helper;
 using CBS.FrontDesk.Service;
 using System.Web.Mvc;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
 
 namespace CBS.BusinessService.Accounting
 {
@@ -166,6 +167,11 @@ namespace CBS.BusinessService.Accounting
         {
             var bookingDirections = new SelectListItem[] { new SelectListItem { Text = "Debit", Value = "Debit" }, new SelectListItem { Text = "Credit", Value = "Credit" } }.ToList();
             return Task.FromResult(bookingDirections);
+        }
+
+        public Task<ExecutionMessages> Create(AccountingRuleEntry accountingRuleEntry)
+        {
+            throw new NotImplementedException();
         }
     }
 

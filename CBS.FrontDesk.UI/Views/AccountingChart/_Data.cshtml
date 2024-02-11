@@ -18,14 +18,14 @@
             {
                 <tr>
                 
-                    <td style="width:35%">@d.AccountNumber : @d.Label</td>
-                    <td style="width:5%">@d.IsBSAccount</td>
-                    <td style="width:5%">@d.IsDebit</td>
-                    <td style="width:5%">@d.IsDirect</td>
-                    <td style="width:35<%">@d.AccountNumberParentAccount</td>
-                    <td style="width:15%">
-                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Update','update','AccountingChart')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountNumber to edit">Edit</a>
-                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountNumber" onclick="DeleteRecordDataTable('ChartOfAccount','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                    <td style="width:35%">@d.AccountNumber : @d.LabelEn</td>
+                    <td style="width:25%">@d.LabelEn</td>
+                    <td style="width:5%">@d.IsBalanceAccount</td>
+                    <td style="width:5%">@d.RootParentId</td>
+                    <td style="width:20%">@d.LabelFr</td>
+                    <td style="width:10%">
+                        <a href="#" onclick="AddORUpdateGen('@d.RootParentId','datalistingview','_Update','update','AccountingChart')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountNumber to edit">Edit</a>
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountNumber" onclick="DeleteRecordDataTable('ChartOfAccount','@d.RootParentId','myDataTable','_Data',0,'datalistingview')">Delete</a>
                     </td>
                 </tr>
             }

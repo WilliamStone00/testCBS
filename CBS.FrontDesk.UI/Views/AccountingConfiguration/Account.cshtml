@@ -1,0 +1,34 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+<div class="row">
+    <!-- Context Menu -->
+    <div class="col-12 card-body">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Add New Account:</h5>
+                <small class="text-body float-end">@Model.ChartOfAccount.AccountNumber-@Model.ChartOfAccount.LabelEn</small>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Create", "AccountingConfiguration", FormMethod.Post, new { id = "chartOfAccountForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                {
+                    @Html.HiddenFor(model => model.Account.ChartOfAccountId) <!-- Hidden field for AccountNumber -->
+
+                    <div class="form-floating form-floating-outline mb-4">
+                        @Html.TextBoxFor(model => model.Account.AccountNumber, new { @class = "form-control", placeholder = "Account Number" })
+                        @Html.LabelFor(model => model.Account.AccountNumber, new { @for = "accountNumber" })
+                    </div>
+
+                    <div class="form-floating form-floating-outline mb-4">
+                        @Html.DropDownListFor(model => model.Account.AccountTypeId, new SelectList(ViewBag.AccountTypes == null ? "" : ViewBag.AccountTypes, "Id", "Name"), "---Select AccountTypes---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(model => model.Account.AccountTypeId, "", new { @class = "text-danger" })
+                        <label for="AccountTypeId">AccountType</label>
+                    </div>
+                 
+
+                    <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">Save</button>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

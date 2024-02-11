@@ -37,7 +37,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var mode = await _Services.GetChartOfAccountByAccountNumber(accNum);
                 ChartOfAccountDto model = new ChartOfAccountDto
                 {
-                    RootParentId = mode.Id,
+                    RootParentId= mode.Id,
                     LabelEn = modeldto.LabelEn,
                     LabelFr = modeldto.LabelFr,
                     IsBalanceAccount = modeldto.IsBalanceAccount,
@@ -55,13 +55,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             if (ModelState.IsValid)
             {
-                //ChartOfAccountDto model = new ChartOfAccountDto
-                //{
-                //    RootParentId = modeldto.ParentAccountId,
-                //    Label = modeldto.Label,
-                //    IsBalanceAccount = modeldto.IsBalanceAccount,
-                //    AccountNumber = modeldto.AccountNumber
-                //};
+                ChartOfAccountDto model = new ChartOfAccountDto
+                {
+                    RootParentId = modeldto.ParentAccountId,
+                    LabelEn = modeldto.LabelEn,
+                    IsBalanceAccount = modeldto.IsBalanceAccount,
+                    AccountNumber = modeldto.AccountNumber
+                };
                 var data = await _Services.Update(modeldto);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
             }
@@ -72,7 +72,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
             GetList();
-            if (path == "list")
+            if (path == "list" )
             {
                 var treeData = await _Services.GetAllChartOfAccountTreeNodes();
 

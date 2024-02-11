@@ -10,7 +10,8 @@ using CBS.FrontDesk.Data.Message;
 using CBS.BusinessService.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using System.Web.Services.Description;
-using CBS.BusinessService.OperationEvent;
+using CBS.BusinessService;
+using CBS.BusinessService.Accounts;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -18,13 +19,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
     {
         
         private readonly AccountingEntryRuleService _Service;
-
+        private readonly AccountingServices _accountService;
         private readonly OperationEventAttributeServices _OperationEventAttributeService;
         private readonly ChartOfAccountServices _chartOfAccountServices;
         private readonly AccountingRuleService _ServiceRule;
         private readonly OperationEventServices _OperationEventService;
-        public AccountingEntryRuleController(OperationEventServices eventServices, AccountingRuleService servicesRule,ChartOfAccountServices chartOfAccountServices,AccountingEntryRuleService services, OperationEventAttributeServices OperationEventAttributeService)
+        public AccountingEntryRuleController(AccountingServices accountService, OperationEventServices eventServices, AccountingRuleService servicesRule,ChartOfAccountServices chartOfAccountServices,AccountingEntryRuleService services, OperationEventAttributeServices OperationEventAttributeService)
         {
+            _accountService = accountService;
             _ServiceRule = servicesRule;
             _Service = services;
             _OperationEventService = eventServices;
@@ -45,8 +47,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var listOfOperation = await _OperationEventAttributeService.GetOperationEventAttributes();
 
                 SelectList data = new SelectList(_OperationEventAttributeService.ConvertToSelectedList( listOfOperation.ToList()), "Text", "Value", 0);
-
-                //SelectList data = new SelectList(AccountingRules.ToList(), "Text", "Value", 0);
 
                 return Json(data, JsonRequestBehavior.AllowGet);
                 
@@ -89,7 +89,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             
                 var  OperationEventList = await _OperationEventService.GetOperationEvents();
                 var OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
-                var DebitAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+                var DebitAccounts = await _accountService.GetAllAccounting();
                 var dataList = await _Service.GetAccountingEntryRules();
                 var data = await _Service.GetAccountingEntryRulesDto(dataList, OperationEventList, OperationEventAttributes, DebitAccounts);
                 return PartialView(partialView, data);

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -49,10 +50,10 @@
     <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.4\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -221,9 +222,12 @@
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
     <Compile Include="Controllers\Accounting\AccountingChartController.cs" />
+    <Compile Include="Controllers\Accounting\AccountingConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\AccountingEntryRuleController.cs" />
     <Compile Include="Controllers\Accounting\AccountingRuleController.cs" />
+    <Compile Include="Controllers\Accounting\AccountingStatementsController.cs" />
     <Compile Include="Controllers\Accounting\BankingOperationController.cs" />
+    <Compile Include="Controllers\Accounting\CashFlowManagementController.cs" />
     <Compile Include="Controllers\Accounting\OperationEventAttributeController.cs" />
     <Compile Include="Controllers\Accounting\OperationEventController.cs" />
     <Compile Include="Controllers\Authentication\AuthenticationController.cs" />
@@ -249,7 +253,9 @@
     <Compile Include="Controllers\Loan\Configuration\DocumentController.cs" />
     <Compile Include="Controllers\Loan\Configuration\TaxController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
+
     <Compile Include="Controllers\RoleManagement\MenuMasterController.cs" />
+
     <Compile Include="Controllers\RoleManagement\RoleController.cs" />
     <Compile Include="Controllers\RoleManagement\RolePermissionController.cs" />
     <Compile Include="Controllers\Session\SessionController.cs" />
@@ -2032,7 +2038,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
-    <Content Include="Scripts\Js\Accounting\AccountingRuleEntry.js" />
+    <Content Include="Scripts\Js\main.js\Account.js" />
     <Content Include="Scripts\Js\Crud\Config\Localization\Countries.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\CustomersProfile.js" />
     <Content Include="Scripts\Js\Crud\DropDownLoader.js" />
@@ -2048,6 +2054,7 @@
     <Content Include="Scripts\Js\Crud\User\SystemStatus.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\Customers.js" />
     <Content Include="Scripts\Js\Crud\User\UserListing.js" />
+    <Content Include="Scripts\Js\main.js\AccountingStatements.js" />
     <Content Include="Scripts\Js\main.js\App.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
@@ -2223,7 +2230,6 @@
     <Content Include="Views\AccountingRule\_Create.cshtml" />
     <Content Include="Views\AccountingRule\_Data.cshtml" />
     <Content Include="Views\AccountingRule\_Update.cshtml" />
-    <Content Include="Views\BankingOperation\Index.cshtml" />
     <Content Include="Views\OperationEventAttribute\Index.cshtml" />
     <Content Include="Views\OperationEventAttribute\_Create.cshtml" />
     <Content Include="Views\OperationEventAttribute\_Data.cshtml" />
@@ -2232,6 +2238,40 @@
     <Content Include="Views\OperationEvent\_Create.cshtml" />
     <Content Include="Views\OperationEvent\_Data.cshtml" />
     <Content Include="Views\OperationEvent\_Update.cshtml" />
+
+    <Content Include="Views\AccountingConfiguration\Index.cshtml" />
+    <Content Include="Views\Shared\_modal.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_ChartOfAccountData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_AccountingEntryRuleData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_OperationEventAttributeData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_OperationEventData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateAccount.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_OperationOnAccount.cshtml" />
+    <Content Include="Views\BankingOperations\Index.cshtml" />
+    <Content Include="Views\BankingOperations\_ManualAccountingEntry.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_AccountData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\Account.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_UpdateAccount.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_DeleteAccount.cshtml" />
+    <Content Include="Views\BankingOperations\_CashInfusion.cshtml" />
+    <Content Include="Views\CashFlowManagement\Index.cshtml" />
+    <Content Include="Views\CashFlowManagement\_ManualAccountingEntry.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CashInfusion.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_AccountTypeData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateAccountingEntryRule.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateOperationEventAttribute.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateOperationEvent.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_OperationOnChartOfAccount.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateChartOfAccount.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_ChartOfAccountDtoData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_ChartOfAccountDtoDataChart.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_DeleteChartOfAccount.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateAccountType.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateOpeningOfTheDay.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_OpeningOfTheDayData.cshtml" />
+    <Content Include="Views\AccountingStatements\Index.cshtml" />
+    <Content Include="Views\AccountingStatements\_GeneralLedgerData.cshtml" />
+
     <Content Include="Views\Error\InternalServer.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Error\ServiceUnavailable.cshtml" />
@@ -2275,11 +2315,17 @@
     <Content Include="Views\Role\_RolePermissionData.cshtml" />
     <Content Include="Views\Operation\Transactions.cshtml" />
     <Content Include="Views\Operation\_TransactionData.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\DocumentPack\" />
+
+    <Folder Include="Views\Reports\" />
+    <Folder Include="Views\RolePermission\" />
+
     <Folder Include="Views\Session\" />
+
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -2370,7 +2416,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
   </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

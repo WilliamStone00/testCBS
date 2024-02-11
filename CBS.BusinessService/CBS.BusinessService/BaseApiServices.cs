@@ -42,16 +42,34 @@ namespace CBS.FrontDesk.Service
             }
         }
 
-        public async Task<IEnumerable<OperationEvent>> GetAllOperationEvent()
+        public async Task<List<OperationEvent>> GetAllOperationEvent()
         {
             try
             {
-                var couApiResponse = _AccountingAPIConfigApiHelper.GetAsync<ResponseObject<List<OperationEvent>>>(APICallHelper.GetAllOperationEvent).Result;
+                var couApiResponse = await _AccountingAPIConfigApiHelper.GetAsync<ResponseObject<List<OperationEvent>>>(APICallHelper.GetAllOperationEvent);
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
                 }
                 return new List<OperationEvent>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+        public async Task<List<OperationEventAttribute>> GetAllOperationEventAttribute()
+        {
+            try
+            {
+                var couApiResponse = await _AccountingAPIConfigApiHelper.GetAsync<ResponseObject<List<OperationEventAttribute>>>(APICallHelper.GetAllOperationEventAttribute);
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<OperationEventAttribute>();
             }
             catch (Exception ex)
             {

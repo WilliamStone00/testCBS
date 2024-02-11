@@ -15,8 +15,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public bool IsBalanceAccount { get; set; }
         public string ParentAccountNumber { get; set; }
         public string ParentAccountId { get; set; }
+        public bool IsForUpdate { get; set; }
 
-      
     }
    
 }

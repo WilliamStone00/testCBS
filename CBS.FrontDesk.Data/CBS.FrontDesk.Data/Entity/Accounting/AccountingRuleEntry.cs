@@ -15,9 +15,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string BookingDirection { get; set; }
         public string  OperationEventAttributeId { get; set; }
         public string  OperationEventId { get; set; }
-        public string  DebitAccountId { get; set; }
-        public string  CreditAccountId { get; set; }
-
+        public string DeterminationAccountId { get; set; }
+        public string BalancingAccountId { get; set; }
         public string BankId { get; set; }
+      
     }
 }

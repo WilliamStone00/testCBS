@@ -5,7 +5,7 @@
     {
         <div class="row mt-2 gy-4">
             <div class="col-md-6">
-                <label for="AccountingRuleEntryName">Accounting RuleEntry Name</label>
+                <label for="AccountingRuleEntryName">RuleEntry Name</label>
                 @Html.TextBoxFor(model => model.AccountingRuleEntryName, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.AccountingRuleEntryName, "", new { @class = "text-danger" })
 
@@ -13,9 +13,8 @@
 
             <div class="col-md-6">
 
-                <label for="OperationEventId">Operation Event</label>
+                <label for="OperationEventId">Event</label>
                 @Html.DropDownListFor(m => m.OperationEventId, new SelectList(ViewBag.OperationEvent == null ? "" : ViewBag.OperationEvent, "Id", "OperationEventName"), "---Select Operation EventAttribute---", new { @class = "form-control select2", @search = "true" })
-
                 @Html.ValidationMessageFor(model => model.OperationEventId, "", new { @class = "text-danger" })
 
             </div>
@@ -35,20 +34,21 @@
 
             </div>
             <div class="col-md-6">
-
-                <label for="CreditAccountId">CreditAccount</label>
-                @Html.DropDownListFor(m => m.CreditAccountId, new SelectList(ViewBag.CreditAccounts == null ? "" : ViewBag.CreditAccounts, "Text", "Value"), "---Select Account ---", new { @class = "form-control select2", @search = "true" })
-
-                @Html.ValidationMessageFor(model => model.CreditAccountId, "", new { @class = "text-danger" })
+                <label for="DebitAccountId">Determination Account</label>
+                @Html.DropDownListFor(m => m.DeterminationAccountId, new SelectList(ViewBag.DebitAccounts == null ? "" : ViewBag.DebitAccounts, "Text", "Value"), "---Select Account ---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(model => model.DeterminationAccountId, "", new { @class = "text-danger" })
 
             </div>
-
             <div class="col-md-6">
-                <label for="DebitAccountId">DebitAccount</label>
-                @Html.DropDownListFor(m => m.DebitAccountId, new SelectList(ViewBag.DebitAccounts == null ? "" : ViewBag.DebitAccounts, "Text", "Value"), "---Select Account ---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(model => model.DebitAccountId, "", new { @class = "text-danger" })
+
+                <label for="CreditAccountId">Balancing Account</label>
+                @Html.DropDownListFor(m => m.BalancingAccountId, new SelectList(ViewBag.CreditAccounts == null ? "" : ViewBag.CreditAccounts, "Text", "Value"), "---Select Account ---", new { @class = "form-control select2", @search = "true" })
+
+                @Html.ValidationMessageFor(model => model.BalancingAccountId, "", new { @class = "text-danger" })
 
             </div>
+
+
 
         </div>
 

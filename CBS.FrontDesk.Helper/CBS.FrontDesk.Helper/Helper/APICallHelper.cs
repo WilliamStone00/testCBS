@@ -7,11 +7,12 @@ namespace CBS.FrontDesk.Helper
 {
     public abstract class APICallHelper
     {
+        
 
         //Authentication
         public static string Authentication = "/api/Authentication/Session/Login";
         public static string RefreshToken = " /api/Authentication/Session/RefreshToken";
-           
+
         //User
         public static string GetUserByID = "/api/User/{0}";
         public static string DeleteUser = "/api/User/{0}";
@@ -111,7 +112,7 @@ namespace CBS.FrontDesk.Helper
 
         //Account
         public static string AddCustomerSavingAccount = "/api/v1/Account";
-        
+
 
         //Teller
         public static string Get_Update_Delete_Teller = "/api/v1/Teller/{0}";
@@ -122,7 +123,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_SavingProduct = "/api/v1/SavingProduct/{0}";
         public static string GetAllSavingProducts = "/api/v1/SavingProduct";
         public static string CreateSavingProduct = "/api/v1/SavingProduct";
-        
+
         //DepositLimit
         public static string Get_Update_Delete_DepositLimit = "/api/v1/DepositLimits/{0}";
         public static string GetAllDepositLimits = "/api/v1/DepositLimits";
@@ -182,7 +183,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_Bank = "/api/v1/Bank/{0}";
         public static string GetAllBank = "/api/v1/Banks";
         public static string CreateBank = "/api/v1/Bank";
-        
+
 
         //Loan
         public static string Get_Update_Delete_Document = "/api/v1/Document/{0}";
@@ -367,6 +368,54 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllJsTreeNode = "/api/v1/ChartOfAccounts/JsTreeNode";
         //Get,Update,Delete ChartOfAccount By Id
         public static string Delete_ChartOfAccount = "/api/v1/ChartOfAccount/DeleteChartOfAccountByAccountNumber/{0}";
+        // POST  Create a ChartOfAccount
+        public static string ManualEntriePosting = "/api/v1/AccountingEntry/ManualPostingEventCommand";
+ 
+        //Account/api/v1/AccountingEntry/AddCashInfusionCommand
+        //Credit a specifique Account record AddCashInfusionCommand
+        public static string CashInfusion = "/api/v1/AccountingEntry/AddCashInfusionCommand";
+        public static string GetAccountByReference = "/api/v1/Account/GetAccountByReference/{id}";
+        public static string GetAccountByAccountNumber = "/api/v1/Account/GetAccountByAccountNumber/{id}";
+        public static string GetAccountByAccountType = "/api/v1/Account/GetAccountByAccountType/{id}";
+        public static string GetAccount = "/api/v1/Account/{0}";
+        public static string Delete_Account = "/api/v1/Account/{0}";
+        public static string GetAlAccounts = "/api/v1/Accounts";
+        public static string CreateAccount = "/api/v1/Account";
+        public static string GetAccountUploadFiles = "/api/v1/Accounts/UploadFiles/{id}";
+        public static string PutAccount = "/api/v1/Account/{0}";
+
+
+        public static string GetAccountType = "/api/v1/AccountType/{0}";
+        public static string GetOperationEventAttributes = "/api/v1/AccountType/GetOperationEventAttributes/{0}";
+        public static string GetAccountTypeAccountRubrique = "/api/v1/AccountType/AccountRubrique/{0}";
+        public static string GetAllAccountType = "/api/v1/AccountTypes/AllSystemAccountTypes";
+        public static string GetAllAccountTypeAccountRubrique = "/api/v1/AccountTypes/AccountRubrique";
+        public static string Create_AccountTypeForSystem = "/api/v1/AccountType/AccountTypeForSystem";
+        public static string Create_update_AccountTypeAccountRubrique = "/api/v1/AccountType/AccountRubrique";
+        public static string Create_AccountType = "/api/v1/AccountType";
+        public static string Update_AccountType = "/api/v1/AccountType/{0}";
+        public static string Delete_AccountType = "/api/v1/AccountType/{0}";
+        public static string Delete_AccountTypeAccountRubrique = "/api/v1/AccountType/AccountRubrique/{0}";
+      
+        
+        public static string AccountingEntry_Get_Update_delete = "/api/v1/AccountingEntry/{0}";
+        public static string AccountingEntry_Get_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdQuery/{0}";
+        public static string AccountingEntry_ReverseEntry = "/api/v1/AccountingEntry/ReverseAccountingEntry";
+        public static string AccountingEntry_Entries = "/api/v1/AccountingEntries";
+
+
+        //
+        ///api/v1/AccountingEntry/AddCashInfusionCommand
+        ///api/v1/AccountingEntries
+        ///api/v1/AccountingEntries/RetrieveEntries
+        ///api/v1/AccountingEntries/Generate4ColumnTrialBalance
+        ///api/v1/AccountingEntries/Generate6ColumnTrialBalance
+        ///api/v1/AccountingEntry/MakeAccountPosting
+        ///api/v1/AccountingEntry/OpeningAndClosingOfDayPostingEventPosting
+        ///api/v1/AccountingEntry/DepositPostingEventCommand
+        ///api/v1/AccountingEntry/ManualPostingEventCommand
+        ///api/v1/AccountingEntry/FinancialStatement
+        ///api/v1/AccountingEntry/{referenceId}
 
 
     }

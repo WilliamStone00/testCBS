@@ -1,4 +1,4 @@
-﻿using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Loan.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
@@ -167,7 +167,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             }
         }
 
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+
         {
             await GetList();
             Func<Task<PartialViewResult>> serviceAction = GetServiceAction(path, partialView, KEY, serviceOption);
@@ -185,7 +187,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             return HttpNotFound(); // Or return a default view for handling unknown paths
         }
 
+
         private Func<Task<PartialViewResult>> GetServiceAction(string path, string partialView, string key, string serviceOption)
+
         {
             if (serviceOption == "savingproduct")
             {

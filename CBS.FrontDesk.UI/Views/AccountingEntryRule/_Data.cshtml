@@ -12,8 +12,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var d in Model)
-        {
+        @{ 
+            foreach (var d in Model)
+            {
             <tr>
                 <td style="width:10%">@d.AccountingRuleEntryName</td>
                 <td style="width:10%">@d.BookingDirection</td>
@@ -26,7 +27,8 @@
                     <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.OperationEventName" onclick="DeleteRecordDataTable('AccountingEntryRule','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
                 </td>
             </tr>
-        }
+                }
+            }
     </tbody>
 </table>
 
