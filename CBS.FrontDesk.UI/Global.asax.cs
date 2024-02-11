@@ -1,5 +1,6 @@
 ﻿using CBS.FrontDesk.Data.Entity.User;
 using CBS.FrontDesk.Service;
+using CBS.FrontDesk.UI.Controllers.ErrorHandler;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,56 @@ namespace CBS.FrontDesk.UI
                 Context.Response.End();
             }
         }
+        //protected void Application_Error(object sender, EventArgs e)
+        //{
+        //    var exception = Server.GetLastError();
+        //    var httpException = exception as HttpException;
+
+        //    Response.Clear();
+        //    Server.ClearError();
+
+        //    if (httpException != null)
+        //    {
+        //        int errorCode = httpException.GetHttpCode();
+
+        //        // Redirect based on error code
+        //        switch (errorCode)
+        //        {
+        //            case 400:
+        //                Response.Redirect("~/Error/BadRequest");
+        //                break;
+        //            case 401:
+        //                Response.Redirect("~/Error/Unauthorized");
+        //                break;
+        //            case 403:
+        //                Response.Redirect("~/Error/Forbidden");
+        //                break;
+        //            case 404:
+        //                Response.Redirect("~/Error/NotFound");
+        //                break;
+        //            case 500:
+        //                Response.Redirect("~/Error/InternalServer");
+        //                break;
+        //            case 503:
+        //                Response.Redirect("~/Error/ServiceUnavailable");
+        //                break;
+        //            case 322:
+        //                Response.Redirect("~/Error/TemporalRedirect");
+        //                break;
+        //            // Add more cases for other error codes if needed
+        //            default:
+        //                Response.Redirect("~/Error");
+        //                break;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // Redirect to a generic error page for other types of exceptions
+        //        Response.Redirect("~/Error");
+        //    }
+        //}
+
+
 
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
         {

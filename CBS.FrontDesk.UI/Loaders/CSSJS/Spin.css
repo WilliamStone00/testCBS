@@ -1,14 +1,11 @@
-﻿
-#loading {
+﻿#loading {
     display: none;
     position: fixed;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    /*background: rgba(255,255,255,0.8);*/
     background: rgba(0, 0, 0, 0);
-    /*background: #ff0000;*/
     z-index: 1000;
 }
 
@@ -30,4 +27,33 @@
     padding-top: 80px;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
 
+    to {
+        opacity: 1;
+    }
+}
+
+#loadingcontent span {
+    animation: fadeIn 1s ease-in-out infinite;
+}
+
+#loadingspinner::before {
+    content: "FLX";
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 4px solid #ccc;
+    border-top-color: #555;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

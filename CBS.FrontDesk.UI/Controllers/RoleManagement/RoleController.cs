@@ -30,62 +30,73 @@ namespace CBS.FrontDesk.UI.Controllers.RoleManagement
         public async Task<ActionResult> RolePermission(string KEY)
         {
             var data = await _services.GetRolePermissions(KEY);
-            return View(data);
+            return View(new RolePermissionManagement { RolePermissions = data.ToList() });
         }
         //
         [HttpPost]
-        public async Task<ActionResult> Create(Role model)
+        public async Task<ActionResult> Create(RolePermissionManagement model)
         {
             if (ModelState.IsValid)
             {
-                var data = await _services.Create(model);
+                var data = await _services.Create(model.Role);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
             }
 
             return Json(new { success = false, status = false, message = "Fill the required fields." });
         }
         [HttpPost]
-        public async Task<ActionResult> Update(Role model)
+        public async Task<ActionResult> Update(RolePermissionManagement model)
         {
             if (ModelState.IsValid)
             {
-                var data = await _services.Update(model);
+                var data = await _services.Update(model.Role);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
             }
 
             return Json(new { success = false, status = false, message = "Fill the required fields." });
         }
 
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
             if (path == "list")
             {
-                var data = await _services.GetRoles();
-                return PartialView(partialView, data);
+                if (serviceOption== "view_role_permission")
+                {
+                    var data = await _services.GetRolePermissions(KEY);
+
+                    return PartialView(partialView, new RolePermissionManagement { RolePermissions = data.ToList() });
+                }
+                else
+                {
+                    var data = await _services.GetRoles();
+                    return PartialView(partialView, new RolePermissionManagement { Roles = data.ToList() });
+                }
+           
             }
             //GetRolePermissions
             else if (path == "new")
             {
-                return PartialView(partialView, new Role());
+                return PartialView(partialView, new RolePermissionManagement());
             }
-            else if (path == "set_permission")
-            {
-                var data = await _services.GetRolePermissions(KEY);
-                return PartialView(partialView, data);
-            }
+      
             else
             {
-                var Tax = await _services.GetRole(KEY);
-                return PartialView(partialView, Tax);
+                var role = await _services.GetRole(KEY);
+                return PartialView(partialView, new RolePermissionManagement { Role = role });
 
             }
         }
 
-        public async Task<ActionResult> Delete(string KEYS)
+        public async Task<ActionResult> Delete(string KEY)
         {
-            var data = await _services.Delete(KEYS);
+            var data = await _services.Delete(KEY);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
-       
+        public async Task<ActionResult> DeleteRolePersmission(string KEY)
+        {
+            var data = await _services.DeleteRolePermission(KEY);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

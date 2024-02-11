@@ -265,7 +265,12 @@ namespace CBS.BusinessService.CustomerManagement
             try
             {
                 var cusResponseObject = await _customerApiHelper.GetAsync<ResponseObject<IndividualProfile>>(string.Format(APICallHelper.GetCustomerByID, id));
-                return cusResponseObject.ApiResponseData.Data;
+                if (cusResponseObject.ApiResponseData!=null)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return new IndividualProfile();
+
             }
             catch (Exception ex)
             {
@@ -405,10 +410,10 @@ namespace CBS.BusinessService.CustomerManagement
         public async Task<ExecutionMessages> ActivateDeactivate(IndividualCustomerProfile objCustomerProfile)
         {
             try
-            {
+            {//10005110050004
                 var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.customerId);
-                customer.active = objCustomerProfile.CustomerList.active;
-                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.customerId), customer);
+                var activation=new CustomerActivation { activate= objCustomerProfile.CustomerList.active, customerId=objCustomerProfile.CustomerList.customerId };
+                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<bool>>(APICallHelper.ActivateOrDiactivateCustomer, activation);
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario

@@ -66,6 +66,24 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
+        public async Task<IEnumerable<Teller>> GetTellersPrimary()
+        {
+            try
+            {
+                var couApiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<Teller>>>(APICallHelper.GetAllTeller);
+                if (couApiResponse!=null)
+                {
+                    var results= couApiResponse.ApiResponseData.Data.Where(x => x.isPrimary == true);
+                    return results;
+                }
+                return new List<Teller>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<Teller> GetTeller(string id)
         {
             try
@@ -123,10 +141,12 @@ namespace CBS.BusinessService.Accounts
                 {
                     Teller.code = model.code;
                     Teller.name = model.name;
-                    Teller.minAlertBalance = model.minAlertBalance;
-                    Teller.bankId = model.bankId;
-                    Teller.branchId = model.branchId;
+                    Teller.MinAmount = model.MinAmount;
+                    Teller.MaxAmount = model.MaxAmount;
                     Teller.isPrimary = model.isPrimary;
+                    Teller.activeStatus = model.activeStatus;
+                    Teller.inUseStatus = model.inUseStatus;
+                    Teller.inUsedByUserId = model.inUsedByUserId;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<Teller>>(string.Format(APICallHelper.Get_Update_Delete_Teller, model.id), Teller);
                     if (response.IsSuccess)
                     {

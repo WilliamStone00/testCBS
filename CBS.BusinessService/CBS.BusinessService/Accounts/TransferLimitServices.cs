@@ -89,6 +89,8 @@ namespace CBS.BusinessService.Accounts
             {
 
                 // Make an API call to create an individual profile
+                model.branchId = GetBranchID();
+                model.bankId = GetBankID(); 
                 var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<TransferLimit>>(APICallHelper.CreateTransferLimits, model);
                 if (response.IsSuccess)
                 {
@@ -123,7 +125,9 @@ namespace CBS.BusinessService.Accounts
                     TransferLimit.transferType = model.transferType;
                     TransferLimit.minAmount = model.minAmount;
                     TransferLimit.maxAmount = model.maxAmount;
-                    TransferLimit.feePercentage = model.feePercentage;
+                    TransferLimit.transferFeeFlat = model.transferFeeFlat;
+                    TransferLimit.transferFeeRate = model.transferFeeRate;
+                    TransferLimit.productId = model.productId;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<TransferLimit>>(string.Format(APICallHelper.Get_Update_Delete_TransferLimits, model.id), TransferLimit);
                     if (response.IsSuccess)
                     {

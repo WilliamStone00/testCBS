@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CBS.FrontDesk.Data.Entity
 {
@@ -9,14 +10,27 @@ namespace CBS.FrontDesk.Data.Entity
     public class MenuMaster
     {
         public int Id { get; set; }
+        [Required]
         public string MenuText { get; set; }
+        [Required]
+
         public string ParentId { get; set; }
+
         public string ControllerName { get; set; }
+
         public string ActionName { get; set; }
+        [Required]
+
         public string MenuGroup { get; set; }
+        [Required]
+
         public string IconClass { get; set; }
+        [Required]
+
         public string Description { get; set; }
         public bool IsVisible { get; set; }
+        public string Action { get; set; }
+        public string ServiceOption { get; set; }
     }
 
     public class DatabaseMenus
@@ -50,6 +64,8 @@ namespace CBS.FrontDesk.Data.Entity
     }
 
 
+
+    // Root myDeserializedClass = JsonConvert.DeserializeObject<List<Root>>(myJsonResponse);
 
 
 

@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
+using System.Web.Util;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -59,6 +60,129 @@ namespace CBS.BusinessService.Accounts
             {
                 var accounts = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(APICallHelper.GetAllAccounts);
                 return accounts.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public async Task<Account> GetTransactionsAsync()
+        {
+            try
+            {
+             
+                var apiResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<TransactionHistory>>>(APICallHelper.GetAllTransactions);
+                if (apiResponse != null)
+                {
+                    var accounts = new Account { TransactionHistories = apiResponse.ApiResponseData.Data };
+                    return accounts;
+                }
+                return new Account();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public async Task<TransactionHistory> GetTransactionsAsync(string transactionId)
+        {
+            try
+            {
+
+                var apiResponse = await _transactionApiHelper.GetAsync<ResponseObject<TransactionHistory>>(string.Format(APICallHelper.GetTransaction, transactionId));
+                if (apiResponse != null)
+                {
+                    var transactionHistory = apiResponse.ApiResponseData.Data;
+                    return transactionHistory;
+                }
+                return new TransactionHistory();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public IEnumerable<TransactionHistoryExport> GetTransactionHistoryExports(List<TransactionHistory> transactionHistories)
+        {
+            try
+            {
+
+                var accounts = MapToTransactionHistoryExportList(transactionHistories);
+                return accounts;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public TransactionHistoryExport MapToTransactionHistoryExport(TransactionHistory transaction)
+        {
+            return new TransactionHistoryExport
+            {
+                customerName = transaction.account.accountName,
+                Date = transaction.createdDate,
+                amount = transaction.amount,
+                accountNumber = transaction.accountNumber,
+                transactionType = transaction.transactionType,
+                operationType = transaction.operationType,
+                transactionRef = transaction.transactionRef,
+                previousBalance = transaction.previousBalance,
+                note = transaction.note,
+                senderAccountId = transaction.senderAccountId,
+                receiverAccountId = transaction.receiverAccountId,
+                depositorIdNumber = transaction.depositorIdNumber,
+                depositorName = transaction.depositorName,
+                depositorIdIssueDate = transaction.depositorIdIssueDate,
+                depositorIdExpiryDate = transaction.depositorIdExpiryDate,
+                balanceBroughtForward = transaction.balanceBroughtForward,
+                //productName = transaction.account.product.name,
+                fee = transaction.fee,
+                feeType = transaction.feeType,
+                teller = transaction.teller.name
+            };
+        }
+        public List<TransactionHistoryExport> MapToTransactionHistoryExportList(List<TransactionHistory> transactions)
+        {
+            var transactionHistoryExports = new List<TransactionHistoryExport>();
+
+            foreach (var transaction in transactions)
+            {
+                var transactionHistoryExport = MapToTransactionHistoryExport(transaction);
+                transactionHistoryExports.Add(transactionHistoryExport);
+            }
+
+            return transactionHistoryExports;
+        }
+
+        public async Task<IEnumerable<StringValues>> SourceAndDestinationAccount()
+        {
+            try
+            {
+                var accounts = from a in await GetCustomersAccounts() select new StringValues {
+                    Text =$"{a.accountNumber}-{a.productName}-{a.customerName}", Value = a.accountNumber,
+                };
+                return accounts;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public async Task<SavingConfigurationAggregates> GetSavingConfigurationAggregates()
+        {
+            try
+            {
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<SavingConfigurationAggregates>>(APICallHelper.GetAllConfigurationEnums);
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new SavingConfigurationAggregates();
             }
             catch (Exception ex)
             {
@@ -137,8 +261,6 @@ namespace CBS.BusinessService.Accounts
             {
                 customerName = $"{a.firstName} {a.lastName}",
                 status = caAccount.status,
-                //createdBy = a.createdBy,
-                //createdDate = a.createdDate.ToString("dd-MMM-yyyy hh:mm:ss"),
                 customerId = a.customerId,
                 accountNumber = caAccount.accountNumber,
                 accountId = caAccount.id,
@@ -167,6 +289,7 @@ namespace CBS.BusinessService.Accounts
             {
                 model.bankId = GetBankID();
                 model.branchId = GetBranchID();
+                model.depositType = "CASH_INITIAL_DEPOSIT";
                 if (IsCurrencySumValid(model.currencyNotes, model.amount))
                 {
                     var response = await _transactionApiHelper.PutAsync<ServiceResponse<TransactionRespose>>(string.Format(APICallHelper.InitialDeposit, model.accountNumber), model);
@@ -248,6 +371,35 @@ namespace CBS.BusinessService.Accounts
 
                 }
                 // Make an API call to create an individual profile
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> Transfer(TransferRequest model)
+        {
+            try
+            {
+               
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionRespose>>(APICallHelper.MakeTransfer, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{model.amount}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
 
             }
             catch (Exception ex)
@@ -342,7 +494,7 @@ namespace CBS.BusinessService.Accounts
                             receiverAccountNumber = string.Empty,
                             amount = 0,
                             note = string.Empty,
-                            senderAccountNumber = account.accountNumber, sourceDetails = string.Empty,
+                            senderAccountNumber = account.accountNumber, transferType = string.Empty,
                         };
                         account.TransactionHistories = transactionHistories;
                         return account;

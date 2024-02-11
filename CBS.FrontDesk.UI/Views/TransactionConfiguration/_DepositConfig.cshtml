@@ -5,7 +5,7 @@
     <div class="row mt-2 gy-4">
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.DepositLimit.productId, new SelectList(ViewBag.Products, "Id", "name"), "---Select product---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.DepositLimit.productId, new SelectList(ViewBag.Products, "Id", "name"), "---Select product---", new { @class = "form-control select2", @search = "true"})
                 @Html.ValidationMessageFor(m => m.DepositLimit.productId, "", new { @class = "text-danger" })
                 <label>Select product</label>
             </div>
@@ -17,28 +17,36 @@
                 <label>Select deposit limit type</label>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.DepositLimit.minAmount, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.DepositLimit.minAmount, "", new { @class = "text-danger" })
                 <label>Min deposit amount</label>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.DepositLimit.maxAmount, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.DepositLimit.maxAmount, "", new { @class = "text-danger" })
                 <label>Max deposit amount</label>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.DepositLimit.feePercentage, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.DepositLimit.feePercentage, "", new { @class = "text-danger" })
-                <label>Percentage fee</label>
+                @Html.TextBoxFor(m => m.DepositLimit.depositFeeFlat, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.DepositLimit.depositFeeFlat, "", new { @class = "text-danger" })
+                <label>Flat fee</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.DepositLimit.depositFeeRate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.DepositLimit.depositFeeRate, "", new { @class = "text-danger" })
+                <label>Fee rate</label>
             </div>
         </div>
     </div>
+    
     <div class="mt-4">
         @if (Model.DepositLimit.id == null)
         {

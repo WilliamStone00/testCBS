@@ -83,10 +83,17 @@
     <Compile Include="Accounting\AccountingRuleService.cs" />
     <Compile Include="Accounting\AccountingServices.cs" />
     <Compile Include="Accounting\ChartOfAccountServices.cs" />
+    <Compile Include="Accounting\ChartOfAccountServicesAnnex.cs" />
+    <Compile Include="Accounting\EntryFeeParameterServices.cs" />
     <Compile Include="Accounting\OperationEventAttributeServices.cs" />
     <Compile Include="Accounting\OperationEventServices.cs" />
     <Compile Include="Accounts\AccountServices.cs" />
+    <Compile Include="Accounts\CloseFeeParameterServices.cs" />
     <Compile Include="Accounts\DepositLimitServices.cs" />
+    <Compile Include="Accounts\ManagementFeeParameterServices.cs" />
+    <Compile Include="Accounts\PrimaryTellerEndOfDayServices.cs" />
+    <Compile Include="Accounts\ReopenFeeParameterServices.cs" />
+    <Compile Include="Accounts\SubTellerEndOfDayServices.cs" />
     <Compile Include="Accounts\TellerProvissioningServices.cs" />
     <Compile Include="Accounts\SavingProductServices.cs" />
     <Compile Include="Accounts\TellerServices.cs" />
@@ -140,6 +147,7 @@
     <Compile Include="Loan\Config\PeriodServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleManagement\RolePermissionServices.cs" />
+    <Compile Include="RoleManagement\MenuMasterServices.cs" />
     <Compile Include="RoleManagement\RoleServices.cs" />
     <Compile Include="Session\SessionHelper.cs" />
     <Compile Include="Session\LocalSession.cs" />

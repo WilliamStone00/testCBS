@@ -16,7 +16,7 @@
                 <td style="width:35%">@d.product.name</td>
                 <td style="width:15%">@d.transferType</td>
                 <td style="width:20%">@d.minAmount-@d.maxAmount</td>
-                <td style="width:10%">@d.feePercentage %</td>
+                <td style="width:10%">@d.transferFeeFlat %</td>
                 <td style="width:20%">
                     <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview_Transfer','_TransferConfig','get','TransactionConfiguration','transferlimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.product.name @d.transferType to edit">Edit</a>
                     <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.product.name @d.transferType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable_Transfer','_TransferData',0,'datalistingview_Transfer')">Delete</a>

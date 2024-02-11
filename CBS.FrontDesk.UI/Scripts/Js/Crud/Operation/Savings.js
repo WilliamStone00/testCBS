@@ -31,22 +31,22 @@ function LoadAccounts() {
             { "data": "accountNumber", "name": "accountNumber", "autoWidth": true },
             { "data": "customerId", "name": "customerId", "autoWidth": true },
             { "data": "status", "name": "status", "autoWidth": true },
-            { "data": "createdDate", "name": "createdDate", "autoWidth": true },
             {
                 "data": "accountNumber", "orderable": "false", "render": function (data) {
-                    return "<a href='/Operation/AccountDetails?KEY=" + data + "'target='_blanck'" + data + " detail'> Detail</a>";
+                    //return "<a href='/Operation/AccountDetails?KEY=" + data + "'target='_blanck'" + data + " detail'> Detail</a>";
+                    return "<a href='/Operation/AccountDetails?KEY=" + data + "' target='_blank'>Detail</a>";
+
                 }
             }
         ],
         "columnDefs": [
-            { "targets": 0, "searchable": true, "orderable": true, "width": "21%" },
-            { "targets": 1, "searchable": true, "orderable": true, "width": "13%" },
+            { "targets": 0, "searchable": true, "orderable": true, "width": "31%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "18%" },
             { "targets": 2, "searchable": true, "orderable": true, "width": "8%" },
-            { "targets": 3, "searchable": true, "orderable": true, "width": "10%" },
+            { "targets": 3, "searchable": true, "orderable": true, "width": "15%" },
             { "targets": 4, "searchable": true, "orderable": true, "width": "10%" },
             { "targets": 5, "searchable": true, "orderable": true, "width": "8%" },
-            { "targets": 6, "searchable": true, "orderable": true, "width": "20%" },
-            { "targets": 7, "searchable": true, "orderable": true, "width": "10%" }
+            { "targets": 6, "searchable": true, "orderable": true, "width": "10%" }
 
 
         ],

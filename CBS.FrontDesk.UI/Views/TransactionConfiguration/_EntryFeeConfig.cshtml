@@ -1,0 +1,42 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <input type="hidden" name="ServiceOption" value="EntryFeeParameter" id="ServiceOption" />
+    <div class="row mt-2 gy-4">
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.EntryFeeParameter.productId, new SelectList(ViewBag.Products, "Id", "name"), "---Select product---", new { @class = "form-control select2", @search = "true"})
+                @Html.ValidationMessageFor(m => m.EntryFeeParameter.productId, "", new { @class = "text-danger" })
+                <label>Select product</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.EntryFeeParameter.entryFeeFlat, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.EntryFeeParameter.entryFeeFlat, "", new { @class = "text-danger" })
+                <label>Flat fee</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.EntryFeeParameter.entryFeeRate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.EntryFeeParameter.entryFeeRate, "", new { @class = "text-danger" })
+                <label>Fee rate</label>
+            </div>
+        </div>
+      
+    </div>
+    
+    <div class="mt-4">
+        @if (Model.EntryFeeParameter.id == null)
+        {
+            <button type="submit" class="btn btn-primary me-2">Save</button>
+            <input type="hidden" name="Action" value="insert" id="Action" />
+        }
+        else
+        { <button type="submit" class="btn btn-primary me-2">Update</button>
+            @Html.HiddenFor(m => m.EntryFeeParameter.id)
+            <input type="hidden" name="Action" value="update" id="Action" />
+        }
+    </div>
+}

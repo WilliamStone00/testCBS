@@ -9,8 +9,21 @@
             <small>Customer Code: Last 5 digits</small><br />
             <small>Bank Code: @Session["BankCode"].ToString()</small><br />
             <small>Branch Code: @Session["BranchCode"].ToString()</small><br />
-            Account Number <span class="highlight-text">@Model.accountNumber</span><br />
+            Selected account number <span class="highlight-text">@Model.accountNumber</span><br />
         </h4>
+    </div>
+    <br />
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center flex-wrap gap-2">
+                <div class="card-info">
+                    <div class="d-flex align-items-center">
+                        <h4 class="mb-0">@Model.AccountBalance.totalBalance</h4>
+                    </div>
+                    <small>Total account balance</small>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="card mt-3">
         <div class="card-body px-3 py-2">

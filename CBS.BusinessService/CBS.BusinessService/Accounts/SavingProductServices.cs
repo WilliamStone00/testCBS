@@ -106,6 +106,7 @@ namespace CBS.BusinessService.Accounts
             {
                 model.bankId = GetBankID();
                 // Make an API call to create an individual profile
+      
                 var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<SavingProduct>>(APICallHelper.CreateSavingProduct, model);
                 if (response.IsSuccess)
                 {
@@ -137,16 +138,27 @@ namespace CBS.BusinessService.Accounts
                 if (SavingProduct != null)
                 {
                     SavingProduct.name = model.name;
-                    SavingProduct.managementFee = model.managementFee;
-                    SavingProduct.managementFeeFrequency = model.managementFeeFrequency;
+                    SavingProduct.code = model.code;
+                    SavingProduct.interestAccrualFrequency = model.interestAccrualFrequency;
+                    SavingProduct.isCapitalizeInterest = model.isCapitalizeInterest;
                     SavingProduct.postingFrequency = model.postingFrequency;
-                    SavingProduct.interestCalculationFrequency = model.interestCalculationFrequency;
+                    SavingProduct.currencyId = model.currencyId;
                     SavingProduct.maxAmount = model.maxAmount;
                     SavingProduct.minAmount = model.minAmount;
-                    SavingProduct.yearlyInterestRate = model.yearlyInterestRate;
-                    SavingProduct.closingFee = model.closingFee;
-                    SavingProduct.entryFee = model.entryFee;
-                    SavingProduct.isTerm = model.isTerm;
+                    SavingProduct.activeStatus = model.activeStatus;
+                    SavingProduct.isTermProduct = model.isTermProduct;
+                    SavingProduct.isUsedForTellerProvisioning = model.isUsedForTellerProvisioning;
+                    SavingProduct.description = model.description;
+                    SavingProduct.ChartOfAccountIdPricipalSavingAccount = model.ChartOfAccountIdPricipalSavingAccount;
+                    SavingProduct.ChartOfAccountIdInterestSavingAccount = model.ChartOfAccountIdInterestSavingAccount;
+                    SavingProduct.ChartOfAccountIdInterestSavingExpenseAccount = model.ChartOfAccountIdInterestSavingExpenseAccount;
+                    SavingProduct.ChartOfAccountIdSavingFee = model.ChartOfAccountIdSavingFee;
+                    SavingProduct.ChartOfAccountIdWithrawalFee = model.ChartOfAccountIdWithrawalFee;
+                    SavingProduct.ChartOfAccountIdTransferFee = model.ChartOfAccountIdTransferFee;
+                    SavingProduct.ChartOfAccountIdManagementFee = model.ChartOfAccountIdManagementFee;
+                    SavingProduct.ChartOfAccountIdClossingFee = model.ChartOfAccountIdClossingFee;
+                    SavingProduct.ChartOfAccountIdRepoeningFee = model.ChartOfAccountIdRepoeningFee;
+                    SavingProduct.bankId = model.bankId;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.id), SavingProduct);
                     if (response.IsSuccess)
                     {

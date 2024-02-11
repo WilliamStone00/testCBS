@@ -11,6 +11,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
 
     public class SavingConfiguration
     {
+        public CloseFeeParameter CloseFeeParameter { get; set; } = new CloseFeeParameter();
+        public ReopenFeeParameter ReopenFeeParameter { get; set; } = new ReopenFeeParameter();
+        public ManagementFeeParameter ManagementFeeParameter { get; set; } = new ManagementFeeParameter();
+        public EntryFeeParameter EntryFeeParameter { get; set; } = new EntryFeeParameter();
+
+        public List<CloseFeeParameter> CloseFeeParameters { get; set; } = new List<CloseFeeParameter>();
+        public List<ReopenFeeParameter> ReopenFeeParameters { get; set; } = new List<ReopenFeeParameter>();
+        public List<ManagementFeeParameter> ManagementFeeParameters { get; set; } = new List<ManagementFeeParameter>();
+        public List<EntryFeeParameter> EntryFeeParameters { get; set; } = new List<EntryFeeParameter>();
         public DepositLimit DepositLimit { get; set; }=new DepositLimit();
         public TransferLimit TransferLimit { get; set; } = new TransferLimit();
         public SavingProduct SavingProduct { get; set; } = new SavingProduct();
@@ -36,11 +45,23 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string depositType { get; set; }
         [Required]
-        public double minAmount { get; set; }
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal minAmount { get; set; }
         [Required]
-        public double maxAmount { get; set; }
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal maxAmount { get; set; }
         [Required]
-        public double feePercentage { get; set; }
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal depositFeeRate { get; set; }
+        [Required]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal depositFeeFlat { get; set; }
+        public string branchId { get; set; }
+        public string bankId { get; set; }
         public SavingProduct product { get; set; }
     }
     public class TransferLimit
@@ -51,56 +72,150 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string transferType { get; set; }
         [Required]
-        public double minAmount { get; set; }
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal minAmount { get; set; }
         [Required]
-        public double maxAmount { get; set; }
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal maxAmount { get; set; }
         [Required]
-        public double feePercentage { get; set; }
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, double.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal transferFeeRate { get; set; }
+        [Required]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal transferFeeFlat { get; set; }
+        public string bankId { get; set; }
+        public string branchId { get; set; }
         public SavingProduct product { get; set; }
 
     }
+    public class ReopenFeeParameter
+    {
+        public string id { get; set; }
+        [Required]
+        public string productId { get; set; }
+        [Required]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal reopenFeeFlat { get; set; }
+        [Required]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, double.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal reopenFeeRate { get; set; }
+        public string bankId { get; set; }
+        public string branchId { get; set; }
+        public SavingProduct product { get; set; }
+
+    }
+    public class ManagementFeeParameter
+    {
+        public string id { get; set; }
+        [Required]
+        public string productId { get; set; }
+        [Required]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal managementFeeFlat { get; set; }
+        [Required]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, double.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal managementFeeRate { get; set; }
+        [Required]
+        public string managementFeeFrequency { get; set; }
+        public string bankId { get; set; }
+        public string branchId { get; set; }
+
+
+    }
+    public class EntryFeeParameter
+    {
+        public string id { get; set; }
+        [Required]
+        public string productId { get; set; }
+        [Required]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, double.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal entryFeeRate { get; set; }
+        [Required]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal entryFeeFlat { get; set; }
+        public string bankId { get; set; }
+        public string branchId { get; set; }
+        public SavingProduct product { get; set; }
+
+    }
+    public class CloseFeeParameter
+    {
+        public string id { get; set; }
+        [Required]
+        public string productId { get; set; }
+        [Required]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal closeFeeFlat { get; set; }
+        [Required]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, double.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal closeFeeRate { get; set; }
+        [Required]
+        public string bankId { get; set; }
+        public string branchId { get; set; }
+        public SavingProduct product { get; set; }
+
+    }
+
     public class SavingProduct
     {
         public string id { get; set; }
         [Required]
         public string name { get; set; }
         [Required]
-        public double minAmount { get; set; }
+        public string code { get; set; }
         [Required]
-        public double maxAmount { get; set; }
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal minAmount { get; set; }
         [Required]
-        public double yearlyInterestRate { get; set; }
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal maxAmount { get; set; }
         [Required]
-        public string interestCalculationFrequency { get; set; }
+        public string interestAccrualFrequency { get; set; }
         [Required]
         public string postingFrequency { get; set; }
-        public List<DepositLimit> depositLimits { get; set; } = new List<DepositLimit>();
-        public List<WithdrawalLimit> withdrawalLimits { get; set; } = new List<WithdrawalLimit>();
-        public List<TransferLimit> transferLimits { get; set; } = new List<TransferLimit>();
+        public bool isUsedForTellerProvisioning { get; set; }
+        
+        public bool isCapitalizeInterest { get; set; }
         [Required]
-        public double entryFee { get; set; }
+        public string currencyId { get; set; }
+        public bool activeStatus { get; set; }
+        public bool isTermProduct { get; set; }
         [Required]
-        public double reopeningFee { get; set; }
+        public string description { get; set; }
         [Required]
-        public double closingFee { get; set; }
+        public string ChartOfAccountIdPricipalSavingAccount { get; set; }
         [Required]
-        public double managementFee { get; set; }
-        [Required]
-        public string managementFeeFrequency { get; set; }
+        public string ChartOfAccountIdInterestSavingAccount { get; set; }
+        public string ChartOfAccountIdInterestSavingExpenseAccount { get; set; }
+        public string ChartOfAccountIdSavingFee { get; set; }
+        public string ChartOfAccountIdWithrawalFee { get; set; }
+        public string ChartOfAccountIdTransferFee { get; set; }
+        public string ChartOfAccountIdManagementFee { get; set; }
+        public string ChartOfAccountIdClossingFee { get; set; }
+        public string ChartOfAccountIdRepoeningFee { get; set; }
         [Required]
         public string bankId { get; set; }
-        public bool isTerm { get; set; }
-        public double interestRate { get; set; }
-        public string createdBy { get; set; }
-        public object accountOwnershipType { get; set; }
-        public double alertBalance { get; set; }
-        public bool isOverdraftAllowed { get; set; }
-        public bool canExpire { get; set; }
-        public string description { get; set; }
-        public string modifiedBy { get; set; }
-        public object deletedBy { get; set; }
-        public int objectState { get; set; }
-        public bool isDeleted { get; set; }
+        public List<CloseFeeParameter> CloseFeeParameters { get; set; }
+        public List<EntryFeeParameter> EntryFeeParameters { get; set; }
+        public List<ManagementFeeParameter> ManagementFeeParameters { get; set; }
+        public List<ReopenFeeParameter> ReopenFeeParameters { get; set; }
+        public List<DepositLimit> CashDepositParameters { get; set; }
+        public List<WithdrawalLimit> WithdrawalParameters { get; set; }
+        public List<TransferLimit> TransferParameters { get; set; }
     }
     public class WithdrawalLimit
     {
@@ -108,13 +223,25 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string productId { get; set; }
         [Required]
-        public double minAmount { get; set; }
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal minAmount { get; set; }
         [Required]
-        public double maxAmount { get; set; }
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal maxAmount { get; set; }
         [Required]
         public string withdrawalType { get; set; }
         [Required]
-        public double feePercentage { get; set; }
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, double.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal withdrawalFeeRate { get; set; }
+        [Required]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal withdrawalFeeFlat { get; set; }
+        public string bankId { get; set; }
+        public string branchId { get; set; }
         public SavingProduct product { get; set; }
     }
     public class Teller
@@ -130,11 +257,13 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string branchId { get; set; }
         [Required]
-        public double minAlertBalance { get; set; }
+   
+        public double MinAmount { get; set; }
         [Required]
-        public double maxAlertBalance { get; set; }
-        public string BranchName { get; set; }
-        public string BankName { get; set; }
+        public double MaxAmount { get; set; }
+        public bool inUseStatus { get; set; }
+        public string inUsedByUserId { get; set; }
+        public bool activeStatus { get; set; }
     }
     public class OpeningOfTheDay
     {
@@ -148,13 +277,11 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string code { get; set; }
         public string bankId { get; set; }
         public string branchId { get; set; }
-        public int initialAmount { get; set; }
-        public int minAlertBalance { get; set; }
-        public int maxAlertBalance { get; set; }
+        public double initialAmount { get; set; }
+        public double minAlertBalance { get; set; }
+        public double maxAlertBalance { get; set; }
         public bool isPrimary { get; set; }
         public string userId { get; set; }
-        public DateTime startTime { get; set; }
-        public DateTime endTime { get; set; }
         public DateTime createdDate { get; set; }
         public string createdBy { get; set; }
         public DateTime modifiedDate { get; set; }
@@ -166,14 +293,16 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string primaryTellerId { get; set; }
         [Required]
-        public int initialAmount { get; set; }
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public decimal initialAmount { get; set; }
         [Required]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, double.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public string subTellerId { get; set; }
         [Required]
         public string userId { get; set; }
         [Required]
-        public DateTime startTime { get; set; }
-        public DateTime endTime { get; set; }
         public string bankId { get; set; }
         public string branchId { get; set; }
         public CurrencyNotes currencyNotes { get; set; }=new CurrencyNotes();
@@ -210,6 +339,10 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<StringValues> transferLimitTypes { get; set; } = new List<StringValues>();
         public List<StringValues> depositLimitTypes { get; set; } = new List<StringValues>();
         public List<StringValues> termDepositDurations { get; set; } = new List<StringValues>();
+        public List<StringValues> freeQuencies { get; set; } = new List<StringValues>();
+        public List<StringValues> currencies { get; set; } = new List<StringValues>();
+        public List<StringValues> operationAccounts { get; set; } = new List<StringValues>();
+        //
 
     }
     public class AddCustomerAccount

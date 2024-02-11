@@ -164,6 +164,7 @@ namespace CBS.BusinessService.Accounting
                 if (inResponse.IsSuccess)
                 {
 
+
                     return GetExecutionMessages(inResponse, true, $"{account.AccountNumber + " " + account.AccountHolder}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
                    
@@ -183,5 +184,6 @@ namespace CBS.BusinessService.Accounting
             }
             return null;
         }
+
     }
 }

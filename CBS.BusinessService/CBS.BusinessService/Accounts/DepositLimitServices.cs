@@ -90,6 +90,8 @@ namespace CBS.BusinessService.Accounts
             {
 
                 // Make an API call to create an individual profile
+                model.branchId = GetBranchID();
+                model.bankId = GetBankID();
                 var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<DepositLimit>>(APICallHelper.CreateDepositLimit, model);
                 if (response.IsSuccess)
                 {
@@ -124,7 +126,10 @@ namespace CBS.BusinessService.Accounts
                     DepositLimit.depositType = model.depositType;
                     DepositLimit.minAmount = model.minAmount;
                     DepositLimit.maxAmount = model.maxAmount;
-                    DepositLimit.feePercentage = model.feePercentage;
+                    DepositLimit.depositFeeFlat = model.depositFeeFlat;
+                    DepositLimit.depositFeeRate = model.depositFeeRate;
+                    DepositLimit.productId = model.productId;
+                 
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<DepositLimit>>(string.Format(APICallHelper.Get_Update_Delete_DepositLimit, model.id), DepositLimit);
                     if (response.IsSuccess)
                     {

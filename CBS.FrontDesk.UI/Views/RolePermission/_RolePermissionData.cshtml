@@ -1,0 +1,41 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.MenuMaster>
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>Name</th>
+            <th>Controller</th>
+            <th>Action</th>
+            <th>Group</th>
+            <th>Status</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td style="width:20%">@d.MenuText</td>
+                <td style="width:10%">@d.ControllerName</td>
+                <td style="width:10%">@d.ActionName</td>
+                <td style="width:12%">@d.MenuGroup</td>
+                <td style="width:5%">
+                    @if (d.IsVisible)
+                    {
+                        <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Visible</span></label>
+                    }
+                    else
+                    {
+                        <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">None</span></label>
+                    }
+                </td>
+                <td style="width:30%">@d.Description</td>
+                <td style="width:13%">
+                    <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview','_MenuMaster','get','MenuMaster','')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.MenuText to edit">Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.MenuText" onclick="DeleteRecordDataTable('MenuMaster','@d.Id','myDataTable','_MenuMasterData',0,'datalistingview')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

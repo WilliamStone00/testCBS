@@ -91,11 +91,11 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                if (IsCurrencySumValid(model.currencyNotes, model.initialAmount))
+                if (IsCurrencySumValid(model.currencyNotes, ConverToInteger(model.initialAmount.ToString())))
                 {
                     model.bankId = GetBankID();
                     model.branchId = GetBranchID();
-                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<OpeningOfTheDayResponse>>(APICallHelper.PrimaryTellerProvisioning, model);
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<OpeningOfTheDayResponse>>(APICallHelper.SubTellerProvisioning, model);
                     if (response.IsSuccess)
                     {
 
@@ -159,10 +159,9 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var pTellers = (from a in await _userManagementServices.GetUserList() 
-                                join r in await _role.GetRoles() on a.roleID equals r.Id where r.IsTeller select new Teller
+                var pTellers = (from a in await _userManagementServices.GetUSerRoles()  where a.IsTeller select new Teller
                                 { 
-                                 name=$"{r.Name}-{a.firstName} {a.lastName}", id=a.id.ToString(),
+                                 name=$"{a.RoleName}-{a.FirstName} {a.LastName}", id=a.UserId.ToString(),
                                 }).ToList();
 
                 if (!pTellers.Any())
@@ -178,5 +177,31 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+        //public async Task<List<Teller>> GetUserRole()
+        //{
+        //    try
+        //    {
+        //        var pTellers = (from a in await _userManagementServices.GetUserList()
+        //                        join r in await _role.GetRoles() on a.roleID equals r.Id
+        //                        where r.IsTeller
+        //                        select new Teller
+        //                        {
+        //                            name = $"{r.Name}-{a.firstName} {a.lastName}",
+        //                            id = a.id.ToString(),
+        //                        }).ToList();
+
+        //        if (!pTellers.Any())
+        //        {
+        //            pTellers.Add(new Teller { name = $"Primary Teller-Default Admin", id = "4b352b37-332a-40c6-ab05-e38fcf109719" });
+        //        }
+        //        return pTellers.ToList();
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log and handle exception
+        //        throw ex;
+        //    }
+        //}
     }
 }

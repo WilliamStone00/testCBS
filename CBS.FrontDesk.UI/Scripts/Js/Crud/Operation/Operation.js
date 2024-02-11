@@ -2,8 +2,19 @@
     $("#btnData").click(function () {
         LoadData();
     });
+    var depositerDiv = document.getElementById("depositer");
+    depositerDiv.style.display = "none";
 });
-
+function toggleDepositer(isChecked) {
+    var depositerDiv = document.getElementById("depositer");
+    if (isChecked) {
+        // Checkbox is checked, hide the depositer div
+        depositerDiv.style.display = "none";
+    } else {
+        // Checkbox is unchecked, show the depositer div
+        depositerDiv.style.display = "block";
+    }
+}
 function GetTransactionHistory(KEY, divToLoadData, partialView, path, myDataTable,order) {
     LoadDataTableNew("Operation", myDataTable, "InitializeData", KEY, partialView, order, path, divToLoadData);
 

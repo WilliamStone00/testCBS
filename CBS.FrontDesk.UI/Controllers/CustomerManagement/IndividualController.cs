@@ -180,6 +180,12 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
+            else if (model.option == "ResetPin")
+            {
+                var data = await _individualProfileServices.ResetPin(model);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
 
 
 

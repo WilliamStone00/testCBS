@@ -78,10 +78,34 @@
         });
     }
 })();
+// Call extendSessionTimeout every 5 minutes (300,000 milliseconds)
+//setInterval(extendSessionTimeout, 300000);
 
 function FillDropDownAjaxCall(url, affecteddropdownID, select_option) {
     var data = "<option value='0'> Please wait loading...</option>";
+    var T = '#' + affecteddropdownID;
+    $(T).html(data).show();
+    $.ajax({
+        type: "Get",
+        url: url,
+        cache: false,
+        success: function (data) {
+            var markup = "<option value='0'>" + select_option + "</option>";
+            for (var x = 0; x < data.length; x++) {
+                markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                console.log(markup);
+            }
+            $(T).html(markup).show();
+        }
+        , error: function (err) {
+            appalert(err.statusText, 1, 3);
+        }
+    });
 
+
+}
+function FillDropDownAjaxCallParam(url, affecteddropdownID, select_option) {
+    var data = "<option value='0'> Please wait loading...</option>";
     var T = '#' + affecteddropdownID;
     $(T).html(data).show();
     $.ajax({
@@ -460,6 +484,68 @@ function DeleteRecordDataTable(controller, KEY, tableID, partialView, order,divT
                     if (response.success) {
                         appalert(response.message, 1, 1);
                         LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, "list", divToLoadTheData)
+                    }
+                    else {
+                        appalert(response.message, 3, 1);
+                    }
+
+                }, error: function (err) {
+
+                    appalert(err.statusText, 3, 1);
+                }
+            });
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
+
+        });
+
+
+}
+function DeleteDynamic(controller, deleteActionName, KEY, tableID, partialView, order, divToLoadTheData) {
+
+    alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
+        function () {
+            var url = "/" + controller + "/" + deleteActionName + "?KEY=" + KEY;
+            console.log(url);
+            $.ajax({
+                type: "Get",
+                url: url,
+                success: function (response) {
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, "list", divToLoadTheData)
+                    }
+                    else {
+                        appalert(response.message, 3, 1);
+                    }
+
+                }, error: function (err) {
+
+                    appalert(err.statusText, 3, 1);
+                }
+            });
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
+
+        });
+
+
+}
+function DeleteDynamicRolePermission(controller, deleteActionName, KEY, tableID, partialView, order, divToLoadTheData,roleid,seviceoption) {
+
+    alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
+        function () {
+            var url = "/" + controller + "/" + deleteActionName + "?KEY=" + KEY;
+            console.log(url);
+            $.ajax({
+                type: "Get",
+                url: url,
+                success: function (response) {
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        LoadDataTableNew(controller, tableID, "InitializeData", roleid, partialView, order, "list", divToLoadTheData, seviceoption)
                     }
                     else {
                         appalert(response.message, 3, 1);
@@ -939,6 +1025,35 @@ function LoadDataNoSelectAutodebit(controller, option, divLoader, tableID, actio
 
 
 }
+function ExportFile(controller, serviceOption, action, KEY, ReadOptions, path, rptType, ReportName, reportoption, reportpath, fileTitle, datefrom, dateto) {
+    appalert("Please wait, downloading file", 1);
+
+    $.post(
+        '/' + controller + '/' + action,
+        {
+            controller: controller,
+            serviceOption: serviceOption,
+            action: action,
+            KEY: KEY,
+            ReadOptions: ReadOptions,
+            path: path,
+            rptType: rptType,
+            ReportName: ReportName,
+            reportoption: reportoption,
+            reportpath: reportpath,
+            fileTitle: fileTitle,
+            datefrom: datefrom,
+            dateto: dateto
+        },
+        function () {
+            window.open("/Reports/" + reportoption, "_blank"); // Updated URL
+        }
+    ).fail(function (err) {
+        appalert(err.statusText, 1, 3);
+    });
+}
+
+
 function LoadDataTableNew(controller, tableID, action, KEY, partialView, order, path, diveToloadtheData,serviceOption) {
     var encodedURL = '/' + controller + '/' + action +
         '?KEY=' + encodeURIComponent(KEY) +

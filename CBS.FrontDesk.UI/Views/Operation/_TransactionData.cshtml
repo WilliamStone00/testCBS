@@ -1,0 +1,38 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+
+
+<div class="table-responsive mb-3">
+    <table class="table table-hover" id="myDataTable">
+        <thead class="table-light">
+            <tr>
+                <th>Date</th>
+                <th>Deposited</th>
+                <th>Fee</th>
+                <th>Acctual Amount</th>
+                <th>Balance</th>
+                <th>Previouse Balance</th>
+                <th>Charge Type</th>
+                <th>Transaction Type</th>
+                <th>Operation Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.TransactionHistories)
+            {
+                <tr>
+                    <td style="width:20%">@d.createdDate</td>
+                    <td style="width:15%">@d.originalDepositAmount</td>
+                    <td style="width:8%">@d.fee</td>
+                    <td style="width:8%">@d.amount</td>
+                    <td style="width:8%">@d.previousBalance</td>
+                    <td style="width:11%">@d.balanceBroughtForward</td>
+                    <td style="width:15%">@d.feeType</td>
+                    <td style="width:10%">@d.transactionType</td>
+                    <td style="width:10%">@d.operationType</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

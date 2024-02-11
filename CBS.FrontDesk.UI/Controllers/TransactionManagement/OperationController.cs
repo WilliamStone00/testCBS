@@ -13,51 +13,69 @@ using System.Web.Mvc;
 using CBS.BusinessService.Accounts;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
+using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
     public class OperationController : BaseController
     {
-        // GET: TransactionManagement
+        // GET: Operation
         private readonly AccountServices _acountServices;
-
-        public OperationController(AccountServices acountServices)
+        private readonly TellerProvissioningServices _services;
+        public OperationController(AccountServices acountServices, TellerProvissioningServices services = null)
         {
             _acountServices = acountServices;
+            _services = services;
         }
         public async Task<ActionResult> AccountDetails(string KEY = null)
         {
+
+            //502846231941202110
+
             var account = await _acountServices.GetAccountByAccountNumber(KEY);
             return View(account);
         }
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path=null)
+        public async Task<ActionResult> Transactions()
         {
-            ViewBag.KEY = KEY;
-            if (path=="transactions")
-            {
-                
-            }
-            else
-            {
-                var account = await _acountServices.GetAccountByAccountNumber(KEY);
-                ViewBag.Sources = _acountServices.GetPaymentSources();
-                return PartialView(partialView, account);
-            }
-            
-            return PartialView(KEY, partialView);
+            return View();
         }
+        //Transactions
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        {
+            try
+            {
+                ViewBag.KEY = KEY;
+                if (path == "transactions")
+                {
+                    var account = await _acountServices.GetTransactionsAsync();
+                    return PartialView(partialView, account);
+                }
+                else
+                {
+                    var account = await _acountServices.GetAccountByAccountNumber(KEY);
+                    ViewBag.Sources = _acountServices.GetPaymentSources();
+                    return PartialView(partialView, account);
+                }
 
+                return PartialView(KEY, partialView);
+            }
+            catch (Exception ex)
+            {
+
+                TempData["ErrorMessage"] = ex.Message; // Store error message
+                return RedirectToAction("Index", "Error"); // Redirect to error page
+            }
+        }
         [HttpPost]
         public async Task<ActionResult> Deposit(Account model)
         {
             if (model.OperationType == "Deposit")
             {
-                
+
                 var data = await _acountServices.Deposit(model.DepositRequest);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
-            //Withdrawal
             else if (model.OperationType == "InitialDeposit")
             {
                 var data = await _acountServices.MakeInitialDeposit(model.AccountActivationRequest);
@@ -70,10 +88,53 @@ namespace CBS.FrontDesk.UI.Controllers
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
+            else if (model.OperationType == "Transfer")
+            {
+                var data = await _acountServices.Transfer(model.TransferRequest);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
             else
             {
                 return Json(new { success = false, status = false, message = "Fill the required fields." });
             }
+        }
+        [HttpPost]
+        public async Task<ActionResult> GetReport(string rptType = null, string ReportName = null, string serviceoption = null,string reportpath=null,string fileTitle=null, string ReadOptions = null, string KEY = null, string path = null, string yearID = null, string datefrom = null, string dateto = null)
+        {
+            if (path == "export_transactions")
+            {
+                var account = await _acountServices.GetTransactionsAsync();
+                this.HttpContext.Session["rptSource"] = _acountServices.GetTransactionHistoryExports(account.TransactionHistories);
+                if (!account.TransactionHistories.Any())
+                {
+                    this.HttpContext.Session["rptSource"] = "empty";
+                }
+                this.HttpContext.Session["rptType"] = rptType;
+                this.HttpContext.Session["ReportName"] = $"{ReportName}.rpt";
+                this.HttpContext.Session["rptpath"] = $"~/{reportpath}/" + ReportName + ".rpt";
+                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+
+            }
+            else if (path == "by_date_history")
+            {
+                //this.HttpContext.Session["rptSource"] = _helper._object.Receipts;
+                //this.HttpContext.Session["DateFrom"] = datefrom;
+                //this.HttpContext.Session["DateTo"] = dateto;
+            }
+           
+
+            return Json("", JsonRequestBehavior.AllowGet);
+
+        }
+        public async Task<ActionResult> Transfer()
+        {
+            var account = await _acountServices.SourceAndDestinationAccount();
+            var conf = await _acountServices.GetSavingConfigurationAggregates();
+            ViewBag.Source = account;
+            ViewBag.Destination = account;
+            ViewBag.TransferTypes = conf.transferTypes;
+            return View(new Account());
         }
     }
 }
