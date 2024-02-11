@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+﻿@*@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
 <table class="table table-hover" id="myDataTable_teller">
     <thead class="table-light">
         <tr>
@@ -6,7 +6,6 @@
             <th>Code</th>
             <th>Min-Max Amount</th>
             <th>Teller type</th>
-            @*<th>Branch</th>*@
             <th>Action</th>
         </tr>
     </thead>
@@ -27,13 +26,12 @@
                 <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">-</span></label>
                     }
                 </td>
-                @*<td style="width:20%">@d.BranchName</td>*@
                 <td style="width:20%">
-                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview_Teller','_TellerConfig','get','TransactionConfiguration','teller')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable_teller','_TellerData',0,'datalistingview_teller')">Delete</a>
+                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview_Teller','_TellerConfig','get','TellerManagement','teller')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('TellerManagement','@d.id','myDataTable_teller','_TellerData',0,'datalistingview_teller')">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
-</table>
+</table>*@
 

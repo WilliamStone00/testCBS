@@ -1,56 +1,64 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
 
-    @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-    {<input type="hidden" name="ServiceOption" value="transferlimit" id="ServiceOption" />
-        <div class="row mt-2 gy-4">
-            <div class="row mt-2 gy-4">
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.TransferLimit.productId, new SelectList(ViewBag.Products, "Id", "name"), "---Select product---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.TransferLimit.productId, "", new { @class = "text-danger" })
-                        <label>Select product</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.TransferLimit.transferType, new SelectList(ViewBag.TransferLimitTypes, "Text", "Value"), "---Select transafer type---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.TransferLimit.transferType, "", new { @class = "text-danger" })
-                        <label>Select transfer limit type</label>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.TransferLimit.minAmount, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.TransferLimit.minAmount, "", new { @class = "text-danger" })
-                        <label>Min transfer amount</label>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.TransferLimit.maxAmount, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.TransferLimit.maxAmount, "", new { @class = "text-danger" })
-                        <label>Max transfer amount</label>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.TransferLimit.feePercentage, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.TransferLimit.feePercentage, "", new { @class = "text-danger" })
-                        <label>Percentage fee</label>
-                    </div>
-                </div>
+@using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <input type="hidden" name="ServiceOption" value="transferlimit" id="ServiceOption" />
+    <div class="row mt-2 gy-4">
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.TransferLimit.productId, new SelectList(ViewBag.Products, "Id", "name"), "---Select product---", new { @class = "form-control select2", @search = "true"})
+                @Html.ValidationMessageFor(m => m.TransferLimit.productId, "", new { @class = "text-danger" })
+                <label>Select product</label>
             </div>
         </div>
-        <div class="mt-4">
-            @if (Model.TransferLimit.id == null)
-            {
-                <button type="submit" class="btn btn-primary me-2">Save</button>
-                <input type="hidden" name="Action" value="insert" id="Action" />
-            }
-            else
-            { <button type="submit" class="btn btn-primary me-2">Update</button>
-                @Html.HiddenFor(m => m.TransferLimit.id)
-                <input type="hidden" name="Action" value="update" id="Action" />
-            }
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.TransferLimit.transferType, new SelectList(ViewBag.TransferLimitTypes, "Text", "Value"), "---Select deposit type---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.TransferLimit.transferType, "", new { @class = "text-danger" })
+                <label>Select deposit limit type</label>
+            </div>
         </div>
-    }
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.TransferLimit.minAmount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TransferLimit.minAmount, "", new { @class = "text-danger" })
+                <label>Min deposit amount</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.TransferLimit.maxAmount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TransferLimit.maxAmount, "", new { @class = "text-danger" })
+                <label>Max deposit amount</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.TransferLimit.transferFeeFlat, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TransferLimit.transferFeeFlat, "", new { @class = "text-danger" })
+                <label>Flat fee</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.TransferLimit.transferFeeRate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TransferLimit.transferFeeRate, "", new { @class = "text-danger" })
+                <label>Fee rate</label>
+            </div>
+        </div>
+       
+    </div>
+
+    <div class="mt-4">
+        @if (Model.TransferLimit.id == null)
+        {
+            <button type="submit" class="btn btn-primary me-2">Save</button>
+            <input type="hidden" name="Action" value="insert" id="Action" />
+        }
+        else
+        { <button type="submit" class="btn btn-primary me-2">Update</button>
+            @Html.HiddenFor(m => m.TransferLimit.id)
+            <input type="hidden" name="Action" value="update" id="Action" />
+        }
+    </div>
+}

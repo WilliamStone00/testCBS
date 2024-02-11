@@ -11,4 +11,5 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string id { get; set; }
         public string ruleName { get; set; }
     }
+   
 }

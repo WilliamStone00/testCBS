@@ -14,8 +14,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string tellerId { get; set; }
         public string userIdInChargeOfThisTeller { get; set; }
         public string provisionedBy { get; set; }
-        public DateTime? openedDate { get; set; }
-        public DateTime? clossedDate { get; set; } = new DateTime(1900, 1, 1);
+        public DateTime openedDate { get; set; }
+        public DateTime clossedDate { get; set; } = new DateTime(1900, 1, 1);
         public decimal openOfDayAmount { get; set; } = 0;
         public decimal cashAtHand { get; set; } = 0;
         public decimal endOfDayAmount { get; set; } = 0;
@@ -47,8 +47,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string tellerId { get; set; }
         public string userIdInChargeOfThisTeller { get; set; }
         public string provisionedBy { get; set; }
-        public DateTime? openedDate { get; set; }
-        public DateTime? clossedDate { get; set; } = new DateTime(1900, 1, 1);
+        public DateTime openedDate { get; set; }
+        public DateTime clossedDate { get; set; } = new DateTime(1900, 1, 1);
         public decimal openOfDayAmount { get; set; } = 0;
         public decimal cashAtHand { get; set; } = 0;
         public decimal endOfDayAmount { get; set; } = 0;

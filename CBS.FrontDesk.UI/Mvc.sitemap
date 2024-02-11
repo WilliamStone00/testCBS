@@ -35,6 +35,8 @@
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Document" controller="Document" action="Index">
       </mvcSiteMapNode>
+      <mvcSiteMapNode title="Teller management" controller="TellerManagement" action="Index">
+      </mvcSiteMapNode>
       <mvcSiteMapNode title="Loan product" controller="LoanProduct" action="Index">
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Guaranty" controller="Guaranty" action="Index">
@@ -55,6 +57,14 @@
       <mvcSiteMapNode title="Loan purpose" controller="LoanPurpose" action="Index">
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Tax" controller="Tax" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Menu master" controller="MenuMaster" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Role permission" controller="RolePermission" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Role management" controller="Role" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Branch management" controller="BranchManagement" action="Index">
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Transaction configuration" controller="TransactionConfiguration" action="Index">
       </mvcSiteMapNode>

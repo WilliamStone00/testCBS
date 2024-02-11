@@ -1,7 +1,9 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -51,11 +53,11 @@ namespace CBS.BusinessService.Config
         }
         public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions)
         {
-            Func<Task<List<Bank>>> getDataFunc = async () => (await GetCountries()).ToList();
+            Func<Task<List<Bank>>> getDataFunc = async () => (await GetBanks()).ToList();
             var dataTable = await DatatableHelper.GenerateDataTable<Bank>(dataTableOptions, getDataFunc);
             return dataTable;
         }
-        public async Task<IEnumerable<Bank>> GetCountries()
+        public async Task<IEnumerable<Bank>> GetBanks()
         {
             try
             {
@@ -68,7 +70,7 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
-        private async Task<Bank> GetBank(string id)
+        public async Task<Bank> GetBank(string id)
         {
             try
             {
@@ -110,6 +112,81 @@ namespace CBS.BusinessService.Config
             }
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> Update(Bank model)
+        {
+            try
+            {
 
+                var bank = await GetBank(model.Id);
+                if (bank != null)
+                {
+                    bank.BankCode = model.BankCode;
+                    bank.Name = model.Name;
+                    bank.Address = model.Address;
+                    bank.ImmatriculationNumber = model.ImmatriculationNumber;
+                    bank.RegistrationNumber = model.RegistrationNumber;
+                    bank.Capital = model.Capital;
+                    bank.DateOfCreation = model.DateOfCreation;
+                    bank.Email = model.Email;
+                    bank.Telephone = model.Telephone;
+                    bank.Description = model.Description;
+                    bank.TaxPayerNUmber = model.TaxPayerNUmber;
+                    bank.PBox = model.PBox;
+                    bank.WebSite = model.WebSite;
+                    bank.BankInitial = model.BankInitial;
+                    bank.Motto = model.Motto;
+                    bank.OrganizationId = model.OrganizationId;
+                    var response = await _bankConfigApiHelper.PutAsync<ServiceResponse<Teller>>(string.Format(APICallHelper.Get_Update_Delete_Bank, model.Id), bank);
+                    if (response.IsSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"{bank.Name}", MessagesResults.Success,
+                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(model, false, $"{bank.Name}", MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> UploadBankLogo(CustomerDocumentRequest attachedToLoan)
+        {
+            try
+            {
+                var additionalParams = new Dictionary<string, string>
+                {
+                    { "BankID", attachedToLoan.CustomerID }
+                };
+                var response = await _bankConfigApiHelper.PostFilesAndParamsAsync<ServiceResponse<Bank>>(APICallHelper.UpdateBankLogo, additionalParams, attachedToLoan.AttachedFiles);
+                if (response.ApiResponseData.Success)
+                {
+                    GetExecutionMessages(response, true, attachedToLoan.DocumentType, MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null,
+                        null);
+                    return ExecutionMessage;
+                }
+                GetExecutionMessages(attachedToLoan, false, attachedToLoan.DocumentType, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
+                    null);
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
     }
 }

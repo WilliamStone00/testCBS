@@ -19,12 +19,12 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
         public static List<T> FilterData<T>(List<T> items, DataTableOptions dataTableOptions) where T : class
         {
             var data = items;
-            string searchValue = dataTableOptions.searchValue?.ToLower();
+            string searchValue = dataTableOptions.searchValue.ToLower();
 
             if (!string.IsNullOrEmpty(searchValue))
             {
                 data = data.Where(m => m.GetType().GetProperties().Any(prop =>
-                    prop.GetValue(m)?.ToString()?.ToLower()?.Contains(searchValue) == true)).ToList();
+                    prop.GetValue(m).ToString().ToLower().Contains(searchValue) == true)).ToList();
             }
 
             dataTableOptions.recordsTotal = data.Count;

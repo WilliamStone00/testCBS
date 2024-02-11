@@ -53,7 +53,7 @@
                                                 <label>Opening date</label>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        @*<div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.product.interestRate, new { @class = "form-control", @readonly = true })
                                                 <label>Interest rate</label>
@@ -88,7 +88,7 @@
                                                 @Html.TextBoxFor(m => m.product.yearlyInterestRate, new { @class = "form-control", @readonly = true })
                                                 <label>Yearly interst rate</label>
                                             </div>
-                                        </div>
+                                        </div>*@
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.product.minAmount, new { @class = "form-control", @readonly = true })
@@ -101,12 +101,12 @@
                                                 <label>Max amount</label>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        @*<div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.product.managementFeeFrequency, new { @class = "form-control", @readonly = true })
                                                 <label>Management fee frequency</label>
                                             </div>
-                                        </div>
+                                        </div>*@
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.product.postingFrequency, new { @class = "form-control", @readonly = true })
@@ -155,11 +155,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var d in Model.product.withdrawalLimits)
+                                        @foreach (var d in Model.product.WithdrawalParameters)
                                         {
                                             <tr>
                                                 <td style="width:70%">@d.withdrawalType</td>
-                                                <td style="width:10%">@d.feePercentage</td>
+                                                <td style="width:10%">@d.withdrawalFeeFlat</td>
                                                 <td style="width:10%">@d.minAmount</td>
                                                 <td style="width:10%">@d.maxAmount</td>
                                             </tr>
@@ -206,11 +206,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var d in Model.product.depositLimits)
+                                        @foreach (var d in Model.product.CashDepositParameters)
                                         {
                                             <tr>
                                                 <td style="width:70%">@d.depositType</td>
-                                                <td style="width:10%">@d.feePercentage</td>
+                                                <td style="width:10%">@d.depositFeeFlat</td>
                                                 <td style="width:10%">@d.minAmount</td>
                                                 <td style="width:10%">@d.maxAmount</td>
                                             </tr>
@@ -251,19 +251,21 @@
                             <div class="table-responsive mb-3">
                                 <table class="table table-hover" id="myDataTableT">
                                     <thead class="table-light">
-                                    <tr>
-                                        <th>transferType</th>
-                                        <th>Fee</th>
-                                        <th>Min</th>
-                                        <th>Max</th>
-                                    </tr>
+                                        <tr>
+                                            <th>transferType</th>
+                                            <th>Fee</th>
+                                            <th>Rate</th>
+                                            <th>Min</th>
+                                            <th>Max</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach (var d in Model.product.transferLimits)
+                                    @foreach (var d in Model.product.TransferParameters)
                                     {
                                         <tr>
                                             <td style="width:70%">@d.transferType</td>
-                                            <td style="width:10%">@d.feePercentage</td>
+                                            <td style="width:10%">@d.transferFeeFlat</td>
+                                            <td style="width:10%">@d.transferFeeRate</td>
                                             <td style="width:10%">@d.minAmount</td>
                                             <td style="width:10%">@d.maxAmount</td>
                                         </tr>

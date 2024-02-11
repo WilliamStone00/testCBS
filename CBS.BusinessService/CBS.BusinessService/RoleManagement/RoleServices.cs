@@ -27,7 +27,7 @@ namespace CBS.BusinessService
             try
             {
                 var objRole = await GetRole(id);
-                var inResponse = await _identityConfigApiHelper.DeleteAsync<ResponseObject<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_Role, id), id));
+                var inResponse = await _identityConfigApiHelper.DeleteAsync<ResponseObject<bool>>(string.Format(APICallHelper.Get_Update_Delete_Role, id));
                 if (inResponse.IsSuccess)
                 {
 
@@ -49,7 +49,34 @@ namespace CBS.BusinessService
             }
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> DeleteRolePermission(string id)
+        {
+            try
+            {
+                var deleteRole=new DeleteRolePermission { Ids = new List<string> { id } };
+                var inResponse = await _identityConfigApiHelper.PostAsync<ResponseObject<bool>>(APICallHelper.DeleteRolePermisions, deleteRole);
+                if (inResponse.IsSuccess)
+                {
 
+                    GetExecutionMessages(inResponse, true, $"Permision", MessagesResults.Success,
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
+                    return ExecutionMessage;
+
+                }
+                else
+                {
+                    // Handle failure scenario
+                    GetExecutionMessages(null, false, $"", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+            }
+            return ExecutionMessage;
+        }
+        ///api/RolePermission
         public async Task<IEnumerable<Role>> GetRoles()
         {
             try
@@ -67,22 +94,17 @@ namespace CBS.BusinessService
                 throw;
             }
         }
-        public async Task<Role> GetRolePermissions(string roleID)
+        public async Task<IEnumerable<RolePermission>> GetRolePermissions(string roleID)
         {
             try
             {
-                var cusResponseObject = await _identityConfigApiHelper.GetAsync<ResponseObject<List<Permission>>>(string.Format(APICallHelper.GetRolePermissions, roleID));
+                var cusResponseObject = await _identityConfigApiHelper.GetAsync<ResponseObject<List<RolePermission>>>(string.Format(APICallHelper.GetRolePermissions, roleID));
                 if (cusResponseObject.ApiResponseData!=null)
                 {
-                    var role = cusResponseObject.ApiResponseData.Data;
-                    if (role != null)
-                    {
-                        var roles = new Role { Permissions= role, Name= role.FirstOrDefault().FullName, Id= role.FirstOrDefault().Id, IsTeller=false};
-                        return roles;
-                    }
-                    return new Role();
+                    var rolePermissions = cusResponseObject.ApiResponseData.Data;
+                    return rolePermissions;
                 }
-                return null;
+                return new List<RolePermission>();
             }
             catch (Exception ex)
             {

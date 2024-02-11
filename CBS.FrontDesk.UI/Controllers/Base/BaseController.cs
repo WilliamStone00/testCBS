@@ -145,6 +145,7 @@ namespace CBS.FrontDesk.UI.Controllers
             Session.Timeout = 30;
             HttpContext.Session["Token"] = reqDto.bearerToken;
             HttpContext.Session["menu"] = reqDto.Permissions.ToList();
+
             Response.Cookies.Add(faCookie);
         }
 

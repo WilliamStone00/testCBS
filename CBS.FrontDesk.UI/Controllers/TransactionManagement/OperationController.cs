@@ -29,17 +29,26 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         public async Task<ActionResult> AccountDetails(string KEY = null)
         {
+
+            //502846231941202110
+
             var account = await _acountServices.GetAccountByAccountNumber(KEY);
             return View(account);
         }
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
+        public async Task<ActionResult> Transactions()
+        {
+            return View();
+        }
+        //Transactions
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
             try
             {
                 ViewBag.KEY = KEY;
                 if (path == "transactions")
                 {
-
+                    var account = await _acountServices.GetTransactionsAsync();
+                    return PartialView(partialView, account);
                 }
                 else
                 {
@@ -57,7 +66,6 @@ namespace CBS.FrontDesk.UI.Controllers
                 return RedirectToAction("Index", "Error"); // Redirect to error page
             }
         }
-     
         [HttpPost]
         public async Task<ActionResult> Deposit(Account model)
         {
@@ -90,6 +98,34 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 return Json(new { success = false, status = false, message = "Fill the required fields." });
             }
+        }
+        [HttpPost]
+        public async Task<ActionResult> GetReport(string rptType = null, string ReportName = null, string serviceoption = null,string reportpath=null,string fileTitle=null, string ReadOptions = null, string KEY = null, string path = null, string yearID = null, string datefrom = null, string dateto = null)
+        {
+            if (path == "export_transactions")
+            {
+                var account = await _acountServices.GetTransactionsAsync();
+                this.HttpContext.Session["rptSource"] = _acountServices.GetTransactionHistoryExports(account.TransactionHistories);
+                if (!account.TransactionHistories.Any())
+                {
+                    this.HttpContext.Session["rptSource"] = "empty";
+                }
+                this.HttpContext.Session["rptType"] = rptType;
+                this.HttpContext.Session["ReportName"] = $"{ReportName}.rpt";
+                this.HttpContext.Session["rptpath"] = $"~/{reportpath}/" + ReportName + ".rpt";
+                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+
+            }
+            else if (path == "by_date_history")
+            {
+                //this.HttpContext.Session["rptSource"] = _helper._object.Receipts;
+                //this.HttpContext.Session["DateFrom"] = datefrom;
+                //this.HttpContext.Session["DateTo"] = dateto;
+            }
+           
+
+            return Json("", JsonRequestBehavior.AllowGet);
+
         }
         public async Task<ActionResult> Transfer()
         {

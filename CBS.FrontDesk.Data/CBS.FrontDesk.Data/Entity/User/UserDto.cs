@@ -56,11 +56,12 @@ namespace CBS.FrontDesk.Data.Entity.User
     }
     public class UserRoleDto
     {
-        public Guid? UserId { get; set; }
+        public Guid UserId { get; set; }
         public Guid RoleId { get; set; }
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string RoleName { get; set; }
+        public bool IsTeller { get; set; }
     }
 }

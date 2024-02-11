@@ -12,6 +12,7 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using System.Web;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.User;
 
 namespace CBS.BusinessService.UserManagement
 {
@@ -62,6 +63,20 @@ namespace CBS.BusinessService.UserManagement
                 throw ex;
             }
         }
+        public async Task<IEnumerable<UserRoleDto>> GetUSerRoles()
+        {
+            try
+            {
+                var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+                var roles = await ApiCallerHelper.GetAsync<ResponseObject<List<UserRoleDto>>>(APICallHelper.GetAllUserRoles);
+                return roles.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<IEnumerable<UserList>> GetUserList()
         {
             try

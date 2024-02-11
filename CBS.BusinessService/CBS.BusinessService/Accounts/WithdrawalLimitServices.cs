@@ -88,7 +88,8 @@ namespace CBS.BusinessService.Accounts
             try
             {
 
-                // Make an API call to create an individual profile
+                model.bankId=GetBankID();
+                model.branchId= GetBranchID();
                 var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<WithdrawalLimit>>(APICallHelper.CreateWithdrawalLimits, model);
                 if (response.IsSuccess)
                 {
@@ -123,7 +124,9 @@ namespace CBS.BusinessService.Accounts
                     WithdrawalLimit.withdrawalType = model.withdrawalType;
                     WithdrawalLimit.minAmount = model.minAmount;
                     WithdrawalLimit.maxAmount = model.maxAmount;
-                    WithdrawalLimit.feePercentage = model.feePercentage;
+                    WithdrawalLimit.withdrawalFeeRate = model.withdrawalFeeRate;
+                    WithdrawalLimit.productId = model.productId;
+                    WithdrawalLimit.withdrawalFeeFlat = model.withdrawalFeeFlat;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<WithdrawalLimit>>(string.Format(APICallHelper.Get_Update_Delete_WithdrawalLimits, model.id), WithdrawalLimit);
                     if (response.IsSuccess)
                     {

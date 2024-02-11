@@ -18,4 +18,5 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
       
     }
+   
 }

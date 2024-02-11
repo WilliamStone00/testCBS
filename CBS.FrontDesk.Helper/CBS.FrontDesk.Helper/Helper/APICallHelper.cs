@@ -28,18 +28,21 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_Role = "/api/Role/{0}";
         public static string GetAllRoles = "/api/Role";
         public static string CreateRole = "/api/Role";
+        //
 
         //UserPermission
         public static string Get_Update_Delete_UserPermission = "/api/UserPermission/{0}";
         public static string GetAllUserPermission = "/api/UserPermissions";
         public static string CreateUserPermission = "/api/UserPermission";
         public static string GetUserPermissions = "/api/UserPermission/User/{0}";
+        public static string GetAllUserRoles = "/api/RoleUsers/GetAllUserRoles";
 
         //RolePermission
         public static string Get_Update_Delete_RolePermission = "/api/RolePermission/{0}";
         public static string GetAllRolePermission = "/api/RolePermissions";
         public static string CreateRolePermission = "/api/RolePermission";
         public static string GetRolePermissions = "/api/RolePermission/Role/{0}";
+        public static string DeleteRolePermisions = "/api/RolePermission/Delete";
 
 
         //MenuMaster
@@ -48,7 +51,23 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllMenuMasterToAssignPermission = "/api/MenuMasters/AssignPemission";
         public static string CreateMenuMaster = "/api/MenuMaster";
         public static string GetMenuMasterByParentID = "/api/MenuMaster/Parent/{0}";
-
+        public static string GetAssignPemissions = "/api/MenuMasters/AssignPemission";
+        //CloseFeeParameter
+        public static string Get_Update_Delete_CloseFeeParameter = "/api/v1/CloseFeeParameter/{0}";
+        public static string GetAllCloseFeeParameter = "/api/v1/CloseFeeParameter";
+        public static string CreateCloseFeeParameter = "/api/v1/CloseFeeParameter";
+        //EntryFeeParameter
+        public static string Get_Update_Delete_EntryFeeParameter = "/api/v1/EntryFeeParameter/{0}";
+        public static string GetAllEntryFeeParameter = "/api/v1/EntryFeeParameter";
+        public static string CreateEntryFeeParameter = "/api/v1/EntryFeeParameter";
+        //ManagementFeeParameter
+        public static string Get_Update_Delete_ManagementFeeParameter = "/api/v1/ManagementFeeParameter/{0}";
+        public static string GetAllManagementFeeParameter = "/api/v1/ManagementFeeParameter";
+        public static string CreateManagementFeeParameter = "/api/v1/ManagementFeeParameter";
+        //ReopenFeeParameter
+        public static string Get_Update_Delete_ReopenFeeParameter = "/api/v1/ReopenFeeParameter/{0}";
+        public static string GetAllReopenFeeParameter = "/api/v1/ReopenFeeParameter";
+        public static string CreateReopenFeeParameter = "/api/v1/ReopenFeeParameter";
 
         //Customer
         public static string CreateIndividualProfile = "/api/v1/Customer";
@@ -69,6 +88,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetSavingProducts = "/api/v1/SavingProduct";
         public static string GetCustomerBalance = "/api/v1/Account/Balance/Customer/{0}";
         public static string UpdateIndividualProfile = "/api/v1/Customer/{0}";
+        public static string ActivateOrDiactivateCustomer = "/api/v1/Customer/ActivateOrDis-activate";
+        
         public static string GetCustomerAccounts = "/api/v1/Account/Customer/{0}";
         public static string InitialDeposit = "/api/v1/Transaction/Initiate/{0}";
         public static string GetAllAccounts = "/api/v1/Account";
@@ -79,6 +100,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetTransactionHistoryByAccountNumber = "/api/v1/Transaction/AccountNumber/{0}";
         public static string GetTransactionHistoryByCustomerNumber = "/api/v1/Transaction/Customer/{0}";
         public static string GetAllTransactions = "/api/v1/Transaction";
+        public static string GetTransaction = "/api/v1/Transaction/{0}";
 
         public static string PrimaryTellerProvisioning = "/api/v1/Teller/Provision/PrimaryTeller";
         public static string SubTellerProvisioning = "/api/v1/Teller/Provision/SubTeller";
@@ -152,6 +174,8 @@ namespace CBS.FrontDesk.Helper
         public static string CreateCurrency = "/api/v1/Currency";
         //Branch
         public static string Get_Update_Delete_Branch = "/api/v1/Branch/{0}";
+        public static string GetBranchesByBankID = "api/v1/Branch/GetBranchsByBank/{bankid}";
+        ///api/v1/Branch/GetBranchsByBank/{bankid}
         public static string GetAllBranch = "/api/v1/Branchs";
         public static string CreateBranch = "/api/v1/Branch";
         //Bank
@@ -189,7 +213,9 @@ namespace CBS.FrontDesk.Helper
 
         //Upload FIles
         public static string UploadFile = "/api/FIleManagement/Upload";
-
+        public static string UpdateBankLogo = "/api/v1/UploadBankLogo";
+        public static string UpdateBranchLogo = "/api/v1/UploadBranchLogo";
+        ///api/v1/UploadBranchLogo
         //Loan Application
         public static string Get_Update_Delete_LoanApplication = "/api/v1/LoanApplication/{0}";
         public static string GetAllLoanApplication = "/api/v1/LoanApplications";
@@ -277,6 +303,7 @@ namespace CBS.FrontDesk.Helper
 
         //Accounting Roles
         public static string GetAllAccountingRules = "/api/v1/AccountingRules";
+        //
         //OperationEvent
         //Get,Update,Delete OperationEvent By Id
         public static string Get_Update_Delete_OperationEvent = "/api/v1/OperationEvent/{0}";
@@ -332,6 +359,9 @@ namespace CBS.FrontDesk.Helper
         public static string Get_ChartOfAccount_By_AccountNumber = "/api/v1/ChartOfAccount/GetChartOfAccountByAccountNumber/{0}";
         //Get All ChartOfAccount
         public static string GetAllChartOfAccount = "/api/v1/ChartOfAccounts";
+        public static string GetOperationEventAttributes = "/api/v1/AccountType/GetOperationEventAttributes/{0}";
+        public static string GetAllOperationEventAttributes = "/api/v1/OperationEventAttributes";
+        ///api/v1/OperationEventAttributes
         // POST  Create a ChartOfAccount
         public static string CreateChartOfAccount = "/api/v1/ChartOfAccount";
         public static string GetAllJsTreeNode = "/api/v1/ChartOfAccounts/JsTreeNode";

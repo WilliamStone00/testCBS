@@ -18,6 +18,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string branchId { get; set; }
         [Required(ErrorMessage = "Teller is required")]
         public string tellerId { get; set; }
+        public string depositType { get; set; }
+       
 
     }
     public class WithdrawalRequest

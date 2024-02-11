@@ -1,7 +1,7 @@
 ﻿
 $(document).ready(function () {
 
-    LoadUsers();
+
     $("#btnData").click(function () {
         DownloadLoans('All');
     });

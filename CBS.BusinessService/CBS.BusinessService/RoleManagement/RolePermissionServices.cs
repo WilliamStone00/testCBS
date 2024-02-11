@@ -5,6 +5,7 @@ using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -50,16 +51,23 @@ namespace CBS.BusinessService
             return ExecutionMessage;
         }
 
-        public async Task<IEnumerable<Permission>> GetRolePermissions()
+        public async Task<IEnumerable<StringValues>> GetRolePermissions()
         {
             try
             {
-                var couApiResponse = await _identityConfigApiHelper.GetAsync<ResponseObject<List<Permission>>>(APICallHelper.GetAllRolePermission);
-                if (couApiResponse.IsSuccess)
+                var couApiResponse = await _identityConfigApiHelper.GetAsync<ResponseObject<List<Role>>>(APICallHelper.GetAllRoles);
+                if (couApiResponse.ApiResponseData != null)
                 {
-                    return couApiResponse.ApiResponseData.Data;
+                    var menuMasters = from a in couApiResponse.ApiResponseData.Data
+                                      select new StringValues
+                                      {
+                                          Value = a.Id.ToString(),
+                                          Text = $"{a.Name}-{a.IsTeller}"
+                                      };
+
+                    return menuMasters;
                 }
-                return new List<Permission>();
+                return new List<StringValues>();
             }
             catch (Exception ex)
             {
@@ -98,15 +106,42 @@ namespace CBS.BusinessService
             catch (Exception ex)
             {
                 // Log and handle exception
+
                 throw ex;
             }
         }
-        public async Task<ExecutionMessages> Create(RolePermissionRequestCommand command)
+        public async Task<IEnumerable<PermissionMenuLoader>> GetAssignPermissions()
         {
             try
             {
-
-                var response = await _identityConfigApiHelper.PostAsync<ServiceResponse<RolePermission>>(APICallHelper.CreateRolePermission, command);
+                var cusResponseObject = await _identityConfigApiHelper.GetAsync<ResponseObject<List<PermissionMenuLoader>>>(APICallHelper.GetAssignPemissions);
+                if (cusResponseObject!=null)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<ExecutionMessages> Create(PermissionMenuLoaderDto  command)
+        {
+            try
+            {
+                var rolePermissionRequestCommand = new RolePermissionRequestCommand();
+                rolePermissionRequestCommand.roleID = ConvertStringToGuid(command.roleID);
+                foreach (var a in command.MenuMasterId)
+                {
+                    
+                    rolePermissionRequestCommand.rolePermissionRequests.Add(new PermissionRequest { Delete=true, MenuMasterId=a,
+                      Create= true, Download= true, MenuText="", Read= true, Update= true, Upload= true, Id=Guid.NewGuid().ToString()});
+                  
+                }
+            
+                var response = await _identityConfigApiHelper.PostAsync<ServiceResponse<List<RolePermission>>>(APICallHelper.CreateRolePermission, rolePermissionRequestCommand);
                 if (response.IsSuccess)
                 {
                     // Successful creation
@@ -129,7 +164,7 @@ namespace CBS.BusinessService
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> Update(RolePermissionRequestCommand model)
+        public async Task<ExecutionMessages> Update(PermissionMenuLoaderDto model)
         {
             try
             {

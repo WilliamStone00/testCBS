@@ -17,6 +17,7 @@ using System.IO;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using System.Net.Http.Headers;
 using System.Web.UI.WebControls;
+using CBS.FrontDesk.Data.Entity.Accounting;
 
 namespace CBS.API.Helper
 {
@@ -261,6 +262,10 @@ namespace CBS.API.Helper
             HttpResponseMessage response = await _httpClient.DeleteAsync(apiUrl);
             return await HandleResponse<T>(response);
         }
+    
+
+
+
         public class NullableDoubleConverter : JsonConverter<double?>
         {
             public override double? ReadJson(JsonReader reader, Type objectType, double? existingValue, bool hasExistingValue, JsonSerializer serializer)

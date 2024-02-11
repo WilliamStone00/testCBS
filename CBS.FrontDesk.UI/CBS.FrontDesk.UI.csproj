@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -226,6 +229,7 @@
     <Compile Include="Controllers\Authentication\AuthenticationController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\Configuration\Localization\CountryController.cs" />
+    <Compile Include="Controllers\Configuration\Organ\BranchManagementController.cs" />
     <Compile Include="Controllers\CustomerManagement\IndividualController.cs" />
     <Compile Include="Controllers\ErrorHandler\ErrorController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
@@ -244,6 +248,8 @@
     <Compile Include="Controllers\Loan\Configuration\PeriodController.cs" />
     <Compile Include="Controllers\Loan\Configuration\DocumentController.cs" />
     <Compile Include="Controllers\Loan\Configuration\TaxController.cs" />
+    <Compile Include="Controllers\Report\ReportsController.cs" />
+    <Compile Include="Controllers\RoleManagement\MenuMasterController.cs" />
     <Compile Include="Controllers\RoleManagement\RoleController.cs" />
     <Compile Include="Controllers\RoleManagement\RolePermissionController.cs" />
     <Compile Include="Controllers\Session\SessionController.cs" />
@@ -251,9 +257,15 @@
     <Compile Include="Controllers\TransactionManagement\EndOfDayOperationController.cs" />
     <Compile Include="Controllers\TransactionManagement\OperationController.cs" />
     <Compile Include="Controllers\TransactionManagement\SavingController.cs" />
+    <Compile Include="Controllers\TransactionManagement\TellerManagementController.cs" />
     <Compile Include="Controllers\TransactionManagement\TellerProvissioingController.cs" />
     <Compile Include="Controllers\TransactionManagement\TransactionConfigurationController.cs" />
     <Compile Include="Controllers\UserManagement\UserManagementController.cs" />
+    <Compile Include="DataSet\Transaction\TransactionDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TransactionDS.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -267,6 +279,12 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Reporting\Transactions\Reciepts\Receipts.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Receipts.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1984,6 +2002,17 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Mvc.sitemap" />
+    <Content Include="DataSet\Transaction\TransactionDS.xsc">
+      <DependentUpon>TransactionDS.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet\Transaction\TransactionDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TransactionDS.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="DataSet\Transaction\TransactionDS.xss">
+      <DependentUpon>TransactionDS.xsd</DependentUpon>
+    </Content>
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -2006,9 +2035,12 @@
     <Content Include="Scripts\Js\Accounting\AccountingRuleEntry.js" />
     <Content Include="Scripts\Js\Crud\Config\Localization\Countries.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\CustomersProfile.js" />
+    <Content Include="Scripts\Js\Crud\DropDownLoader.js" />
     <Content Include="Scripts\Js\Crud\Loan\Config\Documents.js" />
+    <Content Include="Scripts\Js\Crud\Operation\Transactions.js" />
     <Content Include="Scripts\Js\Crud\Operation\Operation.js" />
     <Content Include="Scripts\Js\Crud\Operation\Savings.js" />
+    <Content Include="Scripts\Js\Crud\RolePermission.js" />
     <Content Include="Scripts\Js\Crud\User\AlertProfile.js" />
     <Content Include="Scripts\Js\Crud\User\PromoWhitelist.js" />
     <Content Include="Scripts\Js\Crud\User\Services.js" />
@@ -2145,8 +2177,6 @@
     <Content Include="Views\Role\_Data.cshtml" />
     <Content Include="Views\Role\_Update.cshtml" />
     <Content Include="Views\Role\Index.cshtml" />
-    <Content Include="Views\Role\_SetRolePermission.cshtml" />
-    <Content Include="Views\Role\RolePermission.cshtml" />
     <Content Include="Views\Individual\_MaritalStatus.cshtml" />
     <Content Include="Views\Individual\_EmploymentDetails.cshtml" />
     <Content Include="Views\Individual\_BankInformation.cshtml" />
@@ -2157,10 +2187,8 @@
     <Content Include="Views\TransactionConfiguration\_TransferConfig.cshtml" />
     <Content Include="Views\TransactionConfiguration\_DepositConfig.cshtml" />
     <Content Include="Views\TransactionConfiguration\_WithdrawalConfig.cshtml" />
-    <Content Include="Views\TransactionConfiguration\_TellerConfig.cshtml" />
     <Content Include="Views\TransactionConfiguration\_WithdrawalData.cshtml" />
     <Content Include="Views\TransactionConfiguration\_DepositData.cshtml" />
-    <Content Include="Views\TransactionConfiguration\_TellerData.cshtml" />
     <Content Include="Views\TransactionConfiguration\_TransferData.cshtml" />
     <Content Include="Views\Individual\_AddCustomerAccount.cshtml" />
     <Content Include="Views\Individual\_ResetPin.cshtml" />
@@ -2220,12 +2248,37 @@
     <Content Include="Views\EndOfDayOperation\_AccountantViewOfPrimaryTellerHistoryData.cshtml" />
     <Content Include="Views\Operation\Transfer.cshtml" />
     <Content Include="Views\Operation\_Transfer.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_ManagementFeeConfig.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_ManagementFeeData.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_EntryFeeConfig.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_EntryFeeData.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_ClossingFeeConfig.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_ClossingFeeData.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_ReopeningFeeConfig.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_ReopeningFeeData.cshtml" />
+    <Content Include="Views\BranchManagement\_BankData.cshtml" />
+    <Content Include="Views\BranchManagement\_Bank.cshtml" />
+    <Content Include="Views\BranchManagement\_BranchData.cshtml" />
+    <Content Include="Views\BranchManagement\_Branch.cshtml" />
+    <Content Include="Views\TellerManagement\Index.cshtml" />
+    <Content Include="Views\TellerManagement\_PrimaryTellerData.cshtml" />
+    <Content Include="Views\TellerManagement\_PrimaryTeller.cshtml" />
+    <Content Include="Views\BranchManagement\Index.cshtml" />
+    <Content Include="Views\BranchManagement\_ImageUploader.cshtml" />
+    <Content Include="Views\MenuMaster\Index.cshtml" />
+    <Content Include="Views\MenuMaster\_MenuMaster.cshtml" />
+    <Content Include="Views\MenuMaster\_MenuMasterData.cshtml" />
+    <Content Include="Views\RolePermission\_RolePermission.cshtml" />
+    <Content Include="Views\RolePermission\_RolePermissionData.cshtml" />
+    <Content Include="Views\RolePermission\Index.cshtml" />
+    <Content Include="Views\RolePermission\_AddRolePermission.cshtml" />
+    <Content Include="Views\Role\_RolePermissionData.cshtml" />
+    <Content Include="Views\Operation\Transactions.cshtml" />
+    <Content Include="Views\Operation\_TransactionData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\Configuration\Organ\" />
     <Folder Include="Views\DocumentPack\" />
-    <Folder Include="Views\RolePermission\" />
     <Folder Include="Views\Session\" />
   </ItemGroup>
   <ItemGroup>
@@ -2272,6 +2325,15 @@
       <Project>{192960F3-C2BA-4286-A4E6-F0B94DA85450}</Project>
       <Name>CBS.FrontDesk.Helper</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reporting\Transactions\Reciepts\Receipts.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Receipts.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

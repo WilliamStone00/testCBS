@@ -1,157 +1,125 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.OpeningOfTheDay
 
+@using (Html.BeginForm("SubTeller", "TellerProvissioing", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <div class="row mt-2 gy-4">
 
-<div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SubTellerProvissioning.initialAmount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.initialAmount, "", new { @class = "text-danger" })
+                <label style="color:blue">Enter provission amount</label>
+            </div>
+        </div>
 
-    <div class="accordion-item active">
-        <h2 class="accordion-header text-body d-flex justify-content-between"
-            id="accordionPopoutIconThree">
-            <button type="button"
-                    class="accordion-button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#accordionPopoutIcon-3"
-                    aria-expanded="true"
-                    aria-controls="accordionPopoutIcon-3">
-                <i class="mdi mdi-octagram-plus me-2"></i>
-               PROVISSIONING SUB-TELLER
-            </button>
-        </h2>
-        <div id="accordionPopoutIcon-3"
-             class="accordion-collapse collapse show"
-             data-bs-parent="#accordionPopoutIcon">
-            <div class="accordion-body">
-                <div id="mainviewChange">
-                    <div class="change-group">
-
-                        @using (Html.BeginForm("SubTeller", "TellerProvissioing", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-                        {
-                            <div class="row mt-2 gy-4">
-
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.initialAmount, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.initialAmount, "", new { @class = "text-danger" })
-                                        <label style="color:blue">Enter provission amount</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.note10000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.note10000, "", new { @class = "text-danger " })
-                                        <label>Note-10,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.note5000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.note5000, "", new { @class = "text-danger " })
-                                        <label>Note-5,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.note2000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.note2000, "", new { @class = "text-danger " })
-                                        <label>Note-2,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.note1000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.note1000, "", new { @class = "text-danger " })
-                                        <label>Note-1,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.note500, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.note500, "", new { @class = "text-danger " })
-                                        <label>Note-500</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin500, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin500, "", new { @class = "text-danger " })
-                                        <label>Coin-500</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin100, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin100, "", new { @class = "text-danger " })
-                                        <label>Coin-100</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin50, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin50, "", new { @class = "text-danger " })
-                                        <label>Coin-50</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin25, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin25, "", new { @class = "text-danger " })
-                                        <label>Coin-25</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin10, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin10, "", new { @class = "text-danger " })
-                                        <label>Coin-10</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin5, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin5, "", new { @class = "text-danger " })
-                                        <label>Coin-5</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin1, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin1, "", new { @class = "text-danger " })
-                                        <label>Coin-1</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.SubTellerProvissioning.primaryTellerId, new SelectList(ViewBag.PrimaryTeller, "id", "name"), "---Select primary teller---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.primaryTellerId, "", new { @class = "text-danger " })
-                                        <label for="formValidationDob">Select primary teller</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.SubTellerProvissioning.subTellerId, new SelectList(ViewBag.SubTellers, "id", "name"), "---Select teller box---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.subTellerId, "", new { @class = "text-danger " })
-                                        <label for="formValidationDob">Select teller box</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.SubTellerProvissioning.userId, new SelectList(ViewBag.TellerRoles, "id", "name"), "---Select user---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.SubTellerProvissioning.userId, "", new { @class = "text-danger " })
-                                        <label for="formValidationDob">Select teller user</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-4">
-                                <button type="submit" class="btn btn-primary me-2">Provision (Open the day)</button>
-                            </div>
-                        }
-
-                    </div>
-                </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.note10000, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.note10000, "", new { @class = "text-danger " })
+                <label>Note-10,000</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.note5000, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.note5000, "", new { @class = "text-danger " })
+                <label>Note-5,000</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.note2000, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.note2000, "", new { @class = "text-danger " })
+                <label>Note-2,000</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.note1000, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.note1000, "", new { @class = "text-danger " })
+                <label>Note-1,000</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.note500, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.note500, "", new { @class = "text-danger " })
+                <label>Note-500</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin500, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin500, "", new { @class = "text-danger " })
+                <label>Coin-500</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin100, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin100, "", new { @class = "text-danger " })
+                <label>Coin-100</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin50, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin50, "", new { @class = "text-danger " })
+                <label>Coin-50</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin25, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin25, "", new { @class = "text-danger " })
+                <label>Coin-25</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin10, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin10, "", new { @class = "text-danger " })
+                <label>Coin-10</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin5, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin5, "", new { @class = "text-danger " })
+                <label>Coin-5</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SubTellerProvissioning.currencyNotes.coin1, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.currencyNotes.coin1, "", new { @class = "text-danger " })
+                <label>Coin-1</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.SubTellerProvissioning.primaryTellerId, new SelectList(ViewBag.PrimaryTeller, "id", "name"), "---Select primary teller---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.primaryTellerId, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Select primary caisse</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.SubTellerProvissioning.subTellerId, new SelectList(ViewBag.SubTellers, "id", "name"), "---Select teller box---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.subTellerId, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Select caisse to provision</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.SubTellerProvissioning.userId, new SelectList(ViewBag.TellerRoles, "id", "name"), "---Select user---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.SubTellerProvissioning.userId, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Select user to manage the selected caisse</label>
             </div>
         </div>
     </div>
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary me-2">Provision (Open the day)</button>
+    </div>
+}
 
-
-
-</div>

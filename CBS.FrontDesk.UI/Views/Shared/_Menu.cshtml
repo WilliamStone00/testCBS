@@ -10,13 +10,30 @@
         <ul class="menu-inner py-1">
             @foreach (var group in menuItems.Select(m => m.MenuGroup).Distinct()) // Loop through distinct menu groups
             {
-                <li class="menu-header fw-medium mt-4">
-                    <span class="menu-header-text">@group</span>
-                </li>
+                // Get menu items for the current group
+                var groupMenuItems = menuItems.Where(m => m.MenuGroup == group && m.ParentId == 0);
 
-                foreach (var menuItem in menuItems.Where(m => m.ParentId == 0 && m.MenuGroup == group)) // Filtering root items by group
+                // Check if any menu item in the group has child menus
+                var groupHasChildMenus = groupMenuItems.Any(m => menuItems.Any(cm => cm.ParentId == m.MenuMasterId));
+
+                // Render the group only if it has associated menu items with child menus
+                if (groupHasChildMenus)
                 {
-                    @RenderSubMenu(menuItem, menuItems)
+                    <li class="menu-header fw-medium mt-4">
+                        <span class="menu-header-text">@group</span>
+                    </li>
+
+                    foreach (var menuItem in groupMenuItems) // Loop through menu items in the group
+                    {
+                        // Check if the current menu item has child menus
+                        var menuItemHasChildMenus = menuItems.Any(cm => cm.ParentId == menuItem.MenuMasterId);
+
+                        // Render sub-menu only if the current menu item has child menus
+                        if (menuItemHasChildMenus)
+                        {
+                            @RenderSubMenu(menuItem, menuItems)
+                        }
+                    }
                 }
             }
         </ul>
@@ -24,14 +41,19 @@
 }
 
 
+
 @helper RenderSubMenu(CBS.FrontDesk.Data.Entity.DatabaseMenus menuItem, List<CBS.FrontDesk.Data.Entity.DatabaseMenus> menuItems)
 {
-    <li class="menu-item">
-        <a href="javascript:void(0);" class="menu-link menu-toggle">
-            <i class="@menuItem.IconClass"></i> <div> @menuItem.MenuText</div>
-        </a>
-        @if (menuItems.Any(m => m.ParentId == menuItem.MenuMasterId))
-        {
+    // Check if the current menu item has any child items
+    var hasChildItems = menuItems.Any(m => m.ParentId == menuItem.MenuMasterId);
+
+    // Render the submenu only if there are child items
+    if (hasChildItems)
+    {
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="@menuItem.IconClass"></i> <div> @menuItem.MenuText</div>
+            </a>
             <ul class="menu-sub">
                 @foreach (var childItem in menuItems.Where(m => m.ParentId == menuItem.MenuMasterId))
                 {
@@ -46,6 +68,33 @@
                     </li>
                 }
             </ul>
-        }
-    </li>
+        </li>
+    }
 }
+
+
+@*@helper RenderSubMenu(CBS.FrontDesk.Data.Entity.DatabaseMenus menuItem, List<CBS.FrontDesk.Data.Entity.DatabaseMenus> menuItems)
+    {
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="@menuItem.IconClass"></i> <div> @menuItem.MenuText</div>
+            </a>
+            @if (menuItems.Any(m => m.ParentId == menuItem.MenuMasterId))
+            {
+                <ul class="menu-sub">
+                    @foreach (var childItem in menuItems.Where(m => m.ParentId == menuItem.MenuMasterId))
+                    {
+                        <li class="menu-item">
+                            <a href="@Url.Action(childItem.ActionName, childItem.ControllerName)" class="menu-link">
+                                <div>@childItem.MenuText</div>
+                            </a>
+                            @if (menuItems.Any(m => m.ParentId == childItem.MenuMasterId))
+                            {
+                                @RenderSubMenu(childItem, menuItems)// Recursive call for submenus
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
+    }*@

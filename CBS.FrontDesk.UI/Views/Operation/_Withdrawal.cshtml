@@ -32,13 +32,13 @@
                             <input type="hidden" name="actionMethod" value="InitializeData" id="actionMethod" />
                             <div class="row mt-2 gy-4">
                                 @Html.HiddenFor(model => model.WithdrawalRequest.accountNumber)
-                                @if (Model.product.withdrawalLimits.Count() > 0)
+                                @if (Model.product.WithdrawalParameters.Count() > 0)
                                 {
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.WithdrawalRequest.amount, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.WithdrawalRequest.amount, "", new { @class = "text-danger" })
-                                            <label style="color:blue">Enter amount to withdraw (min: @Model.product.withdrawalLimits.FirstOrDefault().minAmount, max: @Model.product.withdrawalLimits.FirstOrDefault().maxAmount)</label>
+                                            <label style="color:blue">Enter amount to withdraw (min: @Model.product.WithdrawalParameters.FirstOrDefault().minAmount, max: @Model.product.WithdrawalParameters.FirstOrDefault().maxAmount)</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">

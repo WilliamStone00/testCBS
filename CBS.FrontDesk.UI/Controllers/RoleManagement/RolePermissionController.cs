@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.RoleManagement
 {
-    public class RolePermissionController : Controller
+    public class RolePermissionController : BaseController
     {
         // GET: RolePermission
         private readonly RolePermissionServices _services;
@@ -21,63 +21,95 @@ namespace CBS.FrontDesk.UI.Controllers.RoleManagement
 
         public async Task<ActionResult> Index()
         {
-
-            return View();
+            await GetList();
+            var data = await _services.GetAssignPermissions();
+            return View(new PermissionMenuLoaderDto { PermissionMenuLoaders = data.ToList() });
         }
+
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(RolePermissionRequestCommand model)
+        public async Task<ActionResult> AddOrUpdate(PermissionMenuLoaderDto model)
         {
-            if (ModelState.IsValid)
-            {
-                var data = await _services.Create(model);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-            }
+            Func<Task<ExecutionMessages>> serviceAction = null;
 
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
-        }
-        [HttpPost]
-        public async Task<ActionResult> Update(RolePermissionRequestCommand model)
-        {
-            if (ModelState.IsValid)
+            if (model.Action == "insert")
             {
-                var data = await _services.Update(model);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-            }
-
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
-        }
-
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
-        {
-            if (path == "list")
-            {
-                var data = await _services.GetRolePermissions();
-                return PartialView(partialView, data);
-            }
-
-            else if (path == "new")
-            {
-                return PartialView(partialView, new RolePermissionRequestCommand());
-            }
-            else if(path == "getby_roleID")
-            {
-                var Tax = await _services.GetRolePermissions(KEY);
-                return PartialView(partialView, Tax);
-
+                serviceAction = GetInsertServiceAction(model.ServiceOption, model);
             }
             else
             {
-                var Tax = await _services.GetRolePermission(KEY);
-                return PartialView(partialView, Tax);
-
+                serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
             }
+
+            if (serviceAction != null)
+            {
+                try
+                {
+                    var data = await serviceAction();
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+                }
+            }
+
+            return Json(new { success = false, status = false, message = "Invalid option selected." });
+        }
+        
+       
+        private Func<Task<ExecutionMessages>> GetInsertServiceAction(string serviceOption, PermissionMenuLoaderDto model)
+        {
+            return () => _services.Create(model);
         }
 
-        public async Task<ActionResult> Delete(List<string> KEYS)
+        private Func<Task<ExecutionMessages>> GetUpdateServiceAction(string serviceOption, PermissionMenuLoaderDto model)
         {
-            var data = await _services.Delete(KEYS);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+            return () => _services.Update(model);
+        }
+
+
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        {
+            await GetList();
+            Func<Task<PartialViewResult>> serviceAction = GetServiceAction(path, partialView, KEY, serviceOption);
+
+            if (serviceAction != null)
+            {
+                var partialResult = await serviceAction();
+
+                if (partialResult != null)
+                {
+                    return partialResult;
+                }
+            }
+
+            return HttpNotFound(); // Or return a default view for handling unknown paths
+        }
+
+        private Func<Task<PartialViewResult>> GetServiceAction(string path, string partialView, string key, string serviceOption)
+        {
+            if (path == "list")
+            {
+                return async () =>
+                {
+                    var data = await _services.GetRolePermissions();
+                    return PartialView(partialView, data);
+
+                };
+            }
+            else
+            {
+                return async () => PartialView(partialView, new PermissionMenuLoaderDto());
+            }
+
+        }
+
+        public async Task<bool> GetList()
+        {
+            var stringValues = await _services.GetRolePermissions();
+            ViewBag.Roles = stringValues.ToList();
+            return true;
         }
     }
 }
