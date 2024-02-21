@@ -1535,7 +1535,7 @@ namespace BusinessServices
         }
         public string GetBranchID()
         {
-            string str = HttpContext.Current.Session["BranchID"].ToString();
+         string str = HttpContext.Current.Session["BranchID"].ToString();
             return str;
         }
         public string GetOrganizationID()

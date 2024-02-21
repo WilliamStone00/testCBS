@@ -253,7 +253,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         RootParentId = mode.Id,
                         LabelEn = mode.LabelEn,
                         LabelFr = mode.LabelFr,
-                        IsBalanceAccount = mode.IsBalanceAccount,
+                        IsBalanceAccount = mode.IsBalanceSheetAccount,
                         AccountNumber = model.ChartOfAccount.AccountNumber
                     };
                     return () => _chartOfAccountServices.Create(modelc);
@@ -265,7 +265,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         RootParentId = mode.Id,
                         LabelEn = mode.LabelEn,
                         LabelFr = mode.LabelFr,
-                        IsBalanceAccount = mode.IsBalanceAccount,
+                        IsBalanceAccount = mode.IsBalanceSheetAccount,
                         AccountNumber = mode.AccountNumber
                     };
                     return () => _chartOfAccountServices.Create(modelcomp);
@@ -320,55 +320,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             return partialResult;
         }
-        public async Task<ActionResult> Delete(string KEY, string serviceOption)
-        {
-
-
-            if (serviceOption == "account")
-            {
-                var data = await _AccountServices.Delete(KEY);
-                return Json(new { success = data, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
-
-
-            }
-            else if (serviceOption == "operationEvent")
-            {
-                var data = await _OperationEventService.Delete(KEY);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
-
-            }
-            else if (serviceOption == "operationEventAttribute")
-            {
-                var data = await _OperationEventAttributeService.Delete(KEY);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
-
-            }
-            else if (serviceOption == "accountingRuleEntry")
-            {
-                var data = await _accountingEntryRuleService.Delete(KEY);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
-
-            }
-            else if (serviceOption == "chartOfAccount")
-            {
-
-                var data = await _chartOfAccountServices.Delete(KEY);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
-
-            }
-            else if (serviceOption == "accountType")
-            {
-
-                var data = await _AccountTypeServices.Delete(KEY);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
-
-            }
-            else
-            {
-                return null;
-            }
-
-        }
+       
         private async Task<PartialViewResult> GetServiceAction(string path, string partialView, string key, string serviceOption)
         {
             if (serviceOption == "account")
@@ -416,13 +368,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else if (path == "new")
                 {
                     var chartOfAccount = await _chartOfAccountServices.GetChartOfAccountByAccountNumber(key);
-                    Data.Account account = new Data.Account
+                    if (chartOfAccount==null)
                     {
-                        ChartOfAccountId = (chartOfAccount == null) ? "xxxxxxxxxx" : chartOfAccount.Id,
-                        AccountNumber = (chartOfAccount == null) ? "xxxxxxxxxx" : chartOfAccount.AccountNumber,
-
-                    };
-                    return PartialView(partialView, new AccountingConfiguration { Account = account, ChartOfAccount = chartOfAccount });
+                        chartOfAccount = new  ChartOfAccount
+                        {
+                            Id = "XXXXXXX",
+                         AccountNumber = "XXXXXXX" 
+                        };
+                    }
+                     
+                    return PartialView(partialView, new AccountingConfiguration { ChartOfAccount = chartOfAccount });
                 }
                 else
                 {
@@ -542,7 +497,55 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         OperationEventName = e.OperationEventName
                     }).ToList();
         }
+        public async Task<ActionResult> Delete(string KEY, string serviceOption)
+        {
 
+
+            if (serviceOption == "account")
+            {
+                var data = await _AccountServices.Delete(KEY);
+                return Json(new { success = data, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+
+            }
+            else if (serviceOption == "operationEvent")
+            {
+                var data = await _OperationEventService.Delete(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
+            else if (serviceOption == "operationEventAttribute")
+            {
+                var data = await _OperationEventAttributeService.Delete(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
+            else if (serviceOption == "accountingRuleEntry")
+            {
+                var data = await _accountingEntryRuleService.Delete(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
+            else if (serviceOption == "chartOfAccount")
+            {
+
+                var data = await _chartOfAccountServices.Delete(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
+            else if (serviceOption == "accountType")
+            {
+
+                var data = await _AccountTypeServices.Delete(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+                return null;
+            }
+
+        }
     }
 
 }

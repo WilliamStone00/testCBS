@@ -109,7 +109,9 @@ namespace CBS.FrontDesk.Helper
         public static string PrimaryTellerEndOfDay = "/api/v1/Teller/PrimaryTellerEndOfDay";
         ///api/v1/Teller/SubTellerEndOfDay
         //
-
+        public static string  TellerCashReplenishmentRequest = "/api/v1/CashReplenishment";
+        public static string TellerCashReplenishmentRequestApproval = "/api/v1/CashReplenishment/{0}";
+        public static string CurrentOpenOfDayHistory = "/api/v1/Teller/CurrentOpenOfDayHistory";
         //Account
         public static string AddCustomerSavingAccount = "/api/v1/Account";
 
@@ -373,7 +375,7 @@ namespace CBS.FrontDesk.Helper
  
         //Account/api/v1/AccountingEntry/AddCashInfusionCommand
         //Credit a specifique Account record AddCashInfusionCommand
-        public static string CashInfusion = "/api/v1/AccountingEntry/AddCashInfusionCommand";
+      
         public static string GetAccountByReference = "/api/v1/Account/GetAccountByReference/{id}";
         public static string GetAccountByAccountNumber = "/api/v1/Account/GetAccountByAccountNumber/{id}";
         public static string GetAccountByAccountType = "/api/v1/Account/GetAccountByAccountType/{id}";
@@ -403,19 +405,10 @@ namespace CBS.FrontDesk.Helper
         public static string AccountingEntry_Entries = "/api/v1/AccountingEntries";
 
 
-        //
-        ///api/v1/AccountingEntry/AddCashInfusionCommand
-        ///api/v1/AccountingEntries
-        ///api/v1/AccountingEntries/RetrieveEntries
-        ///api/v1/AccountingEntries/Generate4ColumnTrialBalance
-        ///api/v1/AccountingEntries/Generate6ColumnTrialBalance
-        ///api/v1/AccountingEntry/MakeAccountPosting
-        ///api/v1/AccountingEntry/OpeningAndClosingOfDayPostingEventPosting
-        ///api/v1/AccountingEntry/DepositPostingEventCommand
-        ///api/v1/AccountingEntry/ManualPostingEventCommand
-        ///api/v1/AccountingEntry/FinancialStatement
-        ///api/v1/AccountingEntry/{referenceId}
-
-
+        public static string CashReplenishmentRequest = "/api/v1/BankingOperation/RequestForCashReplenishment";
+        public static string CashReplenishmentResponse = "/api/v1/BankingOperation/ResponseToCashReplenishment";
+        public static string GetAllCashReplenishmentRequests = "/api/v1/BankingOperation/GetAllCashReplenishmentRequests";
+        public static string GetCashReplenishmentRequestById = "/api/v1/BankingOperation/GetCashReplenishmentRequestById/{0}";
+        public static string GetCashReplenishmentRequestIdReference = "/api/v1/BankingOperation/GetCashReplenishmentRequestByRefereceId/{0}";
     }
 }

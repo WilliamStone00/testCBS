@@ -16,13 +16,13 @@
                 <div class="d-flex justify-content-between flex-column mb-3 mb-md-0 pe-md-3">
                     <ul class="nav nav-align-left nav-pills flex-column">
                         <li class="nav-item">
-                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#attributesChartOfAccount">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#attributesChartOfAccount">
                                 <i class="mdi mdi-book-open-page-variant me-2"></i>
                                 <span class="align-middle">Chart Of Account</span>
                             </button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#restock">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#restock">
                                 <i class="mdi mdi-book-open-page-variant me-2"></i>
                                 <span class="align-middle">Account</span>
                             </button>
@@ -68,7 +68,7 @@
 
             <div class="col-12 col-md-9 pt-4 pt-md-0">
                 <div class="tab-content p-0 pe-xl-0 ps-md-3">
-                    <div class="tab-pane fade active" id="attributesChartOfAccount" role="tabpanel">
+                    <div class="tab-pane fade" id="attributesChartOfAccount" role="tabpanel">
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
                                 <a type="button" onclick="AddORUpdateGen(null,'datalistingview_ChartOfAccount','_ChartOfAccountDtoData','new','AccountingConfiguration','chartOfAccount')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Back to chart of account">
@@ -91,7 +91,7 @@
                         </div>
 
                     </div>
-                    <div class="tab-pane fade show" id="restock" role="tabpanel">
+                    <div class="tab-pane fade show active" id="restock" role="tabpanel">
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
                                 <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Account','_ChartOfAccountData','new','AccountingConfiguration','account')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Back to chart of account">
@@ -102,6 +102,7 @@
                                 </a>
                                 <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Account','_CreateAccount','new','AccountingConfiguration','account')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
                                     <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    <span class="tf-icons mdi mdi-bank-plus mdi-18px"></span>
                                 </a>
                                 <a type="button" id="loadAccounts" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Reload Chart Of Account">
                                     <span class="tf-icons mdi mdi-refresh-auto mdi-18px"></span>

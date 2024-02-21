@@ -36,8 +36,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string CrAccountNumber { get; set; }
         public decimal DrAmount { get; set; }
         public decimal CrAmount { get; set; }
+        public decimal CurrentBalance { get; set; }
 
- 
         public string OperationType { get; set; }
         public string CrCurrentBalance { get; set; }
         public string DrCurrentBalance { get; set; }
@@ -52,16 +52,18 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class AccountingEntryDto
     {
         // Unique ID number for the entry=
-        public string Id { get; set; }
-        public DateTime EntryDate { get; set; }
+        //public string Id { get; set; }
+        public string EntryDate { get; set; }
         public string Description { get; set; }
         public string TransactionReference { get; set; }
         public string AccountNumber { get; set; }
-        public string AccountHolder { get; set; }
+        public string AccountName { get; set; }
         public string DebitAmount { get; set; }
         public string CreditAmount { get; set; }
-        public string CrCurrentBalance { get; set; }
-        public string DrCurrentBalance { get; set; }
-
+        //public string CrCurrentBalance { get; set; }
+        //public string DrCurrentBalance { get; set; }
+   public string CurrentBalance { get; set; }
+        public string CreditAccountBalance { get; set; }
+        public string DebitAccountBalance { get; set; }
     }
 }

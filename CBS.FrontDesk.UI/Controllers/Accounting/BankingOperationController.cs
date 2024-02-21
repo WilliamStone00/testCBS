@@ -68,7 +68,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 var entry = model.ManualAccountingEntry;
 
-                var data = await _accountingEntryServices.Create(entry);
+                var data = await _accountingEntryServices.CreateManualAccountingEntry(entry);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
             }
 
@@ -81,12 +81,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
 
                 var entry = model.CashInfusion;
-                var data = await _accountingEntryServices.CreateCashInfusion(entry);
+                var data = await _accountingEntryServices.CashReplenishmentRequest(entry);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
             }
 
             return Json(new { success = false, status = false, message = "Fill the required fields." });
         }
+
+
 
     }
 }
