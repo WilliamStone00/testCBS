@@ -330,7 +330,7 @@ function InfinitiySroll(iTable, iAction, iParams) {
     };
     this.AddTableLines(0);
 }
-
+//GoBackToMenu
 
 function LoadDTSelect(tableID, order) {
     var T = '#' + tableID;

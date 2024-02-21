@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "Successfully -Cash Replenishment Request";
+
+}
+@model CBS.FrontDesk.Data.Entity.Accounting.DetailsDto
+
+
+<div class="row invoice-preview">
+    <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+        <div class="accordion-item active">
+            <h2 class="accordion-header text-body d-flex justify-content-between"
+                id="accordionPopoutIconThree">
+                <button type="button"
+                        class="accordion-button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#accordionPopoutIcon-3"
+                        aria-expanded="true"
+                        aria-controls="accordionPopoutIcon-3">
+                    <i class="mdi mdi-bank-plus me-2"></i>
+                    <span style="color:red"> Request ReferenceId : @Model.id not validated </span>
+                </button>
+            </h2>
+            <div class="card-body">
+
+                <br />
+                <div class="collapse show">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Cash Replenishment Request Details</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            <tr>
+                                <td>Invoice Number</td>
+                                <td>@Model.id </td>
+                            </tr>
+                            <tr>
+                                <td>Amount Requested</td>
+                                <td>@Model.requestedAmount.ToString("N") </td>
+                            </tr>
+                            <tr>
+                                <td>Request Message</td>
+                                <td>@Model.requetcomment </td>
+                            </tr>
+                            <tr>
+                                <td>Requested By </td>
+                                <td> @Model.requesterUserId </td>
+                            </tr>
+                            <tr>
+                                <td>Approved By </td>
+                                <td> @Model.approvedBy </td>
+                            </tr>
+                            <tr>
+                                <td>Amount Approved</td>
+                                <td>@Model.confirmedAmount.ToString("N") </td>
+                            </tr>
+
+
+                            <tr>
+                                <td>Approved Date</td>
+                                <td>@Model.approvedDate </td>
+                            </tr>
+                            <tr>
+                                <td>Approved Message</td>
+                                <td>@Model.approvedComment </td>
+                            </tr>
+                            <tr>
+
+
+                                <td> Status</td>
+                                @if (@Model.approvedStatus.ToUpper().Equals("PENDING"))
+                                {
+                                    <td class="badge bg-label-primary rounded-pill text-uppercase">
+                                        @Model.approvedStatus
+                                    </td>
+
+
+                                }
+                                else
+                                {
+                                    if (@Model.approvedStatus.ToUpper().Equals("SUCCESS"))
+                                    {
+                                        <td class="badge bg-label-success rounded-pill text-uppercase">
+                                            @Model.approvedStatus
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                            @Model.approvedStatus
+                                        </td>
+                                    }
+
+                                }
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                < <div class="card card-action mb-5">
+                    <h5 class="card-header"><span style="color:forestgreen">Your cash replenishment request has been sent succesfully. Patiently wait for your managers approval</span> </h5>
+
+                    <div class="col-12 shift-right">
+
+                        <button type="submit" class="btn btn-primary click-to-go-back-to-menu" onclick="refreshPageHome()">Back to home. </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/Js/main.js/CashFlowManagement.js"></script>
+}

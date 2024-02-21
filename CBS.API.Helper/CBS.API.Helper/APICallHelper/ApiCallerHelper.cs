@@ -354,6 +354,19 @@ namespace CBS.API.Helper
 
                     if (response.IsSuccessStatusCode)
                     {
+                        if (responseData.Contains("\"data\":true"))
+                        {
+                            jsonResponse = JObject.Parse(responseData);
+                            var obj = JsonConvert.DeserializeObject<dynamic>(responseData);
+                            message = jsonResponse["message"]?.ToString();
+                            statusDescription = jsonResponse["statusDescription"]?.ToString();
+
+                            return new ApiResponse<T>
+                            {
+                                IsSuccess = true,
+                                Message = statusDescription + " " + message
+                            };
+                        }
                         T data = JsonConvert.DeserializeObject<T>(responseData, new JsonSerializerSettings
                         {
                             Converters = new List<JsonConverter> { new NullableDoubleConverter() },
@@ -429,16 +442,7 @@ namespace CBS.API.Helper
                         
                         else if (response.StatusCode == HttpStatusCode.BadRequest||response.StatusCode == HttpStatusCode.Conflict || response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.Forbidden)
                         {
-                            //jsonResponse = JObject.Parse(responseData);
-                            //message = jsonResponse["message"]?.ToString();
-                            //statusDescription = jsonResponse["statusDescription"]?.ToString();
-                            ////List<string> errorMessages = JsonConvert.DeserializeObject<List<string>>(responseData);
-                            //return new ApiResponse<T>
-                            //{
-                            //    IsSuccess = false,
-                            //    Message = $"Request failed with status code {(int)response.StatusCode}, Message: {message}, Description: {statusDescription}"
-                            //};
-
+                            
                             T data;
                             try
                             {
@@ -454,6 +458,20 @@ namespace CBS.API.Helper
                                         IsSuccess = false,
                                         Message = $"Request failed with status code {(int)response.StatusCode}. Description: {statusDescription}, Message: {message}"
                                     };
+                                }
+                                else if (responseData.Contains("\"data\":false"))
+                                {
+                                    jsonResponse = JObject.Parse(responseData);
+                                    var obj = JsonConvert.DeserializeObject<dynamic>(responseData);
+                                    message = jsonResponse["message"]?.ToString();
+                                    statusDescription = jsonResponse["statusDescription"]?.ToString();
+                               
+                                        return new ApiResponse<T>
+                                        {
+                                            IsSuccess = false,
+                                            Message = statusDescription+" "+ message
+                                        };
+                                    
                                 }
                                 else
                                 {

@@ -14,37 +14,53 @@
                 {<input type="hidden" name="ServiceOption" value="account" id="ServiceOption" />
                     
                    
-            <div class="row mt-2 gy-4">
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Account.AccountNumber, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Account.AccountNumber, "", new { @class = "text-danger" })
-                        <label>AccountNumber</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Account.AccountHolder, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Account.AccountHolder, "", new { @class = "text-danger" })
-                        <label>AccountLabel</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.Account.AccountTypeId, new SelectList(ViewBag.AccountTypes == null ? "" : ViewBag.AccountTypes, "Text", "Value"), "---Select AccountType---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.Account.AccountTypeId, "", new { @class = "text-danger" })
-                        <label>AccountType</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.Account.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---Select Accounts---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.Account.ChartOfAccountId, "", new { @class = "text-danger" })
-                        <label>ChartOfAccount</label>
-                    </div>
-                </div>
-
-            </div>
+                 <div class="row mt-2 gy-4">
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+                             @Html.TextBoxFor(m => m.Account.AccountNumber, new { @class = "form-control" })
+                             @Html.ValidationMessageFor(m => m.Account.AccountNumber, "", new { @class = "text-danger" })
+                             <label>AccountNumber</label>
+                         </div>
+                     </div>
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+                             @Html.TextBoxFor(m => m.Account.AccountHolder, new { @class = "form-control" })
+                             @Html.ValidationMessageFor(m => m.Account.AccountHolder, "", new { @class = "text-danger" })
+                             <label>AccountLabel</label>
+                         </div>
+                     </div>
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+                             @Html.DropDownListFor(m => m.Account.AccountTypeId, new SelectList(ViewBag.AccountTypes == null ? "" : ViewBag.AccountTypes, "Text", "Value"), "---Select AccountType---", new { @class = "form-control select2", @search = "true" })
+                             @Html.ValidationMessageFor(m => m.Account.AccountTypeId, "", new { @class = "text-danger" })
+                             <label>AccountType</label>
+                         </div>
+                     </div>
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+                             @Html.DropDownListFor(m => m.Account.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                             @Html.ValidationMessageFor(m => m.Account.BookingDirection, "", new { @class = "text-danger" })
+                             <label>BookingDirection</label>
+                         </div>
+                     </div>
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+                             @Html.DropDownListFor(m => m.Account.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---Select ChartOfAccount---", new { @class = "form-control select2", @search = "true" })
+                             @Html.ValidationMessageFor(m => m.Account.ChartOfAccountId, "", new { @class = "text-danger" })
+                             <label>ChartOfAccount</label>
+                         </div>
+                     </div>
+                     <div class="form-check mb-4">
+                         @Html.CheckBoxFor(model => model.Account.IsBalanceSheetAccount, new { @class = "form-check-input" })
+                       
+                         <label>Is a balance sheet account</label>
+                     </div>
+                     <div class="form-check mb-4">
+                         @Html.CheckBoxFor(model => model.Account.CanBeNegative, new { @class = "form-check-input" })
+                       
+                         <label>Check if account can have a negative balance</label>
+                     </div>
+                 </div>
                     <div class="mt-4">
                         @if (Model.Account.Id == null)
                         {

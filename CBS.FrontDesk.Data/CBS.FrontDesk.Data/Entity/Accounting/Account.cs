@@ -14,6 +14,9 @@ namespace CBS.FrontDesk.Data
         public string AccountTypeId { get; set; }
         public string ChartOfAccountId { get; set; }
         public string AccountOwnerId { get; set; }
+        public string BookingDirection { get; set; }
+        public bool CanBeNegative { get; set; }
+        public bool IsBalanceSheetAccount { get; set; }
     }
 
     public class AccountHoDto

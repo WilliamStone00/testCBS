@@ -112,8 +112,9 @@
 // bootstrap-maxlength & repeater (jquery)
 $(function () {
   var maxlengthInput = $('.bootstrap-maxlength-example'),
-    formRepeater = $('.form-repeater');
-
+        formRepeater = $('.form-repeater');
+    console.log('=======================');
+    console.log(formRepeater);
   // Bootstrap Max Length
   // --------------------------------------------------------------------
   if (maxlengthInput.length) {
@@ -162,3 +163,7 @@ $(function () {
     });
   }
 });
+
+$(function () {
+    $
+})

@@ -9,113 +9,133 @@
             @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { id = "chartOfAccountForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
             {
 
-
-                if (@Model.ChartOfAccount == null)
+                if (@Model.ChartOfAccount.Id.Contains("XXXXX"))
                 {
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Add New Account:</h5>
-                        <small class="text-body float-end">
-                            You are about to create a new item on your accounting chart kindly makesure you follow the strictly the chart Of Account
-                            applied in COBAC Zone
-                        </small>
-                    </div>
-                    <div class="card-body">
-                        <input type="hidden" name="ServiceOption" value="chartOfAccount" id="ServiceOption" />
-                        <!-- Hidden field for AccountNumber -->
+                    <div class="misc-wrapper text-center">
+                        <br /> <br />    <br /> <br />
+                        <h1 class="mb-2 mx-2" style="font-size: 3rem">422</h1>
+                        <h4 class="mb-2">Internal server error</h4>
+                        <p class="mb-2 mx-2">Makesure the chart of account you are creating if found under an existing chart of account.</p>
+                        <div class="d-flex justify-content-center mt-5">
 
-                        <div class="form-check mb-4">
-                            @Html.CheckBoxFor(model => model.ChartOfAccount.IsForUpdate, new { @class = "form-check-input" })
-
-                            @if (Model.ChartOfAccount != null)
-                            {
-                                <label>If you wish to update informations on the chart of account: @Model.ChartOfAccount.AccountNumber-@Model.ChartOfAccount.LabelEn</label>
-
-                            }
-                            else
-                            {
-
-                            }
+                            <div>
+                                <a href="/AccountingConfiguration" class="btn btn-primary text-center my-5">Click to Reload Page</a>
+                            </div>
                         </div>
-                        <div class="form-floating form-floating-outline mb-4">
-                            @Html.TextBoxFor(model => model.ChartOfAccount.AccountNumber, new { @class = "form-control", placeholder = "Account Number" })
-                            @Html.LabelFor(model => model.ChartOfAccount.AccountNumber, new { @for = "accountNumber" })
-                        </div>
-
-                        <div class="form-floating form-floating-outline mb-4">
-                            @Html.TextBoxFor(model => model.ChartOfAccount.LabelEn, new { @class = "form-control", placeholder = "Account Label" })
-                            <label>Account label(English)</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-4">
-                            @Html.TextBoxFor(model => model.ChartOfAccount.LabelFr, new { @class = "form-control", placeholder = "Account Label" })
-                            <label>Account label(French)</label>
-                        </div>
-                        <div class="form-check mb-4">
-                            @Html.CheckBoxFor(model => model.ChartOfAccount.IsBalanceAccount, new { @class = "form-check-input" })
-                            @Html.LabelFor(model => model.ChartOfAccount.IsBalanceAccount, new { @class = "form-check-label" })
-                        </div>
-
-                        @if (@Model.ChartOfAccount == null)
-                        {
-                            <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">Save</button>
-                            @Html.HiddenFor(model => model.ChartOfAccount.ParentAccountId)
-                            <input type="hidden" name="Action" value="insert" id="Action" />
-                        }
-                        else
-                        { <button type="submit" class="btn btn-primary me-2">Update</button>
-                            @Html.HiddenFor(model => model.ChartOfAccount.AccountNumber)
-                            <input type="hidden" name="Action" value="update" id="Action" />
-                        }
-
                     </div>
                 }
                 else
                 {
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <small class="text-body float-end">You are about to create a new account rubrique under @Model.ChartOfAccount.AccountNumber-@Model.ChartOfAccount.LabelEn</small><br>
-                    </div>
-                    <div class="card-body">
-                        <input type="hidden" name="ServiceOption" value="chartOfAccount" id="ServiceOption" />
-                        <!-- Hidden field for AccountNumber -->
-
-                        <div class="form-check mb-4">
-                            @Html.CheckBoxFor(model => model.ChartOfAccount.IsForUpdate, new { @class = "form-check-input" })
-
-
-                            <label>If you wish to update informations on the chart of account: @Model.ChartOfAccount.AccountNumber-@Model.ChartOfAccount.LabelEn</label>
+                    if (@Model.ChartOfAccount == null)
+                    {
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Add New Account:</h5>
+                            <small class="text-body float-end">
+                                You are about to create a new item on your accounting chart kindly makesure you follow the strictly the chart Of Account
+                                applied in COBAC Zone
+                            </small>
                         </div>
-                        <div class="form-floating form-floating-outline mb-4">
-                            @Html.TextBoxFor(model => model.ChartOfAccount.AccountNumber, new { @class = "form-control", placeholder = "Account Number" })
-                            @Html.LabelFor(model => model.ChartOfAccount.AccountNumber, new { @for = "accountNumber" })
+                        <div class="card-body">
+                            <input type="hidden" name="ServiceOption" value="chartOfAccount" id="ServiceOption" />
+                            <!-- Hidden field for AccountNumber -->
+
+                            <div class="form-check mb-4">
+                                @Html.CheckBoxFor(model => model.ChartOfAccount.IsForUpdate, new { @class = "form-check-input" })
+                                <label>If you wish to update informations on the chart of account: @Model.ChartOfAccount.AccountNumber-@Model.ChartOfAccount.LabelEn</label>
+                            </div>
+                            <div class="form-floating form-floating-outline mb-4">
+                                @Html.TextBoxFor(model => model.ChartOfAccount.AccountNumber, new { @class = "form-control", placeholder = "Account Number" })
+                                @Html.LabelFor(model => model.ChartOfAccount.AccountNumber, new { @for = "accountNumber" })
+                            </div>
+
+                            <div class="form-floating form-floating-outline mb-4">
+                                @Html.TextBoxFor(model => model.ChartOfAccount.LabelEn, new { @class = "form-control", placeholder = "Account Label" })
+                                <label>Account label(English)</label>
+                            </div>
+                            <div class="form-floating form-floating-outline mb-4">
+                                @Html.TextBoxFor(model => model.ChartOfAccount.LabelFr, new { @class = "form-control", placeholder = "Account Label" })
+                                <label>Account label(French)</label>
+                            </div>
+                            <div class="form-check mb-4">
+                                @Html.CheckBoxFor(model => model.ChartOfAccount.IsBalanceSheetAccount, new { @class = "form-check-input" })
+
+                                <label>Is a balance sheet account</label>
+                            </div>
+                            <div class="form-check mb-4">
+                                @Html.CheckBoxFor(model => model.ChartOfAccount.CanBeNegative, new { @class = "form-check-input" })
+
+                                <label>Check if account can have a negative balance</label>
+                            </div>
+                            <div class="form-check mb-4">
+                                @Html.CheckBoxFor(model => model.ChartOfAccount.CreateAccount, new { @class = "form-check-input" })
+
+                                <label>Check if you which to create the account directly for operation</label>
+                            </div>
+
+                            @if (@Model.ChartOfAccount == null)
+                            {
+                                <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">Save</button>
+                                @Html.HiddenFor(model => model.ChartOfAccount.ParentAccountId)
+                                <input type="hidden" name="Action" value="insert" id="Action" />
+                            }
+                            else
+                            { <button type="submit" class="btn btn-primary me-2">Update</button>
+                                @Html.HiddenFor(model => model.ChartOfAccount.AccountNumber)
+                                <input type="hidden" name="Action" value="update" id="Action" />
+                            }
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <small class="text-body float-end">You are about to create a new account rubrique under @Model.ChartOfAccount.AccountNumber-@Model.ChartOfAccount.LabelEn</small><br>
+                        </div>
+                        <div class="card-body">
+                            <input type="hidden" name="ServiceOption" value="chartOfAccount" id="ServiceOption" />
+                            <!-- Hidden field for AccountNumber -->
+
+                            <div class="form-check mb-4">
+                                @Html.CheckBoxFor(model => model.ChartOfAccount.IsForUpdate, new { @class = "form-check-input" })
+
+
+                                <label>If you wish to update informations on the chart of account: @Model.ChartOfAccount.AccountNumber-@Model.ChartOfAccount.LabelEn</label>
+                            </div>
+                            <div class="form-floating form-floating-outline mb-4">
+                                @Html.TextBoxFor(model => model.ChartOfAccount.AccountNumber, new { @class = "form-control", placeholder = "Account Number" })
+                                @Html.LabelFor(model => model.ChartOfAccount.AccountNumber, new { @for = "accountNumber" })
+                            </div>
+
+                            <div class="form-floating form-floating-outline mb-4">
+                                @Html.TextBoxFor(model => model.ChartOfAccount.LabelEn, new { @class = "form-control", placeholder = "Account Label" })
+                                <label>Account label(English)</label>
+                            </div>
+                            <div class="form-floating form-floating-outline mb-4">
+                                @Html.TextBoxFor(model => model.ChartOfAccount.LabelFr, new { @class = "form-control", placeholder = "Account Label" })
+                                <label>Account label(French)</label>
+                            </div>
+                            <div class="form-check mb-4">
+                                @Html.CheckBoxFor(model => model.ChartOfAccount.IsBalanceSheetAccount, new { @class = "form-check-input" })
+                                @Html.LabelFor(model => model.ChartOfAccount.IsBalanceSheetAccount, new { @class = "form-check-label" })
+                            </div>
+
+                            @if (@Model.ChartOfAccount == null)
+                            {
+                                <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">Save</button>
+                                @Html.HiddenFor(model => model.ChartOfAccount.ParentAccountId)
+                                <input type="hidden" name="Action" value="insert" id="Action" />
+                            }
+                            else
+                            { <button type="submit" class="btn btn-primary me-2">Update</button>
+                                @Html.HiddenFor(model => model.ChartOfAccount.AccountNumber)
+                                <input type="hidden" name="Action" value="update" id="Action" />
+                            }
+
                         </div>
 
-                        <div class="form-floating form-floating-outline mb-4">
-                            @Html.TextBoxFor(model => model.ChartOfAccount.LabelEn, new { @class = "form-control", placeholder = "Account Label" })
-                            <label>Account label(English)</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-4">
-                            @Html.TextBoxFor(model => model.ChartOfAccount.LabelFr, new { @class = "form-control", placeholder = "Account Label" })
-                            <label>Account label(French)</label>
-                        </div>
-                        <div class="form-check mb-4">
-                            @Html.CheckBoxFor(model => model.ChartOfAccount.IsBalanceAccount, new { @class = "form-check-input" })
-                            @Html.LabelFor(model => model.ChartOfAccount.IsBalanceAccount, new { @class = "form-check-label" })
-                        </div>
-
-                        @if (@Model.ChartOfAccount == null)
-                        {
-                            <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">Save</button>
-                            @Html.HiddenFor(model => model.ChartOfAccount.ParentAccountId)
-                            <input type="hidden" name="Action" value="insert" id="Action" />
-                        }
-                        else
-                        { <button type="submit" class="btn btn-primary me-2">Update</button>
-                            @Html.HiddenFor(model => model.ChartOfAccount.AccountNumber)
-                            <input type="hidden" name="Action" value="update" id="Action" />
-                        }
-
-                    </div>
-
+                    }
                 }
+
 
 
             }

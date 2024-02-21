@@ -29,16 +29,17 @@ namespace CBS.BusinessService.Accounting
                         from crAccount in crJoined.DefaultIfEmpty()
                         select new AccountingEntryDto
                         {
-                            Id = entry.Id,
-                            EntryDate = entry.EntryDate,
+                      
+                            EntryDate = entry.EntryDate.Date.ToShortDateString(),
+                           
+                            AccountNumber = entry.EntryType == "DEBIT" ? drAccount?.AccountNumber : crAccount?.AccountNumber,
+                            AccountName = entry.EntryType == "DEBIT" ? drAccount?.AccountHolder : crAccount?.AccountHolder,
                             Description = entry.Description,
                             TransactionReference = entry.ReferenceID,
-                            AccountNumber = entry.EntryType == "DEBIT" ? drAccount?.AccountNumber : crAccount?.AccountNumber,
-                            AccountHolder = entry.EntryType == "DEBIT" ? drAccount?.AccountHolder : crAccount?.AccountHolder,
                             DebitAmount = entry.EntryType == "DEBIT" ? entry.DrAmount.ToString() : "0",
                             CreditAmount = entry.EntryType == "CREDIT" ? entry.CrAmount.ToString() : "0",
-                            CrCurrentBalance = entry.CrCurrentBalance.ToString(),
-                            DrCurrentBalance = entry.DrCurrentBalance.ToString()
+                            DebitAccountBalance = entry.CrCurrentBalance.ToString(),
+                            CreditAccountBalance = entry.DrCurrentBalance.ToString()
                         };
            return query.ToList();
         }

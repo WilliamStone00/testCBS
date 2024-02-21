@@ -87,7 +87,9 @@
     <Compile Include="Accounting\EntryFeeParameterServices.cs" />
     <Compile Include="Accounting\OperationEventAttributeServices.cs" />
     <Compile Include="Accounting\OperationEventServices.cs" />
+    <Compile Include="Accounting\TellerCashReplenishmentServices.cs" />
     <Compile Include="Accounts\AccountServices.cs" />
+    <Compile Include="Accounts\BankingOperationServices.cs" />
     <Compile Include="Accounts\CloseFeeParameterServices.cs" />
     <Compile Include="Accounts\DepositLimitServices.cs" />
     <Compile Include="Accounts\ManagementFeeParameterServices.cs" />

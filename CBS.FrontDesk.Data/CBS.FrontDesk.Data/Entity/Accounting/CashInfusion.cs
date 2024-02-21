@@ -11,23 +11,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
  
     public class CashInfusion
     {
-
-        [Required]
-        public string SourceAccountId { get; set; }
        
-        [PositiveAmountValidator]
+      //  [PositiveAmountValidator]
         public decimal Amount { get; set; }
-        [Required]
-        public string Description { get; set; }
-        [Required]
-        public string ReferenceNumber { get; set; }
-
-        //public string SourceDocumentUrl { get; set; }
-          public string EntryType  { get; set; }
-
-        //public List<string> Approvals { get; set; }
-
-        public string CurrencyCode { get; set; }
+       // [Required]
+        public string RequestMessage { get; set; }
+        //   [Required]
+        public string ReferenceNumber { get; set; } 
+        public string CurrentOperation { get; set; }
         public CashInfusion()
         {
                 
@@ -38,11 +29,17 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
      
 
             Amount = amount;
-            Description = description;
+            RequestMessage = description;
             //SourceDocumentUrl= "";
             ReferenceNumber = "";
 
         }
- 
+
+        public CashReplenimentRequest ConvertToCashReplenimentRequest()
+        {
+          return new CashReplenimentRequest { Amount = Amount, RequestMessage = RequestMessage, ReferenceId = ReferenceNumber, IssuedBy="Not-Set" };
+        }
+
+
     }
 }

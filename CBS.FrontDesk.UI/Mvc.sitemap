@@ -78,12 +78,26 @@
       <mvcSiteMapNode title="Accounting-Configuration" controller="AccountingConfiguration" action="Index">
       </mvcSiteMapNode>
     </mvcSiteMapNode>
-    <mvcSiteMapNode title="Banking-Operations" controller="CashFlowManagement" action="Index">
+    <mvcSiteMapNode title="Manual Operations" controller="BankingOperations" action="Index">
     </mvcSiteMapNode>
+    
     <mvcSiteMapNode title="General Ledger" controller="AccountingStatements" action="Index">
+    </mvcSiteMapNode>
+  
+    <mvcSiteMapNode title="Cash Replenishment Request" controller="CashFlowManagement" action="CreateCashReplenishmentRequest">   
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Cash Replenishment Approval" controller="CashFlowManagement" action="CreateApprovalRequest">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="View Cash Replenishment Request" controller="CashFlowManagement" action="GetAllCashReplenimentRequestData">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Cash Replenishment Request" controller="CashFlowManagement" action="GetCashReplenimentRequest">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Teller Cash Replenishment Request" controller="TellerCashDemand" action="Index">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Teller Cash Replenishment Request" controller="TellerCashDemand" action="CreateCashReplenishmentRequest">
     </mvcSiteMapNode>
   </mvcSiteMapNode>
 
-  
 
+  
 </mvcSiteMap>
