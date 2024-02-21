@@ -48,8 +48,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                var result=  await Service.CreateCashReplenishmentRequest(model);
                 if (result.MessageStatus.Equals("Failed"))
                 {
-                    var datas = DetailsDto.SetDefault(model);
-                    return View("Failed_Request_View", datas);
+                    var datass = DetailsDto.SetDefault(model);
+                    return View("Failed_Request_View", datass);
                 }
                 else
                 {
@@ -59,7 +59,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             }
 
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
+            var datas = DetailsDto.SetDefault(model);
+            return View("Failed_Request_View", datas);
         }
 
         [HttpGet]

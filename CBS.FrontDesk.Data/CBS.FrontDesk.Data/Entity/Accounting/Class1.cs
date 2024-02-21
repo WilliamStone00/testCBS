@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 {
     public class CashInfusionRequest : Request
     {
-         
+        [Required]
         public string CurrentOperation { get; set; }
 
         public Request GetRequest()
@@ -23,8 +24,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     }
     public class  Request
     {
+        [Required]
 
         public decimal RequestedAmount { get; set; }
+        [Required]
+
         public string Requetcomment { get; set; }
        
 

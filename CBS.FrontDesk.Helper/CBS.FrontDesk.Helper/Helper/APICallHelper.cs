@@ -123,7 +123,6 @@ namespace CBS.FrontDesk.Helper
         //
         public static string  TellerCashReplenishmentRequest = "/api/v1/CashReplenishment";
         public static string TellerCashReplenishmentRequestApproval = "/api/v1/CashReplenishment/{0}";
-        public static string CurrentOpenOfDayHistory = "/api/v1/Teller/CurrentOpenOfDayHistory";
         //Account
         public static string AddCustomerSavingAccount = "/api/v1/Account";
 
