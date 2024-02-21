@@ -26,6 +26,7 @@ using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using System.Threading.Tasks;
 using CBS.FrontDesk.Helper;
+using System.Text.RegularExpressions;
 
 namespace BusinessServices
 {
@@ -156,7 +157,10 @@ namespace BusinessServices
                 }
             }
         }
-
+        public static string FormatCurrency(decimal amount, string currencySymbol = "XAF", int decimalPlaces = 2)
+        {
+            return string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}{1:N" + decimalPlaces + "}", currencySymbol, amount);
+        }
         public bool CheckTekn()
         {
             HttpCookie authCookie = HttpContext.Current.Request.Cookies["Token"];
@@ -1050,9 +1054,20 @@ namespace BusinessServices
         {
             try
             {
-                if (value == "" || value == null)
+                if (string.IsNullOrEmpty(value))
                 {
                     return 0;
+                }
+
+                // Try to parse the input string to an integer
+                if (decimal.TryParse(value, out decimal decimalValue))
+                {
+                    // Cast the decimal value to an integer
+                    return (int)decimalValue;
+                }
+                else
+                {
+                    return 0; // Conversion failed, return default value
                 }
             }
             catch (Exception ex)
@@ -1060,7 +1075,7 @@ namespace BusinessServices
 
                 throw ex;
             }
-            return Convert.ToInt32(value);
+
         }
         public string Add237(string subscriberNumber)
         {
@@ -1533,10 +1548,44 @@ namespace BusinessServices
             string str = HttpContext.Current.Session["BranchCode"].ToString();
             return str;
         }
+        public string GetBranchName()
+        {
+            string str = HttpContext.Current.Session["BranchName"].ToString();
+            return str;
+        }
         public string GetBranchID()
         {
             string str = HttpContext.Current.Session["BranchID"].ToString();
             return str;
+        }
+      
+        public static string CleanTelephoneNumber(string phoneNumber)
+        {
+            // Remove any non-numeric characters
+            string numericPhoneNumber = new string(phoneNumber.Where(char.IsDigit).ToArray());
+
+            // Check if the cleaned number has a length of 9
+            if (numericPhoneNumber.Length == 9)
+            {
+                return numericPhoneNumber;
+            }
+            else
+            {
+                throw new ArgumentException($"Invalid telephone number format or length: {phoneNumber}");
+            }
+        }
+
+        // Helper method to check if a string consists of numeric characters only
+        private static bool IsNumeric(string value)
+        {
+            foreach (char c in value)
+            {
+                if (!char.IsDigit(c))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
         public string GetOrganizationID()
         {

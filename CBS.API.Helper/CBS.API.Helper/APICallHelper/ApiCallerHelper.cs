@@ -442,7 +442,7 @@ namespace CBS.API.Helper
                             T data;
                             try
                             {
-                                if (responseData.Contains("\"data\":null"))
+                                if (responseData.Contains("\"data\":null") || responseData.Contains("null"))
                                 {
                                     data = default(T); // Assign default value for T (typically null for reference types)
 
@@ -458,30 +458,73 @@ namespace CBS.API.Helper
                                 else
                                 {
                                     jsonResponse = JObject.Parse(responseData);
+                                   
 
                                     if (jsonResponse["errors"] != null)
                                     {
                                         var errorResponse = jsonResponse["errors"].ToObject<Dictionary<string, List<string>>>();
-                                        var errorMessages = errorResponse
-                                            .SelectMany(error => error.Value) // Flatten the list of error messages
-                                            .ToList();
-                                        var errorMessage = string.Join(". ", errorMessages);
 
+                                        // Check if the error message indicates a duplicate record
+                                        if (errorResponse.Any(error => error.Value.Any(x => x.Contains("already exists"))))
+                                        {
+                                            return new ApiResponse<T>
+                                            {
+                                                IsSuccess = false,
+                                                Message = "A customer with the provided phone number already exists."
+                                            };
+                                        }
+                                        else
+                                        {
+                                            // Extract and join all error messages
+                                            var errorMessages = errorResponse
+                                                .SelectMany(error => error.Value) // Flatten the list of error messages
+                                                .ToList();
+                                            var errorMessage = string.Join(". ", errorMessages);
+
+                                            return new ApiResponse<T>
+                                            {
+                                                IsSuccess = false,
+                                                Message = string.IsNullOrEmpty(errorMessage) ? "Validation error occurred" : errorMessage
+                                            };
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Handle case when there are no error messages in the response
                                         return new ApiResponse<T>
                                         {
                                             IsSuccess = false,
-                                            Message = string.IsNullOrEmpty(errorMessage) ? "Validation error occurred" : errorMessage
+                                            Message = "Unexpected error occurred: No error messages in the response."
                                         };
                                     }
+
+
+
+
+
+                                    //if (jsonResponse["errors"] != null)
+                                    //{
+                                    //    var errorResponse = jsonResponse["errors"].ToObject<Dictionary<string, List<string>>>();
+                                    //    var errorMessages = errorResponse
+                                    //        .SelectMany(error => error.Value) // Flatten the list of error messages
+                                    //        .ToList();
+                                    //    var errorMessage = string.Join(". ", errorMessages);
+
+                                    //    return new ApiResponse<T>
+                                    //    {
+                                    //        IsSuccess = false,
+                                    //        Message = string.IsNullOrEmpty(errorMessage) ? "Validation error occurred" : errorMessage
+                                    //    };
+                                    //}
                                 }
 
 
-                                // If the error structure doesn't match the expected format or errors object not found
-                                return new ApiResponse<T>
-                                {
-                                    IsSuccess = false,
-                                    Message = "Error in request" // Set a generic error message
-                                };
+                                //// If the error structure doesn't match the expected format or errors object not found
+                                //return new ApiResponse<T>
+                                //{
+                                //    IsSuccess = false,
+                                //    Message = "Error in request" // Set a generic error message
+                                //};
                             }
                             catch (Exception ex)
                             {

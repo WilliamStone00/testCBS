@@ -7,6 +7,9 @@ using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -72,6 +75,80 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-      
+        public async Task<IEnumerable<SubTellerProvisioningDto>> GetSubTellerHistories()
+        {
+            try
+            {
+                var apiUrl = HttpContext.Current.User.IsInRole("Administrator") ? APICallHelper.GetAllSubTellerProvioningHistoryQuery : string.Format(APICallHelper.GetSubTellerProvisioningHistoryByUserIncharge, GetUserID());
+
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<SubTellerProvisioningDto>>>(apiUrl);
+
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                else
+                {
+                    return Enumerable.Empty<SubTellerProvisioningDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        public async Task<EndOfDaySubTellerCommand> GetDailyOperationToClose(string id)
+        {
+            try
+            {
+                var apiUrl = string.Format(APICallHelper.GetSubTellerProvioningHistoryQuery, id);
+
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<SubTellerProvisioningDto>>(apiUrl);
+
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse!=null)
+                    {
+                        var data = new EndOfDaySubTellerCommand
+                        {
+                            cashAtHand = ConverToInteger(couApiResponse.ApiResponseData.Data.cashAtHand.ToString()),
+                            tellerProvisioningId = couApiResponse.ApiResponseData.Data.id,
+                            openOfDayAmount = FormatCurrency(couApiResponse.ApiResponseData.Data.openOfDayAmount),
+                            operationDate = couApiResponse.ApiResponseData.Data.openedDate.ToString(), comment = couApiResponse.ApiResponseData.Data.subTellerComment
+                        };
+                        return data;
+                    }
+                    
+                }
+                return new EndOfDaySubTellerCommand();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        public async Task<SubTellerProvisioningDto> GetDailyOperation(string id)
+        {
+            try
+            {
+                var apiUrl = string.Format(APICallHelper.GetSubTellerProvioningHistoryQuery, id);
+
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<SubTellerProvisioningDto>>(apiUrl);
+
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                else
+                {
+                    return new SubTellerProvisioningDto();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

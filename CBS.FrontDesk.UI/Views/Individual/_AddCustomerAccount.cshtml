@@ -12,20 +12,20 @@
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CustomerList.customerId, new { @class = "form-control", @readonly = true })
-                <label>Customer Number</label>
+                <label>Member reference number</label>
             </div>
         </div>
         <div class="col-md-9">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CustomerList.name, new { @class = "form-control", @readonly = true })
-                <label>Customer Name</label>
+                <label>Member name</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.DropDownListFor(m => m.AddCustomerAccount.productId, new SelectList(ViewBag.Savings, "Id", "Name"), "---Select product---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.AddCustomerAccount.productId, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Select account type</label>
+                <label for="formValidationDob">Select the account type to open for @Model.CustomerList.name</label>
             </div>
         </div>
         <div class="col-12">

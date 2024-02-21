@@ -1,66 +1,34 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.EndOfTheDay
 
 
-<div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
-
-    <div class="accordion-item active">
-        <h2 class="accordion-header text-body d-flex justify-content-between"
-            id="accordionPopoutIconThree">
-            <button type="button"
-                    class="accordion-button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#accordionPopoutIcon-3"
-                    aria-expanded="true"
-                    aria-controls="accordionPopoutIcon-3">
-                <i class="mdi mdi-format-list-numbered me-2"></i>
-                TRANSACTIONS
-            </button>
-        </h2>
-        <div id="accordionPopoutIcon-3"
-             class="accordion-collapse collapse show"
-             data-bs-parent="#accordionPopoutIcon">
-            <div class="accordion-body">
-                <div id="mainviewChange">
-                    <div class="change-group">
-                        <div class="table-responsive mb-3">
-                            <table class="table table-hover" id="myDataTable">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Date Open</th>
-                                        <th>Date closes</th>
-                                        <th>Initial amount</th>
-                                        <th>Cash at handt</th>
-                                        <th>Your comment</th>
-                                        <th>Closed status</th>
-                                        <th>Primary teller comment</th>
-                                        <th>Primary teller status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var d in Model.SubTellerProvioningHistories)
-                                    {
-                                        <tr>
-                                            <td style="width:20%">@d.openedDate</td>
-                                            <td style="width:15%">@d.clossedDate</td>
-                                            <td style="width:8%">@d.openOfDayAmount</td>
-                                            <td style="width:8%">@d.cashAtHand</td>
-                                            <td style="width:8%">@d.subTellerComment</td>
-                                            <td style="width:11%">@d.clossedStatus</td>
-                                            <td style="width:15%">@d.primaryTellerComment</td>
-                                            <td style="width:10%">@d.primaryTellerConfirmationStatus</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-</div>
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>Date Open</th>
+            <th>Date closes</th>
+            <th>Initial amount</th>
+            <th>Cash at handt</th>
+            <th>Closed status</th>
+            <th>Primary teller status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.SubTellerProvioningHistories)
+        {
+            <tr>
+                <td style="width:20%">@d.openedDate</td>
+                <td style="width:20%">@d.clossedDate</td>
+                <td style="width:10%">@d.openOfDayAmount</td>
+                <td style="width:10%">@d.cashAtHand</td>
+                <td style="width:10%">@d.clossedStatus</td>
+                <td style="width:10%">@d.primaryTellerConfirmationStatus</td>
+                <td style="width:20%">
+                    <a href="#" onclick="EditResetModal('@d.id','modal','modalContent','EndOfDayOperation','InitializeData','_SubTellerProvisioningDetails','details','@d.teller.name.ToUpper(), Code: @d.teller.code, OPERATION DETAILS','modalLabel','subteller')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.openOfDayAmount to see details">Details</a> |
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Close the operation of @d.openOfDayAmount for date of @d.openedDate" onclick="EditResetModal('@d.id','modal','modalContent','EndOfDayOperation','InitializeData','_SubTeller','close','CLOSE @d.teller.name.ToUpper() DAILY OPERATION','modalLabel','subteller')">Close</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 

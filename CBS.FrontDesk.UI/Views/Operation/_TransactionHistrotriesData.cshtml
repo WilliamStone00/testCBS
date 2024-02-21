@@ -22,11 +22,25 @@
             <div class="accordion-body">
                 <div id="mainviewChange">
                     <div class="change-group">
+                        <div class="card mb-4">
+                            <div class="card-body d-sm-flex d-block">
+                                <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('Operation', null,'GetReport', '@Model.accountNumber', 'List', 'customer_account_transaction', null,'customer_account_transaction','DownloadExcelFile',null,'@Model.accountNumber')" data-bs-toggle="tooltip" title="Export members account @Model.accountNumber statements">
+                                        <span class="tf-icons mdi mdi-file-excel mdi-18px"></span>
+                                    </a>
+                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('Operation', null,'GetReport', null, 'List', 'export_transactions', null,'Transaction_Staement','DownloadExcelFile',null,'Transaction_Staement')" data-bs-toggle="tooltip" title="Print customer account statements">
+                                        <span class="tf-icons mdi mdi-printer mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                           
+                        </div>
                         <div class="table-responsive mb-3">
                             <table class="table table-hover" id="myDataTable">
                                 <thead class="table-light">
                                     <tr>
                                         <th>Date</th>
+                                        <th>Direction</th>
                                         <th>Deposited</th>
                                         <th>Fee</th>
                                         <th>Acctual Amount</th>
@@ -34,7 +48,7 @@
                                         <th>Previouse Balance</th>
                                         <th>Charge Type</th>
                                         <th>Transaction Type</th>
-                                        <th>Operation Type</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -42,14 +56,24 @@
                                     {
                                         <tr>
                                             <td style="width:20%">@d.createdDate</td>
+                                            <td style="width:10%">
+                                                @if (d.operationType == "Debit")
+                                                {
+                                                    <label class="ql-color-red"><span class="badge rounded-pill rounded-2 badge-red bg-label-danger fs-tiny py-1">@d.operationType</span></label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="ql-color-blue"><span class="badge rounded-pill rounded-2 badge-red bg-label-primary fs-tiny py-1">@d.operationType</span></label>
+                                                }
+                                            </td>
                                             <td style="width:15%">@d.originalDepositAmount</td>
                                             <td style="width:8%">@d.fee</td>
                                             <td style="width:8%">@d.amount</td>
-                                            <td style="width:8%">@d.previousBalance</td>
-                                            <td style="width:11%">@d.balanceBroughtForward</td>
+                                            <td style="width:8%">@d.balanceBroughtForward</td>
+                                            <td style="width:11%">@d.previousBalance</td>
                                             <td style="width:15%">@d.feeType</td>
                                             <td style="width:10%">@d.transactionType</td>
-                                            <td style="width:10%">@d.operationType</td>
+
                                         </tr>
                                     }
                                 </tbody>

@@ -2,14 +2,14 @@
 <!-- User Card -->
 <div class="card mb-4 border-2 border-primary">
     <div class="card mt-3 px-3 py-2">
-        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#customerInfoModal">Customer Details</button>
+        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#customerInfoModal">More information concerning member</button>
         <br />
         <h4 class="group-title">
-            Custumer Number <span class="highlight-text">@Model.Customer.customerId</span><br />
-            <small>Customer Code: Last 5 digits</small><br />
+            Member reference number <span class="highlight-text">@Model.Customer.customerId</span><br />
+            <small>Member code: Last 5 digits</small><br />
             <small>Bank Code: @Session["BankCode"].ToString()</small><br />
             <small>Branch Code: @Session["BranchCode"].ToString()</small><br />
-            Selected account number <span class="highlight-text">@Model.accountNumber</span><br />
+            Account number <span class="highlight-text">@Model.accountNumber</span><br />
         </h4>
     </div>
     <br />
@@ -18,7 +18,7 @@
             <div class="d-flex align-items-center flex-wrap gap-2">
                 <div class="card-info">
                     <div class="d-flex align-items-center">
-                        <h4 class="mb-0">@Model.AccountBalance.totalBalance</h4>
+                        <h4 class="mb-0 blue-text">@Model.AccountBalance.totalBalance</h4>
                     </div>
                     <small>Total account balance</small>
                 </div>
@@ -27,7 +27,14 @@
     </div>
     <div class="card mt-3">
         <div class="card-body px-3 py-2">
-            <h5 class="card-title">Picture</h5>
+            <!-- Aligning the card title and Member text in the same row -->
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Card title aligned to the left -->
+                <h5 class="card-title text-left mb-0">Member: @Model.Customer.name</h5>
+                <hr />
+                <!-- Member name aligned to the right -->
+                <!--<span class="text-end"></span>-->
+            </div>
             <div class="image-upload-container">
                 <!-- Image for picture -->
                 @if (Model.Customer.photoUrl != null)

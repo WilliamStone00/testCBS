@@ -31,6 +31,63 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string primaryTellerComment { get; set; }
         public string primaryTellerConfirmationStatus { get; set; }
     }
+    public class SubTellerProvisioningDto
+    {
+        public string id { get; set; }
+        public string tellerId { get; set; }
+        public string userIdInChargeOfThisTeller { get; set; }
+        public string provisionedBy { get; set; }
+        public bool IsCashReplenished { get; set; }
+        public decimal ReplenishedAmount { get; set; }
+        public DateTime openedDate { get; set; }
+        public DateTime clossedDate { get; set; }
+        public decimal openOfDayAmount { get; set; }
+        public decimal cashAtHand { get; set; }
+        public decimal endOfDayAmount { get; set; }
+        public decimal accountBalance { get; set; }
+        public decimal tellerAccountBalance { get; set; }
+        public decimal lastOPerationAmount { get; set; }
+        public string lastOperationType { get; set; }
+        public decimal previouseBalance { get; set; }
+        public string lastUserID { get; set; }
+        public string subTellerComment { get; set; }
+        public string primaryTellerID { get; set; }
+        public string bankId { get; set; }
+        public string branchId { get; set; }
+        public string startOfDayCurrencyNoteId { get; set; }
+        public string clossedStatus { get; set; }
+        public string primaryTellerComment { get; set; }
+        public string primaryTellerConfirmationStatus { get; set; }
+        public Teller teller { get; set; }
+    }
+    public class PrimaryTellerProvisioningDto
+    {
+        public string id { get; set; }
+        public string tellerId { get; set; }
+        public string userIdInChargeOfThisTeller { get; set; }
+        public string provisionedBy { get; set; }
+        public DateTime openedDate { get; set; }
+        public DateTime clossedDate { get; set; }
+        public decimal openOfDayAmount { get; set; }
+        public decimal cashReplenishmentAmount { get; set; }
+        public string replenishmentReferenceNumber { get; set; }
+        public bool isCashReplenishment { get; set; }
+        public decimal cashAtHand { get; set; }
+        public decimal endOfDayAmount { get; set; }
+        public decimal accountBalance { get; set; }
+        public decimal previouseBalance { get; set; }
+        public string lastUserID { get; set; }
+        public string bankId { get; set; }
+        public string branchId { get; set; }
+        public string startOfDayCurrencyNoteId { get; set; }
+        public string accountantComment { get; set; }
+        public string accountantUserID { get; set; }
+        public string clossedStatus { get; set; }
+        public string primaryTellerComment { get; set; }
+        public string accountantConfirmationStatus { get; set; }
+        public string accountantCloseOfDayComment { get; set; }
+        public Teller teller { get; set; }
+    }
     public class EndOfDaySubTellerCommand
     {
         public CurrencyNotes currencyNotes { get; set; }=new CurrencyNotes();
@@ -38,7 +95,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string comment { get; set; }
         [Required]
         public int cashAtHand { get; set; }
-        public DateTime operationDate { get; set; }
+        public string operationDate { get; set; }
+        public string tellerProvisioningId { get; set; }
+        public string openOfDayAmount { get; set; }
     }
 
     public class PrimaryTellerProvisioningHistory
@@ -79,7 +138,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     {
         public EndOfDayPrimaryTellerCommand EndOfDayPrimaryTellerCommand { get; set; } = new EndOfDayPrimaryTellerCommand();
         public EndOfDaySubTellerCommand EndOfDaySubTellerCommand { get; set; } = new EndOfDaySubTellerCommand();
-        public List<PrimaryTellerProvisioningHistory> PrimaryTellerProvisioningHistories { get; set; }= new List<PrimaryTellerProvisioningHistory>();
-        public List<SubTellerProvioningHistory> SubTellerProvioningHistories { get; set; } = new List<SubTellerProvioningHistory>();
+        public List<PrimaryTellerProvisioningDto> PrimaryTellerProvisioningHistories { get; set; }= new List<PrimaryTellerProvisioningDto>();
+        public PrimaryTellerProvisioningDto PrimaryTellerProvisioningHistory { get; set; } = new PrimaryTellerProvisioningDto();
+        public List<SubTellerProvisioningDto> SubTellerProvioningHistories { get; set; } = new List<SubTellerProvisioningDto>();
+        public SubTellerProvisioningDto SubTellerProvioningHistory { get; set; } = new SubTellerProvisioningDto();
     }
 }

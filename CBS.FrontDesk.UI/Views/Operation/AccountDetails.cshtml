@@ -1,6 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
 @{
-    ViewBag.Title = "Account Details";
+    ViewBag.Title = "Member's account details";
 }
 
 <div class="row">
@@ -25,7 +25,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="customerInfoModalLabel">Customer Information</h5>
+                <h5 class="modal-title" id="customerInfoModalLabel">Member Information</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -74,13 +74,16 @@
                             <li class="mb-3">
                                 <span class="fw-medium text-heading me-2">Status:</span>
                                 <span class="badge bg-label-success rounded-pill">
+
+                                  
+
                                     @if (@Model.Customer.active)
                                     {
-                                        <label>Active</label>
+                                        <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Active</span></label>
                                     }
                                     else
                                     {
-                                        <label>In-Active</label>
+                                        <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Not active</span></label>
                                     }
                                 </span>
                             </li>
@@ -101,11 +104,11 @@
                                 <span class="badge bg-label-success rounded-pill">
                                     @if (@Model.Customer.isUseOnLineMobileBanking)
                                     {
-                                        <label>Activated</label>
+                                        <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Active</span></label>
                                     }
                                     else
                                     {
-                                        <label>Not-active</label>
+                                        <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Not active</span></label>
                                     }
                                 </span>
                             </li>

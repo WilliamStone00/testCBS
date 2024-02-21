@@ -2,30 +2,26 @@
 
 
 @if (Model.CustomerList.secretQuestion != null)
-{<div class="card mb-4">
-        <div class="card-body">
-            <h5 class="mb-3">Secret Question</h5>
-            <p class="w-75">
-                @Model.CustomerList.secretQuestion
-            </p>
-            <br />
-            <h5 class="mb-3">Secret Answer</h5>
-            <p class="w-75">
-                @Model.CustomerList.secretAnswer
-            </p>
-        </div>
+{<div class="card-body">
+        <h5 class="mb-3">Secret Question</h5>
+        <p class="w-75">
+            @Model.CustomerList.secretQuestion
+        </p>
+        <br />
+        <h5 class="mb-3">Secret Answer</h5>
+        <p class="w-75">
+            @Model.CustomerList.secretAnswer
+        </p>
     </div>
 
 }
 else
 {
-    <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="mb-3">Secret Question not set by @Model.CustomerList.name</h5><br />
-            <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#enableOTP">
-                Send security warning sms.
-            </button>
-        </div>
+    <div class="card-body">
+        <h5 class="mb-3">Secret Question not set by @Model.CustomerList.name</h5><br />
+        <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#enableOTP">
+            Send security warning sms.
+        </button>
     </div>
 }
 

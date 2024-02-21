@@ -122,5 +122,10 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var listing = await _accountingServices.GetEventAttributeByOperationTypeID(Key);
             return Json(listing, JsonRequestBehavior.AllowGet);
         }
+        public async Task<ActionResult> Delete(string id)
+        {
+            var data = await _tellerServices.Delete(id);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -14,6 +14,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public decimal originalDepositAmount { get; set; }
         public string accountId { get; set; }
         public string accountNumber { get; set; }
+        public string Operation { get; set; }
         public Account account { get; set; }
         public string transactionType { get; set; }
         public string operationType { get; set; }
@@ -65,14 +66,22 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
     }
     public class TransactionHistoryExport
     {
-        public string customerName { get; set; }
-        public DateTime Date { get; set; }
-        public decimal amount { get; set; }
+        public string accountHolderName { get; set; }
         public string accountNumber { get; set; }
-        public string transactionType { get; set; }
-        public string operationType { get; set; }
-        public string transactionRef { get; set; }
+        public string customerReferenceNumber { get; set; }
+        public DateTime Date { get; set; }
+        public decimal originalAmount { get; set; }
+        public decimal fee { get; set; }
+        public decimal newAmount { get; set; }
         public decimal previousBalance { get; set; }
+        public decimal balance { get; set; }
+      
+        public string Operation { get; set; }
+        public string feeType { get; set; }
+
+        public string transactionType { get; set; }
+        public string operationDirection { get; set; }
+        public string transactionRef { get; set; }
         public string note { get; set; }
         public string senderAccountId { get; set; }
         public string receiverAccountId { get; set; }
@@ -80,10 +89,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public string depositorName { get; set; }
         public string depositorIdIssueDate { get; set; }
         public string depositorIdExpiryDate { get; set; }
-        public decimal balanceBroughtForward { get; set; }
         public string productName { get; set; }
-        public decimal fee { get; set; }
-        public string feeType { get; set; }
         public string teller { get; set; }
     }
 

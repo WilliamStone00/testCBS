@@ -11,7 +11,7 @@
     <mvcSiteMapNode title="Savings" controller="Saving" action="Index">
       <mvcSiteMapNode title="Account Details" controller="Operation" action="AccountDetails" preservedRouteParameters="KEY"/>
     </mvcSiteMapNode>
-    <mvcSiteMapNode title="Customer" controller="Individual" action="Create">
+    <mvcSiteMapNode title="Members" controller="Individual" action="Create">
       <mvcSiteMapNode title="List" controller="Individual" action="List"/>
       <mvcSiteMapNode title="Profile" controller="Individual" action="CustomerProfile" preservedRouteParameters="KEY"/>
       <mvcSiteMapNode title="Account" controller="Individual" action="Account" preservedRouteParameters="KEY"/>

@@ -17,6 +17,10 @@
                             <div class="d-flex align-items-center">
                                 <h4 class="mb-0">@Model.AccountBalance.totalBalance</h4>
                             </div>
+
+
+
+
                             @if (status)
                             {
                                 <small>Total account balance</small>
@@ -56,49 +60,48 @@
             </div>
         }
 
-    </div>
-    <br />
-
-    <div class="card card-action mb-5">
+        <div class="card card-action mb-5">
 
 
-        <div class="collapse show">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Registration office details</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody class="table-border-bottom-0">
-                    <tr>
-                        <td> 1. Organization</td>
-                        <td>@Model.CustomerList.organizationId</td>
-                    </tr>
-                    <tr>
-                        <td>2. Branch Office</td>
-                        <td>@Model.CustomerList.bankId</td>
-                    </tr>
-                    <tr>
-                        <td>3. Branch</td>
-                        <td>@Model.CustomerList.branchId</td>
-                    </tr>
-                    <tr>
-                        <td>4. Account Manager</td>
-                        <td>My account manager name here</td>
-                    </tr>
-                    <tr>
-                        <td>5. Opening date</td>
-                        <td>2023-10-23</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Registration office details</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        <tr>
+                            <td> 1. Organization</td>
+                            <td>@Model.CustomerList.organizationId</td>
+                        </tr>
+                        <tr>
+                            <td>2. Branch Office</td>
+                            <td>@Model.CustomerList.bankId</td>
+                        </tr>
+                        <tr>
+                            <td>3. Branch</td>
+                            <td>@Model.CustomerList.branchId</td>
+                        </tr>
+                        <tr>
+                            <td>4. Account Manager</td>
+                            <td>My account manager name here</td>
+                        </tr>
+                        <tr>
+                            <td>5. Opening date</td>
+                            <td>2023-10-23</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card card-action mb-5">
+
+            @Html.Partial("_DeleteProfile")
         </div>
     </div>
-    <div class="card card-action mb-5">
+ 
 
-        @Html.Partial("_DeleteProfile")
-    </div>
-   
 </div>
 

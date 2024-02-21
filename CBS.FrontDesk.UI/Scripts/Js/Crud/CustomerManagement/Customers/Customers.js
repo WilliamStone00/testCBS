@@ -1,7 +1,7 @@
 ﻿
 $(document).ready(function () {
 
-
+    LoadDataGen('Individual', 'myDataTable', '_IndividualData', 0, 'datalistingview', null)
     $("#btnData").click(function () {
         DownloadLoans('All');
     });

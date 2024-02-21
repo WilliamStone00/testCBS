@@ -1,0 +1,38 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+
+<div class="card-body">
+
+
+    @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+    {
+        <!-- Account Details -->
+        @Html.HiddenFor(model => model.CustomerList.customerId)
+        <input type="hidden" name="option" value="legalstaus" />
+
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.CustomerList.legalForm, new SelectList(ViewBag.legalForms, "Text", "Value"), "---Select legality status---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.CustomerList.legalForm, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Legal form</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.CustomerList.formalOrInformalSector, new SelectList(ViewBag.formalOrInformalSectors, "Text", "Value"), "---Select sector---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.CustomerList.formalOrInformalSector, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Sector</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.CustomerList.bankingRelationship, new SelectList(ViewBag.bankingRelationships, "Text", "Value"), "---Select relation ship with bank---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.CustomerList.bankingRelationship, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Bank relationship</label>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    }
+</div>

@@ -20,21 +20,21 @@
             <div class="form-floating form-floating-outline">
                 @Html.DropDownListFor(m => m.WithdrawalLimit.withdrawalType, new SelectList(ViewBag.WithdrawalLimitTypes, "Text", "Value"), "---Select deposit type---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.WithdrawalLimit.withdrawalType, "", new { @class = "text-danger" })
-                <label>Select deposit limit type</label>
+                <label>Select withdrawal limit type</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.WithdrawalLimit.minAmount, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.WithdrawalLimit.minAmount, "", new { @class = "text-danger" })
-                <label>Min deposit amount</label>
+                <label>Min withdrawal amount</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.WithdrawalLimit.maxAmount, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.WithdrawalLimit.maxAmount, "", new { @class = "text-danger" })
-                <label>Max deposit amount</label>
+                <label>Max withdrawal amount</label>
             </div>
         </div>
         <div class="col-md-6">

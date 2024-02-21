@@ -2,27 +2,21 @@
 <div class="card mb-4">
     <div class="card-body d-sm-flex d-block">
         <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-            <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space"onclick="GetObject('@Model.accountNumber','datalistingview','_Product','product')" data-bs-toggle="tooltip" title="Product information">
+            <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space"onclick="GetObject('@Model.accountNumber','datalistingview','_Product','product')" data-bs-toggle="tooltip" title="Member subcribed account information">
                 <span class="tf-icons mdi mdi-information mdi-18px"></span>
             </a>
-            <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="GetObject('@Model.accountNumber','datalistingview','_AccountInfo','accountInfo')" data-bs-toggle="tooltip" title="Account information">
+            <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="GetObject('@Model.accountNumber','datalistingview','_AccountInfo','accountInfo')" data-bs-toggle="tooltip" title="Member account information">
                 <span class="tf-icons mdi mdi-folder-information-outline mdi-18px"></span>
             </a>
-            <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="GetObject('@Model.accountNumber','datalistingview','_Deposit','deposit')" data-bs-toggle="tooltip" title="Deposit">
+            <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="GetObject('@Model.accountNumber','datalistingview','_Deposit','deposit')" data-bs-toggle="tooltip" title="Perform member deposit operation">
                 <span class="tf-icons mdi mdi-octagram-plus mdi-18px"></span>
             </a>
-            <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="GetObject('@Model.accountNumber','datalistingview','_Withdrawal','withdrawal')" data-bs-toggle="tooltip" title="Withdrawal">
+            <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="GetObject('@Model.accountNumber','datalistingview','_Withdrawal','withdrawal')" data-bs-toggle="tooltip" title="Perform member withdrawal operation">
                 <span class="tf-icons mdi mdi-outdoor-lamp mdi-18px"></span>
             </a>
-            @*<a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="Transfer">
-                <span class="tf-icons mdi mdi-transfer mdi-18px"></span>
-            </a>*@
-            <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space"onclick="GetTransactionHistory('@Model.accountNumber','datalistingview','_TransactionHistrotriesData','histories','myDataTable','1')" data-bs-toggle="tooltip" title="Account transaction histories">
+            <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space"onclick="GetTransactionHistory('@Model.accountNumber','datalistingview','_TransactionHistrotriesData','histories','myDataTable','1')" data-bs-toggle="tooltip" title="Member account statements">
                 <span class="tf-icons mdi mdi-format-list-bulleted mdi-18px"></span>
             </a>
-            @*<a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="Reporting">
-                <span class="tf-icons mdi mdi-chart-histogram mdi-18px"></span>
-            </a>*@
         </div>
     </div>
 </div>

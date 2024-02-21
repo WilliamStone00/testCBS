@@ -1,5 +1,5 @@
 ﻿<!-- Modal -->
-<div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+@*<div class="modal fade" id="modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -10,17 +10,53 @@
                         aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modalBody">
-                <div   id="modalContent">
+                <div id="modalContent">
 
                 </div>
             </div>
-                <!--<div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="button" class="btn btn-primary">Save changes</button>-->
-                    @*@Html.Partial("_modalFooter")*@
-                <!--</div>-->
+           
+        </div>
+    </div>
+</div>*@
+
+
+@*<div class="modal fade" id="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-simple modal-enable-otp modal-dialog-centered">
+        <div class="modal-content p-3 p-md-5">
+           
+            <div class="modal-body">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="text-center mb-4">
+                    <h4 class="modal-title" id="modalLabel">Modal title</h4>
+                </div>
+                <hr />
+                <div class="modal-body" id="modalBody">
+                    <div id="modalContent">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>*@
+
+
+<div class="modal fade" id="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-simple modal-enable-otp modal-dialog-centered">
+        <div class="modal-content p-3 p-md-5">
+            <div class="modal-body">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="text-center mb-4">
+                    <h4 class="modal-title" id="modalLabel">Modal title</h4>
+                </div>
+                <div class="signature">FLX-CBS</div>
+
+                <hr />
+                <div class="modal-body" id="modalBody">
+                    <div id="modalContent"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

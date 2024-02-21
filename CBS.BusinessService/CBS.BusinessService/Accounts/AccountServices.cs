@@ -110,7 +110,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
 
-                var accounts = MapToTransactionHistoryExportList(transactionHistories);
+                var accounts = MapToTransactionHistoryExport(transactionHistories);
                 return accounts;
             }
             catch (Exception ex)
@@ -119,45 +119,35 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
-        public TransactionHistoryExport MapToTransactionHistoryExport(TransactionHistory transaction)
+        public List<TransactionHistoryExport> MapToTransactionHistoryExport(List<TransactionHistory> transactions)
         {
-            return new TransactionHistoryExport
-            {
-                customerName = transaction.account.accountName,
-                Date = transaction.createdDate,
-                amount = transaction.amount,
-                accountNumber = transaction.accountNumber,
-                transactionType = transaction.transactionType,
-                operationType = transaction.operationType,
-                transactionRef = transaction.transactionRef,
-                previousBalance = transaction.previousBalance,
-                note = transaction.note,
-                senderAccountId = transaction.senderAccountId,
-                receiverAccountId = transaction.receiverAccountId,
-                depositorIdNumber = transaction.depositorIdNumber,
-                depositorName = transaction.depositorName,
-                depositorIdIssueDate = transaction.depositorIdIssueDate,
-                depositorIdExpiryDate = transaction.depositorIdExpiryDate,
-                balanceBroughtForward = transaction.balanceBroughtForward,
-                //productName = transaction.account.product.name,
-                fee = transaction.fee,
-                feeType = transaction.feeType,
-                teller = transaction.teller.name
-            };
+            return transactions
+                .OrderBy(t => t.createdDate) // Order transactions by date in descending order
+                .Select(transaction => new TransactionHistoryExport
+                {
+                    accountHolderName =transaction.account.accountName,
+                    Date = transaction.createdDate,
+                    originalAmount = transaction.originalDepositAmount,
+                    accountNumber = transaction.accountNumber,
+                    transactionType = transaction.transactionType,
+                    operationDirection = transaction.operationType,
+                    transactionRef = transaction.transactionRef,
+                    previousBalance = transaction.previousBalance,
+                    note = transaction.note,
+                    senderAccountId = transaction.senderAccountId,
+                    receiverAccountId = transaction.receiverAccountId,
+                    depositorIdNumber = transaction.depositorIdNumber,
+                    depositorName = transaction.depositorName,
+                    depositorIdIssueDate = transaction.depositorIdIssueDate,
+                    depositorIdExpiryDate = transaction.depositorIdExpiryDate,
+                    balance = transaction.balanceBroughtForward,
+                    fee = transaction.fee,
+                    feeType = transaction.feeType, Operation= transaction.Operation,
+                    teller = transaction.teller.name, customerReferenceNumber= transaction.account.customerId, newAmount= transaction.amount, productName= transaction.account.product.name
+                })
+                .ToList();
         }
-        public List<TransactionHistoryExport> MapToTransactionHistoryExportList(List<TransactionHistory> transactions)
-        {
-            var transactionHistoryExports = new List<TransactionHistoryExport>();
-
-            foreach (var transaction in transactions)
-            {
-                var transactionHistoryExport = MapToTransactionHistoryExport(transaction);
-                transactionHistoryExports.Add(transactionHistoryExport);
-            }
-
-            return transactionHistoryExports;
-        }
-
+       
         public async Task<IEnumerable<StringValues>> SourceAndDestinationAccount()
         {
             try
@@ -203,7 +193,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-        private async Task<List<TransactionHistory>> GetCustomerTransactionsByAccountNumber(string accountNumber)
+        public async Task<List<TransactionHistory>> GetCustomerTransactionsByAccountNumber(string accountNumber)
         {
             try
             {
@@ -216,7 +206,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-        private async Task<List<TransactionHistory>> GetCustomerTransactionsByCustomerNumber(string customerNumber)
+        public async Task<List<TransactionHistory>> GetCustomerTransactionsByCustomerNumber(string customerNumber)
         {
             try
             {
@@ -229,7 +219,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-        private async Task<List<TransactionHistory>> GetAllTransactions()
+        public async Task<List<TransactionHistory>> GetAllTransactions()
         {
             try
             {
@@ -242,7 +232,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-        private async Task<List<CustomerAccount>> GetCustomerAccounts(string customerID)
+        public async Task<List<CustomerAccount>> GetCustomerAccounts(string customerID)
         {
             try
             {

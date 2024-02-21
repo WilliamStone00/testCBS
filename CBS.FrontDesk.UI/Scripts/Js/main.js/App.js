@@ -857,13 +857,11 @@ function AjaxPostAndUpdateValidationDecision(form) {
 }
 
 
-function EditResetModal(KEY, modalBodyID, ModalcontentID, controller, actionMethod, partialView, path, modallabelName, labelID) {
-    var modeline = $('#' + labelID).val();
-    console.log(modeline);
-    console.log(modallabelName);
+function EditResetModal(KEY, modalBodyID, ModalcontentID, controller, actionMethod, partialView, path, modallabelName, labelID, serviceOption) {
+    $('#' + labelID).html(modallabelName);
     $.ajax({
         type: "GET",
-        url: '/' + controller + '/' + actionMethod + '?KEY=' + KEY + '&partialView=' + partialView + '&path=' + partialView,
+        url: '/' + controller + '/' + actionMethod + '?KEY=' + KEY + '&partialView=' + partialView + '&path=' + path + '&serviceOption=' + serviceOption,
         success: function (data) {
             $('#' + ModalcontentID).html(data);
             $('#' + modalBodyID).modal('show');

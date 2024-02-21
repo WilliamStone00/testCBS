@@ -7,10 +7,14 @@ using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using System.Collections.Generic;
+using CBS.FrontDesk.Data.UserManagement;
+using System.Web;
+using System.Linq;
 
 namespace CBS.BusinessService.Accounts
 {
-    public class PrimaryTellerEndOfDayServices:BaseService
+    public class PrimaryTellerEndOfDayServices : BaseService
     {
         private readonly ApiCallerHelper _transactionApiHelper;
         public PrimaryTellerEndOfDayServices()
@@ -43,7 +47,7 @@ namespace CBS.BusinessService.Accounts
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<SubTellerProvioningHistory>>(APICallHelper.PrimaryTellerEndOfDay, model);
                     if (response.IsSuccess)
                     {
-                        
+
                         GetExecutionMessages(response, true, $"{model.cashAtHand}", MessagesResults.Success,
                             ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
@@ -72,6 +76,49 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-      
+        public async Task<IEnumerable<PrimaryTellerProvisioningDto>> GetPrimaryTellerHistories()
+        {
+            try
+            {
+                var apiUrl = HttpContext.Current.User.IsInRole("Administrator") ? APICallHelper.GetAllPrimaryTellerProvisioningHistoryQuery : string.Format(APICallHelper.GetPrimaryTellerProvisioningHistoryByUserIncharge, GetUserID());
+
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<PrimaryTellerProvisioningDto>>>(apiUrl);
+
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                else
+                {
+                    return Enumerable.Empty<PrimaryTellerProvisioningDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        public async Task<PrimaryTellerProvisioningDto> GetDailyOperation(string id)
+        {
+            try
+            {
+                var apiUrl = string.Format(APICallHelper.GetAllPrimaryTellerProvisioningHistoryQuery, id);
+
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<PrimaryTellerProvisioningDto>>(apiUrl);
+
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                else
+                {
+                    return new PrimaryTellerProvisioningDto();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

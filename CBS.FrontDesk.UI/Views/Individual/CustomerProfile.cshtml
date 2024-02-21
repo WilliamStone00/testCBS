@@ -10,16 +10,47 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="group-title">
-                    Custumer Number <span class="highlight-text">@Model.CustomerList.customerId</span><br />
-                    <small>Customer Code: Last 5 digits</small><br />
+                    MEMBER REFERENCE # <span class="highlight-text">@Model.CustomerList.customerId</span><br />
+                    <hr />
+                    <small>Member code: Last 4 digits</small><br />
                     <small>Bank Code: @Session["BankCode"].ToString()</small><br />
                     <small>Branch Code: @Session["BranchCode"].ToString()</small>
                 </h4>
             </div>
         </div>
+        <br />
+        <div class="card">
+            <div class="card-body">
+                <h4 class="group-title">
+                    MEMBER STATUS
+                    <hr />
+                    @if (Model.CustomerList.membershipApprovalStatus == "Approved")
+                    {
+                        <small>Approved BY:  @Model.CustomerList.membershipApprovalBy</small><br />
+                        <small>Approved Date:  @Model.CustomerList.membershipApprovedDate</small><br />
+                        <small>Status: <span class="highlight-text">@Model.CustomerList.membershipApprovalStatus.ToUpper()</span></small>
+                    }
+                    else
+                    {
+                        <small>Status: <span class="highlight-text">@Model.CustomerList.membershipApprovalStatus</span></small>
+                    }
+                    <br />
+                    <small>Registration Date: @Model.CustomerList.membershipApplicantDate</small>
+                </h4>
+            </div>
+        </div>
+
+
         <div class="card mt-3">
             <div class="card-body">
-                <h5 class="card-title">Picture</h5>
+                <!-- Aligning the card title and Member text in the same row -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Card title aligned to the left -->
+                    <h5 class="card-title text-left mb-0">Member: @Model.CustomerList.name</h5>
+                    <hr />
+                    <!-- Member name aligned to the right -->
+                    <!--<span class="text-end"></span>-->
+                </div>
                 <div class="image-upload-container">
                     <!-- Image for picture -->
                     @if (Model.CustomerList.photoUrl != null)
@@ -148,8 +179,8 @@
                                     class="nav-link"
                                     role="tab"
                                     data-bs-toggle="tab"
-                                    data-bs-target="#navs-justified-nextofking"
-                                    aria-controls="navs-justified-nextofking"
+                                    data-bs-target="#navs-justified-cardsignature"
+                                    aria-controls="navs-justified-cardsignature"
                                     aria-selected="false">
                                 <i class="tf-icons mdi mdi-account me-1"></i> Signature card
                             </button>
@@ -259,16 +290,44 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed"
+                                                        type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#membershipstatus"
+                                                        aria-controls="membershipstatus">
+                                                    Membership status
+                                                </button>
+                                            </h2>
+                                            <div id="membershipstatus" class="accordion-collapse collapse">
+                                                <div class="accordion-body">
+                                                    @Html.Partial("_MembershipStatus")
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed"
+                                                        type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#legalstaus"
+                                                        aria-controls="legalstaus">
+                                                    Legal status
+                                                </button>
+                                            </h2>
+                                            <div id="legalstaus" class="accordion-collapse collapse">
+                                                <div class="accordion-body">
+                                                    @Html.Partial("_LegalSector")
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
 
                             </div>
                         </div>
-
-
-
-
                     </div>
                     <div class="tab-pane fade" id="navs-justified-security" role="tabpanel">
                         <div class="tab-pane fade show active" id="payment" role="tabpanel">
@@ -319,6 +378,94 @@
                     <div class="tab-pane fade" id="navs-justified-account" role="tabpanel">
                         @Html.Partial("_AccountBalance")
                     </div>
+                    <div class="tab-pane fade" id="navs-justified-nextofking" role="tabpanel">
+                        <div class="tab-pane fade show active" id="payment" role="tabpanel">
+                            <div id="accordionPayment" class="accordion">
+                                <div class="accordion-item active">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                aria-expanded="true"
+                                                data-bs-target="#accordionPayment-1"
+                                                aria-controls="accordionPayment-1">
+                                            Create next of kings
+                                        </button>
+                                    </h2>
+
+                                    <div id="accordionPayment-1" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            @Html.Partial("_AddMembershipNextOfKingsMember")
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#accordionPayment-2"
+                                                aria-controls="accordionPayment-2">
+                                            Next of king Listing
+                                        </button>
+                                    </h2>
+                                    <div id="accordionPayment-2" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            @Html.Partial("_AddMembershipNextOfKingsMemberData")
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="tab-pane fade" id="navs-justified-cardsignature" role="tabpanel">
+                        <div class="tab-pane fade show active" id="payment" role="tabpanel">
+                            <div id="accordionPayment" class="accordion">
+                                <div class="accordion-item active">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                aria-expanded="true"
+                                                data-bs-target="#accordionPayment-1"
+                                                aria-controls="accordionPayment-1">
+                                            Issue card signature
+                                        </button>
+                                    </h2>
+
+                                    <div id="accordionPayment-1" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            @Html.Partial("_AddCardSignatureSpecimen")
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#accordionPayment-2"
+                                                aria-controls="accordionPayment-2">
+                                            Membership Card Signature
+                                        </button>
+                                    </h2>
+                                    <div id="accordionPayment-2" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            @Html.Partial("_AddCardSignatureSpecimenData")
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -354,7 +501,9 @@
         </div>
     </div>
 </div>
+
+
+
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
-@*<script src="~/Scripts/Js/Crud/CustomerManagement/Customers/CustomersProfile.js"></script>*@
 
 }

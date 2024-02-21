@@ -78,6 +78,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetCustomerByID = "/api/v1/Customer/{0}";
         public static string UploadCustomerDocument = "/api/v1/uploadCustomerDocuments";
         public static string GetCustomerDefaultEnums = "/api/v1/SubscriptionAggregates/GetAll";
+        public static string CreateMembershipNextOfKing = "/api/v1/MembershipNextOfKings";
+        public static string CreateCardSignatureSpecimenDetails = "/api/v1/CardSignatureSpecimenDetails";
 
         public static string ResetPin = "/api/v1/Customer/Pin/Reset";
 
@@ -102,11 +104,21 @@ namespace CBS.FrontDesk.Helper
         public static string GetTransactionHistoryByCustomerNumber = "/api/v1/Transaction/Customer/{0}";
         public static string GetAllTransactions = "/api/v1/Transaction";
         public static string GetTransaction = "/api/v1/Transaction/{0}";
-
+        //Teller
         public static string PrimaryTellerProvisioning = "/api/v1/Teller/Provision/PrimaryTeller";
         public static string SubTellerProvisioning = "/api/v1/Teller/Provision/SubTeller";
         public static string SubTellerEndOfDay = "/api/v1/Teller/SubTellerEndOfDay";
         public static string PrimaryTellerEndOfDay = "/api/v1/Teller/PrimaryTellerEndOfDay";
+        public static string GetSubTellerProvisioningHistoryByUserIncharge = "/api/v1/Teller/GetSubTellerProvisioningHistoryByUserIncharge/{0}";
+        public static string GetPrimaryTellerProvisioningHistoryByUserIncharge = "/api/v1/Teller/GetPrimaryTellerProvisioningHistoryByUserIncharge/{0}";
+        public static string GetAllSubTellerProvioningHistoryQuery = "/api/v1/Teller/GetAllSubTellerProvioningHistoryQuery";
+        public static string GetAllPrimaryTellerProvisioningHistoryBetweenDatesQuery = "/api/v1/Teller/GetAllPrimaryTellerProvisioningHistoryBetweenDatesQuery";
+        public static string GetAllSubTellerProvioningHistoryBetweenDatesQuery = "/api/v1/Teller/GetAllSubTellerProvioningHistoryBetweenDatesQuery";
+        public static string GetAllPrimaryTellerProvisioningHistoryQuery = "/api/v1/Teller/GetAllPrimaryTellerProvisioningHistoryQuery";
+        public static string CurrentOpenOfDayHistory = "/api/v1/Teller/CurrentOpenOfDayHistory";
+        public static string GetSubTellerProvioningHistoryQuery = "/api/v1/Teller/GetSubTellerProvioningHistoryQuery/{0}";
+        public static string GetPrimaryTellerProvisioningHistoryQuery = "/api/v1/Teller/GetPrimaryTellerProvisioningHistoryQuery/{0}";
+
         ///api/v1/Teller/SubTellerEndOfDay
         //
 
@@ -374,14 +386,14 @@ namespace CBS.FrontDesk.Helper
         //Account/api/v1/AccountingEntry/AddCashInfusionCommand
         //Credit a specifique Account record AddCashInfusionCommand
         public static string CashInfusion = "/api/v1/AccountingEntry/AddCashInfusionCommand";
-        public static string GetAccountByReference = "/api/v1/Account/GetAccountByReference/{id}";
-        public static string GetAccountByAccountNumber = "/api/v1/Account/GetAccountByAccountNumber/{id}";
-        public static string GetAccountByAccountType = "/api/v1/Account/GetAccountByAccountType/{id}";
+        public static string GetAccountByReference = "/api/v1/Account/GetAccountByReference/{0}";
+        public static string GetAccountByAccountNumber = "/api/v1/Account/AccountNumber/{0}";
+        public static string GetAccountByAccountType = "/api/v1/Account/GetAccountByAccountType/{0}";
         public static string GetAccount = "/api/v1/Account/{0}";
         public static string Delete_Account = "/api/v1/Account/{0}";
         public static string GetAlAccounts = "/api/v1/Accounts";
         public static string CreateAccount = "/api/v1/Account";
-        public static string GetAccountUploadFiles = "/api/v1/Accounts/UploadFiles/{id}";
+        public static string GetAccountUploadFiles = "/api/v1/Accounts/UploadFiles/{0}";
         public static string PutAccount = "/api/v1/Account/{0}";
 
 

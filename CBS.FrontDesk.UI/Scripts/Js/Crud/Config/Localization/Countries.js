@@ -7,7 +7,7 @@ $(document).ready(function () {
     $("#btnData").click(function () {
         LoadData();
     });
-    /*LoadData();*/
+    LoadDT("jkjkjkj",0)
 });
 
 function LoadData() {

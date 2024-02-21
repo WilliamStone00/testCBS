@@ -15,6 +15,7 @@ using CBS.FrontDesk.Data.Entity;
 using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Loan.Config;
 using MvcSiteMapProvider.Reflection;
+using System.Data.Entity.Core.Metadata.Edm;
 
 namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
 {
@@ -83,17 +84,17 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         {
             var agrAggregates = await _individualProfileServices.GetAggregates();
             await PopulateAggregatesInViewBag(agrAggregates);
-            return await _individualProfileServices.GetCustomer(KEY, agrAggregates);
+            var results= await _individualProfileServices.GetCustomer(KEY, agrAggregates);
+            ViewBag.MemberAccounts= _individualProfileServices.MembersAccounts(results.CustomerAccounts.ToList());
+            return results;
         }
 
         private async Task PopulateAggregatesInViewBag(Aggregrate agrAggregates = null)
         {
-            await GetList();
             if (agrAggregates == null)
             {
                 agrAggregates = await _individualProfileServices.GetAggregates();
             }
-
             ViewBag.Banks = agrAggregates.Banks;
             ViewBag.Branches = agrAggregates.Branches;
             ViewBag.EconomicActivities = agrAggregates.EconomicActivities;
@@ -114,7 +115,8 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             ViewBag.maritalStatuses = agrAggregates.CustomerDefaultEnum.maritalStatuses;
             ViewBag.languages = _individualProfileServices.GetLanguages();
             ViewBag.Categories = agrAggregates.CustomerDefaultEnum.customerCategories;
-         
+            ViewBag.relationships = agrAggregates.CustomerDefaultEnum.relationships;
+            
         }
 
 
@@ -157,9 +159,33 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
-            else if (model.option == "BankInfo")
+            else if (model.option == "bank_info")
             {
                 var data = await _individualProfileServices.UpdateBankInfo(model);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else if (model.option == "cardsignaturespecement")
+            {
+                var data = await _individualProfileServices.CreateCardSignatureSpecimenDetail(model.CardSignatureSpecimen);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else if (model.option == "nextofking")
+            {
+                var data = await _individualProfileServices.CreateMembershipNextOfKingsMember(model.MembershipNextOfKingsMember);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else if (model.option == "membershipstatus")
+            {
+                var data = await _individualProfileServices.UpdateMembershipstatus(model);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else if (model.option == "legalstaus")
+            {
+                var data = await _individualProfileServices.UpdateLegalSector(model);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
@@ -197,10 +223,6 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<bool> GetList()
-        {
-            ViewBag.Genders = _individualProfileServices.GetGender();
-            return true;
-        }
+     
     }
 }

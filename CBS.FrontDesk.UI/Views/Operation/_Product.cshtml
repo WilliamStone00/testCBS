@@ -17,7 +17,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-information me-2"></i>
-                PRODUCT INFORMATION
+                <b> @Model.product.name.ToUpper() ACCOUNT CONFIGURATION DETAILS</b>
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"
@@ -28,92 +28,56 @@
                     <div class="change-group">
                         <div class="card mb-4">
                             <div class="card-body pt-2 mt-1">
-                              <div class="row mt-2 gy-4">
-                                        <div class="col-md-8">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => name, new { @class = "form-control", @readonly = true })
-                                                <label>Profile</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.product.name, new { @class = "form-control", @readonly = true })
-                                                <label>Saving product</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.createdBy, new { @class = "form-control", @readonly = true })
-                                                <label>Saving officer</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.createdDate, new { @class = "form-control", @readonly = true })
-                                                <label>Opening date</label>
-                                            </div>
-                                        </div>
-                                        @*<div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.product.interestRate, new { @class = "form-control", @readonly = true })
-                                                <label>Interest rate</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.product.entryFee, new { @class = "form-control", @readonly = true })
-                                                <label>Entry fee</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.product.closingFee, new { @class = "form-control", @readonly = true })
-                                                <label>Closing fee</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.product.reopeningFee, new { @class = "form-control", @readonly = true })
-                                                <label>Re-opening fee</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.product.managementFee, new { @class = "form-control", @readonly = true })
-                                                <label>Management fee</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.product.yearlyInterestRate, new { @class = "form-control", @readonly = true })
-                                                <label>Yearly interst rate</label>
-                                            </div>
-                                        </div>*@
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.product.minAmount, new { @class = "form-control", @readonly = true })
-                                                <label>Minimum amount</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.product.maxAmount, new { @class = "form-control", @readonly = true })
-                                                <label>Max amount</label>
-                                            </div>
-                                        </div>
-                                        @*<div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.product.managementFeeFrequency, new { @class = "form-control", @readonly = true })
-                                                <label>Management fee frequency</label>
-                                            </div>
-                                        </div>*@
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.product.postingFrequency, new { @class = "form-control", @readonly = true })
-                                                <label>Posting frequency</label>
-                                            </div>
+                                <div class="row mt-2 gy-4">
+                                    <div class="col-md-8">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.accountName, new { @class = "form-control", @readonly = true })
+                                            <label>Member account name</label>
                                         </div>
                                     </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.product.name, new { @class = "form-control", @readonly = true })
+                                            <label>Saving product</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.createdBy, new { @class = "form-control", @readonly = true })
+                                            <label>Saving officer</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.createdDate, new { @class = "form-control", @readonly = true })
+                                            <label>Opening date</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.product.minAmount, new { @class = "form-control", @readonly = true })
+                                            <label>Minimum amount</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.product.maxAmount, new { @class = "form-control", @readonly = true })
+                                            <label>Max amount</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.product.activeStatus, new { @class = "form-control", @readonly = true })
+                                            <label>Product active status</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.product.postingFrequency, new { @class = "form-control", @readonly = true })
+                                            <label>Posting frequency</label>
+                                        </div>
+                                    </div>
+                                </div>
                              
                             </div>
                             <!-- /Account -->

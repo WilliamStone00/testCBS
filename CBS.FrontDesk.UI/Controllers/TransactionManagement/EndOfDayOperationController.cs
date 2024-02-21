@@ -24,16 +24,20 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         public async Task<ActionResult> Index()
         {
+
             return View(new EndOfTheDay());
         }
 
         public async Task<ActionResult> Primary()
         {
-            return View(new EndOfTheDay());
+            var primaryTellerProvisionings = await _primaryTellerEndOfDayServices.GetPrimaryTellerHistories();
+            return View(new EndOfTheDay { PrimaryTellerProvisioningHistories= primaryTellerProvisionings.ToList()});
         }
         public async Task<ActionResult> SubTeller()
         {
-            return View(new EndOfTheDay());
+
+            var tellerProvisioningDtos = await _subTellerEndOfDay.GetSubTellerHistories();
+            return View(new EndOfTheDay { SubTellerProvioningHistories = tellerProvisioningDtos.ToList() });
         }
 
         [HttpPost]
@@ -49,6 +53,38 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var data = await _subTellerEndOfDay.EndTheDay(model.EndOfDaySubTellerCommand);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
+        }
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        {
+            try
+            {
+                ViewBag.KEY = KEY;
+                if (serviceOption == "subteller")
+                {
+                    if (path=="details")
+                    {
+                        var provisioningDto = await _subTellerEndOfDay.GetDailyOperation(KEY);
+                        return PartialView(partialView, new EndOfTheDay { SubTellerProvioningHistory = provisioningDto });
+                    }
+                    else
+                    {
+                        var command = await _subTellerEndOfDay.GetDailyOperationToClose(KEY);
+                        return PartialView(partialView, new EndOfTheDay {  EndOfDaySubTellerCommand = command });
+                    }
+                }
+                else
+                {
+                    var provisioningDto = await _primaryTellerEndOfDayServices.GetDailyOperation(KEY);
+                    return PartialView(partialView, new EndOfTheDay { PrimaryTellerProvisioningHistory = provisioningDto });
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                TempData["ErrorMessage"] = ex.Message; // Store error message
+                return RedirectToAction("Index", "Error"); // Redirect to error page
+            }
         }
     }
 }

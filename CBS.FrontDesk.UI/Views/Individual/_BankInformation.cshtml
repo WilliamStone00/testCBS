@@ -7,26 +7,15 @@
     {
         <!-- Account Details -->
         @Html.HiddenFor(model => model.CustomerList.customerId)
-        <div class="col-12">
-            <h5 class="mt-2"><b>5. Bank Info</b></h5>
-            <hr class="mt-0" />
-        </div>
-
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.organizationId, new SelectList(ViewBag.Organizations, "Id", "Name"), "---Select Organization---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.CustomerList.organizationId, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Organization</label>
-            </div>
-        </div>
-        <div class="col-md-3">
+        <input type="hidden" name="option" value="bank_info" />
+        <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.DropDownListFor(m => m.CustomerList.bankId, new SelectList(ViewBag.Banks, "Id", "Name"), "---Select Branch head office---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.CustomerList.bankId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">Branch Head office</label>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.DropDownListFor(m => m.CustomerList.branchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select Branch offce---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.CustomerList.branchId, "", new { @class = "text-danger " })
@@ -36,43 +25,11 @@
 
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.membershipApprovalStatus, new SelectList(ViewBag.membershipApprovalStatuses, "Text", "Value"), "---Select membership status---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.CustomerList.membershipApprovalStatus, "", new { @class = "text-danger " })
+                @Html.TextBoxFor(m => m.CustomerList.membershipApprovalStatus, new { @class = "form-control",@readonly=true })
                 <label for="formValidationDob">Membership status</label>
             </div>
         </div>
 
 
-
-        <div class="col-12">
-            <h5 class="mt-2"><b>6. Others</b></h5>
-            <hr class="mt-0" />
-        </div>
-
-        <div class="col-md-4">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.legalForm, new SelectList(ViewBag.legalForms, "Text", "Value"), "---Select legality status---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.CustomerList.legalForm, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Legal form</label>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.formalOrInformalSector, new SelectList(ViewBag.formalOrInformalSectors, "Text", "Value"), "---Select sector---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.CustomerList.formalOrInformalSector, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Sector</label>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.bankingRelationship, new SelectList(ViewBag.bankingRelationships, "Text", "Value"), "---Select relation ship with bank---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.CustomerList.bankingRelationship, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Bank relationship</label>
-            </div>
-        </div>
-
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary">Update</button>
-        </div>
     }
 </div>

@@ -82,7 +82,7 @@
                                                 <h5 class="mb-0">Balance: @Model.balance</h5>
                                             </div>
                                             <small>Account Number: <b>@Model.accountNumber</b></small><br />
-                                            <small class="mb-0">Account Name: <b>@Model.product.name</b></small><br />
+                                            <small class="mb-0">Account Name: <b>@Model.accountName</b></small><br />
                                             <small class="mb-0">Account Status: <b>@Model.status</b></small><br />
                                             <small class="mb-0">Date created: <b>@Model.createdDate</b></small>
                                             @if (Model.status == "INPROGRESS")
@@ -122,7 +122,16 @@
                                                                 @d.product.name
                                                             </a>
                                                         </td>
-                                                        <td>@d.status</td>
+                                                        <td>
+                                                            @if (d.status.ToLower() == "active")
+                                                            {
+                                                                <label class="ql-color-purple"><span class="blue-text badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@d.status</span></label>
+                                                            }
+                                                            else
+                                                            {
+                                                                <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Blocked</span></label>
+                                                            }
+                                                        </td>
                                                         <td>@d.balance</td>
                                                         <td>@d.previousBalance</td>
                                                         <td>@d.accountNumber</td>

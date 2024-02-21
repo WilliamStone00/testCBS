@@ -13,6 +13,7 @@ using CBS.FrontDesk.Data.Entity.User;
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
 using CBS.FrontDesk.UI.Helper;
+using Microsoft.AspNet.Identity;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -21,7 +22,6 @@ namespace CBS.FrontDesk.UI.Controllers
     {
         private IAuthenticationServices _helper;
         //
-
         public AuthenticationController(IAuthenticationServices helper)
         {
             _helper = helper;

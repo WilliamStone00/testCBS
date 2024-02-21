@@ -253,9 +253,7 @@
     <Compile Include="Controllers\Loan\Configuration\DocumentController.cs" />
     <Compile Include="Controllers\Loan\Configuration\TaxController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
-
     <Compile Include="Controllers\RoleManagement\MenuMasterController.cs" />
-
     <Compile Include="Controllers\RoleManagement\RoleController.cs" />
     <Compile Include="Controllers\RoleManagement\RolePermissionController.cs" />
     <Compile Include="Controllers\Session\SessionController.cs" />
@@ -2238,7 +2236,6 @@
     <Content Include="Views\OperationEvent\_Create.cshtml" />
     <Content Include="Views\OperationEvent\_Data.cshtml" />
     <Content Include="Views\OperationEvent\_Update.cshtml" />
-
     <Content Include="Views\AccountingConfiguration\Index.cshtml" />
     <Content Include="Views\Shared\_modal.cshtml" />
     <Content Include="Views\AccountingConfiguration\_ChartOfAccountData.cshtml" />
@@ -2271,7 +2268,6 @@
     <Content Include="Views\AccountingConfiguration\_OpeningOfTheDayData.cshtml" />
     <Content Include="Views\AccountingStatements\Index.cshtml" />
     <Content Include="Views\AccountingStatements\_GeneralLedgerData.cshtml" />
-
     <Content Include="Views\Error\InternalServer.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Error\ServiceUnavailable.cshtml" />
@@ -2315,17 +2311,19 @@
     <Content Include="Views\Role\_RolePermissionData.cshtml" />
     <Content Include="Views\Operation\Transactions.cshtml" />
     <Content Include="Views\Operation\_TransactionData.cshtml" />
-
+    <Content Include="Views\Individual\_MembershipStatus.cshtml" />
+    <Content Include="Views\Individual\_LegalSector.cshtml" />
+    <Content Include="Views\Individual\_AddMembershipNextOfKingsMember.cshtml" />
+    <Content Include="Views\Individual\_AddCardSignatureSpecimen.cshtml" />
+    <Content Include="Views\Individual\_AddMembershipNextOfKingsMemberData.cshtml" />
+    <Content Include="Views\Individual\_AddCardSignatureSpecimenData.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_SubTellerProvisioningDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\DocumentPack\" />
-
     <Folder Include="Views\Reports\" />
-    <Folder Include="Views\RolePermission\" />
-
     <Folder Include="Views\Session\" />
-
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
