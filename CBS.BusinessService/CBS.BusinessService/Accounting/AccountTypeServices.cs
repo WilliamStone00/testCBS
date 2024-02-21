@@ -69,7 +69,7 @@ namespace CBS.BusinessService
                 // Make an API call to create an individual profile
 
 
-                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<CashInfusion>>(APICallHelper.CashInfusion, model);
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<CashInfusion>>(APICallHelper.CashReplenishmentRequest, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation

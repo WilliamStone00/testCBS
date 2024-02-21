@@ -40,7 +40,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     RootParentId= mode.Id,
                     LabelEn = modeldto.LabelEn,
                     LabelFr = modeldto.LabelFr,
-                    IsBalanceAccount = modeldto.IsBalanceAccount,
+                    IsBalanceAccount = modeldto.IsBalanceSheetAccount,
                     AccountNumber = modeldto.AccountNumber
                 };
                
@@ -59,7 +59,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     RootParentId = modeldto.ParentAccountId,
                     LabelEn = modeldto.LabelEn,
-                    IsBalanceAccount = modeldto.IsBalanceAccount,
+                    IsBalanceAccount = modeldto.IsBalanceSheetAccount,
                     AccountNumber = modeldto.AccountNumber
                 };
                 var data = await _Services.Update(modeldto);

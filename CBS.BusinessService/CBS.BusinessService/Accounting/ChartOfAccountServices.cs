@@ -176,7 +176,7 @@ namespace CBS.BusinessService.Accounting
                         Account.AccountNumber = model.AccountNumber;
                         Account.LabelEn = model.LabelEn;
                         Account.LabelFr = model.LabelFr;
-                        Account.IsBalanceAccount = model.IsBalanceAccount;
+                        Account.IsBalanceSheetAccount = model.IsBalanceSheetAccount;
                         var response = await _ConfigApiHelper.PutAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.ChartOfAccount>>(string.Format(APICallHelper.Get_Update_Delete_ChartOfAccount, Account.Id), Account);
                         if (response.IsSuccess)
                         {

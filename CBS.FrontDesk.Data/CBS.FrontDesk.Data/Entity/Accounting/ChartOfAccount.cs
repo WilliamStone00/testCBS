@@ -12,7 +12,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string AccountNumber { get; set; }
         public string LabelEn { get; set; }
         public string LabelFr { get; set; }
-        public bool IsBalanceAccount { get; set; }
+        public bool IsBalanceSheetAccount { get; set; }
+        public bool CanBeNegative { get; set; }
+        public bool CreateAccount { get; set; }
         public string ParentAccountNumber { get; set; }
         public string ParentAccountId { get; set; }
         public bool IsForUpdate { get; set; }

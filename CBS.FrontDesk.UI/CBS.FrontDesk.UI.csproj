@@ -230,6 +230,7 @@
     <Compile Include="Controllers\Accounting\CashFlowManagementController.cs" />
     <Compile Include="Controllers\Accounting\OperationEventAttributeController.cs" />
     <Compile Include="Controllers\Accounting\OperationEventController.cs" />
+    <Compile Include="Controllers\Accounting\TellerCashDemandController.cs" />
     <Compile Include="Controllers\Authentication\AuthenticationController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\Configuration\Localization\CountryController.cs" />
@@ -253,9 +254,7 @@
     <Compile Include="Controllers\Loan\Configuration\DocumentController.cs" />
     <Compile Include="Controllers\Loan\Configuration\TaxController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
-
     <Compile Include="Controllers\RoleManagement\MenuMasterController.cs" />
-
     <Compile Include="Controllers\RoleManagement\RoleController.cs" />
     <Compile Include="Controllers\RoleManagement\RolePermissionController.cs" />
     <Compile Include="Controllers\Session\SessionController.cs" />
@@ -2056,6 +2055,8 @@
     <Content Include="Scripts\Js\Crud\User\UserListing.js" />
     <Content Include="Scripts\Js\main.js\AccountingStatements.js" />
     <Content Include="Scripts\Js\main.js\App.js" />
+    <Content Include="Scripts\Js\main.js\CashFlowManagement.js" />
+    <Content Include="Scripts\Js\main.js\MultipleManualEntry.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -2238,7 +2239,6 @@
     <Content Include="Views\OperationEvent\_Create.cshtml" />
     <Content Include="Views\OperationEvent\_Data.cshtml" />
     <Content Include="Views\OperationEvent\_Update.cshtml" />
-
     <Content Include="Views\AccountingConfiguration\Index.cshtml" />
     <Content Include="Views\Shared\_modal.cshtml" />
     <Content Include="Views\AccountingConfiguration\_ChartOfAccountData.cshtml" />
@@ -2256,7 +2256,7 @@
     <Content Include="Views\BankingOperations\_CashInfusion.cshtml" />
     <Content Include="Views\CashFlowManagement\Index.cshtml" />
     <Content Include="Views\CashFlowManagement\_ManualAccountingEntry.cshtml" />
-    <Content Include="Views\CashFlowManagement\_CashInfusion.cshtml" />
+    <Content Include="Views\CashFlowManagement\CreateCashReplenishmentRequest.cshtml" />
     <Content Include="Views\AccountingConfiguration\_AccountTypeData.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateAccountingEntryRule.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateOperationEventAttribute.cshtml" />
@@ -2271,7 +2271,6 @@
     <Content Include="Views\AccountingConfiguration\_OpeningOfTheDayData.cshtml" />
     <Content Include="Views\AccountingStatements\Index.cshtml" />
     <Content Include="Views\AccountingStatements\_GeneralLedgerData.cshtml" />
-
     <Content Include="Views\Error\InternalServer.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Error\ServiceUnavailable.cshtml" />
@@ -2300,9 +2299,6 @@
     <Content Include="Views\BranchManagement\_Bank.cshtml" />
     <Content Include="Views\BranchManagement\_BranchData.cshtml" />
     <Content Include="Views\BranchManagement\_Branch.cshtml" />
-    <Content Include="Views\TellerManagement\Index.cshtml" />
-    <Content Include="Views\TellerManagement\_PrimaryTellerData.cshtml" />
-    <Content Include="Views\TellerManagement\_PrimaryTeller.cshtml" />
     <Content Include="Views\BranchManagement\Index.cshtml" />
     <Content Include="Views\BranchManagement\_ImageUploader.cshtml" />
     <Content Include="Views\MenuMaster\Index.cshtml" />
@@ -2315,17 +2311,26 @@
     <Content Include="Views\Role\_RolePermissionData.cshtml" />
     <Content Include="Views\Operation\Transactions.cshtml" />
     <Content Include="Views\Operation\_TransactionData.cshtml" />
-
+    <Content Include="Views\CashFlowManagement\GetAllCashReplenimentRequestData.cshtml" />
+    <Content Include="Views\CashFlowManagement\GetCashReplenimentRequest.cshtml" />
+    <Content Include="Views\CashFlowManagement\Successfull_Request_View.cshtml" />
+    <Content Include="Views\CashFlowManagement\Failed_Request_View.cshtml" />
+    <Content Include="Views\BankingOperations\Create.cshtml" />
+    <Content Include="Views\CashFlowManagement\Failed_RequestApproval_View.cshtml" />
+    <Content Include="Views\CashFlowManagement\Successfull_RequestApproval_View.cshtml" />
+    <Content Include="Views\TellerCashDemand\Index.cshtml" />
+    <Content Include="Views\TellerCashDemand\CreateCashReplenishmentRequest.cshtml" />
+    <Content Include="Views\TellerCashDemand\Failed_Request_View.cshtml" />
+    <Content Include="Views\TellerCashDemand\Successfull_Request_View.cshtml" />
+    <Content Include="Views\TellerCashDemand\GetCashReplenimentRequest.cshtml" />
+    <Content Include="Views\TellerCashDemand\Successfull_RequestApproval_View.cshtml" />
+    <Content Include="Views\TellerCashDemand\Failed_RequestApproval_View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\DocumentPack\" />
-
     <Folder Include="Views\Reports\" />
-    <Folder Include="Views\RolePermission\" />
-
     <Folder Include="Views\Session\" />
-
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
