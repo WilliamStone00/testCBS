@@ -9,7 +9,7 @@
             @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { id = "chartOfAccountForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
             {
 
-                if (@Model.ChartOfAccount.Id.Contains("XXXXX"))
+                if (@Model.ChartOfAccount.Id==null)
                 {
                     <div class="misc-wrapper text-center">
                         <br /> <br />    <br /> <br />
@@ -39,39 +39,45 @@
                             <input type="hidden" name="ServiceOption" value="chartOfAccount" id="ServiceOption" />
                             <!-- Hidden field for AccountNumber -->
 
-                            <div class="form-check mb-4">
-                                @Html.CheckBoxFor(model => model.ChartOfAccount.IsForUpdate, new { @class = "form-check-input" })
-                                <label>If you wish to update informations on the chart of account: @Model.ChartOfAccount.AccountNumber-@Model.ChartOfAccount.LabelEn</label>
-                            </div>
+                            @Html.HiddenFor(model => model.ChartOfAccount.ParentAccountId) <!-- Hidden field for AccountNumber -->
+
                             <div class="form-floating form-floating-outline mb-4">
                                 @Html.TextBoxFor(model => model.ChartOfAccount.AccountNumber, new { @class = "form-control", placeholder = "Account Number" })
                                 @Html.LabelFor(model => model.ChartOfAccount.AccountNumber, new { @for = "accountNumber" })
+                                @Html.ValidationMessageFor(model => model.ChartOfAccount.AccountNumber, "", new { @class = "text-danger" })
                             </div>
 
                             <div class="form-floating form-floating-outline mb-4">
                                 @Html.TextBoxFor(model => model.ChartOfAccount.LabelEn, new { @class = "form-control", placeholder = "Account Label" })
                                 <label>Account label(English)</label>
+                                @Html.ValidationMessageFor(model => model.ChartOfAccount.LabelEn, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-floating form-floating-outline mb-4">
                                 @Html.TextBoxFor(model => model.ChartOfAccount.LabelFr, new { @class = "form-control", placeholder = "Account Label" })
                                 <label>Account label(French)</label>
+                                @Html.ValidationMessageFor(model => model.ChartOfAccount.LabelFr, "", new { @class = "text-danger" })
                             </div>
-                            <div class="form-check mb-4">
-                                @Html.CheckBoxFor(model => model.ChartOfAccount.IsBalanceSheetAccount, new { @class = "form-check-input" })
 
-                                <label>Is a balance sheet account</label>
+                            <div class="form-floating form-floating-outline mb-4">
+                                @Html.DropDownListFor(model => model.ChartOfAccount.OperationDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(model => model.ChartOfAccount.OperationDirection, "", new { @class = "text-danger" })
+                                <label>BookingDirection</label>
+                            </div>
+
+                            <div class="form-floating form-floating-outline mb-4">
+                                @Html.DropDownListFor(model => model.ChartOfAccount.AccountCartegoryId, new SelectList(ViewBag.AccountCartegories == null ? "" : ViewBag.AccountCartegories, "Id", "Name"), "---Select Cartegory---", new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(model => model.ChartOfAccount.AccountCartegoryId, "", new { @class = "text-danger" })
+                                <label>AccountCartegory</label>
                             </div>
                             <div class="form-check mb-4">
                                 @Html.CheckBoxFor(model => model.ChartOfAccount.CanBeNegative, new { @class = "form-check-input" })
-
-                                <label>Check if account can have a negative balance</label>
+                                @Html.LabelFor(model => model.ChartOfAccount.CanBeNegative, new { @class = "form-check-label" })
                             </div>
                             <div class="form-check mb-4">
-                                @Html.CheckBoxFor(model => model.ChartOfAccount.CreateAccount, new { @class = "form-check-input" })
-
-                                <label>Check if you which to create the account directly for operation</label>
+                                @Html.CheckBoxFor(model => model.ChartOfAccount.IsBalanceSheetAccount, new { @class = "form-check-input" })
+                                @Html.LabelFor(model => model.ChartOfAccount.IsBalanceSheetAccount, new { @class = "form-check-label" })
                             </div>
-
+                        
                             @if (@Model.ChartOfAccount == null)
                             {
                                 <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">Save</button>
@@ -95,30 +101,51 @@
                             <input type="hidden" name="ServiceOption" value="chartOfAccount" id="ServiceOption" />
                             <!-- Hidden field for AccountNumber -->
 
-                            <div class="form-check mb-4">
-                                @Html.CheckBoxFor(model => model.ChartOfAccount.IsForUpdate, new { @class = "form-check-input" })
+                            <div class="card-body">
+                                <input type="hidden" name="ServiceOption" value="chartOfAccount" id="ServiceOption" />
+                                <!-- Hidden field for AccountNumber -->
 
+                                @Html.HiddenFor(model => model.ChartOfAccount.ParentAccountId) <!-- Hidden field for AccountNumber -->
 
-                                <label>If you wish to update informations on the chart of account: @Model.ChartOfAccount.AccountNumber-@Model.ChartOfAccount.LabelEn</label>
-                            </div>
-                            <div class="form-floating form-floating-outline mb-4">
-                                @Html.TextBoxFor(model => model.ChartOfAccount.AccountNumber, new { @class = "form-control", placeholder = "Account Number" })
-                                @Html.LabelFor(model => model.ChartOfAccount.AccountNumber, new { @for = "accountNumber" })
-                            </div>
+                                <div class="form-floating form-floating-outline mb-4">
+                                    @Html.TextBoxFor(model => model.ChartOfAccount.AccountNumber, new { @class = "form-control", placeholder = "Account Number" })
+                                    @Html.LabelFor(model => model.ChartOfAccount.AccountNumber, new { @for = "accountNumber" })
+                                    @Html.ValidationMessageFor(model => model.ChartOfAccount.AccountNumber, "", new { @class = "text-danger" })
+                                </div>
 
-                            <div class="form-floating form-floating-outline mb-4">
-                                @Html.TextBoxFor(model => model.ChartOfAccount.LabelEn, new { @class = "form-control", placeholder = "Account Label" })
-                                <label>Account label(English)</label>
-                            </div>
-                            <div class="form-floating form-floating-outline mb-4">
-                                @Html.TextBoxFor(model => model.ChartOfAccount.LabelFr, new { @class = "form-control", placeholder = "Account Label" })
-                                <label>Account label(French)</label>
-                            </div>
-                            <div class="form-check mb-4">
-                                @Html.CheckBoxFor(model => model.ChartOfAccount.IsBalanceSheetAccount, new { @class = "form-check-input" })
-                                @Html.LabelFor(model => model.ChartOfAccount.IsBalanceSheetAccount, new { @class = "form-check-label" })
-                            </div>
+                                <div class="form-floating form-floating-outline mb-4">
+                                    @Html.TextBoxFor(model => model.ChartOfAccount.LabelEn, new { @class = "form-control", placeholder = "Account Label" })
+                                    <label>Account label(English)</label>
+                                    @Html.ValidationMessageFor(model => model.ChartOfAccount.LabelEn, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-floating form-floating-outline mb-4">
+                                    @Html.TextBoxFor(model => model.ChartOfAccount.LabelFr, new { @class = "form-control", placeholder = "Account Label" })
+                                    <label>Account label(French)</label>
+                                    @Html.ValidationMessageFor(model => model.ChartOfAccount.LabelFr, "", new { @class = "text-danger" })
+                                </div>
 
+                                <div class="form-floating form-floating-outline mb-4">
+                                    @Html.DropDownListFor(model => model.ChartOfAccount.OperationDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(model => model.ChartOfAccount.OperationDirection, "", new { @class = "text-danger" })
+                                    <label>BookingDirection</label>
+                                </div>
+
+                                <div class="form-floating form-floating-outline mb-4">
+                                    @Html.DropDownListFor(model => model.ChartOfAccount.AccountCartegoryId, new SelectList(ViewBag.AccountCartegories == null ? "" : ViewBag.AccountCartegories, "Id", "Name"), "---Select Cartegory---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(model => model.ChartOfAccount.AccountCartegoryId, "", new { @class = "text-danger" })
+                                    <label>AccountCartegory</label>
+                                </div>
+                                <div class="form-check mb-4">
+                                    @Html.CheckBoxFor(model => model.ChartOfAccount.CanBeNegative, new { @class = "form-check-input" })
+                                    @Html.LabelFor(model => model.ChartOfAccount.CanBeNegative, new { @class = "form-check-label" })
+                                </div>
+                                <div class="form-check mb-4">
+                                    @Html.CheckBoxFor(model => model.ChartOfAccount.IsBalanceSheetAccount, new { @class = "form-check-input" })
+                                    @Html.LabelFor(model => model.ChartOfAccount.IsBalanceSheetAccount, new { @class = "form-check-label" })
+                                </div>
+
+                                
+                            </div>
                             @if (@Model.ChartOfAccount == null)
                             {
                                 <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">Save</button>
@@ -139,6 +166,10 @@
 
 
             }
+
+        
+
+
         </div>
     </div>
 </div>

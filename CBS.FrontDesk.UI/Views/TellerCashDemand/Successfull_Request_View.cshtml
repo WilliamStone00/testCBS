@@ -18,7 +18,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    <span style="color:red"> Request ReferenceId : @Model.id not validated </span>
+                    <span style="color:forestgreen"> Request ReferenceId : @Model.id  </span>
                 </button>
             </h2>
             <div class="card-body">
@@ -81,7 +81,7 @@
                                 }
                                 else
                                 {
-                                    if (@Model.approvedStatus.ToUpper().Equals("SUCCESS"))
+                                    if (@Model.approvedStatus.ToUpper().Equals("APPROVE"))
                                     {
                                         <td class="badge bg-label-success rounded-pill text-uppercase">
                                             @Model.approvedStatus
@@ -100,7 +100,7 @@
                         </tbody>
                     </table>
                 </div>
-                < <div class="card card-action mb-5">
+                  <div class="card card-action mb-5">
                     <h5 class="card-header"><span style="color:forestgreen">Your cash replenishment request has been sent succesfully. Patiently wait for your managers approval</span> </h5>
 
                     <div class="col-12 shift-right">

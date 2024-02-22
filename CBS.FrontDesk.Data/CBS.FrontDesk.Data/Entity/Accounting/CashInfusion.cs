@@ -12,12 +12,13 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class CashInfusion
     {
        
-      //  [PositiveAmountValidator]
+       [PositiveAmountValidator]
         public decimal Amount { get; set; }
-       // [Required]
+        [Required]
         public string RequestMessage { get; set; }
-        //   [Required]
-        public string ReferenceNumber { get; set; } 
+        
+        public string ReferenceNumber { get; set; }
+        [Required]
         public string CurrentOperation { get; set; }
         public CashInfusion()
         {
@@ -37,7 +38,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
         public CashReplenimentRequest ConvertToCashReplenimentRequest()
         {
-          return new CashReplenimentRequest { Amount = Amount, RequestMessage = RequestMessage, ReferenceId = ReferenceNumber, IssuedBy="Not-Set" };
+          return new CashReplenimentRequest { AmountRequested = Amount, RequestMessage = RequestMessage, ReferenceId = ReferenceNumber, IssuedBy="Not-Set" };
         }
 
 

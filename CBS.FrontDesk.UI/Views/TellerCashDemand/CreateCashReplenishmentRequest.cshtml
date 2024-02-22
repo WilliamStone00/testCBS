@@ -19,7 +19,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-bank-plus me-2"></i>
-                PROVISION BANK TO VAULT
+                PROVISIONING SECONDARY TELLER ACCOUNT
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"
@@ -29,7 +29,7 @@
                 <div id="mainviewChange">
                     <div class="change-group">
 
-                        @using (Html.BeginForm("CreateCashReplenishmentRequest", "TellerCashDemand", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        @using (Html.BeginForm("CreateCashReplenishmentRequest", "TellerCashDemand", FormMethod.Post))
                         {
                             <div class="row mt-2 gy-4">
 
@@ -48,7 +48,7 @@
                                     </div>
                                 </div>
 
-                        
+
 
 
                                 <div class="col-md-12">
@@ -59,7 +59,7 @@
                                         <label for="Description"> RequestMessage</label>
                                     </div>
                                 </div>
-                              
+
                             </div>
 
                             <div class="mt-4">
@@ -77,3 +77,6 @@
 
 
 </div>
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")}

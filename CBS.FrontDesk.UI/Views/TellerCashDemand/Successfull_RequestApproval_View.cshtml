@@ -80,7 +80,7 @@
                                 }
                                 else
                                 {
-                                    if (@Model.approvedStatus.ToUpper().Equals("SUCCESS"))
+                                    if (@Model.approvedStatus.ToUpper().Equals("APPROVE"))
                                     {
                                         <td class="badge bg-label-success rounded-pill text-uppercase">
                                             @Model.approvedStatus
@@ -103,11 +103,11 @@
 
                     @if (@Model.approvedStatus.ToUpper().Equals("PENDING"))
                     {
-                        <h5 class="card-header" style="color:firebrick">You have just rejected the cash replenishment request of XAF @Model.requestedAmount.ToString("N") Issued by @Model.requesterUserId successfully.</h5>
+                        <h5 class="card-header" >You have just rejected the cash replenishment request of XAF @Model.requestedAmount.ToString("N") Issued by @Model.requesterUserId successfully.</h5>
                     }
                     else
                     {
-                        if (@Model.approvedStatus.ToUpper().Equals("SUCCESS"))
+                        if (@Model.approvedStatus.ToUpper().Equals("APPROVE"))
                         {
                             <h5 class="card-header" style="color:forestgreen">You have just approved cash replenishment request of XAF @Model.confirmedAmount.ToString("N") Issued by @Model.requesterUserId for @Model.requestedAmount.ToString("N")  successfully.</h5>
 
@@ -120,7 +120,7 @@
                     }
                     <div class="col-12 shift-right">
 
-                        <button type="submit" class="btn btn-primary click-to-go-back-to-menu" onclick="refreshPage()">Click to view pending cash replenishment request. </button>
+                        <a href="/TellerCashDemand/GetAllCashReplenimentRequestData" class="btn btn-primary click-to-go-back-to-menu" >Click to view pending cash replenishment request. </a>
 
 
                     </div>

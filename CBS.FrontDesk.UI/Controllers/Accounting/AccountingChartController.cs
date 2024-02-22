@@ -16,14 +16,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         // GET: ChartOfAccount
  
         private readonly ChartOfAccountServices _Services;
-        public AccountingChartController(ChartOfAccountServices services)
+        private readonly AccountCategoryServices _AccountCategoryServices;
+
+        public AccountingChartController(ChartOfAccountServices services, AccountCategoryServices accountCategoryServices)
         {
             _Services = services;
+            _AccountCategoryServices = accountCategoryServices;
         }
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            GetList();
+            GetListAsync();
            /*JsonRequestBehavior = JsonRequestBehavior.AllowGet*/
          
             return View();
@@ -41,7 +44,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     LabelEn = modeldto.LabelEn,
                     LabelFr = modeldto.LabelFr,
                     IsBalanceAccount = modeldto.IsBalanceSheetAccount,
-                    AccountNumber = modeldto.AccountNumber
+                    AccountNumber = modeldto.AccountNumber,
+                    CanBeNegative= modeldto.CanBeNegative,
+                    IsDebit= modeldto.OperationDirection == "DEBIT",
+                    AccountCartegoryId = modeldto.AccountCartegoryId
                 };
                
                 var data = await _Services.Create(model);
@@ -60,7 +66,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     RootParentId = modeldto.ParentAccountId,
                     LabelEn = modeldto.LabelEn,
                     IsBalanceAccount = modeldto.IsBalanceSheetAccount,
-                    AccountNumber = modeldto.AccountNumber
+                    AccountNumber = modeldto.AccountNumber,
+                      LabelFr = modeldto.LabelFr,                
+                    CanBeNegative = modeldto.CanBeNegative,
+                    IsDebit = modeldto.OperationDirection == "DEBIT",
+                    AccountCartegoryId = modeldto.AccountCartegoryId
                 };
                 var data = await _Services.Update(modeldto);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
@@ -71,7 +81,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
-            GetList();
+           await  GetListAsync();
             if (path == "list" )
             {
                 var treeData = await _Services.GetAllChartOfAccountTreeNodes();
@@ -80,7 +90,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (path == "new")
             {
-                return PartialView(partialView, new ChartOfAccount());
+                var account = await _Services.GetChartOfAccountByAccountNumber(KEY);
+                 account =(account == null )?new ChartOfAccount(): account;
+                return PartialView(partialView, account);
             }
             else if (path == "Transit")
             {
@@ -116,11 +128,22 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             var data = await _Services.Delete(KEY);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
-        public void GetList()
+        public async Task GetListAsync()
         {
+            ViewBag.AccountCartegories = await _AccountCategoryServices.GetAccountCategory();
+            ViewBag.OperationDirection = BuildMenuViewBag();
 
-            //ViewBag.Branches = _Services.GetAllBranchesByBankId(_Services.BankId);
+        }
+        private dynamic BuildMenuViewBag()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
 
+            list.Add(new SelectListItem { Text = $"DEBIT", Value = "DEBIT" });
+
+            list.Add(new SelectListItem { Text = $"CREDIT", Value = "CREDIT" });
+
+
+            return list;
         }
     }
 }

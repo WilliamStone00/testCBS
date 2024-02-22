@@ -16,10 +16,6 @@
                 <td style="width:25%">@d.Description</td>
 
                 <td style="width:40%">
-                    <button type="button" onclick="EditResetModal('@d.Id','modalBody','modalContent','OperationEventAttribute','InitializeData','_Create','new','modalLabel','Add EventAttribute')" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modalCenter">
-                        Event Attribute
-                    </button>
-
                     <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_OperationEvent','_CreateOperationEvent','update','AccountingConfiguration','operationEvent')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.OperationEventName to edit">Edit</a>
                     <a href="#" class="mr-2 btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete @d.OperationEventName"  onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_OperationEvent','_OperationEventData',0,'datalistingview_OperationEvent','operationEvent')">Delete</a>
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +11,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         public string Id { get; set; }
         public string ReferenceId { get; set; }
-        public decimal Amount { get; set; }
+        public decimal AmountRequested { get; set; }
         public string RequestMessage { get; set; }
-
+        [Required]
+        public decimal AmountConfirm { get; set; }
+        [Required]
         public string OpenOfDayOperationId { get; set; }
         public string IssuedBy { get; set; }
         public string IssuedDate { get; set; }
@@ -20,6 +23,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public DateTime? ApprovedDate { get; set; }
         public bool IsApproved { get; set; }
         public string CurrencyCode { get; set; }
+        [Required]
         public string ApprovedMessage { get; set; }
         public string Status { get; set; }
 
@@ -31,7 +35,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             return new CashReplenimentRequestDto
             {
                 Id = this.Id,
-                Amount = this.Amount,
+                AmountRequested = this.AmountRequested,
                 RequestMessage = this.RequestMessage,
                 ReferenceId = this.ReferenceId,
                 IssuedBy = this.IssuedBy,

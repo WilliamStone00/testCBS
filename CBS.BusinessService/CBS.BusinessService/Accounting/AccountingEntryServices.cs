@@ -65,7 +65,7 @@ namespace CBS.BusinessService
 
 
                 var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.ManualEntriePosting, model.ConvertToManualAccountingEntryDto());
-                if (response.ApiResponseData.Data)
+                if (response.IsSuccess)
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,

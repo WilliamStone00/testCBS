@@ -2325,7 +2325,7 @@
     <Content Include="Views\TellerCashDemand\GetCashReplenimentRequest.cshtml" />
     <Content Include="Views\TellerCashDemand\Successfull_RequestApproval_View.cshtml" />
     <Content Include="Views\TellerCashDemand\Failed_RequestApproval_View.cshtml" />
-    <Content Include="Views\TellerCashDemand\Index - Copy %282%29.cshtml" />
+    <Content Include="Views\TellerCashDemand\GetAllCashReplenimentRequestData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

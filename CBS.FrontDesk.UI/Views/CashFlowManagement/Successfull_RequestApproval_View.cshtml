@@ -38,7 +38,7 @@
                             </tr>
                             <tr>
                                 <td>Amount Requested</td>
-                                <td>XAF @Model.Amount.ToString("N") </td>
+                                <td>XAF @Model.AmountRequested.ToString("N") </td>
                             </tr>
                             <tr>
                                 <td>Request Message</td>
@@ -84,7 +84,7 @@
                 <div class="card card-action mb-5">
                     @if (@Model.IsApproved)
                     {
-                        <h5 class="card-header" style="color:forestgreen">You have just approved cash replenishment request of XAF @Model.Amount.ToString("N") Issued by @Model.IssuedBy on @Model.IssuedDate successfully.</h5>
+                        <h5 class="card-header" style="color:forestgreen">You have just approved cash replenishment request of XAF @Model.AmountRequested.ToString("N") Issued by @Model.IssuedBy on @Model.IssuedDate successfully.</h5>
 
 
                     }
@@ -94,13 +94,13 @@
                         if (@Model.Status.ToUpper().Equals("PENDING"))
                         {
                 <td class="badge bg-label-primary rounded-pill text-uppercase">
-                    <h5 class="card-header" style="color:firebrick">You have just rejected the cash replenishment request of XAF @Model.Amount.ToString("N") Issued by @Model.IssuedBy on @Model.IssuedDate successfully.</h5>
+                    <h5 class="card-header" style="color:firebrick">You have just rejected the cash replenishment request of XAF @Model.AmountRequested.ToString("N") Issued by @Model.IssuedBy on @Model.IssuedDate successfully.</h5>
 
                 </td>
                         }
                         else
                         {
-                            <h5 class="card-header" style="color:firebrick">You have just rejected the cash replenishment request of XAF @Model.Amount.ToString("N") Issued by @Model.IssuedBy on @Model.IssuedDate successfully.</h5>
+                            <h5 class="card-header" style="color:firebrick">You have just rejected the cash replenishment request of XAF @Model.AmountRequested.ToString("N") Issued by @Model.IssuedBy on @Model.IssuedDate successfully.</h5>
 
                         }
                     }

@@ -45,7 +45,7 @@ namespace CBS.BusinessService.Accounting
                 {
 
                     GetExecutionMessages(inResponse, true, $"{objOperationEvent.AccountNumber + " " + objOperationEvent.LabelEn}", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }
@@ -177,6 +177,10 @@ namespace CBS.BusinessService.Accounting
                         Account.LabelEn = model.LabelEn;
                         Account.LabelFr = model.LabelFr;
                         Account.IsBalanceSheetAccount = model.IsBalanceSheetAccount;
+                        Account.AccountCartegoryId = model.AccountCartegoryId;
+                        Account.CanBeNegative= model.CanBeNegative;
+                        Account.IsDebit= model.IsDebit;
+
                         var response = await _ConfigApiHelper.PutAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.ChartOfAccount>>(string.Format(APICallHelper.Get_Update_Delete_ChartOfAccount, Account.Id), Account);
                         if (response.IsSuccess)
                         {
