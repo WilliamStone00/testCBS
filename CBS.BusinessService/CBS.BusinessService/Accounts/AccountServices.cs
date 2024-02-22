@@ -122,10 +122,10 @@ namespace CBS.BusinessService.Accounts
         public List<TransactionHistoryExport> MapToTransactionHistoryExport(List<TransactionHistory> transactions)
         {
             return transactions
-                .OrderBy(t => t.createdDate) // Order transactions by date in descending order
+                .OrderBy(t => t.createdDate) // Order transactions by date in ascending order
                 .Select(transaction => new TransactionHistoryExport
                 {
-                    accountHolderName =transaction.account.accountName,
+                    accountHolderName = transaction.account?.accountName ?? "-", // Use null coalescing operator
                     Date = transaction.createdDate,
                     originalAmount = transaction.originalDepositAmount,
                     accountNumber = transaction.accountNumber,
@@ -142,12 +142,17 @@ namespace CBS.BusinessService.Accounts
                     depositorIdExpiryDate = transaction.depositorIdExpiryDate,
                     balance = transaction.balanceBroughtForward,
                     fee = transaction.fee,
-                    feeType = transaction.feeType, Operation= transaction.Operation,
-                    teller = transaction.teller.name, customerReferenceNumber= transaction.account.customerId, newAmount= transaction.amount, productName= transaction.account.product.name
+                    feeType = transaction.feeType,
+                    Operation = transaction.Operation,
+                    teller = transaction.teller?.name ?? "-", // Use null coalescing operator
+                    customerReferenceNumber = transaction.account?.customerId ?? "-", // Use null coalescing operator
+                    newAmount = transaction.amount,
+                    productName = transaction.account?.product.name ?? "-" // Use null coalescing operator
                 })
                 .ToList();
         }
-       
+
+
         public async Task<IEnumerable<StringValues>> SourceAndDestinationAccount()
         {
             try

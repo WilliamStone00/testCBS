@@ -1,7 +1,4 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.EndOfTheDay
-
-
-
 <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
 
     <div id="accordionPopoutIconxx" class="accordion mt-3 accordion-popout">
@@ -106,7 +103,7 @@
                         data-bs-target="#accordionPopoutIconx-2"
                         aria-controls="accordionPopoutIconx-2">
                     <i class="mdi mdi-details me-2"></i>
-                    Close operations of @Model.SubTellerProvioningHistory.teller.name for the selected date @Model.SubTellerProvioningHistory.openedDate
+                    Confirmation the operations of @Model.SubTellerProvioningHistory.teller.name for the selected date @Model.SubTellerProvioningHistory.openedDate
                 </button>
             </h2>
             <div id="accordionPopoutIconx-2"
@@ -115,133 +112,38 @@
                 <div class="accordion-body">
                     <div id="mainviewReset">
                         <div class="reset-group">
-                            @using (Html.BeginForm("SubTeller", "EndOfDayOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-                            {@Html.HiddenFor(model => model.EndOfDaySubTellerCommand.tellerProvisioningId)
-                            <div class="row mt-2 gy-4">
 
-                                <div class="col-md-8">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.cashAtHand, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.cashAtHand, "", new { @class = "text-danger" })
-                                        <label style="color:blue">Enter cash at hand</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.operationDate, new { @class = "form-control date-picker", @placeholder = "Operation date" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.operationDate, "", new { @class = "text-danger" })
-                                        <label>Date to close</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.currencyNotes.note10000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.currencyNotes.note10000, "", new { @class = "text-danger " })
-                                        <label>Note-10,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.currencyNotes.note5000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.currencyNotes.note5000, "", new { @class = "text-danger " })
-                                        <label>Note-5,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.currencyNotes.note2000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.currencyNotes.note2000, "", new { @class = "text-danger " })
-                                        <label>Note-2,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.currencyNotes.note1000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.currencyNotes.note1000, "", new { @class = "text-danger " })
-                                        <label>Note-1,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.currencyNotes.note500, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.currencyNotes.note500, "", new { @class = "text-danger " })
-                                        <label>Note-500</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.currencyNotes.coin500, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.currencyNotes.coin500, "", new { @class = "text-danger " })
-                                        <label>Coin-500</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.currencyNotes.coin100, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.currencyNotes.coin100, "", new { @class = "text-danger " })
-                                        <label>Coin-100</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.currencyNotes.coin50, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.currencyNotes.coin50, "", new { @class = "text-danger " })
-                                        <label>Coin-50</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.currencyNotes.coin25, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.currencyNotes.coin25, "", new { @class = "text-danger " })
-                                        <label>Coin-25</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.currencyNotes.coin10, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.currencyNotes.coin10, "", new { @class = "text-danger " })
-                                        <label>Coin-10</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.currencyNotes.coin5, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.currencyNotes.coin5, "", new { @class = "text-danger " })
-                                        <label>Coin-5</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.currencyNotes.coin1, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.currencyNotes.coin1, "", new { @class = "text-danger " })
-                                        <label>Coin-1</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextAreaFor(m => m.EndOfDaySubTellerCommand.comment, new { @class = "form-control", @style = "height: 75px;" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.comment, "", new { @class = "text-danger " })
-                                        <label for="formValidationDob">Teller close of day note</label>
-                                    </div>
-                                </div>
-                            </div>
-                            if (Model.EndOfDaySubTellerCommand.cashAtHand == 0)
+
+                            @using (Html.BeginForm("SubtellerVerification", "EndOfDayOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                             {
+                                @Html.HiddenFor(model => model.EndOfDayBySubTellerIDCommand.subTellerProvioningHistoryID)
+                                <div class="row mt-2 gy-4">
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.EndOfDayBySubTellerIDCommand.primaryTellerConfirmationStatus, new SelectList(ViewBag.Statuses, "Text", "Value"), "---Select status type---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.EndOfDayBySubTellerIDCommand.primaryTellerConfirmationStatus, "", new { @class = "text-danger " })
+                                            <label for="formValidationDob">Confirmation status</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextAreaFor(m => m.EndOfDayBySubTellerIDCommand.comment, new { @class = "form-control", @style = "height: 75px;" })
+                                            @Html.ValidationMessageFor(m => m.EndOfDayBySubTellerIDCommand.comment, "", new { @class = "text-danger " })
+                                            <label for="formValidationDob">Teller close of day note</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2">Close (End the day operation)</button>
+                                    <button type="submit" class="btn btn-primary me-2">Confirm subteller operations</button>
                                 </div>
                             }
-
-                        }
-
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!--<div class="accordion-item">
+        <div class="accordion-item">
             <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconxOne">
                 <button type="button"
                         class="accordion-button collapsed"
@@ -302,32 +204,32 @@
                                                 <td style="width: 10%">@d.transactionType</td>
                                             </tr>
                                         }
-                                    </tbody>-->
+                                    </tbody>
                                     @*<tfoot>
-                                            <tr>
-                                                <td colspan="6"></td>
-                                                <td>
-                                                    <strong>Balance:</strong>
-                                                    @if (Model.TransactionHistories.Any())
-                                                    {
-                                                        var totalBalance = Model.TransactionHistories.Sum(d => d.amount);
-                                                        @totalBalance
-                                                    }
-                                                    else
-                                                    {
-                                                        <label>0</label>
-                                                    }
-                                                </td>
-                                                <td colspan="3"></td>
-                                            </tr>
-                                        </tfoot>*@
-                                <!--</table>
+                    <tr>
+                        <td colspan="6"></td>
+                        <td>
+                            <strong>Balance:</strong>
+                            @if (Model.TransactionHistories.Any())
+                            {
+                                var totalBalance = Model.TransactionHistories.Sum(d => d.amount);
+                                @totalBalance
+                            }
+                            else
+                            {
+                                <label>0</label>
+                            }
+                        </td>
+                        <td colspan="3"></td>
+                    </tr>
+                </tfoot>*@
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>-->
+        </div>
 
     </div>
 

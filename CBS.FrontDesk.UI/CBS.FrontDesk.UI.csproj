@@ -2037,6 +2037,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
+    <Content Include="Scripts\Js\Crud\EOD\EOD.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />
     <Content Include="Scripts\Js\Crud\Config\Localization\Countries.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\CustomersProfile.js" />
@@ -2332,6 +2333,10 @@
     <Content Include="Views\Individual\_AddMembershipNextOfKingsMemberData.cshtml" />
     <Content Include="Views\Individual\_AddCardSignatureSpecimenData.cshtml" />
     <Content Include="Views\EndOfDayOperation\_SubTellerProvisioningDetails.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_PrimaryTellerViewOfSubTellerStatus.cshtml" />
+    <Content Include="Views\EndOfDayOperation\SubtellerVerification.cshtml" />
+    <Content Include="Views\EndOfDayOperation\Accountant.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_Accountant.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

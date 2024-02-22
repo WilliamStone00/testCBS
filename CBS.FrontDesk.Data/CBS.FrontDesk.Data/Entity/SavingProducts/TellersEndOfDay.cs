@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -66,8 +67,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string tellerId { get; set; }
         public string userIdInChargeOfThisTeller { get; set; }
         public string provisionedBy { get; set; }
-        public DateTime openedDate { get; set; }
-        public DateTime clossedDate { get; set; }
+        public string openedDate { get; set; }
+        public string clossedDate { get; set; }
         public decimal openOfDayAmount { get; set; }
         public decimal cashReplenishmentAmount { get; set; }
         public string replenishmentReferenceNumber { get; set; }
@@ -99,7 +100,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string tellerProvisioningId { get; set; }
         public string openOfDayAmount { get; set; }
     }
-
+    public class EndOfDayBySubTellerIDCommand
+    {
+        [Required]
+        public string comment { get; set; }
+        [Required]
+        public string primaryTellerConfirmationStatus { get; set; }
+        public string subTellerProvioningHistoryID { get; set; }
+     
+    }
     public class PrimaryTellerProvisioningHistory
     {
         public string id { get; set; }
@@ -132,15 +141,33 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string comment { get; set; }
         [Required]
         public int cashAtHand { get; set; }
+        public string primaryTellerProvioningHistoryID { get; set; }
+        public string clossedStatus { get; set; }
 
+
+    }
+    public class EndOfDayAccountantCommand
+    {
+        [Required]
+        public string comment { get; set; }
+        [Required]
+        public int amountRecieved { get; set; }
+        public string primaryTellerProvioningHistoryID { get; set; }
+        [Required]
+        public string eodClosedStatus { get; set; }
+        [Required]
+        public string accountantConfirmationStatus { get; set; }
     }
     public class EndOfTheDay
     {
+        public EndOfDayAccountantCommand EndOfDayAccountantCommand { get; set; } = new EndOfDayAccountantCommand();
+        public EndOfDayBySubTellerIDCommand EndOfDayBySubTellerIDCommand { get; set; } = new EndOfDayBySubTellerIDCommand();
         public EndOfDayPrimaryTellerCommand EndOfDayPrimaryTellerCommand { get; set; } = new EndOfDayPrimaryTellerCommand();
         public EndOfDaySubTellerCommand EndOfDaySubTellerCommand { get; set; } = new EndOfDaySubTellerCommand();
         public List<PrimaryTellerProvisioningDto> PrimaryTellerProvisioningHistories { get; set; }= new List<PrimaryTellerProvisioningDto>();
         public PrimaryTellerProvisioningDto PrimaryTellerProvisioningHistory { get; set; } = new PrimaryTellerProvisioningDto();
         public List<SubTellerProvisioningDto> SubTellerProvioningHistories { get; set; } = new List<SubTellerProvisioningDto>();
         public SubTellerProvisioningDto SubTellerProvioningHistory { get; set; } = new SubTellerProvisioningDto();
+        public List<TransactionHistory> TransactionHistories { get; set; } = new List<TransactionHistory>();
     }
 }

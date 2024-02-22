@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Sub-teller EOD";
+    ViewBag.Title = "EOD accountant";
 }
 
 <div class="row">
@@ -15,8 +15,8 @@
                             data-bs-target="#accordionPopoutIcon-3"
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-close-box me-2"></i>
-                        EOD SUB-TELLER
+                        <i class="mdi mdi-close-box-multiple me-2"></i>
+                        EOD ACCOUNTANT FRONT DESK OPERATIONS
                     </button>
 
                 </h2>
@@ -29,14 +29,14 @@
                                 <div class="card mb-4">
                                     <div class="card-body d-sm-flex d-block">
                                         <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            <a type="button" href="/EndOfDayOperation/SubTeller" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                            <a type="button" href="/EndOfDayOperation/Accountant" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                                 <div id="datalistingview">
-                                    @Html.Partial("_SubTellerTellerViewOfOwnHistoryData")
+                                    @Html.Partial("_AccountantViewOfPrimaryTellerHistoryData")
                                 </div>
                             </div>
                         </div>

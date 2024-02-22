@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.RoleManagement
 {
@@ -112,7 +113,11 @@ namespace CBS.FrontDesk.UI.Controllers.RoleManagement
                 };
             }
         }
-
+        public async Task<ActionResult> Delete(string KEY)
+        {
+            var data = await _menuMasterServices.Delete(KEY);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+        }
         public async Task<bool> GetList()
         {
             var stringValues = await _menuMasterServices.GetMenuMastersDropDowns();

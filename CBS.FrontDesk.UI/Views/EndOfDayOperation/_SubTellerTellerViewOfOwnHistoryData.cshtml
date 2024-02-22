@@ -24,8 +24,9 @@
                 <td style="width:10%">@d.clossedStatus</td>
                 <td style="width:10%">@d.primaryTellerConfirmationStatus</td>
                 <td style="width:20%">
-                    <a href="#" onclick="EditResetModal('@d.id','modal','modalContent','EndOfDayOperation','InitializeData','_SubTellerProvisioningDetails','details','@d.teller.name.ToUpper(), Code: @d.teller.code, OPERATION DETAILS','modalLabel','subteller')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.openOfDayAmount to see details">Details</a> |
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Close the operation of @d.openOfDayAmount for date of @d.openedDate" onclick="EditResetModal('@d.id','modal','modalContent','EndOfDayOperation','InitializeData','_SubTeller','close','CLOSE @d.teller.name.ToUpper() DAILY OPERATION','modalLabel','subteller')">Close</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Close the operation of @d.openOfDayAmount for date of @d.openedDate" onclick="AddORUpdateGen('@d.id','datalistingview','_SubTeller','close','EndOfDayOperation','close_subteller')">Close</a>
+                    @*<a href="#" onclick="EditResetModal('@d.id','modal','modalContent','EndOfDayOperation','InitializeData','_SubTellerProvisioningDetails','details','@d.teller.name.ToUpper(), Code: @d.teller.code, OPERATION DETAILS','modalLabel','subteller')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.openOfDayAmount to see details">Details</a> |
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Close the operation of @d.openOfDayAmount for date of @d.openedDate" onclick="EditResetModal('@d.id','modal','modalContent','EndOfDayOperation','InitializeData','_SubTeller','close','CLOSE @d.teller.name.ToUpper() DAILY OPERATION','modalLabel','subteller')">Close</a>*@
                 </td>
             </tr>
         }

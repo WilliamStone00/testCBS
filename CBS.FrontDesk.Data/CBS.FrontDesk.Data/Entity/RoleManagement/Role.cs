@@ -1,6 +1,7 @@
 ﻿using CBS.FrontDesk.Data.Entity.User;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,9 @@ namespace CBS.FrontDesk.Data.Entity
 
     public class PermissionMenuLoaderDto
     {
+        [Required]
         public string roleID { get; set; }
+        [Required]
         public string userID { get; set; }
         public List<int> MenuMasterId { get; set; }
         public List<PermissionMenuLoader> PermissionMenuLoaders { get; set; }

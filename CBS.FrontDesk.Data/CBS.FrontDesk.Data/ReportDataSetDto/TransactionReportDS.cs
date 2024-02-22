@@ -13,6 +13,8 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public decimal Amount { get; set; }
         public decimal OriginalDepositAmount { get; set; }
         public string CustomerName { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
         public string AccountNumber { get; set; }
         public string CustomerNumber { get; set; }
         public string TransactionType { get; set; }

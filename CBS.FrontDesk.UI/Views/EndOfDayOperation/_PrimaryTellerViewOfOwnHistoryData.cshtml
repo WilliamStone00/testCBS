@@ -23,7 +23,9 @@
                 <td style="width:10%">@d.cashAtHand</td>
                 <td style="width:10%">@d.clossedStatus</td>
                 <td style="width:15%">@d.accountantConfirmationStatus</td>
-                <td style="width:20%"></td>
+                <td style="width:20%">
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Close the operation of @d.openOfDayAmount for date of @d.openedDate" onclick="AddORUpdateGen('@d.id','datalistingview','_Primary','close','EndOfDayOperation')">Close</a>
+                </td>
             </tr>
         }
     </tbody>

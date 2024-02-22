@@ -327,7 +327,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<StringValues> freeQuencies { get; set; } = new List<StringValues>();
         public List<StringValues> currencies { get; set; } = new List<StringValues>();
         public List<StringValues> operationAccounts { get; set; } = new List<StringValues>();
-        //
+        public List<StringValues> primaryTellerEODStatuses { get; set; } = new List<StringValues>();
+        public List<StringValues> accountantEODStatuses { get; set; } = new List<StringValues>();
 
     }
     public class AddCustomerAccount

@@ -109,6 +109,8 @@ namespace CBS.FrontDesk.Helper
         public static string SubTellerProvisioning = "/api/v1/Teller/Provision/SubTeller";
         public static string SubTellerEndOfDay = "/api/v1/Teller/SubTellerEndOfDay";
         public static string PrimaryTellerEndOfDay = "/api/v1/Teller/PrimaryTellerEndOfDay";
+        public static string EndOfDayAccountant = "/api/v1/Teller/EndOfDayAccountant";
+        //
         public static string GetSubTellerProvisioningHistoryByUserIncharge = "/api/v1/Teller/GetSubTellerProvisioningHistoryByUserIncharge/{0}";
         public static string GetPrimaryTellerProvisioningHistoryByUserIncharge = "/api/v1/Teller/GetPrimaryTellerProvisioningHistoryByUserIncharge/{0}";
         public static string GetAllSubTellerProvioningHistoryQuery = "/api/v1/Teller/GetAllSubTellerProvioningHistoryQuery";
@@ -118,9 +120,11 @@ namespace CBS.FrontDesk.Helper
         public static string CurrentOpenOfDayHistory = "/api/v1/Teller/CurrentOpenOfDayHistory";
         public static string GetSubTellerProvioningHistoryQuery = "/api/v1/Teller/GetSubTellerProvioningHistoryQuery/{0}";
         public static string GetPrimaryTellerProvisioningHistoryQuery = "/api/v1/Teller/GetPrimaryTellerProvisioningHistoryQuery/{0}";
-
+        public static string GetSubTellerProvioningHistoryByPrimaryTellerUserIDQuery = "/api/v1/Teller/GetSubTellerProvioningHistoryByPrimaryTellerUserIDQuery/{0}";
+        public static string EndOfDaySubTellerBYPrimaryTeller = "/api/v1/Teller/EndOfDaySubTellerBYPrimaryTeller";
+        public static string GetPrimaryTellerProvisioningHistoryByBranchIDQuery = "/api/v1/Teller/GetPrimaryTellerProvisioningHistoryByBranchIDQuery/{0}";
         ///api/v1/Teller/SubTellerEndOfDay
-        //
+        //GetPrimaryTellerProvisioningHistoryByBranchIDQuery
         public static string  TellerCashReplenishmentRequest = "/api/v1/CashReplenishment";
         public static string TellerCashReplenishmentRequestApproval = "/api/v1/CashReplenishment/{0}";
         //Account

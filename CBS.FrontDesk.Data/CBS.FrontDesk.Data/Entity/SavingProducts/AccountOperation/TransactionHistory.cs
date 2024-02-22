@@ -13,6 +13,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public decimal amount { get; set; }
         public decimal originalDepositAmount { get; set; }
         public string accountId { get; set; }
+        public decimal debit { get; set; }
+        public decimal credit { get; set; }
         public string accountNumber { get; set; }
         public string Operation { get; set; }
         public Account account { get; set; }

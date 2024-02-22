@@ -17,7 +17,6 @@
                         aria-controls="accordionPopoutIconx-3">
                     <i class="mdi mdi-update me-2"></i>
                     Details of operations of @Model.PrimaryTellerProvisioningHistory.teller.name for the selected date @Model.PrimaryTellerProvisioningHistory.openedDate
-
                 </button>
             </h2>
             <div id="accordionPopoutIconx-3"
@@ -88,9 +87,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
                         </div>
                     </div>
                 </div>
@@ -116,7 +112,7 @@
                     <div id="mainviewReset">
                         <div class="reset-group">
                             @using (Html.BeginForm("Primary", "EndOfDayOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-                            {@Html.HiddenFor(model => model.EndOfDayPrimaryTellerCommand.primaryTellerProvioningHistoryID)
+                            {@Html.HiddenFor(model => model.EndOfDayAccountantCommand.primaryTellerProvioningHistoryID)
                             <div class="row mt-2 gy-4">
                                 <div class="col-md-8">
                                     <div class="form-floating form-floating-outline">
@@ -132,100 +128,31 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDayPrimaryTellerCommand.cashAtHand, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.cashAtHand, "", new { @class = "text-danger" })
+                                        @Html.TextBoxFor(m => m.EndOfDayAccountantCommand.amountRecieved, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.EndOfDayAccountantCommand.amountRecieved, "", new { @class = "text-danger" })
                                         <label style="color:blue">Enter amount collected</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.note10000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.note10000, "", new { @class = "text-danger " })
-                                        <label>Note-10,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.note5000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.note5000, "", new { @class = "text-danger " })
-                                        <label>Note-5,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.note2000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.note2000, "", new { @class = "text-danger " })
-                                        <label>Note-2,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.note1000, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.note1000, "", new { @class = "text-danger " })
-                                        <label>Note-1,000</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.note500, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.note500, "", new { @class = "text-danger " })
-                                        <label>Note-500</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.coin500, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.coin500, "", new { @class = "text-danger " })
-                                        <label>Coin-500</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.coin100, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.coin100, "", new { @class = "text-danger " })
-                                        <label>Coin-100</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.coin50, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.coin50, "", new { @class = "text-danger " })
-                                        <label>Coin-50</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.coin25, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.coin25, "", new { @class = "text-danger " })
-                                        <label>Coin-25</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.coin10, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.coin10, "", new { @class = "text-danger " })
-                                        <label>Coin-10</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.coin5, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.coin5, "", new { @class = "text-danger " })
-                                        <label>Coin-5</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.coin1, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.currencyNotes.coin1, "", new { @class = "text-danger " })
-                                        <label>Coin-1</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextAreaFor(m => m.EndOfDayPrimaryTellerCommand.comment, new { @class = "form-control", @style = "height: 75px;" })
-                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.comment, "", new { @class = "text-danger " })
-                                        <label for="formValidationDob">Teller note</label>
+                                        @Html.DropDownListFor(m => m.EndOfDayAccountantCommand.accountantConfirmationStatus, new SelectList(ViewBag.Statuses, "Text", "Value"), "---Select confirmation status type---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.EndOfDayAccountantCommand.accountantConfirmationStatus, "", new { @class = "text-danger " })
+                                        <label for="formValidationDob">Confirmation status</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.EndOfDayAccountantCommand.eodClosedStatus, new SelectList(ViewBag.ClosedStatus, "Text", "Value"), "---Select closed status type---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.EndOfDayAccountantCommand.eodClosedStatus, "", new { @class = "text-danger " })
+                                        <label for="formValidationDob">Closed status</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextAreaFor(m => m.EndOfDayAccountantCommand.comment, new { @class = "form-control", @style = "height: 75px;" })
+                                        @Html.ValidationMessageFor(m => m.EndOfDayAccountantCommand.comment, "", new { @class = "text-danger " })
+                                        <label for="formValidationDob">Accounant note</label>
                                     </div>
                                 </div>
                             </div>
