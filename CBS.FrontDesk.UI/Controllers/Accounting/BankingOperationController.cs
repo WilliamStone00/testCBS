@@ -28,8 +28,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _accountingEntryServices = new AccountingEntryServices();
         }
         // GET: BankingOperation
-        public async Task<ActionResult> Index()
-        
+        public async Task<ActionResult> Index()      
         {
             await GetList();
             return View(new BankingOperations());

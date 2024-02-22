@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.Accounting.CashReplenimentRequest>
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.Accounting.DetailsDto>
 @{
     ViewBag.Title = "Approve-Cash Replenishment";
 
@@ -34,7 +34,7 @@
                                     <th>RequestMessage</th>
                                     <th>IssuedBy</th>
                                     <th>IssuedDate</th>
-                                  
+
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -42,48 +42,53 @@
 
                                 @foreach (var item in Model)
                                 {
+
+
                                     <tr>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.ReferenceId)
+                                            @Html.DisplayFor(modelItem => item.id)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.AmountRequested)
+                                            @Html.DisplayFor(modelItem => item.requestedAmount)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.RequestMessage)
+                                            @Html.DisplayFor(modelItem => item.requetcomment)
                                         </td>
 
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.IssuedBy)
+                                            @Html.DisplayFor(modelItem => item.requesterUserId)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.IssuedDate)
+                                            @Html.DisplayFor(modelItem => item.RequestDate)
                                         </td>
 
 
-                                        @if (item.IsApproved)
+                                        @if (item.approvedStatus.ToUpper().Equals("PENDING"))
                                         {
-                                            <td class="badge bg-label-success rounded-pill text-uppercase">   Approved  </td>
+                                            <td class="badge bg-label-primary rounded-pill text-uppercase">
+
+                                                @Html.ActionLink("Click to approve", "GetCashReplenimentRequest", new { @Key = item.id }, new { @style = "color: inherit;" })
+
+                                            </td>
+
+
                                         }
                                         else
                                         {
-                                            if (item.Status.ToUpper() == "PENDING")
+                                            if (item.approvedStatus.ToUpper().Equals("APPROVE"))
                                             {
-                                                <td>
-                                                    @Html.ActionLink("GetAllCashReplenimentRequestData", "CashFlowManagement", new { @class = "badge bg-label-primary rounded-pill text-uppercase" })
+                                                <td class="badge bg-label-success rounded-pill text-uppercase">
+                                                    @Html.ActionLink("APPROVED", "GetCashReplenimentRequest", new { @Key = item.id}, new { @style = "color: inherit;" })
                                                 </td>
                                             }
                                             else
                                             {
-                                             
-                                                   <td class="badge bg-label-danger rounded-pill text-uppercase"> Rejected </td>
-                                              
+                                    <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                        @Html.ActionLink("REJECTED", "GetCashReplenimentRequest", new { @Key = item.id }, new { @style = "color: inherit;" })
+                                    </td>
                                             }
 
-
                                         }
-
-
                                     </tr>
                                 }
                             </tbody>
