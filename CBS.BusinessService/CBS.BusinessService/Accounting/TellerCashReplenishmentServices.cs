@@ -30,7 +30,7 @@ namespace CBS.BusinessService.Accounting
             if (response.IsSuccess)
             {
                 // Successful creation
-                GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+                GetExecutionMessages(response.ApiResponseData.Data, true, $"Transaction was successfull", MessagesResults.Success,
                     ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                 return ExecutionMessage;
             }
@@ -47,12 +47,12 @@ namespace CBS.BusinessService.Accounting
             try
             {
 
-                string url = string.Format(APICallHelper.TellerCashReplenishmentRequest,model.id);
-                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<DetailsDto>>(url, model);
+                string url = string.Format(APICallHelper.TellerCashReplenishmentRequestApproval, model.id);
+                var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<DetailsDto>>(url, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+                    GetExecutionMessages(response.ApiResponseData, true, $"Transaction was successfull", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
@@ -106,8 +106,7 @@ namespace CBS.BusinessService.Accounting
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<DetailsDto>>(url);
                 if (couApiResponse.IsSuccess)
                 {
-                    var user = await GetUser(couApiResponse.ApiResponseData.Data.requesterUserId);
-                    couApiResponse.ApiResponseData.Data.requesterUserId = user.name + "," + user.phoneNumber + " ";
+                    
                     return couApiResponse.ApiResponseData.Data;
                 }
                 return new DetailsDto();

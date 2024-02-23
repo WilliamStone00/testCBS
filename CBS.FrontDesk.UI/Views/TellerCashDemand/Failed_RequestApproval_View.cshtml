@@ -17,7 +17,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    <span style="color:red">Approval Request Failed ReferenceId : @Model.ReferenceId not sent </span>
+                    <span style="color:red">Approval Request Failed ReferenceId : @Model.id not sent </span>
                 </button>
             </h2>
             <div class="card-body">
@@ -80,7 +80,7 @@
                                 }
                                 else
                                 {
-                                    if (@Model.approvedStatus.ToUpper().Equals("SUCCESS"))
+                                    if (@Model.approvedStatus.ToUpper().Equals("APPROVE"))
                                     {
                                         <td class="badge bg-label-success rounded-pill text-uppercase">
                                             @Model.approvedStatus

@@ -17,7 +17,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    Request ReferenceId :@Model.id      Amount : XFA @Model.requestedAmount.ToString("N")   
+                    Request ReferenceId :@Model.id      Amount : XFA @Model.requestedAmount.ToString("N")
                 </button>
             </h2>
             <div class="card-body">
@@ -80,7 +80,7 @@
                                 }
                                 else
                                 {
-                                    if (@Model.approvedStatus.ToUpper().Equals("SUCCESS"))
+                                    if (@Model.approvedStatus.ToUpper().Equals("APPROVE"))
                                     {
                                         <td class="badge bg-label-success rounded-pill text-uppercase">
                                             @Model.approvedStatus
@@ -103,66 +103,106 @@
                     <h5 class="card-header">Cash Replenishment Request Status</h5>
                     <div class="card-body">
                         <div class="mb-3 col-12 mb-0">
-                            @if (@Model.approvedStatus.ToUpper().Equals("SUCCESS"))
+                            @if (@Model.approvedStatus.ToUpper().Equals("APPROVE"))
                             {
                                 <div class="alert alert-outline-success" role="alert">
-                                    <h6 class="alert-heading mb-1">@Model.requetcomment account is active.</h6>
-                                    <p class="mb-0">Un-check the box and click on de-activate button to de-activate account</p>
+                                    <h6 class="alert-heading mb-1">The Cash replenishment request issued by  @Model.requesterUserId with reference :@Model.id  with Amount XFA @Model.confirmedAmount.ToString("N")  has already been approved.</h6>
+
                                 </div>
+                                <div class="col-12 shift-right">
+
+
+                                    <a href="/TellerCashDemand/GetAllCashReplenimentRequestData" class="btn btn-primary click-to-go-back-to-menu">Click to view pending cash replenishment request. </a>
+
+
+                                </div>
+
                             }
                             else
-                            {<div class="alert alert-outline-primary" role="alert">
-                                    <h6 class="alert-heading mb-1">ReferenceId :@Model.id  with Amount XFA @Model.requestedAmount.ToString("N") has not yet been approved</h6>
-                                    <p class="mb-0">Check the box and click on Approved Account Replenishment button to approved the request</p>
-                                </div>
+                            {
+                                if (@Model.approvedStatus.ToUpper().Equals("REJECTED"))
+                                {
+                                    <div class="alert alert-outline-danger" role="alert">
+                                        <h6 class="alert-heading mb-1">The Cash replenishment request issued by  @Model.requesterUserId with reference :@Model.id  with Amount XFA @Model.requestedAmount.ToString("N")  has already been rejected.</h6>
+
+                                    </div>
+                                    <div class="col-12 shift-right">
+
+
+                                        <a href="/TellerCashDemand/GetAllCashReplenimentRequestData" class="btn btn-primary ">Click to view pending cash replenishment request. </a>
+
+
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    <div class="alert alert-outline-primary" role="alert">
+                                        <h6 class="alert-heading mb-1">ReferenceId :@Model.id  with Amount XFA @Model.requestedAmount.ToString("N") has not yet been approved</h6>
+                                        <p class="mb-0">Select your decision and click on Approved Account Replenishment button to approved the request</p>
+                                    </div>
+                                    <div class="col-12 shift-right">
+
+
+                                        <a href="/TellerCashDemand/GetAllCashReplenimentRequestData" class="btn btn-primary">Click to view pending cash replenishment request. </a>
+
+
+                                    </div>
+
+                                }
+
                             }
 
                         </div>
-                        @using (Html.BeginForm("CreateApprovalRequest", "TellerCashDemand", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+                        @using (Html.BeginForm("CreateApprovalRequest", "TellerCashDemand", FormMethod.Post))
                         {
                             <!-- Account Details -->
                             @Html.HiddenFor(model => model.id)
-
+                            @Html.HiddenFor(model => model.requetcomment)
                             <input type="hidden" name="option" value="Status" id="option" />
 
-                            if (@Model.approvedStatus.ToUpper().Equals("SUCCESS"))
+                            if (@Model.approvedStatus.ToUpper().Equals("APPROVE"))
                             {
-                                <div class="form-check mb-3">
-                                    <div class="form-check">
-
-                                        <label class="form-check-label" for="isActive">The cash replenishment request of issued by @Model.requesterUserId has been approved</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">Already Approved Account Replenishment</button>
-                                </div>
+                              
 
                             }
                             else
                             {
-                                <div class="form-check mb-3">
-                                    <div class="form-floating form-floating-outline">
-                                        <label for="Account">Make decision</label>
-                                        @Html.DropDownListFor(m => m.approvedStatus, new SelectList(ViewBag.Decisions == null ? "" : ViewBag.Decisions, "Text", "Value"), "---Select Account ---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(model => model.approvedStatus, "", new { @class = "text-danger" })
+                                if (@Model.approvedStatus.ToUpper().Equals("REJECTED"))
+                                {
+                                    
+
+                                }
+                                else
+                                {<div class="form-check mb-3">
+                                        <div class="form-floating form-floating-outline">
+                                            <label for="Account">Make decision</label>
+                                            @Html.DropDownListFor(m => m.approvedStatus, new SelectList(ViewBag.Decisions == null ? "" : ViewBag.Decisions, "Text", "Value"), "---Select Decision ---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(model => model.approvedStatus, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="form-check mb-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.confirmedAmount, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.confirmedAmount, "", new { @class = "text-danger" })
 
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextAreaFor(m => m.confirmedAmount, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.approvedComment, "", new { @class = "text-danger" })
+                                            <label for="confirmedAmount"> Approved Amount</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextAreaFor(m => m.approvedComment, new { @class = "form-control", @style = "height: 200px;" })
+                                            @Html.ValidationMessageFor(model => model.approvedComment, "", new { @class = "text-danger" })
 
-                                    <label for="confirmedAmount"> Approved Amount</label>
-                                </div>
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextAreaFor(m => m.approvedComment, new { @class = "form-control", @style = "height: 200px;" })
-                                    @Html.ValidationMessageFor(model => model.approvedComment, "", new { @class = "text-danger" })
+                                            <label for="Description"> Approved Message Description</label>
+                                        </div>
 
-                                    <label for="Description"> Approved Message Description</label>
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary deactivate-account">Click to approve cash replenishment</button>
-                                </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary deactivate-account">Click to approve cash replenishment</button>
+                                    </div>
+                                }
+
 
                             }
 
@@ -180,3 +220,7 @@
 
     </div>
 </div>
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")}

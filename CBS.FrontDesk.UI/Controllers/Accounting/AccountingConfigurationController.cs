@@ -29,6 +29,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly OperationEventServices _OperationEventService;
         private readonly AccountingServices _AccountServices;
         private readonly AccountTypeServices _AccountTypeServices;
+
+        private readonly AccountCategoryServices _AccountCategoryServices;
+
         public AccountingConfigurationController()
         {
             _Service = new AccountingEntryRuleService();
@@ -38,6 +41,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _OperationEventService = new OperationEventServices();
             _AccountServices = new AccountingServices();
             _AccountTypeServices = new AccountTypeServices();
+            _AccountCategoryServices = new AccountCategoryServices();
         }
         // GET: AccountingConfiguration
 
@@ -61,6 +65,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
             ViewBag.CreditAccounts = CreditAccounts;
             ViewBag.DebitAccounts = CreditAccounts;
+            ViewBag.AccountCartegories = await _AccountCategoryServices.GetAccountCategory();
         }
 
         private dynamic BuildMenuAccountViewBag(List<ChartOfAccount> ListchartOfAccounts)
@@ -254,7 +259,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         LabelEn = mode.LabelEn,
                         LabelFr = mode.LabelFr,
                         IsBalanceAccount = mode.IsBalanceSheetAccount,
-                        AccountNumber = model.ChartOfAccount.AccountNumber
+                        AccountNumber = model.ChartOfAccount.AccountNumber,
+                      CanBeNegative = model.ChartOfAccount.CanBeNegative,
+     IsDebit = model.ChartOfAccount.IsDebit,
+                       
+ AccountCartegoryId = model.ChartOfAccount.AccountCartegoryId
+                         
                     };
                     return () => _chartOfAccountServices.Create(modelc);
                 }
@@ -372,8 +382,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     {
                         chartOfAccount = new  ChartOfAccount
                         {
-                            Id = "XXXXXXX",
-                         AccountNumber = "XXXXXXX" 
+                            Id = key,
+                            AccountNumber = key
                         };
                     }
                      

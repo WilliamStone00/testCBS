@@ -17,7 +17,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    Request ReferenceId :@Model.Id      Amount : XFA @Model.Amount
+                    Request ReferenceId :@Model.Id      Amount : XFA @Model.AmountRequested
                 </button>
             </h2>
             <div class="card-body">
@@ -38,7 +38,7 @@
                             </tr>
                             <tr>
                                 <td>Amount Requested</td>
-                                <td>XAF @Model.Amount.ToString("N") </td>
+                                <td>XAF @Model.AmountRequested.ToString("N") </td>
                             </tr>
                             <tr>
                                 <td>Request Message</td>
@@ -95,7 +95,7 @@
                             }
                             else
                             {<div class="alert alert-outline-primary" role="alert">
-                                    <h6 class="alert-heading mb-1">ReferenceId :@Model.Id  with Amount XFA @Model.Amount.ToString("N") has not yet been approved</h6>
+                                    <h6 class="alert-heading mb-1">ReferenceId :@Model.Id  with Amount XFA @Model.AmountRequested.ToString("N") has not yet been approved</h6>
                                     <p class="mb-0">Check the box and click on Approved Account Replenishment button to approved the request</p>
                                 </div>
                             }
@@ -130,7 +130,7 @@
                                         @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                             
+
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextAreaFor(m => m.ApprovedMessage, new { @class = "form-control", @style = "height: 200px;" })
                                     @Html.ValidationMessageFor(model => model.ApprovedMessage, "", new { @class = "text-danger" })
@@ -157,3 +157,6 @@
 
     </div>
 </div>
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")}

@@ -25,10 +25,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class  Request
     {
         [Required]
-
         public decimal RequestedAmount { get; set; }
         [Required]
-
         public string Requetcomment { get; set; }
        
 
@@ -36,23 +34,30 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class Approval
     {
         public string id { get; set; }
-        public int requestedAmount { get; set; }
-        public int confirmedAmount { get; set; }
+        public decimal requestedAmount { get; set; }
+        [Required]
+        public decimal confirmedAmount { get; set; }
+        [Required]
         public string approvedComment { get; set; }
         public string requetcomment { get; set; }
+        [Required]
         public string approvedStatus { get; set; }
     }
     public class DetailsDto
     {
         public string id { get; set; }
-        public int requestedAmount { get; set; }
-        public int confirmedAmount { get; set; }
+        public decimal requestedAmount { get; set; }
+        [Required]
+        public decimal confirmedAmount { get; set; }
         public string requesterUserId { get; set; }
         public string approvedBy { get; set; }
+        public DateTime RequestDate { get; set; }
         public string approvedByUserId { get; set; }
         public DateTime approvedDate { get; set; }
+        [Required]
         public string approvedComment { get; set; }
         public string requetcomment { get; set; }
+        [Required]
         public string approvedStatus { get; set; }
 
         public static DetailsDto SetDefault(CashInfusionRequest request)

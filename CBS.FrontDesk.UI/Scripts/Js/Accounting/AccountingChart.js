@@ -78,10 +78,10 @@ $('#jstree-context-menu').on('click', '.parent', function (e, data) {
   //  loadPartialView2(id, partialview);
 });
 
-function GetObject(partialview) {
+function GetObject(partialview, path) {
     var id = $("#selectedID").val();
 
-    loadPartialView2(id, partialview);  
+    loadPartialView3(id, partialview, path);  
     //loadPartialView(nodeId, "_Operation", "Transit");
 }
 function loadPartialView3(nodeId,view,path) {

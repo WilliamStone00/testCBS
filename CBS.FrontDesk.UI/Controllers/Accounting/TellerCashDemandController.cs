@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -29,11 +30,26 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         public async Task GetList(string language = "En")
         {
-
+            List<SelectListItem> list = new List<SelectListItem>();
             ViewBag.OpeningOfDayId = await Service.GetCashReplenimentRequestId();
-    
+            if (ViewBag.OpeningOfDayId.Count == 0)
+            {
+                list.Add(new SelectListItem { Text = "Id001", Value = "Current Opening Reference" });
+                ViewBag.OpeningOfDayId = list;
+            }
+            ViewBag.Decisions = BuildMenuViewBag();
         }
+        private dynamic BuildMenuViewBag()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
 
+            list.Add(new SelectListItem { Text = $"Approve", Value = "Approve" });
+
+            list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
+
+
+            return list;
+        }
 
         public async Task<ActionResult> CreateCashReplenishmentRequest()
         {
@@ -48,25 +64,26 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                var result=  await Service.CreateCashReplenishmentRequest(model);
                 if (result.MessageStatus.Equals("Failed"))
                 {
-                    var datass = DetailsDto.SetDefault(model);
-                    return View("Failed_Request_View", datass);
+                    var datas = DetailsDto.SetDefault(model);
+                    return View("Failed_Request_View", datas);
                 }
                 else
                 {
-                   
-                    return View("Successfull_Request_View", model);
+              
+                    return View("Successfull_Request_View", result.Data);
                 }
 
             }
 
-            var datas = DetailsDto.SetDefault(model);
-            return View("Failed_Request_View", datas);
+            var dataccs = DetailsDto.SetDefault(model);
+            return View("Failed_Request_View", dataccs);
         }
 
         [HttpGet]
         public async Task<ActionResult> GetCashReplenimentRequest(string KEY)
         {
-        
+            await GetList();
+  
             var datas = await Service.GetCashReplenimentRequest(KEY);
 
      

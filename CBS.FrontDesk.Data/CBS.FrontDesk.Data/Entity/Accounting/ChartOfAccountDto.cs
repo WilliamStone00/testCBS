@@ -8,11 +8,18 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 {
     public class ChartOfAccountDto
     {
-        public string RootParentId { get; set; }
-        public string AccountNumber { get; set; }
-        public string LabelEn { get; set; }
-        public string LabelFr { get; set; }
-        public bool IsBalanceAccount { get; set; }
+        // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+        
+            public string RootParentId { get; set; }
+            public string AccountNumber { get; set; }
+            public string LabelEn { get; set; }
+            public string LabelFr { get; set; }
+            public bool IsBalanceAccount { get; set; }
+            public bool CanBeNegative { get; set; }
+            public bool IsDebit { get; set; }
+            public string AccountCartegoryId { get; set; }
+      
+
 
     }
 

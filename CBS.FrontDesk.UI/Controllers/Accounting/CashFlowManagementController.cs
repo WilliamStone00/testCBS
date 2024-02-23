@@ -48,6 +48,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.Accounts = CreditAccounts;
      
             ViewBag.OpeningOfDayId = await _accountingEntryServices.GetCashReplenimentRequestId();
+            if (ViewBag.OpeningOfDayId == null)
+            {
+                ViewBag.OpeningOfDayId = new SelectListItem { Text = "Id001", Value ="Current Opening Reference" };
+            }
         }
         private dynamic BuildMenuViewBagCurrency(List<CBS.FrontDesk.Data.Entity.Accounting.Currency> currencies)
         {
@@ -83,9 +87,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             List<SelectListItem> list = new List<SelectListItem>();
            
-                    list.Add(new SelectListItem { Text = $"Approve", Value = "I Approve" });
+                    list.Add(new SelectListItem { Text = $"Approve", Value = "Approve" });
 
-            list.Add(new SelectListItem { Text = $"Rejected", Value = "I Rejected" });
+            list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
 
 
             return list;
@@ -127,7 +131,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
            
             }
 
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
+            return View("Failed_Request_View", model.ConvertToCashReplenimentRequest());
         }
 
         [HttpGet]
@@ -151,7 +155,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                          {
                              Id = request.Id,
                              ReferenceId = request.ReferenceId,
-                             Amount = request.Amount,
+                             AmountRequested = request.AmountRequested,
 
                              RequestMessage = request.RequestMessage,
                              IssuedBy = user.name + "," + user.roleName,
