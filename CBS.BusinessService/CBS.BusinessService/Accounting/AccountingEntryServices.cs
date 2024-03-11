@@ -12,7 +12,8 @@ using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.UserManagement;
- 
+using System.Runtime.InteropServices;
+
 
 namespace CBS.BusinessService
 {
@@ -317,6 +318,170 @@ namespace CBS.BusinessService
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public async Task<TransactionReversalDetailRequestDto> GetTransasctionReversalRequestById(string Id)
+        {
+            try
+            {
+                var url = string.Format(APICallHelper.GetTransactionReversalRequest, Id);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<TransactionReversalDetailRequestDto>>(url);
+                if (couApiResponse.IsSuccess)
+                {
+                    var user = await GetUser(couApiResponse.ApiResponseData.Data.IssuedBy);
+                    couApiResponse.ApiResponseData.Data.IssuedBy = user.name + "," + user.phoneNumber + " ";
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new TransactionReversalDetailRequestDto();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+        public async Task<TransactionReversalDetailRequestDto> GetTransactionReversalRequestByReferenceId(string Id)
+        {
+            try
+            {
+                var url = string.Format(APICallHelper.GetTransactionReversalRequestByReferenceId, Id);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<TransactionReversalDetailRequestDto>>(url);
+                if (couApiResponse.IsSuccess)
+                {
+                    var user = await GetUser(couApiResponse.ApiResponseData.Data.IssuedBy);
+                    couApiResponse.ApiResponseData.Data.IssuedBy = user.name + "," + user.phoneNumber + " ";
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new TransactionReversalDetailRequestDto();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+
+        public  async Task<bool>  CheckIfTransactionReferenceIdExist(string Id)
+        {
+            try
+            {
+                var url = string.Format(APICallHelper.CheckIfTransactionReversalRequestByReferenceIdExist, Id);
+                var couApiResponse =   await _accountingApiCallerHelper.GetAsync<ResponseObject<bool>>(url);
+                if (couApiResponse.IsSuccess)
+                {
+                    
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+        public async Task<ExecutionMessages> TransactionReversalRequestApproval(TransactionReversalRequestApproval model)
+        {
+            try
+            {
+
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<TransactionReversalDetailRequestDto>>(APICallHelper.TransactionReversalRequestApproval, model);
+
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response.ApiResponseData, true, $"Transaction was successfull", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task<ExecutionMessages> TransactionReversalRequest(TransactionReversalRequest model)
+        {
+            try
+            {
+
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<TransactionReversalDetailRequestDto>>(APICallHelper.TransactionReversalRequest, model);
+
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response.ApiResponseData, true, $"Transaction was successfull", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<List<TransactionReversalDetailRequestDto>> GetAllTransasctionReversalRequest()
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<TransactionReversalDetailRequestDto>>>(APICallHelper.GetAllTransactionReversalRequest);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData == null)
+                    {
+                        return new List<TransactionReversalDetailRequestDto>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<TransactionReversalDetailRequestDto>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+
+        public async Task<ExecutionMessages> CreateTransactionReversalRequest(TransactionReversalRequest model)
+        {
+            var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<TransactionReversalDetailRequestDto>>(APICallHelper.TransactionReversalRequest, model);
+            if (response.IsSuccess)
+            {
+                // Successful creation
+                GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+                    ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                return ExecutionMessage;
+            }
+            else
+            {
+                // Failed creation
+                GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                return ExecutionMessage;
             }
         }
     }

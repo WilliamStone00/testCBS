@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
@@ -84,10 +85,12 @@
     <Compile Include="Accounting\AccountingServices.cs" />
     <Compile Include="Accounting\ChartOfAccountServices.cs" />
     <Compile Include="Accounting\ChartOfAccountServicesAnnex.cs" />
+    <Compile Include="Accounting\Class1.cs" />
     <Compile Include="Accounting\EntryFeeParameterServices.cs" />
     <Compile Include="Accounting\OperationEventAttributeServices.cs" />
     <Compile Include="Accounting\OperationEventServices.cs" />
     <Compile Include="Accounting\TellerCashReplenishmentServices.cs" />
+    <Compile Include="Accounting\TransactionReferenceValidator.cs" />
     <Compile Include="Accounts\AccountServices.cs" />
     <Compile Include="Accounts\BankingOperationServices.cs" />
     <Compile Include="Accounts\CloseFeeParameterServices.cs" />

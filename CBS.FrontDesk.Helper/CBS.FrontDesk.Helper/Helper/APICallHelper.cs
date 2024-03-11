@@ -410,5 +410,13 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllCashReplenishmentRequests = "/api/v1/BankingOperation/GetAllCashReplenishmentRequests";
         public static string GetCashReplenishmentRequestById = "/api/v1/BankingOperation/GetCashReplenishmentRequestById/{0}";
         public static string GetCashReplenishmentRequestIdReference = "/api/v1/BankingOperation/GetCashReplenishmentRequestByRefereceId/{0}";
+        public static string TransactionReversalRequest = "/api/v1/BankingOperation/TransactionReversalRequest";
+        public static string TransactionReversalRequestApproval = "/api/v1/BankingOperation/TransactionReversalRequestApproval";
+        public static string GetTransactionReversalRequest = "/api/v1/BankingOperation/GetTransactionReversalRequestById/{0}";
+        public static string GetAllTransactionReversalRequest = "/api/v1/BankingOperation/GetAllTransactionReversalRequests";
+        public static string GetTransactionReversalRequestByReferenceId = "/api/v1/BankingOperation/GetTransactionReversalRequestByReferenceId/{0}";
+        ///CheckIfTransactionReversalRequestByReferenceIdExist/
+        public static string CheckIfTransactionReversalRequestByReferenceIdExist = "/api/v1/BankingOperation/CheckIfTransactionReversalRequestByReferenceIdExist/{0}";
+
     }
 }
