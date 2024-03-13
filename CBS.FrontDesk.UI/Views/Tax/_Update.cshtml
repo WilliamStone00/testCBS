@@ -15,7 +15,7 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.value, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.value, "", new { @class = "text-danger" })
-                <label>Amount</label>
+                <label>Percentage value</label>
             </div>
         </div>
         <div class="col-md-12">
@@ -25,26 +25,8 @@
                 <label>Description</label>
             </div>
         </div>
-        <div class="col-12">
-            <div class="form-check">
-                @Html.CheckBoxFor(m => m.isMandatory, new { @class = "form-check-input" })
-                <label class="form-check-label">Compulsary</label>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.periodicity, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.periodicity, "", new { @class = "text-danger" })
-                <label>Periodicity</label>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.AccountingRuleId, new SelectList(ViewBag.Roles, "id", "ruleName"), "---Select accounting roles---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.AccountingRuleId, "", new { @class = "text-danger " })
-                <label>Accounting role</label>
-            </div>
-        </div>
+       
+       
     </div>
     <div class="mt-4">
 

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Threading.Tasks;
 
-namespace CBS.BusinessService.Loan.Config
+namespace CBS.BusinessService.Config
 {
     public class AttachedDocumentServices : BaseService
     {

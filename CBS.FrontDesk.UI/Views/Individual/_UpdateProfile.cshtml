@@ -183,7 +183,13 @@
                 <label>Post box number</label>
             </div>
         </div>
-
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.VillageOfOrigin, new { @class = "form-control", @placeholder = "VillageOfOrigin" })
+                @Html.ValidationMessageFor(m => m.CustomerList.VillageOfOrigin, "", new { @class = "text-danger" })
+                <label>Village of origin</label>
+            </div>
+        </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Update</button>
         </div>

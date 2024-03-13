@@ -19,7 +19,7 @@ namespace CBS.FrontDesk.UI.Controllers
 {
     public class OperationController : BaseController
     {
-        // GET: Operation
+        // GET: Operation/Transfer
         private readonly AccountServices _acountServices;
         private readonly TellerProvissioningServices _services;
         public OperationController(AccountServices acountServices, TellerProvissioningServices services = null)

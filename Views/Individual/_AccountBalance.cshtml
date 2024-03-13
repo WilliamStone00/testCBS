@@ -1,0 +1,107 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+@{
+    var status = false;
+    string comment = "No initial deposit has been made.";
+    if (Model.AccountBalance.accounts.Any())
+    {
+        status = true;
+    }
+}
+<div class="card-body">
+    <div class="row gy-3">
+        <div class="col-lg-12 col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        <div class="card-info">
+                            <div class="d-flex align-items-center">
+                                <h4 class="mb-0">@Model.AccountBalance.totalBalance</h4>
+                            </div>
+
+
+
+
+                            @if (status)
+                            {
+                                <small>Total account balance</small>
+                            }
+                            else
+                            {
+                                @comment;
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card card-action mb-5">
+
+            @Html.Partial("_AddCustomerAccount")
+        </div>
+        @foreach (var account in Model.CustomerAccounts)
+        {
+            <div class="col-lg-6 col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center flex-wrap gap-2">
+                            <div class="card-info">
+                                <div class="d-flex align-items-center">
+                                    <h5 class="mb-0">Balance: @account.balance</h5>
+                                </div>
+                                <small>Account Number: <b>@account.accountNumber</b></small><br />
+                                <small class="mb-0">Account Name: <b>@account.product.name</b></small><br />
+                                <small class="mb-0">Account Status: <b>@account.status</b></small><br />
+                                <small class="mb-0">Date created: <b>@account.createdDate</b></small>
+                                <a class="nav-link" href="#"><i class="mdi mdi-history mdi-20px me-1"></i>View transactions</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="card card-action mb-5">
+
+
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Registration office details</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        <tr>
+                            <td> 1. Organization</td>
+                            <td>@Model.CustomerList.organizationId</td>
+                        </tr>
+                        <tr>
+                            <td>2. Branch Office</td>
+                            <td>@Model.CustomerList.bankId</td>
+                        </tr>
+                        <tr>
+                            <td>3. Branch</td>
+                            <td>@Model.CustomerList.branchId</td>
+                        </tr>
+                        <tr>
+                            <td>4. Account Manager</td>
+                            <td>My account manager name here</td>
+                        </tr>
+                        <tr>
+                            <td>5. Opening date</td>
+                            <td>2023-10-23</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card card-action mb-5">
+
+            @Html.Partial("_DeleteProfile")
+        </div>
+    </div>
+ 
+
+</div>
+

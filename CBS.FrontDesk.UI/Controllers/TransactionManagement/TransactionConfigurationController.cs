@@ -1,6 +1,5 @@
 using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
-using CBS.BusinessService.Loan.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;

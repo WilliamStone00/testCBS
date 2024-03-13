@@ -13,8 +13,12 @@ using System.Text;
 using System.Threading.Tasks;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using System.Web.Mvc;
 
-namespace CBS.BusinessService.Loan.Config
+namespace CBS.BusinessService.Config
 {
     public class LoanProductServices : BaseService
     {
@@ -36,15 +40,15 @@ namespace CBS.BusinessService.Loan.Config
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"{objLoanProduct.productName}", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
+                    GetExecutionMessages(inResponse, true, $"{objLoanProduct.ProductName}", MessagesResults.Success,
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objLoanProduct, false, $"{objLoanProduct.productName}", MessagesResults.Failed,
+                    GetExecutionMessages(objLoanProduct, false, $"{objLoanProduct.ProductName}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -54,7 +58,7 @@ namespace CBS.BusinessService.Loan.Config
             }
             return ExecutionMessage;
         }
-        
+
         public async Task<IEnumerable<LoanProduct>> GetLoanProducts()
         {
             try
@@ -72,16 +76,17 @@ namespace CBS.BusinessService.Loan.Config
                 throw;
             }
         }
-        public async Task<IEnumerable<Currency>> GetCurrencies()
+        public async Task<IEnumerable<StringValues>> GetLoanProductsDropDown()
         {
             try
             {
-                var couApiResponse = await _BankConfigApiHelper.GetAsync<ResponseObject<List<Currency>>>(APICallHelper.GetAllCurrency);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProduct);
                 if (couApiResponse.IsSuccess)
                 {
-                    return couApiResponse.ApiResponseData.Data;
+                    var data = couApiResponse.ApiResponseData.Data.Select(x => new StringValues { Text = $"{x.ProductName}, Loan Range>> Min: {x.LoanMinimumAmount.ToString("#0,0.0")}, Max: {x.LoanMaximumAmount.ToString("#0,0.0")}", Value = x.Id }).ToList();
+                    return data;
                 }
-                return new List<Currency>();
+                return new List<StringValues>();
             }
             catch (Exception ex)
             {
@@ -89,6 +94,7 @@ namespace CBS.BusinessService.Loan.Config
                 throw;
             }
         }
+
         ///api/v1/LoanProductConfigurationAgregates
         public async Task<LoanProduct> GetLoanProduct(string id)
         {
@@ -114,7 +120,7 @@ namespace CBS.BusinessService.Loan.Config
                 var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<LoanProductConfigurationAgregates>>(APICallHelper.GetLoanProductConfigurationAgregates);
                 if (cusResponseObject.IsSuccess)
                 {
-                    if (cusResponseObject!=null)
+                    if (cusResponseObject != null)
                     {
                         return cusResponseObject.ApiResponseData.Data;
                     }
@@ -128,6 +134,62 @@ namespace CBS.BusinessService.Loan.Config
                 throw ex;
             }
         }
+        public async Task<SelectList> GetLoanProductRepayments(string loanProductId = null, string path = null)
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<LoanProduct>>(string.Format(APICallHelper.Get_Update_Delete_LoanProduct, loanProductId));
+                return ProcessApiResponseResponse(couApiResponse.ApiResponseData.Data, path);
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        private SelectList ProcessApiResponseResponse(LoanProduct product, string path)
+        {
+            if (path == "loanrepayment_cycles")
+            {
+                var values = product.LoanProductRepaymentCycles.Select(a => new StringValues
+                {
+                    Text = $"{a.RepaymentCycle}",
+                    Value = a.Id
+                });
+                var defaultSelectedValue = "default-value";
+                return new SelectList(values.ToList(), "Value", "Text", defaultSelectedValue);
+
+            }
+            else
+            {
+                var values = product.LoanProductRepaymentOrders.Select(a => new StringValues
+                {
+                    Text = $"{a.RepaymentOrder}",
+                    Value = a.Id
+                });
+                var defaultSelectedValue = "default-value";
+                return new SelectList(values.ToList(), "Value", "Text", defaultSelectedValue);
+
+            }
+        }
+        public async Task<LoanProductEnumAgregates> GetLoanProductEnumAggregates()
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<LoanProductEnumAgregates>>(APICallHelper.LoanProductEnumAggregates);
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new LoanProductEnumAgregates();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<ExecutionMessages> Create(LoanProduct model)
         {
             try
@@ -138,14 +200,14 @@ namespace CBS.BusinessService.Loan.Config
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.productName}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.ProductName}", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.productName, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.ProductName, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -162,69 +224,112 @@ namespace CBS.BusinessService.Loan.Config
             try
             {
 
-                var LoanProduct = await GetLoanProduct(model.loanProductId);
+                var LoanProduct = await GetLoanProduct(model.Id);
                 if (LoanProduct != null)
                 {
-                    LoanProduct.productName = model.productName;
-                    LoanProduct.scheduleTypeId = model.scheduleTypeId;
-                    LoanProduct.productCode = model.productCode;
-                    LoanProduct.installmentTypeId = model.installmentTypeId;
-                    LoanProduct.numberOfInstallmentMin = model.numberOfInstallmentMin;
-                    LoanProduct.numberOfInstallmentMax = model.numberOfInstallmentMax;
-                    LoanProduct.currencyId = model.currencyId;
-                    LoanProduct.numberOfGracePeriodMin = model.numberOfGracePeriodMin;
-                    LoanProduct.numberOfGracePeriodMax = model.numberOfGracePeriodMax;
-                    LoanProduct.gracePeriodPercentageMin = model.gracePeriodPercentageMin;
-                    LoanProduct.gracePeriodPercentageMax = model.gracePeriodPercentageMax;
-                    LoanProduct.loanAmountMin = model.loanAmountMin;
-                    LoanProduct.loanAmountMax = model.loanAmountMax;
-                    //LoanProduct.interestRateType = model.interestRateType;
-                    LoanProduct.interestRateMin = model.interestRateMin;
-                    LoanProduct.interestRateMax = model.interestRateMax;
-                    LoanProduct.guaranteePackId = model.guaranteePackId;
-                    LoanProduct.documentPackId = model.documentPackId;
-                    LoanProduct.minPercentageGuarantee = model.minPercentageGuarantee;
-                    LoanProduct.minPercentageCollateral = model.minPercentageCollateral;
-                    LoanProduct.creditInsuranceMin = model.creditInsuranceMin;
-                    LoanProduct.creditInsuranceMax = model.creditInsuranceMax;
-                    LoanProduct.feeOlbMin = model.feeOlbMin;
-                    LoanProduct.feeOlbMax = model.feeOlbMax;
-                    LoanProduct.feeOverduePrincipalMin = model.feeOverduePrincipalMin;
-                    LoanProduct.feeOverduePrincipalMax = model.feeOverduePrincipalMax;
-                    LoanProduct.feeOverdueInterestMax = model.feeOverdueInterestMax;
-                    LoanProduct.feeOverdueInterestMin = model.feeOverdueInterestMin;
-                    LoanProduct.fundingLineId = model.fundingLineId;
-                    LoanProduct.taxId = model.taxId;
-                    LoanProduct.customerProfiles = model.customerProfiles;
-                    LoanProduct.feeOlbAccountingRuleId = model.feeOlbAccountingRuleId;
-                    LoanProduct.feeOverduePrincipalAccountingRuleId = model.feeOverduePrincipalAccountingRuleId;
-                    LoanProduct.feeOverdueInterestAccountingRuleId = model.feeOverdueInterestAccountingRuleId;
-                    LoanProduct.activeStatus = model.activeStatus;
-                    LoanProduct.hasTopUp = model.hasTopUp;
-                    LoanProduct.topUpAmountMax = model.topUpAmountMax; 
-                    LoanProduct.topUpAmountMin = model.topUpAmountMin;
-                    LoanProduct.topUpAmountAccountingRuleId = model.topUpAmountAccountingRuleId;
-                    //LoanProduct.earlyPartialRepaymentFeeType = model.earlyPartialRepaymentFeeType; 
-                    LoanProduct.earlyPartialRepaymentFeeRate = model.earlyPartialRepaymentFeeRate;
-                    LoanProduct.earlyPartialRepaymentFeeAccountingRuleId = model.earlyPartialRepaymentFeeAccountingRuleId;
-                    LoanProduct.earlyTotalRepaymentFeeRate = model.earlyTotalRepaymentFeeRate; 
-                    LoanProduct.earlyTotalRepaymentFeeRateType = model.earlyTotalRepaymentFeeRateType;
-                    LoanProduct.earlyTotalRepaymentFeeRateAccountingRuleId = model.earlyTotalRepaymentFeeRateAccountingRuleId;
-                    LoanProduct.penaltyIds = model.penaltyIds;
-                    LoanProduct.fees = model.fees;
-                    LoanProduct.accountingRuleIds = model.accountingRuleIds;
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanProduct>>(string.Format(APICallHelper.Get_Update_Delete_LoanProduct, model.loanProductId), LoanProduct);
+                    if (model.ServiceOption == "product")
+                    {
+                        LoanProduct.ProductCode = model.ProductCode;
+                        LoanProduct.ProductName = model.ProductName;
+                        LoanProduct.LoanMinimumAmount = model.LoanMinimumAmount;
+                        LoanProduct.DefaultLoanAmount = model.DefaultLoanAmount;
+                        LoanProduct.LoanMaximumAmount = model.LoanMaximumAmount;
+                        LoanProduct.ActiveStatus = model.ActiveStatus;
+                    }
+                    else if (model.ServiceOption == "gurantee")
+                    {
+                        LoanProduct.RequiresGuarantor = model.RequiresGuarantor;
+                        LoanProduct.MinimumCollateralPercentage = model.MinimumCollateralPercentage;
+                        LoanProduct.DefaultCollateralPercentage = model.DefaultCollateralPercentage;
+                        LoanProduct.MaximumCollateralPercentage = model.MaximumCollateralPercentage;
+                        LoanProduct.MinimumCreditInsurancePercentage = model.MinimumCreditInsurancePercentage;
+                        LoanProduct.DefaultCreditInsurancePercentage = model.DefaultCreditInsurancePercentage;
+                        LoanProduct.MaximumCreditInsurancePercentage = model.MaximumCreditInsurancePercentage;
+
+                    }
+                    else if (model.ServiceOption == "topup")
+                    {
+                        LoanProduct.HasTopUp = model.HasTopUp;
+                        LoanProduct.MinTopUpLoanAmount = model.MinTopUpLoanAmount;
+                        LoanProduct.TopUpAmount = model.TopUpAmount;
+                        LoanProduct.MaxTopUpLoanAmount = model.MaxTopUpLoanAmount;
+
+
+                    }
+                    
+                    else if (model.ServiceOption == "interest")
+                    {
+                        LoanProduct.LoanInterestMethod = model.LoanInterestMethod;
+                        LoanProduct.LoanInterestType = model.LoanInterestType;
+                        LoanProduct.LoanInterestPeriod = model.LoanInterestPeriod;
+                        LoanProduct.MinimumInterestRate = model.MinimumInterestRate;
+                        LoanProduct.DefaultInterestRate = model.DefaultInterestRate;
+                        LoanProduct.MaximumInterestRate = model.MaximumInterestRate;
+
+                    }
+                    else if (model.ServiceOption == "duration")
+                    {
+                        LoanProduct.LoanDurationPeriod = model.LoanDurationPeriod;
+                        LoanProduct.MinimumDurationPeriod = model.MinimumDurationPeriod;
+                        LoanProduct.DefaultDurationsPeriod = model.DefaultDurationsPeriod;
+                        LoanProduct.MaximumDurationPeriod = model.MaximumDurationPeriod;
+
+                    }
+                    else if (model.ServiceOption == "repayment")
+                    {
+                        LoanProduct.RepaymentCycles = model.RepaymentCycles;
+                        LoanProduct.MinimumNumberOfRepayment = model.MinimumNumberOfRepayment;
+                        LoanProduct.DefaultNumberOfRepayment = model.DefaultNumberOfRepayment;
+                        LoanProduct.MaximumNumberOfRepayment = model.MaximumNumberOfRepayment;
+                        LoanProduct.RefundOrders = model.RefundOrders;
+                        LoanProduct.ServiceOption = model.ServiceOption;
+
+
+                    }
+                    else if (model.ServiceOption == "taxandfee")
+                    {
+                        LoanProduct.TaxId = model.TaxId;
+                        LoanProduct.IsEarlyPartialRepaymentFeeRate = model.IsEarlyPartialRepaymentFeeRate;
+                        LoanProduct.EarlyPartialRepaymentFee = model.EarlyPartialRepaymentFee;
+                        LoanProduct.IsEarlyTotalRepaymentFeeRate = model.IsEarlyTotalRepaymentFeeRate;
+                        LoanProduct.EarlyTotalRepaymentFee = model.EarlyTotalRepaymentFee;
+                        LoanProduct.MinimumProcessingFeeRate = model.MinimumProcessingFeeRate;
+                        LoanProduct.DefaultProcessingFeeRate = model.DefaultProcessingFeeRate;
+                        LoanProduct.MaximumProcessingFeeRate = model.MaximumProcessingFeeRate;
+                    }
+                    else if (model.ServiceOption == "advancedsettings")
+                    {
+                        LoanProduct.FirstRepaymentAmount = model.FirstRepaymentAmount;
+                        LoanProduct.HowShoudInterestBeCahrgedInLoanSchedule = model.HowShoudInterestBeCahrgedInLoanSchedule;
+                        LoanProduct.HowShoudPrincipalBeCahrgedInLoanSchedule = model.HowShoudPrincipalBeCahrgedInLoanSchedule;
+                        LoanProduct.CalculateInterestOnEachRepaymentOnProRatabase = model.CalculateInterestOnEachRepaymentOnProRatabase;
+                        LoanProduct.LoanScheduleDescription = model.LoanScheduleDescription;
+
+                    }
+                    else if (model.ServiceOption == "accounting")
+                    {
+                        LoanProduct.ChartOfAccountIdForPrincipalAmount = model.ChartOfAccountIdForPrincipalAmount;
+                        LoanProduct.ChartOfAccountIdForAccrualInterest = model.ChartOfAccountIdForAccrualInterest;
+                        LoanProduct.ChartOfAccountIdForInterestIncome = model.ChartOfAccountIdForInterestIncome;
+                        LoanProduct.ChartOfAccountIdForWriteOffPotfolio = model.ChartOfAccountIdForWriteOffPotfolio;
+                        LoanProduct.ChartOfAccountIdForWriteOffInterest = model.ChartOfAccountIdForWriteOffInterest;
+                        LoanProduct.ChartOfAccountIdForLoanLossReserve = model.ChartOfAccountIdForLoanLossReserve;
+                        LoanProduct.ChartOfAccountIdForProvisionOnPrincipal = model.ChartOfAccountIdForProvisionOnPrincipal;
+                        LoanProduct.ChartOfAccountIdForProvisionReversalOnPrincipal = model.ChartOfAccountIdForProvisionReversalOnPrincipal;
+                    }
+
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanProduct>>(string.Format(APICallHelper.Get_Update_Delete_LoanProduct, model.Id), LoanProduct);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{model.productName}", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"{model.ServiceOption.ToUpper()}", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, model.productName, MessagesResults.Failed,
+                        GetExecutionMessages(model, false, model.ServiceOption.ToUpper(), MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }

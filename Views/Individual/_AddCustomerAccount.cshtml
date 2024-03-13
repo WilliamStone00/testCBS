@@ -1,0 +1,35 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+
+<div class="card-body">
+
+
+    @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+    {
+        <!-- Account Details -->
+        @Html.HiddenFor(model => model.AddCustomerAccount.customerId)
+        <input type="hidden" name="option" value="addaccount" id="option" />
+
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.customerId, new { @class = "form-control", @readonly = true })
+                <label>Member reference number</label>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.name, new { @class = "form-control", @readonly = true })
+                <label>Member name</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.AddCustomerAccount.productId, new SelectList(ViewBag.Savings, "Id", "Name"), "---Select product---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.AddCustomerAccount.productId, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Select the account type to open for @Model.CustomerList.name</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Add account</button>
+        </div>
+    }
+</div>

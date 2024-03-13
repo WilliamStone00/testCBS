@@ -1,0 +1,70 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+<style>
+    .label-wrap {
+        word-wrap: break-word;
+    }
+</style>
+@using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+
+    <input type="hidden" name="ServiceOption" value="withdrawallimit" id="ServiceOption" />
+    <div class="row mt-2 gy-4">
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.WithdrawalLimit.productId, new SelectList(ViewBag.Products, "Id", "name"), "---Select product---", new { @class = "form-control select2", @search = "true"})
+                @Html.ValidationMessageFor(m => m.WithdrawalLimit.productId, "", new { @class = "text-danger" })
+                <label>Select product</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.WithdrawalLimit.withdrawalType, new SelectList(ViewBag.WithdrawalLimitTypes, "Text", "Value"), "---Select deposit type---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.WithdrawalLimit.withdrawalType, "", new { @class = "text-danger" })
+                <label>Select withdrawal limit type</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.WithdrawalLimit.minAmount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.WithdrawalLimit.minAmount, "", new { @class = "text-danger" })
+                <label>Min withdrawal amount</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.WithdrawalLimit.maxAmount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.WithdrawalLimit.maxAmount, "", new { @class = "text-danger" })
+                <label>Max withdrawal amount</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.WithdrawalLimit.withdrawalFeeFlat, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.WithdrawalLimit.withdrawalFeeFlat, "", new { @class = "text-danger" })
+                <label>Flat fee</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.WithdrawalLimit.withdrawalFeeRate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.WithdrawalLimit.withdrawalFeeRate, "", new { @class = "text-danger" })
+                <label>Fee rate</label>
+            </div>
+        </div>
+       
+
+    </div>
+
+    <div class="mt-4">
+        @if (Model.WithdrawalLimit.id == null)
+        {
+            <button type="submit" class="btn btn-primary me-2">Save</button>
+            <input type="hidden" name="Action" value="insert" id="Action" />
+        }
+        else
+        { <button type="submit" class="btn btn-primary me-2">Update</button>
+            @Html.HiddenFor(m => m.WithdrawalLimit.id)
+            <input type="hidden" name="Action" value="update" id="Action" />
+        }
+    </div>
+}

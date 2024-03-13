@@ -1,0 +1,37 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+<h5 class="py-3 mb-4"><span class="text-muted fw-light">@Model.CustomerList.name/@Model.CustomerList.customerId</span>: @ViewBag.Title</h5>
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body d-sm-flex d-block">
+            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                <a href="/Individual/Create" class="footer-link me-4">Add new account</a>
+                <a href="/Individual/List" class="footer-link me-4">Back to list</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-12">
+    <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+        <ul class="nav nav-pills flex-column flex-md-row mb-3 gap-2 gap-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" href="/Individual/CustomerProfile?KEY=@Model.CustomerList.customerId"><i class="mdi mdi-account-outline mdi-20px me-1"></i>Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="mdi mdi-bookmark-outline mdi-20px me-1"></i>Documents</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="mdi mdi-bookmark-outline mdi-20px me-1"></i>Subscription plan</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="mdi mdi-bookmark-outline mdi-20px me-1"></i>Security</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Individual/Account?KEY=@Model.CustomerList.customerId"><i class="mdi mdi-lock-open-outline mdi-20px me-1"></i>Saving accounts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="mdi mdi-bookmark-outline mdi-20px me-1"></i>Loan account</a>
+            </li>
+        </ul>
+
+    </div>
+</div>

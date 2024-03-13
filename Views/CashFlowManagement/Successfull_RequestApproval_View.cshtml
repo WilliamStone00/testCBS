@@ -1,0 +1,126 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashReplenimentRequest
+@{
+    ViewBag.Title = "Successfull_RequestApproval_View";
+
+}
+
+<div class="row invoice-preview">
+    <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+        <div class="accordion-item active">
+            <h2 class="accordion-header text-body d-flex justify-content-between"
+                id="accordionPopoutIconThree">
+                <button type="button"
+                        class="accordion-button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#accordionPopoutIcon-3"
+                        aria-expanded="true"
+                        aria-controls="accordionPopoutIcon-3">
+                    <i class="mdi mdi-bank-plus me-2"></i>
+                    Request ReferenceId : @Model.Id
+                </button>
+            </h2>
+            <div class="card-body">
+
+                <br />
+                <div class="collapse show">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Cash Replenishment Details</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            <tr>
+                                <td>Daily Operation Reference </td>
+                                <td>@Model.OpenOfDayOperationId </td>
+                            </tr>
+                            <tr>
+                                <td>Amount Requested</td>
+                                <td>XAF @Model.AmountRequested.ToString("N") </td>
+                            </tr>
+                            <tr>
+                                <td>Request Message</td>
+                                <td>@Model.RequestMessage </td>
+                            </tr>
+                            <tr>
+                                <td>Requested By </td>
+                                <td> @Model.IssuedBy </td>
+                            </tr>
+                            <tr>
+                                <td>Requested Date</td>
+                                <td>@Model.IssuedDate </td>
+                            </tr>
+                            <tr>
+                                <td> Status</td>
+                                @if (@Model.IsApproved)
+                                {
+                                    <td class="badge bg-label-success rounded-pill text-uppercase">
+                                        @Model.Status
+                                    </td>
+
+                                }
+                                else
+                                {
+                                    if (@Model.Status.ToUpper().Equals("PENDING"))
+                                    {
+                                        <td class="badge bg-label-primary rounded-pill text-uppercase">
+                                            @Model.Status
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                            @Model.Status
+                                        </td>
+                                    }
+
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card card-action mb-5">
+                    @if (@Model.IsApproved)
+                    {
+                        <h5 class="card-header" style="color:forestgreen">You have just approved cash replenishment request of XAF @Model.AmountRequested.ToString("N") Issued by @Model.IssuedBy on @Model.IssuedDate successfully.</h5>
+
+
+                    }
+                    else
+                    {
+
+                        if (@Model.Status.ToUpper().Equals("PENDING"))
+                        {
+                <td class="badge bg-label-primary rounded-pill text-uppercase">
+                    <h5 class="card-header" style="color:firebrick">You have just rejected the cash replenishment request of XAF @Model.AmountRequested.ToString("N") Issued by @Model.IssuedBy on @Model.IssuedDate successfully.</h5>
+
+                </td>
+                        }
+                        else
+                        {
+                            <h5 class="card-header" style="color:firebrick">You have just rejected the cash replenishment request of XAF @Model.AmountRequested.ToString("N") Issued by @Model.IssuedBy on @Model.IssuedDate successfully.</h5>
+
+                        }
+                    }
+                    <div class="col-12 shift-right">
+
+                        <button type="submit" class="btn btn-primary click-to-go-back-to-menu" onclick="refreshPage()">Click to view pending cash replenishment request. </button>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/Js/main.js/CashFlowManagement.js"></script>
+}

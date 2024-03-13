@@ -1,0 +1,184 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+
+
+@{
+    var name = $"{Model.Customer.firstName} {Model.Customer.lastName}";
+}
+<div class="card mb-4">
+    <h5 class="card-header">PRODUCT INFO</h5>
+    <div class="card-body pt-2 mt-1">
+        @using (Html.BeginForm("AddOrEdit", "UserManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);"}))
+        {<div class="row mt-2 gy-4">
+                <div class="col-md-8">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => name, new { @class = "form-control",@readonly=true })
+                        <label>Profile</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.product.name, new { @class = "form-control",@readonly=true })
+                        <label>Saving product</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.createdBy, new { @class = "form-control",@readonly=true })
+                        <label>Saving officer</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.createdDate, new { @class = "form-control",@readonly=true })
+                        <label>Opening date</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.product.interestRate, new { @class = "form-control",@readonly=true })
+                        <label>Interest rate</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.product.entryFee, new { @class = "form-control",@readonly=true })
+                        <label>Entry fee</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.product.closingFee, new { @class = "form-control",@readonly=true })
+                        <label>Closing fee</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.product.reopeningFee, new { @class = "form-control",@readonly=true })
+                        <label>Re-opening fee</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.product.managementFee, new { @class = "form-control",@readonly=true })
+                        <label>Management fee</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.product.yearlyInterestRate, new { @class = "form-control",@readonly=true })
+                        <label>Yearly interst rate</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.product.minAmount, new { @class = "form-control",@readonly=true })
+                        <label>Minimum amount</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.product.maxAmount, new { @class = "form-control",@readonly=true })
+                        <label>Max amount</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.product.managementFeeFrequency, new { @class = "form-control",@readonly=true })
+                        <label>Management fee frequency</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.product.postingFrequency, new { @class = "form-control",@readonly=true })
+                        <label>Posting frequency</label>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <!-- /Account -->
+</div>
+
+<div class="card mb-4">
+    <h5 class="card-header">Withdrawal Config</h5>
+    <div class="table-responsive mb-3">
+        <table class="table table-hover" id="myDataTableW">
+            <thead class="table-light">
+            <tr>
+                <th>Withdrawal Type</th>
+                <th>Fee</th>
+                <th>Min</th>
+                <th>Max</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var d in Model.product.withdrawalLimits)
+            {
+                <tr>
+                    <td style="width:70%">@d.withdrawalType</td>
+                    <td style="width:10%">@d.feePercentage</td>
+                    <td style="width:10%">@d.minAmount</td>
+                    <td style="width:10%">@d.maxAmount</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<div class="card mb-4">
+    <h5 class="card-header">Deposit Config</h5>
+    <div class="table-responsive mb-3">
+        <table class="table table-hover" id="myDataTableD">
+            <thead class="table-light">
+            <tr>
+                <th>Deposit type</th>
+                <th>Fee</th>
+                <th>Min</th>
+                <th>Max</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var d in Model.product.depositLimits)
+            {
+                <tr>
+                    <td style="width:70%">@d.depositType</td>
+                    <td style="width:10%">@d.feePercentage</td>
+                    <td style="width:10%">@d.minAmount</td>
+                    <td style="width:10%">@d.maxAmount</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<div class="card mb-4">
+    <h5 class="card-header">Transfer Config</h5>
+    <div class="table-responsive mb-3">
+        <table class="table table-hover" id="myDataTableT">
+            <thead class="table-light">
+                <tr>
+                    <th>transferType</th>
+                    <th>Fee</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model.product.transferLimits)
+                {
+                    <tr>
+                        <td style="width:70%">@d.transferType</td>
+                        <td style="width:10%">@d.feePercentage</td>
+                        <td style="width:10%">@d.minAmount</td>
+                        <td style="width:10%">@d.maxAmount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

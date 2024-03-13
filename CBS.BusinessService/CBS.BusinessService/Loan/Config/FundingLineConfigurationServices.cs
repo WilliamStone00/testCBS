@@ -9,7 +9,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using CBS.FrontDesk.Data.Entity.Config;
 
-namespace CBS.BusinessService.Loan.Config
+namespace CBS.BusinessService.Config
 {
     public class FundingLineServices : BaseService
     {

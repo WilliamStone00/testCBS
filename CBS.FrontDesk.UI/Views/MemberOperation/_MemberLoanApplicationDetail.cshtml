@@ -1,0 +1,117 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+<div class="table-responsive mb-3">
+    <hr />
+    <a href="#" onclick="AddORUpdateGen('@Model.LoanApplication.Id','datalistingview','_MemberLoanApplicationDetail','application_detail','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @Model.LoanApplication.LoanType for detail">
+        Refresh
+    </a>
+    <hr />
+    <table class="table table-bordered">
+        <tr>
+            <td><strong>Member's Code:</strong></td>
+            <td>@Model.LoanApplication.CustomerId</td>
+        </tr>
+        <tr>
+            <td><strong>Loan Applocation Code:</strong></td>
+            <td>@Model.LoanApplication.Id</td>
+        </tr>
+        <tr>
+            <td><strong>Loan Product ID:</strong></td>
+            <td>@Model.LoanApplication.LoanProductId</td>
+        </tr>
+        <tr>
+            <td><strong>Loan Product Name:</strong></td>
+            <td>@Model.LoanApplication.LoanProduct.ProductName</td>
+        </tr>
+        <tr>
+            <td><strong>Loan type:</strong></td>
+            <td>@Model.LoanApplication.LoanType</td>
+        </tr>
+        <tr>
+            <td><strong>Amount:</strong></td>
+            <td>@Model.LoanApplication.Amount.ToString("#,##0.00") FCFA</td>
+        </tr>
+        <tr>
+            <td><strong>Interest Rate:</strong></td>
+            <td>@Model.LoanApplication.InterestRate.ToString("#,##0.00")%</td>
+        </tr>
+        <tr>
+            <td><strong>Processing Fee Rate:</strong></td>
+            <td>@Model.LoanApplication.ProcessingFee.ToString("#,##0.00") % of @Model.LoanApplication.Amount.ToString("#,##0.00") FCFA</td>
+        </tr>
+        <tr>
+            <td><strong>Number of Repayments:</strong></td>
+            <td>@Model.LoanApplication.NumberOfRepayment</td>
+        </tr>
+        <tr>
+            <td><strong>Repayment Circle:</strong></td>
+            <td>@Model.LoanApplication.LoanProduct.LoanProductRepaymentCycles.Where(x=>x.Id==Model.LoanApplication.RepaymentCircle).FirstOrDefault().RepaymentCycle</td>
+        </tr>
+        <tr>
+            <td><strong>Loan Duration:</strong></td>
+            <td>@Model.LoanApplication.LoanDuration  -  @Model.LoanApplication.LoanProduct.LoanDurationPeriod</td>
+
+        </tr>
+        <tr>
+            <td><strong>First installment Date:</strong></td>
+            <td>@Model.LoanApplication.FirstInstallmentDate.ToString("MM/dd/yyyy")</td>
+        </tr>
+        <tr>
+            <td><strong>Application Date:</strong></td>
+            <td>@Model.LoanApplication.ApplicationDate</td>
+        </tr>
+        <tr>
+            <td><strong>Approval Status:</strong></td>
+            <td>@Model.LoanApplication.ApprovalStatus</td>
+        </tr>
+        <tr>
+            <td><strong>Has the loan been approved?:</strong></td>
+            <td>@Model.LoanApplication.IsApproved</td>
+        </tr>
+        <tr>
+            <td><strong>Disbursement Date:</strong></td>
+            @*<td>@Model.LoanApplication.DisbursementDate.ToString("MM/dd/yyyy")</td>*@
+        </tr>
+        <tr>
+            <td><strong>Disbursement Type:</strong></td>
+            @*<td>@Model.DisburstmentType</td>*@
+        </tr>
+        <tr>
+            <td><strong>Interest Method:</strong></td>
+            <td>@Model.LoanApplication.LoanProduct.LoanInterestType</td>
+        </tr>
+        <tr>
+            <td><strong>Interest Type:</strong></td>
+            <td>@Model.LoanApplication.LoanProduct.LoanInterestType</td>
+        </tr>
+        <!-- Add more rows for other loan details -->
+        <tr>
+            <td><strong>Status:</strong></td>
+            @*<td>@Model.Status</td>*@
+        </tr>
+        <tr>
+            <td><strong>Grace Period:</strong></td>
+            <td>@Model.LoanApplication.GracePeriod days</td>
+        </tr>
+        <tr>
+            <td><strong>Grace Period Rate:</strong></td>
+            <td>@Model.LoanApplication.GracePeriodRate %</td>
+        </tr>
+
+    </table>
+</div>
+
+
+
+
+@*<table class="datatables-users table" id="myDataTable">
+        <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th>phone</th>
+                <th>Town</th>
+                <th>Branch</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>*@

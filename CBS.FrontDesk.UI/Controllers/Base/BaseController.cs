@@ -264,6 +264,15 @@ namespace CBS.FrontDesk.UI.Controllers
             Session["BranchName"] = userSession.Branch.Name;
             Session["BranchCode"] = userSession.Branch.BranchCode;
             Session["BankCode"] = userSession.Bank.BankCode;
+
+            if (userSession.Branch.IsHeadOffice)
+            {
+                Session["IsHeadOffice"] = "True";
+            }
+            else
+            {
+                Session["IsHeadOffice"] = "False";
+            }
         }
 
         [NonAction]

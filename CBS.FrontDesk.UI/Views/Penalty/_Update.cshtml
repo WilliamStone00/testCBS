@@ -1,75 +1,120 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Penalty
-<div class="card-body">
+<div class="col">
 
-    @using (Html.BeginForm("Update", "Penalty", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-    {@Html.HiddenFor(model => model.id)
-    <div class="row mt-2 gy-4">
-        <div class="col-md-8">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.penaltyType, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.penaltyType, "", new { @class = "text-danger" })
-                <label>Penalty type</label>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.penaltyName, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.penaltyName, "", new { @class = "text-danger" })
-                <label>Penalty name</label>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.percentage, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.percentage, "", new { @class = "text-danger" })
-                <label>Percentage</label>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.daysToApplyPenalty, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.daysToApplyPenalty, "", new { @class = "text-danger" })
-                <label>Days to apply penalty</label>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.flateAmount, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.flateAmount, "", new { @class = "text-danger" })
-                <label>Flat amount</label>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="form-check">
-                @Html.CheckBoxFor(m => m.isRate, new { @class = "form-check-input" })
-                <label class="form-check-label" for="isActive">Use rate</label>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.TextAreaFor(m => m.description, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
-                <label>Description</label>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.accountingRuleId, new SelectList(ViewBag.Roles, "id", "ruleName"), "---Select accounting roles---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.accountingRuleId, "", new { @class = "text-danger " })
-                <label>Accounting role</label>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="form-check">
-                @Html.CheckBoxFor(m => m.isEnabled, new { @class = "form-check-input" })
-                <label class="form-check-label" for="isActive">Enable</label>
+    <div class="row my-4">
+        <div class="accordion" id="collapsibleSection">
+            <div class="card accordion-item">
+                <h2 class="accordion-header" id="headingDeliveryAddress">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDeliveryAddress"
+                            aria-expanded="true"
+                            aria-controls="collapseDeliveryAddress">
+                        Update Penalty for @Model.LoanProduct.ProductName
+                    </button>
+                </h2>
+                <div id="collapseDeliveryAddress"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div id="penaltydiv">
+                            @using (Html.BeginForm("Update", "Penalty", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            {
+                                <div class="row g-4">
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.PenaltyType, new SelectList(ViewBag.PenaltyTypes, "Value", "Text"), "---Select Penalty type---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.PenaltyType, "", new { @class = "text-danger " })
+                                            <label>Penalty type</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.PenaltyName, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.PenaltyName, "", new { @class = "text-danger" })
+                                            <label>Enter penalty unique name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="waivePenaltyYesNo"></label>
+                                        <div class="form-check form-check-inline" id="waivePenaltyYesNo">
+                                            @Html.RadioButtonFor(m => m.IsRate, true, new { id = "IsRatePercentage", @class = "form-check-input" })
+                                            <label class="form-check-label" for="waivePenaltyYes">I want Penalty to be percentage % based</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            @Html.RadioButtonFor(m => m.IsRate, false, new { id = "IsRateFixed", @class = "form-check-input" })
+                                            <label class="form-check-label" for="waivePenaltyNo">I want Penalty to be a fixed amount</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="waivePenaltyYesNo">(optional) Waive penalty on branch holidays?</label>
+                                        <div class="form-check form-check-inline" id="waivePenaltyYesNo">
+                                            @Html.RadioButtonFor(m => m.WaivePenaltyOnBranchHolidays, true, new { id = "waivePenaltyYes", @class = "form-check-input" })
+                                            <label class="form-check-label" for="waivePenaltyYes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            @Html.RadioButtonFor(m => m.WaivePenaltyOnBranchHolidays, false, new { id = "waivePenaltyNo", @class = "form-check-input" })
+                                            <label class="form-check-label" for="waivePenaltyNo">No</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.CalculatePenaltyOn, new SelectList(ViewBag.CalculateInterestOn, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.CalculatePenaltyOn, "", new { @class = "text-danger " })
+                                            <label>Calculate penalty on?</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.PenaltyValue, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.PenaltyValue, "", new { @class = "text-danger" })
+                                            <label>Enter penalty value. (Keep in mind of you have selectd rate or fix amount)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.GracePeriodInDaysBeforeApplyingPenalty, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.GracePeriodInDaysBeforeApplyingPenalty, "", new { @class = "text-danger" })
+                                            <label>Grace priod in days (Optional)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.DaysToApplyPenalty, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.DaysToApplyPenalty, "", new { @class = "text-danger" })
+                                            <label>Enter days to apply penalt. Penalty will be applied after grace period.</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.IsEnabled, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">Check to enable</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", style = "height: 150px;" })
+                                            @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                                            <label>Penalty description</label>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary me-2">Set penalty</button>
+                                    @Html.HiddenFor(m => m.LoanProductId)
+                                    @Html.HiddenFor(m => m.Id)
+                                    <input type="hidden" name="ServiceOption" value="set_penalty" id="ServiceOption" />
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="mt-4">
-
-        <button type="submit" class="btn btn-primary me-2">Update</button>
-
-    </div>
-}
 </div>

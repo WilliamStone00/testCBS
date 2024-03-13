@@ -259,6 +259,7 @@
     <Compile Include="Controllers\Loan\Configuration\PeriodController.cs" />
     <Compile Include="Controllers\Loan\Configuration\DocumentController.cs" />
     <Compile Include="Controllers\Loan\Configuration\TaxController.cs" />
+    <Compile Include="Controllers\MemberOperation\MemberOperationController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
     <Compile Include="Controllers\RoleManagement\MenuMasterController.cs" />
     <Compile Include="Controllers\RoleManagement\RoleController.cs" />
@@ -300,10 +301,16 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppFiles\Images\Icon PNG.png" />
+    <Content Include="AppFiles\Images\Icon.ico" />
+    <Content Include="AppFiles\Images\images.jpeg" />
+    <Content Include="AppFiles\Images\Logog.png" />
     <Content Include="AppFiles\Images\no signature.png" />
     <Content Include="AppFiles\Images\noimage.jpg" />
     <Content Include="AppFiles\Images\p.jpg" />
     <Content Include="AppFiles\Images\s.jpg" />
+    <Content Include="AppFiles\Images\TrusBank_LoginBG.png" />
+    <Content Include="AppFiles\Images\TrustBankTitle.png" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\alertify.js" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\alertify.min.js" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\css\alertify.css" />
@@ -2028,6 +2035,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
+    <None Include="Properties\PublishProfiles\Default Settings1.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -2043,7 +2051,12 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\Customers.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\LoanApplication.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\MyCustomers.js" />
+    <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\MyCustomers.js" />
     <Content Include="Scripts\Js\Crud\EOD\EOD.js" />
+    <Content Include="Scripts\Js\Crud\Penalty\Penalty.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />
     <Content Include="Scripts\Js\Crud\Config\Localization\Countries.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\CustomersProfile.js" />
@@ -2176,7 +2189,6 @@
     <Content Include="Views\FundingLine\_Update.cshtml" />
     <Content Include="Views\FundingLine\_Data.cshtml" />
     <Content Include="Views\FundingLine\_Create.cshtml" />
-    <Content Include="Views\Penalty\_Create.cshtml" />
     <Content Include="Views\Penalty\_Data.cshtml" />
     <Content Include="Views\Penalty\_Update.cshtml" />
     <Content Include="Views\Penalty\Index.cshtml" />
@@ -2343,6 +2355,26 @@
     <Content Include="Views\EndOfDayOperation\SubtellerVerification.cshtml" />
     <Content Include="Views\EndOfDayOperation\Accountant.cshtml" />
     <Content Include="Views\EndOfDayOperation\_Accountant.cshtml" />
+    <Content Include="Views\Individual\MyMembers.cshtml" />
+    <Content Include="Views\TellerManagement\Index.cshtml" />
+    <Content Include="Views\TellerManagement\_PrimaryTeller.cshtml" />
+    <Content Include="Views\TellerManagement\_PrimaryTellerData.cshtml" />
+    <Content Include="Views\MemberOperation\_MembersData.cshtml" />
+    <Content Include="Views\MemberOperation\OperationPanel.cshtml" />
+    <Content Include="Views\MemberOperation\Members.cshtml" />
+    <Content Include="Views\MemberOperation\MyMembers.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanApplication.cshtml" />
+    <Content Include="Views\MemberOperation\_MemberLoanApplicationData.cshtml" />
+    <Content Include="Views\MemberOperation\_MemberLoanApplicationDetail.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanData.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanDetails.cshtml" />
+    <Content Include="Views\MemberOperation\_RefundForm.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanScheduleData.cshtml" />
+    <Content Include="Views\MemberOperation\_SelectedLoanData.cshtml" />
+    <Content Include="Views\MemberOperation\LoanApplicationValidation.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanApplicationValidationData.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanApplicationValidation.cshtml" />
+    <Content Include="Views\LoanProduct\_SetPenalty.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

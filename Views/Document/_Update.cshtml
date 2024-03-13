@@ -1,0 +1,44 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Document
+<div class="card-body">
+
+    @using (Html.BeginForm("Update", "Country", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        @Html.HiddenFor(model => model.id)
+    <div class="row mt-2 gy-4">
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
+                <label>Name</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.type, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.type, "", new { @class = "text-danger" })
+                <label>Type</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextAreaFor(m => m.description, new { @class = "form-control", @style = "height: 200px;" })
+                @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
+                <label>Description</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.linkDoc, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.linkDoc, "", new { @class = "text-danger" })
+                <label>Document link</label>
+            </div>
+        </div>
+
+    </div>
+    <div class="mt-4">
+
+        <button type="submit" class="btn btn-primary me-2">Update</button>
+
+    </div>
+}
+</div>

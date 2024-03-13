@@ -1,4 +1,4 @@
-﻿using CBS.BusinessService.Loan.Config;
+﻿
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using System;

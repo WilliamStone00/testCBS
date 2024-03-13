@@ -102,6 +102,7 @@ namespace CBS.BusinessService.Config
             {
 
                 // Make an API call to create an individual profile
+                model.BankId = GetBankID();
                 var response = await _BranchConfigApiHelper.PostAsync<ServiceResponse<Branch>>(APICallHelper.CreateBranch, model);
                 if (response.IsSuccess)
                 {
@@ -114,7 +115,7 @@ namespace CBS.BusinessService.Config
                 {
                     // Failed creation
                     GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, null);
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(),null, response.Message);
                 }
             }
             catch (Exception ex)

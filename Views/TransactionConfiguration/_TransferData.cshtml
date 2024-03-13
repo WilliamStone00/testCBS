@@ -1,0 +1,30 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+<table class="table table-hover" id="myDataTable_Transfer">
+    <thead class="table-light">
+        <tr>
+            <th>Product name</th>
+            <th>Transfer type</th>
+            <th>Min-Max Amount</th>
+            <th>Rate</th>
+            <th>Flate</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.TransferLimits)
+        {
+            <tr>
+                <td style="width:25%">@d.product.name</td>
+                <td style="width:15%">@d.transferType</td>
+                <td style="width:20%">@d.minAmount-@d.maxAmount</td>
+                <td style="width:10%">@d.transferFeeRate %</td>
+                <td style="width:10%">@d.transferFeeFlat</td>
+                <td style="width:20%">
+                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview_Transfer','_TransferConfig','get','TransactionConfiguration','transferlimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.product.name @d.transferType to edit">Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.product.name @d.transferType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable_Transfer','_TransferData',0,'datalistingview_Transfer')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

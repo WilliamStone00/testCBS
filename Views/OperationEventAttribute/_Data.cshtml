@@ -1,0 +1,24 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.Accounting.OperationEventAttributeDto>
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td style="width:35%">@d.Name</td>
+                <td style="width:35%">@d.OperationEventName</td>
+                <td style="width:25%">
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Update','update','OperationEventAttribute')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('OperationEventAttribute','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

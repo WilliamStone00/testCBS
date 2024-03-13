@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +11,13 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     public class Tax
     {
         public string id { get; set; }
+        [Required]
         public string name { get; set; }
+        [Required]
+
         public double value { get; set; }
-        public string periodicity { get; set; }
-        public bool isMandatory { get; set; }
+        [Required]
         public string description { get; set; }
-        public string AccountingRuleId { get; set; }
     }
 
 }

@@ -14,7 +14,7 @@
             new Cleave(phoneMask, {
                 phone: true,
                 phoneRegionCode: 'US'
-            });
+            });r
         });
     }
 
@@ -871,8 +871,8 @@ function EditResetModal(KEY, modalBodyID, ModalcontentID, controller, actionMeth
     });
 }
 
-function LoadDataGen(controller, tableID, partialView, order, datalistingview,KEY,serviceOption) {
-    LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, "list", datalistingview, serviceOption);
+function LoadDataGen(controller, tableID, partialView, order, datalistingview,KEY,serviceOption,path) {
+    LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, path, datalistingview, serviceOption);
 
 }
 function AddORUpdateGen(KEY, divToLoadData, partialView, path, controller,serviceOption) {

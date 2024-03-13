@@ -354,7 +354,7 @@ namespace CBS.API.Helper
 
                     if (response.IsSuccessStatusCode)
                     {
-                        if (responseData.Contains("\"data\":true"))
+                        if (responseData.Contains("\"status\":SUCCESS") || responseData.Contains("\"data\":true"))
                         {
                             jsonResponse = JObject.Parse(responseData);
                             var obj = JsonConvert.DeserializeObject<dynamic>(responseData);

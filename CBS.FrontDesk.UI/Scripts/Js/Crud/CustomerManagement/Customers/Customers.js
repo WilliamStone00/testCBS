@@ -1,12 +1,9 @@
 ﻿
 $(document).ready(function () {
 
-    LoadDataGen('Individual', 'myDataTable', '_IndividualData', 0, 'datalistingview', null)
-    $("#btnData").click(function () {
-        DownloadLoans('All');
-    });
-
+    LoadDataGen('Individual', 'myDataTable', '_IndividualData', 0, 'datalistingview', null, 'all')
 });
+
 
 
 function showConfirmMessage(KEY, ServiceOption, tableID) {

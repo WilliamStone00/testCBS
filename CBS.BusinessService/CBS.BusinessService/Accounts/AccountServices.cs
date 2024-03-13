@@ -96,9 +96,11 @@ namespace CBS.BusinessService.Accounts
                 {
                     var transactionHistory = apiResponse.ApiResponseData.Data;
                     return transactionHistory;
+
                 }
                 return new TransactionHistory();
             }
+
             catch (Exception ex)
             {
                 // Log and handle exception

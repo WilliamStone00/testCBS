@@ -13,9 +13,10 @@ using CBS.FrontDesk.UI.Helper;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity;
 using CBS.BusinessService.Accounting;
-using CBS.BusinessService.Loan.Config;
+
 using MvcSiteMapProvider.Reflection;
 using System.Data.Entity.Core.Metadata.Edm;
+using CBS.BusinessService.Config;
 
 namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
 {
@@ -37,11 +38,17 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
 
 
         }
+
         public async Task<ActionResult> CustomerProfile(string KEY = null, string ReadOptions = null, string path = null, string group = null)
         {
             ViewBag.KEY = KEY;
             var customer = await InitializeCustomerData(KEY);
             return View(customer);
+        }
+        public async Task<ActionResult> MyMembers()
+        {
+         
+            return View();
         }
         public async Task<ActionResult> Account(string KEY = null, string ReadOptions = null, string path = null, string group = null)
         {
@@ -50,7 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             return View(customer);
         }
 
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null)
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null,string serviceOption = null, string path = null)
         {
             ViewBag.KEY = KEY;
             if (KEY != "null")
@@ -60,11 +67,19 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             }
             else
             {
-                var data = await _individualProfileServices.GetIndividualProfile();
-
-                return PartialView(partialView, data);
+                if (serviceOption == "branch")
+                {
+                    var data = await _individualProfileServices.GetIndividualProfileByBranch();
+                    return PartialView(partialView, data);
+                }
+                else if (serviceOption == "all")
+                {
+                    var data = await _individualProfileServices.GetIndividualProfile();
+                    return PartialView(partialView, data);
+                }
+ 
             }
-            return PartialView(KEY, "");
+            return PartialView(partialView, new List<IndividualProfile>());
         }
 
         public async Task<ActionResult> Create()
@@ -76,8 +91,25 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         [HttpPost]
         public async Task<ActionResult> Create(IndividualProfile model)
         {
-            var data = await _individualProfileServices.Create(model);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            if (ModelState.IsValid)
+            {
+                var data = await _individualProfileServices.Create(model);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            }
+            else
+            {
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Where(e => e.ErrorMessage != null)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                // Convert the list of error messages to a single string with each message on a new line
+                string errorMessage = string.Join("\n", errorMessages);
+
+                // Pass the error message as the message
+                return Json(new { success = false, status = false, message = errorMessage });
+            }
         }
 
         private async Task<IndividualCustomerProfile> InitializeCustomerData(string KEY)

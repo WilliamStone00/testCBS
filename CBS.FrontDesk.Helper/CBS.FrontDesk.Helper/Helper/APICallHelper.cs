@@ -123,6 +123,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetSubTellerProvioningHistoryByPrimaryTellerUserIDQuery = "/api/v1/Teller/GetSubTellerProvioningHistoryByPrimaryTellerUserIDQuery/{0}";
         public static string EndOfDaySubTellerBYPrimaryTeller = "/api/v1/Teller/EndOfDaySubTellerBYPrimaryTeller";
         public static string GetPrimaryTellerProvisioningHistoryByBranchIDQuery = "/api/v1/Teller/GetPrimaryTellerProvisioningHistoryByBranchIDQuery/{0}";
+        public static string GetCustomersByBranchID = "/api/v1/Customers/{0}";
+        
         ///api/v1/Teller/SubTellerEndOfDay
         //GetPrimaryTellerProvisioningHistoryByBranchIDQuery
         public static string  TellerCashReplenishmentRequest = "/api/v1/CashReplenishment";
@@ -156,7 +158,8 @@ namespace CBS.FrontDesk.Helper
 
         //Configuration
         public static string GetAllConfigurationEnums = "/api/v1/Config/EnumData";
-
+        public static string LoanProductEnumAggregates = "/api/v1/EnumAggregates";
+        ///api/v1/EnumAggregates
         //Country
         public static string Get_Update_Delete_Country = "/api/v1/Country/{0}";
         public static string GetAllCountry = "/api/v1/Countrys";
@@ -228,6 +231,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllLoanProduct = "/api/v1/LoanProducts";
         public static string CreateLoanProduct = "/api/v1/LoanProduct";
         public static string GetLoanProductConfigurationAgregates = "/api/v1/LoanProductConfigurationAgregates";
+        public static string GetAllLoanApplicationByCustomerId = "/api/v1/LoanApplication/GetAllLoanApplicationByCustomerId/{0}";
+        
 
         //Upload FIles
         public static string UploadFile = "/api/FIleManagement/Upload";
@@ -241,7 +246,19 @@ namespace CBS.FrontDesk.Helper
         public static string GetLoanApplicationInstallment = "/api/v1/LoanApplication/Installment/{0}";
         public static string LoanSimulation = "/api/v1/LoanApplication/Simulation";
         public static string ApproveLoanApplication = "/api/v1/LoanApplication/ChangeStatus/{0}";
+        public static string ValidateLoanApplicationStatus = "/api/v1/LoanApplication/ChangeStatus/{0";
+        
+    
+    //LOAN
+    public static string GetAllLoanByCustomerId = "/api/v1/Loan/GetAllLoanByCustomerId/{0}";
+        public static string GetLoan = "/api/v1/Loan/{0}";
+        public static string GetLoans = "/api/v1/Loans";
+        public static string GetAllLoanByBranchIdQuery = "/api/v1/Loan/GetAllLoanByBranchIdQuery/{id}";
 
+        //LOAN Amortization
+        public static string GetLoanAmortizationByID = "/api/LoanAmortization/GetLoanAmortization/{0}";
+        public static string GetAllLoanAmortizationByLoanIdQuery = "/api/LoanAmortization/Installments/GetAllLoanAmortizationByLoanIdQuery/{0}";
+        public static string LoanInstallationSimulation = "/api/LoanAmortization/Loan/Simulation";
 
         //Tax  
         public static string Get_Update_Delete_Tax = "/api/v1/Tax/{0}";

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CBS.BusinessService.Loan.Config
+namespace CBS.BusinessService.Config
 {
     public class LoanCommeteeMemberServices : BaseService
     {

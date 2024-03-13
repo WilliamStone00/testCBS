@@ -1,0 +1,42 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+
+<div class="card-body">
+
+
+    @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+    {
+        <!-- Account Details -->
+        @Html.HiddenFor(model => model.MembershipNextOfKingsMember.customerId)
+        <input type="hidden" name="option" value="nextofking" id="option" />
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.MembershipNextOfKingsMember.accountNumber, new SelectList(ViewBag.MemberAccounts, "Value", "Text"), "---Select account---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.MembershipNextOfKingsMember.accountNumber, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Select from @Model.CustomerList.name list of accounts (@Model.CustomerAccounts.Count()) for next of king</label>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.MembershipNextOfKingsMember.name, new { @class = "form-control" })
+                <label>Next of king name</label>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.MembershipNextOfKingsMember.ratio, new { @class = "form-control" })
+                <label>What ratio of selected account is given to this individual</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.MembershipNextOfKingsMember.relation, new SelectList(ViewBag.relationships, "Value", "Text"), "---Select relation---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.MembershipNextOfKingsMember.relation, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Select relationship between @Model.CustomerList.name with this individual</label>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Add next of kings</button>
+        </div>
+    }
+</div>

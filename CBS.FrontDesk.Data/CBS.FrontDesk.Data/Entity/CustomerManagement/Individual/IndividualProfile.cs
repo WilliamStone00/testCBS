@@ -21,6 +21,8 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         [Required]
         public string email { get; set; }
         [Required]
+        public string VillageOfOrigin { get; set; }
+        [Required]
         public string phone { get; set; }
         [Required]
         public string idNumber { get; set; }
@@ -36,13 +38,13 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string packageId { get; set; }
         [Required]
         public string divisionId { get; set; }
-        [Required]
+ 
         public string branchId { get; set; }
         [Required]
         public string economicActivitiesId { get; set; }
-        [Required]
+
         public string bankId { get; set; }
-        [Required]
+  
         public string organizationId { get; set; }
         [Required]
         public string subDivisionId { get; set; }

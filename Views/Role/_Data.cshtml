@@ -1,0 +1,34 @@
+﻿@model CBS.FrontDesk.Data.Entity.RolePermissionManagement
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>Name</th>
+            <th>Teller?</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.Roles)
+        {
+            <tr>
+                <td style="width:65%">@d.Name</td>
+                <td style="width:10%">
+                    @if (@d.IsTeller)
+                    {
+                        <label>Yes</label>
+                    }
+                    else
+                    {
+                        <label>No</label>
+                    }
+                </td>
+                <td style="width:25%">
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Update','update','Role')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a>|
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('Role','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>|
+                    <a href="#" onclick="LoadDataGen('Role','myDataTable','_RolePermissionData',0,'datalistingview','@d.Id','view_role_permission')" target="_parent" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">View permissions</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

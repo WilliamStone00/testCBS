@@ -1,0 +1,56 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Fee
+<div class="card-body">
+
+    @using (Html.BeginForm("Update", "Fee", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {@Html.HiddenFor(model => model.id)
+    <div class="row mt-2 gy-4">
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.nameOfFee, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.nameOfFee, "", new { @class = "text-danger" })
+                <label>Name</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.min, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.min, "", new { @class = "text-danger" })
+                <label>Min value</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.max, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.max, "", new { @class = "text-danger" })
+                <label>Max value</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.CheckBoxFor(m => m.isRate, new { @class = "form-check-input" })
+                @Html.ValidationMessageFor(m => m.isRate, "", new { @class = "text-danger" })
+                <label>Use rate</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.rate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.rate, "", new { @class = "text-danger" })
+                <label>Rate</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.accountingRuleId, new SelectList(ViewBag.Roles, "id", "ruleName"), "---Select accounting roles---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.accountingRuleId, "", new { @class = "text-danger " })
+                <label>Accounting role</label>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4">
+
+        <button type="submit" class="btn btn-primary me-2">Update</button>
+
+    </div>
+}
+</div>

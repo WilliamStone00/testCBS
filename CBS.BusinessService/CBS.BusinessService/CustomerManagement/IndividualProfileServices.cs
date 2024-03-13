@@ -58,7 +58,7 @@ namespace CBS.BusinessService.CustomerManagement
                     { "serviceType", attachedToLoan.ServiceTypeType },
                 };
                 var response = await _bankConfigApiHelper.PostFilesAndParamsAsync<ServiceResponse<DocumentUploadResponse>>(APICallHelper.UploadFile, additionalParams, attachedToLoan.AttachedFiles);
-                if (response.ApiResponseData.Success)
+                if (response.ApiResponseData!=null)
                 {
                     GetExecutionMessages(response, true, attachedToLoan.DocumentType, MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null,
@@ -122,6 +122,27 @@ namespace CBS.BusinessService.CustomerManagement
             try
             {
                 var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.GetAllIndividualProfile);
+                var aggregates = await GetAggregates();
+
+                var data = (from a in individualProfiles.ApiResponseData.Data
+                            join b in aggregates.Branches on a.branchId equals b.Id
+                            join t in aggregates.Towns on a.townId equals t.Id
+                            select TransformToCustomerList(a, b, t)).ToList();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<IndividualProfile>> GetIndividualProfileByBranch()
+        {
+            try
+            {
+                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(string.Format(APICallHelper.GetCustomersByBranchID, GetBranchID()));
                 var aggregates = await GetAggregates();
 
                 var data = (from a in individualProfiles.ApiResponseData.Data
@@ -425,6 +446,7 @@ namespace CBS.BusinessService.CustomerManagement
                 customer.address = objCustomerProfile.CustomerList.address;
                 customer.bankName = GetBranchName();
                 customer.language = objCustomerProfile.CustomerList.language;
+                customer.VillageOfOrigin = objCustomerProfile.CustomerList.VillageOfOrigin;
                 customer.gender = objCustomerProfile.CustomerList.gender;
                 customer.phone = objCustomerProfile.CustomerList.phone;
                 customer.taxIdentificationNumber = objCustomerProfile.CustomerList.taxIdentificationNumber;

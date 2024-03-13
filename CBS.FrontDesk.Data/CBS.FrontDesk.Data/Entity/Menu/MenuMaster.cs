@@ -39,6 +39,7 @@ namespace CBS.FrontDesk.Data.Entity
 
     public class DatabaseMenus
     {
+
         public int MenuMasterId { get; set; }
         public Guid UserID { get; set; }
         public Guid RoleID { get; set; }

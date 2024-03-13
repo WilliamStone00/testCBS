@@ -1,0 +1,38 @@
+﻿@model  CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+<table class="table table-hover" id="myDataTable_OperationEvent">
+    <thead class="table-light">
+        <tr>
+            <th>OperationEventName</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.OperationEvents)
+        {
+
+            <tr>
+                <td style="width:35%">@d.OperationEventName</td>
+                <td style="width:25%">@d.Description</td>
+
+                <td style="width:40%">
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_OperationEvent','_CreateOperationEvent','update','AccountingConfiguration','operationEvent')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.OperationEventName to edit">Edit</a>
+                    <a href="#" class="mr-2 btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete @d.OperationEventName"  onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_OperationEvent','_OperationEventData',0,'datalistingview_OperationEvent','operationEvent')">Delete</a>
+
+                </td>
+
+
+            </tr>
+
+
+        }
+    </tbody>
+</table>
+@*<div class="card">
+    <div class="card-body">
+        <div id="datalistingview">
+            @Html.Partial("_modal")
+
+        </div>
+    </div>
+</div>*@

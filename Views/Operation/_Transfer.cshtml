@@ -1,0 +1,50 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+
+
+@using (Html.BeginForm("Deposit", "Operation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <input type="hidden" name="OperationType" value="Transfer" id="OperationType" />
+
+    <div class="row mt-2 gy-4">
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.TransferRequest.senderAccountNumber, new SelectList(ViewBag.Source, "Value", "Text"), "---Source account---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.TransferRequest.senderAccountNumber, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Select source account</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.TransferRequest.receiverAccountNumber, new SelectList(ViewBag.Destination, "Value", "Text"), "---Source account---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.TransferRequest.receiverAccountNumber, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Select destination account</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.TransferRequest.transferType, new SelectList(ViewBag.TransferTypes, "Value", "Text"), "---Transfer type---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.TransferRequest.transferType, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Transfer type</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.TransferRequest.amount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TransferRequest.amount, "", new { @class = "text-danger" })
+                <label style="color:blue">Enter amount</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextAreaFor(m => m.TransferRequest.note, new { @class = "form-control", @style = "height: 75px;" })
+                @Html.ValidationMessageFor(m => m.TransferRequest.note, "", new { @class = "text-danger" })
+                <label style="color:blue">Note</label>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary me-2">Transfer</button>
+    </div>
+}

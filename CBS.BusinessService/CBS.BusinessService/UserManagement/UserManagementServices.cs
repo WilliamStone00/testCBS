@@ -40,7 +40,7 @@ namespace CBS.BusinessService.UserManagement
                 }
                 GetExecutionMessages(user, false, user.firstName, MessagesResults.Failed,
                     ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null,
-                    null);
+                    reUser.Message);
 
             }
             catch (Exception ex)
@@ -81,48 +81,53 @@ namespace CBS.BusinessService.UserManagement
         {
             try
             {
-                var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var userLists = await ApiCallerHelper.GetAsync<ResponseObject<List<UserList>>>(APICallHelper.GetUsers);
+                var identityServerBaseUrl = ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString();
+                var apiCallerHelper = new ApiCallerHelper(identityServerBaseUrl);
+
+                var userListsResponse = await apiCallerHelper.GetAsync<ResponseObject<List<UserList>>>(APICallHelper.GetUsers);
                 var newList = new List<UserList>();
-                
-                if (userLists!=null)
+
+                if (userListsResponse != null && userListsResponse.IsSuccess)
                 {
-                    var braches = await GetBranches();
+                    var userLists = userListsResponse.ApiResponseData.Data;
+                    var isHeadOffice = HttpContext.Current.Session["IsHeadOffice"] == "True";
+                    var branchId = GetBranchID();
+                    var branches = await GetBranches();
 
-
-                    foreach (var a in userLists.ApiResponseData.Data)
+                    foreach (var user in userLists.Where(u => isHeadOffice || u.BranchID == branchId))
                     {
-                        a.name = $"{a.firstName} {a.lastName}";
-                        a.strlastLoginDate = a.lastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
-                        a.status = a.isActive ? "Active" : "In-active";
-                        if (a.BranchID!=null)
+                        user.name = $"{user.firstName} {user.lastName}";
+                        user.strlastLoginDate = user.lastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
+                        user.status = user.isActive ? "Active" : "In-active";
+
+                        if (user.BranchID != null)
                         {
-                            a.Branch = braches.Where(x => x.Id == a.BranchID).FirstOrDefault();
-                            a.Bank= braches.Where(x => x.Id == a.BranchID).FirstOrDefault().Bank;
-                            if (a.Bank==null)
+                            var branch = branches.FirstOrDefault(b => b.Id == user.BranchID);
+                            if (branch != null)
                             {
-                                a.BankID = null;
-                                a.Bank = new Bank();
+                                user.Branch = branch;
+                                user.Bank = branch.Bank ?? new Bank();
                             }
-                    
                         }
                         else
                         {
-                            a.Bank = new Bank();
-                            a.Branch = new Branch();
+                            user.Branch = new Branch();
+                            user.Bank = new Bank();
                         }
-                        newList.Add(a);
+
+                        newList.Add(user);
                     }
+
                     return newList;
                 }
-
-               
-                
-                return userLists.ApiResponseData.Data;
+                else
+                {
+                    return Enumerable.Empty<UserList>();
+                }
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public async Task<IEnumerable<Branch>> GetBranches()
@@ -130,10 +135,23 @@ namespace CBS.BusinessService.UserManagement
             try
             {
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
-                var branchApiResponse = await ApiCallerHelper.GetAsync<ResponseObject<Bank>>((string.Format(APICallHelper.Get_Update_Delete_Bank,GetBankID())));
-                var bracBranches = branchApiResponse.ApiResponseData.Data;
-                var branches = bracBranches.Branches;
-                return branches;
+                if (HttpContext.Current.Session["IsHeadOffice"] == "True")
+                {
+                    var branchApiResponse = await ApiCallerHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
+                    var bracBranches = branchApiResponse.ApiResponseData.Data;
+                    var branches = bracBranches;
+                    return branches;
+                }
+                else
+                {
+                    var branchApiResponse = await ApiCallerHelper.GetAsync<ResponseObject<Branch>>((string.Format(APICallHelper.Get_Update_Delete_Branch, GetBranchID())));
+                    var bracBranches = branchApiResponse.ApiResponseData.Data;
+                    var branches = new List<Branch>();
+                    branches.Add(bracBranches);
+                    return branches;
+                }
+         
+           ;
             }
             catch (Exception ex)
             {

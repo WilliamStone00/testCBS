@@ -1,0 +1,34 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.EndOfTheDay
+
+
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>Date Open</th>
+            <th>Date closed</th>
+            <th>Initial amount</th>
+            <th>Cash at handt</th>
+            <th>Closed status</th>
+            <th>Primary teller status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.SubTellerProvioningHistories)
+        {
+            <tr>
+                <td style="width:20%">@d.openedDate</td>
+                <td style="width:20%">@d.clossedDate</td>
+                <td style="width:10%">@d.openOfDayAmount</td>
+                <td style="width:10%">@d.cashAtHand</td>
+                <td style="width:10%">@d.clossedStatus</td>
+                <td style="width:10%">@d.primaryTellerConfirmationStatus</td>
+                <td style="width:20%">
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Close the operation of @d.openOfDayAmount for date of @d.openedDate" onclick="AddORUpdateGen('@d.id','datalistingview','_PrimaryTellerViewOfSubTellerStatus','subteller_validation','EndOfDayOperation')">Verify operations</a>
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+
+@Html.Partial("_Content")
+
+
+@if (ViewBag.StartSessionWarning != null && (bool)ViewBag.StartSessionWarning)
+{
+    <script>
+        $(document).ready(function () {
+            startSessionWarning();
+        });
+    </script>
+}
