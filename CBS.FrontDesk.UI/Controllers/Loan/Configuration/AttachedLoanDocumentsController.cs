@@ -1,4 +1,5 @@
-﻿using CBS.BusinessService.Loan.Config;
+﻿
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
+namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
     public class AttachedLoanDocumentsController : BaseController
     {

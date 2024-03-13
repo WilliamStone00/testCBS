@@ -15,6 +15,8 @@ using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using static CBS.FrontDesk.Data.Entity.CustomerManagement.IndividualProfile;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
+using System.Reflection;
 
 namespace CBS.BusinessService.CustomerManagement
 {
@@ -40,6 +42,15 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {
+
+                // Check if files are attached
+                if (attachedToLoan.AttachedFiles[0] == null)
+                {
+                    // Handle case where no files are attached
+                    return GetExecutionMessages(attachedToLoan, false, attachedToLoan.DocumentType, MessagesResults.Failed,
+              ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
+              null);
+                }
                 var additionalParams = new Dictionary<string, string>
                 {
                     { "Id", attachedToLoan.CustomerID },
@@ -47,7 +58,7 @@ namespace CBS.BusinessService.CustomerManagement
                     { "serviceType", attachedToLoan.ServiceTypeType },
                 };
                 var response = await _bankConfigApiHelper.PostFilesAndParamsAsync<ServiceResponse<DocumentUploadResponse>>(APICallHelper.UploadFile, additionalParams, attachedToLoan.AttachedFiles);
-                if (response.ApiResponseData.Success)
+                if (response.ApiResponseData!=null)
                 {
                     GetExecutionMessages(response, true, attachedToLoan.DocumentType, MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null,
@@ -75,7 +86,7 @@ namespace CBS.BusinessService.CustomerManagement
                 var inResponse = await _customerApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.DeleteCustomer, id));
                 if (inResponse.IsSuccess)
                 {
-          
+
                     // Handle success scenario
                     GetExecutionMessages(inResponse, true, $"{customer.firstName} {customer.lastName}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, null);
@@ -96,7 +107,7 @@ namespace CBS.BusinessService.CustomerManagement
             return ExecutionMessage;
         }
 
-       
+
 
         // Other methods refactored similarly...
 
@@ -114,9 +125,9 @@ namespace CBS.BusinessService.CustomerManagement
                 var aggregates = await GetAggregates();
 
                 var data = (from a in individualProfiles.ApiResponseData.Data
-                    join b in aggregates.Branches on a.branchId equals b.Id
-                    join t in aggregates.Towns on a.townId equals t.Id
-                    select TransformToCustomerList(a, b, t)).ToList();
+                            join b in aggregates.Branches on a.branchId equals b.Id
+                            join t in aggregates.Towns on a.townId equals t.Id
+                            select TransformToCustomerList(a, b, t)).ToList();
 
                 return data;
             }
@@ -126,7 +137,28 @@ namespace CBS.BusinessService.CustomerManagement
                 throw;
             }
         }
-       
+
+        public async Task<IEnumerable<IndividualProfile>> GetIndividualProfileByBranch()
+        {
+            try
+            {
+                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(string.Format(APICallHelper.GetCustomersByBranchID, GetBranchID()));
+                var aggregates = await GetAggregates();
+
+                var data = (from a in individualProfiles.ApiResponseData.Data
+                            join b in aggregates.Branches on a.branchId equals b.Id
+                            join t in aggregates.Towns on a.townId equals t.Id
+                            select TransformToCustomerList(a, b, t)).ToList();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
         private async Task<AccountBalance> GetCustomerBalance(string customerID)
         {
             try
@@ -181,28 +213,77 @@ namespace CBS.BusinessService.CustomerManagement
                 organizationId = a.organizationId,
                 packageId = a.packageId,
                 fax = a.fax,
-                photoUrl = a.photoUrl, signatureUrl = a.signatureUrl, bankingRelationship = a.bankingRelationship, cardSignatureSpecimens = a.cardSignatureSpecimens, customerDocuments = a.customerDocuments,
-                
+                photoUrl = a.photoUrl,
+                signatureUrl = a.signatureUrl,
+                bankingRelationship = a.bankingRelationship,
+                cardSignatureSpecimens = a.cardSignatureSpecimens,
+                customerDocuments = a.customerDocuments,
                 pin = a.pin,
                 regionId = a.regionId,
                 subDivisionId = a.subDivisionId,
-                taxIdentificationNumber = a.taxIdentificationNumber, 
+                taxIdentificationNumber = a.taxIdentificationNumber,
+                bankCode = a.bankCode,
+                formalOrInformalSector = a.formalOrInformalSector,
+                isMemberOfACompany = a.isMemberOfACompany,
+                legalForm = a.legalForm,
+                membershipApprovalStatus = a.membershipApprovalStatus,
+                branchCode = a.branchCode,
+                customerCategory = a.customerCategory,
+                customerCategoryId = a.customerCategoryId,
+                customerPackageId = a.packageId,
+                employerAddress = a.employerAddress,
+                employerName = a.employerName,
+                employerTelephone = a.employerTelephone,
+                income = a.income,
+                workingStatus = a.workingStatus,
+                idNumberIssueAt = a.idNumberIssueAt,
+                idNumberIssueDate = a.idNumberIssueDate,
+                ImageNoVirtualPath = a.ImageNoVirtualPath,
+                ImageVirtualNoSignaturePath = a.ImageVirtualNoSignaturePath,
+                ImageVirtualPath = a.ImageVirtualPath,
+                ImageVirtualSignaturePath = a.ImageVirtualSignaturePath,
+                isMemberOfAGroup = a.isMemberOfAGroup,
+                language = a.language,
+                maritalStatus = a.maritalStatus,
+                occupation = a.occupation,
+                poBox = a.poBox,
+                membershipAllocatedNumber = a.membershipAllocatedNumber,
+                membershipApplicantDate = a.membershipApplicantDate,
+                membershipApplicantProposedByReferral1 = a.membershipApplicantProposedByReferral1,
+                membershipApplicantProposedByReferral2 = a.membershipApplicantProposedByReferral2,
+                membershipApprovalBy = a.membershipApprovalBy,
+                membershipApprovedDate = a.membershipApprovedDate,
+                membershipApprovedSignatureUrl = a.membershipApprovedSignatureUrl,
+                membershipNextOfKings = a.membershipNextOfKings,
+                mobileOrOnLineBankingLoginState = a.mobileOrOnLineBankingLoginState,
+                numberOfKids = a.numberOfKids,
+                placeOfBirth = a.placeOfBirth,
+                secretAnswer = a.secretAnswer,
+                secretQuestion = a.secretQuestion,
+                spouseAddress = a.spouseAddress,
+                spouseContactNumber = a.spouseContactNumber,
+                spouseName = a.spouseName,
+                spouseOccupation = a.spouseOccupation,
+
+
             };
         }
         public async Task<IndividualCustomerProfile> GetCustomer(string id, Aggregrate aggregrates)
         {
             try
             {
-              
+
                 var cusResponseObject = await GetSingleCustomer(id);
                 var accountBalance = await GetCustomerBalance(id);
                 var accounts = await GetCustomerAccounts(id);
                 var data = (from a in new List<IndividualProfile> { cusResponseObject }
-                    join b in aggregrates.Branches on a.branchId equals b.Id
-                    join t in aggregrates.Towns on a.townId equals t.Id
-                    select TransformToCustomerList(a, b, t)).ToList();
+                            join b in aggregrates.Branches on a.branchId equals b.Id
+                            join t in aggregrates.Towns on a.townId equals t.Id
+                            select TransformToCustomerList(a, b, t)).ToList();
                 var addaccount = new AddCustomerAccount { customerId = id };
-                var result = new IndividualCustomerProfile(data.First(), aggregrates, accountBalance, accounts, addaccount);
+                var nextOfKingsMember = new MembershipNextOfKingsMember { customerId = id };
+                var cardSignatureSpecimen = new CardSignatureSpecimen { customerId = id };
+                var result = new IndividualCustomerProfile(data.First(), aggregrates, accountBalance, accounts, addaccount,nextOfKingsMember,cardSignatureSpecimen);
                 result.SavingProducts = aggregrates.Savings;
                 return result;
             }
@@ -210,6 +291,25 @@ namespace CBS.BusinessService.CustomerManagement
             {
                 // Log and handle exception
                 throw ex;
+            }
+        }
+        public IEnumerable<StringValues> MembersAccounts(List<CustomerAccount> accounts)
+        {
+            try
+            {
+                var menuMasters = from a in accounts
+                                  select new StringValues
+                                  {
+                                      Value = a.accountNumber.ToString(),
+                                      Text = $"{a.accountNumber}-{a.accountName}"
+                                  };
+
+                return menuMasters;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
             }
         }
         public async Task<IEnumerable<SavingProduct>> GetSavingProducts()
@@ -240,19 +340,19 @@ namespace CBS.BusinessService.CustomerManagement
                 //{
                 //    return SessionHelper.Retrieve<Aggregrate>("aggregates");
                 //}
-                
+
                 var subscriptionAggregatesResponse = await _bankConfigApiHelper.GetAsync<ResponseObject<Aggregrate>>(APICallHelper.SubcriptionAggregates);
                 if (subscriptionAggregatesResponse.IsSuccess)
                 {
                     var aggregates = subscriptionAggregatesResponse?.ApiResponseData.Data ?? new Aggregrate();
                     var savingsResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<SavingProduct>>>(APICallHelper.GetSavingProducts);
-                    aggregates.Savings = savingsResponse?.ApiResponseData==null? new List<SavingProduct>(): savingsResponse.ApiResponseData.Data;
+                    aggregates.Savings = savingsResponse?.ApiResponseData == null ? new List<SavingProduct>() : savingsResponse.ApiResponseData.Data;
                     var customerDefaultEnum = await _customerApiHelper.GetAsync<ResponseObject<CustomerDefaultEnum>>(APICallHelper.GetCustomerDefaultEnums);
                     aggregates.CustomerDefaultEnum = customerDefaultEnum?.ApiResponseData == null ? new CustomerDefaultEnum() : customerDefaultEnum.ApiResponseData.Data;
                     return aggregates;
                 }
-                return new Aggregrate();    
-          
+                return new Aggregrate();
+
             }
             catch (Exception ex)
             {
@@ -265,7 +365,7 @@ namespace CBS.BusinessService.CustomerManagement
             try
             {
                 var cusResponseObject = await _customerApiHelper.GetAsync<ResponseObject<IndividualProfile>>(string.Format(APICallHelper.GetCustomerByID, id));
-                if (cusResponseObject.ApiResponseData!=null)
+                if (cusResponseObject.ApiResponseData != null)
                 {
                     return cusResponseObject.ApiResponseData.Data;
                 }
@@ -298,6 +398,7 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {
+                
 
                 model.bankId = GetBankID();
                 model.branchId = GetBranchID();
@@ -333,6 +434,7 @@ namespace CBS.BusinessService.CustomerManagement
                 customer.divisionId = objCustomerProfile.CustomerList.divisionId;
                 customer.subDivisionId = objCustomerProfile.CustomerList.subDivisionId;
                 customer.regionId = objCustomerProfile.CustomerList.regionId;
+                customer.townId = objCustomerProfile.CustomerList.townId;
                 customer.countryId = objCustomerProfile.CustomerList.countryId;
                 customer.dateOfBirth = objCustomerProfile.CustomerList.dateOfBirth;
                 customer.firstName = objCustomerProfile.CustomerList.firstName;
@@ -342,7 +444,9 @@ namespace CBS.BusinessService.CustomerManagement
                 customer.idNumber = objCustomerProfile.CustomerList.idNumber;
                 customer.email = objCustomerProfile.CustomerList.email;
                 customer.address = objCustomerProfile.CustomerList.address;
+                customer.bankName = GetBranchName();
                 customer.language = objCustomerProfile.CustomerList.language;
+                customer.VillageOfOrigin = objCustomerProfile.CustomerList.VillageOfOrigin;
                 customer.gender = objCustomerProfile.CustomerList.gender;
                 customer.phone = objCustomerProfile.CustomerList.phone;
                 customer.taxIdentificationNumber = objCustomerProfile.CustomerList.taxIdentificationNumber;
@@ -382,8 +486,10 @@ namespace CBS.BusinessService.CustomerManagement
                 customer.organizationId = objCustomerProfile.CustomerList.organizationId;
                 customer.branchId = objCustomerProfile.CustomerList.branchId;
                 customer.bankId = objCustomerProfile.CustomerList.bankId;
-                customer.bankCode = GetBankCode();
-                customer.branchCode = GetBranchCode();
+                customer.membershipApprovalStatus = objCustomerProfile.CustomerList.membershipApprovalStatus;
+                customer.legalForm = objCustomerProfile.CustomerList.legalForm;
+                customer.formalOrInformalSector = objCustomerProfile.CustomerList.formalOrInformalSector;
+                customer.bankingRelationship = objCustomerProfile.CustomerList.bankingRelationship;
                 var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.customerId), customer);
                 if (inResponse.IsSuccess)
                 {
@@ -407,12 +513,75 @@ namespace CBS.BusinessService.CustomerManagement
             }
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> UpdateMembershipstatus(IndividualCustomerProfile objCustomerProfile)
+        {
+            try
+            {
+                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.customerId);
+                customer.membershipApprovalStatus = objCustomerProfile.CustomerList.membershipApprovalStatus;
+                customer.membershipApprovalBy = GetUserFullName();
+                customer.membershipApprovedDate = DateTime.Now.ToString();
+                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.customerId), customer);
+                if (inResponse.IsSuccess)
+                {
+                    // Handle success scenario
+                    GetExecutionMessages(inResponse, true, $"{customer.firstName} {customer.lastName}", MessagesResults.Success,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                    return ExecutionMessage;
+
+                }
+                else
+                {
+                    // Handle failure scenario
+                    GetExecutionMessages(customer, false, customer.firstName, MessagesResults.Failed,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> UpdateLegalSector(IndividualCustomerProfile objCustomerProfile)
+        {
+            try
+            {
+                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.customerId);
+                customer.legalForm = objCustomerProfile.CustomerList.legalForm;
+                customer.formalOrInformalSector = objCustomerProfile.CustomerList.formalOrInformalSector;
+                customer.bankingRelationship = objCustomerProfile.CustomerList.bankingRelationship;
+                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.customerId), customer);
+                if (inResponse.IsSuccess)
+                {
+                    // Handle success scenario
+                    GetExecutionMessages(inResponse, true, $"{customer.firstName} {customer.lastName}", MessagesResults.Success,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                    return ExecutionMessage;
+
+                }
+                else
+                {
+                    // Handle failure scenario
+                    GetExecutionMessages(customer, false, customer.firstName, MessagesResults.Failed,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+            }
+            return ExecutionMessage;
+        }
+
         public async Task<ExecutionMessages> ActivateDeactivate(IndividualCustomerProfile objCustomerProfile)
         {
             try
             {//10005110050004
                 var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.customerId);
-                var activation=new CustomerActivation { activate= objCustomerProfile.CustomerList.active, customerId=objCustomerProfile.CustomerList.customerId };
+                var activation = new CustomerActivation { activate = objCustomerProfile.CustomerList.active, customerId = objCustomerProfile.CustomerList.customerId };
                 var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<bool>>(APICallHelper.ActivateOrDiactivateCustomer, activation);
                 if (inResponse.IsSuccess)
                 {
@@ -441,10 +610,14 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {
+                var tel = CleanTelephoneNumber(model.phone);
                 model.bankCode = GetBankCode();
                 model.branchCode = GetBranchCode();
                 model.branchId = GetBranchID();
                 model.bankId = GetBankID();
+                model.employerTelephone=tel;
+                model.bankName = GetBranchName();
+                model.membershipApplicantDate = DateTime.Now.ToString();
                 var response = await _customerApiHelper.PostAsync<ServiceResponse<IndividualProfile>>(APICallHelper.CreateIndividualProfile, model);
                 if (response.IsSuccess)
                 {
@@ -457,7 +630,7 @@ namespace CBS.BusinessService.CustomerManagement
                 {
                     // Failed creation
                     GetExecutionMessages(model, false, model.firstName, MessagesResults.Failed,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(),null,response.Message);
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
             catch (Exception ex)
@@ -468,6 +641,73 @@ namespace CBS.BusinessService.CustomerManagement
             }
             return ExecutionMessage;
         }
+
+        public async Task<ExecutionMessages> CreateMembershipNextOfKingsMember(MembershipNextOfKingsMember model)
+        {
+            try
+            {
+              
+                model.branchId = GetBranchID();
+                var response = await _customerApiHelper.PostAsync<ServiceResponse<MembershipNextOfKingsMember>>(APICallHelper.CreateMembershipNextOfKing, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{model.name}", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, null);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> CreateCardSignatureSpecimenDetail(CardSignatureSpecimen model)
+        {
+            try
+            {
+                var apiResponse = await _transactionApiHelper.GetAsync<ResponseObject<Account>>(string.Format(APICallHelper.GetAccountByAccountNumber, model.accountNumber));
+
+
+
+               model.branchMangerId= apiResponse.ApiResponseData.Data.createdBy;
+                model.cardSignatureSpecimenDetails.Add(model.cardSignatureSpecimenDetail);
+                model.branchId = GetBranchID();
+                var response = await _customerApiHelper.PostAsync<ServiceResponse<CardSignatureSpecimen>>(APICallHelper.CreateCardSignatureSpecimenDetails, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{model.cardSignatureSpecimenDetail.name}", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, null);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, model.cardSignatureSpecimenDetail.name, MessagesResults.Failed,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+
+
 
         public async Task<ExecutionMessages> ResetPin(IndividualCustomerProfile objCustomerProfile)
         {

@@ -1,0 +1,31 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.ChartOfAccount
+
+@{
+    ViewBag.Title = "ChartOfAccount";
+
+}
+<style>
+    .red-text {
+        color: red;
+    }
+</style>
+<div class="row">
+    <!-- Context Menu -->
+    <div class="col-12 card-body">
+        <div class="card col-12 alert alert-outline-danger">
+
+            You have requested to delete the account with the following details:
+            <br>
+            Number: @Model.AccountNumber <br>
+            Label: @Model.LabelEn
+            <br>
+            Please confirm that you would like to permanently delete this account and its associated data.
+            This action cannot be undone.
+
+            <div class="col-md-12 col-12">
+                <button onclick="DeleteData('AccountingChart', @Model.AccountNumber)" class="btn btn-danger waves-effect waves-light mdi-bag-checked">YES</button>
+            </div>
+
+        </div>
+    </div>
+</div>

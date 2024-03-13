@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CBS.BusinessService.Loan.Config
+namespace CBS.BusinessService.Config
 {
     public class PenaltyServices : BaseService
     {
@@ -31,15 +31,15 @@ namespace CBS.BusinessService.Loan.Config
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"{objPenalty.penaltyName}", MessagesResults.Success,
-                    ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
+                    GetExecutionMessages(inResponse, true, $"{objPenalty.PenaltyName}", MessagesResults.Success,
+                    ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objPenalty, false, $"{objPenalty.penaltyName}", MessagesResults.Failed,
+                    GetExecutionMessages(objPenalty, false, $"{objPenalty.PenaltyName}", MessagesResults.Failed,
                     ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -88,22 +88,19 @@ namespace CBS.BusinessService.Loan.Config
         {
             try
             {
-                model.bankId = GetBankID();
-                model.branchId = GetBranchID();
-                model.organizationId = GetOrganizationID();
                 // Make an API call to create an individual profile
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<Penalty>>(APICallHelper.CreatePenalty, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.penaltyName}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.Description}", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.penaltyName, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.Description, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -120,33 +117,33 @@ namespace CBS.BusinessService.Loan.Config
             try
             {
 
-                var Penalty = await GetPenalty(model.id);
+                var Penalty = await GetPenalty(model.Id);
                 if (Penalty != null)
                 {
-                    Penalty.penaltyName = model.penaltyName;
-                    Penalty.penaltyType = model.penaltyType;
-                    Penalty.description = model.description;
-                    Penalty.flateAmount = model.flateAmount;
-                    Penalty.isRate = model.isRate;
-                    Penalty.percentage = model.percentage;
-                    Penalty.daysToApplyPenalty = model.daysToApplyPenalty;
-                    Penalty.isEnabled = model.isEnabled;
-                    Penalty.accountingRuleId = model.accountingRuleId;
-                    Penalty.organizationId = model.organizationId;
-                    Penalty.bankId = model.bankId;
-                    Penalty.branchId = model.branchId;
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Penalty>>(string.Format(APICallHelper.Get_Update_Delete_Penalty, model.id), Penalty);
+                    Penalty.Id = model.Id;
+                    Penalty.IsRate = model.IsRate;
+                    Penalty.PenaltyName = model.PenaltyName;
+                    Penalty.LoanProductId = model.LoanProductId;
+                    Penalty.PenaltyType = model.PenaltyType;
+                    Penalty.PenaltyValue = model.PenaltyValue;
+                    Penalty.RecuringInterval = model.RecuringInterval;
+                    Penalty.RecurringPeriod = model.RecurringPeriod;
+                    Penalty.WaivePenaltyOnBranchHolidays = model.WaivePenaltyOnBranchHolidays;
+                    Penalty.CalculatePenaltyOn = model.CalculatePenaltyOn;
+                    Penalty.DaysToApplyPenalty = model.DaysToApplyPenalty;
+                    Penalty.Description = model.Description;
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Penalty>>(string.Format(APICallHelper.Get_Update_Delete_Penalty, model.Id), Penalty);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{model.penaltyName}", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"{model.PenaltyName}", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, model.penaltyName, MessagesResults.Failed,
+                        GetExecutionMessages(model, false, model.PenaltyName, MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }

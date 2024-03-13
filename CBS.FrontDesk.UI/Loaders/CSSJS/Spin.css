@@ -36,7 +36,13 @@
         opacity: 1;
     }
 }
+#loadingspinner::before {
+    border-top-color: #4CAF50; /* Green */
+}
 
+#loadingspinner {
+    color: #4CAF50; /* Green */
+}
 #loadingcontent span {
     animation: fadeIn 1s ease-in-out infinite;
 }

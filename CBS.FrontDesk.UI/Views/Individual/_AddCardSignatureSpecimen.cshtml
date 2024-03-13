@@ -1,0 +1,66 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+
+<div class="card-body">
+
+
+    @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+    {
+        <!-- Account Details -->
+        @Html.HiddenFor(model => model.CardSignatureSpecimen.customerId)
+        <input type="hidden" name="option" value="cardsignaturespecement" id="option" />
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.CardSignatureSpecimen.accountNumber, new SelectList(ViewBag.MemberAccounts, "Value", "Text"), "---Select account---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.accountNumber, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Select account</label>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.name, "", new { @class = "text-danger " })
+                <label>Member card signature name</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.identityCardNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.identityCardNumber, "", new { @class = "text-danger " })
+                <label>Member card number</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.issuedOn, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.issuedOn, "", new { @class = "text-danger " })
+                <label>Issued on</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.issuedAt, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.issuedAt, "", new { @class = "text-danger " })
+                <label>Place of issued</label>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextAreaFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.instruction, new { @class = "form-control", @style = "height: 75px;" })
+                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.instruction, "", new { @class = "text-danger " })
+                <label>Provide @Model.CustomerList.name specific instructions</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextAreaFor(m => m.CardSignatureSpecimen.iHererByTestifyforAllTheSignatures, new { @class = "form-control", @style = "height: 75px;" })
+                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.iHererByTestifyforAllTheSignatures, "", new { @class = "text-danger " })
+                <label>Words of afirmation</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Add card signature speciment</button>
+        </div>
+    }
+</div>

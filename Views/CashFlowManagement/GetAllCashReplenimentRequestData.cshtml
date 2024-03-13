@@ -1,0 +1,106 @@
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.Accounting.CashReplenimentRequest>
+@{
+    ViewBag.Title = "Approve-Cash Replenishment";
+
+}
+<div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+    <div class="accordion-item active">
+        <h2 class="accordion-header text-body d-flex justify-content-between"
+            id="accordionPopoutIconThree">
+            <button type="button"
+                    class="accordion-button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordionPopoutIcon-3"
+                    aria-expanded="true"
+                    aria-controls="accordionPopoutIcon-3">
+                <i class="mdi mdi-bank-plus me-2"></i>
+                PROVISION BANK TO VAULT
+            </button>
+        </h2>
+        <div id="accordionPopoutIcon-3"
+             class="accordion-collapse collapse show"
+             data-bs-parent="#accordionPopoutIcon">
+            <div class="accordion-body">
+                <div id="mainviewChange">
+                    <div class="change-group">
+                        <h2>List of Cash Replenishments</h2>
+
+                        <table class="table table-hover" id="ListOfCashReplenishmentData">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ReferenceId</th>
+                                    <th>Amount</th>
+                                    <th>RequestMessage</th>
+                                    <th>IssuedBy</th>
+                                    <th>IssuedDate</th>
+                                  
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ReferenceId)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.AmountRequested)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.RequestMessage)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.IssuedBy)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.IssuedDate)
+                                        </td>
+
+
+                                        @if (item.IsApproved)
+                                        {
+                                            <td class="badge bg-label-success rounded-pill text-uppercase">   Approved  </td>
+                                        }
+                                        else
+                                        {
+                                            if (item.Status.ToUpper() == "PENDING")
+                                            {
+                                                <td>
+                                                    @Html.ActionLink("GetAllCashReplenimentRequestData", "CashFlowManagement", new { @class = "badge bg-label-primary rounded-pill text-uppercase" })
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                             
+                                                   <td class="badge bg-label-danger rounded-pill text-uppercase"> Rejected </td>
+                                              
+                                            }
+
+
+                                        }
+
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/Js/main.js/CashFlowManagement.js"></script>
+}
+
+

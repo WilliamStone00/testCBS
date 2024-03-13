@@ -7,10 +7,14 @@ using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using System.Collections.Generic;
+using CBS.FrontDesk.Data.UserManagement;
+using System.Web;
+using System.Linq;
 
 namespace CBS.BusinessService.Accounts
 {
-    public class PrimaryTellerEndOfDayServices:BaseService
+    public class PrimaryTellerEndOfDayServices : BaseService
     {
         private readonly ApiCallerHelper _transactionApiHelper;
         public PrimaryTellerEndOfDayServices()
@@ -43,7 +47,7 @@ namespace CBS.BusinessService.Accounts
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<SubTellerProvioningHistory>>(APICallHelper.PrimaryTellerEndOfDay, model);
                     if (response.IsSuccess)
                     {
-                        
+
                         GetExecutionMessages(response, true, $"{model.cashAtHand}", MessagesResults.Success,
                             ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
@@ -72,6 +76,180 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-      
+        public async Task<ExecutionMessages> EndTheDayAccountant(EndOfDayAccountantCommand model)
+        {
+            try
+            {
+             
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<SubTellerProvioningHistory>>(APICallHelper.PrimaryTellerEndOfDay, model);
+                    if (response.IsSuccess)
+                    {
+
+                        GetExecutionMessages(response, true, $"{model.amountRecieved}", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(model, false, $"{model.amountRecieved}", MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+               
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> EndTheDaySubTellerVerification(EndOfDayBySubTellerIDCommand model)
+        {
+            try
+            {
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<SubTellerProvioningHistory>>(APICallHelper.EndOfDaySubTellerBYPrimaryTeller, model);
+                if (response.IsSuccess)
+                {
+
+                    GetExecutionMessages(response, true, $"{model.primaryTellerConfirmationStatus}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"{model.primaryTellerConfirmationStatus}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<IEnumerable<PrimaryTellerProvisioningDto>> GetPrimaryTellerHistories()
+        {
+            try
+            {
+                var apiUrl = HttpContext.Current.User.IsInRole("Administrator") ? APICallHelper.GetAllPrimaryTellerProvisioningHistoryQuery : string.Format(APICallHelper.GetPrimaryTellerProvisioningHistoryByUserIncharge, GetUserID());
+
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<PrimaryTellerProvisioningDto>>>(apiUrl);
+
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                else
+                {
+                    return Enumerable.Empty<PrimaryTellerProvisioningDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        public async Task<IEnumerable<PrimaryTellerProvisioningDto>> GetPrimaryTellerHistoriesByBranchID()
+        {
+            try
+            {
+                var apiUrl = string.Format(APICallHelper.GetPrimaryTellerProvisioningHistoryByBranchIDQuery, GetBranchID());
+
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<PrimaryTellerProvisioningDto>>>(apiUrl);
+
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                else
+                {
+                    return Enumerable.Empty<PrimaryTellerProvisioningDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<EndOfTheDay> GetDailyOperationToClose(string id)
+        {
+            try
+            {
+                var apiUrl = string.Format(APICallHelper.GetSubTellerProvioningHistoryQuery, id);
+
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<SubTellerProvisioningDto>>(apiUrl);
+
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse != null)
+                    {
+                        var data = new EndOfTheDay
+                        {
+                            EndOfDayBySubTellerIDCommand = new EndOfDayBySubTellerIDCommand
+                            {
+                                subTellerProvioningHistoryID = couApiResponse.ApiResponseData.Data.id,
+                                comment = couApiResponse.ApiResponseData.Data.primaryTellerComment,
+                                primaryTellerConfirmationStatus = couApiResponse.ApiResponseData.Data.primaryTellerConfirmationStatus
+                            },
+                            SubTellerProvioningHistory = couApiResponse.ApiResponseData.Data,
+                            TransactionHistories = couApiResponse.ApiResponseData.Data.teller.Transactions,
+                        };
+                        return data;
+                    }
+                }
+                return new EndOfTheDay();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<EndOfTheDay> GetDailyOperation(string id)
+        {
+            try
+            {
+                var apiUrl = string.Format(APICallHelper.GetPrimaryTellerProvisioningHistoryQuery, id);
+
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<PrimaryTellerProvisioningDto>>(apiUrl);
+
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse != null)
+                    {
+                        var data = new EndOfTheDay
+                        {
+                            EndOfDayPrimaryTellerCommand = new EndOfDayPrimaryTellerCommand
+                            {
+                                primaryTellerProvioningHistoryID = couApiResponse.ApiResponseData.Data.id,
+                            },
+                            EndOfDayAccountantCommand = new EndOfDayAccountantCommand
+                            {
+                                primaryTellerProvioningHistoryID = couApiResponse.ApiResponseData.Data.id,
+                            },
+                            PrimaryTellerProvisioningHistory = couApiResponse.ApiResponseData.Data,
+                            TransactionHistories = couApiResponse.ApiResponseData.Data.teller.Transactions,
+                        };
+                        return data;
+                    }
+                }
+                return new EndOfTheDay();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
     }
 }

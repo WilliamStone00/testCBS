@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CBS.BusinessService.Loan.Application
+namespace CBS.BusinessService.Application
 {
     public class LoanApplicationServices : BaseService
     {
@@ -67,6 +67,23 @@ namespace CBS.BusinessService.Loan.Application
                 throw;
             }
         }
+        public async Task<IEnumerable<LoanApplication>> GetLoanApplicationByCustomerID(string customerId)
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanApplication>>>(string.Format(APICallHelper.GetAllLoanApplicationByCustomerId,customerId));
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<LoanApplication>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<LoanApplication> GetLoanApplication(string id)
         {
             try
@@ -90,9 +107,9 @@ namespace CBS.BusinessService.Loan.Application
             {
 
                 // Make an API call to create an individual profile
-                model.bankId = GetBankID();
-                model.branchId = GetBranchID();
-                model.organizationId = GetOrganizationID();
+                model.BankId = GetBankID();
+                model.BranchId = GetBranchID();
+                model.OrganizationId = GetOrganizationID();
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<LoanApplication>>(APICallHelper.CreateLoanApplication, model);
                 if (response.IsSuccess)
                 {
@@ -116,45 +133,22 @@ namespace CBS.BusinessService.Loan.Application
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> Update(LoanApplication model)
+        public async Task<ExecutionMessages> ValidaLoanApplication(LoanApplication model)
         {
             try
             {
 
-                var LoanApplication = await GetLoanApplication(model.id);
+                var LoanApplication = await GetLoanApplication(model.Id.ToString());
                 if (LoanApplication != null)
                 {
-                    LoanApplication.loanProductId = model.loanProductId;
-                    LoanApplication.amount = model.amount;
-                    LoanApplication.interestRate = model.interestRate;
-                    LoanApplication.disbursementFee = model.disbursementFee;
-                    LoanApplication.followupFee = model.followupFee;
-                    LoanApplication.organizationId = model.organizationId;
-                    LoanApplication.bankId = model.bankId;
-                    LoanApplication.firstPreferenceDisburseDate = model.firstPreferenceDisburseDate;
-                    LoanApplication.installmentTypeId = model.installmentTypeId;
-                    LoanApplication.creditLineId = model.creditLineId;
-                    LoanApplication.customerId = model.customerId;
-                    LoanApplication.borrowerDescription = model.borrowerDescription;
-                    LoanApplication.economicActivityId = model.economicActivityId;
-                    LoanApplication.accountNumber = model.accountNumber; 
-                    LoanApplication.gracePeriod = model.gracePeriod;
-                    LoanApplication.gracePeriodAmount = model.gracePeriodAmount;
-                    LoanApplication.insuranceFund = model.insuranceFund;
-                    LoanApplication.isGuarantee = model.isGuarantee;
-                    LoanApplication.loanPurposeId = model.loanPurposeId;
-                    LoanApplication.scoreRiskAmount = model.scoreRiskAmount;
-                    LoanApplication.scoringAmount = model.scoringAmount;
-                    LoanApplication.approvalStatus = model.approvalStatus;
-                    LoanApplication.isApproved = model.isApproved;
-                    LoanApplication.isDisbursed = model.isDisbursed;
                     
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanApplication>>(string.Format(APICallHelper.Get_Update_Delete_LoanApplication, model.id), LoanApplication);
+                    
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanApplication>>(string.Format(APICallHelper.ValidateLoanApplicationStatus, model.Id), LoanApplication);
                     if (response.IsSuccess)
                     {
                         // Successful creation
                         GetExecutionMessages(response, true, $"Loan application", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(),null, response.Message);
                         return ExecutionMessage;
                     }
                     else

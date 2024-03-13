@@ -46,6 +46,8 @@ namespace CBS.FrontDesk.Data.Entity.Config
         public List<StringValues> membershipApprovalStatuses { get; set; }
         public List<StringValues> languages { get; set; }
         public List<StringValues> customerCategories { get; set; }
+        public List<StringValues> relationships { get; set; }
+        //
         //
     }
 

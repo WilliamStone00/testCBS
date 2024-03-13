@@ -15,6 +15,10 @@ namespace CBS.FrontDesk.Data.Entity
         public AddCustomerAccount AddCustomerAccount { get; set; }
         public Aggregrate Aggregrate { get; set; }
         public AccountBalance AccountBalance { get; set; }
+        public MembershipNextOfKingsMember MembershipNextOfKingsMember { get; set; }
+        public List<MembershipNextOfKingsMember> MembershipNextOfKingsMembers { get; set; }
+        public List<CardSignatureSpecimen> CardSignatureSpecimens { get; set; }
+        public CardSignatureSpecimen CardSignatureSpecimen { get; set; }
         public List<CustomerAccount> CustomerAccounts { get; set; }
         public List<SavingProduct> SavingProducts { get; set; }=new List<SavingProduct>();
         public CustomerDocumentRequest CustomerDocumentRequest { get; set; } = new CustomerDocumentRequest();
@@ -24,13 +28,21 @@ namespace CBS.FrontDesk.Data.Entity
         {
             
         }
-        public IndividualCustomerProfile(IndividualProfile customer, Aggregrate aggregrate, AccountBalance accountBalance, List<CustomerAccount> customerAccounts, AddCustomerAccount addCustomerAccount)
+        public IndividualCustomerProfile(IndividualProfile customer, Aggregrate aggregrate, AccountBalance accountBalance, List<CustomerAccount> customerAccounts, AddCustomerAccount addCustomerAccount, MembershipNextOfKingsMember membershipNextOfKingsMember, CardSignatureSpecimen cardSignatureSpecimen)
         {
             CustomerList = customer;
             Aggregrate = aggregrate;
             AccountBalance = accountBalance;
             CustomerAccounts = customerAccounts;
             AddCustomerAccount = addCustomerAccount;
+            MembershipNextOfKingsMember = membershipNextOfKingsMember;
+            CardSignatureSpecimen = cardSignatureSpecimen;
+        }
+
+        public IndividualCustomerProfile(MembershipNextOfKingsMember membershipNextOfKingsMember, CardSignatureSpecimen cardSignatureSpecimen)
+        {
+            MembershipNextOfKingsMember = membershipNextOfKingsMember;
+            CardSignatureSpecimen = cardSignatureSpecimen;
         }
     }
     

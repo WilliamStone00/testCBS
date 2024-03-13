@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
@@ -11,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CBS.BusinessService.Loan.Config
+namespace CBS.BusinessService.Config
 {
     public class LoanPurposeServices : BaseService
     {
@@ -67,6 +68,30 @@ namespace CBS.BusinessService.Loan.Config
                 throw;
             }
         }
+        public async Task<List<StringValues>> GetAllLoanPurpose()
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanPurpose>>>(APICallHelper.GetAllLoanPurpose);
+                if (couApiResponse != null)
+                {
+                    var values = couApiResponse.ApiResponseData.Data.Select(a => new StringValues
+                    {
+                        Text = $"{a.purposeName}",
+                        Value = a.id
+                    }).ToList();
+                    return values;
+                }
+                return new List<StringValues>();
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
         public async Task<LoanPurpose> GetLoanPurpose(string id)
         {
             try

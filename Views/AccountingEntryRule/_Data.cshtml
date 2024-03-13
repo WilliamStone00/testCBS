@@ -1,0 +1,34 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.Accounting.AccountingRuleEntryDto>
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>AccountingEntry</th>
+            <th>BookingDirection</th>
+            <th>DebitAccount</th>
+            <th>CreditAccount</th>
+            <th>EventAttributeName</th>
+            <th>EventName</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{ 
+            foreach (var d in Model)
+            {
+            <tr>
+                <td style="width:10%">@d.AccountingRuleEntryName</td>
+                <td style="width:10%">@d.BookingDirection</td>
+                <td style="width:20%">@d.DebitAccountLabel</td>
+                <td style="width:20%">@d.CreditAccountLabel</td>
+                <td style="width:10%">@d.OperationEventAttributeName</td>
+                <td style="width:10%">@d.OperationEventName</td>
+                <td style="width:20%">
+                    <a href="#" onclick="AddORUpdateGen('@d.Id'','datalistingview','_Update','update','AccountingEntryRule')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.OperationEventName to edit">Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.OperationEventName" onclick="DeleteRecordDataTable('AccountingEntryRule','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                </td>
+            </tr>
+                }
+            }
+    </tbody>
+</table>
+

@@ -1,0 +1,23 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+
+<div class="col-md-12">
+    <div class="form-floating form-floating-outline">
+        @Html.DropDownListFor(m => m.Refund.PaymentMode, new SelectList(ViewBag.PaymentModes, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+        @Html.ValidationMessageFor(m => m.Refund.PaymentMode, "", new { @class = "text-danger " })
+        <label>Select repayment mode</label>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="form-floating form-floating-outline">
+        @Html.TextBoxFor(m => m.Refund.Paid, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Refund.Paid, "", new { @class = "text-danger" })
+        <label>Repayment amount</label>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="form-floating form-floating-outline">
+        @Html.TextBoxFor(m => m.Refund.DateOfPayment, new { @class = "form-control date-picker" })
+        @Html.ValidationMessageFor(m => m.Refund.DateOfPayment, "", new { @class = "text-danger" })
+        <label>Repayment amount</label>
+    </div>
+</div>

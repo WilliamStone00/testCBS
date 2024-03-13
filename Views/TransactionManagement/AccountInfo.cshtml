@@ -1,0 +1,46 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@{
+    ViewBag.Title = "Account Info";
+}
+
+<h5 class="py-3 mb-4"><span class="text-muted fw-light">@Model.Customer.firstName @Model.Customer.lastName /@Model.customerId</span>: Account Info</h5>
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body d-sm-flex d-block">
+            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                <a href="/TransactionManagement/SavingAccounts" class="footer-link me-4">Back to list</a>
+                <a href="/TransactionManagement/AccountInfo?KEY=@Model.accountNumber" class="footer-link me-4">Refresh</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <!-- User Sidebar -->
+    <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
+
+        @Html.Partial("_CustomerCard")
+
+    </div>
+    <!--/ User Sidebar -->
+    <!-- User Content -->
+    <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+        <!-- User Tabs -->
+        @Html.Partial("_Tabs")
+       
+        <div class="col-12">
+            <div id="mainview">
+                @Html.Partial("_AccountInfo")
+            </div>
+          
+        </div>
+
+    </div>
+    <!--/ User Content -->
+</div>
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+    <script src="~/Scripts/Js/Crud/TransactionManagement/AccountDetails.js"></script>
+}

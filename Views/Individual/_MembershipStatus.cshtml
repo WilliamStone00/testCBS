@@ -1,0 +1,23 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+
+<div class="card-body">
+
+
+    @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+    {
+        <!-- Account Details -->
+        @Html.HiddenFor(model => model.CustomerList.customerId)
+        <input type="hidden" name="option" value="membershipstatus" />
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.CustomerList.membershipApprovalStatus, new SelectList(ViewBag.membershipApprovalStatuses, "Text", "Value"), "---Select membership status---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.CustomerList.membershipApprovalStatus, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Membership status</label>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    }
+</div>

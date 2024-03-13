@@ -1,0 +1,63 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+<div class="table-responsive mb-3">
+    <table class="table table-hover" id="myDataTable">
+        <thead class="table-light">
+            <tr>
+                <th style="width: 3%">SN</th>
+                <th style="width: 7%">Date</th>
+                <th style="width: 10%">Description</th>
+                <th style="width: 8%">Principal</th>
+                <th style="width: 8%">Interest</th>
+                <th style="width: 7%">Fees</th>
+                <th style="width: 7%">Penalty</th>
+                <th style="width: 7%">Due</th>
+                <th style="width: 7%">Paid</th>
+                <th style="width: 7%">Pending Due</th>
+                <th style="width: 7%">Total Due</th>
+                <th style="width: 7%">Principal Due</th>
+                <th style="width: 7%">Principal Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- First Additional Row -->
+            <tr>
+                <td colspan="1"></td>
+                <td style="width: 12%">Principal: @Model.Loan.Principal.ToString("#,0.00")</td>
+            </tr>
+            <!-- Second Additional Row -->
+            <tr>
+                <td colspan="2"></td>
+                <td style="width: 20%">@DateTime.Now</td>
+                <td style="width: 20%">Today</td>
+            </tr>
+            @foreach (var d in Model.LoanAmortizations.OrderBy(app => app.Sno))
+            {
+                <tr>
+                    <td style="width: 3%">@d.Sno</td>
+                    <td style="width: 7%">@d.NextPaymentDate.ToShortDateString()</td>
+                    <td style="width: 10%">@d.Description</td>
+                    <td style="width: 8%">@d.Principal.ToString("#,0.00")</td>
+                    <td style="width: 8%">@d.Interest.ToString("#,0.00")</td>
+                    <td style="width: 7%">@d.Fee.ToString("#,0.00")</td>
+                    <td style="width: 7%">@d.Penalty.ToString("#,0.00")</td>
+                    <td style="width: 7%">@d.Due.ToString("#,0.00")</td>
+                    <td style="width: 7%">@d.Paid.ToString("#,0.00")</td>
+                    <td style="width: 7%">@d.PendingDue.ToString("#,0.00")</td>
+                    <td style="width: 7%">@d.TotalDue.ToString("#,0.00")</td>
+                    <td style="width: 7%">@d.PrincipalDue.ToString("#,0.00")</td>
+                    <td style="width: 7%">@d.PrincipalBalance.ToString("#,0.00")</td>
+                </tr>
+            }
+        </tbody>
+        <!-- Footer -->
+        <tfoot>
+            <tr>
+                <td colspan="8"></td>
+                <td style="width: 12%">Total Due: @Model.LoanAmortizations.Sum(x=>x.Due).ToString("#,0.00")</td>
+                <td style="width: 12%">Total Paid: @Model.LoanAmortizations.Sum(x => x.Paid).ToString("#,0.00")</td>
+                <td style="width: 12%">Total Pending Due: @Model.LoanAmortizations.Sum(x => x.PendingDue).ToString("#,0.00")</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+

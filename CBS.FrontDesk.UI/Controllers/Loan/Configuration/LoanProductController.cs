@@ -7,26 +7,29 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using CBS.BusinessService.Loan.Config;
+
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Config;
 
-namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
+namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
     public class LoanProductController : BaseController
     {
         // GET: LoanProduct
         private readonly LoanProductServices _LoanProductServices;
-        private readonly AccountingServices _accountingServices;
-        public LoanProductController(LoanProductServices LoanProductServices, AccountingServices accountingServices)
+        private readonly PenaltyServices _PenaltyServices;
+        private readonly ChartOfAccountServicesAnnex _accountingServices;
+        public LoanProductController(LoanProductServices LoanProductServices, ChartOfAccountServicesAnnex accountingServices, PenaltyServices penaltyServices)
         {
             _LoanProductServices = LoanProductServices;
             _accountingServices = accountingServices;
+            _PenaltyServices = penaltyServices;
         }
         public async Task<ActionResult> Index()
         {
             await GetValues();
-            return View();
+            return View(new LoanProduct());
         }
         [HttpPost]
         public async Task<ActionResult> Create(LoanProduct model)
@@ -36,19 +39,37 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
                 var data = await _LoanProductServices.Create(model);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
             }
+            else
+            {
+                var errorMessages = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Where(e => e.ErrorMessage != null)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
 
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
+                // Convert the list of error messages to a single string with each message on a new line
+                string errorMessage = string.Join("\n", errorMessages);
+
+                // Pass the error message as the message
+                return Json(new { success = false, status = false, message = errorMessage });
+            }
         }
         [HttpPost]
         public async Task<ActionResult> Update(LoanProduct model)
         {
-            if (ModelState.IsValid)
+            if (model.ServiceOption=="set_penalty")
+            {
+                var data = await _PenaltyServices.Create(model.Penalty);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else
             {
                 var data = await _LoanProductServices.Update(model);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
             }
 
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
         }
         
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path=null)
@@ -56,9 +77,11 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
         
             if (path=="list")
             {
+
                 var data = await _LoanProductServices.GetLoanProducts();
                 return PartialView(partialView, data);
             }
+
             else if (path == "new")
             {
                 await GetValues();
@@ -66,27 +89,48 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
             }
             else
             {
-                await GetValues();
-                var LoanProduct = await _LoanProductServices.GetLoanProduct(KEY);
-                return PartialView(partialView, LoanProduct);
+                if (path=="set_penalty")
+                {
+                    await GetValues();
+                    var penalty = await _PenaltyServices.GetPenalty(KEY);
+                    return PartialView(partialView, penalty.LoanProduct);
+                }
+                else
+                {
+                    await GetValues();
+                    var LoanProduct = await _LoanProductServices.GetLoanProduct(KEY);
+                    LoanProduct.Penalty.LoanProductId = LoanProduct.Id;
+                    return PartialView(partialView, LoanProduct);
+                }
+             
             }
         }
 
         public async Task<bool> GetValues()
         {
             var agreggates= await _LoanProductServices.GetAgreggates();
-
+            var productEnumAgregates = await _LoanProductServices.GetLoanProductEnumAggregates();
+            var chartOfAccounts = await _accountingServices.GetChartOfAccounts();
             ViewBag.SheduleTypes = _LoanProductServices.GetScheduleTypes();
             ViewBag.Penalties = agreggates.Penalties;
             ViewBag.Fees = agreggates.Fees;
-            ViewBag.Currencies = await _LoanProductServices.GetCurrencies();
-            ViewBag.CustomerProfiles = _LoanProductServices.GetCustomerProfile();
             ViewBag.DocumentPackes = agreggates.DocumentPackes;
             ViewBag.GuranteePackes = agreggates.GuranteePackes;
             ViewBag.Taxes = agreggates.Taxes;
             ViewBag.FundingLines = agreggates.FundingLines;
             ViewBag.InstallmentTypes = agreggates.InstallmentTypes;
-            ViewBag.AccountingRules = await _accountingServices.GetAccountingRoles();
+            ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
+            ViewBag.ChartOfAccounts = chartOfAccounts;
+            ViewBag.RepaymentCycles = productEnumAgregates.RepaymentCycles;
+            ViewBag.LoanInterestMethods = productEnumAgregates.LoanInterestMethods;
+            ViewBag.LoanStatuses = productEnumAgregates.LoanStatuses;
+            ViewBag.LoanInterestTypes = productEnumAgregates.LoanInterestTypes;
+            ViewBag.LoanInterestPeriods = productEnumAgregates.LoanInterestPeriods;
+            ViewBag.LoanDurationPeriods = productEnumAgregates.LoanDurationPeriods;
+            ViewBag.RefundOrders = productEnumAgregates.RefundOrders;
+            ViewBag.PenaltyTypes = productEnumAgregates.PenaltyTypes;
+            ViewBag.YesOrNo = productEnumAgregates.YesOrNo;
+            //YesOrNo
             return true;
         }
 

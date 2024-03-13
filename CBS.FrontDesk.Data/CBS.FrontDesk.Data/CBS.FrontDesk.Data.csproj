@@ -112,7 +112,6 @@
     <Compile Include="Entity\LoanConf\Guaranty.cs" />
     <Compile Include="Entity\LoanConf\GurantiPack.cs" />
     <Compile Include="Entity\LoanConf\InstallmentType.cs" />
-    <Compile Include="Entity\LoanConf\Loan.cs" />
     <Compile Include="Entity\LoanConf\LoanApplication.cs" />
     <Compile Include="Entity\LoanConf\LoanCollatera.cs" />
     <Compile Include="Entity\LoanConf\LoanCommentry.cs" />
@@ -127,6 +126,7 @@
     <Compile Include="Entity\LoanConf\RescheduleLoan.cs" />
     <Compile Include="Entity\LoanConf\Tax.cs" />
     <Compile Include="Entity\LoanConf\WriteOffLoan.cs" />
+    <Compile Include="Entity\MemberOperation\MemberOperationPanel.cs" />
     <Compile Include="Entity\Menu\MenuMaster.cs" />
     <Compile Include="Entity\RoleManagement\Role.cs" />
     <Compile Include="Entity\SavingProducts\AccountOperation\AccountTransfer.cs" />

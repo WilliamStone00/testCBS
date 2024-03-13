@@ -34,7 +34,7 @@ function LoadAccounts() {
             {
                 "data": "accountNumber", "orderable": "false", "render": function (data) {
                     //return "<a href='/Operation/AccountDetails?KEY=" + data + "'target='_blanck'" + data + " detail'> Detail</a>";
-                    return "<a href='/Operation/AccountDetails?KEY=" + data + "' target='_blank'>Detail</a>";
+                    return "<a href='/Operation/AccountDetails?KEY=" + data + "' target='_blank'>Operations</a>";
 
                 }
             }

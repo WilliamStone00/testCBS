@@ -125,6 +125,8 @@
     <Compile Include="Authentication\AuthenticationServices.cs" />
     <Compile Include="Config\Localization\CountryServices.cs" />
     <Compile Include="Loan\Application\LoanApplicationServices.cs" />
+    <Compile Include="Loan\Application\LoanAmortizationServices.cs" />
+    <Compile Include="Loan\Application\LoanServices.cs" />
     <Compile Include="Loan\Config\DocumentServices.cs" />
     <Compile Include="Loan\Config\DocumentPackServices.cs" />
     <Compile Include="Loan\Config\LoanCollateralServices.cs" />

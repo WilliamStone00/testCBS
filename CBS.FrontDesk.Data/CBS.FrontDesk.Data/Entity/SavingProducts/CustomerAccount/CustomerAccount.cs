@@ -15,6 +15,7 @@ namespace CBS.FrontDesk.Data.Entity
     {
         public string id { get; set; }
         public string accountNumber { get; set; }
+        public string accountName { get; set; }
         public string balance { get; set; }
         public string previousBalance { get; set; }
         public string status { get; set; }

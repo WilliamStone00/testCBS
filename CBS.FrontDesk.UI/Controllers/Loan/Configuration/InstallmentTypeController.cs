@@ -7,10 +7,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using CBS.BusinessService.Loan.Config;
-using CBS.FrontDesk.Data.Entity.LoanConf;
 
-namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
+using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.BusinessService.Config;
+
+namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
     public class InstallmentTypeController : BaseController
     {

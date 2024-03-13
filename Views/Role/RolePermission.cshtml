@@ -1,0 +1,117 @@
+﻿
+
+@{
+    ViewBag.Title = "Role Permissions";
+}
+<style>
+    .caret {
+        cursor: pointer;
+        user-select: none;
+        padding: 0 4px;
+    }
+
+        .caret::before {
+            content: "\25B6"; /* Right-pointing triangle */
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+    .caret-down::before {
+        transform: rotate(90deg);
+    }
+
+    .nested {
+        display: none;
+    }
+
+    .active {
+        display: block;
+    }
+</style>
+
+<div class="row justify-content-end">
+    <div class="demo-inline-spacing text-end">
+        <a type="button" onclick="LoadDataGen('Role','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+            <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+        </a>
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','Role')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+            <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+        </a>
+    </div>
+</div>
+<br />
+<div class="card">
+    <div class="card-body">
+        <div id="datalistingview">
+            @Html.Partial("_SetRolePermission")
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $("#selectAllPermissions").change(function () {
+                var isChecked = $(this).is(":checked");
+                $(".row-checkbox").prop("checked", isChecked);
+            });
+
+            $(".row-checkbox").change(function () {
+                var allRows = $(".row-checkbox").length;
+                var checkedRows = $(".row-checkbox:checked").length;
+
+                if (allRows === checkedRows) {
+                    $("#selectAllPermissions").prop("checked", true);
+                } else {
+                    $("#selectAllPermissions").prop("checked", false);
+                }
+            });
+        });
+    </script>
+    <script>
+        // Toggle nested list items (expand/collapse)
+        var toggler = document.getElementsByClassName("caret");
+        var i;
+
+        for (i = 0; i < toggler.length; i++) {
+            toggler[i].addEventListener("click", function () {
+                this.parentElement.querySelector(".nested").classList.toggle("active");
+                this.classList.toggle("caret-down");
+            });
+        }
+        // Toggle all checkboxes on Select/Unselect All click
+        document.getElementById("selectAllPermissions").addEventListener("change", function () {
+            var checkboxes = document.getElementsByClassName("permissionCheckbox");
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = this.checked;
+                expandParents(checkboxes[i]);
+            }
+        });
+
+        // Function to expand all parent nodes when a checkbox is checked
+        function expandParents(element) {
+            var parent = element.parentNode.parentNode; // Get the parent <li> of the checkbox
+
+            while (parent && parent.nodeName === "LI") {
+                var caret = parent.querySelector(".caret");
+                var nested = parent.querySelector(".nested");
+
+                if (caret && nested) {
+                    caret.classList.add("caret-down");
+                    nested.classList.add("active");
+                }
+
+                parent = parent.parentNode.parentNode; // Move to the next parent node
+            }
+        }
+        
+    </script>
+}
+
+

@@ -28,22 +28,25 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
     public class Penalty
     {
-        public string id { get; set; }
+        public string Id { get; set; }
+        public string LoanProductId { get; set; }
         [Required]
-        public string penaltyType { get; set; }
+        public string PenaltyType { get; set; }//Late_Repayment_Penalty Or Penalty_After_Maturity_Date
+        public string Description { get; set; }
         [Required]
-        public string penaltyName { get; set; }
+        public string PenaltyName { get; set; }
         [Required]
-        public string description { get; set; }
-        public double flateAmount { get; set; }
-        public bool isRate { get; set; }
-        public double percentage { get; set; }
-        public int daysToApplyPenalty { get; set; }
-        public bool isEnabled { get; set; }
-        public string accountingRuleId { get; set; }
-        public string organizationId { get; set; }
-        public string bankId { get; set; }
-        public string branchId { get; set; }
+        public decimal PenaltyValue { get; set; }
+        public bool IsRate { get; set; }
+        public bool IsEnabled { get; set; }
+        [Required]
+        public string CalculatePenaltyOn { get; set; }//Overdue_Principal_Amount,Overdue_Interest_Amount,Overdue_Principal_Plus_Interest_Plus_Amount,
+        public bool WaivePenaltyOnBranchHolidays { get; set; }
+        public int GracePeriodInDaysBeforeApplyingPenalty { get; set; }
+        public string RecuringInterval { get; set; }// Every 1 to 365 Days
+        public string RecurringPeriod { get; set; }//Days, Months, Years, Weeks
+        public int DaysToApplyPenalty { get; set; }
+        public LoanProduct LoanProduct { get; set; }
     }
 
     //Entry fees

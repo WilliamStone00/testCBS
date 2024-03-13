@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CBS.BusinessService.Loan.Config
+namespace CBS.BusinessService.Config
 {
     public class TaxServices : BaseService
     {
@@ -32,7 +32,7 @@ namespace CBS.BusinessService.Loan.Config
                 {
 
                     GetExecutionMessages(inResponse, true, $"{objTax.name}", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }
@@ -124,8 +124,6 @@ namespace CBS.BusinessService.Loan.Config
                     Tax.name = model.name;
                     Tax.description = model.description;
                     Tax.value = model.value;
-                    Tax.periodicity = model.periodicity;
-                    Tax.isMandatory = model.isMandatory;
                     var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Tax>>(string.Format(APICallHelper.Get_Update_Delete_Tax, model.id), Tax);
                     if (response.IsSuccess)
                     {

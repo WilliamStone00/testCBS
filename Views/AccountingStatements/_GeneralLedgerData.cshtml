@@ -1,0 +1,41 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.Accounting.AccountingEntryDto>
+<div class="table-responsive mb-3">
+    <table class="table table-hover" id="myDataTable">
+        <thead class="table-light">
+            <tr>
+                <th>Date</th>
+                <th>Reference</th>
+                <th>AccountNumber</th>
+                <th>AccountName</th>
+                <th>Description</th>
+                <th>Debit</th>
+                <th>Credit</th>
+                <th>Debit Balance</th>
+                <th>Credit Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+
+             
+                    foreach (var transaction in Model)
+                    {
+                        <tr>
+                           
+                                <td>@transaction.EntryDate</td>
+                                <td>@transaction.TransactionReference</td>
+                            <td>@transaction.AccountNumber</td>
+                            <td>@transaction.AccountName</td>
+                            <td>@transaction.Description</td>
+                            <td>@transaction.DebitAmount</td>
+                            <td>@transaction.CreditAmount</td>
+                            <td>@transaction.DebitAccountBalance</td>
+                            <td>@transaction.CreditAccountBalance</td>
+                        </tr>
+                    }
+                }
+            
+        </tbody>
+    </table>
+</div>
+

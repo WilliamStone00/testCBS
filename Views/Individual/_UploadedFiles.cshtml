@@ -1,0 +1,38 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+
+
+
+<div class="col-12 col-lg-6 mb-4 mb-xl-0">
+    <div class="demo-inline-spacing mt-3">
+        <div class="list-group">
+            @foreach (var file in Model.CustomerList.customerDocuments)
+            {
+                <div class="list-group-item list-group-item-action d-flex align-items-center cursor-pointer">
+                    <div class="w-100">
+                        <div class="d-flex justify-content-between">
+                            <div class="user-info">
+                                <h6 class="mb-1">@file.documentName</h6>
+                                <div class="file-actions">
+                                    <a href="#" onclick="confirmDelete(@file.documentId)" class="file-action-link delete">Delete</a>
+                                    <a href="@($"{file.baseUrl}/{file.urlPath}")" target="_blank" class="file-action-link read">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function confirmDelete(fileId) {
+        if (confirm("Are you sure you want to delete this file?")) {
+            // Call your delete function or API endpoint here
+            // Example: window.location.href = "/File/Delete/" + fileId;
+        }
+    }
+</script>
+

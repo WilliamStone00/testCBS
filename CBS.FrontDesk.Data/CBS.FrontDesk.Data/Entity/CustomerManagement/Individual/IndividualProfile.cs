@@ -10,6 +10,7 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
 
     public class IndividualProfile
     {
+        public string bankName { get; set; }
         [Required]
         public string firstName { get; set; }
         [Required]
@@ -19,6 +20,8 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string gender { get; set; }
         [Required]
         public string email { get; set; }
+        [Required]
+        public string VillageOfOrigin { get; set; }
         [Required]
         public string phone { get; set; }
         [Required]
@@ -35,13 +38,13 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string packageId { get; set; }
         [Required]
         public string divisionId { get; set; }
-        [Required]
+ 
         public string branchId { get; set; }
         [Required]
         public string economicActivitiesId { get; set; }
-        [Required]
+
         public string bankId { get; set; }
-        [Required]
+  
         public string organizationId { get; set; }
         [Required]
         public string subDivisionId { get; set; }
@@ -60,10 +63,12 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string occupation { get; set; }
         public string idNumberIssueDate { get; set; }
         public string idNumberIssueAt { get; set; }
+        [Required]
         public string membershipApprovalStatus { get; set; }
         public string poBox { get; set; }
         public string fax { get; set; }
         public string customerPackageId { get; set; }
+        [Required]
         public string language { get; set; }
         public bool active { get; set; }
         public string secretQuestion { get; set; }
@@ -78,6 +83,7 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string spouseOccupation { get; set; }
         public string spouseContactNumber { get; set; }
         public double income { get; set; }
+        [Required]
         public string customerCategoryId { get; set; }
         public string workingStatus { get; set; }
         public string activeStatus { get; set; }
@@ -105,10 +111,10 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string mobileOrOnLineBankingLoginState { get; set; }
 
         public string signatureUrl { get; set; }
-
         public List<CustomerDocument> customerDocuments { get; set; }=new List<CustomerDocument>();
-        public List<MembershipNextOfKing> membershipNextOfKings { get; set; }=new List<MembershipNextOfKing>();
+        public List<MembershipNextOfKingsMember> membershipNextOfKings { get; set; }=new List<MembershipNextOfKingsMember>();
         public List<CardSignatureSpecimen> cardSignatureSpecimens { get; set; } = new List<CardSignatureSpecimen>();
+        public List<CardSignatureSpecimenDetail> cardSignatureSpecimenDetails { get; set; } = new List<CardSignatureSpecimenDetail>();
         public CustomerCategory customerCategory { get; set; }=new CustomerCategory();
         public IndividualProfile()
         {
@@ -116,22 +122,6 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
             ImageVirtualSignaturePath = "~/AppFiles/Images/s.jpg";
             ImageNoVirtualPath = "~/AppFiles/Images/noimage.jpg";
             ImageVirtualNoSignaturePath = "~/AppFiles/Images/no signature.png";
-        }
-        public class CardSignatureSpecimen
-        {
-            public DateTime createdDate { get; set; }
-            public string createdBy { get; set; }
-            public DateTime modifiedDate { get; set; }
-            public string modifiedBy { get; set; }
-            public DateTime deletedDate { get; set; }
-            public string deletedBy { get; set; }
-            public int objectState { get; set; }
-            public bool isDeleted { get; set; }
-            public string cardSignatureSpecimenId { get; set; }
-            public string name { get; set; }
-            public string customerId { get; set; }
-            public string issuedAt { get; set; }
-            public string issuedOn { get; set; }
         }
 
         public class CustomerCategory
@@ -162,43 +152,6 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
           
         }
 
-        public class MembershipNextOfKing
-        {
-            public DateTime createdDate { get; set; }
-            public string createdBy { get; set; }
-            public DateTime modifiedDate { get; set; }
-            public string modifiedBy { get; set; }
-            public DateTime deletedDate { get; set; }
-            public string deletedBy { get; set; }
-            public int objectState { get; set; }
-            public bool isDeleted { get; set; }
-            public string membershipNextOfKingId { get; set; }
-            public string name { get; set; }
-            public string customerId { get; set; }
-            public string relation { get; set; }
-            public string ratio { get; set; }
-            public string signatureUrl { get; set; }
-            public string photoUrl { get; set; }
-            public List<MembershipNextOfKingMember> membershipNextOfKingMembers { get; set; }
-        }
-
-        public class MembershipNextOfKingMember
-        {
-            public DateTime createdDate { get; set; }
-            public string createdBy { get; set; }
-            public DateTime modifiedDate { get; set; }
-            public string modifiedBy { get; set; }
-            public DateTime deletedDate { get; set; }
-            public string deletedBy { get; set; }
-            public int objectState { get; set; }
-            public bool isDeleted { get; set; }
-            public string membershipNextOfKingMembersId { get; set; }
-            public string name { get; set; }
-            public string membershipNextOfKingId { get; set; }
-            public string relation { get; set; }
-            public string ratio { get; set; }
-            public string signatureUrl { get; set; }
-        }
 
       
 

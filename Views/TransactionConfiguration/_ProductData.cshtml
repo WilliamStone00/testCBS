@@ -1,0 +1,26 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+<table class="table table-hover" id="myDataTable_product">
+    <thead class="table-light">
+        <tr>
+            <th>Name</th>
+            <th>Entry-Clossing Fee</th>
+            <th>Min-Max Amount</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.SavingProducts)
+        {
+            <tr>
+                <td style="width:35%">@d.name</td>
+                <td style="width:20%">@d.postingFrequency</td>
+                <td style="width:25%">@d.minAmount-@d.maxAmount</td>
+                <td style="width:20%">
+                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview_product','_ProductConfig','get','TransactionConfiguration','savingproduct')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable_product','_ProductData',0,'datalistingview_product')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

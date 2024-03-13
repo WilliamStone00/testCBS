@@ -1,0 +1,13 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.DocumentAttachedToLoan
+
+@using (Html.BeginForm("UploadFiles", "AttachedLoanDocuments", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.LoanApplicationID)
+
+    <label for="fileUpload">Select files:</label>
+    <input type="file" id="fileUpload" name="AttachedFiles" multiple />
+    <br />
+
+    <input type="submit" value="Upload" />
+}
+

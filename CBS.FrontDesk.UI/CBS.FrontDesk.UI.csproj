@@ -46,9 +46,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine">
+      <HintPath>..\..\..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource">
+      <HintPath>..\..\..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared">
+      <HintPath>..\..\..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -253,6 +259,7 @@
     <Compile Include="Controllers\Loan\Configuration\PeriodController.cs" />
     <Compile Include="Controllers\Loan\Configuration\DocumentController.cs" />
     <Compile Include="Controllers\Loan\Configuration\TaxController.cs" />
+    <Compile Include="Controllers\MemberOperation\MemberOperationController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
     <Compile Include="Controllers\RoleManagement\MenuMasterController.cs" />
     <Compile Include="Controllers\RoleManagement\RoleController.cs" />
@@ -294,10 +301,16 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppFiles\Images\Icon PNG.png" />
+    <Content Include="AppFiles\Images\Icon.ico" />
+    <Content Include="AppFiles\Images\images.jpeg" />
+    <Content Include="AppFiles\Images\Logog.png" />
     <Content Include="AppFiles\Images\no signature.png" />
     <Content Include="AppFiles\Images\noimage.jpg" />
     <Content Include="AppFiles\Images\p.jpg" />
     <Content Include="AppFiles\Images\s.jpg" />
+    <Content Include="AppFiles\Images\TrusBank_LoginBG.png" />
+    <Content Include="AppFiles\Images\TrustBankTitle.png" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\alertify.js" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\alertify.min.js" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\css\alertify.css" />
@@ -2022,6 +2035,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
+    <None Include="Properties\PublishProfiles\Default Settings1.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -2037,6 +2051,12 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\Customers.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\LoanApplication.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\MyCustomers.js" />
+    <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\MyCustomers.js" />
+    <Content Include="Scripts\Js\Crud\EOD\EOD.js" />
+    <Content Include="Scripts\Js\Crud\Penalty\Penalty.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />
     <Content Include="Scripts\Js\Crud\Config\Localization\Countries.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\CustomersProfile.js" />
@@ -2170,7 +2190,6 @@
     <Content Include="Views\FundingLine\_Update.cshtml" />
     <Content Include="Views\FundingLine\_Data.cshtml" />
     <Content Include="Views\FundingLine\_Create.cshtml" />
-    <Content Include="Views\Penalty\_Create.cshtml" />
     <Content Include="Views\Penalty\_Data.cshtml" />
     <Content Include="Views\Penalty\_Update.cshtml" />
     <Content Include="Views\Penalty\Index.cshtml" />
@@ -2326,14 +2345,38 @@
     <Content Include="Views\TellerCashDemand\GetCashReplenimentRequest.cshtml" />
     <Content Include="Views\TellerCashDemand\Successfull_RequestApproval_View.cshtml" />
     <Content Include="Views\TellerCashDemand\Failed_RequestApproval_View.cshtml" />
-    <Content Include="Views\TellerCashDemand\GetAllCashReplenimentRequestData.cshtml" />
-    <Content Include="Views\TellerCashDemand\CreateCashReplenishmentRequest.cshtml" />
-    <Content Include="Views\BankingOperations\GetTransactionReversalRequest.cshtml" />
-    <Content Include="Views\BankingOperations\Successfull_Request_View.cshtml" />
-    <Content Include="Views\BankingOperations\Successfull_RequestApproval_View.cshtml" />
-    <Content Include="Views\BankingOperations\Failed_RequestApproval_View.cshtml" />
-    <Content Include="Views\BankingOperations\Failed_Request_View.cshtml" />
-    <Content Include="Views\BankingOperations\GetAllTransasctionReversalRequest.cshtml" />
+
+    <Content Include="Views\Individual\_MembershipStatus.cshtml" />
+    <Content Include="Views\Individual\_LegalSector.cshtml" />
+    <Content Include="Views\Individual\_AddMembershipNextOfKingsMember.cshtml" />
+    <Content Include="Views\Individual\_AddCardSignatureSpecimen.cshtml" />
+    <Content Include="Views\Individual\_AddMembershipNextOfKingsMemberData.cshtml" />
+    <Content Include="Views\Individual\_AddCardSignatureSpecimenData.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_SubTellerProvisioningDetails.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_PrimaryTellerViewOfSubTellerStatus.cshtml" />
+    <Content Include="Views\EndOfDayOperation\SubtellerVerification.cshtml" />
+    <Content Include="Views\EndOfDayOperation\Accountant.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_Accountant.cshtml" />
+    <Content Include="Views\Individual\MyMembers.cshtml" />
+    <Content Include="Views\TellerManagement\Index.cshtml" />
+    <Content Include="Views\TellerManagement\_PrimaryTeller.cshtml" />
+    <Content Include="Views\TellerManagement\_PrimaryTellerData.cshtml" />
+    <Content Include="Views\MemberOperation\_MembersData.cshtml" />
+    <Content Include="Views\MemberOperation\OperationPanel.cshtml" />
+    <Content Include="Views\MemberOperation\Members.cshtml" />
+    <Content Include="Views\MemberOperation\MyMembers.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanApplication.cshtml" />
+    <Content Include="Views\MemberOperation\_MemberLoanApplicationData.cshtml" />
+    <Content Include="Views\MemberOperation\_MemberLoanApplicationDetail.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanData.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanDetails.cshtml" />
+    <Content Include="Views\MemberOperation\_RefundForm.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanScheduleData.cshtml" />
+    <Content Include="Views\MemberOperation\_SelectedLoanData.cshtml" />
+    <Content Include="Views\MemberOperation\LoanApplicationValidation.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanApplicationValidationData.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanApplicationValidation.cshtml" />
+    <Content Include="Views\LoanProduct\_SetPenalty.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

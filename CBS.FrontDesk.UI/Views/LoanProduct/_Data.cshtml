@@ -1,27 +1,49 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.LoanProduct>
-<table class="table table-hover" id="myDataTable">
-    <thead class="table-light">
-        <tr>
-            <th>Name</th>
-            <th>Schedule type</th>
-            <th>Interest Rate</th>
-            <th>Amount Range</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var d in Model)
-        {
-            <tr>
-                <td style="width:10%">@d.productName</td>
-                <td style="width:60%">@d.scheduleTypeId</td>
-                <td style="width:60%">@d.interestRateMin-@d.interestRateMax</td>
-                <td style="width:60%">@d.loanAmountMin-@d.loanAmountMax</td>
-                <td style="width:20%">
-                    <a href="#" onclick="AddORUpdateGen(@d.loanProductId,'datalistingview','_Update','update','LoanProduct')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.productName to edit">Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.productName" onclick="DeleteRecordDataTable('LoanProduct','@d.loanProductId','myDataTable','_Data',0,'datalistingview')">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
+@if (Model != null && Model.Any())
+{
+    <div class="table-responsive mb-3">
+        <table class="table table-hover" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Range</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr>
+                        <td style="width:8%">@d.ProductCode</td>
+                        <td style="width:32%">@d.ProductName</td>
+                        <td style="width:20%">@d.LoanMinimumAmount.ToString("0#,00.0")-@d.LoanMaximumAmount.ToString("0#,00.0")</td>
+                        <td style="width:10%">
+                            @if (d.ActiveStatus)
+                            {
+                                <span class="badge bg-info">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning">Inactive</span>
+                            }
+                        </td>
+                        <td style="width:30%">
+                            <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview','_Update','update','LoanProduct')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.ProductName to edit">Edit</a> |
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.ProductName" onclick="DeleteRecordDataTable('LoanProduct','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>|
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Set fee for ">Add fee</a>|
+                            <a href="#" class="mr-2" onclick="AddORUpdateGen('@d.Id','datalistingview','_SetPenalty','update','LoanProduct')" data-toggle="tooltip" data-placement="top" title="Set penalty for @d.ProductName">Set penalty</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        No loan products are available at the moment.
+    </div>
+}

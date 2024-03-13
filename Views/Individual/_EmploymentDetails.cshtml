@@ -1,0 +1,51 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+
+<div class="card-body">
+
+
+    @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+    {
+        <!-- Account Details -->
+        @Html.HiddenFor(model => model.CustomerList.customerId)
+        <input type="hidden" name="option" value="employmentdetail" id="option" />
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.CustomerList.workingStatus, new SelectList(ViewBag.workingStatuses, "Text", "Value"), "---Select Work Status---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.CustomerList.workingStatus, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Work status</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.employerName, new { @class = "form-control", @placeholder = "Employeer name" })
+                @Html.ValidationMessageFor(m => m.CustomerList.employerName, "", new { @class = "text-danger" })
+                <label>Employeer name</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.employerTelephone, new { @class = "form-control", @placeholder = "Employeer telephone" })
+                @Html.ValidationMessageFor(m => m.CustomerList.employerTelephone, "", new { @class = "text-danger" })
+                <label>Employeer telephone</label>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.employerAddress, new { @class = "form-control", @placeholder = "Employeer address" })
+                @Html.ValidationMessageFor(m => m.CustomerList.employerAddress, "", new { @class = "text-danger" })
+                <label>Employeer address</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.income, new { @class = "form-control", @placeholder = "Income" })
+                @Html.ValidationMessageFor(m => m.CustomerList.income, "", new { @class = "text-danger" })
+                <label>Salary or income</label>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    }
+</div>

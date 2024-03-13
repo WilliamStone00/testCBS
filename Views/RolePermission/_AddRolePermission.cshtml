@@ -1,0 +1,31 @@
+﻿@model CBS.FrontDesk.Data.Entity.PermissionMenuLoaderDto
+
+
+<form id="menuForm">
+    <div class="table-responsive">
+        <table class="table table-hover" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th>MenuText</th>
+                    <th>Group</th>
+                    <th>Description</th>
+                    <th> <label><input type="checkbox" id="selectAll"></label></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model.PermissionMenuLoaders)
+                {
+                    <tr>
+                        <td style="width:20%">@d.MenuText</td>
+                        <td style="width:12%">@d.MenuGroup</td>
+                        <td style="width:53%">@d.Description</td>
+                        <td style="width:10%">
+                            <input type="checkbox" name="selectedMenus" value="@d.MenuMasterId" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+

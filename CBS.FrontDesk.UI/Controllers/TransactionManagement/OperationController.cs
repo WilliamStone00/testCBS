@@ -19,7 +19,7 @@ namespace CBS.FrontDesk.UI.Controllers
 {
     public class OperationController : BaseController
     {
-        // GET: Operation
+        // GET: Operation/Transfer
         private readonly AccountServices _acountServices;
         private readonly TellerProvissioningServices _services;
         public OperationController(AccountServices acountServices, TellerProvissioningServices services = null)
@@ -115,6 +115,19 @@ namespace CBS.FrontDesk.UI.Controllers
                 this.HttpContext.Session["rptpath"] = $"~/{reportpath}/" + ReportName + ".rpt";
                 this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
 
+            }
+            else if (path== "customer_account_transaction")
+            {
+                var transactionHistories = await _acountServices.GetCustomerTransactionsByAccountNumber(KEY);
+                this.HttpContext.Session["rptSource"] = _acountServices.GetTransactionHistoryExports(transactionHistories);
+                if (!transactionHistories.Any())
+                {
+                    this.HttpContext.Session["rptSource"] = "empty";
+                }
+                this.HttpContext.Session["rptType"] = rptType;
+                this.HttpContext.Session["ReportName"] = $"{ReportName}.rpt";
+                this.HttpContext.Session["rptpath"] = $"~/{reportpath}/" + ReportName + ".rpt";
+                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
             }
             else if (path == "by_date_history")
             {

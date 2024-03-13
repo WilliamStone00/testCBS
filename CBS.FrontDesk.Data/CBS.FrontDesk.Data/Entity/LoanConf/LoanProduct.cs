@@ -1,64 +1,277 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.LoanConf
 {
- 
+
 
     public class LoanProduct
     {
-        public string loanProductId { get; set; }
-        public string productCode { get; set; }
-        public string productName { get; set; }
-        public string installmentTypeId { get; set; }
-        public string fundingLineId { get; set; }
-        public string taxId { get; set; }
-        public string guaranteePackId { get; set; }
-        public string documentPackId { get; set; }
-        public string scheduleTypeId { get; set; }
-        public int numberOfInstallmentMin { get; set; }
-        public int numberOfInstallmentMax { get; set; }
-        public string currencyId { get; set; }
-        public int numberOfGracePeriodMin { get; set; }
-        public int numberOfGracePeriodMax { get; set; }
-        public double gracePeriodPercentageMin { get; set; }
-        public double gracePeriodPercentageMax { get; set; }
-        public double loanAmountMin { get; set; }
-        public double loanAmountMax { get; set; }
-        public string isRate { get; set; }
-        public double interestRateMin { get; set; }
-        public double interestRateMax { get; set; }
-        public double minPercentageGuarantee { get; set; }
-        public double minPercentageCollateral { get; set; }
-        public double creditInsuranceMin { get; set; }
-        public double creditInsuranceMax { get; set; }
-        public double feeOlbMin { get; set; }
-        public double feeOlbMax { get; set; }
-        public string feeOlbAccountingRuleId { get; set; }
-        public double feeOverduePrincipalMin { get; set; }
-        public double feeOverduePrincipalMax { get; set; }
-        public string feeOverduePrincipalAccountingRuleId { get; set; }
-        public double feeOverdueInterestMax { get; set; }
-        public double feeOverdueInterestMin { get; set; }
-        public string feeOverdueInterestAccountingRuleId { get; set; }
-        public bool activeStatus { get; set; }
-        public bool hasTopUp { get; set; }
-        public double topUpAmountMax { get; set; }
-        public double topUpAmountMin { get; set; }
-        public string topUpAmountAccountingRuleId { get; set; }
-        public string isRearlyPartialRepaymentFeeType { get; set; }
-        public double earlyPartialRepaymentFeeRate { get; set; }
-        public string earlyPartialRepaymentFeeAccountingRuleId { get; set; }
-        public double earlyTotalRepaymentFeeRate { get; set; }
-        public string earlyTotalRepaymentFeeRateType { get; set; }
-        public string earlyTotalRepaymentFeeRateAccountingRuleId { get; set; }
-        public List<string> penaltyIds { get; set; }
-        public List<string> fees { get; set; }
-        public List<string> customerProfiles { get; set; }
-        public List<string> accountingRuleIds { get; set; }
+        public string Id { get; set; }
+
+        [Required]
+        public string ProductCode { get; set; }
+
+        [Required]
+        public string ProductName { get; set; }
+
+        [Required]
+        public string LoanInterestMethod { get; set; } //Flat Rate, Reducing Balance - Equal Installments, Reducing Balance - Equal Principal, Interest-Only, Compound Interest
+
+        [Required]
+        public string LoanInterestPeriod { get; set; } //Per Day, Per Week, Per Month, Per Year
+
+        [Required]
+        public string LoanInterestType { get; set; } //Rate Or Flate
+
+        [Required]
+        public double MinimumInterestRate { get; set; }
+
+        [Required]
+        public double MaximumInterestRate { get; set; }
+
+        [Required]
+        public double DefaultInterestRate { get; set; }
+
+        [Required]
+        public string LoanDurationPeriod { get; set; } //Days, Weeks, Months, Years
+
+        [Required]
+        public int MinimumDurationPeriod { get; set; }
+
+        [Required]
+        public int MaximumDurationPeriod { get; set; }
+
+        [Required]
+        public bool RequiresGuarantor { get; set; }
+
+
+        public List<string> RepaymentCycles { get; set; }
+
+        public List<string> RefundOrders { get; set; }
+
+        [Required]
+        public int DefaultDurationsPeriod { get; set; }
+
+        [Required]
+        public int MinimumNumberOfRepayment { get; set; }
+
+        [Required]
+        public int MaximumNumberOfRepayment { get; set; }
+
+        [Required]
+        public int DefaultNumberOfRepayment { get; set; }
+
+        public string TaxId { get; set; }
+        public decimal LoanMinimumAmount { get; set; }
+
+        public decimal LoanMaximumAmount { get; set; }
+
+        public decimal DefaultLoanAmount { get; set; }
+
+        public double MinimumCollateralPercentage { get; set; }
+
+        public double MaximumCollateralPercentage { get; set; }
+
+        public double DefaultCollateralPercentage { get; set; }
+
+        public double MinimumCreditInsurancePercentage { get; set; }
+
+        public double MaximumCreditInsurancePercentage { get; set; }
+
+        public double DefaultCreditInsurancePercentage { get; set; }
+
+        public bool ActiveStatus { get; set; }
+
+        public bool HasTopUp { get; set; }
+
+        public decimal MaxTopUpLoanAmount { get; set; }
+
+        public decimal MinTopUpLoanAmount { get; set; }
+
+        public decimal TopUpAmount { get; set; }
+
+        public bool IsEarlyPartialRepaymentFeeRate { get; set; }
+
+        public double EarlyPartialRepaymentFee { get; set; }
+        public decimal MinimumProcessingFeeRate { get; set; }
+        public decimal MaximumProcessingFeeRate { get; set; }
+        public decimal DefaultProcessingFeeRate { get; set; }
+
+        public double EarlyTotalRepaymentFee { get; set; }
+
+        public bool IsEarlyTotalRepaymentFeeRate { get; set; }
+
+        public double FirstRepaymentAmount { get; set; }
+
+        public bool CalculateInterestOnEachRepaymentOnProRatabase { get; set; }
+
+        public string HowShoudInterestBeCahrgedInLoanSchedule { get; set; }
+
+        public string HowShoudPrincipalBeCahrgedInLoanSchedule { get; set; }
+
+        public string LoanScheduleDescription { get; set; }
+
+        public string ChartOfAccountIdForPrincipalAmount { get; set; }
+
+        public string ChartOfAccountIdForAccrualInterest { get; set; }
+
+        public string ChartOfAccountIdForPenalty { get; set; }
+
+        public string ChartOfAccountIdForFee { get; set; }
+
+        public string ChartOfAccountIdForTax { get; set; }
+
+        public string ChartOfAccountIdForWriteOffPotfolio { get; set; }
+
+        public string ChartOfAccountIdForInterestIncome { get; set; }
+
+        public string ChartOfAccountIdForWriteOffInterest { get; set; }
+
+        public string ChartOfAccountIdForLoanLossReserve { get; set; }
+
+        public string ChartOfAccountIdForProvisionOnPrincipal { get; set; }
+
+        public string ChartOfAccountIdForProvisionReversalOnPrincipal { get; set; }
+
+        public string ChartOfAccountIdForLoanLossReserveInterest { get; set; }
+
+        public string ChartOfAccountIdForProvisionOnInterest { get; set; }
+
+        public string ChartOfAccountIdForProvisionReversalOnInterest { get; set; }
+
+        public string ChartOfAccountIdForLoanLossReservePenalties { get; set; }
+
+        public string ChartOfAccountIdForProvisionOnLateFees { get; set; }
+
+        public string ChartOfAccountIdForProvisionReversalOnLateFees { get; set; }
+        public Penalty Penalty { get; set; }
+        public string ChartOfAccountIdForEarlyPartialRepaymentFeeIncome { get; set; }
+
+        public string ChartOfAccountIdForEarlyTotalRepaymentFeeIncome { get; set; }
+
+        public Tax Tax { get; set; }
+
+        public List<LoanProductFee> LoanProductFeeJoins { get; set; }
+
+        public List<Penalty> Penalties { get; set; }
+
+        public List<LoanProductRepaymentCycle> LoanProductRepaymentCycles { get; set; } //Daily, Weekly, Biweekly, Monthly, Bimonthly, Quarterly, Every 4 Months, Semi-Annual, Every 9 Months, Yearly, Lump-Sum
+
+        public List<LoanProductRepaymentOrder> LoanProductRepaymentOrders { get; set; }
+
+        public List<LoanApplication> LoanApplications { get; set; }
+
+        public List<LoanProductCollateral> LoanProductCollaterals { get; set; }
+
+        public List<LoanProductMaturityPeriodExtension> LoanProductMaturityPeriodExtensions { get; set; }
+        public string ServiceOption { get; set; }
+        public LoanProduct()
+        {
+            MinimumInterestRate = 0;
+            MaximumInterestRate = 0;
+            DefaultInterestRate = 0;
+            MinimumDurationPeriod = 0;
+            MaximumDurationPeriod = 0;
+            DefaultDurationsPeriod = 0;
+            MinimumNumberOfRepayment = 0;
+            MaximumNumberOfRepayment = 0;
+            DefaultNumberOfRepayment = 0;
+          
+            LoanMinimumAmount = 0;
+            LoanMaximumAmount = 0;
+            MinimumProcessingFeeRate=0;
+            DefaultProcessingFeeRate = 0;
+            MaximumProcessingFeeRate = 0;
+            DefaultLoanAmount = 0;
+            FirstRepaymentAmount = 0;
+            MinimumCollateralPercentage = 0;
+            MaximumCollateralPercentage = 0;
+            DefaultCollateralPercentage = 0;
+            MinimumCreditInsurancePercentage = 0;
+            MaximumCreditInsurancePercentage = 0;
+            DefaultCreditInsurancePercentage = 0;
+            MaxTopUpLoanAmount = 0;
+            MinTopUpLoanAmount = 0;
+            TopUpAmount = 0;
+            EarlyPartialRepaymentFee = 0;
+            EarlyTotalRepaymentFee = 0;
+            RepaymentCycles = new List<string>();
+            RefundOrders = new List<string>();
+            Penalty = new Penalty();
+            LoanProductFeeJoins = new List<LoanProductFee>();
+            Penalties = new List<Penalty>();
+            LoanProductRepaymentCycles = new List<LoanProductRepaymentCycle>();
+            LoanProductRepaymentOrders = new List<LoanProductRepaymentOrder>();
+            LoanApplications = new List<LoanApplication>();
+            LoanProductCollaterals = new List<LoanProductCollateral>();
+            LoanProductMaturityPeriodExtensions = new List<LoanProductMaturityPeriodExtension>();
+        }
+    }
+
+    public class LoanProductMaturityPeriodExtension
+    {
+        public string Id { get; set; }
+        public bool ExternLoanAfterMaturityPeriod { get; set; }
+        public string MaturityPeriodLoanInterestType { get; set; }
+        public string CalculateInterestOn { get; set; }
+        public double InterestRate { get; set; }
+        public string LoanProductId { get; set; }
+        public int RecurringPeriod { get; set; }
+        public string RecurringPeriodType { get; set; }
+        public bool IncludePenalTyFee { get; set; }
+        public bool KeepLoanStatusAsPAssedMaturityEvenAfterLoanIsExterneded { get; set; }
+        public virtual LoanProduct LoanProduct { get; set; }
+    }
+
+    public class LoanProductCollateral
+    {
+
+        public string Id { get; set; }
+        public string CollateralId { get; set; }
+        public string LoanProductId { get; set; }
+        public double Value { get; set; }
+        public virtual Collateral Collateral { get; set; }
+        public virtual LoanProduct LoanProduct { get; set; }
+    }
+    public class LoanProductRepaymentOrder
+    {
+        public string Id { get; set; }
+        public int RepaymentOrder { get; set; }
+        public string RepaymentReceive { get; set; }
+        public string LoanProductId { get; set; }
+        public virtual LoanProduct LoanProduct { get; set; }
+
+    }
+    public class LoanProductRepaymentCycle
+    {
+        public string Id { get; set; }
+        public string RepaymentCycle { get; set; }
+        public string LoanProductId { get; set; }
+        public virtual LoanProduct LoanProduct { get; set; }
+
+    }
+    public class LoanProductPenalty
+    {
+        public string Id { get; set; }
+        public string LoanProductId { get; set; }
+        public string PenaltyId { get; set; }
+        public double PenaltyAmount { get; set; }
+        public virtual LoanProduct LoanProduct { get; set; }
+        public virtual Penalty Penalty { get; set; }
+    }
+    public class LoanProductFee
+    {
+        public string Id { get; set; }
+        public string LoanProductId { get; set; }
+        public string FeeId { get; set; }
+        public double FeeAmount { get; set; }
+        public virtual LoanProduct LoanProduct { get; set; }
+        public virtual Fee Fee { get; set; }
     }
 
     public class LoanProductConfigurationAgregates
@@ -72,6 +285,26 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public List<InstallmentType> InstallmentTypes { get; set; }= new List<InstallmentType>();
         public List<OtherFee> OtherFees { get; set; } = new List<OtherFee>();
         
+    }
+    public class LoanProductEnumAgregates
+    {
+        public List<StringValues> LoanInterestMethods { get; set; } = new List<StringValues>();
+        public List<StringValues> LoanInterestPeriods { get; set; } = new List<StringValues>();
+        public List<StringValues> LoanInterestTypes { get; set; } = new List<StringValues>();
+        public List<StringValues> LoanDurationPeriods { get; set; } = new List<StringValues>();
+        public List<StringValues> CalculateInterestOn { get; set; } = new List<StringValues>();
+        public List<StringValues> RepaymentCycles { get; set; } = new List<StringValues>();
+        public List<StringValues> LoanStatuses { get; set; } = new List<StringValues>();
+        public List<StringValues> RefundOrders { get; set; } = new List<StringValues>();
+        public List<StringValues> LoanPurposes { get; set; } = new List<StringValues>();
+        public List<StringValues> LoanTypes { get; set; } = new List<StringValues>();
+        public List<StringValues> PaymentModes { get; set; } = new List<StringValues>();
+        public List<StringValues> LoanApplicationStatus { get; set; } = new List<StringValues>();
+        public List<StringValues> PenaltyTypes { get; set; } = new List<StringValues>();
+        public List<StringValues> YesOrNo { get; set; } = new List<StringValues>();
+
+        //YesOrNo
+        //ApprovalStatus
     }
 
 }

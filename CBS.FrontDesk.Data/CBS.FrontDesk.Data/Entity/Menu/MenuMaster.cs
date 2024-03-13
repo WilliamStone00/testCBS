@@ -28,13 +28,18 @@ namespace CBS.FrontDesk.Data.Entity
         [Required]
 
         public string Description { get; set; }
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; set; } = true;
         public string Action { get; set; }
         public string ServiceOption { get; set; }
+        public MenuMaster()
+        {
+            IsVisible = true;
+        }
     }
 
     public class DatabaseMenus
     {
+
         public int MenuMasterId { get; set; }
         public Guid UserID { get; set; }
         public Guid RoleID { get; set; }

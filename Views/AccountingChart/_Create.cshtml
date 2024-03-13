@@ -1,0 +1,63 @@
+﻿ 
+@model CBS.FrontDesk.Data.Entity.Accounting.ChartOfAccount
+ 
+<div class="row">
+    <!-- Context Menu -->
+    <div class="col-12 card-body">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">You are about to add new Account Rubrique:@Model.AccountNumber-@Model.LabelEn </h3>
+                <p>The account number must start with @Model.AccountNumber </p>
+
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Create", "AccountingChart", FormMethod.Post, new { id = "chartOfAccountForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                {
+                    @Html.HiddenFor(model => model.ParentAccountId) <!-- Hidden field for AccountNumber -->
+
+                    <div class="form-floating form-floating-outline mb-4">
+                        @Html.TextBoxFor(model => model.AccountNumber, new { @class = "form-control", placeholder = "Account Number" })
+                        @Html.LabelFor(model => model.AccountNumber, new { @for = "accountNumber" })
+                        @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-floating form-floating-outline mb-4">
+                        @Html.TextBoxFor(model => model.LabelEn, new { @class = "form-control", placeholder = "Account Label" })
+                        <label>Account label(English)</label>
+                        @Html.ValidationMessageFor(model => model.LabelEn, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        @Html.TextBoxFor(model => model.LabelFr, new { @class = "form-control", placeholder = "Account Label" })
+                        <label>Account label(French)</label>
+                        @Html.ValidationMessageFor(model => model.LabelFr, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-floating form-floating-outline mb-4">
+                        @Html.DropDownListFor(model => model.OperationDirection, new SelectList(ViewBag.OperationDirection == null ? "" : ViewBag.OperationDirection, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(model => model.OperationDirection, "", new { @class = "text-danger" })
+                        <label>BookingDirection</label>
+                    </div>
+
+                    <div class="form-floating form-floating-outline mb-4">
+                        @Html.DropDownListFor(model => model.AccountCartegoryId, new SelectList(ViewBag.AccountCartegories == null ? "" : ViewBag.AccountCartegories, "Id", "Name"), "---Select Cartegory---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(model => model.AccountCartegoryId, "", new { @class = "text-danger" })
+                        <label>AccountCartegory</label>
+                    </div>
+                    <div class="form-check mb-4">
+                        @Html.CheckBoxFor(model => model.CanBeNegative, new { @class = "form-check-input" })
+                        @Html.LabelFor(model => model.CanBeNegative, new { @class = "form-check-label" })
+                    </div>
+                    <div class="form-check mb-4">
+                        @Html.CheckBoxFor(model => model.IsBalanceSheetAccount, new { @class = "form-check-input" })
+                        @Html.LabelFor(model => model.IsBalanceSheetAccount, new { @class = "form-check-label" })
+                    </div>
+                    <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">Save</button>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

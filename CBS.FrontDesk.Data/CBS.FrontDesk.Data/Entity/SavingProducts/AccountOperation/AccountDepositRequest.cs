@@ -31,7 +31,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string accountNumber { get; set; }
         [Required(ErrorMessage = "Withdrawal type is required")]
         public string withDrawalType { get; set; }
-        [Required(ErrorMessage = "Withdrawal note is required")]
+  
         public string note { get; set; }
         public string bankId { get; set; }
         public string branchId { get; set; }
@@ -74,7 +74,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string receiverAccountNumber { get; set; }
         [Required(ErrorMessage = "Source type is required")]
         public string transferType { get; set; }
-        [Required(ErrorMessage = "Tranfer note is required")]
+       
         public string note { get; set; }
         [Required(ErrorMessage = "Teller is required")]
         public string tellerId { get; set; }
