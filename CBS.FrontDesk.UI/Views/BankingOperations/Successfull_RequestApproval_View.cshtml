@@ -1,0 +1,139 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.TransactionReversalDetailRequestDto
+@{
+    ViewBag.Title = "Successfull Transaction reversal request approval";
+
+}
+
+ 
+
+<div class="row invoice-preview">
+    <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+        <div class="accordion-item active">
+            <h2 class="accordion-header text-body d-flex justify-content-between"
+                id="accordionPopoutIconThree">
+                <button type="button"
+                        class="accordion-button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#accordionPopoutIcon-3"
+                        aria-expanded="true"
+                        aria-controls="accordionPopoutIcon-3">
+                    <i class="mdi mdi-bank-plus me-2"></i>
+                    <span style="color:forestgreen">Transaction reversal request  with referenceId : @Model.ReferenceId  has been succesfully approved  </span>
+                </button>
+            </h2>
+            <div class="card-body">
+
+                <br />
+                <div class="collapse show">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Transaction Reversal Request Details</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+
+                            <tr>
+                                <td>Requested Date</td>
+                                <td>@Model.IssuedDate </td>
+                            </tr>
+                            <tr>
+                                <td>Request Message</td>
+                                <td>@Model.RequestMessage </td>
+                            </tr>
+                            <tr>
+                                <td>Requested By </td>
+                                <td> @Model.IssuedBy </td>
+                            </tr>
+                            <tr>
+                                <td>Approved By </td>
+                                <td> @Model.ApprovedBy </td>
+                            </tr>
+                            <tr>
+                                <td>Approved Message</td>
+                                <td>@Model.ApprovedMessage </td>
+                            </tr>
+
+
+                            <tr>
+                                <td>Approved Date</td>
+                                <td>@Model.ApprovedDate </td>
+                            </tr>
+                            <tr>
+                                <td>Approved Message</td>
+                                <td>@Model.ApprovedMessage </td>
+                            </tr>
+                            <tr>
+
+
+                                <td> Status</td>
+                                @if (@Model.Status.ToUpper().Equals("PENDING"))
+                                {
+                                    <td class="badge bg-label-primary rounded-pill text-uppercase">
+                                        @Model.Status
+                                    </td>
+
+
+                                }
+                                else
+                                {
+                                    if (@Model.Status.ToUpper().Equals("APPROVE"))
+                                    {
+                                        <td class="badge bg-label-success rounded-pill text-uppercase">
+                                            @Model.Status
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                            @Model.Status
+                                        </td>
+                                    }
+
+                                }
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card card-action mb-5">
+
+                    @if (@Model.Status.ToUpper().Equals("PENDING"))
+                    {
+                        <h5 class="card-header">You have just rejected the transaction reversal request issued by @Model.IssuedBy having transaction referenceId:@Model.ReferenceId.</h5>
+                    }
+                    else
+                    {
+                        if (@Model.Status.ToUpper().Equals("APPROVE"))
+                        {
+                            <h5 class="card-header" style="color:forestgreen">You have just the approved transaction reversal request issued by @Model.IssuedBy having referenceId:@Model.ReferenceId</h5>
+
+                        }
+                        else
+                        {
+                <h5 class="card-header" style="color:firebrick">You have just rejected the transaction reversal request issued by @Model.IssuedBy having referenceId:@Model.ReferenceId.</h5>
+                        }
+
+                    }
+                    <div class="col-12 shift-right">
+
+                        <a href="/TellerCashDemand/GetAllCashReplenimentRequestData" class="btn btn-primary click-to-go-back-to-menu">Click to view pending transaction reversal request. </a>
+
+
+                    </div>
+                </div>
+             
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/Js/main.js/CashFlowManagement.js"></script>
+}

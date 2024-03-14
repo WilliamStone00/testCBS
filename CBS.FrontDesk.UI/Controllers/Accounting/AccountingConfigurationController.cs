@@ -63,8 +63,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.OperationEvent = await _OperationEventService.GetOperationEvents();
             ViewBag.BookingDirections = await this.GetBookingDirections();
             ViewBag.OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
-            ViewBag.CreditAccounts = CreditAccounts;
-            ViewBag.DebitAccounts = CreditAccounts;
+            ViewBag.CreditAccounts = ViewBag.ChartOfAccounts;
+            ViewBag.DebitAccounts = ViewBag.ChartOfAccounts;
             ViewBag.AccountCartegories = await _AccountCategoryServices.GetAccountCategory();
         }
 
@@ -248,22 +248,27 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (serviceOption == "chartOfAccount")
             {
-                //ChartOfAccountDto modelc;
-                string accNum = model.ChartOfAccount.AccountNumber.Substring(0, model.ChartOfAccount.AccountNumber.Length - 1);
-                var mode = await _chartOfAccountServices.GetChartOfAccountByAccountNumber(accNum);
+                ChartOfAccount mode = null;
+                int numberLength = 1;
+                do
+                {
+                    string accNum = model.ChartOfAccount.AccountNumber.Substring(0, model.ChartOfAccount.AccountNumber.Length - numberLength);
+                      mode = await _chartOfAccountServices.GetChartOfAccountByAccountNumber(accNum);
+                    numberLength++;
+                } while (mode==null);
+       
                 if (model.ChartOfAccount.IsForUpdate == false)
                 {
                     ChartOfAccountDto modelc = new ChartOfAccountDto
                     {
                         RootParentId = mode.Id,
-                        LabelEn = mode.LabelEn,
-                        LabelFr = mode.LabelFr,
-                        IsBalanceAccount = mode.IsBalanceSheetAccount,
+                        LabelEn = model.ChartOfAccount.LabelEn,
+                        LabelFr = model.ChartOfAccount.LabelFr,
+                        IsBalanceAccount = model.ChartOfAccount.IsBalanceSheetAccount,
                         AccountNumber = model.ChartOfAccount.AccountNumber,
                       CanBeNegative = model.ChartOfAccount.CanBeNegative,
-     IsDebit = model.ChartOfAccount.IsDebit,
-                       
- AccountCartegoryId = model.ChartOfAccount.AccountCartegoryId
+                      IsDebit = model.ChartOfAccount.IsDebit,
+                       AccountCartegoryId = model.ChartOfAccount.AccountCartegoryId
                          
                     };
                     return () => _chartOfAccountServices.Create(modelc);

@@ -80,7 +80,10 @@
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Manual Operations" controller="BankingOperations" action="Index">
     </mvcSiteMapNode>
-    
+    <mvcSiteMapNode title="Transaction Reversal" controller="BankingOperations" action="CreateTransactionReversalRequest">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Transaction Reversal" controller="BankingOperations" action="GetAllTransasctionReversalRequest">
+    </mvcSiteMapNode>
     <mvcSiteMapNode title="General Ledger" controller="AccountingStatements" action="Index">
     </mvcSiteMapNode>
   
