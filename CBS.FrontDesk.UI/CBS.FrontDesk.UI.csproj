@@ -228,6 +228,7 @@
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
     <Compile Include="Controllers\Accounting\AccountingChartController.cs" />
+    <Compile Include="Controllers\Accounting\ManuallyJournalEntryController.cs" />
     <Compile Include="Controllers\Accounting\AccountingConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\AccountingEntryRuleController.cs" />
     <Compile Include="Controllers\Accounting\AccountingRuleController.cs" />
@@ -2335,7 +2336,7 @@
     <Content Include="Views\CashFlowManagement\GetCashReplenimentRequest.cshtml" />
     <Content Include="Views\CashFlowManagement\Successfull_Request_View.cshtml" />
     <Content Include="Views\CashFlowManagement\Failed_Request_View.cshtml" />
-    <Content Include="Views\BankingOperations\Create.cshtml" />
+    <Content Include="Views\BankingOperations\_JournalEntries.cshtml" />
     <Content Include="Views\CashFlowManagement\Failed_RequestApproval_View.cshtml" />
     <Content Include="Views\CashFlowManagement\Successfull_RequestApproval_View.cshtml" />
     <Content Include="Views\TellerCashDemand\Index.cshtml" />
@@ -2345,7 +2346,6 @@
     <Content Include="Views\TellerCashDemand\GetCashReplenimentRequest.cshtml" />
     <Content Include="Views\TellerCashDemand\Successfull_RequestApproval_View.cshtml" />
     <Content Include="Views\TellerCashDemand\Failed_RequestApproval_View.cshtml" />
-
     <Content Include="Views\Individual\_MembershipStatus.cshtml" />
     <Content Include="Views\Individual\_LegalSector.cshtml" />
     <Content Include="Views\Individual\_AddMembershipNextOfKingsMember.cshtml" />
@@ -2377,6 +2377,10 @@
     <Content Include="Views\MemberOperation\_LoanApplicationValidationData.cshtml" />
     <Content Include="Views\MemberOperation\_LoanApplicationValidation.cshtml" />
     <Content Include="Views\LoanProduct\_SetPenalty.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\Index.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_JournalEntries.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_AddEntry.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_AddEntryPurpose.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
