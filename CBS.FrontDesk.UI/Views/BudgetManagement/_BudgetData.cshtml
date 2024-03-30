@@ -1,0 +1,40 @@
+﻿@model CBS.FrontDesk.Data.Entity.BudgetConfiguration
+@{
+    ViewBag.Title = "_BudgetData";
+}
+
+
+ 
+    <table class="table table-hover" id="myDataTable_BudgetData">
+        <thead class="table-light">
+            <tr>
+                <th>Budget Code</th>
+                <th>Organization Unit</th>
+                <th>Budget</th>
+ 
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.Budgets)
+            {
+                <tr>
+                    <td style="width:25%">@d.BudgetPeriodId</td>
+                    <td style="width:20%">@d.UnitId</td>
+                    <td style="width:25%">@d.TotalBudgetAmount.ToString("N")</td>
+                  
+                    <td style="width:30%">
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Budget','_CreateBudget','update','BudgetManagement','budget')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.BudgetPeriodId to edit">Edit</a>|
+
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Details @d.BudgetPeriodId" onclick="ViewDataDetails('BudgetManagement','@d.Id','myDataTable_BudgetData','_BudgetData',0,'datalistingview_Budget','budget')">Details</a>|
+
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.BudgetPeriodId" onclick="DeleteDataConfiguration('BudgetManagement','@d.Id','myDataTable_BudgetData','_BudgetData',0,'datalistingview_Budget','budget')">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+ 
+ 
+
+

@@ -18,14 +18,14 @@
                                 @Html.DropDownListFor(model => model.AccountName, new SelectList(ViewBag.AccountNames as System.Collections.IEnumerable, "Value", "Text"), "Select Account", new { @class = "form-control select2", id = "account-name" })
                                 <label for="account-name">Account Name</label>
                             </div>
-                            <div class="mb-3">
+                            @*<div class="mb-3">
                                 @Html.EditorFor(model => model.Debit, new { htmlAttributes = new { @class = "form-control", placeholder = "Debit Amount" } })
                                 <label for="debit-amount">Debit Amount</label>
                             </div>
                             <div class="mb-3">
                                 @Html.EditorFor(model => model.Credit, new { htmlAttributes = new { @class = "form-control", placeholder = "Credit Amount" } })
                                 <label for="credit-amount">Credit Amount</label>
-                            </div>
+                            </div>*@
                             <div class="mb-3">
                                 @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = "Description" } })
                                 <label for="description">Description</label>

@@ -139,21 +139,27 @@ $('#jstree-checkbox').on('click', '.parent', function (e, data) {
     $(".RootId").val(nodeId);
 
 });
-function GetObjectView(partialview, path, serviceOption, divToLoadContent) {
-    var idChart = $("#selectedID").val();
-    var idAcc = $("#selectedIDchart").val();
-    alert("id from Chart:" + idChart);
-    alert("id from Account:" + idAcc);
-    loadPartialView2(id, partialview, path, serviceOption, divToLoadContent);
-    //loadPartialView(nodeId, "_Operation", "Transit");
+//(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+function LoadDataTable(controller, tableID, action, KEY, partialView, order, path, diveToloadtheData, serviceOption) {
+    var encodedURL = '/' + controller + '/' + action +
+        '?KEY=' + encodeURIComponent(KEY) +
+        '&partialView=' + encodeURIComponent(partialView) +
+        '&serviceOption=' + encodeURIComponent(serviceOption) +
+        '&path=' + encodeURIComponent(path);
+
+    $.ajax({
+        type: "GET",
+        url: encodedURL,
+        success: function (data) {
+            $('#' + diveToloadtheData).html(data);
+            LoadDT(tableID, order);
+        },
+        error: function (err) {
+            appalert(err.statusText, 1, 3);
+        }
+    });
 }
 
-function GetObjectViewForChart(partialview, path, serviceOption, divToLoadContent) {
-    var id = $("#selectedIDchart").val();
-    alert("id:" + id);
-    loadPartialView2(id, partialview, path, serviceOption, divToLoadContent);
-    //loadPartialView(nodeId, "_Operation", "Transit");
-}
 function loadPartialView2(nodeId, view, path, serviceOption, divToLoadContent) {
     // Use AJAX to load the partial view based on the nodeId
     $.ajax({
@@ -170,6 +176,4 @@ function loadPartialView2(nodeId, view, path, serviceOption, divToLoadContent) {
         }
     });
 }
-
-
 

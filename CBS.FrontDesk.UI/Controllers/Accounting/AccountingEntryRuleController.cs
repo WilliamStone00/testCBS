@@ -89,7 +89,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             
                 var  OperationEventList = await _OperationEventService.GetOperationEvents();
                 var OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
-                var DebitAccounts = await _accountService.GetAllAccounting();
+                var DebitAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
                 var dataList = await _Service.GetAccountingEntryRules();
                 var data = await _Service.GetAccountingEntryRulesDto(dataList, OperationEventList, OperationEventAttributes, DebitAccounts);
                 return PartialView(partialView, data);

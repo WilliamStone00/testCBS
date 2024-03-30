@@ -240,6 +240,7 @@
     <Compile Include="Controllers\Accounting\TellerCashDemandController.cs" />
     <Compile Include="Controllers\Authentication\AuthenticationController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
+    <Compile Include="Controllers\BudgetManagement\BudgetManagementController.cs" />
     <Compile Include="Controllers\Configuration\Localization\CountryController.cs" />
     <Compile Include="Controllers\Configuration\Organ\BranchManagementController.cs" />
     <Compile Include="Controllers\CustomerManagement\IndividualController.cs" />
@@ -274,6 +275,26 @@
     <Compile Include="Controllers\TransactionManagement\TellerProvissioingController.cs" />
     <Compile Include="Controllers\TransactionManagement\TransactionConfigurationController.cs" />
     <Compile Include="Controllers\UserManagement\UserManagementController.cs" />
+    <Compile Include="DataSet\Accounting\BalanceSheet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BalanceSheet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet\Accounting\ProfitAndLost.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProfitAndLost.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet\Accounting\TrialBalance6Column.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrialBalance6Column.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet\Accounting\TrialBalance8Column.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrialBalance8Column.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet\Transaction\TransactionDS.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -292,6 +313,12 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Reporting\Accounting\TrialBalance8Column.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrialBalance8Column.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reporting\Transactions\Reciepts\Receipts.cs">
       <AutoGen>True</AutoGen>
@@ -2024,6 +2051,50 @@
     <Content Include="DataSet\Transaction\TransactionDS.xsc">
       <DependentUpon>TransactionDS.xsd</DependentUpon>
     </Content>
+    <Content Include="DataSet\Accounting\BalanceSheet.xsc">
+      <DependentUpon>BalanceSheet.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet\Accounting\BalanceSheet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>BalanceSheet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="DataSet\Accounting\BalanceSheet.xss">
+      <DependentUpon>BalanceSheet.xsd</DependentUpon>
+    </Content>
+    <Content Include="DataSet\Accounting\ProfitAndLost.xsc">
+      <DependentUpon>ProfitAndLost.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet\Accounting\ProfitAndLost.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ProfitAndLost.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="DataSet\Accounting\ProfitAndLost.xss">
+      <DependentUpon>ProfitAndLost.xsd</DependentUpon>
+    </Content>
+    <Content Include="DataSet\Accounting\TrialBalance6Column.xsc">
+      <DependentUpon>TrialBalance6Column.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet\Accounting\TrialBalance6Column.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TrialBalance6Column.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="DataSet\Accounting\TrialBalance6Column.xss">
+      <DependentUpon>TrialBalance6Column.xsd</DependentUpon>
+    </Content>
+    <Content Include="DataSet\Accounting\TrialBalance8Column.xsc">
+      <DependentUpon>TrialBalance8Column.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet\Accounting\TrialBalance8Column.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TrialBalance8Column.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="DataSet\Accounting\TrialBalance8Column.xss">
+      <DependentUpon>TrialBalance8Column.xsd</DependentUpon>
+    </Content>
     <None Include="DataSet\Transaction\TransactionDS.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -2052,6 +2123,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
+    <Content Include="Scripts\Js\Budgetmanagement\Budget.js" />
     <Content Include="Scripts\Js\Crud\OperationPanel\Customers.js" />
     <Content Include="Scripts\Js\Crud\OperationPanel\LoanApplication.js" />
     <Content Include="Scripts\Js\Crud\OperationPanel\MyCustomers.js" />
@@ -2381,6 +2453,13 @@
     <Content Include="Views\ManuallyJournalEntry\_JournalEntries.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\_AddEntry.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\_AddEntryPurpose.cshtml" />
+    <Content Include="Views\BudgetManagement\Index.cshtml" />
+    <Content Include="Views\BudgetManagement\_CreateBudget.cshtml" />
+    <Content Include="Views\BudgetManagement\_CreateBudgetCategory.cshtml" />
+    <Content Include="Views\BudgetManagement\_BudgetDetails.cshtml" />
+    <Content Include="Views\BudgetManagement\_BudgetCategoryDetails.cshtml" />
+    <Content Include="Views\BudgetManagement\_BudgetData.cshtml" />
+    <Content Include="Views\BudgetManagement\_BudgetCategoryData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2434,6 +2513,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reporting\Accounting\TrialBalance8Column.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TrialBalance8Column.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reporting\Transactions\Reciepts\Receipts.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Receipts.cs</LastGenOutput>

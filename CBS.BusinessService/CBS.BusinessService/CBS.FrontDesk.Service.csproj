@@ -85,7 +85,7 @@
     <Compile Include="Accounting\AccountingServices.cs" />
     <Compile Include="Accounting\ChartOfAccountServices.cs" />
     <Compile Include="Accounting\ChartOfAccountServicesAnnex.cs" />
-    <Compile Include="Accounting\Class1.cs" />
+    <Compile Include="Accounting\TransactionReversalRequest.cs" />
     <Compile Include="Accounting\EntryFeeParameterServices.cs" />
     <Compile Include="Accounting\EntryTempDataServices.cs" />
     <Compile Include="Accounting\OperationEventAttributeServices.cs" />
@@ -107,6 +107,8 @@
     <Compile Include="Accounts\WithdrawalLimitServices.cs" />
     <Compile Include="BaseService\BaseService.cs" />
     <Compile Include="BaseApiServices.cs" />
+    <Compile Include="BudgetManagement\BudgetCategoryServices.cs" />
+    <Compile Include="BudgetManagement\BudgetServices.cs" />
     <Compile Include="Config\Localization\SubDivisionServices.cs" />
     <Compile Include="Config\Localization\TownServices.cs" />
     <Compile Include="Config\Localization\DivisionServices.cs" />

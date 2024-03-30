@@ -92,7 +92,7 @@
                                 <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Account','_ChartOfAccountData','new','AccountingConfiguration','account')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Back to chart of account">
                                     <span class="tf-icons mdi mdi-chart-box mdi-18px"></span>
                                 </a>
-                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountData','_AccountData',0,'datalistingview_Account',null,'account')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_Account','_AccountData','desc','datalistingview_Account',0,'account','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                 </a>
                                 <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Account','_CreateAccount','new','AccountingConfiguration','account')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
@@ -113,12 +113,13 @@
                     <div class="tab-pane fade" id="shippingAccountType" role="tabpanel">
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountType','_AccountTypeData',0,'datalistingview_AccountType',null,'accountType')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountType','_AccountTypeData','desc','datalistingview_AccountType',0,'accountType','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                 </a>
                                 <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountType','_CreateAccountType','new','AccountingConfiguration','accountType')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
                                     <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                 </a>
+                               
                             </div>
                         </div>
                         <br />
@@ -129,8 +130,8 @@
                     <div class="tab-pane fade" id="attributes" role="tabpanel">
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_OperationEvent','_OperationEventData',0,'datalistingview_OperationEvent',null,'operationEvent')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_OperationEvent','_OperationEventData','desc','datalistingview_OperationEvent',0,'operationEvent','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span> 
                                 </a>
                                 <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEvent','_CreateOperationEvent','new','AccountingConfiguration','operationEvent')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
                                     <span class="tf-icons mdi mdi-plus mdi-18px"></span>
@@ -145,8 +146,7 @@
                     <div class="tab-pane fade" id="global-delivery" role="tabpanel">
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
-
-                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_OperationEventAttribute','_OperationEventAttributeData',0,'datalistingview_OperationEventAttribute',null,'operationEventAttribute')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_OperationEventAttribute','_OperationEventAttributeData','desc','datalistingview_OperationEventAttribute',0,'operationEventAttribute','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                 </a>
                                 <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEventAttribute','_CreateOperationEventAttribute','new','AccountingConfiguration','operationEventAttribute')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
@@ -163,7 +163,7 @@
                     <div class="tab-pane fade" id="shipping" role="tabpanel">
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountingEntryRule','_AccountingEntryRuleData',0,'datalistingview_AccountingEntryRule',null,'accountingEntryRule')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountingEntryRule','_AccountingEntryRuleData','desc','datalistingview_AccountingEntryRule',0,'accountingEntryRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                 </a>
                                 <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountingEntryRule','_CreateAccountingEntryRule','new','AccountingConfiguration','accountingEntryRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">

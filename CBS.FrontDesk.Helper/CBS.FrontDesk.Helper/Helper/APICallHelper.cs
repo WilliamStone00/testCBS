@@ -456,6 +456,20 @@ namespace CBS.FrontDesk.Helper
         public static string Url_Get_Update_delete_EntryTempData =     "/api/v1/EntryTempData/{0}";
         public static string Url_Get_RefereceId= "api/v1/EntryTempDatas/{0}";
         public static string Post_AccountingEntry_Entries = "/api/v1/EntryTempData/PostManualEntries";
+        //BUdgetmanagement
+        public static string Get_Update_Delete_Budget = "/api/v1/Budget/{0}";
+        public static string Create_Budget = "/api/v1/Budget";
+        public static string Get_All_Budget = "/api/v1/Budget";
+        public static string Get_All_BudgetPeriod = "/api/v1/BudgetPeriods";
+        public static string Get_All_OrganizationalUnit = "api/v1/OrganizationalUnit";
+        public static string LockBudget_Budget = "/api/v1/Budget/LockBudget/{0}";
+        public static string ApprovedBudget_Budget = "/api/v1/Budget/ApprovedBudget/{0}";
 
+        //BUdgetmanagement
+        public static string Get_Update_Delete_BudgetCategory = "/api/v1/BudgetCategory/{0}";
+        public static string Get_All_BudgetCategory = "/api/v1/BudgetCategory";
+        public static string Create_BudgetCategory = "/api/v1/BudgetCategory";
+        public static string LockBudget_BudgetCategory = "/api/v1/BudgetCategory/LockBudget/{0}";
+        public static string ActivateBudget_BudgetCategory = "/api/v1/BudgetCategory/ApprovedBudget/{0}";
     }
 }
