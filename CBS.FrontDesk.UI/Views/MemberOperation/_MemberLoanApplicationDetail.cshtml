@@ -1,117 +1,140 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
-<div class="table-responsive mb-3">
-    <hr />
-    <a href="#" onclick="AddORUpdateGen('@Model.LoanApplication.Id','datalistingview','_MemberLoanApplicationDetail','application_detail','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @Model.LoanApplication.LoanType for detail">
-        Refresh
-    </a>
-    <hr />
-    <table class="table table-bordered">
-        <tr>
-            <td><strong>Member's Code:</strong></td>
-            <td>@Model.LoanApplication.CustomerId</td>
-        </tr>
-        <tr>
-            <td><strong>Loan Applocation Code:</strong></td>
-            <td>@Model.LoanApplication.Id</td>
-        </tr>
-        <tr>
-            <td><strong>Loan Product ID:</strong></td>
-            <td>@Model.LoanApplication.LoanProductId</td>
-        </tr>
-        <tr>
-            <td><strong>Loan Product Name:</strong></td>
-            <td>@Model.LoanApplication.LoanProduct.ProductName</td>
-        </tr>
-        <tr>
-            <td><strong>Loan type:</strong></td>
-            <td>@Model.LoanApplication.LoanType</td>
-        </tr>
-        <tr>
-            <td><strong>Amount:</strong></td>
-            <td>@Model.LoanApplication.Amount.ToString("#,##0.00") FCFA</td>
-        </tr>
-        <tr>
-            <td><strong>Interest Rate:</strong></td>
-            <td>@Model.LoanApplication.InterestRate.ToString("#,##0.00")%</td>
-        </tr>
-        <tr>
-            <td><strong>Processing Fee Rate:</strong></td>
-            <td>@Model.LoanApplication.ProcessingFee.ToString("#,##0.00") % of @Model.LoanApplication.Amount.ToString("#,##0.00") FCFA</td>
-        </tr>
-        <tr>
-            <td><strong>Number of Repayments:</strong></td>
-            <td>@Model.LoanApplication.NumberOfRepayment</td>
-        </tr>
-        <tr>
-            <td><strong>Repayment Circle:</strong></td>
-            <td>@Model.LoanApplication.LoanProduct.LoanProductRepaymentCycles.Where(x=>x.Id==Model.LoanApplication.RepaymentCircle).FirstOrDefault().RepaymentCycle</td>
-        </tr>
-        <tr>
-            <td><strong>Loan Duration:</strong></td>
-            <td>@Model.LoanApplication.LoanDuration  -  @Model.LoanApplication.LoanProduct.LoanDurationPeriod</td>
 
-        </tr>
-        <tr>
-            <td><strong>First installment Date:</strong></td>
-            <td>@Model.LoanApplication.FirstInstallmentDate.ToString("MM/dd/yyyy")</td>
-        </tr>
-        <tr>
-            <td><strong>Application Date:</strong></td>
-            <td>@Model.LoanApplication.ApplicationDate</td>
-        </tr>
-        <tr>
-            <td><strong>Approval Status:</strong></td>
-            <td>@Model.LoanApplication.ApprovalStatus</td>
-        </tr>
-        <tr>
-            <td><strong>Has the loan been approved?:</strong></td>
-            <td>@Model.LoanApplication.IsApproved</td>
-        </tr>
-        <tr>
-            <td><strong>Disbursement Date:</strong></td>
-            @*<td>@Model.LoanApplication.DisbursementDate.ToString("MM/dd/yyyy")</td>*@
-        </tr>
-        <tr>
-            <td><strong>Disbursement Type:</strong></td>
-            @*<td>@Model.DisburstmentType</td>*@
-        </tr>
-        <tr>
-            <td><strong>Interest Method:</strong></td>
-            <td>@Model.LoanApplication.LoanProduct.LoanInterestType</td>
-        </tr>
-        <tr>
-            <td><strong>Interest Type:</strong></td>
-            <td>@Model.LoanApplication.LoanProduct.LoanInterestType</td>
-        </tr>
-        <!-- Add more rows for other loan details -->
-        <tr>
-            <td><strong>Status:</strong></td>
-            @*<td>@Model.Status</td>*@
-        </tr>
-        <tr>
-            <td><strong>Grace Period:</strong></td>
-            <td>@Model.LoanApplication.GracePeriod days</td>
-        </tr>
-        <tr>
-            <td><strong>Grace Period Rate:</strong></td>
-            <td>@Model.LoanApplication.GracePeriodRate %</td>
-        </tr>
+<div class="card mb-4">
+    <div class="card-body d-sm-flex d-block">
+        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+            <div class="ms-3">
+                <a href="#" onclick="AddORUpdateGen('@Model.LoanApplication.Id','datalistingview','_MemberLoanApplicationDetail','application_detail','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @Model.LoanApplication.LoanType for detail">
+                    Reload
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-    </table>
+
+
+<div class="col">
+
+    <div class="row my-4">
+        <div class="accordion" id="collapsibleSection">
+            <div class="card accordion-item">
+                <h2 class="accordion-header" id="headingDeliveryAddress">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDeliveryAddress"
+                            aria-expanded="true"
+                            aria-controls="collapseDeliveryAddress">
+                        Loan Term
+                    </button>
+                </h2>
+
+                <div id="collapseDeliveryAddress"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div class="table-responsive mb-3">
+                            <hr />
+                            <a href="#" onclick="AddORUpdateGen('@Model.LoanApplication.Id','datalistingview','_MemberLoanApplicationDetail','application_detail','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @Model.LoanApplication.LoanType for detail">
+                                Refresh
+                            </a>
+                            <hr />
+
+                            @Html.Partial("_SharedLoanTerm")
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card accordion-item">
+                <h2 class="accordion-header" id="headingPaymentMethod8">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePaymentMethod8"
+                            aria-expanded="false"
+                            aria-controls="collapsePaymentMethod8">
+                        Add Guarantor
+                    </button>
+                </h2>
+                <div id="collapsePaymentMethod8"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingPaymentMethod8"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div class="row g-4">
+                            <div id="datalistingview_gurantor_add">
+                                @Html.Partial("_AddLoanGuarantor")
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="accordion-body">
+                            <div id="datalistingview_data">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card accordion-item">
+                <h2 class="accordion-header" id="headingPaymentMethod4">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePaymentMethod4"
+                            aria-expanded="false"
+                            aria-controls="collapsePaymentMethod4">
+                        Add collateral
+                    </button>
+                </h2>
+                <div id="collapsePaymentMethod4"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingPaymentMethod4"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div class="row g-4">
+                            <div id="datalistingview_collateral_add">
+                                @Html.Partial("_AddLoanCollateral")
+                            </div>
+                        </div>
+                        <div id="datalistingview_collateral_data">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card accordion-item">
+                <h2 class="accordion-header" id="headingPaymentMethod5">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePaymentMethod5"
+                            aria-expanded="false"
+                            aria-controls="collapsePaymentMethod5">
+                        Add documents
+                    </button>
+                </h2>
+                <div id="collapsePaymentMethod5"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingPaymentMethod5"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div class="row g-4">
+                            <div id="datalistingview_document_add">
+                                @Html.Partial("_AddtachedLoanDocument")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
 </div>
 
 
 
 
-@*<table class="datatables-users table" id="myDataTable">
-        <thead class="table-light">
-            <tr>
-                <th>Name</th>
-                <th>phone</th>
-                <th>Town</th>
-                <th>Branch</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-    </table>*@

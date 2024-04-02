@@ -13,6 +13,21 @@ namespace CBS.FrontDesk.Helper
         public static string Authentication = "/api/Authentication/Session/Login";
         public static string RefreshToken = " /api/Authentication/Session/RefreshToken";
 
+
+        //CreateMemberAccountActivation
+        public static string CreateMemberAccountActivation = "/api/v1/MemberAccountActivation";
+        public static string Get_Update_Delete_MemberAccountActivation = "/api/v1/MemberAccountActivation/{0}";
+        public static string GetAllMemberAccountActivation= "/api/v1/MemberAccountActivation";
+        public static string GetMemberAccountActivationByCustomerID= "/api/v1/MemberAccountActivation/GetCustomerMemberAccountActivation/{0}";
+
+        //CreateMemberAccountActivationPolicy
+        public static string CreateMemberAccountActivationPolicy = "/api/v1/MemberAccountActivationPolicy";
+        public static string Get_Update_Delete_MemberAccountActivationPolicy = "/api/v1/MemberAccountActivationPolicy/{0}";
+        public static string GetAllMemberAccountActivationPolicy = "/api/v1/MemberAccountActivationPolicy";
+        public static string GetMemberAccountActivationPolicyByCustomerID = "/api/v1/MemberAccountActivationPolicy/GetCustomerMemberAccountActivationPolicy/{0}";
+
+
+
         //User
         public static string GetUserByID = "/api/User/{0}";
         public static string DeleteUser = "/api/User/{0}";
@@ -221,12 +236,12 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_Period = "/api/v1/Period/{0}";
         public static string GetAllPeriod = "/api/v1/Periods";
         public static string CreatePeriod = "/api/v1/Period";
-        public static string AttachedDocuments = "/api/v1/AttachedLoanDocument";
+        public static string AttachedDocuments = "/api/v1/DocumentAttachedToLoan";
         public static string Get_Update_Delete_InstallmentType = "/api/v1/InstallmentType/{0}";
         public static string GetAllInstallmentType = "/api/v1/InstallmentTypes";
         public static string CreateInstallmentType = "/api/v1/InstallmentType";
-        public static string Get_Delete_DocumentAttachedToLoan = "/api/v1/AttachedLoanDocument/{0}";
-        public static string GetAllAttachedments = "/api/v1/AttachedLoanDocuments";
+        public static string Get_Delete_DocumentAttachedToLoan = "/api/v1/DocumentAttachedToLoan/{0}";
+        public static string GetAllAttachedments = "/api/v1/DocumentAttachedToLoans";
         public static string Get_Update_Delete_LoanProduct = "/api/v1/LoanProduct/{0}";
         public static string GetAllLoanProduct = "/api/v1/LoanProducts";
         public static string CreateLoanProduct = "/api/v1/LoanProduct";
@@ -238,7 +253,7 @@ namespace CBS.FrontDesk.Helper
         public static string UploadFile = "/api/FIleManagement/Upload";
         public static string UpdateBankLogo = "/api/v1/UploadBankLogo";
         public static string UpdateBranchLogo = "/api/v1/UploadBranchLogo";
-        ///api/v1/UploadBranchLogo
+        ///api/v1/Loan/Disbursed
         //Loan Application
         public static string Get_Update_Delete_LoanApplication = "/api/v1/LoanApplication/{0}";
         public static string GetAllLoanApplication = "/api/v1/LoanApplications";
@@ -246,11 +261,14 @@ namespace CBS.FrontDesk.Helper
         public static string GetLoanApplicationInstallment = "/api/v1/LoanApplication/Installment/{0}";
         public static string LoanSimulation = "/api/v1/LoanApplication/Simulation";
         public static string ApproveLoanApplication = "/api/v1/LoanApplication/ChangeStatus/{0}";
-        public static string ValidateLoanApplicationStatus = "/api/v1/LoanApplication/ChangeStatus/{0";
-        
-    
-    //LOAN
-    public static string GetAllLoanByCustomerId = "/api/v1/Loan/GetAllLoanByCustomerId/{0}";
+        public static string ValidateLoanApplicationStatus = "/api/v1/LoanApplication/ChangeStatus/{0}";
+        public static string GenerateAmortizationSchedule = "/api/LoanAmortization/Loan/Simulation";
+        public static string Disbursed = "/api/v1/Loan/Disbursed";
+        public static string GenerateOTP = "/api/v1/OTPNotification";
+
+
+        //LOAN
+        public static string GetAllLoanByCustomerId = "/api/v1/Loan/GetAllLoanByCustomerId/{0}";
         public static string GetLoan = "/api/v1/Loan/{0}";
         public static string GetLoans = "/api/v1/Loans";
         public static string GetAllLoanByBranchIdQuery = "/api/v1/Loan/GetAllLoanByBranchIdQuery/{id}";
@@ -276,6 +294,13 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_LoanCollateral = "/api/v1/LoanCollateral/{0}";
         public static string GetAllLoanCollateral = "/api/v1/LoanCollaterals";
         public static string CreateLoanCollateral = "/api/v1/LoanCollateral";
+
+        //LoanProductCollateral
+        public static string Get_Update_Delete_LoanProductCollateral = "/api/v1/LoanProductCollateral/{0}";
+        public static string GetAllLoanProductCollateral = "/api/v1/LoanProductCollaterals";
+        public static string CreateLoanProductCollateral = "/api/v1/LoanProductCollateral";
+        public static string GetAllLaonApplicationCollateralByApplicationIdQuery = "/api/v1/GetAllLaonApplicationCollateralByApplicationIdQuery/{0}";
+        
         //LoanCommentry
         public static string Get_Update_Delete_LoanCommentry = "/api/v1/LoanCommentry/{0}";
         public static string GetAllLoanCommentry = "/api/v1/LoanCommentrys";

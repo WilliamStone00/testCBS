@@ -24,7 +24,8 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
         public async Task<ActionResult> Index()
         {
-            await GetList();
+            //await GetList();
+            //var data = await _TaxServices.GetTaxs();
             return View();
         }
         [HttpPost]
@@ -52,7 +53,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
-            await GetList();
+            //await GetList();
             if (path == "list")
             {
                 var data = await _TaxServices.GetTaxs();

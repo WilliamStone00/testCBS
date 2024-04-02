@@ -11,7 +11,7 @@
     <div class="row mt-2 gy-4">
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.WithdrawalLimit.productId, new SelectList(ViewBag.Products, "Id", "name"), "---Select product---", new { @class = "form-control select2", @search = "true"})
+                @Html.DropDownListFor(m => m.WithdrawalLimit.productId, new SelectList(ViewBag.Products, "Id", "name"), "---Select product---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.WithdrawalLimit.productId, "", new { @class = "text-danger" })
                 <label>Select product</label>
             </div>
@@ -51,7 +51,36 @@
                 <label>Fee rate</label>
             </div>
         </div>
-       
+        <h3>Sharing</h3>
+        <br />
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.WithdrawalLimit.SourceBrachOfficeShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CloseFeeParameter.SourceBrachOfficeShare, "", new { @class = "text-danger" })
+                <label>Source branch share (in percentage %)</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.WithdrawalLimit.DestinationBranchOfficeShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CloseFeeParameter.DestinationBranchOfficeShare, "", new { @class = "text-danger" })
+                <label>Destination branch share (in percentage %)</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.WithdrawalLimit.HeadOfficeShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CloseFeeParameter.HeadOfficeShare, "", new { @class = "text-danger" })
+                <label>Head office share (in percentage %)</label>
+            </div>
+        </div>
+        @*<div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CloseFeeParameter.PartnerShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CloseFeeParameter.PartnerShare, "", new { @class = "text-danger" })
+                <label>Partner branch share (in percentage %)</label>
+            </div>
+        </div>*@
 
     </div>
 

@@ -25,9 +25,12 @@
                                 <div class="card mb-4">
                                     <div class="card-body d-sm-flex d-block">
                                         <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            <a href="/MemberOperation/OperationPanel?KEY=@Model.Loan.CustomerId"data-bs-toggle="tooltip" title="Load members from database">
+                                            <a href="/MemberOperation/OperationPanel?KEY=@Model.Loan.CustomerId" data-bs-toggle="tooltip" title="Load members from database">
                                                 <span>View all loans</span>
                                             </a>
+                                            <div class="ms-3">
+                                                <button type="button" class="btn btn-primary" onclick="AddORUpdateGen(@Model.LoanApplication.Id,'datalistingview','_LoanCommiteeValidation','loan_commitee_validation_history','MemberOperation','applications')">Commetee validation</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

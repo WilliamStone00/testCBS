@@ -1,0 +1,58 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanCommitee.LoanCommitee
+
+
+@if (Model != null && Model.LoanCommiteeGroups.Any())
+{<div class="card mb-4">
+        <div class="card-body d-sm-flex d-block">
+            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                <a type="button" onclick="LoadDataGen('LoanCommitee','myDataTable_commitee_group','_LoanCommiteeData',0,'datalistingview',null,'LoanCommiteeGroup','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="table-responsive mb-3">
+        <table class="table table-hover" id="myDataTable_commitee_group">
+            <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Leader</th>
+                    <th>Range</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model.LoanCommiteeGroups)
+                {
+                    <tr>
+                        <td style="width:40%">@d.Name</td>
+                        <td style="width:15%">@d.CommiteeLeaderUserId</td>
+                        <td style="width:20%">@d.MinimumLoanAmount.ToString("0#,00.0")-@d.MaximumLoanAmount.ToString("0#,00.0")</td>
+                        <td style="width:10%">
+                            @if (d.Status)
+                            {
+                                <span class="badge bg-info">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning">Inactive</span>
+                            }
+                        </td>
+                        <td style="width:15%">
+                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_LoanCommitee','update','LoanCommitee','LoanCommiteeGroup')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a> |
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('LoanCommitee','@d.Id','myDataTable_commitee_group','_LoanCommiteeData',0,'datalistingview')">Delete</a>|
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        No commitee groups are available at the moment.
+    </div>
+}

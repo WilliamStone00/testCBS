@@ -88,7 +88,6 @@ namespace CBS.BusinessService.Accounts
             try
             {
                model.bankId = GetBankID();
-                model.branchId = GetBranchID();
                 // Make an API call to create an individual profile
                 var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<EntryFeeParameter>>(APICallHelper.CreateEntryFeeParameter, model);
                 if (response.IsSuccess)

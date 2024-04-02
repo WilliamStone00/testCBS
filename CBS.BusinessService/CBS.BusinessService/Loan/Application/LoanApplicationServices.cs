@@ -110,6 +110,7 @@ namespace CBS.BusinessService.Application
                 model.BankId = GetBankID();
                 model.BranchId = GetBranchID();
                 model.OrganizationId = GetOrganizationID();
+                model.LoanManager = GetUserFullName();
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<LoanApplication>>(APICallHelper.CreateLoanApplication, model);
                 if (response.IsSuccess)
                 {
@@ -133,20 +134,48 @@ namespace CBS.BusinessService.Application
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> ValidaLoanApplication(LoanApplication model)
+        public async Task<ExecutionMessages> GenerateOTP(AddOTPNotificationCommand model)
         {
             try
             {
 
+               
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<OTPNotification>>(APICallHelper.GenerateOTP, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"OTP", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, "OTP", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> ValidaLoanApplication(UpdateLoanApplicationStatusCommand model)
+        {
+            try
+            {
+
+
                 var LoanApplication = await GetLoanApplication(model.Id.ToString());
                 if (LoanApplication != null)
                 {
-                    
-                    
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanApplication>>(string.Format(APICallHelper.ValidateLoanApplicationStatus, model.Id), LoanApplication);
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<AlertProfile>>(string.Format(APICallHelper.ValidateLoanApplicationStatus, model.Id), model);
+
                     if (response.IsSuccess)
                     {
-                        // Successful creation
                         GetExecutionMessages(response, true, $"Loan application", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(),null, response.Message);
                         return ExecutionMessage;

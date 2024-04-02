@@ -37,27 +37,12 @@ namespace CBS.FrontDesk.Service
                 var response = await _identityServer.PostAsync<ResponseObject<UserDto>>(APICallHelper.Authentication, request);
                 if (response.IsSuccess)
                 {
-                    if (response.ApiResponseData.Data.BranchID!=null)
-                    {
-                        HttpContext.Current.Session["Token"] = response.ApiResponseData.Data.bearerToken;
-                        var branchApiResponse = await _BankServer.GetAsync<ResponseObject<Branch>>(string.Format(APICallHelper.Get_Update_Delete_Branch,response.ApiResponseData.Data.BranchID));
-                        
-                        if (branchApiResponse.ApiResponseData!=null)
-                        {
-                            if (branchApiResponse.ApiResponseData.Data != null)
-                            {
-                                var bank = branchApiResponse.ApiResponseData.Data.Bank;
-                                var branch = branchApiResponse.ApiResponseData.Data;
-                                response.ApiResponseData.Data.Bank = bank;
-                                response.ApiResponseData.Data.BankID = bank.Id;
-                                response.ApiResponseData.Data.Branch = branch;
-                            }
-                        }
-                    }
-                    response.ApiResponseData.Data.password = request.Password;
-                    GetExecutionMessages(response.ApiResponseData.Data, true, request.UserName, MessagesResults.Success,
+                    var userAuth = response.ApiResponseData.Data;
+                    HttpContext.Current.Session["Token"] = userAuth.bearerToken;
+                    userAuth.password = request.Password;
+                    GetExecutionMessages(userAuth, true, request.UserName, MessagesResults.Success,
                         ExecutionProcessOption.LoginSuccessful, SystemMessageStatus.Success.ToString(), null,
-                        response.ApiResponseData.Data.refreshToken);
+                        userAuth.refreshToken);
                     return ExecutionMessage;
 
                 }
@@ -67,7 +52,7 @@ namespace CBS.FrontDesk.Service
             catch (Exception ex)
             {
 
-                GetExecutionMessages(null,false, request.UserName, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                GetExecutionMessages(null, false, request.UserName, MessagesResults.Error, ExecutionProcessOption.TryCatch,
                     SystemMessageStatus.Failed.ToString(), ex);
 
             }

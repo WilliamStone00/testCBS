@@ -28,10 +28,17 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         [HttpPost]
         public async Task<ActionResult> Create(Collateral model)
         {
-            if (ModelState.IsValid)
+            if (model.id==null)
             {
-                var data = await _CollateralServices.Create(model);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                if (ModelState.IsValid)
+                {
+                    var data = await _CollateralServices.Create(model);
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
+            }
+            else
+            {
+                return await Update(model);
             }
 
             return Json(new { success = false, status = false, message = "Fill the required fields." });
@@ -50,6 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
+            ViewBag.Key = null;
             if (path == "list")
             {
                 var data = await _CollateralServices.GetCollaterals();
@@ -62,6 +70,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             }
             else
             {
+                ViewBag.Key = KEY;
                 var Collateral = await _CollateralServices.GetCollateral(KEY);
                 return PartialView(partialView, Collateral);
 

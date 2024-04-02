@@ -15,16 +15,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required]
         public string description { get; set; }
     }
-    public class LoanCollateral
-    {
-        public string id { get; set; }
-        [Required]
-        public string collateralId { get; set; }
-        [Required]
-        public string loanApplicationId { get; set; }
-        [Required]
-        public string value { get; set; }
-    }
+   
 
     public class Penalty
     {

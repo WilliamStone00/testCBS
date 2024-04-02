@@ -31,7 +31,7 @@ namespace CBS.BusinessService.Config
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"{objTax.name}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{objTax.Name}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
@@ -39,7 +39,7 @@ namespace CBS.BusinessService.Config
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objTax, false, $"{objTax.name}", MessagesResults.Failed,
+                    GetExecutionMessages(objTax, false, $"{objTax.Name}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -94,14 +94,14 @@ namespace CBS.BusinessService.Config
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.name}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -118,24 +118,28 @@ namespace CBS.BusinessService.Config
             try
             {
 
-                var Tax = await GetTax(model.id);
+                var Tax = await GetTax(model.Id);
                 if (Tax != null)
                 {
-                    Tax.name = model.name;
-                    Tax.description = model.description;
-                    Tax.value = model.value;
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Tax>>(string.Format(APICallHelper.Get_Update_Delete_Tax, model.id), Tax);
+                    Tax.Name = model.Name;
+                    Tax.Description = model.Description;
+                    Tax.TaxRate = model.TaxRate;
+                    Tax.IsVat=model.IsVat;
+                    Tax.AppliedOnInterest = model.AppliedOnInterest;
+                    Tax.AppliedWhenLoanRequestIsGreaterThanSaving = model.AppliedWhenLoanRequestIsGreaterThanSaving;
+                    Tax.SavingControlAmount = model.SavingControlAmount;
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Tax>>(string.Format(APICallHelper.Get_Update_Delete_Tax, model.Id), Tax);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{model.name}", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
+                        GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }

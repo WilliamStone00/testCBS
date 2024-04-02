@@ -24,7 +24,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         public async Task<ActionResult> Index()
         {
 
-            return View(new DocumentAttachedToLoan { LoanApplicationID = "1234"});
+            return View(new DocumentAttachedToLoan { LoanApplicationId = "1234"});
         }
         public async Task<ActionResult> CustomerDocument()
         {
@@ -55,7 +55,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         }
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
-            return PartialView(partialView, new DocumentAttachedToLoan { LoanApplicationID = KEY });
+            return PartialView(partialView, new DocumentAttachedToLoan { LoanApplicationId = KEY });
             if (path == "list")
             {
                 var data = await _services.GetDocumentAttachedToLoanByLoanID(KEY);
@@ -64,7 +64,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
             else if (path == "new")
             {
-                return PartialView(partialView, new DocumentAttachedToLoan { LoanApplicationID = KEY });
+                return PartialView(partialView, new DocumentAttachedToLoan { LoanApplicationId = KEY });
             }
             else
             {

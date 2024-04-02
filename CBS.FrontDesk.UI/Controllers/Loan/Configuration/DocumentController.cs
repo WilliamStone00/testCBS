@@ -31,10 +31,17 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         [HttpPost]
         public async Task<ActionResult> Create(Document model)
         {
-            if (ModelState.IsValid)
+            if (model.Id==null)
             {
-                var data = await _DocumentServices.Create(model);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                if (ModelState.IsValid)
+                {
+                    var data = await _DocumentServices.Create(model);
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
+            }
+            else
+            {
+                return await Update(model);
             }
 
             return Json(new { success = false, status = false, message = "Fill the required fields." });
@@ -60,10 +67,12 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
             else if (path == "new")
             {
+                ViewBag.Key = null;
                 return PartialView(partialView, new Document());
             }
             else
             {
+                ViewBag.Key = KEY;
                 var Period = await _DocumentServices.GetDocument(KEY);
                 return PartialView(partialView, Period);
 

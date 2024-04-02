@@ -1,0 +1,80 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+
+@if (Model.Loans.Count == 0)
+{
+    <div class="text-center my-3">
+        <p>No loans have been contracted.</p>
+    </div>
+}
+else
+{
+    <div class="table-responsive mb-3">
+        <table class="table table-hover" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 7%">Date</th>
+                    <th style="width: 8%">Maturity Date</th>
+                    <th style="width: 10%">Principal</th>
+                    <th style="width: 7%">Interest %</th>
+                    <th style="width: 8%">accrual</th>
+                    <th style="width: 8%">Due fee</th>
+                    <th style="width: 8%">Penalty</th>
+                    <th style="width: 8%">Due</th>
+                    <th style="width: 8%">Paid</th>
+                    <th style="width: 8%">Balance</th>
+                    <th style="width: 8%">Last Payment</th>
+                    <th style="width: 7%">Status</th>
+                    <th style="width: 7%">State</th>
+                    <th style="width: 7%">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model.Loans.OrderBy(app => app.DisbursementDate))
+                {
+                    <tr>
+                        <td style="width: 7%">@d.DisbursementDate</td>
+                        <td style="width: 8%">@d.MaturityDate</td>
+                        <td style="width: 10%">@d.Principal.ToString("#,0.00")</td>
+                        <td style="width: 7%">@d.InterestRate %</td>
+                        <td style="width: 8%">@d.AccrualInterestBalance.ToString("#,0.00")</td>
+                        <td style="width: 8%">@d.FeeBalance.ToString("#,0.00")</td>
+                        <td style="width: 8%">@d.PenaltyBalance.ToString("#,0.00")</td>
+                        <td style="width: 8%">@d.DueAmount.ToString("#,0.00")</td>
+                        <td style="width: 8%">@d.Paid.ToString("#,0.00")</td>
+                        <td style="width: 8%">@d.Balance.ToString("#,0.00")</td>
+                        <td style="width: 8%">@d.LastPayment.ToString("#,0.00")</td>
+                        <td style="width: 7%">@d.LoanStatus</td>
+                        <td style="width: 7%">
+                            @if (d.IsCurrentLoan)
+                            {
+                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Current</span>
+                            }
+                            else
+                            {
+                                <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Restructured</span>
+                            }
+                        </td>
+                        <td style="width: 7%">
+                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_LoanDetails','loan_detail','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select for detail">
+                                Detail
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="1"></td>
+                    <td>Due:</td>
+                    <td>@Model.Loans.Sum(x => x.Principal).ToString("#,0.00")</td>
+                    <td>Paid:</td>
+                    <td>@Model.Loans.Sum(x => x.Paid).ToString("#,0.00")</td>
+                    <td>P.Due:</td>
+                    <td>@Model.Loans.Sum(x => x.Balance).ToString("#,0.00")</td>
+                    <td></td> <!-- Placeholder for the last column -->
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+}

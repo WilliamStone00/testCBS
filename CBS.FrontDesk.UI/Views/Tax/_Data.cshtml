@@ -1,27 +1,42 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.Tax>
-<table class="table table-hover" id="myDataTable">
-    <thead class="table-light">
-        <tr>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Description</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var d in Model)
-        {
-            <tr>
-                <td style="width:10%">@d.name</td>
-                <td style="width:10%">@d.value</td>
-                <td style="width:60%">@d.description</td>
-                
-                <td style="width:20%">
-                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview','_Update','update','Tax')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('Tax','@d.id','myDataTable','_Data',0,'datalistingview')">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
+@if (Model != null)
+{<div class="table-responsive mb-3">
+        <table class="table table-hover" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Rate</th>
+                    <th>Control on Saving</th>
+                    <th>Applied on interest</th>
+                    <th>Control amount</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr>
+                        
+                        <td style="width:15%">@d.Name</td>
+                        <td style="width:10%">@d.TaxRate %</td>
+                        <td style="width:8%">@d.AppliedWhenLoanRequestIsGreaterThanSaving</td>
+                        <td style="width:8%">@d.AppliedOnInterest</td>
+                        <td style="width:10%">@d.SavingControlAmount.ToString("#0,0.0")</td>
+                        <td style="width:22%">@d.Description</td>
+                        <td style="width:20%">
+                            <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview','_Update','update','Tax')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a> |
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('Tax','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        No Data was found at the moment.
+    </div>
+}

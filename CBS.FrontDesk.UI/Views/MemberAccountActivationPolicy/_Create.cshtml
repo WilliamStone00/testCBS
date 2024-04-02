@@ -1,0 +1,75 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.MemberAccountActivationPolicy
+<div class="card-body">
+    @using (Html.BeginForm("AddOrUpdate", "MemberAccountActivationPolicy", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        <div class="row mt-2 gy-4">
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.PolicyName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PolicyName, "", new { @class = "text-danger" })
+                    <label>Policy name</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.MinimumRegistrationFee, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.MinimumRegistrationFee, "", new { @class = "text-danger" })
+                    <label>Minimum registration fee</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.MaximumRegistrationFee, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.MaximumRegistrationFee, "", new { @class = "text-danger" })
+                    <label>Maximum registration fee</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.MinimumAccountClossingFee, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.MinimumAccountClossingFee, "", new { @class = "text-danger" })
+                    <label>Minimum clossing fee</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.MaximumAccountClossingFee, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.MaximumAccountClossingFee, "", new { @class = "text-danger" })
+                    <label>Maximum clossing fee</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.MinimumReopeningFee, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.MinimumReopeningFee, "", new { @class = "text-danger" })
+                    <label>Minimum reopening fee</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.MaximumReopeningFee, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.MaximumReopeningFee, "", new { @class = "text-danger" })
+                    <label>Maximum reopening fee</label>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="isActive">Check to keep this policy active</label>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            @if (Model.Id == null)
+            {
+                <button type="submit" class="btn btn-primary me-2">Save</button>
+                <input type="hidden" name="Action" value="insert" id="Action" />
+            }
+            else
+            { <button type="submit" class="btn btn-primary me-2">Update</button>
+                @Html.HiddenFor(m => m.Id)
+                <input type="hidden" name="Action" value="update" id="Action" />
+            }
+        </div>
+    }
+</div>

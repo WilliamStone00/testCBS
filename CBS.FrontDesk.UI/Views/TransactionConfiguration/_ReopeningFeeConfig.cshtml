@@ -10,7 +10,7 @@
                 <label>Select product</label>
             </div>
         </div>
-       
+
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.ReopenFeeParameter.reopenFeeFlat, new { @class = "form-control" })
@@ -25,7 +25,36 @@
                 <label>Fee rate</label>
             </div>
         </div>
-  
+        <h3>Sharing</h3>
+        <br />
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.ReopenFeeParameter.SourceBrachOfficeShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CloseFeeParameter.SourceBrachOfficeShare, "", new { @class = "text-danger" })
+                <label>Source branch share (in percentage %)</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.ReopenFeeParameter.DestinationBranchOfficeShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CloseFeeParameter.DestinationBranchOfficeShare, "", new { @class = "text-danger" })
+                <label>Destination branch share (in percentage %)</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.ReopenFeeParameter.HeadOfficeShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CloseFeeParameter.HeadOfficeShare, "", new { @class = "text-danger" })
+                <label>Head office share (in percentage %)</label>
+            </div>
+        </div>
+        @*<div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CloseFeeParameter.PartnerShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CloseFeeParameter.PartnerShare, "", new { @class = "text-danger" })
+                <label>Partner branch share (in percentage %)</label>
+            </div>
+        </div>*@
     </div>
     
     <div class="mt-4">

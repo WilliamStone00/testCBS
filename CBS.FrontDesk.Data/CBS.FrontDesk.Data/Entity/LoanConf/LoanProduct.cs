@@ -19,13 +19,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required]
         public string ProductName { get; set; }
 
-        [Required]
-        public string LoanInterestMethod { get; set; } //Flat Rate, Reducing Balance - Equal Installments, Reducing Balance - Equal Principal, Interest-Only, Compound Interest
-
-        [Required]
         public string LoanInterestPeriod { get; set; } //Per Day, Per Week, Per Month, Per Year
 
-        [Required]
         public string LoanInterestType { get; set; } //Rate Or Flate
 
         [Required]
@@ -37,7 +32,6 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required]
         public double DefaultInterestRate { get; set; }
 
-        [Required]
         public string LoanDurationPeriod { get; set; } //Days, Weeks, Months, Years
 
         [Required]
@@ -49,6 +43,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required]
         public bool RequiresGuarantor { get; set; }
 
+        [Required]
+        public bool IsRequiredCollateral { get; set; }
+        public bool StartGeneratingInterestAfterDisbustment { get; set; }
 
         public List<string> RepaymentCycles { get; set; }
 
@@ -68,22 +65,32 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
         public string TaxId { get; set; }
         public decimal LoanMinimumAmount { get; set; }
+        [Required]
+        public string Description { get; set; }
 
         public decimal LoanMaximumAmount { get; set; }
-
+        public bool BlockedSavingAccount { get; set; }
+        public bool BlockedGuarantorAccount { get; set; }
+        public bool BlockedSalaryAccount { get; set; }
         public decimal DefaultLoanAmount { get; set; }
-
+        public bool IsRequiredShareAccount { get; set; }
+        public bool IsRequiredSalaryccount { get; set; }
+        public bool IsRequiredSavingAccount { get; set; }
+        public bool IsRequresRegisteredPublicAuthority { get; set; }
+        public bool IsRequredIrrivocableSalaryTransfer { get; set; }
+        public bool IsInterestDeductedUpFront { get; set; }
+        public bool IsFeeDeductedUpFront { get; set; }
+        public decimal MinimumSavingAccountBalanceRateForTheRequestAmount { get; set; }
+        public decimal MaximumSavingAccountBalanceRateForTheRequestAmount { get; set; }
+        public decimal MinimumSalaryAccountBalanceRateForTheRequestAmount { get; set; }
+        public decimal MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount { get; set; }
+        public decimal MinimumShareAccountBalanceRateForTheRequestAmount { get; set; }
+        public decimal MaximumShareAccountBalanceRateForTheRequestAmount { get; set; }
         public double MinimumCollateralPercentage { get; set; }
 
         public double MaximumCollateralPercentage { get; set; }
 
         public double DefaultCollateralPercentage { get; set; }
-
-        public double MinimumCreditInsurancePercentage { get; set; }
-
-        public double MaximumCreditInsurancePercentage { get; set; }
-
-        public double DefaultCreditInsurancePercentage { get; set; }
 
         public bool ActiveStatus { get; set; }
 
@@ -170,6 +177,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
         public List<LoanProductMaturityPeriodExtension> LoanProductMaturityPeriodExtensions { get; set; }
         public string ServiceOption { get; set; }
+        public string Action { get; set; }
         public LoanProduct()
         {
             MinimumInterestRate = 0;
@@ -192,9 +200,6 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             MinimumCollateralPercentage = 0;
             MaximumCollateralPercentage = 0;
             DefaultCollateralPercentage = 0;
-            MinimumCreditInsurancePercentage = 0;
-            MaximumCreditInsurancePercentage = 0;
-            DefaultCreditInsurancePercentage = 0;
             MaxTopUpLoanAmount = 0;
             MinTopUpLoanAmount = 0;
             TopUpAmount = 0;
@@ -212,7 +217,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             LoanProductMaturityPeriodExtensions = new List<LoanProductMaturityPeriodExtension>();
         }
     }
-
+    public class AddLoanDisbumentCommand
+    {
+        public string LoanId { get; set; }
+        public string AccountNumber { get; set; }
+        [Required]
+        public string Status { get; set; }
+        [Required]
+        public string Comment { get; set; }
+    }
     public class LoanProductMaturityPeriodExtension
     {
         public string Id { get; set; }
@@ -228,16 +241,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public virtual LoanProduct LoanProduct { get; set; }
     }
 
-    public class LoanProductCollateral
-    {
-
-        public string Id { get; set; }
-        public string CollateralId { get; set; }
-        public string LoanProductId { get; set; }
-        public double Value { get; set; }
-        public virtual Collateral Collateral { get; set; }
-        public virtual LoanProduct LoanProduct { get; set; }
-    }
+    
     public class LoanProductRepaymentOrder
     {
         public string Id { get; set; }
@@ -302,8 +306,11 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public List<StringValues> LoanApplicationStatus { get; set; } = new List<StringValues>();
         public List<StringValues> PenaltyTypes { get; set; } = new List<StringValues>();
         public List<StringValues> YesOrNo { get; set; } = new List<StringValues>();
+        public List<StringValues> LoanCommiteeValidationStatuses { get; set; } = new List<StringValues>();
+        public List<StringValues> AmortizationTypes { get; set; } = new List<StringValues>();
+        public List<StringValues> DisbursmentStatuses { get; set; } = new List<StringValues>();
 
-        //YesOrNo
+        //AmortizationTypes
         //ApprovalStatus
     }
 

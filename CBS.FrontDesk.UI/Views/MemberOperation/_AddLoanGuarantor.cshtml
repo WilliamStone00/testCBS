@@ -1,0 +1,135 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+<div class="change-group">
+    <div class="card mb-4">
+        <div class="card-body d-sm-flex d-block">
+            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                <div class="ms-3">
+                    <a type="button" onclick="AddORUpdateGen(@Model.LoanApplication.Id,'datalistingview_gurantor_add','_AddLoanGuarantor','application_detail','MemberOperation','applications')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new guarantor">
+                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                    </a>
+                </div>
+                <div class="ms-3">
+                    <a type="button" onclick="LoadGuarantors()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View list of guarantor">
+                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="col">
+    <div class="accordion-body">
+        @using (Html.BeginForm("Create", "MemberOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostGuarantor(this);" }))
+        {
+            @Html.HiddenFor(m => m.LoanGuarantor.Id)
+            @Html.HiddenFor(m => m.LoanGuarantor.CustomerId)
+            @Html.HiddenFor(m => m.LoanApplication.Id)
+            @Html.HiddenFor(m => m.LoanGuarantor.LoanApplicationId)
+            <input type="hidden" name="ServiceOption" value="guarantor" id="ServiceOption" />
+            <input type="hidden" value="@Model.LoanApplication.Id" id="loanapplicationid" />
+
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.LoanGuarantor.IsCoMember, new { @class = "form-check-input" })
+                        <label class="form-check-label" for="isActive">Is this gurantor a co-member?</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanGuarantor.AccountNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanGuarantor.AccountNumber, "", new { @class = "text-danger" })
+                        <label>Account number</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanGuarantor.GuarantorName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanGuarantor.GuarantorName, "", new { @class = "text-danger" })
+                        <label>Guarantor name</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanGuarantor.GuaranteeAmount, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanGuarantor.GuaranteeAmount, "", new { @class = "text-danger" })
+                        <label>Guaranty amount</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanGuarantor.IdCardNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanGuarantor.IdCardNumber, "", new { @class = "text-danger" })
+                        <label>National identity card number</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanGuarantor.IssueDate, new { @class = "form-control"})
+                        @Html.ValidationMessageFor(m => m.LoanGuarantor.IssueDate, "", new { @class = "text-danger" })
+                        <label>Date of issue (yyyy-mm-dd e.g 2024-03-22)</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanGuarantor.ExpireDate, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanGuarantor.ExpireDate, "", new { @class = "text-danger" })
+                        <label>Expiry date (yyyy-mm-dd e.g 2024-03-22)</label>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanGuarantor.Address, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanGuarantor.Address, "", new { @class = "text-danger" })
+                        <label>Address</label>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanGuarantor.PhoneNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanGuarantor.PhoneNumber, "", new { @class = "text-danger" })
+                        <label>Phone number</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanGuarantor.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanGuarantor.Email, "", new { @class = "text-danger" })
+                        <label>Email</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanGuarantor.Relationship, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanGuarantor.Relationship, "", new { @class = "text-danger" })
+                        <label>Relationship</label>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                @if (ViewBag.Key == null)
+                {
+                    <button type="submit" class="btn btn-primary me-2">Add guarantor</button>
+                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                    <input type="hidden" name="Path" value="insert" id="Path" />
+
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                    <input type="hidden" name="Path" value="update" id="Path" />
+
+                }
+            </div>
+        }
+    </div>
+
+</div>
+
+
+

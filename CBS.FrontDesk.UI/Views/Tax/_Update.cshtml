@@ -2,31 +2,54 @@
 <div class="card-body">
 
     @using (Html.BeginForm("Update", "Tax", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-    {@Html.HiddenFor(model => model.id)
+    {@Html.HiddenFor(model => model.Id)
     <div class="row mt-2 gy-4">
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
-                <label>Name</label>
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                <label>Tax name</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.value, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.value, "", new { @class = "text-danger" })
-                <label>Percentage value</label>
+                @Html.TextBoxFor(m => m.TaxRate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TaxRate, "", new { @class = "text-danger" })
+                <label>Rate in percentage (%)</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.AppliedOnInterest, new { @class = "form-check-input" })
+                <label class="form-check-label" for="isActive">Apply tax on interest</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.AppliedWhenLoanRequestIsGreaterThanSaving, new { @class = "form-check-input" })
+                <label class="form-check-label" for="isActive">Applied tax if loan loan amount requested is greater than saving balance</label>
+            </div>
+        </div> 
+        <div class="col-12">
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.IsVat, new { @class = "form-check-input" })
+                <label class="form-check-label" for="isActive">Check this option if the tax you are creating is VAT</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.description, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(m => m.SavingControlAmount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SavingControlAmount, "", new { @class = "text-danger" })
+                <label>Control saving amount (Flat)</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 200px;" })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                 <label>Description</label>
             </div>
         </div>
-       
-       
     </div>
     <div class="mt-4">
 

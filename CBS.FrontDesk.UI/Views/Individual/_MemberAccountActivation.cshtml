@@ -1,0 +1,38 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+
+<h5 class="card-header">Member Fee Set-Up</h5>
+<hr />
+<div class="card-body">
+    @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+    {
+        <!-- Account Details -->
+        @Html.HiddenFor(model => model.MemberAccountActivation.CustomerId)
+        @Html.HiddenFor(model => model.MemberAccountActivation.MemberAccountActivationPolicyId)
+        @Html.HiddenFor(model => model.option)
+        <input type="hidden" name="option" value="membershipstatus" />
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.MemberAccountActivation.RegistrationFee, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.MemberAccountActivation.RegistrationFee, "", new { @class = "text-danger" })
+                <label>Registration fee</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.MemberAccountActivation.ClossingFee, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.MemberAccountActivation.ClossingFee, "", new { @class = "text-danger" })
+                <label>Clossing fee</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.MemberAccountActivation.ReopeningFee, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.MemberAccountActivation.ReopeningFee, "", new { @class = "text-danger" })
+                <label>Reopening fee</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Set fees</button>
+        </div>
+    }
+</div>

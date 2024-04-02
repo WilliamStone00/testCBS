@@ -1,0 +1,89 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProduct
+
+
+
+
+<div class="col">
+   
+        @using (Html.BeginForm("Create", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            <div class="row my-4">
+                <div class="accordion" id="collapsibleSection">
+                    <div class="card accordion-item">
+                        <h2 class="accordion-header" id="headingDeliveryAddress">
+                            <button type="button"
+                                    class="accordion-button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDeliveryAddress"
+                                    aria-expanded="true"
+                                    aria-controls="collapseDeliveryAddress">
+                                Loan product
+                            </button>
+                        </h2>
+                        <div id="collapseDeliveryAddress"
+                             class="accordion-collapse collapse show"
+                             data-bs-parent="#collapsibleSection">
+                            <div class="accordion-body">
+                                <div class="row g-4">
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.ProductCode, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.ProductCode, "", new { @class = "text-danger" })
+                                            <label>Code</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.ProductName, "", new { @class = "text-danger" })
+                                            <label>Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.TaxId, new SelectList(ViewBag.Taxes, "Id", "name"), "---Select Tax---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.TaxId, "", new { @class = "text-danger " })
+                                            <label>Tax</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 200px;" })
+                                            @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                                            <label>Description</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.ActiveStatus, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">Active status</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    @if (ViewBag.Key == null)
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Save</button>
+                                        @Html.HiddenFor(m => m.Id)
+                                        <input type="hidden" name="ServiceOption" value="product" id="ServiceOption" />
+
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Update</button>
+                                        @Html.HiddenFor(m => m.Id)
+                                        <input type="hidden" name="ServiceOption" value="product" id="ServiceOption" />
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+</div>
+
+
+

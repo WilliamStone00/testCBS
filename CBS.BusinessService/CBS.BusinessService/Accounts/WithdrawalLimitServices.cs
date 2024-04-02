@@ -89,7 +89,6 @@ namespace CBS.BusinessService.Accounts
             {
 
                 model.bankId=GetBankID();
-                model.branchId= GetBranchID();
                 var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<WithdrawalLimit>>(APICallHelper.CreateWithdrawalLimits, model);
                 if (response.IsSuccess)
                 {

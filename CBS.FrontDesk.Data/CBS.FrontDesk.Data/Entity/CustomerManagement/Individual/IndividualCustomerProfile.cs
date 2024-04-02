@@ -15,6 +15,8 @@ namespace CBS.FrontDesk.Data.Entity
         public AddCustomerAccount AddCustomerAccount { get; set; }
         public Aggregrate Aggregrate { get; set; }
         public AccountBalance AccountBalance { get; set; }
+        public MemberAccountActivation MemberAccountActivation { get; set; }
+        public List<MemberAccountActivation> MemberAccountActivations { get; set; }
         public MembershipNextOfKingsMember MembershipNextOfKingsMember { get; set; }
         public List<MembershipNextOfKingsMember> MembershipNextOfKingsMembers { get; set; }
         public List<CardSignatureSpecimen> CardSignatureSpecimens { get; set; }
@@ -28,10 +30,12 @@ namespace CBS.FrontDesk.Data.Entity
         {
             
         }
-        public IndividualCustomerProfile(IndividualProfile customer, Aggregrate aggregrate, AccountBalance accountBalance, List<CustomerAccount> customerAccounts, AddCustomerAccount addCustomerAccount, MembershipNextOfKingsMember membershipNextOfKingsMember, CardSignatureSpecimen cardSignatureSpecimen)
+        public IndividualCustomerProfile(IndividualProfile customer=null, Aggregrate aggregrate=null, AccountBalance accountBalance=null, List<CustomerAccount> customerAccounts=null, AddCustomerAccount addCustomerAccount=null, MembershipNextOfKingsMember membershipNextOfKingsMember=null, CardSignatureSpecimen cardSignatureSpecimen=null)
         {
             CustomerList = customer;
             Aggregrate = aggregrate;
+            MemberAccountActivation=new MemberAccountActivation();
+            MemberAccountActivations=new List<MemberAccountActivation>();
             AccountBalance = accountBalance;
             CustomerAccounts = customerAccounts;
             AddCustomerAccount = addCustomerAccount;

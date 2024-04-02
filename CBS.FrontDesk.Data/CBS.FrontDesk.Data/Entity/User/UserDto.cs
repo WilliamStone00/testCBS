@@ -32,6 +32,8 @@ namespace CBS.FrontDesk.Data.Entity.User
         public bool isMFA { get; set; }
         public bool IsBlocked { get; set; }
         public bool ChangePasswordOnFirstLogin { get; set; }
+        public string GoogleAuthenticatorSecretKey { get; set; }
+        public bool IsVerified { get; set; }
         public string profilePhoto { get; set; }
         public string BankID { get; set; }
         public string BranchID { get; set; }
@@ -63,5 +65,6 @@ namespace CBS.FrontDesk.Data.Entity.User
         public string LastName { get; set; }
         public string RoleName { get; set; }
         public bool IsTeller { get; set; }
+        public string branchId { get; set; }
     }
 }

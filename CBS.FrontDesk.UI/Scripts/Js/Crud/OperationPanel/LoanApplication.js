@@ -8,10 +8,10 @@
 });
 
 function LoadDropDown(KEY, path,affectedID) {
-
+    GetLoanApplication(KEY);
     var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
-    FillDropDownAjaxCallParam(url, affectedID,"---Select Option---")
-
+    FillDropDownAjaxCallParam(url, affectedID, "---Select Option---");
+    
 }
 function LoadProductDetails(KEY) {
 
@@ -19,12 +19,67 @@ function LoadProductDetails(KEY) {
 
 }
 
+function GetLoanApplication(KEY) {
+    $.ajax({
+        type: "GET",
+        url: '/MemberOperation/GetLoanProduct?KEY=' + KEY,
+        success: function (data) {
+            $('#amount').html("Enter amount from:" + data.LoanMinimumAmount + " to " + data.LoanMaximumAmount);
+            $('#loanduration').html("Loan duration is between:" + data.MinimumDurationPeriod + " to " + data.MaximumDurationPeriod + " " + data.LoanDurationPeriod);
+            $('#interest').html("Enter interest between:" + data.MinimumInterestRate + "% and " + data.MaximumInterestRate + "%. Calculated on daily bases: " + data.LoanInterestPeriod);
+            $('#installment').html("Minimum repayment installment is:" + data.MinimumNumberOfRepayment + " and Maximum is " + data.MaximumNumberOfRepayment);
+            $('#saving').html("Enter balance saving rate between:" + data.MinimumSavingAccountBalanceRateForTheRequestAmount + "% and " + data.MaximumSavingAccountBalanceRateForTheRequestAmount+"%");
+            $('#share').html("Enter balance share rate between:" + data.MinimumShareAccountBalanceRateForTheRequestAmount + "% and " + data.MaximumShareAccountBalanceRateForTheRequestAmount + "%");
+            $('#salary').html("Enter Salary rate between:" + data.MinimumSalaryAccountBalanceRateForTheRequestAmount + "% and " + data.MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount + "%");
+            $('#fee').html("Enter processing fee rate between:" + data.MinimumProcessingFeeRate + "% and " + data.MaximumProcessingFeeRate + "%.");
+
+
+        }, error: function (err) {
+
+            appalert(err.statusText, 1, 3);
+        }
+    });
+}
 
 function EditReset(KEY, partialView) {
     EditResetMain(KEY, partialView, "mainview", "Individual", "InitializeData");
 }
 
 
+function AjaxPostLoanScedule(form) {
+
+    $.validator.unobtrusive.parse(form);
+    if ($(form).valid()) {
+        var ajaxConfig = {
+            type: 'POST',
+            url: form.action,
+            data: new FormData(form),
+            success: function (response) {
+
+                if (response.success) {
+                    appalert(response.message, 1, 1);
+                    LoadLocalSchedule();                }
+                else {
+                    appalert(response.message, 2, 1);
+
+                }
+
+            }
+            , error: function (err) {
+                appalert(err.statusText, 0, 1);
+            }
+        };
+
+        if ($(form).attr('enctype') === "multipart/form-data") {
+            ajaxConfig["contentType"] = false;
+            ajaxConfig["processData"] = false;
+        }
+        $.ajax(ajaxConfig);
+
+    }
+    return false;
+
+}
 
 
 
@@ -32,52 +87,10 @@ function showConfirmMessage(KEY, ServiceOption, tableID) {
     DeleteData("Transactions", KEY, ServiceOption, "datalistingview", tableID, "InitializeData");
 
 }
-function LoadUsers() {
-    LoadDataGen('Individual', 'myDataTable', '_IndividualData', 0, 'datalistingview', "KEY")
-    //$("#myDataTable").DataTable({
-    //    "destroy": true,
-    //    "processing": true,
-    //    "serverSide": true,
-    //    "info": true,
-    //    "stateSave": true,
-    //    "lengthMenu": [[10, 20, 100, 500, 1000, 2000, 5000, 10000], [10, 20, 100, 500, 1000, 2000, 5000, 10000]],
-    //    "filter": true,
-    //    "ajax": {
-    //        "url": "/Individual/LoadData",
-    //        "type": "POST",
-    //        "datatype": "json"
-    //    },
 
-    //    "columns": [
-    //        { "data": "name", "name": "userName", "autoWidth": true },
-    //        { "data": "phone", "name": "email", "autoWidth": true },
-    //        { "data": "town", "name": "address", "autoWidth": true },
-    //        { "data": "branch", "name": "strlastLoginDate", "autoWidth": true },
-    //        { "data": "status", "name": "status", "autoWidth": true },
-    //        {
-    //            "data": "customerId", "orderable": "false", "render": function (data) {
-    //                return "<a href='/Individual/CustomerProfile?KEY=" + data + "'target='_blanck' class='mr-2' data-toggle='tooltip' data-placement='top' title='View " + data + " detail'> Profile</a>";
-    //            }
-    //        }
-    //    ],
-    //    "columnDefs": [
-    //        { "targets": 0, "searchable": true, "orderable": true, "width": "30%" },
-    //        { "targets": 1, "searchable": true, "orderable": true, "width": "10%" },
-    //        { "targets": 2, "searchable": true, "orderable": true, "width": "15%" },
-    //        { "targets": 3, "searchable": true, "orderable": true, "width": "20%" },
-    //        { "targets": 4, "searchable": true, "orderable": true, "width": "15%" },
-    //        { "targets": 5, "searchable": true, "orderable": true, "width": "10%" },
-
-
-    //    ],
-    //    "order": [[0, "asc"]]
-    //});
-
-
-
+function LoadLocalSchedule() {
+    LoadDataGen('MemberOperation', null, '_LoanSimulationScheduleData', 0, 'amortization_schedule_data_div', "KEY", 'applications', 'loan_schedule')
 }
-
-
 
 
 

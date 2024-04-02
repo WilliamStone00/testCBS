@@ -3,24 +3,6 @@
     ViewBag.Title = "Member's loan profile";
 }
 
-<style>
-    tfoot {
-        background-color: #f3f4f6; /* Background color */
-        font-weight: bold; /* Bold text */
-    }
-
-        tfoot td {
-            padding: 10px; /* Padding */
-        }
-
-            tfoot td:first-child {
-                border-radius: 0 0 0 10px; /* Rounded corners for the first cell */
-            }
-
-            tfoot td:last-child {
-                border-radius: 0 0 10px 0; /* Rounded corners for the last cell */
-            }
-</style>
 
 <div class="row invoice-preview">
     <div class="col-xl-3 col-md-4 col-12 invoice-actions">
@@ -128,31 +110,31 @@
             </div>
         </div>
     </div>
-        <div class="col-xl-9 col-lg-8 col-md-8 order-0 order-md-1">
-            <div class="card">
-                <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
-                    <div class="accordion-item active">
-                        <h2 class="accordion-header text-body d-flex justify-content-between"
-                            id="accordionPopoutIconThree">
-                            <button type="button"
-                                    class="accordion-button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#accordionPopoutIcon-3"
-                                    aria-expanded="true"
-                                    aria-controls="accordionPopoutIcon-3">
-                                <i class="mdi mdi-application-cog me-2"></i>
-                            </button>
-                        </h2>
-                        <div id="accordionPopoutIcon-3"
-                             class="accordion-collapse collapse show"
-                             data-bs-parent="#accordionPopoutIcon">
-                            <div class="accordion-body">
-                                <div id="mainviewChange">
-                                    <div class="change-group">
-                                        <div class="card mb-4">
-                                            <div class="card-body d-sm-flex d-block">
-                                                <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                                    <div>
+    <div class="col-xl-9 col-lg-8 col-md-8 order-0 order-md-1">
+        <div class="card">
+            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+                <div class="accordion-item active">
+                    <h2 class="accordion-header text-body d-flex justify-content-between"
+                        id="accordionPopoutIconThree">
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionPopoutIcon-3"
+                                aria-expanded="true"
+                                aria-controls="accordionPopoutIcon-3">
+                            <i class="mdi mdi-application-cog me-2"></i>
+                        </button>
+                    </h2>
+                    <div id="accordionPopoutIcon-3"
+                         class="accordion-collapse collapse show"
+                         data-bs-parent="#accordionPopoutIcon">
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+                                <div class="change-group">
+                                    <div class="card mb-4">
+                                        <div class="card-body d-sm-flex d-block">
+                                            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                                                @*<div>
                                                         <button type="button" class="btn btn-primary" onclick="AddORUpdateGen('@Model.Customer.customerId','datalistingview','_LoanApplication','loanapplication','MemberOperation',null)">Apply for a Loan</button>
                                                     </div>
                                                     <div class="ms-3">
@@ -161,13 +143,31 @@
                                                     <div class="ms-3">
                                                         <button type="button" class="btn btn-primary" onclick="LoadDataGen('MemberOperation','myDataTable','_MemberLoanApplicationData',0,'datalistingview','@Model.Customer.customerId','applications','list_of_members_loan_application')">Applications</button>
                                                     </div>
+                                                    <div class="ms-3">
+                                                        <button type="button" class="btn btn-primary" onclick="AddORUpdateGen(null,'datalistingview','_MakeLoanSimulation','create_loan_simulation','MemberOperation','applications')">Simulate amortization schedule</button>
+                                                    </div>*@
+                                                <div class="ms-3">
+                                                    <a type="button" onclick="AddORUpdateGen('@Model.Customer.customerId','datalistingview','_LoanApplication','loanapplication','MemberOperation',null)" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Apply for a new loan">
+                                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                                    </a>
+                                                </div>
+                                                <div class="ms-3">
+                                                    <a type="button" onclick="LoadDataGen('MemberOperation','myDataTable','_MemberLoanApplicationData',0,'datalistingview','@Model.Customer.customerId','applications','list_of_members_loan_application')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View listing of loan applications">
+                                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                                    </a>
+                                                </div>
+                                                <div class="ms-3">
+                                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_MakeLoanSimulation','create_loan_simulation','MemberOperation','applications')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Peform loan simuation">
+                                                        <span class="tf-icons mdi mdi-calculator mdi-18px"></span>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="datalistingview">
-                                            @Html.Partial("_LoanData");
-                                        </div>
                                     </div>
+                                    <div id="datalistingview">
+                                        @Html.Partial("_LoanData")
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -175,6 +175,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </div>
 
 <!-- Modal -->
@@ -208,7 +209,9 @@
 </div>
 
 
-
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
 <script src="~/Scripts/Js/Crud/OperationPanel/LoanApplication.js"></script>
+<script src="~/Scripts/Js/Crud/OperationPanel/Guarantor.js"></script>
+<script src="~/Scripts/Js/Crud/OperationPanel/Collateral.js"></script>
+<script src="~/Scripts/Js/Crud/OperationPanel/Attachedment.js"></script>
 }

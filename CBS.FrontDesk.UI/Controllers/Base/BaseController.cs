@@ -16,6 +16,7 @@ using System.Linq;
 using CBS.FrontDesk.Helper;
 using CBS.API.Helper;
 using System.IdentityModel.Tokens.Jwt;
+using CBS.FrontDesk.Data.UserManagement;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -52,7 +53,26 @@ namespace CBS.FrontDesk.UI.Controllers
                 throw;
             }
         }
+        public bool VerifyCookies(string cookiesName = "CBS4U")
+        {
 
+            HttpCookie authCookie = Request.Cookies[cookiesName];
+            if (authCookie != null)
+            {
+                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                if (authTicket.Expired)
+                {
+                    return true;
+                }
+
+            }
+            else
+            {
+                return true;
+            }
+            return false;
+
+        }
         //protected override void OnActionExecuting(ActionExecutingContext filterContext)
         //{
         //    // Check if the request is going to the login page to avoid redirection loops
@@ -260,18 +280,18 @@ namespace CBS.FrontDesk.UI.Controllers
             Session["BranchID"] = userSession.BranchID;
             Session["OrganizationID"] = userSession.Bank.OrganizationId;
             Session["BankID"] = userSession.BankID;
-            Session["BankName"] = userSession.Bank.Name;
+            Session["BankName"] = userSession.Branch.Bank.Name;
             Session["BranchName"] = userSession.Branch.Name;
             Session["BranchCode"] = userSession.Branch.BranchCode;
-            Session["BankCode"] = userSession.Bank.BankCode;
+            Session["BankCode"] = userSession.Branch.Bank.BankCode;
 
             if (userSession.Branch.IsHeadOffice)
             {
-                Session["IsHeadOffice"] = "True";
+                Session["IsHeadOffice"] = true;
             }
             else
             {
-                Session["IsHeadOffice"] = "False";
+                Session["IsHeadOffice"] = false;
             }
         }
 

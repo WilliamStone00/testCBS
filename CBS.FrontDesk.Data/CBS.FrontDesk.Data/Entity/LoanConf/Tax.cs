@@ -10,14 +10,28 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
  
     public class Tax
     {
-        public string id { get; set; }
+        public string Id { get; set; }
         [Required]
-        public string name { get; set; }
-        [Required]
+        public string Name { get; set; }
+        public decimal TaxRate { get; set; }
+        public bool AppliedWhenLoanRequestIsGreaterThanSaving { get; set; }
+        public bool IsVat { get; set; }
 
-        public double value { get; set; }
+        public bool AppliedOnInterest { get; set; }
         [Required]
-        public string description { get; set; }
+        public decimal SavingControlAmount { get; set; }
+        [Required]
+        public string Description { get; set; }
+        public List<LoanApplication> LoanApplications { get; set; }
+        public Tax()
+        {
+            AppliedOnInterest = true;
+            AppliedWhenLoanRequestIsGreaterThanSaving = true;
+            SavingControlAmount = 0;
+            TaxRate = 0;
+            IsVat = true;
+        }
+
     }
 
 }
