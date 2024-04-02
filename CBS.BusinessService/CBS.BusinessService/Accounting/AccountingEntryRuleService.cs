@@ -42,7 +42,7 @@ namespace CBS.BusinessService.Accounting
                 {
 
                     GetExecutionMessages(inResponse, true, $"{objOperationEvent.AccountingRuleEntryName}", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }
@@ -171,7 +171,7 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
-        public Task<List<FrontDesk.Data.Entity.Accounting.AccountingRuleEntryDto>> GetAccountingEntryRulesDto(IEnumerable<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry> accountingRuleEntries, IEnumerable<FrontDesk.Data.Entity.Accounting.OperationEvent> operationEvents, IEnumerable<OperationEventAttribute> operationEventAttributes, IEnumerable<Account> chartOfAccounts)
+        public Task<List<FrontDesk.Data.Entity.Accounting.AccountingRuleEntryDto>> GetAccountingEntryRulesDto(IEnumerable<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry> accountingRuleEntries, IEnumerable<FrontDesk.Data.Entity.Accounting.OperationEvent> operationEvents, IEnumerable<OperationEventAttribute> operationEventAttributes, IEnumerable<ChartOfAccount> chartOfAccounts)
         {
             var query = from accountingRuleEntry in accountingRuleEntries
                         join debitAccount in chartOfAccounts on accountingRuleEntry.DeterminationAccountId equals debitAccount.Id
@@ -185,8 +185,8 @@ namespace CBS.BusinessService.Accounting
                             BookingDirection = accountingRuleEntry.BookingDirection, // Add your logic for BookingDirection
                             OperationEventAttributeName = operationEventAttribute.Name,
                             OperationEventName = operationEventAttribute.Name,
-                            DebitAccountLabel = debitAccount.AccountHolder,
-                            CreditAccountLabel = creditAccount.AccountHolder
+                            DebitAccountLabel = debitAccount.LabelEn,
+                            CreditAccountLabel = creditAccount.LabelEn
                         };
 
             List<AccountingRuleEntryDto> result = query.ToList();

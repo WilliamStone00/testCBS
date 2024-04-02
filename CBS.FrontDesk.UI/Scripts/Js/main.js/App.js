@@ -230,7 +230,8 @@ function PrintSingleObject(objectID, option, reportStructureType) {
 }
 
 
-function LoadDT(tableID, order) {
+function LoadDT(tableID, order)
+{
 
     if (order === "desc") {
         var T = '#' + tableID;
@@ -257,7 +258,8 @@ function LoadDT(tableID, order) {
         });
     }
 
-    else {
+    else
+    {
         var T = '#' + tableID;
         var dataThumbView = $(T).DataTable({
             responsive: false,

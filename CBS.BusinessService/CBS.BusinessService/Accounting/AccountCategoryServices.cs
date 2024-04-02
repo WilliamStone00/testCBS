@@ -172,5 +172,23 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
+
+        public async Task<List<FrontDesk.Data.Entity.Accounting.AccountCategory>> GetAccountClassCategory(string id)
+        {
+            try
+            {
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.Accounting.AccountCategory>>>(string.Format(APICallHelper.Get_AccountClassCategory, id));
+                if (cusResponseObject.IsSuccess)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
     }
 }

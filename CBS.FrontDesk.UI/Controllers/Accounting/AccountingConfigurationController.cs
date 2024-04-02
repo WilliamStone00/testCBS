@@ -457,7 +457,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     var data = await _accountingEntryRuleService.GetAccountingEntryRules();
                     var OperationEventList = await _OperationEventService.GetOperationEvents();
                     var OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
-                    var DebitAccounts = await _AccountServices.GetAllAccounting();
+                    var DebitAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
                     var dataList = await _Service.GetAccountingEntryRules();
                     var dataModel = await _Service.GetAccountingEntryRulesDto(dataList, OperationEventList, OperationEventAttributes, DebitAccounts);
 

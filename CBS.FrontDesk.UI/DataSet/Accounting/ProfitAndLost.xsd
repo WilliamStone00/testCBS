@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ProfitAndLost" targetNamespace="http://tempuri.org/ProfitAndLost.xsd" xmlns:mstns="http://tempuri.org/ProfitAndLost.xsd" xmlns="http://tempuri.org/ProfitAndLost.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="ProfitAndLost" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_UserDSName="ProfitAndLost" msprop:Generator_DataSetName="ProfitAndLost">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ProfitAndLost" msprop:Generator_RowEvHandlerName="ProfitAndLostRowChangeEventHandler" msprop:Generator_RowDeletedName="ProfitAndLostRowDeleted" msprop:Generator_RowDeletingName="ProfitAndLostRowDeleting" msprop:Generator_RowEvArgName="ProfitAndLostRowChangeEvent" msprop:Generator_TablePropName="_ProfitAndLost" msprop:Generator_RowChangedName="ProfitAndLostRowChanged" msprop:Generator_RowChangingName="ProfitAndLostRowChanging" msprop:Generator_TableClassName="ProfitAndLostDataTable" msprop:Generator_RowClassName="ProfitAndLostRow" msprop:Generator_TableVarName="tableProfitAndLost" msprop:Generator_UserTableName="ProfitAndLost">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_UserColumnName="Id" type="xs:string" minOccurs="0" />
+              <xs:element name="EntityType" msprop:Generator_ColumnPropNameInRow="EntityType" msprop:Generator_ColumnPropNameInTable="EntityTypeColumn" msprop:Generator_ColumnVarNameInTable="columnEntityType" msprop:Generator_UserColumnName="EntityType" type="xs:string" minOccurs="0" />
+              <xs:element name="Name" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="Location" msprop:Generator_ColumnPropNameInRow="Location" msprop:Generator_ColumnPropNameInTable="LocationColumn" msprop:Generator_ColumnVarNameInTable="columnLocation" msprop:Generator_UserColumnName="Location" type="xs:string" minOccurs="0" />
+              <xs:element name="AccountNumber" msprop:Generator_ColumnPropNameInRow="AccountNumber" msprop:Generator_ColumnPropNameInTable="AccountNumberColumn" msprop:Generator_ColumnVarNameInTable="columnAccountNumber" msprop:Generator_UserColumnName="AccountNumber" type="xs:string" minOccurs="0" />
+              <xs:element name="AccountName" msprop:Generator_ColumnPropNameInRow="AccountName" msprop:Generator_ColumnPropNameInTable="AccountNameColumn" msprop:Generator_ColumnVarNameInTable="columnAccountName" msprop:Generator_UserColumnName="AccountName" type="xs:string" minOccurs="0" />
+              <xs:element name="CurrentBalance" msprop:Generator_ColumnPropNameInRow="CurrentBalance" msprop:Generator_ColumnPropNameInTable="CurrentBalanceColumn" msprop:Generator_ColumnVarNameInTable="columnCurrentBalance" msprop:Generator_UserColumnName="CurrentBalance" type="xs:string" minOccurs="0" />
+              <xs:element name="Cartegory" msdata:Caption="DebitBalance" msprop:Generator_ColumnPropNameInRow="Cartegory" msprop:Generator_ColumnPropNameInTable="CartegoryColumn" msprop:Generator_ColumnVarNameInTable="columnCartegory" msprop:Generator_UserColumnName="Cartegory" type="xs:string" minOccurs="0" />
+              <xs:element name="Address" msprop:Generator_ColumnPropNameInRow="Address" msprop:Generator_ColumnPropNameInTable="AddressColumn" msprop:Generator_ColumnVarNameInTable="columnAddress" msprop:Generator_UserColumnName="Address" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

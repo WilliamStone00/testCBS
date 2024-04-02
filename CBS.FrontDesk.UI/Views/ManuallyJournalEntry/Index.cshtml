@@ -1,0 +1,53 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+@{
+    ViewBag.Title = "ManuallyJournalEntry";
+}
+
+<div class="card mb-12">
+    <div class="card-header">
+        <h5 class="card-title mb-0">BANKING OPERATIONS-JOURNAL ENTRY MANAGEMENT</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+
+            <!-- Navigation -->
+            <div class="col-12 col-md-4  card-separator">
+        
+                    <div id="datalistingview_AddEntry">
+                        @Html.Partial("_AddEntry")
+                    </div>
+          
+            </div>
+            <!-- Navigation Body -->
+            <div class="col-12 col-md-8 ">
+                <div class="col-12 ">
+
+                   
+
+                </div>
+                <div class="tab-content  card-separator">
+                    <br />
+                    <div id="datalistingview_JournalEntries">
+                        <div id="datalistingview_AddEntryPurpose">
+                            @Html.Partial("_AddEntryPurpose")
+                        </div>
+                    </div>
+                    <br />
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts { @Scripts.Render("~/bundles/jqueryval")
+  
+
+    <script src="~/Scripts/Js/main.js/MultipleManualEntry.js"></script>
+}
+
