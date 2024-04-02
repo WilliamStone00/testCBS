@@ -82,7 +82,7 @@ function GetObject(partialview, path) {
     var id = $("#selectedID").val();
 
     loadPartialView3(id, partialview, path);  
-    //loadPartialView(nodeId, "_Operation", "Transit");
+    loadCartegoryId(id);
 }
 function loadPartialView3(nodeId,view,path) {
     // Use AJAX to load the partial view based on the nodeId
@@ -93,6 +93,7 @@ function loadPartialView3(nodeId,view,path) {
         success: function (result) {
             // Assuming you have a container where you want to display the partial view
             $('.viewSelector').html(result);
+        
         },
         error: function (error) {
             /*console.error('Error loading partial view:', error);*/
@@ -118,4 +119,25 @@ function loadPartialView2(nodeId, view) {
     });
 }
 
- 
+function loadCartegoryId(accountNumber) {
+
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/AccountingChart/InitializeData?KEY=' + accountNumber + '&partialView=null&path=Cartegory',
+        type: 'GET',
+        dataType: 'json',
+        data: { accountNumber: accountNumber },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+            $('#AccountCartegoryId').empty();
+
+            // Add new options based on the fetched data
+            $.each(data, function (index, item) {
+                $('#AccountCartegoryId').append($('<option>').text(item.Name).attr('value', item.Id));
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}

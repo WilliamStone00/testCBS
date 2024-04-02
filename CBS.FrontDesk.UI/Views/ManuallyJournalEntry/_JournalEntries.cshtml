@@ -1,0 +1,75 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+
+
+<table class="table table-hover card-body" id="JournalEntryDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>AccountNumber</th>
+            <th>AccountName</th>
+            <th>Credit</th>
+            <th>Debit</th>
+            <th>Action</th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.EntryTempDataResult)
+        {
+            <tr>
+                <td style="width:10%">@d.AccountNumber</td>
+                <td style="width:25%">@d.AccountName</td>
+                @if (d.BookingDirection == "DEBIT")
+                {
+                    <td style="width:20%">0.00</td>
+                    <td style="width:20%">@d.Amount.ToString("N")</td>
+
+                }
+                else
+                {
+
+                    <td style="width:20%">@d.Amount.ToString("N")</td>
+                    <td style="width:20%">0.00</td>
+                }
+                <td style="width:25%">
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_AddEntry','_AddEntry','update','ManuallyJournalEntry','EntryTempData')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountName to edit">Edit</a>|
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountName" onclick="DeleteDataJournal('ManuallyJournalEntry','@d.Id','JournalEntryDataTable','_JournalEntries','desc','datalistingview_JournalEntries','EntryTempData')">Delete</a>
+                </td>
+                <td></td>
+            </tr>
+        }
+        <tr>
+            <td>Total Debit:@Model.EntryTempDataResult[0].SumDebit</td>
+            <td></td>
+            <td>Total Credit:@Model.EntryTempDataResult[0].SumCredit</td>
+            <td></td>
+            <td>Difference:@Model.EntryTempDataResult[0].Difference</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+@using (Html.BeginForm("AddOrUpdate", "ManuallyJournalEntry", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateJournalEntry(this);" }))
+{
+    <input type="hidden" name="ServiceOption" value="EntryDescription" id="ServiceOption" />
+     
+    <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+        <div class="col-12">
+            <div class="card">
+                <h5 class="card-header">Purpose of the Entry: @Html.TextAreaFor(m => m.EntryDescription.Description, new { @class = "form-control textbox" })</h5>
+                @Html.ValidationMessageFor(m => m.EntryDescription.Description, "", new { @class = "text-danger" })
+                <hr />
+                @Html.HiddenFor(x => x.EntryTempDataResult[0].Reference)
+                @Html.ValidationMessageFor(m => m.EntryTempData.Reference, "", new { @class = "text-danger" })
+
+                <div class="shift-right">
+                    <button type="submit" class="btn btn-primary" id="post-entries">
+                        Post Entries &nbsp;&nbsp;<i class="mdi mdi-database-plus"></i>
+                    </button>
+                    <input type="hidden" name="Action" value="insert" id="Action" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+}
+

@@ -78,6 +78,7 @@
     <Compile Include="Entity\Accounting\CashReplenimentRequest.cs" />
     <Compile Include="Entity\Accounting\CashInfusionRequest.cs" />
     <Compile Include="Entity\Accounting\Currency.cs" />
+    <Compile Include="Entity\Accounting\EntryTempData.cs" />
     <Compile Include="Entity\Accounting\EntryType.cs" />
     <Compile Include="Entity\Accounting\CreditAccountingEntry.cs" />
     <Compile Include="Entity\Accounting\ManualAccountingEntry.cs" />
@@ -94,6 +95,11 @@
     <Compile Include="Entity\Accounting\OperationEventAttributeDto.cs" />
     <Compile Include="Entity\Accounting\OperationEventDto.cs" />
     <Compile Include="Entity\Accounting\CashInfusion.cs" />
+    <Compile Include="Entity\BudgetManagement\BubgetConfiguration.cs" />
+    <Compile Include="Entity\BudgetManagement\BudgetCategorie.cs" />
+    <Compile Include="Entity\BudgetManagement\Budget.cs" />
+    <Compile Include="Entity\BudgetManagement\BudgetPeriod.cs" />
+    <Compile Include="Entity\BudgetManagement\OrganizationUnit.cs" />
     <Compile Include="Entity\Config\Organization\BankConfig.cs" />
     <Compile Include="Entity\CustomerManagement\Individual\CustomerActivation.cs" />
     <Compile Include="Entity\CustomerManagement\MembershipNextOfKingsMember.cs" />

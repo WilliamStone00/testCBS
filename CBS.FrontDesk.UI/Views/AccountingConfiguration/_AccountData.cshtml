@@ -5,10 +5,9 @@
     <table class="table table-hover" id="myDataTable_AccountData">
         <thead class="table-light">
             <tr>
-                <th>Account Number</th>
+                <th>Acc Number</th>
                 <th>Account Label</th>
-                <th>AccountType</th>
-                <th>ChartofAccount</th>
+
                 <th>Action</th>
             </tr>
         </thead>
@@ -16,11 +15,10 @@
             @foreach (var d in Model.Accounts)
             {
                 <tr>
-                    <td style="width:15%">@d.AccountNumber</td>
-                    <td style="width:25%">@d.AccountHolder</td>
-                    <td style="width:25%">@d.AccountTypeId</td>
-                    <td style="width:25%">@d.ChartOfAccountId</td>
-                    <td style="width:10%">
+                    <td style="width:20%">@d.AccountNumber</td>
+                    <td style="width:60%">@d.AccountHolder</td>
+                  
+                    <td style="width:25%">
                         <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Account','_CreateAccount','update','AccountingConfiguration','account')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountHolder to edit">Edit</a>|
                         <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountHolder" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_Account','_AccountData',0,'datalistingview_Account','account')">Delete</a>
                     </td>

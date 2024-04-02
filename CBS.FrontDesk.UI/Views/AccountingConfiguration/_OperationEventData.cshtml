@@ -13,11 +13,11 @@
 
             <tr>
                 <td style="width:35%">@d.OperationEventName</td>
-                <td style="width:25%">@d.Description</td>
+                <td style="width:45%">@d.Description</td>
 
-                <td style="width:40%">
-                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_OperationEvent','_CreateOperationEvent','update','AccountingConfiguration','operationEvent')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.OperationEventName to edit">Edit</a>
-                    <a href="#" class="mr-2 btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete @d.OperationEventName"  onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_OperationEvent','_OperationEventData',0,'datalistingview_OperationEvent','operationEvent')">Delete</a>
+                <td style="width:20%">
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_OperationEvent','_CreateOperationEvent','update','AccountingConfiguration','operationEvent')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.OperationEventName to edit">Edit</a>
+                    <a href="#" class="mr-2 " data-toggle="tooltip" data-placement="top" title="Delete @d.OperationEventName"  onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_OperationEvent','_OperationEventData',0,'datalistingview_OperationEvent','operationEvent')">Delete</a>
 
                 </td>
 

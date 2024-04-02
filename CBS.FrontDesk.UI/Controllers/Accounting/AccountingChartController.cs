@@ -99,6 +99,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var OperationEventAttribute = await _Services.GetChartOfAccountById(KEY);
 
                 return PartialView(partialView, OperationEventAttribute);
+            }else if (path == "Cartegory")
+            {
+                var treeData = await _AccountCategoryServices.GetAccountClassCategory(KEY);
+
+                return Json(treeData, JsonRequestBehavior.AllowGet);
             }
             else
             {

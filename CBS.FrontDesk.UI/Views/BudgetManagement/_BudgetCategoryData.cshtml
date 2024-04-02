@@ -1,0 +1,35 @@
+﻿
+
+@model CBS.FrontDesk.Data.Entity.BudgetConfiguration
+@{
+    ViewBag.Title = "_BudgetCategoryData";
+}
+
+
+
+<table class="table table-hover" id="myDataTable_BudgetCategoryData">
+    <thead class="table-light">
+        <tr>
+            <th>Name</th>
+            <th>Chart Of Account</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.BudgetCategories)
+        {
+            <tr>
+                <td style="width:25%">@d.CategoryName</td>
+                <td style="width:20%">@d.ChartOfAccountId</td>
+                <td style="width:20%">@d.Description</td>
+                <td style="width:35%">
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_BudgetCategory','_CreateBudgetCategory','update','BudgetManagement','budgetCategory')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.CategoryName to edit">Edit</a>|
+
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.CategoryName" onclick="ViewDataDetails('BudgetManagement','@d.Id','myDataTable_BudgetData','_BudgetData',0,'datalistingview_Budget','budget')">Details</a>|
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.CategoryName" onclick="DeleteDataConfiguration('BudgetManagement','@d.Id','myDataTable_BudgetData','_BudgetData',0,'datalistingview_Budget','budget')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
