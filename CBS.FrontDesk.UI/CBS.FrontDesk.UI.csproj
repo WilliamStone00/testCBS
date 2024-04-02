@@ -219,6 +219,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Code\Helper\HtmlExtension.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -240,10 +241,12 @@
     <Compile Include="Controllers\Accounting\TellerCashDemandController.cs" />
     <Compile Include="Controllers\Authentication\AuthenticationController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
+    <Compile Include="Controllers\Commitee\LoanCommiteeController.cs" />
     <Compile Include="Controllers\BudgetManagement\BudgetManagementController.cs" />
     <Compile Include="Controllers\Configuration\Localization\CountryController.cs" />
     <Compile Include="Controllers\Configuration\Organ\BranchManagementController.cs" />
     <Compile Include="Controllers\CustomerManagement\IndividualController.cs" />
+    <Compile Include="Controllers\CustomerManagement\Policy\MemberAccountActivationPolicyController.cs" />
     <Compile Include="Controllers\ErrorHandler\ErrorController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Loan\Configuration\AlertProfileController.cs" />
@@ -254,6 +257,7 @@
     <Compile Include="Controllers\Loan\Configuration\FundingLineController.cs" />
     <Compile Include="Controllers\Loan\Configuration\GuarantyPackController.cs" />
     <Compile Include="Controllers\Loan\Configuration\GuarantyController.cs" />
+    <Compile Include="Controllers\Loan\Configuration\LoanProductCollateralController.cs" />
     <Compile Include="Controllers\Loan\Configuration\LoanProductController.cs" />
     <Compile Include="Controllers\Loan\Configuration\InstallmentTypeController.cs" />
     <Compile Include="Controllers\Loan\Configuration\LoanPurposeController.cs" />
@@ -261,6 +265,7 @@
     <Compile Include="Controllers\Loan\Configuration\PeriodController.cs" />
     <Compile Include="Controllers\Loan\Configuration\DocumentController.cs" />
     <Compile Include="Controllers\Loan\Configuration\TaxController.cs" />
+    <Compile Include="Controllers\Loan\LoanTransactions\LoanController.cs" />
     <Compile Include="Controllers\MemberOperation\MemberOperationController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
     <Compile Include="Controllers\RoleManagement\MenuMasterController.cs" />
@@ -274,6 +279,7 @@
     <Compile Include="Controllers\TransactionManagement\TellerManagementController.cs" />
     <Compile Include="Controllers\TransactionManagement\TellerProvissioingController.cs" />
     <Compile Include="Controllers\TransactionManagement\TransactionConfigurationController.cs" />
+    <Compile Include="Controllers\UserManagement\MFAVerificationController.cs" />
     <Compile Include="Controllers\UserManagement\UserManagementController.cs" />
     <Compile Include="DataSet\Accounting\BalanceSheet.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -303,8 +309,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helper\HtmlExtensions.cs" />
-    <Compile Include="Helper\SessionTimeoutFilterAttribute.cs" />
+    <Compile Include="App_Code\Helper\SessionTimeoutFilterAttribute.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -2123,9 +2128,16 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
+    <Content Include="Scripts\Js\Crud\Collateral\Collateral.js" />
+    <Content Include="Scripts\Js\Crud\LoanProductCollateral\LoanProductCollateral.js" />
+    <Content Include="Scripts\Js\Crud\LoanTransactions\Loans.js" />
     <Content Include="Scripts\Js\Budgetmanagement\Budget.js" />
     <Content Include="Scripts\Js\Crud\OperationPanel\Customers.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\Collateral.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\Attachedment.js" />
     <Content Include="Scripts\Js\Crud\OperationPanel\LoanApplication.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\Guarantor.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\Loans.js" />
     <Content Include="Scripts\Js\Crud\OperationPanel\MyCustomers.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\MyCustomers.js" />
     <Content Include="Scripts\Js\Crud\EOD\EOD.js" />
@@ -2218,7 +2230,6 @@
     <Content Include="Views\UserManagement\_MFA.cshtml" />
     <Content Include="Views\UserManagement\_ResetPassword.cshtml" />
     <Content Include="Views\Document\Index.cshtml" />
-    <Content Include="Views\Document\_Update.cshtml" />
     <Content Include="Views\Document\_Data.cshtml" />
     <Content Include="Views\Document\_Create.cshtml" />
     <Content Include="Views\Period\_Create.cshtml" />
@@ -2241,10 +2252,9 @@
     <Content Include="Views\LoanProduct\Index.cshtml" />
     <Content Include="Views\LoanProduct\_Update.cshtml" />
     <Content Include="Views\LoanProduct\_Data.cshtml" />
-    <Content Include="Views\LoanProduct\_Create.cshtml" />
+    <Content Include="Views\LoanProduct\_LoanProduct.cshtml" />
     <Content Include="Views\AttachedLoanDocuments\CustomerDocument.cshtml" />
     <Content Include="Views\Collateral\Index.cshtml" />
-    <Content Include="Views\Collateral\_Update.cshtml" />
     <Content Include="Views\Collateral\_Data.cshtml" />
     <Content Include="Views\Collateral\_Create.cshtml" />
     <Content Include="Views\AlertProfile\Index.cshtml" />
@@ -2445,10 +2455,44 @@
     <Content Include="Views\MemberOperation\_RefundForm.cshtml" />
     <Content Include="Views\MemberOperation\_LoanScheduleData.cshtml" />
     <Content Include="Views\MemberOperation\_SelectedLoanData.cshtml" />
-    <Content Include="Views\MemberOperation\LoanApplicationValidation.cshtml" />
-    <Content Include="Views\MemberOperation\_LoanApplicationValidationData.cshtml" />
-    <Content Include="Views\MemberOperation\_LoanApplicationValidation.cshtml" />
+    <Content Include="Views\MemberOperation\LoanApplicationApproval.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanApplicationApprovalData.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanApplicationApproval.cshtml" />
     <Content Include="Views\LoanProduct\_SetPenalty.cshtml" />
+    <Content Include="Views\MemberOperation\_MakeLoanSimulation.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanSimulationScheduleData.cshtml" />
+    <Content Include="Views\LoanCommitee\Index.cshtml" />
+    <Content Include="Views\LoanCommitee\_LoanCommitee.cshtml" />
+    <Content Include="Views\LoanCommitee\_LoanCommiteeData.cshtml" />
+    <Content Include="Views\LoanCommitee\_LoanCommiteeMember.cshtml" />
+    <Content Include="Views\LoanCommitee\_LoanCommiteeMemberData.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanCommiteeValidation.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanCommiteeValidationData.cshtml" />
+    <Content Include="Views\MemberOperation\LoanApplicationForCommitees.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanApplicationForCommiteeData.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanTerm.cshtml" />
+    <Content Include="Views\Loan\Index.cshtml" />
+    <Content Include="Views\Loan\_LoanData.cshtml" />
+    <Content Include="Views\LoanProduct\_LoanProductPolicy.cshtml" />
+    <Content Include="Views\MemberOperation\LoanSimulation.cshtml" />
+    <Content Include="Views\LoanProductCollateral\_LoanProductCollateral.cshtml" />
+    <Content Include="Views\LoanProductCollateral\_Data.cshtml" />
+    <Content Include="Views\LoanProductCollateral\Index.cshtml" />
+    <Content Include="Views\MemberOperation\_SharedLoanTerm.cshtml" />
+    <Content Include="Views\MemberOperation\_SendOTP.cshtml" />
+    <Content Include="Views\MemberOperation\_AddLoanGuarantor.cshtml" />
+    <Content Include="Views\MemberOperation\_AddLoanGuarantorData.cshtml" />
+    <Content Include="Views\MemberOperation\_AddLoanCollateral.cshtml" />
+    <Content Include="Views\MemberOperation\_AddLoanCollateralData.cshtml" />
+    <Content Include="Views\MemberOperation\_AddtachedLoanDocument.cshtml" />
+    <Content Include="Views\MemberOperation\_AttachedFileData.cshtml" />
+    <Content Include="Views\MemberAccountActivationPolicy\Index.cshtml" />
+    <Content Include="Views\MemberAccountActivationPolicy\_Create.cshtml" />
+    <Content Include="Views\MemberAccountActivationPolicy\_Data.cshtml" />
+    <Content Include="Views\Individual\_MemberAccountActivation.cshtml" />
+    <Content Include="Views\MemberOperation\PendingDisbursment.cshtml" />
+    <Content Include="Views\MemberOperation\_PendingDisbursementData.cshtml" />
+    <Content Include="Views\MemberOperation\_PendingDisbursmentForm.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\Index.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\_JournalEntries.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\_AddEntry.cshtml" />
@@ -2463,9 +2507,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\CustomerManagement\MemberActivation\" />
     <Folder Include="Views\DocumentPack\" />
     <Folder Include="Views\Reports\" />
     <Folder Include="Views\Session\" />
+    <Folder Include="Views\TwoStepaccountverification\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

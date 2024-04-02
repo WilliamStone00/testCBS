@@ -1538,6 +1538,18 @@ namespace BusinessServices
             string str = HttpContext.Current.Session["BankID"].ToString();
             return str;
         }
+        public bool IsHeadOffice()
+        {
+            object value = HttpContext.Current.Session["IsHeadOffice"];
+            if (value != null && value is bool)
+            {
+                return (bool)value;
+            }
+            // Default value if the value is null or not a boolean
+            return false;
+        }
+
+        //Session["IsHeadOffice"] = "True";
         public string GetBankCode()
         {
             string str = HttpContext.Current.Session["BankCode"].ToString();

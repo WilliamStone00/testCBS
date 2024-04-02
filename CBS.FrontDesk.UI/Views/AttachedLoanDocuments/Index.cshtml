@@ -2,7 +2,7 @@
 
 @using (Html.BeginForm("UploadFiles", "AttachedLoanDocuments", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.HiddenFor(model => model.LoanApplicationID)
+    @Html.HiddenFor(model => model.LoanApplicationId)
 
     <label for="fileUpload">Select files:</label>
     <input type="file" id="fileUpload" name="AttachedFiles" multiple />

@@ -1,0 +1,54 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+<div id="loan_file_attached">
+    @if (!Model.DocumentAttachedToLoans.Any())
+    {
+        <div class="text-center my-3">
+            <p>No file is attached to this application</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mb-3">
+            <div class="col-12 col-lg-12 mb-4 mb-xl-0">
+                <div class="demo-inline-spacing mt-3">
+                    <div class="list-group">
+                        @for (var i = 0; i < Model.DocumentAttachedToLoans.Count; i++)
+                        {
+                            var file = Model.DocumentAttachedToLoans[i];
+                            <div class="list-group-item list-group-item-action d-flex align-items-center cursor-pointer">
+                                <div class="w-100">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="user-info">
+                                            <h6 class="mb-1">
+                                                @(i + 1). @file.FileName, @file.Date
+                                                @if (file.FileExtension == ".pdf")
+                                                {
+                                                    <span class="tf-icons mdi mdi-file-pdf mdi-18px"></span>
+                                                }
+                                                else if (file.FileExtension == ".doc" || file.FileExtension == ".docx")
+                                                {
+                                                    <span class="tf-icons mdi mdi-file-word mdi-18px"></span>
+                                                }
+                                                else if (file.FileExtension == ".xls" || file.FileExtension == ".xlsx")
+                                                {
+                                                    <span class="tf-icons mdi mdi-file-excel mdi-18px"></span>
+                                                }
+                                                <!-- Add more conditions for other file types -->
+                                            </h6>
+                                        </div>
+                                        <div class="file-actions">
+                                            @*<button type="button" onclick="confirmDelete('@file.Id')" class="btn btn-sm btn-danger me-2">Delete</button>*@
+                                            <a href="@($"{file.FilePath}")" target="_blank" class="btn btn-sm btn-primary">Read</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+</div>

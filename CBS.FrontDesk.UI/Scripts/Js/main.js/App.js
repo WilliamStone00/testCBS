@@ -873,7 +873,7 @@ function EditResetModal(KEY, modalBodyID, ModalcontentID, controller, actionMeth
     });
 }
 
-function LoadDataGen(controller, tableID, partialView, order, datalistingview,KEY,serviceOption,path) {
+function LoadDataGen(controller, tableID, partialView, order, datalistingview, KEY, serviceOption, path ='list') {
     LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, path, datalistingview, serviceOption);
 
 }

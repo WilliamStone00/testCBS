@@ -83,29 +83,35 @@
                 </div>
             </div>
             @*<input type="text" id="allowedIP" name="allowedIP" class="form-control" placeholder="192.168.11.1" />*@
-            <div class="col-6">
+            <div class="col-12">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.isActive, new { @class = "form-check-input" })
                     <label class="form-check-label" for="isActive">Set account status active</label>
                 </div>
             </div>
+            <div class="col-12">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.ChangePasswordOnFirstLogin, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="isActive">Check to permit user change password on first login.</label>
+                </div>
+            </div>
 
             @*<div class="col-12">
-                    <div class="form-check">
-                        @Html.CheckBoxFor(m => m., new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">Set account status active</label>
-                    </div>
-                </div>*@
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m., new { @class = "form-check-input" })
+                <label class="form-check-label" for="isActive">Set account status active</label>
+            </div>
+        </div>*@
 
             @*<div class="col-12">
-                    <div class="form-check">
-                        <input type="checkbox"
-                               class="form-check-input"
-                               id="@Model.isActive"
-                               name="@Model.isActive" />
-                        <label class="form-check-label" for="formValidationCheckbox">Set account status active</label>
-                    </div>
-                </div>*@
+            <div class="form-check">
+                <input type="checkbox"
+                       class="form-check-input"
+                       id="@Model.isActive"
+                       name="@Model.isActive" />
+                <label class="form-check-label" for="formValidationCheckbox">Set account status active</label>
+            </div>
+        </div>*@
         </div>
         <div class="mt-4">
             <button type="submit" class="btn btn-primary me-2">Create account</button>

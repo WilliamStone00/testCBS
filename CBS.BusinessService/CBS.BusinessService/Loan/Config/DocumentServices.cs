@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
@@ -31,7 +32,7 @@ namespace CBS.BusinessService.Config
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"{objDocument.name}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{objDocument.Name}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
                     return ExecutionMessage;
 
@@ -39,7 +40,7 @@ namespace CBS.BusinessService.Config
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objDocument, false, $"{objDocument.name}", MessagesResults.Failed,
+                    GetExecutionMessages(objDocument, false, $"{objDocument.Name}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -65,6 +66,24 @@ namespace CBS.BusinessService.Config
                     return couApiResponse.ApiResponseData.Data;
                 }
                 return new List<Document>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public async Task<IEnumerable<StringValues>> GetDocumentDropDown()
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Document>>>(APICallHelper.GetAllDocument);
+                if (couApiResponse.ApiResponseData!=null && couApiResponse.IsSuccess)
+                {
+                    var results= (from a in couApiResponse.ApiResponseData.Data select new StringValues() { Text = $"{a.DocumentType} {a.Name}", Value = a.Id }).ToList();
+                    return results;
+                }
+                return new List<StringValues>();
             }
             catch (Exception ex)
             {
@@ -99,14 +118,14 @@ namespace CBS.BusinessService.Config
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.name}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -123,25 +142,25 @@ namespace CBS.BusinessService.Config
             try
             {
 
-                var Document = await GetDocument(model.id);
+                var Document = await GetDocument(model.Id);
                 if (Document != null)
                 {
-                    Document.name = model.name;
-                    Document.linkDoc = model.linkDoc;
-                    Document.type = model.type;
-                    Document.description = model.description;
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Document>>(string.Format(APICallHelper.Get_Update_Delete_Document, model.id), Document);
+                    Document.Name = model.Name;
+                    Document.LinkDoc = model.LinkDoc;
+                    Document.DocumentType = model.DocumentType;
+                    Document.Description = model.Description;
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Document>>(string.Format(APICallHelper.Get_Update_Delete_Document, model.Id), Document);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{model.name}", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
                             ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
+                        GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }

@@ -31,7 +31,7 @@ namespace CBS.BusinessService.Config
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"{objLoanGuarantor.guarantorName}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{objLoanGuarantor.GuarantorName}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
                     return ExecutionMessage;
 
@@ -39,7 +39,7 @@ namespace CBS.BusinessService.Config
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objLoanGuarantor, false, $"{objLoanGuarantor.guarantorName}", MessagesResults.Failed,
+                    GetExecutionMessages(objLoanGuarantor, false, $"{objLoanGuarantor.GuarantorName}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -94,14 +94,14 @@ namespace CBS.BusinessService.Config
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.guarantorName}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.GuarantorName}", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.guarantorName, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.GuarantorName, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -118,31 +118,31 @@ namespace CBS.BusinessService.Config
             try
             {
 
-                var LoanGuarantor = await GetLoanGuarantor(model.id);
+                var LoanGuarantor = await GetLoanGuarantor(model.Id);
                 if (LoanGuarantor != null)
                 {
-                    LoanGuarantor.guarantorName = model.guarantorName;
-                    LoanGuarantor.loanApplicationId = model.loanApplicationId;
-                    LoanGuarantor.idCardNumber = model.idCardNumber;
-                    LoanGuarantor.expireDate = model.expireDate;
-                    LoanGuarantor.issueDate = model.issueDate;
-                    LoanGuarantor.relationship = model.relationship;
-                    LoanGuarantor.address = model.address;
-                    LoanGuarantor.phoneNumber = model.phoneNumber;
-                    LoanGuarantor.isMemberOfMicrofinance = model.isMemberOfMicrofinance;
-                    LoanGuarantor.bankAccountNumber = model.bankAccountNumber;
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanGuarantor>>(string.Format(APICallHelper.Get_Update_Delete_LoanGuarantor, model.id), LoanGuarantor);
+                    LoanGuarantor.GuarantorName = model.GuarantorName;
+                    LoanGuarantor.GuaranteeAmount = model.GuaranteeAmount;
+                    LoanGuarantor.IdCardNumber = model.IdCardNumber;
+                    LoanGuarantor.ExpireDate = model.ExpireDate;
+                    LoanGuarantor.IssueDate = model.IssueDate;
+                    LoanGuarantor.Relationship = model.Relationship;
+                    LoanGuarantor.PhoneNumber = model.PhoneNumber;
+                    LoanGuarantor.AccountNumber = model.AccountNumber;
+                    LoanGuarantor.Email = model.Email;
+                    LoanGuarantor.Address = model.Address;
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanGuarantor>>(string.Format(APICallHelper.Get_Update_Delete_LoanGuarantor, model.Id), LoanGuarantor);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{model.guarantorName}", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                        GetExecutionMessages(response, true, $"{model.GuarantorName}", MessagesResults.Success,
+                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, model.guarantorName, MessagesResults.Failed,
+                        GetExecutionMessages(model, false, model.GuarantorName, MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }

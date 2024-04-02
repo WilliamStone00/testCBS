@@ -1,10 +1,13 @@
 ﻿
 $(document).ready(function () {
 
-    LoadDataGen('MemberOperation', 'myDataTable', '_MembersData', 0, 'datalistingview', null, 'all')
+    LoadMembersLoan();
 });
 
+function LoadMembersLoan() {
+    LoadDataGen('MemberOperation', 'myDataTable', '_MembersData', 0, 'datalistingview', null, 'all')
 
+}
 
 function showConfirmMessage(KEY, ServiceOption, tableID) {
     DeleteData("Frontend", KEY, ServiceOption, "datalistingview", tableID, "InitializeData");

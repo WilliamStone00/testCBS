@@ -27,21 +27,31 @@ namespace CBS.BusinessService.Config
         {
             try
             {
+                // Check if files are attached
+                if (attachedToLoan.AttachedFiles[0] == null)
+                {
+                    // Handle case where no files are attached
+                    return GetExecutionMessages(attachedToLoan, false, "File", MessagesResults.Failed,
+              ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
+              null);
+                }
                 var additionalParams = new Dictionary<string, string>
                 {
-                    { "LoanApplicationID", attachedToLoan.LoanApplicationID },
+                    { "loanApplicationId", attachedToLoan.LoanApplicationId },
+                    { "documentId", attachedToLoan.DocumentId },
+
                 };
-                var response = await _loanConfigApiHelper.PostFilesAndParamsAsync<DocumentAttachedToLoanResponse>(APICallHelper.AttachedDocuments, additionalParams, attachedToLoan.AttachedFiles);
+
+                var response = await _loanConfigApiHelper.PostFilesAndParamsAsync<DocumentAttachedToLoan>(APICallHelper.AttachedDocuments, additionalParams, attachedToLoan.AttachedFiles);
                 if (response.IsSuccess)
                 {
                     GetExecutionMessages(response, true, null, MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null,
-                        null);
+                        response.Message);
                     return ExecutionMessage;
                 }
                 GetExecutionMessages(attachedToLoan, false, null, MessagesResults.Failed,
-                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
-                    null);
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
 
             }
             catch (Exception ex)
@@ -58,7 +68,7 @@ namespace CBS.BusinessService.Config
             {
                 var additionalParams = new Dictionary<string, string>
                 {
-                    { "CustomerID", attachedToLoan.CustomerID },
+                    {"CustomerID", attachedToLoan.CustomerID },
                     {"IsPhoto ","true"},
                     {"IsSignature","false"}
                 };
@@ -92,7 +102,7 @@ namespace CBS.BusinessService.Config
                 if (response.IsSuccess)
                 {
 
-                    GetExecutionMessages(response, true, $"{objDocumentAttachedToLoan.DocumentName}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{objDocumentAttachedToLoan.FileName}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Status);
                     return ExecutionMessage;
 
@@ -100,7 +110,7 @@ namespace CBS.BusinessService.Config
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objDocumentAttachedToLoan, false, $"{objDocumentAttachedToLoan.DocumentName}", MessagesResults.Failed,
+                    GetExecutionMessages(objDocumentAttachedToLoan, false, $"{objDocumentAttachedToLoan.FileName}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -144,11 +154,11 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
-        public async Task<DocumentAttachedToLoanResponse> GetDocumentAttachedToLoan(string id)
+        public async Task<DocumentAttachedToLoan> GetDocumentAttachedToLoan(string id)
         {
             try
             {
-                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<DocumentAttachedToLoanResponse>>(string.Format(APICallHelper.Get_Delete_DocumentAttachedToLoan, id));
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<DocumentAttachedToLoan>>(string.Format(APICallHelper.Get_Delete_DocumentAttachedToLoan, id));
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;

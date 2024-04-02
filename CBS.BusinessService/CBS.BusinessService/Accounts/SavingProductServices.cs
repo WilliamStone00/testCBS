@@ -158,7 +158,9 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.ChartOfAccountIdManagementFee = model.ChartOfAccountIdManagementFee;
                     SavingProduct.ChartOfAccountIdClossingFee = model.ChartOfAccountIdClossingFee;
                     SavingProduct.ChartOfAccountIdRepoeningFee = model.ChartOfAccountIdRepoeningFee;
-                    SavingProduct.bankId = model.bankId;
+                    SavingProduct.ChartOfAccountIdInterestCommissionAccount = model.ChartOfAccountIdInterestCommissionAccount;
+                    SavingProduct.ChartOfAccountIdInterestLiassonAccount = model.ChartOfAccountIdInterestLiassonAccount;
+                    SavingProduct.AccountType = model.AccountType;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.id), SavingProduct);
                     if (response.IsSuccess)
                     {

@@ -44,6 +44,8 @@
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Create Collateral" controller="Collateral" action="Index">
       </mvcSiteMapNode>
+      <mvcSiteMapNode title="Product collateral" controller="LoanProductCollateral" action="Index">
+      </mvcSiteMapNode>
       <mvcSiteMapNode title="Alert profile" controller="AlertProfile" action="Index">
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Service fee" controller="Fee" action="Index">

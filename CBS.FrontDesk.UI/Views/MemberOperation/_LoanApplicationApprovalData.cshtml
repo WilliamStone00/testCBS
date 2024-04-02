@@ -1,0 +1,62 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+
+@if (Model.LoanApplications.Count == 0)
+{
+    <div class="text-center my-3">
+        <p>No loan application was found for validation</p>
+    </div>
+}
+else
+{
+    <div class="table-responsive mb-3">
+        <table class="table table-hover" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th>Date</th>
+                    <th>Customer Code</th>
+                    <th>Product</th>
+                    <th>Amount</th>
+                    <th>Interest rate</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model.LoanApplications.OrderBy(app => app.ApplicationDate))
+                {
+                    <tr>
+                        <td style="width:25%">@d.ApplicationDate</td>
+                        <td style="width:10%">@d.CustomerId</td>
+                        <td style="width:35%">@d.LoanProduct.ProductName</td>
+                        <td style="width:10%">@d.Amount.ToString("#,0.00")</td>
+                        <td style="width:5%">@d.InterestRate %</td>
+                        <td style="width:10%">
+                            @if (d.IsApproved)
+                            {
+                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-success fs-tiny py-1">@d.ApprovalStatus</span>
+                            }
+                            else
+                            {
+                                if (d.ApprovalStatus == "Validated")
+                                {
+                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@d.ApprovalStatus</span>
+                                }
+                                else
+                                {
+                                    <span class="badge rounded-pill rounded-2 badge-danger bg-label-danger fs-tiny py-1">@d.ApprovalStatus</span>
+                                }
+                            }
+                        </td>
+                        <td style="width:10%">
+                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_LoanApplicationApproval','application_detail','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.LoanType for detail">
+                                Approve
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+}

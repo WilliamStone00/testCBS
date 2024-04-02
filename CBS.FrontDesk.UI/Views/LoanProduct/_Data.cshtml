@@ -30,10 +30,11 @@
                             }
                         </td>
                         <td style="width:30%">
-                            <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview','_Update','update','LoanProduct')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.ProductName to edit">Edit</a> |
+                            <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview','_LoanProduct','update_product','LoanProduct')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.ProductName to edit">Edit</a> |
                             <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.ProductName" onclick="DeleteRecordDataTable('LoanProduct','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>|
-                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Set fee for ">Add fee</a>|
-                            <a href="#" class="mr-2" onclick="AddORUpdateGen('@d.Id','datalistingview','_SetPenalty','update','LoanProduct')" data-toggle="tooltip" data-placement="top" title="Set penalty for @d.ProductName">Set penalty</a>
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Set fee for ">Fee</a>|
+                            <a href="#" class="mr-2" onclick="AddORUpdateGen('@d.Id','datalistingview','_SetPenalty','add_penalty','LoanProduct')" data-toggle="tooltip" data-placement="top" title="Set penalty for @d.ProductName">Penalty</a> |
+                            <a href="#" class="mr-2" onclick="AddORUpdateGen('@d.Id','datalistingview','_Update','update','LoanProduct')" data-toggle="tooltip" data-placement="top" title="Set penalty for @d.ProductName">Policies</a>
                         </td>
                     </tr>
                 }

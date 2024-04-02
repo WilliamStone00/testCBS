@@ -33,19 +33,25 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.LoanApplication.LoanType, new SelectList(ViewBag.LoanTypes, "Value", "Text"), "---Select loan type---", new { @class = "form-control select2", @search = "true"})
+                                        @Html.DropDownListFor(m => m.LoanApplication.LoanType, new SelectList(ViewBag.LoanTypes, "Value", "Text"), "---Select loan type---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.LoanApplication.LoanType, "", new { @class = "text-danger " })
                                         <label>Select loan type</label>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanApplication.Amount, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanApplication.Amount, "", new { @class = "text-danger" })
-                                        <label>Amount</label>
+                                        <label id="amount"> Amount</label>
                                     </div>
                                 </div>
-
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.LoanApplication.LoanDuration, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.LoanApplication.LoanDuration, "", new { @class = "text-danger" })
+                                        <label id="loanduration">Loan duration</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -69,14 +75,8 @@
                             <div class="row g-4">
                                 <div class="col-12">
                                     <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.LoanApplication.IsCollateralProvided, new { @class = "form-check-input" })
+                                        @Html.CheckBoxFor(m => m.LoanApplication.IsThereCollateral, new { @class = "form-check-input" })
                                         <label class="form-check-label" for="isActive">Have member provided collateral?</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.LoanApplication.IsGuaranteeProvided, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">Have member provided guarantee?</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -85,32 +85,25 @@
                                         <label class="form-check-label" for="isActive">Have member provided guarantor?</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.CollateralCoverageRate, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.CollateralCoverageRate, "", new { @class = "text-danger" })
-                                        <label>Collateral coverage rate</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.InsuranceCoverageRate, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.InsuranceCoverageRate, "", new { @class = "text-danger" })
-                                        <label>Insurance coverage rate</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanApplication.ShareAccountCoverageRate, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanApplication.ShareAccountCoverageRate, "", new { @class = "text-danger" })
-                                        <label>Share account coverage rate</label>
+                                        <label id="share">Share account coverage rate</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanApplication.SavingAccountCoverageRate, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanApplication.SavingAccountCoverageRate, "", new { @class = "text-danger" })
-                                        <label>Saving aacount coverage rate</label>
+                                        <label id="saving">Saving account coverage rate</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.LoanApplication.SalaryAccountCoverageRate, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.LoanApplication.SalaryAccountCoverageRate, "", new { @class = "text-danger" })
+                                        <label id="salary">Salary account coverage rate</label>
                                     </div>
                                 </div>
                             </div>
@@ -136,17 +129,16 @@
                             <div class="row g-4">
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.GracePeriod, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.GracePeriod, "", new { @class = "text-danger" })
-                                        <label>Enter grace period</label>
+                                        @Html.TextBoxFor(m => m.LoanApplication.GracePeriodBeforeFirstPayment, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.LoanApplication.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
+                                        <label>Enter grace period before repayment (in months. eg 1)</label>
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.GracePeriodRate, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.GracePeriodRate, "", new { @class = "text-danger" })
-                                        <label>Grace period rate</label>
+                                        @Html.TextBoxFor(m => m.LoanApplication.GracePeriodAfterMaturityDate, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.LoanApplication.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
+                                        <label>Enter grace period after entire loan is overdure (in days)</label>
                                     </div>
                                 </div>
                             </div>
@@ -172,9 +164,16 @@
                             <div class="row g-4">
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.LoanApplication.AmortizationType, new SelectList(ViewBag.AmortizationTypes, "Value", "Text"), "---Select loan type---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.LoanApplication.AmortizationType, "", new { @class = "text-danger " })
+                                        <label>Select amortization type</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanApplication.InterestRate, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanApplication.InterestRate, "", new { @class = "text-danger" })
-                                        <label>Interest rate</label>
+                                        <label id="interest">Interest in rate</label>
                                     </div>
                                 </div>
                             </div>
@@ -189,7 +188,7 @@
                                 data-bs-target="#collapsePaymentMethod"
                                 aria-expanded="false"
                                 aria-controls="collapsePaymentMethod">
-                            Repayment and duration
+                            Repayment and loan duration
                         </button>
                     </h2>
                     <div id="collapsePaymentMethod"
@@ -206,31 +205,15 @@
                                         <label>Repayment cycle</label>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                @*<div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanApplication.NumberOfRepayment, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanApplication.NumberOfRepayment, "", new { @class = "text-danger" })
-                                        <label>Number of repayments</label>
+                                        <label id="installment">Number of repayments</label>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.LoanDuration, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.LoanDuration, "", new { @class = "text-danger" })
-                                        <label>Loan duration</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.FirstInstallmentDate, new { @class = "form-control date-picker" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.FirstInstallmentDate, "", new { @class = "text-danger" })
-                                        <label>Enter first installment date</label>
-                                    </div>
-                                </div>
+                                </div>*@
                             </div>
-
                         </div>
-
                     </div>
                 </div>
                 <div class="card accordion-item">
@@ -248,7 +231,6 @@
                          class="accordion-collapse collapse"
                          aria-labelledby="headingPaymentMethod7"
                          data-bs-parent="#collapsibleSection">
-
                         <div class="accordion-body">
                             <div class="row g-4">
 
@@ -256,7 +238,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanApplication.ProcessingFee, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanApplication.ProcessingFee, "", new { @class = "text-danger" })
-                                        <label>Processing fee rate</label>
+                                        <label id="fee">Processing fee rate</label>
                                     </div>
                                 </div>
                             </div>

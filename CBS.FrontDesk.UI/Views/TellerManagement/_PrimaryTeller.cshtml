@@ -5,13 +5,6 @@
         
         <div class="row mt-2 gy-4">
             <div class="row mt-2 gy-4">
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Teller.name, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Teller.name, "", new { @class = "text-danger" })
-                        <label>Teller name</label>
-                    </div>
-                </div>
                 <div class="col-md-4">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Teller.code, new { @class = "form-control" })
@@ -19,52 +12,84 @@
                         <label>Teller code</label>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Teller.MinAmount, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Teller.MinAmount, "", new { @class = "text-danger" })
-                        <label>Min amount teller can hold</label>
+                        @Html.TextBoxFor(m => m.Teller.name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Teller.name, "", new { @class = "text-danger" })
+                        <label>Teller name</label>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Teller.MaxAmount, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Teller.MaxAmount, "", new { @class = "text-danger" })
-                        <label>Max amount teller can hold</label>
-                    </div>
-                </div>
-                <div class="col-6">
+                <div class="col-12">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.Teller.isPrimary, new { @class = "form-check-input" })
                         <label class="form-check-label" for="isActive">Set as primary teller</label>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Teller.MinimumAmountToManage, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Teller.MinimumAmountToManage, "", new { @class = "text-danger" })
+                        <label>Minimum amount teller can hold</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Teller.MaximumAmountToManage, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Teller.MaximumAmountToManage, "", new { @class = "text-danger" })
+                        <label>Maximum amount teller can hold</label>
+                    </div>
+                </div>
+                <h3>Operations</h3>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Teller.MinimumDepositAmount, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Teller.MinimumDepositAmount, "", new { @class = "text-danger" })
+                        <label>Minimum deposit amount to peform</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Teller.MaximumDepositAmount, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Teller.MaximumDepositAmount, "", new { @class = "text-danger" })
+                        <label>Maximum deposit amount to peform</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Teller.MinimumWithdrawalAmount, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Teller.MinimumWithdrawalAmount, "", new { @class = "text-danger" })
+                        <label>Minimum withdrawal amount to peform</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Teller.MaximumWithdrawalAmount, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Teller.MaximumWithdrawalAmount, "", new { @class = "text-danger" })
+                        <label>Minimum withdrawal amount to peform</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Teller.MinimumTransferAmount, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Teller.MinimumTransferAmount, "", new { @class = "text-danger" })
+                        <label>Minimum transfter amount to peform</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Teller.MaximumTransferAmount, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Teller.MaximumTransferAmount, "", new { @class = "text-danger" })
+                        <label>Minimum transfter amount to peform</label>
+                    </div>
+                </div>
+
+                <div class="col-12">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.Teller.activeStatus, new { @class = "form-check-input" })
                         <label class="form-check-label" for="isActive">Active status</label>
                     </div>
                 </div>
-                @*<div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.Teller.chartOfAccountId, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select chart of account of account---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.Teller.chartOfAccountId, "", new { @class = "text-danger" })
-                        <label>Teller account (This account holds the amount that is used for daily operations)</label>
-                    </div>
-                </div>*@
-                @*<div class="col-12">
-            <div class="form-check">
-                @Html.CheckBoxFor(m => m.Teller.isDebit, new { @class = "form-check-input" })
-                <label class="form-check-label" for="isActive">Check this option if this account should be debited.</label>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.Teller.operationEventAttributeId, new SelectList(ViewBag.OperationEventAttributes, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true"})
-                @Html.ValidationMessageFor(m => m.Teller.operationEventAttributeId, "", new { @class = "text-danger" })
-                <label>Select operation event attribute. (The operation account under the selected chart or account)</label>
-            </div>
-        </div>*@
+              
             </div>
         </div>
         <div class="mt-4">

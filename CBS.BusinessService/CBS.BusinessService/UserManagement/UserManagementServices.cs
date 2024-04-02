@@ -13,6 +13,7 @@ using System.Web;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.User;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 
 namespace CBS.BusinessService.UserManagement
 {
@@ -130,6 +131,70 @@ namespace CBS.BusinessService.UserManagement
                 throw;
             }
         }
+
+        public async Task<IEnumerable<StringValues>> GetUserDropDownList()
+        {
+            try
+            {
+                var identityServerBaseUrl = ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString();
+                var apiCallerHelper = new ApiCallerHelper(identityServerBaseUrl);
+
+                var userListsResponse = await apiCallerHelper.GetAsync<ResponseObject<List<UserList>>>(APICallHelper.GetUsers);
+                var newList = new List<UserList>();
+                var stringValues = new List<StringValues>();
+                if (userListsResponse != null && userListsResponse.IsSuccess)
+                {
+                    var userLists = userListsResponse.ApiResponseData.Data;
+                    var isHeadOffice = HttpContext.Current.Session["IsHeadOffice"] == "True";
+                    var branchId = GetBranchID();
+                    var branches = await GetBranches();
+
+                    foreach (var user in userLists.Where(u => isHeadOffice || u.BranchID == branchId))
+                    {
+                        user.name = $"{user.firstName} {user.lastName}";
+                        user.strlastLoginDate = user.lastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
+                        user.status = user.isActive ? "Active" : "In-active";
+
+                        if (user.BranchID != null)
+                        {
+                            var branch = branches.FirstOrDefault(b => b.Id == user.BranchID);
+                            if (branch != null)
+                            {
+                                user.Branch = branch;
+                                user.Bank = branch.Bank ?? new Bank();
+                            }
+                        }
+                        else
+                        {
+                            user.Branch = new Branch();
+                            user.Bank = new Bank();
+                        }
+
+                        newList.Add(user);
+
+                    }
+
+                    stringValues = (from a in newList
+                                    select new StringValues
+                                    {
+                                        Text = $"{a.firstName}{a.lastName}, Branch: {a.Branch.Name}",
+                                        Value = a.id.ToString(),
+                                    }).ToList();
+
+                   
+                    return stringValues.ToList();
+                }
+                else
+                {
+                    return Enumerable.Empty<StringValues>();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public async Task<IEnumerable<Branch>> GetBranches()
         {////780400915211061
             try
@@ -248,7 +313,7 @@ namespace CBS.BusinessService.UserManagement
         {
             try
             {
-                
+                user.ChangePasswordOnFirstLogin = true;
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var reUser = await ApiCallerHelper.PostAsync<ResponseObject<UserList>>(APICallHelper.ChangePassword, user.ChangePassword);
                 if (reUser.IsSuccess)

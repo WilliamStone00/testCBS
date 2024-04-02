@@ -9,13 +9,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 {
     public class Document
     {
-        public string id { get; set; }
+        public string Id { get; set; }
         [Required]
-        public string type { get; set; }
+        public string DocumentType { get; set; }
         [Required]
-        public string name { get; set; }
-        public string description { get; set; }
-        public string linkDoc { get; set; }
+        public string Name { get; set; }
+        [Required]
+        public string Description { get; set; }
+        public string LinkDoc { get; set; }
+        public ICollection<LoanApplication> LoanApplication { get; set; }
     }
-   
+
 }

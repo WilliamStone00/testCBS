@@ -1,0 +1,117 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+<div class="change-group">
+    <div class="card mb-4">
+        <div class="card-body d-sm-flex d-block">
+            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                <div class="ms-3">
+                    <a type="button" onclick="LoadGuarantors()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Reload guarantors">
+                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@if (!Model.LoanApplication.Guarantors.Any())
+{
+    <div class="text-center my-3">
+        <p>No loan gurantor is added</p>
+    </div>
+}
+else
+{
+    if (ViewBag.Value == "0")
+    {
+        <div class="table-responsive mb-3">
+            <table class="table table-hover" id="myDataTable_gurantor">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Account Number</th>
+                        <th>Phone</th>
+                        <th>Amount</th>
+                        <th>Email</th>
+                        <th>Is Co-Member</th>
+
+                        <th>Action</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.LoanApplication.Guarantors)
+                    {
+                        <tr>
+                            <td style="width:30%">@d.GuarantorName</td>
+                            <td style="width:10%">@d.AccountNumber</td>
+                            <td style="width:10%">@d.PhoneNumber</td>
+                            <td style="width:10%">@d.GuaranteeAmount.ToString("#,0.00")</td>
+                            <td style="width:20%">@d.Email</td>
+                            <td style="width:10%">
+                                @if (d.IsCoMember)
+                                {
+                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-hover-info fs-tiny py-1">Co-Member</span>
+                                }
+                                else
+                                {
+                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Not a member</span>
+
+                                }
+                            </td>
+                            <td style="width:10%">
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_gurantor_add','_AddLoanGuarantor','get_guarantor','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.GuarantorName to edit">
+                                    Edit
+                                </a>
+
+                                @*<a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.GuarantorName" onclick="showConfirmMessage('@d.Id','myDataTable_gurantor')">Delete</a>*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    }
+    else
+    {
+        <div class="table-responsive mb-3">
+            <table class="table table-hover" id="myDataTable_gurantor">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Account Number</th>
+                        <th>Phone</th>
+                        <th>Amount</th>
+                        <th>Email</th>
+                        <th>Is Co-Member</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.LoanApplication.Guarantors)
+                    {
+                        <tr>
+                            <td style="width:30%">@d.GuarantorName</td>
+                            <td style="width:10%">@d.AccountNumber</td>
+                            <td style="width:10%">@d.PhoneNumber</td>
+                            <td style="width:10%">@d.GuaranteeAmount.ToString("#,0.00")</td>
+                            <td style="width:20%">@d.Email</td>
+                            <td style="width:10%">
+                                @if (d.IsCoMember)
+                                {
+                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-hover-info fs-tiny py-1">Co-Member</span>
+                                }
+                                else
+                                {
+                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Not a member</span>
+
+                                }
+                            </td>
+                           
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    }
+}

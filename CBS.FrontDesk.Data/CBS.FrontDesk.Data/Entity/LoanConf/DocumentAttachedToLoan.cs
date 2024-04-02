@@ -12,16 +12,14 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     public class DocumentAttachedToLoan
     {
         public string Id { get; set; }
-        [Required]
-        public string LoanApplicationID { get; set; }
-        [Required]
-        public List<HttpPostedFileBase> AttachedFiles { get; set; }
-    }
-    public class DocumentAttachedToLoanResponse
-    {
-        public string Id { get; set; }
-        public string LoanApplicationID { get; set; }
-        public string DocumentName { get; set; }
+        public string LoanApplicationId { get; set; }
+        public string DocumentId { get; set; }
         public string FilePath { get; set; }
+        public string FileName { get; set; }
+        public DateTime Date { get; set; }
+        public string FileExtension { get; set; }
+        public LoanApplication LoanApplication { get; set; }
+        public Document Document { get; set; }
+        public List<HttpPostedFileBase> AttachedFiles { get; set; }
     }
 }

@@ -17,6 +17,9 @@ using CBS.FrontDesk.Data.Entity.LoanConf;
 using static CBS.FrontDesk.Data.Entity.CustomerManagement.IndividualProfile;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using System.Reflection;
+using CBS.BusinessService.Config;
+using CBS.BusinessService.MembersAccountSettings;
+using CBS.BusinessService.MembersAccountSettings.policy;
 
 namespace CBS.BusinessService.CustomerManagement
 {
@@ -27,14 +30,19 @@ namespace CBS.BusinessService.CustomerManagement
         private readonly ApiCallerHelper _customerApiHelper;
         private readonly ApiCallerHelper _bankConfigApiHelper;
         private readonly ApiCallerHelper _transactionApiHelper;
+        private readonly BranchServices _branchServices;
+        private readonly MemberAccountActivationServices _memberAccountActivationServices;
+        private readonly MemberAccountActivationPolicyServices _memberAccountActivationPolicyServices;
 
-
-        public IndividualProfileServices()
+        public IndividualProfileServices(BranchServices branchServices = null, MemberAccountActivationServices memberAccountActivationServices = null, MemberAccountActivationPolicyServices memberAccountActivationPolicyServices = null)
         {
             _customerApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["CustomerBaseUrl"].ToString());
             //_bankConfigApiHelper = new ApiCallerHelper("https://localhost:7085/");
             _bankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
             _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
+            _branchServices = branchServices;
+            _memberAccountActivationServices = memberAccountActivationServices;
+            _memberAccountActivationPolicyServices = memberAccountActivationPolicyServices;
         }
         //https://localhost:7085/
         // Other existing methods...
@@ -58,7 +66,7 @@ namespace CBS.BusinessService.CustomerManagement
                     { "serviceType", attachedToLoan.ServiceTypeType },
                 };
                 var response = await _bankConfigApiHelper.PostFilesAndParamsAsync<ServiceResponse<DocumentUploadResponse>>(APICallHelper.UploadFile, additionalParams, attachedToLoan.AttachedFiles);
-                if (response.ApiResponseData!=null)
+                if (response.ApiResponseData != null)
                 {
                     GetExecutionMessages(response, true, attachedToLoan.DocumentType, MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null,
@@ -84,7 +92,7 @@ namespace CBS.BusinessService.CustomerManagement
             {
                 var customer = await GetSingleCustomer(id);
                 var inResponse = await _customerApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.DeleteCustomer, id));
-                if (inResponse.IsSuccess)
+                if (inResponse.ApiResponseData!=null && inResponse.IsSuccess)
                 {
 
                     // Handle success scenario
@@ -172,7 +180,7 @@ namespace CBS.BusinessService.CustomerManagement
                 throw ex;
             }
         }
-        private async Task<List<CustomerAccount>> GetCustomerAccounts(string customerID)
+        public async Task<List<CustomerAccount>> GetCustomerAccounts(string customerID)
         {
             try
             {
@@ -195,7 +203,7 @@ namespace CBS.BusinessService.CustomerManagement
                 lastName = a.lastName,
                 email = a.email,
                 townId = a.townId,
-                town = t.Name,
+                town = t == null ? "N/A" : t.Name,
                 branch = b.Name,
                 branchId = a.branchId,
                 active = a.active,
@@ -276,6 +284,8 @@ namespace CBS.BusinessService.CustomerManagement
                 var cusResponseObject = await GetSingleCustomer(id);
                 var accountBalance = await GetCustomerBalance(id);
                 var accounts = await GetCustomerAccounts(id);
+                var policies=await _memberAccountActivationPolicyServices.GetMemberAccountActivationPolicys();
+                var memberAccountActivation = await _memberAccountActivationServices.GetMemberAccountActivationByMemberId(id);
                 var data = (from a in new List<IndividualProfile> { cusResponseObject }
                             join b in aggregrates.Branches on a.branchId equals b.Id
                             join t in aggregrates.Towns on a.townId equals t.Id
@@ -283,8 +293,46 @@ namespace CBS.BusinessService.CustomerManagement
                 var addaccount = new AddCustomerAccount { customerId = id };
                 var nextOfKingsMember = new MembershipNextOfKingsMember { customerId = id };
                 var cardSignatureSpecimen = new CardSignatureSpecimen { customerId = id };
-                var result = new IndividualCustomerProfile(data.First(), aggregrates, accountBalance, accounts, addaccount,nextOfKingsMember,cardSignatureSpecimen);
+                var result = new IndividualCustomerProfile(data.First(), aggregrates, accountBalance, accounts, addaccount, nextOfKingsMember, cardSignatureSpecimen);
                 result.SavingProducts = aggregrates.Savings;
+                var policy=new MemberAccountActivationPolicy();
+                if (policies.Any())
+                {
+                    policy=policies.FirstOrDefault();
+                }
+                if (memberAccountActivation==null)
+                {
+                    result.MemberAccountActivation = new MemberAccountActivation { CustomerId = id, RegistrationFee= policy .MaximumRegistrationFee
+                    , ReopeningFee= policy .MaximumReopeningFee, ClossingFee= policy.MaximumAccountClossingFee, MemberAccountActivationPolicyId=policy.Id};
+                    result.option = "AddMemberAccount";
+                }
+                else
+                {
+                    result.MemberAccountActivation = memberAccountActivation;
+                    result.option = "UpdateMemberAccount";
+                }
+                
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<IndividualCustomerProfile> GetCustomerLight(string id)
+        {
+            try
+            {
+
+                var cusResponseObject = await GetSingleCustomer(id);
+                if (true)
+                {
+
+                }
+                var Branch = await _branchServices.GetBranch(cusResponseObject.branchId);
+                var data = TransformToCustomerList(cusResponseObject, Branch, null);
+                var result = new IndividualCustomerProfile(data);
                 return result;
             }
             catch (Exception ex)
@@ -303,7 +351,6 @@ namespace CBS.BusinessService.CustomerManagement
                                       Value = a.accountNumber.ToString(),
                                       Text = $"{a.accountNumber}-{a.accountName}"
                                   };
-
                 return menuMasters;
             }
             catch (Exception ex)
@@ -360,7 +407,7 @@ namespace CBS.BusinessService.CustomerManagement
                 throw ex;
             }
         }
-        private async Task<IndividualProfile> GetSingleCustomer(string id)
+        public async Task<IndividualProfile> GetSingleCustomer(string id)
         {
             try
             {
@@ -398,7 +445,7 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {
-                
+
 
                 model.bankId = GetBankID();
                 model.branchId = GetBranchID();
@@ -615,7 +662,7 @@ namespace CBS.BusinessService.CustomerManagement
                 model.branchCode = GetBranchCode();
                 model.branchId = GetBranchID();
                 model.bankId = GetBankID();
-                model.employerTelephone=tel;
+                model.employerTelephone = tel;
                 model.bankName = GetBranchName();
                 model.membershipApplicantDate = DateTime.Now.ToString();
                 var response = await _customerApiHelper.PostAsync<ServiceResponse<IndividualProfile>>(APICallHelper.CreateIndividualProfile, model);
@@ -646,7 +693,7 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {
-              
+
                 model.branchId = GetBranchID();
                 var response = await _customerApiHelper.PostAsync<ServiceResponse<MembershipNextOfKingsMember>>(APICallHelper.CreateMembershipNextOfKing, model);
                 if (response.IsSuccess)
@@ -679,7 +726,7 @@ namespace CBS.BusinessService.CustomerManagement
 
 
 
-               model.branchMangerId= apiResponse.ApiResponseData.Data.createdBy;
+                model.branchMangerId = apiResponse.ApiResponseData.Data.createdBy;
                 model.cardSignatureSpecimenDetails.Add(model.cardSignatureSpecimenDetail);
                 model.branchId = GetBranchID();
                 var response = await _customerApiHelper.PostAsync<ServiceResponse<CardSignatureSpecimen>>(APICallHelper.CreateCardSignatureSpecimenDetails, model);

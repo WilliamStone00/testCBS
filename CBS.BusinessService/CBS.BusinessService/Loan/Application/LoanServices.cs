@@ -41,6 +41,52 @@ namespace CBS.BusinessService
                 throw;
             }
         }
+        public async Task<ExecutionMessages> ApprovePendingDisbursement(AddLoanDisbumentCommand model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<LoanApplication>>(APICallHelper.Disbursed, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Disbursement", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, "Disbursement", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<IEnumerable<Loan>> GetPendingDisbursementLoans()
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Loan>>>(APICallHelper.GetLoans);
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data.Where(x=>!x.IsLoanDisbursted);
+                }
+                return new List<Loan>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<IEnumerable<Loan>> GetLoanByCustomerID(string customerId)
         {
             try

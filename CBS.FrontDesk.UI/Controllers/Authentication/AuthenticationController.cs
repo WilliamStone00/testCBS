@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using CBS.FrontDesk.Data.Entity.User;
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
-using CBS.FrontDesk.UI.Helper;
 using Microsoft.AspNet.Identity;
 
 namespace CBS.FrontDesk.UI.Controllers
@@ -48,48 +47,49 @@ namespace CBS.FrontDesk.UI.Controllers
                     Data = (UserDto)result.Data;
                     if (!Data.IsBlocked)
                     {
-                        if (Data.isAuthenticated)
+                        try
                         {
-                            try
-                            {
 
-                                if (Data.ChangePasswordOnFirstLogin)
+                            if (Data.ChangePasswordOnFirstLogin)
+                            {
+                                var user = Data;
+                                CreateToken(user, "PWD", 10);
+                                string url = string.Format("~/UserManagement/ChangePassword?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}"
+                                    , "User", user.id, user.refreshToken, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "internaluserobject:" + user.firstName);
+                                return RedirectToLocal(url);
+                            }
+                            else
+                            {
+                                if (Data.isMFA)
                                 {
-                                    var user = Data;
-                                    CreateToken(user, "PWD", 10);
-                                    string url = string.Format("~/UserManagement/ChangePassword?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}"
-                                        , "User", user.id, user.refreshToken, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "internaluserobject:" + user.firstName);
-                                    return RedirectToLocal(url);
+                                    CreateToken(Data, "MFA", 10);
+                                    string url = string.Format("~/TwoStepaccountverification/MFACodeVerification?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}", "User", Data.id, Data.refreshToken, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "internaluserobject:" + Data.firstName);
+                                    return Redirect(url);
                                 }
                                 else
                                 {
-                                    if (Data.isMFA)
-                                    {
-                                        CreateToken(Data, "MFA", 10);
-                                        string url = string.Format("~/TwoStepaccountverification/MFACodeVerification?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}", "User", Data.id, Data.refreshToken, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "internaluserobject:" + Data.firstName);
-                                        return Redirect(url);
-                                    }
-                                    else
-                                    {
-                                        CreateToken(Data, "CBS4U", 10);
-                                        ViewBag.Success = true;
-                                        ViewBag.StartSessionWarning = true;
-                                        ViewBag.Message = Messaging.MessageResult(result);
-                                        return RedirectToLocal(returnUrl);
-
-                                    }
+                                    CreateToken(Data, "CBS4U", 10);
+                                    ViewBag.Success = true;
+                                    ViewBag.StartSessionWarning = true;
+                                    ViewBag.Message = Messaging.MessageResult(result);
+                                    return RedirectToLocal(returnUrl);
 
                                 }
 
+                            }
 
-                            }
-                            catch (Exception ex)
-                            {
-                                ViewBag.Success = false;
-                                ViewBag.Message = $"{Messaging.MessageResult(result)}, Error: {ex.Message}";
-                                return View("Login", model);
-                            }
+
                         }
+                        catch (Exception ex)
+                        {
+                            ViewBag.Success = false;
+                            ViewBag.Message = $"{Messaging.MessageResult(result)}, Error: {ex.Message}";
+                            return View("Login", model);
+                        }
+                        //if (Data.isAuthenticated)
+                        //{
+
+                        //}
                     }
                     else
                     {

@@ -1,4 +1,4 @@
-﻿@using CBS.FrontDesk.UI.Helper
+﻿
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed layout-compact" dir="ltr"
       data-theme="theme-default"
@@ -56,6 +56,23 @@
     </style>
 
     <style>
+        tfoot {
+            background-color: #f3f4f6; /* Background color */
+            font-weight: bold; /* Bold text */
+        }
+
+            tfoot td {
+                padding: 10px; /* Padding */
+            }
+
+                tfoot td:first-child {
+                    border-radius: 0 0 0 10px; /* Rounded corners for the first cell */
+                }
+
+                tfoot td:last-child {
+                    border-radius: 0 0 10px 0; /* Rounded corners for the last cell */
+                }
+
         .upload-container {
             position: relative;
             width: 200px;
@@ -79,7 +96,7 @@
             justify-content: flex-end;
             padding: 10px;
         }
-        
+
 
         .nav .nav-link:hover, .nav .nav-link:focus {
             color: #4CAF50; /* Green */
@@ -101,6 +118,7 @@
         .nav-tabs .tab-slider {
             background-color: #4CAF50; /* Green */
         }
+
         .btn-primary {
             background-color: green;
             border-color: green;
@@ -284,7 +302,7 @@
             font-weight: bold; /* Add any other desired styling for small elements */
             /* Add any other desired styling */
         }
-       
+
         .signature {
             position: absolute;
             top: 10px;
@@ -435,7 +453,6 @@
             .list-group-item.active.waves-effect .waves-ripple {
                 background: radial-gradient(rgba(76, 175, 80, 0.2) 0, rgba(76, 175, 80, 0.3) 40%, rgba(76, 175, 80, 0.4) 50%, rgba(76, 175, 80, 0.5) 60%, rgba(76, 78, 100, 0) 70%);
             }
-
     </style>
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.css" />

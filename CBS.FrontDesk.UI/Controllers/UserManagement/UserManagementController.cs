@@ -8,11 +8,12 @@ using System.Web;
 using System.Web.Mvc;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.UserManagement;
-using CBS.FrontDesk.UI.Helper;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity;
 using CBS.BusinessService.Config.Localization;
 using CBS.FrontDesk.Data.Entity.Config;
+using System.Security.Policy;
+using CBS.FrontDesk.Data.Entity.User;
 
 namespace CBS.FrontDesk.UI.Controllers.UserManagement
 {
@@ -145,6 +146,49 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult> ChangePassword(string serviceoption = "None", string KEY = "KEY", string secrete = "none", string usersecreteid = "secrete", string path = null)
+        {
+            if (!VerifyCookies("CBS4U"))
+            {
+                var user=await _userManagementServices.GetUser(_userManagementServices.ConvertStringToGuid(KEY));
+                if (user.ChangePasswordOnFirstLogin)
+                {
+                    return View(user);
+                }
+
+            }
+
+
+            return Redirect("~/Authentication/Logout");
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> ChangePassword(UserList model)
+        {
+
+            if (!VerifyCookies("CBS4U"))
+            {
+                var data = await _userManagementServices.ChangePassword(model);
+                if (data.Result)
+                {
+                    var dto = new UserDto { };
+
+                    CreateToken(dto);
+
+                }
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            }
+
+
+            var url = "~/Authentication/Login";
+            return Json(new { success = false, message = "Session expired.", urldirect = url, state = "Expired" }, JsonRequestBehavior.AllowGet);
+
+
+
+
         }
         public async Task<ActionResult> Delete(string KEY)
         {

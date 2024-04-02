@@ -48,6 +48,20 @@ namespace CBS.FrontDesk.Data.UserManagement
         public List<UserAllowedIP> userAllowedIPs { get; set; }=new List<UserAllowedIP>();
         public List<UserRole> userRoles { get; set; }=new List<UserRole>();
         public string Option { get; set; }
+        
+        public bool IsActive { get; set; }
+        public bool IsGoogleAuthenticatorEnabled { get; set; }
+        public bool IsVerified { get; set; }
+        public bool IsBlocked { get; set; }
+        public bool ChangePasswordOnFirstLogin { get; set; }
+        public string GoogleAuthenticatorSecretKey { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+        public DateTime? DeletedDate { get; set; }
+        public bool IsRoot { get; set; }
+        public DateTime LastLoginDate { get; set; }
     }
 
 

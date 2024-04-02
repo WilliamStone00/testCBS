@@ -90,7 +90,6 @@ namespace CBS.BusinessService.Accounts
             {
 
                 // Make an API call to create an individual profile
-                model.branchId = GetBranchID();
                 model.bankId = GetBankID();
                 var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<DepositLimit>>(APICallHelper.CreateDepositLimit, model);
                 if (response.IsSuccess)

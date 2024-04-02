@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
-using CBS.FrontDesk.UI.Helper;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity;
 using CBS.BusinessService.Accounting;
@@ -17,6 +16,8 @@ using CBS.BusinessService.Accounting;
 using MvcSiteMapProvider.Reflection;
 using System.Data.Entity.Core.Metadata.Edm;
 using CBS.BusinessService.Config;
+using System.Linq.Expressions;
+using CBS.BusinessService.MembersAccountSettings;
 
 namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
 {
@@ -25,10 +26,12 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
     {
         // GET: Individual
         private readonly IndividualProfileServices _individualProfileServices;
+        private readonly MemberAccountActivationServices _memberAccountActivationServices;
 
-        public IndividualController(IndividualProfileServices individualProfileServices)
+        public IndividualController(IndividualProfileServices individualProfileServices, MemberAccountActivationServices memberAccountActivationServices = null)
         {
             _individualProfileServices = individualProfileServices;
+            _memberAccountActivationServices = memberAccountActivationServices;
         }
         public async Task<ActionResult> List()
         {
@@ -182,7 +185,25 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
-        
+            else if (model.option == "Status")
+            {
+                var data = await _individualProfileServices.ActivateDeactivate(model);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else if (model.option == "UpdateMemberAccount")
+            {
+                var data = await _memberAccountActivationServices.Update(model.MemberAccountActivation);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            }
+            else if (model.option == "AddMemberAccount")
+            {
+               
+                var data = await _memberAccountActivationServices.Create(model.MemberAccountActivation);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+
             else if (model.option == "upload")
             {///NextofkingsPhoto,NextofkingsSignature,CustomerPhoto,CustomerSignature,CustomerOtherDocument
                 model.CustomerDocumentRequest.CustomerID = model.CustomerList.customerId;
@@ -244,7 +265,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
-
+            //MemberAccountActivation
 
 
             return Json(new { success = false, status = false, message = "Fill the required fields." });

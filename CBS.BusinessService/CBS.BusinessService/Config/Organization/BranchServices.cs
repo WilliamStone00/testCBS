@@ -61,8 +61,19 @@ namespace CBS.BusinessService.Config
         {
             try
             {
-                var couApiResponse = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
-                return couApiResponse.ApiResponseData.Data;
+                if (IsHeadOffice())
+                {
+                    var couApiResponse = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
+                    return couApiResponse.ApiResponseData.Data;
+
+                }
+                else
+                {
+                    var couApiResponse = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
+                    return couApiResponse.ApiResponseData.Data.Where(x=>x.Id==GetBranchID());
+
+                }
+
             }
             catch (Exception ex)
             {
@@ -70,6 +81,7 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+
         public async Task<Branch> GetBranch(string id)
         {
             try

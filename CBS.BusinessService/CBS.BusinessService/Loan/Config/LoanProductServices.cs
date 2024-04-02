@@ -231,10 +231,9 @@ namespace CBS.BusinessService.Config
                     {
                         LoanProduct.ProductCode = model.ProductCode;
                         LoanProduct.ProductName = model.ProductName;
-                        LoanProduct.LoanMinimumAmount = model.LoanMinimumAmount;
-                        LoanProduct.DefaultLoanAmount = model.DefaultLoanAmount;
-                        LoanProduct.LoanMaximumAmount = model.LoanMaximumAmount;
+                        LoanProduct.TaxId = model.TaxId;
                         LoanProduct.ActiveStatus = model.ActiveStatus;
+                        LoanProduct.Description = model.Description;
                     }
                     else if (model.ServiceOption == "gurantee")
                     {
@@ -242,9 +241,28 @@ namespace CBS.BusinessService.Config
                         LoanProduct.MinimumCollateralPercentage = model.MinimumCollateralPercentage;
                         LoanProduct.DefaultCollateralPercentage = model.DefaultCollateralPercentage;
                         LoanProduct.MaximumCollateralPercentage = model.MaximumCollateralPercentage;
-                        LoanProduct.MinimumCreditInsurancePercentage = model.MinimumCreditInsurancePercentage;
-                        LoanProduct.DefaultCreditInsurancePercentage = model.DefaultCreditInsurancePercentage;
-                        LoanProduct.MaximumCreditInsurancePercentage = model.MaximumCreditInsurancePercentage;
+                        LoanProduct.IsRequiredCollateral = model.IsRequiredCollateral;
+                        LoanProduct.IsRequiredSalaryccount = model.IsRequiredSalaryccount;
+                        LoanProduct.IsRequiredSavingAccount = model.IsRequiredSavingAccount;
+                        LoanProduct.IsRequiredShareAccount = model.IsRequiredShareAccount;
+                        LoanProduct.IsRequredIrrivocableSalaryTransfer = model.IsRequredIrrivocableSalaryTransfer;
+                        LoanProduct.IsRequresRegisteredPublicAuthority = model.IsRequresRegisteredPublicAuthority;
+                        LoanProduct.MaximumShareAccountBalanceRateForTheRequestAmount = model.MaximumShareAccountBalanceRateForTheRequestAmount;
+                        LoanProduct.MinimumShareAccountBalanceRateForTheRequestAmount = model.MinimumShareAccountBalanceRateForTheRequestAmount;
+                        LoanProduct.MaximumSavingAccountBalanceRateForTheRequestAmount = model.MaximumSavingAccountBalanceRateForTheRequestAmount;
+                        LoanProduct.MinimumSavingAccountBalanceRateForTheRequestAmount = model.MinimumSavingAccountBalanceRateForTheRequestAmount;
+                        LoanProduct.MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount = model.MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount;
+                        LoanProduct.MinimumSalaryAccountBalanceRateForTheRequestAmount = model.MinimumSalaryAccountBalanceRateForTheRequestAmount;
+                        LoanProduct.BlockedGuarantorAccount = model.BlockedGuarantorAccount;
+                        LoanProduct.BlockedSalaryAccount = model.BlockedSalaryAccount;
+                        LoanProduct.BlockedSavingAccount = model.BlockedSavingAccount;
+
+                    }
+                    else if (model.ServiceOption == "loan_range")
+                    {
+                        LoanProduct.LoanMinimumAmount = model.LoanMinimumAmount;
+                        LoanProduct.DefaultLoanAmount = model.DefaultLoanAmount;
+                        LoanProduct.LoanMaximumAmount = model.LoanMaximumAmount;
 
                     }
                     else if (model.ServiceOption == "topup")
@@ -259,12 +277,12 @@ namespace CBS.BusinessService.Config
                     
                     else if (model.ServiceOption == "interest")
                     {
-                        LoanProduct.LoanInterestMethod = model.LoanInterestMethod;
                         LoanProduct.LoanInterestType = model.LoanInterestType;
                         LoanProduct.LoanInterestPeriod = model.LoanInterestPeriod;
                         LoanProduct.MinimumInterestRate = model.MinimumInterestRate;
                         LoanProduct.DefaultInterestRate = model.DefaultInterestRate;
                         LoanProduct.MaximumInterestRate = model.MaximumInterestRate;
+                        LoanProduct.StartGeneratingInterestAfterDisbustment = model.StartGeneratingInterestAfterDisbustment;
 
                     }
                     else if (model.ServiceOption == "duration")
@@ -288,7 +306,7 @@ namespace CBS.BusinessService.Config
                     }
                     else if (model.ServiceOption == "taxandfee")
                     {
-                        LoanProduct.TaxId = model.TaxId;
+        
                         LoanProduct.IsEarlyPartialRepaymentFeeRate = model.IsEarlyPartialRepaymentFeeRate;
                         LoanProduct.EarlyPartialRepaymentFee = model.EarlyPartialRepaymentFee;
                         LoanProduct.IsEarlyTotalRepaymentFeeRate = model.IsEarlyTotalRepaymentFeeRate;

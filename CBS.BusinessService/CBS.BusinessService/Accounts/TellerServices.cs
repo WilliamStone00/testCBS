@@ -53,10 +53,22 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var couApiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<Teller>>>(APICallHelper.GetAllTeller);
-                if (couApiResponse.IsSuccess)
+                if (IsHeadOffice())
                 {
-                    return couApiResponse.ApiResponseData.Data;
+                    var couApiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<Teller>>>(APICallHelper.GetAllTeller);
+                    if (couApiResponse.IsSuccess)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                else
+                {
+                    var couApiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<Teller>>>(APICallHelper.GetAllTeller);
+                    if (couApiResponse.IsSuccess)
+                    {
+                        return couApiResponse.ApiResponseData.Data.Where(x=>x.branchId == GetBranchID());
+                    }
                 }
                 return new List<Teller>();
             }
@@ -141,8 +153,14 @@ namespace CBS.BusinessService.Accounts
                 {
                     Teller.code = model.code;
                     Teller.name = model.name;
-                    Teller.MinAmount = model.MinAmount;
-                    Teller.MaxAmount = model.MaxAmount;
+                    Teller.MinimumAmountToManage = model.MinimumAmountToManage;
+                    Teller.MaximumAmountToManage = model.MaximumAmountToManage;
+                    Teller.MinimumWithdrawalAmount = model.MinimumWithdrawalAmount;
+                    Teller.MaximumWithdrawalAmount = model.MaximumWithdrawalAmount;
+                    Teller.MaximumTransferAmount = model.MaximumTransferAmount;
+                    Teller.MinimumTransferAmount = model.MinimumTransferAmount;
+                    Teller.MaximumDepositAmount = model.MaximumDepositAmount;
+                    Teller.MinimumDepositAmount = model.MinimumDepositAmount;
                     Teller.isPrimary = model.isPrimary;
                     Teller.activeStatus = model.activeStatus;
                     Teller.inUseStatus = model.inUseStatus;

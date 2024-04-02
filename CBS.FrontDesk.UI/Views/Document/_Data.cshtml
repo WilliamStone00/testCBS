@@ -5,6 +5,7 @@
             <th>Name</th>
             <th>Type</th>
             <th>Description</th>
+            <th>Link</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -12,12 +13,13 @@
         @foreach (var d in Model)
         {
             <tr>
-                <td style="width:20%">@d.name</td>
-                <td style="width:10%">@d.type</td>
-                <td style="width:50%">@d.description</td>
+                <td style="width:20%">@d.Name</td>
+                <td style="width:10%">@d.DocumentType</td>
+                <td style="width:50%">@d.Description</td>
+                <td style="width:50%">@d.LinkDoc</td>
                 <td style="width:20%">
-                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview','_Update','update','Document')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('Document','@d.id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                    <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview','_Update','update','Document')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('Document','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
                 </td>
             </tr>
         }
