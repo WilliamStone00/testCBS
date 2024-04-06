@@ -17,6 +17,7 @@ namespace CBS.FrontDesk.Data
         public string BookingDirection { get; set; }
         public bool CanBeNegative { get; set; }
         public bool IsBalanceSheetAccount { get; set; }
+        public decimal CurrentBalance { get; set; }
     }
 
     public class AccountHoDto

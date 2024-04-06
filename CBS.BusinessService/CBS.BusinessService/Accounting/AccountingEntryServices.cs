@@ -13,6 +13,7 @@ using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.UserManagement;
 using System.Runtime.InteropServices;
+using CBS.FrontDesk.Data;
 
 
 namespace CBS.BusinessService
@@ -20,23 +21,23 @@ namespace CBS.BusinessService
     public class AccountingEntryServices:BaseService
     {
         private readonly ApiCallerHelper _accountingApiCallerHelper;
+        private readonly ApiCallerHelper _TransactionBaseUrl;
         private List<Currency> _currencies;
-
         public AccountingEntryServices()
         {
             _accountingApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
-
+            _TransactionBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
         }
-        public async Task<List<DisplayData>> GetCashReplenimentRequestId()
+        public async Task<List<CashRoot>> GetCashReplenimentCurrentOpenOfDayHistoryRequestId()
         {
             try
             {
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<DisplayData>>>(APICallHelper.CurrentOpenOfDayHistory);
+                var couApiResponse = await _TransactionBaseUrl.GetAsync<ResponseObject<List<CashRoot>>>(APICallHelper.CurrentOpenOfDayHistory);
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData == null)
                     {
-                        return new List<DisplayData>();
+                        return new List<CashRoot>();
                     }
                     else
                     {
@@ -44,7 +45,7 @@ namespace CBS.BusinessService
                     }
 
                 }
-                return new List<DisplayData>();
+                return new List<CashRoot>();
             }
             catch (Exception ex)
             {
@@ -88,7 +89,46 @@ namespace CBS.BusinessService
             }
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> Update(CashInfusion model)
+        {
+            try
+            {
 
+                var OperationEvent = await GetCashReplenimentReferenceRequest(model.Id);
+                if (OperationEvent != null)
+                {
+                   
+                    OperationEvent.AmountRequested = model.Amount;
+                    OperationEvent.RequestMessage = model.RequestMessage;
+                    OperationEvent.CurrentOpenOfDayHistoryId = model.CurrentOpenOfDayHistoryId;
+                    OperationEvent.Id= model.Id;
+
+                     var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<CashInfusion>>(string.Format(APICallHelper.UpdateCashReplenishmentRequest, model.Id), model);
+                    if (response.IsSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"{model.CurrentOpenOfDayHistoryId} Transaction was successfull", MessagesResults.Success,
+                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(model, false, $"{model.CurrentOpenOfDayHistoryId} Transaction failed", MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
         public async Task<ExecutionMessages> CashReplenishmentRequest(CashInfusion model)
         {
             try
@@ -128,7 +168,15 @@ namespace CBS.BusinessService
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<AccountingEntry>>>(APICallHelper.AccountingEntry_Entries);
                 if (couApiResponse.IsSuccess)
                 {
-                    return couApiResponse.ApiResponseData.Data;
+                    if (couApiResponse.ApiResponseData==null)
+                    {
+                        return new List<AccountingEntry>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+             
                 }
                 return new List<AccountingEntry>();
             }
@@ -139,15 +187,69 @@ namespace CBS.BusinessService
             }
         }
 
-        public async Task<List<CashReplenimentRequest>> GetAllCashReplenimentRequest()
+        public async Task<List<AccountingEntry>> GetTrialBalance4ColumnEntries(TrialBalance4Column trialBalance)
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<AccountingEntry>>>(APICallHelper.Trialbalance4Column_Entries);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData == null)
+                    {
+                        return new List<AccountingEntry>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<AccountingEntry>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+
+
+        public async Task<List<CashReplenimentRequestDto>> GetAllCashReplenimentRequest()
         {
       
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<CashReplenimentRequestDto>>>(APICallHelper.GetAllCashReplenishmentRequests);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData==null)
+                    {
+                        return new List<CashReplenimentRequestDto>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+               
+                }
+                return new List<CashReplenimentRequestDto>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+
+        public async Task<List<CashReplenimentRequest>> GetAllCashReplenimentRequestByBranch(string Id)
+        {
+
             try
             {
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<CashReplenimentRequest>>>(APICallHelper.GetAllCashReplenishmentRequests);
                 if (couApiResponse.IsSuccess)
                 {
-                    if (couApiResponse.ApiResponseData==null)
+                    if (couApiResponse.ApiResponseData == null)
                     {
                         return new List<CashReplenimentRequest>();
                     }
@@ -155,7 +257,7 @@ namespace CBS.BusinessService
                     {
                         return couApiResponse.ApiResponseData.Data;
                     }
-               
+
                 }
                 return new List<CashReplenimentRequest>();
             }
@@ -192,7 +294,7 @@ namespace CBS.BusinessService
             try
             {
                
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<CashReplenimentRequest>>(string.Format(APICallHelper.GetCashReplenishmentRequestIdReference, Id));
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<CashReplenimentRequest>>(string.Format(APICallHelper.GetCashReplenishmentRequestById, Id));
                 if (couApiResponse.IsSuccess)
                 {
                     var user = await GetUser(couApiResponse.ApiResponseData.Data.IssuedBy);
@@ -485,4 +587,13 @@ namespace CBS.BusinessService
             }
         }
     }
+
+    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+    public class CashRoot
+    {
+        public string id { get; set; }
+        public string text { get; set; }
+    }
+
+
 }

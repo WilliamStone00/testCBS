@@ -1,4 +1,4 @@
-﻿
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 @{
     ViewBag.Title = "Failed_RequestApproval_View";
 
@@ -17,7 +17,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    <span style="color:red">Approval Request Failed ReferenceId : @Model.id not sent </span>
+                    <span style="color:red">Approval Request Failed ReferenceId : @Model.DetailsDtoModel.id not sent </span>
                 </button>
             </h2>
             <div class="card-body">
@@ -34,62 +34,62 @@
                         <tbody class="table-border-bottom-0">
                             <tr>
                                 <td>Invoice Number</td>
-                                <td>@Model.id </td>
+                                <td>@Model.DetailsDtoModel.id </td>
                             </tr>
                             <tr>
                                 <td>Amount Requested</td>
-                                <td>@Model.requestedAmount.ToString("N") </td>
+                                <td>@Model.DetailsDtoModel.requestedAmount.ToString("N") </td>
                             </tr>
                             <tr>
                                 <td>Request Message</td>
-                                <td>@Model.requetcomment </td>
+                                <td>@Model.DetailsDtoModel.requetcomment </td>
                             </tr>
                             <tr>
                                 <td>Requested By </td>
-                                <td> @Model.requesterUserId </td>
+                                <td> @Model.DetailsDtoModel.requesterUserId </td>
                             </tr>
                             <tr>
                                 <td>Approved By </td>
-                                <td> @Model.approvedBy </td>
+                                <td> @Model.DetailsDtoModel.approvedBy </td>
                             </tr>
                             <tr>
                                 <td>Amount Approved</td>
-                                <td>@Model.confirmedAmount.ToString("N") </td>
+                                <td>@Model.DetailsDtoModel.confirmedAmount.ToString("N") </td>
                             </tr>
 
 
                             <tr>
                                 <td>Approved Date</td>
-                                <td>@Model.approvedDate </td>
+                                <td>@Model.DetailsDtoModel.approvedDate </td>
                             </tr>
                             <tr>
                                 <td>Approved Message</td>
-                                <td>@Model.approvedComment </td>
+                                <td>@Model.DetailsDtoModel.approvedComment </td>
                             </tr>
                             <tr>
 
 
                                 <td> Status</td>
-                                @if (@Model.approvedStatus.ToUpper().Equals("PENDING"))
+                                @if (@Model.DetailsDtoModel.approvedStatus.ToUpper().Equals("PENDING"))
                                 {
                                     <td class="badge bg-label-primary rounded-pill text-uppercase">
-                                        @Model.approvedStatus
+                                        @Model.DetailsDtoModel.approvedStatus
                                     </td>
 
 
                                 }
                                 else
                                 {
-                                    if (@Model.approvedStatus.ToUpper().Equals("APPROVE"))
+                                    if (@Model.DetailsDtoModel.approvedStatus.ToUpper().Equals("APPROVE"))
                                     {
                                         <td class="badge bg-label-success rounded-pill text-uppercase">
-                                            @Model.approvedStatus
+                                            @Model.DetailsDtoModel.approvedStatus
                                         </td>
                                     }
                                     else
                                     {
                                         <td class="badge bg-label-danger rounded-pill text-uppercase">
-                                            @Model.approvedStatus
+                                            @Model.DetailsDtoModel.approvedStatus
                                         </td>
                                     }
 

@@ -140,14 +140,17 @@
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.DynamicData.Design" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Entity.Design" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions.Design" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -2359,7 +2362,7 @@
     <Content Include="Views\BankingOperations\_CashInfusion.cshtml" />
     <Content Include="Views\CashFlowManagement\Index.cshtml" />
     <Content Include="Views\CashFlowManagement\_ManualAccountingEntry.cshtml" />
-    <Content Include="Views\CashFlowManagement\CreateCashReplenishmentRequest.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CreateCashReplenishmentRequest.cshtml" />
     <Content Include="Views\AccountingConfiguration\_AccountTypeData.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateAccountingEntryRule.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateOperationEventAttribute.cshtml" />
@@ -2414,8 +2417,7 @@
     <Content Include="Views\Role\_RolePermissionData.cshtml" />
     <Content Include="Views\Operation\Transactions.cshtml" />
     <Content Include="Views\Operation\_TransactionData.cshtml" />
-    <Content Include="Views\CashFlowManagement\GetAllCashReplenimentRequestData.cshtml" />
-    <Content Include="Views\CashFlowManagement\GetCashReplenimentRequest.cshtml" />
+    <Content Include="Views\CashFlowManagement\_ApproveCashReplenimentRequest.cshtml" />
     <Content Include="Views\CashFlowManagement\Successfull_Request_View.cshtml" />
     <Content Include="Views\CashFlowManagement\Failed_Request_View.cshtml" />
     <Content Include="Views\BankingOperations\_JournalEntries.cshtml" />
@@ -2504,6 +2506,13 @@
     <Content Include="Views\BudgetManagement\_BudgetCategoryDetails.cshtml" />
     <Content Include="Views\BudgetManagement\_BudgetData.cshtml" />
     <Content Include="Views\BudgetManagement\_BudgetCategoryData.cshtml" />
+    <Content Include="Views\AccountingStatements\_SearchOptions.cshtml" />
+    <Content Include="Views\TellerCashDemand\CreateCashReplenishmentRequest.cshtml" />
+    <Content Include="Views\TellerCashDemand\GetAllCashReplenimentRequestData.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CashReplenishmentRequestData.cshtml" />
+    <Content Include="Views\CashFlowManagement\_ViewCashRequestStatus.cshtml" />
+    <Content Include="Views\CashFlowManagement\CreateCashReplenishmentRequest.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CashReplenishmentRequestDataWithOutApproval.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2575,6 +2584,9 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
@@ -2590,13 +2602,14 @@
           <DevelopmentServerPort>52456</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>https://localhost:44389/</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>https://localhost:44389/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
           </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <servers defaultServer="SelfHostServer">
+            <server name="SelfHostServer" exePath="" cmdArgs="" url="http://localhost:52456/" workingDir="" />
+          </servers>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

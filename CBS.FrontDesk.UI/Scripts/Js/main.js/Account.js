@@ -31,7 +31,7 @@ function loadOperationEventAttributeIds(operationEventId) {
 
             // Add new options based on the fetched data
             $.each(data, function (index, item) {
-                $('#OperationEventAttributeId').append($('<option>').text(item.Name).attr('value', item.Id));
+                $('#OperationEventAttributeId').append($('<option>').text(item.Text).attr('value', item.Id));
             });
         },
         error: function (xhr, status, error) {

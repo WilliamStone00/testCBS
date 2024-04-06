@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using CBS.BusinessService.Accounts;
+using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -27,6 +29,43 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return View();
         }
 
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        {
+            await GetList();
+            var partialResult = await GetServiceAction(path, partialView, KEY, serviceOption);
+
+            return partialResult;
+        }
+
+        private async Task<PartialViewResult> GetServiceAction(string path, string partialView, string key, string serviceOption)
+        {
+            if (serviceOption == "cashRequest")
+            {
+                if (path == "list")
+                {
+                    var dataChart = await Service.GetAllCashReplenimentRequest();
+                   
+                    var sysData = new CashDemandDataEntity { DetailsDtos  = dataChart.ToList() };
+                    return PartialView(partialView, sysData);
+                }
+
+                else if (path == "new")
+                {
+                    
+                    return PartialView(partialView, new CashDemandDataEntity { });
+                }
+                else
+                {
+                    var data = await Service.GetCashReplenimentRequest(key);
+                    return PartialView(partialView, new CashDemandDataEntity { DetailsDtoModel = data });
+
+                }
+
+
+            }
+         
+            return null;
+        }
 
         public async Task GetList(string language = "En")
         {

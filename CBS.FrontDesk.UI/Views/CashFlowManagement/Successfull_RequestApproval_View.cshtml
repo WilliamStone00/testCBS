@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashReplenimentRequest
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 @{
     ViewBag.Title = "Successfull_RequestApproval_View";
 
@@ -17,7 +17,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    Request ReferenceId : @Model.Id
+                    Request ReferenceId : @Model.CashReplenimentRequest.Id
                 </button>
             </h2>
             <div class="card-body">
@@ -34,45 +34,45 @@
                         <tbody class="table-border-bottom-0">
                             <tr>
                                 <td>Daily Operation Reference </td>
-                                <td>@Model.OpenOfDayOperationId </td>
+                                <td>@Model.CashReplenimentRequest.CurrentOpenOfDayHistoryId </td>
                             </tr>
                             <tr>
                                 <td>Amount Requested</td>
-                                <td>XAF @Model.AmountRequested.ToString("N") </td>
+                                <td>XAF @Model.CashReplenimentRequest.AmountRequested.ToString("N") </td>
                             </tr>
                             <tr>
                                 <td>Request Message</td>
-                                <td>@Model.RequestMessage </td>
+                                <td>@Model.CashReplenimentRequest.RequestMessage </td>
                             </tr>
                             <tr>
                                 <td>Requested By </td>
-                                <td> @Model.IssuedBy </td>
+                                <td> @Model.CashReplenimentRequest.IssuedBy </td>
                             </tr>
                             <tr>
                                 <td>Requested Date</td>
-                                <td>@Model.IssuedDate </td>
+                                <td>@Model.CashReplenimentRequest.IssuedDate </td>
                             </tr>
                             <tr>
                                 <td> Status</td>
-                                @if (@Model.IsApproved)
+                                @if (@Model.CashReplenimentRequest.IsApproved)
                                 {
                                     <td class="badge bg-label-success rounded-pill text-uppercase">
-                                        @Model.Status
+                                        @Model.CashReplenimentRequest.Status
                                     </td>
 
                                 }
                                 else
                                 {
-                                    if (@Model.Status.ToUpper().Equals("PENDING"))
+                                    if (@Model.CashReplenimentRequest.Status.ToUpper().Equals("PENDING"))
                                     {
                                         <td class="badge bg-label-primary rounded-pill text-uppercase">
-                                            @Model.Status
+                                            @Model.CashReplenimentRequest.Status
                                         </td>
                                     }
                                     else
                                     {
                                         <td class="badge bg-label-danger rounded-pill text-uppercase">
-                                            @Model.Status
+                                            @Model.CashReplenimentRequest.Status
                                         </td>
                                     }
 
@@ -82,25 +82,25 @@
                     </table>
                 </div>
                 <div class="card card-action mb-5">
-                    @if (@Model.IsApproved)
+                    @if (@Model.CashReplenimentRequest.IsApproved)
                     {
-                        <h5 class="card-header" style="color:forestgreen">You have just approved cash replenishment request of XAF @Model.AmountRequested.ToString("N") Issued by @Model.IssuedBy on @Model.IssuedDate successfully.</h5>
+                        <h5 class="card-header" style="color:forestgreen">You have just approved cash replenishment request of XAF @Model.CashReplenimentRequest.AmountRequested.ToString("N") Issued by @Model.CashReplenimentRequest.IssuedBy on @Model.CashReplenimentRequest.IssuedDate successfully.</h5>
 
 
                     }
                     else
                     {
 
-                        if (@Model.Status.ToUpper().Equals("PENDING"))
+                        if (@Model.CashReplenimentRequest.Status.ToUpper().Equals("PENDING"))
                         {
                 <td class="badge bg-label-primary rounded-pill text-uppercase">
-                    <h5 class="card-header" style="color:firebrick">You have just rejected the cash replenishment request of XAF @Model.AmountRequested.ToString("N") Issued by @Model.IssuedBy on @Model.IssuedDate successfully.</h5>
+                    <h5 class="card-header" style="color:firebrick">You have just rejected the cash replenishment request of XAF @Model.CashReplenimentRequest.AmountRequested.ToString("N") Issued by @Model.CashReplenimentRequest.IssuedBy on @Model.CashReplenimentRequest.IssuedDate successfully.</h5>
 
                 </td>
                         }
                         else
                         {
-                            <h5 class="card-header" style="color:firebrick">You have just rejected the cash replenishment request of XAF @Model.AmountRequested.ToString("N") Issued by @Model.IssuedBy on @Model.IssuedDate successfully.</h5>
+                            <h5 class="card-header" style="color:firebrick">You have just rejected the cash replenishment request of XAF @Model.CashReplenimentRequest.AmountRequested.ToString("N") Issued by @Model.CashReplenimentRequest.IssuedBy on @Model.CashReplenimentRequest.IssuedDate successfully.</h5>
 
                         }
                     }

@@ -67,6 +67,8 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
+
+      
         public async Task<Account> GetTransactionsAsync()
         {
             try

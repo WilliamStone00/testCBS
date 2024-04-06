@@ -16,12 +16,13 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         [Required]
         public decimal AmountConfirm { get; set; }
         [Required]
-        public string OpenOfDayOperationId { get; set; }
+        public string CurrentOpenOfDayHistoryId { get; set; }
         public string IssuedBy { get; set; }
         public string IssuedDate { get; set; }
         public string ApprovedBy { get; set; }
         public DateTime? ApprovedDate { get; set; }
         public bool IsApproved { get; set; }
+        public string BranchId { get; set; }
         public string CurrencyCode { get; set; }
         [Required]
         public string ApprovedMessage { get; set; }
@@ -29,6 +30,12 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
         public CashApprovalResponse ConvertToCashApprovalResponse(bool Approved)
         { return new CashApprovalResponse { ApprovedMessage =this.ApprovedMessage, IsApproved=Approved,Id= this.Id }; }
+
+        public CashInfusion ConvertToCashInfusionModel()
+        {
+            return new CashInfusion { Amount = this.AmountRequested, RequestMessage = this.RequestMessage, CurrentOpenOfDayHistoryId = this.CurrentOpenOfDayHistoryId, Id= this.Id };
+        }
+
 
         public CashReplenimentRequestDto ConvertToCashReplenimentRequestDto()
         {
@@ -46,19 +53,35 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 CurrencyCode = this.CurrencyCode,
                 ApprovedMessage = this.ApprovedMessage,
                 Status = this.Status,
-                IsRejected = false
+                IsRejected = false,
+                BranchId = this.BranchId
             };
         }
     }
 
     public class CashReplenimentRequestDto: CashReplenimentRequest
-    { 
+    {
+        [Required]
+        public string AccountId { get; set; }
+      
+     
+
        
+        public string BranchOffice { get; set; }
         public bool IsRejected { get; set; }
 
-        public CashApprovalResponse ConvertToCashApprovalResponse()
-        { return new CashApprovalResponse 
-        { ApprovedMessage = this.ApprovedMessage, IsApproved = DetermineApprovalStatus(), Id = this.Id }; }
+        public CashApprovalResponse ConvertToCashApprovalResponse(string BranchCode)
+        { 
+            return new CashApprovalResponse { 
+                ApprovedMessage = this.ApprovedMessage, 
+                IsApproved = DetermineApprovalStatus(), 
+                Id = this.Id,
+                AccountId = this.AccountId,
+                ApprovedAmount = this.AmountConfirm,
+                BranchId = this.BranchId,
+                BranchCode= BranchCode
+            };  
+        }
 
         public bool DetermineApprovalStatus()
         {

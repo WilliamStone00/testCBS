@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             public string Id { get; set; }
              public string ApprovedMessage { get; set; }
         public bool IsApproved { get; set; }
+        public decimal ApprovedAmount { get; set; }
+        public string AccountId { get; set; }
+        public string BranchId { get;   set; }
+        public string BranchCode { get; internal set; }
     }
      
  

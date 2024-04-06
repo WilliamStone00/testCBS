@@ -12,5 +12,17 @@ namespace CBS.FrontDesk.Data.Entity
         public string Text { get; set; }
         public string Value { get; set; }
         public SelectList SelectListItems { get; set; }
+
+        public StringValues()
+        {
+                
+        }
+        public StringValues(string text, string value )
+        {
+            Text = text;
+            Value = value;
+
+
+        }
     }
 }

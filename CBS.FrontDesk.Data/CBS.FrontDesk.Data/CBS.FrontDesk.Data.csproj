@@ -73,6 +73,7 @@
     <Compile Include="Entity\Accounting\AccountType.cs" />
     <Compile Include="Entity\Accounting\AccountValidator.cs" />
     <Compile Include="Entity\Accounting\CashApprovalResponse.cs" />
+    <Compile Include="Entity\Accounting\CashDemandDataEntity.cs" />
     <Compile Include="Entity\Accounting\CashFlowManagement.cs" />
     <Compile Include="Entity\Accounting\BankingOperations.cs" />
     <Compile Include="Entity\Accounting\CashReplenimentRequest.cs" />

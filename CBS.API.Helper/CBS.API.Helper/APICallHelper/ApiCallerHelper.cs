@@ -332,15 +332,15 @@ namespace CBS.API.Helper
                             return new ApiResponse<T>
                             {
                                 IsSuccess = false,
-                                Message = "InternalServerError upexpected error"
+                                Message = "InternalServerError unexpected error"
                             };
                         }
                         else
                         {
                             return new ApiResponse<T>
                             {
-                                IsSuccess = true,
-                                Message = "Empty response data received"
+                                IsSuccess = false,
+                                Message = "Resource not Found"
                             };
                         }
                      

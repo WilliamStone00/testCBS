@@ -4,7 +4,7 @@
 }
 
 <div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+    <div class="col-xl-9 col-lg-9 col-md-9 order-0 order-md-1">
         <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
             <div class="accordion-item active">
@@ -16,8 +16,8 @@
                             data-bs-target="#accordionPopoutIcon-3"
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-format-list-numbered me-2"></i>
-                        General Ledger Of Account
+                        <i class="mdi mdi-file-document-outline me-2"></i>
+                        ACCOUNTING REPORT
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
@@ -26,18 +26,16 @@
                     <div class="accordion-body">
                         <div id="mainviewChange">
                             <div class="change-group">
-                                <div class="card mb-4">
+                                 
                                     <div class="card-body d-sm-flex d-block">
-                                        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('AccountingStatements', null,'GetReport', null, 'List', 'export_generalLedger', null,'generalLedger','DownloadExcelFile',null,'generalLedger')" data-bs-toggle="tooltip" title="Export file">
+                                        <div class=" me-3 mb-3 mb-sm-0">
+                                            @*<a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('AccountingStatements', null,'GetReport', null, 'List', 'export_generalLedger', null,'generalLedger','DownloadExcelFile',null,'generalLedger')" data-bs-toggle="tooltip" title="Export file">
                                                 <span class="tf-icons mdi mdi-file-excel mdi-18px"></span>
-                                            </a>
-                                            <a href="#" class="btn btn-primary date-picker" onclick="ExportFile('AccountingStatements', null,'GetReport', null, 'List', 'export_generalLedger', null,'generalLedger','DownloadExcelFile',null,'generalLedger')" data-bs-toggle="tooltip" title="Export file">
-                                                <span class="tf-icons mdi mdi-file-excel mdi-18px"></span>
-                                            </a>
+                                            </a>*@
+                                           @Html.Partial("_SearchOptions")
                                         </div>
                                     </div>
-                                </div>
+                                 
                                 <div id="datalistingview">
 
                                 </div>

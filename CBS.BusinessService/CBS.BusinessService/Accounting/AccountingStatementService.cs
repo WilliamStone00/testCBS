@@ -17,7 +17,7 @@ namespace CBS.BusinessService.Accounting
             _AccountServices = new AccountingServices();
         }
 
-        public async Task<List<AccountingEntryDto>> GenerateAccountingLedger()
+        public async Task<List<AccountingEntryDto>> GenerateAccountingLedger(SystemQuery systemQuery)
         {
             List<AccountingEntryDto> accountingEntryDtos = new List<AccountingEntryDto>();
             var accountingEntries = await _Service.GetAllAccountingEntries();
@@ -25,6 +25,7 @@ namespace CBS.BusinessService.Accounting
             var query = from entry in accountingEntries
                         join account in accounts on entry.DrAccountId equals account.Id into drJoined
                         from drAccount in drJoined.DefaultIfEmpty()
+                        
                         join account2 in accounts on entry.CrAccountId equals account2.Id into crJoined
                         from crAccount in crJoined.DefaultIfEmpty()
                         select new AccountingEntryDto
@@ -42,6 +43,62 @@ namespace CBS.BusinessService.Accounting
                             CreditAccountBalance = entry.DrCurrentBalance.ToString()
                         };
            return query.ToList();
+        }
+
+        public async Task<List<AccountingEntryDto>> GenerateAccountingLedgerForAnumber(SystemQuery model)
+        {
+            List<AccountingEntryDto> accountingEntryDtos = new List<AccountingEntryDto>();
+            var accountingEntries = await _Service.GetAllAccountingEntries();
+            var accounts = await _AccountServices.GetAllAccounting();
+            var query = from entry in accountingEntries
+                        join account in accounts on entry.DrAccountId equals account.Id into drJoined
+                        from drAccount in drJoined.DefaultIfEmpty()
+                        where (entry.CrAccountNumber == model.AccountNumber )&& (entry.DrAccountNumber == model.AccountNumber)
+                        join account2 in accounts on entry.CrAccountId equals account2.Id into crJoined
+                        from crAccount in crJoined.DefaultIfEmpty()
+                        select new AccountingEntryDto
+                        {
+
+                            EntryDate = entry.EntryDate.Date.ToShortDateString(),
+
+                            AccountNumber = entry.EntryType == "DEBIT" ? drAccount?.AccountNumber : crAccount?.AccountNumber,
+                            AccountName = entry.EntryType == "DEBIT" ? drAccount?.AccountHolder : crAccount?.AccountHolder,
+                            Description = entry.Description,
+                            TransactionReference = entry.ReferenceID,
+                            DebitAmount = entry.EntryType == "DEBIT" ? entry.DrAmount.ToString() : "0",
+                            CreditAmount = entry.EntryType == "CREDIT" ? entry.CrAmount.ToString() : "0",
+                            DebitAccountBalance = entry.CrCurrentBalance.ToString(),
+                            CreditAccountBalance = entry.DrCurrentBalance.ToString()
+                        };
+            return query.ToList();
+        }
+
+        public async Task<List<AccountingEntryDto>> GenerateAccountingLedgerForBranch(SystemQuery model)
+        {
+            List<AccountingEntryDto> accountingEntryDtos = new List<AccountingEntryDto>();
+            var accountingEntries = await _Service.GetAllAccountingEntries();
+            var accounts = await _AccountServices.GetAllAccounting();
+            var query = from entry in accountingEntries
+                        join account in accounts on entry.DrAccountId equals account.Id into drJoined
+                        from drAccount in drJoined.DefaultIfEmpty()
+                        where (entry.BranchId == model.BranchId) && (entry.DrAccountNumber == model.BranchId)
+                        join account2 in accounts on entry.CrAccountId equals account2.Id into crJoined
+                        from crAccount in crJoined.DefaultIfEmpty()
+                        select new AccountingEntryDto
+                        {
+
+                            EntryDate = entry.EntryDate.Date.ToShortDateString(),
+
+                            AccountNumber = entry.EntryType == "DEBIT" ? drAccount?.AccountNumber : crAccount?.AccountNumber,
+                            AccountName = entry.EntryType == "DEBIT" ? drAccount?.AccountHolder : crAccount?.AccountHolder,
+                            Description = entry.Description,
+                            TransactionReference = entry.ReferenceID,
+                            DebitAmount = entry.EntryType == "DEBIT" ? entry.DrAmount.ToString() : "0",
+                            CreditAmount = entry.EntryType == "CREDIT" ? entry.CrAmount.ToString() : "0",
+                            DebitAccountBalance = entry.CrCurrentBalance.ToString(),
+                            CreditAccountBalance = entry.DrCurrentBalance.ToString()
+                        };
+            return query.ToList();
         }
     }
 }

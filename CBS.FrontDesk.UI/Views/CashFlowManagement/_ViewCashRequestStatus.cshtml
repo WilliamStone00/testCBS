@@ -1,9 +1,8 @@
-﻿@{
-    ViewBag.Title = "Successfully -Cash Replenishment Request";
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+@{
+    ViewBag.Title = "View Cash Replenishment Details";
 
 }
-@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
-
 
 <div class="row invoice-preview">
     <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
@@ -18,7 +17,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    Request ReferenceId : @Model.CashReplenimentRequestdto.Id
+                    Request ReferenceId :@Model.CashReplenimentRequestdto.Id Amount : XFA @Model.CashReplenimentRequestdto.AmountRequested
                 </button>
             </h2>
             <div class="card-body">
@@ -33,9 +32,16 @@
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
+                            @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+                            {
+                                <tr>
+                                    <td>Branch Office</td>
+                                    <td>@Model.CashReplenimentRequestdto.BranchOffice </td>
+                                </tr>
+                            }
                             <tr>
-                                <td>Daily Operation Reference </td>
-                                <td>@Model.CashReplenimentRequestdto.CurrentOpenOfDayHistoryId </td>
+                                <td>Invoice Number</td>
+                                <td>@Model.CashReplenimentRequestdto.ReferenceId </td>
                             </tr>
                             <tr>
                                 <td>Amount Requested</td>
@@ -54,8 +60,7 @@
                                 <td>@Model.CashReplenimentRequestdto.IssuedDate </td>
                             </tr>
                             <tr>
-
-                                <td> Status</td>
+                                <td>Status</td>
                                 @if (@Model.CashReplenimentRequestdto.IsApproved)
                                 {
                                     <td class="badge bg-label-success rounded-pill text-uppercase">
@@ -79,29 +84,43 @@
                                     }
 
                                 }
+
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="card card-action mb-5">
-                    <h5 class="card-header"><span style="color:forestgreen">Your cash replenishment request has been sent succesfully. Patiently wait for your managers approval</span> </h5>
+                    <h5 class="card-header">Cash Replenishment Request Status</h5>
+                    <div class="card-body">
+                        <div class="mb-3 col-12 mb-0">
+                            @if (@Model.CashReplenimentRequestdto.IsApproved)
+                            {
+                                <div class="alert alert-outline-success" role="alert">
+                                    <h6 class="alert-heading mb-1">@Model.CashReplenimentRequestdto.RequestMessage account is active.</h6>
+                                    <p class="mb-0">Un-check the box and click on de-activate button to de-activate account</p>
+                                </div>
+                            }
+                            else
+                            {<div class="alert alert-outline-primary" role="alert">
+                                    <h6 class="alert-heading mb-1">ReferenceId :@Model.CashReplenimentRequestdto.Id  with Amount XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") has not yet been approved</h6>
+                                    <p class="mb-0">Select source account to which the vault will be </p>
+                                </div>
+                            }
+                            <div class="text-end" style="padding-right:2em">
 
-                    <div class="col-12 shift-right">
+                                <a type="button" onclick="LoadDataGen('CashFlowManagement','ListOfCashReplenishmentData','_CashReplenishmentRequestData',0,'datalistingview_CashReplenishmentRequest')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Close">
+                                    <span class="tf-icons mdi mdi-close mdi-18px"></span>
+                                </a>
 
-                        <button type="submit" class="btn btn-primary click-to-go-back-to-menu" onclick="refreshPageHome()">Back to home. </button>
+                            </div>
+                        </div>
 
                     </div>
-                
                 </div>
-
+               
             </div>
         </div>
 
 
     </div>
 </div>
-
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-
-<script src="~/Scripts/Js/main.js/CashFlowManagement.js"></script>
-}

@@ -81,7 +81,29 @@ namespace CBS.BusinessService.Accounting
             }
         }
 
+        public async Task<List<Account>> GetAllBranchAccountUsedToCreditCashFlow(string BranchId)
+        {
+            try
+            {
 
+                string Url = string.Format(APICallHelper.GetAllBranchAccountUsedToCreditCashFlow, BranchId);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<Account>>>(Url);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData != null)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<Account>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
         public async Task<List<Account>> GetAllAccounting()
         {
             try

@@ -1,0 +1,75 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingEntryQuery
+<div class="container">
+    <div class="card-body">
+        @using (Html.BeginForm("PostSearch", "AccountingStatements", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            <div class="row justify-content-center mt-2 gy-4">
+
+
+                @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+                {
+                    <div class="col-12 mb-sm-1">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(model => model.SystemQuery.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                            @Html.ValidationMessageFor(model => model.SystemQuery.BranchId, "", new { @class = "text-danger" })
+                            <label>Branch Office</label>
+                        </div>
+                    </div>
+                }
+                <div class="col-md-6 mb-sm-1">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(model => model.SystemQuery.FromDate, new { @class = "form-control date-picker", placeholder = "From Date" })
+                        @Html.ValidationMessageFor(model => model.SystemQuery.FromDate, "", new { @class = "text-danger" })
+                        <label>From Date</label>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-sm-1">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(model => model.SystemQuery.ToDate, new { @class = "form-control date-picker", placeholder = "To Date" })
+                        @Html.ValidationMessageFor(model => model.SystemQuery.ToDate, "", new { @class = "text-danger" })
+                        <label>To Date</label>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-sm-1">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(model => model.SystemQuery.ReportType, new SelectList(ViewBag.ReportTypes == null ? "" : ViewBag.ReportTypes, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(model => model.SystemQuery.ReportType, "", new { @class = "text-danger" })
+                        <label>Select ReportType</label>
+                    </div>
+                </div>
+                <div class="col-md-6 ">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(model => model.SystemQuery.FileType, new SelectList(ViewBag.FileTypes == null ? "" : ViewBag.FileTypes, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(model => model.SystemQuery.FileType, "", new { @class = "text-danger" })
+                        <label>Select FileType</label>
+                    </div>
+                </div>
+
+                <div class="col-12 mb-sm-1">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(model => model.SystemQuery.AccountNumber, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(model => model.SystemQuery.BranchId, "", new { @class = "text-danger" })
+                        <label>Branch Office</label>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="row justify-content-center mt-12">
+                <div>
+                    <button type="submit" class="btn btn-primary me-2">Print</button>
+                   
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

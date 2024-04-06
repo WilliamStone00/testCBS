@@ -1,6 +1,15 @@
 ﻿$(document).ready(function () {
 
     LoadCashReplenishmentDataDT("ListOfCashReplenishmentData")
+
+    $(document).on('change', '#CashReplenimentRequestdto_BranchId', function () {
+        // Get the selected value
+        var selectedValue = $(this).val();
+    
+        // Load another dropdown based on the selected value
+        loadBranchCreditingAccount(selectedValue);
+    });
+
 });
 function refreshPage() {
     // Refresh the current page
@@ -15,6 +24,30 @@ function refreshPageHome() {
     console.log("Page Refreshed");
     // Redirect to the home page
     window.location.href = "/home";
+}
+
+
+function loadBranchCreditingAccount(branchId) {
+    console.log(branchId);
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/CashFlowManagement/GetAllBranchAccountUsedToCreditCashFlow',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId: branchId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+            $('#CashReplenimentRequestdto_AccountId').empty();
+
+            // Add new options based on the fetched data
+            $.each(data, function (index, item) {
+                $('#CashReplenimentRequestdto_AccountId').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
 }
 
 function LoadCashReplenishmentDataDT(tableID) {
@@ -36,12 +69,12 @@ function LoadCashReplenishmentDataDT(tableID) {
             //}
         ],
         "columnDefs": [
-            { "targets": 0, "searchable": true, "orderable": true, "width": "10%" },
-            { "targets": 1, "searchable": true, "orderable": true, "width": "10%" },
-            { "targets": 2, "searchable": true, "orderable": true, "width": "25%" },
-            { "targets": 3, "searchable": true, "orderable": true, "width": "25%" },
-            { "targets": 4, "searchable": true, "orderable": true, "width": "15%" },
-            { "targets": 5, "searchable": true, "orderable": true, "width": "15%" },
+            /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
+            { "targets": 0, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "25%" },
+            { "targets": 2, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 3, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 4, "searchable": true, "orderable": true, "width": "20%" },
 
         ],
             

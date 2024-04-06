@@ -1,6 +1,6 @@
-﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.Accounting.DetailsDto>
+﻿@model  CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 @{
-    ViewBag.Title = "Approve-Cash Replenishment";
+    ViewBag.Title = "Cash Replenishment requests";
 
 }
 <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
@@ -34,13 +34,14 @@
                                     <th>RequestMessage</th>
                                     <th>IssuedBy</th>
                                     <th>IssuedDate</th>
-
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                     
+                            
 
-                                @foreach (var item in Model)
+                                @foreach (var item in Model.DetailsDtos)
                                 {
 
 
@@ -52,7 +53,7 @@
                                             @Html.DisplayFor(modelItem => item.requestedAmount)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.requetcomment)
+                                            @Html.DisplayFor(modelItem => item.confirmedAmount)
                                         </td>
 
                                         <td>
@@ -78,14 +79,14 @@
                                             if (item.approvedStatus.ToUpper().Equals("APPROVE"))
                                             {
                                                 <td class="badge bg-label-success rounded-pill text-uppercase">
-                                                    @Html.ActionLink("APPROVED", "GetCashReplenimentRequest", new { @Key = item.id}, new { @style = "color: inherit;" })
+                                                    @Html.ActionLink("APPROVED", "GetCashReplenimentRequest", new { @Key = item.id }, new { @style = "color: inherit;" })
                                                 </td>
                                             }
                                             else
                                             {
-                                    <td class="badge bg-label-danger rounded-pill text-uppercase">
-                                        @Html.ActionLink("REJECTED", "GetCashReplenimentRequest", new { @Key = item.id }, new { @style = "color: inherit;" })
-                                    </td>
+                                                <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                                    @Html.ActionLink("REJECTED", "GetCashReplenimentRequest", new { @Key = item.id }, new { @style = "color: inherit;" })
+                                                </td>
                                             }
 
                                         }
