@@ -12,8 +12,6 @@
             <div class="card-body">
                 @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                 {<input type="hidden" name="ServiceOption" value="account" id="ServiceOption" />
-                    
-                   
                  <div class="row mt-2 gy-4">
                      <div class="col-md-12">
                          <div class="form-floating form-floating-outline">
