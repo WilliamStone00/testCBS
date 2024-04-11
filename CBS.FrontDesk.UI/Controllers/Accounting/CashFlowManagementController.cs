@@ -63,7 +63,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             foreach (var branch in accounts)
             {
 
-                stringValues.Add(new StringValues(branch.Id, $"{branch.AccountNumber}-{branch.AccountHolder}- {branch.CurrentBalance}"));
+                stringValues.Add(new StringValues(branch.Id, $"{branch.AccountNumber}-{branch.AccountName}- {branch.CurrentBalance}"));
             }
             return stringValues;
         }

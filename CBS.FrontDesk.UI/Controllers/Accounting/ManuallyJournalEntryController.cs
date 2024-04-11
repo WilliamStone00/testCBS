@@ -81,7 +81,7 @@ namespace CBS.FrontDesk.UI.Controllers
             foreach (var item in debitAccounts)
             {
 
-                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.AccountNumber + "-" + item.AccountHolder });
+                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.AccountNumber + "-" + item.AccountName });
 
             }
 
@@ -153,11 +153,11 @@ namespace CBS.FrontDesk.UI.Controllers
                 }
                 if (model.Action == "insert")
                 {
-                    var chartOfAccount = await _AccountServices.GetAccount(model.EntryTempData.AccountName);
+                    var chartOfAccount = await _AccountServices.GetAccount(model.EntryTempData.AccountId);
                     if (chartOfAccount == null)
                     {
                         chartOfAccount = AccountDataSample.Accounts.Find(i => i.Id == model.EntryTempData.AccountName);
-                        model.EntryTempData.AccountName = chartOfAccount.AccountHolder;
+                        model.EntryTempData.AccountName = chartOfAccount.AccountName;
                         model.EntryTempData.Description = "xxxxxxxxxx";
                     }
                     serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
@@ -252,15 +252,18 @@ namespace CBS.FrontDesk.UI.Controllers
                 {
                  
                     var data = await _Service.GetAllEntriesForJournalEntryReference(key);
-                    var dataset = from res in data
+                    var dataAccounts = await _AccountServices.GetAllAccounting();
+                    var dataset = from entry in data
+                                  join account in dataAccounts on entry.AccountNumber equals account.AccountNumber 
+                                 
                                   select new EntryTempDataResult
                                   {
-                                      Id = res.Id,
-                                      AccountName = res.AccountName,
-                                      AccountNumber = res.AccountNumber,
-                                      Amount = res.Amount,
-                                      Reference= res.Reference,
-                                      BookingDirection = res.BookingDirection,
+                                      Id = entry.Id,
+                                      AccountName = entry.AccountName,
+                                      AccountNumber = entry.AccountNumber,
+                                      Amount = entry.Amount,
+                                      Reference= entry.Reference,
+                                      BookingDirection = entry.BookingDirection,
                                       SumDebit = data.Where(x => x.BookingDirection == "DEBIT").Sum(x => x.Amount),
                                       SumCredit = data.Where(x => x.BookingDirection == "CREDIT").Sum(x => x.Amount),
                                       Difference=  (data.Where(x => x.BookingDirection == "CREDIT").Sum(x => x.Amount) - data.Where(x => x.BookingDirection == "DEBIT").Sum(x => x.Amount)),
@@ -350,7 +353,7 @@ namespace CBS.FrontDesk.UI.Controllers
     {
         Id = "1",
         AccountNumber = "123456789",
-        AccountHolder = "John Doe",
+        AccountName = "John Doe",
         AccountTypeId = "AT001",
         ChartOfAccountId = "COA001",
         AccountOwnerId = "OWN001",
@@ -362,7 +365,7 @@ namespace CBS.FrontDesk.UI.Controllers
     {
         Id = "2",
         AccountNumber = "987654321",
-        AccountHolder = "Jane Smith",
+        AccountName = "Jane Smith",
         AccountTypeId = "AT002",
         ChartOfAccountId = "COA002",
         AccountOwnerId = "OWN002",
@@ -374,7 +377,7 @@ namespace CBS.FrontDesk.UI.Controllers
     {
         Id = "3",
         AccountNumber = "456789012",
-        AccountHolder = "Michael Johnson",
+        AccountName = "Michael Johnson",
         AccountTypeId = "AT003",
         ChartOfAccountId = "COA003",
         AccountOwnerId = "OWN003",
@@ -386,7 +389,7 @@ namespace CBS.FrontDesk.UI.Controllers
     {
         Id = "4",
         AccountNumber = "210987654",
-        AccountHolder = "Emily Davis",
+        AccountName = "Emily Davis",
         AccountTypeId = "AT004",
         ChartOfAccountId = "COA004",
         AccountOwnerId = "OWN004",
@@ -398,7 +401,7 @@ namespace CBS.FrontDesk.UI.Controllers
     {
         Id = "5",
         AccountNumber = "789012345",
-        AccountHolder = "David Wilson",
+        AccountName = "David Wilson",
         AccountTypeId = "AT005",
         ChartOfAccountId = "COA005",
         AccountOwnerId = "OWN005",
@@ -410,7 +413,7 @@ namespace CBS.FrontDesk.UI.Controllers
     {
         Id = "6",
         AccountNumber = "345678901",
-        AccountHolder = "Sarah Thompson",
+        AccountName = "Sarah Thompson",
         AccountTypeId = "AT006",
         ChartOfAccountId = "COA006",
         AccountOwnerId = "OWN006",
@@ -422,7 +425,7 @@ namespace CBS.FrontDesk.UI.Controllers
     {
         Id = "7",
         AccountNumber = "678901234",
-        AccountHolder = "Robert Anderson",
+        AccountName = "Robert Anderson",
         AccountTypeId = "AT007",
         ChartOfAccountId = "COA007",
         AccountOwnerId = "OWN007",
@@ -434,7 +437,7 @@ namespace CBS.FrontDesk.UI.Controllers
     {
         Id = "8",
         AccountNumber = "901234567",
-        AccountHolder = "Jessica Taylor",
+        AccountName = "Jessica Taylor",
         AccountTypeId = "AT008",
         ChartOfAccountId = "COA008",
         AccountOwnerId = "OWN008",
@@ -446,7 +449,7 @@ namespace CBS.FrontDesk.UI.Controllers
     {
         Id = "9",
         AccountNumber = "234567890",
-        AccountHolder = "Daniel Brown",
+        AccountName = "Daniel Brown",
         AccountTypeId = "AT009",
         ChartOfAccountId = "COA009",
         AccountOwnerId = "OWN009",
@@ -458,7 +461,7 @@ namespace CBS.FrontDesk.UI.Controllers
     {
         Id = "10",
         AccountNumber = "567890123",
-        AccountHolder = "Olivia Garcia",
+        AccountName = "Olivia Garcia",
         AccountTypeId = "AT010",
         ChartOfAccountId = "COA010",
         AccountOwnerId = "OWN010",

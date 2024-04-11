@@ -446,7 +446,7 @@ namespace CBS.FrontDesk.Helper
         public static string CreateAccount = "/api/v1/Account";
         public static string GetAccountUploadFiles = "/api/v1/Accounts/UploadFiles/{0}";
         public static string PutAccount = "/api/v1/Account/{0}";
-
+        public static string GetSystemLiaisonAccountQueryUrl = "/api/v1/Account/GetSystemLiaisonAccountQuery/{0}";
 
         public static string GetAccountType = "/api/v1/AccountType/{0}";
         public static string GetAccountTypeAccountRubrique = "/api/v1/AccountType/AccountRubrique/{0}";
@@ -458,12 +458,15 @@ namespace CBS.FrontDesk.Helper
         public static string Update_AccountType = "/api/v1/AccountType/{0}";
         public static string Delete_AccountType = "/api/v1/AccountType/{0}";
         public static string Delete_AccountTypeAccountRubrique = "/api/v1/AccountType/AccountRubrique/{0}";
-      
-        
+        public static string AccountingEntry_Generate4ColumnTrialBalance = "api/v1/AccountingEntries/Generate4ColumnTrialBalance";
+        public static string AccountingEntry_Generate6ColumnTrialBalance = "api/v1/AccountingEntries/Generate6ColumnTrialBalance";
+        public static string AccountingEntry_BranchLiaisonEntries = "api/v1/AccountingEntries/BranchLiaisonEntries";
+        public static string AccountingEntry_LiaisonEntries = "/api/v1/AccountingEntries/LiaisonEntries";
         public static string AccountingEntry_Get_Update_delete = "/api/v1/AccountingEntry/{0}";
         public static string AccountingEntry_Get_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdQuery/{0}";
         public static string AccountingEntry_ReverseEntry = "/api/v1/AccountingEntry/ReverseAccountingEntry";
         public static string AccountingEntry_Entries = "/api/v1/AccountingEntries";
+        public static string AccountingEntry_Posting_Entries = "/api/v1/AccountingEntries/RetrieveEntries";
         public static string Trialbalance4Column_Entries = "/api/v1/AccountingEntries/Trialbalance4Column";
         public static string CashReplenishmentRequest = "/api/v1/BankingOperation/RequestForCashReplenishment";
         

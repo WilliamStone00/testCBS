@@ -78,6 +78,10 @@
     <Compile Include="Entity\Accounting\BankingOperations.cs" />
     <Compile Include="Entity\Accounting\CashReplenimentRequest.cs" />
     <Compile Include="Entity\Accounting\CashInfusionRequest.cs" />
+    <Compile Include="Entity\Accounting\BranchLiaisonLedgerEntry.cs" />
+    <Compile Include="Entity\Accounting\TrialBalance6ColumnDto.cs" />
+    <Compile Include="Entity\Accounting\TrialBalance4ColumnDto.cs" />
+    <Compile Include="Entity\Accounting\LiaisonLedgerEntry.cs" />
     <Compile Include="Entity\Accounting\Currency.cs" />
     <Compile Include="Entity\Accounting\EntryTempData.cs" />
     <Compile Include="Entity\Accounting\EntryType.cs" />

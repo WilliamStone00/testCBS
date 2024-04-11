@@ -8,9 +8,12 @@ namespace CBS.FrontDesk.Data
 {
     public class Account
     {
+        public string AccountNumberCamCCUL { get; set; } = "";
+
+        public string AccountNumberAffiliate { get; set; } = "";
         public string Id { get; set; }
         public string AccountNumber { get; set; }
-        public string AccountHolder { get; set; }
+        public string AccountName { get; set; }
         public string AccountTypeId { get; set; }
         public string ChartOfAccountId { get; set; }
         public string AccountOwnerId { get; set; }

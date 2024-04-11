@@ -1,8 +1,13 @@
 ﻿$(document).ready(function () {
-    $(document).on('change', '#EntryTempData_AccountName', function () {
+    $(document).on('change', '#EntryTempData_AccountId', function () {
         var EventId = $(this).val();
- 
+
         loadAccountBalance(EventId)
+    });
+    $(document).on('change', '#EntryTempData_BookingDirection', function () {
+        var EventId = $(this).val();
+
+        loadDescriptionByOperationDirection(EventId)
     });
 });
 
@@ -14,18 +19,45 @@ function loadAccountBalance(accountId) {
         dataType: 'json',
         data: { Id: accountId },
         success: function (data) {
-            // Clear existing options in the OperationEventAttributeId combo
+            // Clear existing options in the OperationEventAttributeId combo 
             $('.account_balance').empty();
-            $(".account_balance").val(data.Account.AccountNumber);
+            $('.account_name').empty();
+            $('.account_number').empty();
+            $(".account_balance").val(data.Account.CurrentBalance);
+            $(".account_name").val(data.Account.AccountHolder);
+            $(".account_number").val(data.Account.AccountNumber);
             // Add new options based on the fetched data
-            console.log(data.Account.AccountNumber);
+            console.log(data.Account.CurrentBalance);
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
         }
     });
 }
-//InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+
+
+function loadDescriptionByOperationDirection(operation) {
+    $('.booking_direction').empty();
+    if (operation === "DEBIT")
+    {
+       
+        var account_name = $(".account_name").val();
+        var account_amount = $(".account_amount").val();
+        var account_number = $(".account_number").val();
+        var message = account_name + "-" + account_number +" will be debited by {0}.0 XFA "
+        $(".booking_direction").val(message);
+      
+    } else {
+        var account_name = $(".account_name").val();
+        var account_amount = $(".account_amount").val();
+        var account_number = $(".account_number").val();
+        var message = account_name + "-" + account_number + " will be credited by {0}.0 XFA "
+        $(".booking_direction").val(message);
+    }
+
+  
+}
+
 function LoadJournalEntryData(controller, action, divLoader, tableID, serviceoption, KEY, partialView, path, order) {
     KEY = $('#EntryTempData_Reference').val();
     $.ajax({

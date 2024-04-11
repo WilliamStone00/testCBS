@@ -161,6 +161,49 @@ namespace CBS.BusinessService
             return ExecutionMessage;
         }
 
+        //
+
+        public async Task<List<LiaisonLedgerEntry>> RetrieveLiasonAccountingEntries(SystemQuery model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+
+                return await _accountingApiCallerHelper.PostLiaisonAccountAsync(APICallHelper.AccountingEntry_LiaisonEntries, model);
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+                throw (ex);
+            }
+
+        }
+        public async Task<List<AccountingEntry>> RetrieveAccountingEntries(SystemQuery model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+
+               return await _accountingApiCallerHelper.PostAccountingAsync(APICallHelper.AccountingEntry_Posting_Entries, model);
+                
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+                throw(ex);
+            }
+            
+        }
+
         public async Task<List<AccountingEntry>> GetAllAccountingEntries()
         {
             try
@@ -213,6 +256,7 @@ namespace CBS.BusinessService
             }
         }
 
+     
 
         public async Task<List<CashReplenimentRequestDto>> GetAllCashReplenimentRequest()
         {
@@ -584,6 +628,66 @@ namespace CBS.BusinessService
                 GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
                     ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 return ExecutionMessage;
+            }
+        }
+
+        public async Task<List<BranchLiaisonLedgerEntry>> RetrieveBranchLiaisonAccountingEntries(SystemQuery model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+
+                return await _accountingApiCallerHelper.PostBranchLiaisonAccountAsync(APICallHelper.AccountingEntry_BranchLiaisonEntries, model);
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+                throw (ex);
+            }
+        }
+
+        public async Task<List<TrialBalance6ColumnDto>> RetrieveTrialBalance6ColumnEntries(SystemQuery model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+
+                return await _accountingApiCallerHelper.PostTrialBalance6ColumnAsyncAsync(APICallHelper.AccountingEntry_Generate6ColumnTrialBalance, model);
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+                throw (ex);
+            }
+        }
+
+        public async Task<List<TrialBalance4ColumnDto>> RetrieveTrialBalance4ColumnEntries(SystemQuery model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+
+                return await _accountingApiCallerHelper.PostTrialBalance4ColumnAsyncAsync(APICallHelper.AccountingEntry_Generate4ColumnTrialBalance, model);
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+                throw (ex);
             }
         }
     }

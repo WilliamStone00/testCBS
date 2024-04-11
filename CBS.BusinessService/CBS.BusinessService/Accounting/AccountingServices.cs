@@ -33,18 +33,18 @@ namespace CBS.BusinessService.Accounting
 
                 model.AccountOwnerId=GetBranchID();
                 var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.CreateAccount, model);
-                if (response.ApiResponseData.IsSuccess)
+                if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"Account {model.AccountNumber + " " + model.AccountHolder} has been created successfully", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"Account {model.AccountNumber + " " + model.AccountName} has been created successfully", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, "");
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, $"Account {model.AccountNumber + " " + model.AccountHolder} failed to be created ", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData.Message);
+                    GetExecutionMessages(model, false, $"Account {model.AccountNumber + " " + model.AccountName} failed to be created ", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
             catch (Exception ex)
@@ -55,24 +55,39 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
+       
+        //public async Task<Account> GetAccount(string id)
+        //{
+        //    try
+        //    {
+        //        var cusResponseObject = await _accountingApiCallerHelper.GetAsync<ResponseObject<Account>>(string.Format(APICallHelper.GetAccount, id));
+        //        if (cusResponseObject.IsSuccess)
+        //        {
+        //            if (cusResponseObject.ApiResponseData == null)
+        //            {
+
+        //            }
+        //            else
+        //            {
+        //                return cusResponseObject.ApiResponseData.Data;
+        //            }
+
+        //        }
+        //        return null;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log and handle exception
+        //        throw ex;
+        //    }
+        //}
+
         public async Task<Account> GetAccount(string id)
         {
             try
             {
-                var cusResponseObject = await _accountingApiCallerHelper.GetAsync<ResponseObject<Account>>(string.Format(APICallHelper.GetAccount, id));
-                if (cusResponseObject.IsSuccess)
-                {
-                    if (cusResponseObject.ApiResponseData == null)
-                    {
-
-                    }
-                    else
-                    {
-                        return cusResponseObject.ApiResponseData.Data;
-                    }
-
-                }
-                return null;
+                var cusResponseObject =(await GetAllAccounting()).Where(i=>i.Id.Equals(id)).FirstOrDefault();
+                return cusResponseObject;
             }
             catch (Exception ex)
             {
@@ -80,7 +95,29 @@ namespace CBS.BusinessService.Accounting
                 throw ex;
             }
         }
+        public async Task<List<Account>> GetAllLiasionAccount(string BranchId)
+        {
+            try
+            {
 
+                string Url = string.Format(APICallHelper.GetSystemLiaisonAccountQueryUrl, BranchId);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<Account>>>(Url);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData != null)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<Account>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
         public async Task<List<Account>> GetAllBranchAccountUsedToCreditCashFlow(string BranchId)
         {
             try
@@ -155,14 +192,14 @@ namespace CBS.BusinessService.Accounting
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"Account {account.AccountNumber + " " + account.AccountHolder} has been updated successfully", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"Account {account.AccountNumber + " " + account.AccountName} has been updated successfully", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(response.ApiResponseData, false, $"{account.AccountNumber + " " + account.AccountHolder} has been updated", MessagesResults.Failed,
+                    GetExecutionMessages(response.ApiResponseData, false, $"{account.AccountNumber + " " + account.AccountName} has been updated", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
 
@@ -187,7 +224,7 @@ namespace CBS.BusinessService.Accounting
                 {
 
 
-                    return GetExecutionMessages(inResponse, true, $"{account.AccountNumber + " " + account.AccountHolder}", MessagesResults.Success,
+                    return GetExecutionMessages(inResponse, true, $"{account.AccountNumber + " " + account.AccountName}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
                    
 
@@ -195,7 +232,7 @@ namespace CBS.BusinessService.Accounting
                 else
                 {
                     // Handle failure scenario
-                    return GetExecutionMessages(account, false, $"{account.AccountNumber + " " + account.AccountHolder}", MessagesResults.Failed,
+                    return GetExecutionMessages(account, false, $"{account.AccountNumber + " " + account.AccountName}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
                 

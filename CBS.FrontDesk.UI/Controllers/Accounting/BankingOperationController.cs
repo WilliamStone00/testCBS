@@ -50,10 +50,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             foreach (var item in debitAccounts)
             {
                 if (language == "En")
-                    list.Add(new SelectListItem { Text = item.Id, Value = item.AccountNumber + "-" + item.AccountHolder });
+                    list.Add(new SelectListItem { Text = item.Id, Value = item.AccountNumber + "-" + item.AccountName });
                 else
                 {
-                    list.Add(new SelectListItem { Text = item.Id, Value = item.AccountNumber + "-" + item.AccountHolder });
+                    list.Add(new SelectListItem { Text = item.Id, Value = item.AccountNumber + "-" + item.AccountName });
 
                 }
             }

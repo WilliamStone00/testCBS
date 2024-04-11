@@ -7,7 +7,15 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
-
+    public class AccountingEntryServiceResponse
+    {
+        public List<AccountingEntry > Data { get; set; }
+        public int StatusCode { get; set; }
+        public string Message { get; set; }
+        public string Status { get; set; }
+        public string Description { get; set; }
+        public List<string> Errors { get; set; }
+    }
     public class AccountingEntryQuery
     {
         public AccountingEntryDto AccountingEntry { get; set; }
@@ -84,7 +92,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public DateTime FromDate { get; set; }  
         public string FileType { get; set; }
         public string ReportType { get; set; }
-        public string AccountNumber { get; set; }
+        public string AccountId { get; set; }
         public string BranchId { get; set; }
     }
  

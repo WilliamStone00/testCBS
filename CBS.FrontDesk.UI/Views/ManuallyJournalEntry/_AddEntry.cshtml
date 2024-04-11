@@ -18,15 +18,16 @@
 
                         <div class="col-md-12">
                             <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.EntryTempData.AccountName, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---Select Account---", new { @class = "form-control select2", @search = "true" })
-                                @Html.ValidationMessageFor(m => m.EntryTempData.AccountName, "", new { @class = "text-danger" })
+                                @Html.DropDownListFor(m => m.EntryTempData.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---Select Account---", new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(m => m.EntryTempData.AccountId, "", new { @class = "text-danger" })
                                 <label>AccountName</label>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.EntryTempData.AccountBalance, new { @class = "form-control account_balance" })
-                                @Html.HiddenFor(m => m.EntryTempData.AccountNumber, new { @class = "form-control account_balance" })
+                                @Html.HiddenFor(m => m.EntryTempData.AccountName, new { @class = "form-control account_name" })
+                                @Html.HiddenFor(m => m.EntryTempData.AccountNumber, new { @class = "form-control account_number" })
                                 <label>Account Balance</label>
                             </div>
                         </div>
@@ -40,6 +41,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-floating form-floating-outline">
+                                @Html.HiddenFor(m => m.EntryTempData.Description, new { @class = "form-control booking_direction" })
                                 @Html.TextBoxFor(m => m.EntryTempData.Amount, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.EntryTempData.Amount, "", new { @class = "text-danger" })
                                 <label>Amount</label>

@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingEntryQuery
 <div class="container">
     <div class="card-body">
-        @using (Html.BeginForm("PostSearch", "AccountingStatements", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        @using (Html.BeginForm("PostSearch", "AccountingStatements", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostSearch(this);" }))
         {
             <div class="row justify-content-center mt-2 gy-4">
 
@@ -32,14 +32,14 @@
                 </div>
                 <div class="col-md-6 mb-sm-1">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(model => model.SystemQuery.ReportType, new SelectList(ViewBag.ReportTypes == null ? "" : ViewBag.ReportTypes, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(model => model.SystemQuery.ReportType, new SelectList(ViewBag.ReportTypes == null ? "" : ViewBag.ReportTypes, "Text", "Value"), "---Select ReportTypes---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(model => model.SystemQuery.ReportType, "", new { @class = "text-danger" })
                         <label>Select ReportType</label>
                     </div>
                 </div>
                 <div class="col-md-6 ">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(model => model.SystemQuery.FileType, new SelectList(ViewBag.FileTypes == null ? "" : ViewBag.FileTypes, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(model => model.SystemQuery.FileType, new SelectList(ViewBag.FileTypes == null ? "" : ViewBag.FileTypes, "Text", "Value"), "---Select FileTypes---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(model => model.SystemQuery.FileType, "", new { @class = "text-danger" })
                         <label>Select FileType</label>
                     </div>
@@ -47,9 +47,9 @@
 
                 <div class="col-12 mb-sm-1">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(model => model.SystemQuery.AccountNumber, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(model => model.SystemQuery.BranchId, "", new { @class = "text-danger" })
-                        <label>Branch Office</label>
+                        @Html.DropDownListFor(model => model.SystemQuery.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---Select Accounts---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(model => model.SystemQuery.AccountId, "", new { @class = "text-danger" })
+                        <label>Select Account</label>
                     </div>
                 </div>
 
