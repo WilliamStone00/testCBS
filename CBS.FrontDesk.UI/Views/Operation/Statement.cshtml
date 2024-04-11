@@ -1,0 +1,80 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@{
+    ViewBag.Title = "Member's statement";
+}
+<div class="row">
+    <div class="col">
+        <div class="row my-4">
+            @if (@Model.Customer == null)
+            {
+                <div class="text-center my-3">
+                    <p>Error ocured while getting member. Please refresh your browser</p>
+                </div>
+            }
+            else
+            {
+                <div class="accordion" id="collapsibleSection">
+                    <div class="card accordion-item">
+                        <h2 class="accordion-header" id="headingDeliveryAddress">
+                            <button type="button"
+                                    class="accordion-button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDeliveryAddress"
+                                    aria-expanded="true"
+                                    aria-controls="collapseDeliveryAddress">
+                                <div class="d-flex justify-content-center">
+                                    <!-- Center-align text -->
+                                    <div class="fw-bold fs-4">
+                                        MEMBER'S CASH DESK OPERATIONS
+                                        <small style="color: blue;">Selected account: @Model.AccountType, Account number: @Model.AccountNumber</small>
+                                    </div>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapseDeliveryAddress"
+                             class="accordion-collapse collapse show"
+                             data-bs-parent="#collapsibleSection">
+                            <div class="accordion-body">
+                                <div class="row g-4">
+                                    <div class="col-md-3">
+                                        @Html.Partial("_CustomerCard")
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="card mb-3 border-2">
+                                            @Html.Partial("_Tabs")
+                                        </div>
+                                        <div class="card mb-3 border-2">
+                                            <div class="card-body d-sm-flex d-block">
+                                                <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('Operation', null,'GetReport', '@Model.AccountNumber', 'List', 'customer_account_transaction', null,'customer_account_transaction','DownloadExcelFile',null,'@Model.AccountNumber')" data-bs-toggle="tooltip" title="Export members account @Model.AccountNumber statements">
+                                                        <span class="tf-icons mdi mdi-file-excel mdi-18px"></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div id="datalistingview">
+                                                @Html.Partial("_TransactionData")
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal to display customer information -->
+@Html.Partial("_SharedModal")
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/Js/Crud/Operation/Operation.js"></script>
+
+}

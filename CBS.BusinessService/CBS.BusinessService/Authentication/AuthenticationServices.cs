@@ -29,6 +29,7 @@ namespace CBS.FrontDesk.Service
             _identityServer = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
             _BankServer = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
         }
+
         public async Task<ExecutionMessages> AuthenticateUser(AuthRequest request)
         {
             string errormessage = null;
@@ -39,6 +40,7 @@ namespace CBS.FrontDesk.Service
                 {
                     var userAuth = response.ApiResponseData.Data;
                     HttpContext.Current.Session["Token"] = userAuth.bearerToken;
+                    HttpContext.Current.Session["BranchObject"]= userAuth.Branch;
                     userAuth.password = request.Password;
                     GetExecutionMessages(userAuth, true, request.UserName, MessagesResults.Success,
                         ExecutionProcessOption.LoginSuccessful, SystemMessageStatus.Success.ToString(), null,

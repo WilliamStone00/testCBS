@@ -1,0 +1,116 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+
+
+<div class="col">
+    <div class="row my-4">
+        <div class="accordion" id="collapsibleSection">
+            <!-- First Collapse -->
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingDeliveryAddress">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDeliveryAddress"
+                            aria-expanded="true"
+                            aria-controls="collapseDeliveryAddress">
+                        Deposit
+                    </button>
+                </h2>
+                <div id="collapseDeliveryAddress"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <!-- Deposit Content -->
+                        <div class="demo-inline-spacing text-end">
+                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit',null,'depositlimit','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                            </a>
+                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Deposit','_DepositConfig','new','TransactionConfiguration','depositlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                            </a>
+                        </div>
+                        <br />
+                        <div class="row g-4">
+                            <div id="datalistingview_Deposit">
+                                @Html.Partial("_DepositConfig")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Second Collapse -->
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingPaymentMethod3">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePaymentMethod3"
+                            aria-expanded="false"
+                            aria-controls="collapsePaymentMethod3">
+                       Withdrawal
+                    </button>
+                </h2>
+                <div id="collapsePaymentMethod3"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingPaymentMethod3"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <!-- Withdrawal Content -->
+                        <div class="demo-inline-spacing text-end">
+                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Withdrawal','_WithdrawalData',0,'datalistingview_Withdrawal',null,'withdrawallimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                            </a>
+                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Withdrawal','_WithdrawalConfig','new','TransactionConfiguration','withdrawallimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                            </a>
+                        </div>
+                        <br />
+                        <div class="row g-4">
+                            <div id="datalistingview_Withdrawal">
+                                @Html.Partial("_WithdrawalConfig")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Third Collapse -->
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingPaymentMethod4">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePaymentMethod4"
+                            aria-expanded="false"
+                            aria-controls="collapsePaymentMethod4">
+                        Transfer
+                    </button>
+                </h2>
+                <div id="collapsePaymentMethod4"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingPaymentMethod4"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <!-- Transfer Content -->
+                        <div class="demo-inline-spacing text-end">
+                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Transfer','_TransferData',0,'datalistingview_Transfer',null,'transferlimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                            </a>
+                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Transfer','_TransferConfig','new','TransactionConfiguration','transferlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                            </a>
+                        </div>
+                        <br />
+                        <div class="row g-4">
+                            <div id="datalistingview_Transfer">
+                                @Html.Partial("_TransferConfig")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,6 +1,4 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
-<h4>Depositer Informations</h4>
-
 <div class="col-md-9">
     <div class="form-floating form-floating-outline">
         @Html.TextBoxFor(m => m.DepositRequest.depositorName, new { @class = "form-control" })
@@ -50,9 +48,3 @@
         <label>Depositer note</label>
     </div>
 </div>
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-
-<script src="~/Scripts/Js/Crud/Operation/Operation.js"></script>
-
-
-}

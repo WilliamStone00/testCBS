@@ -79,7 +79,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var apiUrl = HttpContext.Current.User.IsInRole("Administrator") ? APICallHelper.GetAllSubTellerProvioningHistoryQuery : string.Format(APICallHelper.GetSubTellerProvioningHistoryByPrimaryTellerUserIDQuery, GetUserID());
+                var apiUrl = HttpContext.Current.User.IsInRole("Administrator") ? APICallHelper.GetAllSubTellerProvioningHistoryQuery : string.Format(APICallHelper.GetSubTellerProvisioningHistoryByUserIncharge, GetUserID());
                 var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<SubTellerProvisioningDto>>>(apiUrl);
                 if (couApiResponse.IsSuccess)
                 {

@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanCommitee
         public int NumberToApprovalsToValidationALoan { get; set; }
         public string CommiteeLeaderUserId { get; set; }
         public bool Status { get; set; }
+        public UserList User { get; set; }
         public List<LoanCommiteeMember> LoanCommiteeMembers { get; set; }
         public LoanCommiteeGroup()
         {

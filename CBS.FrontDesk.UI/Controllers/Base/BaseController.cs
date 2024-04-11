@@ -279,7 +279,7 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             Session["BranchID"] = userSession.BranchID;
             Session["OrganizationID"] = userSession.Bank.OrganizationId;
-            Session["BankID"] = userSession.BankID;
+            Session["BankID"] = userSession.Branch.BankId;
             Session["BankName"] = userSession.Branch.Bank.Name;
             Session["BranchName"] = userSession.Branch.Name;
             Session["BranchCode"] = userSession.Branch.BranchCode;

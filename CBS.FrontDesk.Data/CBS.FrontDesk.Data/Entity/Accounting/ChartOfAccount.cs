@@ -27,6 +27,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string ParentAccountNumber { get; set; }
         public string ParentAccountId { get; set; }
         public bool IsForUpdate { get; set; }
+        public string AccountNumberCamCCUL { get; set; }
+        public string AccountNumberAffiliate { get; set; }
 
     }
    

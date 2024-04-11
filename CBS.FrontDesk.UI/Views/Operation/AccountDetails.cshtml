@@ -2,127 +2,70 @@
 @{
     ViewBag.Title = "Member's account details";
 }
-
 <div class="row">
-    <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
-        @Html.Partial("_CustomerCard")
-    </div>
-    <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
-        @Html.Partial("_Tabs")
-        <div class="card">
-
-            <div id="datalistingview">
-                @Html.Partial("_Product")
-            </div>
-
-        </div>
-    </div>
-
-</div>
-
-<!-- Modal to display customer information -->
-<div class="modal fade" id="customerInfoModal" tabindex="-1" aria-labelledby="customerInfoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="customerInfoModalLabel">Member Information</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Place the customer information here -->
-                <div class="card-body">
-                    <div class="image-upload-container">
-                        <!-- Image for picture -->
-                        @if (Model.Customer.photoUrl != null)
-                        {
-                            <!-- Clickable photo for preview -->
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
-                                <img src="@Model.Customer.photoUrl" class="img-fluid preview-image" alt="Uploaded Image">
-                            </a>
-                            <!-- Modal for photo preview -->
-                            <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <img src="@Model.Customer.photoUrl" class="img-fluid" alt="Uploaded Image">
+    <div class="col">
+        <div class="row my-4">
+            @if (@Model.Customer == null)
+            {
+                <div class="text-center my-3">
+                    <p>Error ocured while getting member. Please refresh your browser</p>
+                </div>
+            }
+            else
+            {
+                <div class="accordion" id="collapsibleSection">
+                    <div class="card accordion-item">
+                        <h2 class="accordion-header" id="headingDeliveryAddress">
+                            <button type="button"
+                                    class="accordion-button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDeliveryAddress"
+                                    aria-expanded="true"
+                                    aria-controls="collapseDeliveryAddress">
+                                <div class="d-flex justify-content-center">
+                                    <!-- Center-align text -->
+                                    <div class="fw-bold fs-4">MEMBER'S CASH DESK OPERATIONS (ACCOUNT: @Model.AccountType, Number: @Model.AccountNumber)</div> <!-- Make text bold and increase font size -->
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapseDeliveryAddress"
+                             class="accordion-collapse collapse show"
+                             data-bs-parent="#collapsibleSection">
+                            <div class="accordion-body">
+                                <div class="row g-4">
+                                    <div class="col-md-3">
+                                        @Html.Partial("_CustomerCard")
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="card mb-3 border-2">
+                                            @Html.Partial("_Tabs")
+                                        </div>
+                                        <div class="card mb-3 border-2">
+                                            <div id="datalistingview">
+                                                @Html.Partial("_AccountInfo")
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
-                        }
-                        else
-                        {
-                            <img src="@Url.Content(Model.Customer.ImageNoVirtualPath)" class="img-fluid preview-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
-                        }
-                        <!-- ... Other content ... -->
-                    </div>
-                    <h5 class="pb-3 border-bottom mb-3">Details</h5>
-                    <div class="info-container">
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-3">
-                                <span class="fw-medium text-heading me-2">PIN:</span>
-                                <span>@Model.Customer.taxIdentificationNumber</span>
-                            </li>
-                            <li class="mb-3">
-                                <span class="fw-medium text-heading me-2">Identity Number:</span>
-                                <span>@Model.Customer.idNumber</span>
-                            </li>
-                            <li class="mb-3">
-                                <span class="fw-medium text-heading me-2">Email:</span>
-                                <span>@Model.Customer.email</span>
-                            </li>
-                            <li class="mb-3">
-                                <span class="fw-medium text-heading me-2">Status:</span>
-                                <span class="badge bg-label-success rounded-pill">
 
-                                  
 
-                                    @if (@Model.Customer.active)
-                                    {
-                                        <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Active</span></label>
-                                    }
-                                    else
-                                    {
-                                        <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Not active</span></label>
-                                    }
-                                </span>
-                            </li>
-                            <li class="mb-3">
-                                <span class="fw-medium text-heading me-2">Telephone:</span>
-                                <span>@Model.Customer.phone</span>
-                            </li>
-                            <li class="mb-3">
-                                <span class="fw-medium text-heading me-2">Home phone number:</span>
-                                <span>@Model.Customer.phone</span>
-                            </li>
-                            <li class="mb-3">
-                                <span class="fw-medium text-heading me-2">Address:</span>
-                                <span>@Model.Customer.address</span>
-                            </li>
-                            <li class="mb-3">
-                                <span class="fw-medium text-heading me-2">Online banking status</span>
-                                <span class="badge bg-label-success rounded-pill">
-                                    @if (@Model.Customer.isUseOnLineMobileBanking)
-                                    {
-                                        <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Active</span></label>
-                                    }
-                                    else
-                                    {
-                                        <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Not active</span></label>
-                                    }
-                                </span>
-                            </li>
-                        </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+            }
         </div>
     </div>
 </div>
+
+
+<!-- Modal to display customer information -->
+@Html.Partial("_SharedModal")
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
 
 <script src="~/Scripts/Js/Crud/Operation/Operation.js"></script>
-
 
 }

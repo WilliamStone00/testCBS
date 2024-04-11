@@ -31,7 +31,7 @@ namespace CBS.BusinessService.Accounts
                 {
 
                     GetExecutionMessages(inResponse, true, $"{objSavingProduct.name}", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }
@@ -104,7 +104,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                model.bankId = GetBankID();
+                //model.bankId = GetBankID();
                 // Make an API call to create an individual profile
       
                 var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<SavingProduct>>(APICallHelper.CreateSavingProduct, model);
@@ -149,18 +149,49 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.isTermProduct = model.isTermProduct;
                     SavingProduct.isUsedForTellerProvisioning = model.isUsedForTellerProvisioning;
                     SavingProduct.description = model.description;
-                    SavingProduct.ChartOfAccountIdPricipalSavingAccount = model.ChartOfAccountIdPricipalSavingAccount;
-                    SavingProduct.ChartOfAccountIdInterestSavingAccount = model.ChartOfAccountIdInterestSavingAccount;
-                    SavingProduct.ChartOfAccountIdInterestSavingExpenseAccount = model.ChartOfAccountIdInterestSavingExpenseAccount;
+                    SavingProduct.AccountType = model.AccountType;
+                    SavingProduct.UpdateOption = "N/A";
+                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.id), SavingProduct);
+                    if (response.IsSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"{model.name}", MessagesResults.Success,
+                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> UpdateProductAccountMapping(SavingProduct model)
+        {
+            try
+            {
+                var SavingProduct = await GetSavingProduct(model.id);
+                if (SavingProduct != null)
+                {
+                    SavingProduct.UpdateOption = "assign_account_chart";
+                    SavingProduct.ChartOfAccountIdPricipalAccount = model.ChartOfAccountIdPricipalAccount;
+                    SavingProduct.ChartOfAccountIdInterestAccount = model.ChartOfAccountIdInterestAccount;
+                    SavingProduct.ChartOfAccountIdInterestExpenseAccount = model.ChartOfAccountIdInterestExpenseAccount;
                     SavingProduct.ChartOfAccountIdSavingFee = model.ChartOfAccountIdSavingFee;
                     SavingProduct.ChartOfAccountIdWithrawalFee = model.ChartOfAccountIdWithrawalFee;
                     SavingProduct.ChartOfAccountIdTransferFee = model.ChartOfAccountIdTransferFee;
-                    SavingProduct.ChartOfAccountIdManagementFee = model.ChartOfAccountIdManagementFee;
-                    SavingProduct.ChartOfAccountIdClossingFee = model.ChartOfAccountIdClossingFee;
-                    SavingProduct.ChartOfAccountIdRepoeningFee = model.ChartOfAccountIdRepoeningFee;
-                    SavingProduct.ChartOfAccountIdInterestCommissionAccount = model.ChartOfAccountIdInterestCommissionAccount;
-                    SavingProduct.ChartOfAccountIdInterestLiassonAccount = model.ChartOfAccountIdInterestLiassonAccount;
-                    SavingProduct.AccountType = model.AccountType;
+                    SavingProduct.ChartOfAccountIdCommissionAccount = model.ChartOfAccountIdCommissionAccount;
+                    SavingProduct.ChartOfAccountIdLiassonAccount = model.ChartOfAccountIdLiassonAccount;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.id), SavingProduct);
                     if (response.IsSuccess)
                     {

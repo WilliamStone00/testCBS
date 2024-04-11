@@ -1,107 +1,146 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+<div class="col">
 
-    @using (Html.BeginForm("AddOrUpdate", "TellerManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-    {    <input type="hidden" name="ServiceOption" value="primary_teller" id="ServiceOption" />
-        
-        <div class="row mt-2 gy-4">
-            <div class="row mt-2 gy-4">
-                <div class="col-md-4">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Teller.code, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Teller.code, "", new { @class = "text-danger" })
-                        <label>Teller code</label>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Teller.name, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Teller.name, "", new { @class = "text-danger" })
-                        <label>Teller name</label>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="form-check">
-                        @Html.CheckBoxFor(m => m.Teller.isPrimary, new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">Set as primary teller</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Teller.MinimumAmountToManage, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Teller.MinimumAmountToManage, "", new { @class = "text-danger" })
-                        <label>Minimum amount teller can hold</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Teller.MaximumAmountToManage, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Teller.MaximumAmountToManage, "", new { @class = "text-danger" })
-                        <label>Maximum amount teller can hold</label>
-                    </div>
-                </div>
-                <h3>Operations</h3>
-                <div class="col-md-3">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Teller.MinimumDepositAmount, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Teller.MinimumDepositAmount, "", new { @class = "text-danger" })
-                        <label>Minimum deposit amount to peform</label>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Teller.MaximumDepositAmount, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Teller.MaximumDepositAmount, "", new { @class = "text-danger" })
-                        <label>Maximum deposit amount to peform</label>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Teller.MinimumWithdrawalAmount, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Teller.MinimumWithdrawalAmount, "", new { @class = "text-danger" })
-                        <label>Minimum withdrawal amount to peform</label>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Teller.MaximumWithdrawalAmount, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Teller.MaximumWithdrawalAmount, "", new { @class = "text-danger" })
-                        <label>Minimum withdrawal amount to peform</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Teller.MinimumTransferAmount, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Teller.MinimumTransferAmount, "", new { @class = "text-danger" })
-                        <label>Minimum transfter amount to peform</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Teller.MaximumTransferAmount, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Teller.MaximumTransferAmount, "", new { @class = "text-danger" })
-                        <label>Minimum transfter amount to peform</label>
-                    </div>
-                </div>
+    <div class="row my-4">
+        <div class="accordion" id="collapsibleSection">
+            <div class="card accordion-item">
+                <h2 class="accordion-header" id="headingDeliveryAddress">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDeliveryAddress"
+                            aria-expanded="true"
+                            aria-controls="collapseDeliveryAddress">
+                        Details
+                    </button>
+                </h2>
+                <div id="collapseDeliveryAddress"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div class="row g-4">
+                            @using (Html.BeginForm("AddOrUpdate", "TellerManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            {
+                                <input type="hidden" name="ServiceOption" value="primary_teller" id="ServiceOption" />
+                                <fieldset class="fieldset-custom">
+                                    <legend>Teller details</legend>
+                                    <div class="row mt-2 gy-4">
 
-                <div class="col-12">
-                    <div class="form-check">
-                        @Html.CheckBoxFor(m => m.Teller.activeStatus, new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">Active status</label>
+
+                                        <div class="col-md-4">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.Teller.code, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Teller.code, "", new { @class = "text-danger" })
+                                                <label>Teller code</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.Teller.name, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Teller.name, "", new { @class = "text-danger" })
+                                                <label>Teller name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                @Html.CheckBoxFor(m => m.Teller.isPrimary, new { @class = "form-check-input" })
+                                                <label class="form-check-label" for="isActive">Set as primary teller</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.Teller.MinimumAmountToManage, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Teller.MinimumAmountToManage, "", new { @class = "text-danger" })
+                                                <label>Minimum amount teller can hold</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.Teller.MaximumAmountToManage, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Teller.MaximumAmountToManage, "", new { @class = "text-danger" })
+                                                <label>Maximum amount teller can hold</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                @Html.CheckBoxFor(m => m.Teller.activeStatus, new { @class = "form-check-input" })
+                                                <label class="form-check-label" for="isActive">Set to active</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="fieldset-custom">
+                                    <legend>Operation limits</legend>
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.Teller.MinimumDepositAmount, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Teller.MinimumDepositAmount, "", new { @class = "text-danger" })
+                                                <label>Minimum deposit amount to peform</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.Teller.MaximumDepositAmount, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Teller.MaximumDepositAmount, "", new { @class = "text-danger" })
+                                                <label>Maximum deposit amount to peform</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.Teller.MinimumWithdrawalAmount, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Teller.MinimumWithdrawalAmount, "", new { @class = "text-danger" })
+                                                <label>Minimum withdrawal amount to peform</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.Teller.MaximumWithdrawalAmount, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Teller.MaximumWithdrawalAmount, "", new { @class = "text-danger" })
+                                                <label>Minimum withdrawal amount to peform</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.Teller.MinimumTransferAmount, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Teller.MinimumTransferAmount, "", new { @class = "text-danger" })
+                                                <label>Minimum transfter amount to peform</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.Teller.MaximumTransferAmount, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Teller.MaximumTransferAmount, "", new { @class = "text-danger" })
+                                                <label>Minimum transfter amount to peform</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+
+
+                                <div class="mt-4">
+                                    @if (Model.Teller.id == null)
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Save</button>
+                                        <input type="hidden" name="Action" value="insert" id="Action" />
+                                    }
+                                    else
+                                    { <button type="submit" class="btn btn-primary me-2">Update</button>
+                                        @Html.HiddenFor(m => m.Teller.id)
+                                        <input type="hidden" name="Action" value="update" id="Action" />
+                                    }
+                                </div>
+                            }
+
+                        </div>
                     </div>
                 </div>
-              
             </div>
+
         </div>
-        <div class="mt-4">
-            @if (Model.Teller.id == null)
-            {
-                <button type="submit" class="btn btn-primary me-2">Save</button>
-                <input type="hidden" name="Action" value="insert" id="Action" />
-            }
-            else
-            { <button type="submit" class="btn btn-primary me-2">Update</button>
-                @Html.HiddenFor(m => m.Teller.id)
-                <input type="hidden" name="Action" value="update" id="Action" />
-            }
-        </div>
-    }
+
+    </div>
+</div>
+

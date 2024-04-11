@@ -39,7 +39,7 @@
                                             <a type="button" onclick="LoadDataGen('LoanProduct','myDataTable','_Data',0,'datalistingview',null,null,'list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                             </a>
-                                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','LoanProduct',null)" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_LoanProduct','new','LoanProduct',null)" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
                                                 <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                             </a>
                                         </div>
@@ -73,93 +73,6 @@
 
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
-@*<script>
-    // Wait for the document to be fully loaded
-    document.addEventListener("DOMContentLoaded", function () {
-        // Hide all input fields initially
-        hideAllInputFields();
-
-        // Check if IsRequiredSalaryccount checkbox is checked
-        var isRequiredSalaryAccount = document.getElementById("IsRequiredSalaryccount");
-        if (isRequiredSalaryAccount.checked) {
-            // Show MinimumSalaryAccountBalanceRateForTheRequestAmount and MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount
-            showInputField("MinimumSalaryAccountBalanceRateForTheRequestAmount");
-            showInputField("MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount");
-        }
-
-        // Check if IsRequiredShareAccount checkbox is checked
-        var isRequiredShareAccount = document.getElementById("IsRequiredShareAccount");
-        if (isRequiredShareAccount.checked) {
-            // Show MinimumSavingAccountBalanceRateForTheRequestAmount and MaximumSavingAccountBalanceRateForTheRequestAmount
-            showInputField("MinimumSavingAccountBalanceRateForTheRequestAmount");
-            showInputField("MaximumSavingAccountBalanceRateForTheRequestAmount");
-        }
-
-        // Check if IsRequiredSavingAccount checkbox is checked
-        var isRequiredSavingAccount = document.getElementById("IsRequiredSavingAccount");
-        if (isRequiredSavingAccount.checked) {
-            // Show MinimumShareAccountBalanceRateForTheRequestAmount and MaximumShareAccountBalanceRateForTheRequestAmount
-            showInputField("MinimumShareAccountBalanceRateForTheRequestAmount");
-            showInputField("MaximumShareAccountBalanceRateForTheRequestAmount");
-        }
-
-        // Add event listeners to checkboxes for change events
-        isRequiredSalaryAccount.addEventListener("change", function () {
-            if (isRequiredSalaryAccount.checked) {
-                showInputField("MinimumSalaryAccountBalanceRateForTheRequestAmount");
-                showInputField("MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount");
-            } else {
-                hideInputField("MinimumSalaryAccountBalanceRateForTheRequestAmount");
-                hideInputField("MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount");
-            }
-        });
-
-        isRequiredShareAccount.addEventListener("change", function () {
-            if (isRequiredShareAccount.checked) {
-                showInputField("MinimumSavingAccountBalanceRateForTheRequestAmount");
-                showInputField("MaximumSavingAccountBalanceRateForTheRequestAmount");
-            } else {
-                hideInputField("MinimumSavingAccountBalanceRateForTheRequestAmount");
-                hideInputField("MaximumSavingAccountBalanceRateForTheRequestAmount");
-            }
-        });
-
-        isRequiredSavingAccount.addEventListener("change", function () {
-            if (isRequiredSavingAccount.checked) {
-                showInputField("MinimumShareAccountBalanceRateForTheRequestAmount");
-                showInputField("MaximumShareAccountBalanceRateForTheRequestAmount");
-            } else {
-                hideInputField("MinimumShareAccountBalanceRateForTheRequestAmount");
-                hideInputField("MaximumShareAccountBalanceRateForTheRequestAmount");
-            }
-        });
-    });
-
-    // Function to hide all input fields
-    function hideAllInputFields() {
-        var inputs = document.querySelectorAll("input[type='text']");
-        inputs.forEach(function (input) {
-            input.style.display = "none";
-        });
-    }
-
-    // Function to show a specific input field
-    function showInputField(id) {
-        var input = document.getElementById(id);
-        if (input) {
-            input.style.display = "block";
-        }
-    }
-
-    // Function to hide a specific input field
-    function hideInputField(id) {
-        var input = document.getElementById(id);
-        if (input) {
-            input.style.display = "none";
-        }
-    }
-
-    </script>*@
 }
 
 

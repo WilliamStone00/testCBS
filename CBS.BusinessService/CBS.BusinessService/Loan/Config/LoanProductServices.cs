@@ -223,8 +223,9 @@ namespace CBS.BusinessService.Config
         {
             try
             {
-
+                
                 var LoanProduct = await GetLoanProduct(model.Id);
+                LoanProduct.UpdateOption = "N/A";
                 if (LoanProduct != null)
                 {
                     if (model.ServiceOption == "product")
@@ -247,8 +248,8 @@ namespace CBS.BusinessService.Config
                         LoanProduct.IsRequiredShareAccount = model.IsRequiredShareAccount;
                         LoanProduct.IsRequredIrrivocableSalaryTransfer = model.IsRequredIrrivocableSalaryTransfer;
                         LoanProduct.IsRequresRegisteredPublicAuthority = model.IsRequresRegisteredPublicAuthority;
-                        LoanProduct.MaximumShareAccountBalanceRateForTheRequestAmount = model.MaximumShareAccountBalanceRateForTheRequestAmount;
-                        LoanProduct.MinimumShareAccountBalanceRateForTheRequestAmount = model.MinimumShareAccountBalanceRateForTheRequestAmount;
+                        LoanProduct.MinimumShareAccountBalanceForTheRequestAmount = model.MinimumShareAccountBalanceForTheRequestAmount;
+                        LoanProduct.MaximumShareAccountBalanceForTheRequestAmount = model.MaximumShareAccountBalanceForTheRequestAmount;
                         LoanProduct.MaximumSavingAccountBalanceRateForTheRequestAmount = model.MaximumSavingAccountBalanceRateForTheRequestAmount;
                         LoanProduct.MinimumSavingAccountBalanceRateForTheRequestAmount = model.MinimumSavingAccountBalanceRateForTheRequestAmount;
                         LoanProduct.MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount = model.MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount;
@@ -304,7 +305,7 @@ namespace CBS.BusinessService.Config
 
 
                     }
-                    else if (model.ServiceOption == "taxandfee")
+                    else if (model.ServiceOption == "fee")
                     {
         
                         LoanProduct.IsEarlyPartialRepaymentFeeRate = model.IsEarlyPartialRepaymentFeeRate;
@@ -314,6 +315,9 @@ namespace CBS.BusinessService.Config
                         LoanProduct.MinimumProcessingFeeRate = model.MinimumProcessingFeeRate;
                         LoanProduct.DefaultProcessingFeeRate = model.DefaultProcessingFeeRate;
                         LoanProduct.MaximumProcessingFeeRate = model.MaximumProcessingFeeRate;
+                        LoanProduct.MinimumInspectionFeeRate = model.MinimumInspectionFeeRate;
+                        LoanProduct.MaximumInspectionFeeRate = model.MaximumInspectionFeeRate;
+                        LoanProduct.DefaultInspectionFeeRate = model.DefaultInspectionFeeRate;
                     }
                     else if (model.ServiceOption == "advancedsettings")
                     {
@@ -328,12 +332,13 @@ namespace CBS.BusinessService.Config
                     {
                         LoanProduct.ChartOfAccountIdForPrincipalAmount = model.ChartOfAccountIdForPrincipalAmount;
                         LoanProduct.ChartOfAccountIdForAccrualInterest = model.ChartOfAccountIdForAccrualInterest;
-                        LoanProduct.ChartOfAccountIdForInterestIncome = model.ChartOfAccountIdForInterestIncome;
-                        LoanProduct.ChartOfAccountIdForWriteOffPotfolio = model.ChartOfAccountIdForWriteOffPotfolio;
-                        LoanProduct.ChartOfAccountIdForWriteOffInterest = model.ChartOfAccountIdForWriteOffInterest;
-                        LoanProduct.ChartOfAccountIdForLoanLossReserve = model.ChartOfAccountIdForLoanLossReserve;
+                        LoanProduct.ChartOfAccountIdForPenalty = model.ChartOfAccountIdForPenalty;
+                        LoanProduct.ChartOfAccountIdForFee = model.ChartOfAccountIdForFee;
+                        LoanProduct.ChartOfAccountIdForTax = model.ChartOfAccountIdForTax;
+                        LoanProduct.ChartOfAccountIdForLoanTransition = model.ChartOfAccountIdForLoanTransition;
+                        LoanProduct.ChartOfAccountIdForWriteOffPrincipal = model.ChartOfAccountIdForWriteOffPrincipal;
                         LoanProduct.ChartOfAccountIdForProvisionOnPrincipal = model.ChartOfAccountIdForProvisionOnPrincipal;
-                        LoanProduct.ChartOfAccountIdForProvisionReversalOnPrincipal = model.ChartOfAccountIdForProvisionReversalOnPrincipal;
+                        LoanProduct.UpdateOption = model.UpdateOption;
                     }
 
                     var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanProduct>>(string.Format(APICallHelper.Get_Update_Delete_LoanProduct, model.Id), LoanProduct);

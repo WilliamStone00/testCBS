@@ -1601,7 +1601,7 @@ namespace BusinessServices
         }
         public string GetOrganizationID()
         {
-            string str = HttpContext.Current.Session["OrganizationID"].ToString();
+            string str = "1"; /*HttpContext.Current.Session["OrganizationID"].ToString();*/
             return str;
         }
         public string GetUserToDoAction()

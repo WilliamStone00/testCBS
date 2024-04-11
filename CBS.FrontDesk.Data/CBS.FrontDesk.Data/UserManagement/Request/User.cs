@@ -49,7 +49,6 @@ namespace CBS.FrontDesk.Data.UserManagement
         public List<UserRole> userRoles { get; set; }=new List<UserRole>();
         public string Option { get; set; }
         
-        public bool IsActive { get; set; }
         public bool IsGoogleAuthenticatorEnabled { get; set; }
         public bool IsVerified { get; set; }
         public bool IsBlocked { get; set; }

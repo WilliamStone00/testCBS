@@ -87,7 +87,11 @@ namespace CBS.BusinessService.Config
             try
             {
                 var cusResponseObject = await _BranchConfigApiHelper.GetAsync<ResponseObject<Branch>>(string.Format(APICallHelper.Get_Update_Delete_Branch, id));
-                return cusResponseObject.ApiResponseData.Data;
+                if (cusResponseObject.ApiResponseData!=null)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return new Branch();
             }
             catch (Exception ex)
             {

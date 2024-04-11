@@ -12,10 +12,10 @@
                 <th style="width: 7%">Penalty</th>
                 <th style="width: 7%">Due</th>
                 <th style="width: 7%">Paid</th>
-                <th style="width: 7%">Pending Due</th>
+                @*<th style="width: 7%">Pending Due</th>*@
                 <th style="width: 7%">Total Due</th>
-                <th style="width: 7%">Principal Due</th>
-                <th style="width: 7%">Principal Balance</th>
+                @*<th style="width: 7%">Principal Due</th>
+                <th style="width: 7%">Principal Balance</th>*@
             </tr>
         </thead>
         <tbody>
@@ -42,10 +42,10 @@
                     <td style="width: 7%">@d.Penalty.ToString("#,0.00")</td>
                     <td style="width: 7%">@d.Due.ToString("#,0.00")</td>
                     <td style="width: 7%">@d.Paid.ToString("#,0.00")</td>
-                    <td style="width: 7%">@d.PendingDue.ToString("#,0.00")</td>
+                    @*<td style="width: 7%">@d.PendingDue.ToString("#,0.00")</td>*@
                     <td style="width: 7%">@d.TotalDue.ToString("#,0.00")</td>
-                    <td style="width: 7%">@d.PrincipalDue.ToString("#,0.00")</td>
-                    <td style="width: 7%">@d.PrincipalBalance.ToString("#,0.00")</td>
+                    <td style="width: 7%">@*@d.PrincipalDue.ToString("#,0.00")*@</td>
+                    <td style="width: 7%">@*@d.PrincipalBalance.ToString("#,0.00")*@</td>
                 </tr>
             }
         </tbody>
@@ -55,7 +55,7 @@
                 <td colspan="8"></td>
                 <td style="width: 12%">Total Due: @Model.LoanAmortizations.Sum(x=>x.Due).ToString("#,0.00")</td>
                 <td style="width: 12%">Total Paid: @Model.LoanAmortizations.Sum(x => x.Paid).ToString("#,0.00")</td>
-                <td style="width: 12%">Total Pending Due: @Model.LoanAmortizations.Sum(x => x.PendingDue).ToString("#,0.00")</td>
+                <td style="width: 12%">@*Total Pending Due: @Model.LoanAmortizations.Sum(x => x.PendingDue).ToString("#,0.00")*@</td>
             </tr>
         </tfoot>
     </table>

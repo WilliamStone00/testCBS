@@ -1,84 +1,72 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
 @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
-    <input type="hidden" name="ServiceOption" value="depositlimit" id="ServiceOption" />
-    <div class="row mt-2 gy-4">
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.DepositLimit.productId, new SelectList(ViewBag.Products, "Id", "name"), "---Select product---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.DepositLimit.productId, "", new { @class = "text-danger" })
-                <label>Select product</label>
+    <fieldset class="fieldset-custom">
+        <legend>Set up deposit policies</legend>
+        @Html.HiddenFor(m => m.DepositLimit.productId)
+        <input type="hidden" name="ServiceOption" value="depositlimit" id="ServiceOption" />
+        <div class="row mt-2 gy-4">
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.DepositLimit.depositType, new SelectList(ViewBag.DepositLimitTypes, "Text", "Value"), "---Select deposit type---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.DepositLimit.depositType, "", new { @class = "text-danger" })
+                    <label>Select deposit limit type</label>
+                </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.DepositLimit.depositType, new SelectList(ViewBag.DepositLimitTypes, "Text", "Value"), "---Select deposit type---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.DepositLimit.depositType, "", new { @class = "text-danger" })
-                <label>Select deposit limit type</label>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.DepositLimit.minAmount, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.DepositLimit.minAmount, "", new { @class = "text-danger" })
+                    <label>Minimum deposit amount @Model.SavingProduct.name can hold</label>
+                </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.DepositLimit.minAmount, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.DepositLimit.minAmount, "", new { @class = "text-danger" })
-                <label>Min deposit amount</label>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.DepositLimit.maxAmount, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.DepositLimit.maxAmount, "", new { @class = "text-danger" })
+                    <label>Maximum deposit amount @Model.SavingProduct.name can hold</label>
+                </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.DepositLimit.maxAmount, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.DepositLimit.maxAmount, "", new { @class = "text-danger" })
-                <label>Max deposit amount</label>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.DepositLimit.depositFeeFlat, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.DepositLimit.depositFeeFlat, "", new { @class = "text-danger" })
+                    <label>Flat fee</label>
+                </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.DepositLimit.depositFeeFlat, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.DepositLimit.depositFeeFlat, "", new { @class = "text-danger" })
-                <label>Flat fee</label>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.DepositLimit.depositFeeRate, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.DepositLimit.depositFeeRate, "", new { @class = "text-danger" })
-                <label>Fee rate</label>
-            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.DepositLimit.depositFeeRate, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.DepositLimit.depositFeeRate, "", new { @class = "text-danger" })
+                    <label>Fee rate</label>
+                </div>
 
 
-        </div>
-        <h3>Sharing</h3>
-        <br />
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.DepositLimit.SourceBrachOfficeShare, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CloseFeeParameter.SourceBrachOfficeShare, "", new { @class = "text-danger" })
-                <label>Source branch share (in percentage %)</label>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.DepositLimit.DestinationBranchOfficeShare, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CloseFeeParameter.DestinationBranchOfficeShare, "", new { @class = "text-danger" })
-                <label>Destination branch share (in percentage %)</label>
+    </fieldset>
+    <fieldset class="fieldset-custom">
+        <legend>Sharing</legend>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.DepositLimit.SourceBrachOfficeShare, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.DepositLimit.SourceBrachOfficeShare, "", new { @class = "text-danger" })
+                    <label>Source branch share (in percentage %)</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.DepositLimit.DestinationBranchOfficeShare, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.DepositLimit.DestinationBranchOfficeShare, "", new { @class = "text-danger" })
+                    <label>Destination branch share (in percentage %)</label>
+                </div>
             </div>
         </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.DepositLimit.HeadOfficeShare, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CloseFeeParameter.HeadOfficeShare, "", new { @class = "text-danger" })
-                <label>Head office share (in percentage %)</label>
-            </div>
-        </div>
-        @*<div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CloseFeeParameter.PartnerShare, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CloseFeeParameter.PartnerShare, "", new { @class = "text-danger" })
-                <label>Partner branch share (in percentage %)</label>
-            </div>
-        </div>*@
-    </div>
-    
+    </fieldset>
+
+
+
     <div class="mt-4">
         @if (Model.DepositLimit.id == null)
         {

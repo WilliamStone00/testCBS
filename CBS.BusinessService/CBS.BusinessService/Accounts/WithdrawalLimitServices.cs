@@ -126,6 +126,9 @@ namespace CBS.BusinessService.Accounts
                     WithdrawalLimit.withdrawalFeeRate = model.withdrawalFeeRate;
                     WithdrawalLimit.productId = model.productId;
                     WithdrawalLimit.withdrawalFeeFlat = model.withdrawalFeeFlat;
+                    WithdrawalLimit.SourceBrachOfficeShare = model.SourceBrachOfficeShare;
+                    WithdrawalLimit.DestinationBranchOfficeShare = model.DestinationBranchOfficeShare;
+                    WithdrawalLimit.HeadOfficeShare = model.HeadOfficeShare;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<WithdrawalLimit>>(string.Format(APICallHelper.Get_Update_Delete_WithdrawalLimits, model.id), WithdrawalLimit);
                     if (response.IsSuccess)
                     {

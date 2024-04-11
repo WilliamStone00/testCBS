@@ -164,7 +164,11 @@ namespace CBS.FrontDesk.UI.Controllers.Commitee
             
             return null;
         }
-
+        public async Task<ActionResult> Delete(string id)
+        {
+            var data = await _loanCommiteeMember.Delete(id);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+        }
         public async Task<bool> GetList()
         {
             ViewBag.Groups = await _loanCommiteeGroupServices.GetLoanCommiteeGroups();

@@ -347,10 +347,6 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             private global::System.Data.DataColumn columnBLogoUrl;
             
-            private global::System.Data.DataColumn columnBImmatriculationNumber;
-            
-            private global::System.Data.DataColumn columnBTaxPayerNUmber;
-            
             private global::System.Data.DataColumn columnBPBox;
             
             private global::System.Data.DataColumn columnBWebSite;
@@ -374,6 +370,10 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             private global::System.Data.DataColumn columnCustomerNumber;
             
             private global::System.Data.DataColumn columnCredit;
+            
+            private global::System.Data.DataColumn columnBranchName;
+            
+            private global::System.Data.DataColumn columnBranchAddress;
             
             private global::System.Data.DataColumn columnDebit;
             
@@ -684,22 +684,6 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn BImmatriculationNumberColumn {
-                get {
-                    return this.columnBImmatriculationNumber;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn BTaxPayerNUmberColumn {
-                get {
-                    return this.columnBTaxPayerNUmber;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public global::System.Data.DataColumn BPBoxColumn {
                 get {
                     return this.columnBPBox;
@@ -796,6 +780,22 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchNameColumn {
+                get {
+                    return this.columnBranchName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchAddressColumn {
+                get {
+                    return this.columnBranchAddress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public global::System.Data.DataColumn DebitColumn {
                 get {
                     return this.columnDebit;
@@ -874,8 +874,6 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         string BCapital, 
                         string BRegistrationNumber, 
                         string BLogoUrl, 
-                        string BImmatriculationNumber, 
-                        string BTaxPayerNUmber, 
                         string BPBox, 
                         string BWebSite, 
                         string BBankInitial, 
@@ -888,6 +886,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         string TellerName, 
                         string CustomerNumber, 
                         decimal Credit, 
+                        string BranchName, 
+                        string BranchAddress, 
                         decimal Debit) {
                 TransactionRow rowTransactionRow = ((TransactionRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
@@ -925,8 +925,6 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         BCapital,
                         BRegistrationNumber,
                         BLogoUrl,
-                        BImmatriculationNumber,
-                        BTaxPayerNUmber,
                         BPBox,
                         BWebSite,
                         BBankInitial,
@@ -939,6 +937,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         TellerName,
                         CustomerNumber,
                         Credit,
+                        BranchName,
+                        BranchAddress,
                         Debit};
                 rowTransactionRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowTransactionRow);
@@ -996,8 +996,6 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 this.columnBCapital = base.Columns["BCapital"];
                 this.columnBRegistrationNumber = base.Columns["BRegistrationNumber"];
                 this.columnBLogoUrl = base.Columns["BLogoUrl"];
-                this.columnBImmatriculationNumber = base.Columns["BImmatriculationNumber"];
-                this.columnBTaxPayerNUmber = base.Columns["BTaxPayerNUmber"];
                 this.columnBPBox = base.Columns["BPBox"];
                 this.columnBWebSite = base.Columns["BWebSite"];
                 this.columnBBankInitial = base.Columns["BBankInitial"];
@@ -1010,6 +1008,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 this.columnTellerName = base.Columns["TellerName"];
                 this.columnCustomerNumber = base.Columns["CustomerNumber"];
                 this.columnCredit = base.Columns["Credit"];
+                this.columnBranchName = base.Columns["BranchName"];
+                this.columnBranchAddress = base.Columns["BranchAddress"];
                 this.columnDebit = base.Columns["Debit"];
             }
             
@@ -1084,10 +1084,6 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 base.Columns.Add(this.columnBRegistrationNumber);
                 this.columnBLogoUrl = new global::System.Data.DataColumn("BLogoUrl", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBLogoUrl);
-                this.columnBImmatriculationNumber = new global::System.Data.DataColumn("BImmatriculationNumber", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnBImmatriculationNumber);
-                this.columnBTaxPayerNUmber = new global::System.Data.DataColumn("BTaxPayerNUmber", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnBTaxPayerNUmber);
                 this.columnBPBox = new global::System.Data.DataColumn("BPBox", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBPBox);
                 this.columnBWebSite = new global::System.Data.DataColumn("BWebSite", typeof(string), null, global::System.Data.MappingType.Element);
@@ -1112,8 +1108,13 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 base.Columns.Add(this.columnCustomerNumber);
                 this.columnCredit = new global::System.Data.DataColumn("Credit", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCredit);
+                this.columnBranchName = new global::System.Data.DataColumn("BranchName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchName);
+                this.columnBranchAddress = new global::System.Data.DataColumn("BranchAddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchAddress);
                 this.columnDebit = new global::System.Data.DataColumn("Debit", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDebit);
+                this.columnBranchName.Caption = "DataColumn1";
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1800,38 +1801,6 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string BImmatriculationNumber {
-                get {
-                    try {
-                        return ((string)(this[this.tableTransaction.BImmatriculationNumberColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'BImmatriculationNumber\' in table \'Transaction\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableTransaction.BImmatriculationNumberColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string BTaxPayerNUmber {
-                get {
-                    try {
-                        return ((string)(this[this.tableTransaction.BTaxPayerNUmberColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'BTaxPayerNUmber\' in table \'Transaction\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableTransaction.BTaxPayerNUmberColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string BPBox {
                 get {
                     try {
@@ -2020,6 +1989,38 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 }
                 set {
                     this[this.tableTransaction.CreditColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchName {
+                get {
+                    try {
+                        return ((string)(this[this.tableTransaction.BranchNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchName\' in table \'Transaction\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransaction.BranchNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchAddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableTransaction.BranchAddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchAddress\' in table \'Transaction\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransaction.BranchAddressColumn] = value;
                 }
             }
             
@@ -2449,30 +2450,6 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsBImmatriculationNumberNull() {
-                return this.IsNull(this.tableTransaction.BImmatriculationNumberColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetBImmatriculationNumberNull() {
-                this[this.tableTransaction.BImmatriculationNumberColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsBTaxPayerNUmberNull() {
-                return this.IsNull(this.tableTransaction.BTaxPayerNUmberColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetBTaxPayerNUmberNull() {
-                this[this.tableTransaction.BTaxPayerNUmberColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsBPBoxNull() {
                 return this.IsNull(this.tableTransaction.BPBoxColumn);
             }
@@ -2613,6 +2590,30 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetCreditNull() {
                 this[this.tableTransaction.CreditColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchNameNull() {
+                return this.IsNull(this.tableTransaction.BranchNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchNameNull() {
+                this[this.tableTransaction.BranchNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchAddressNull() {
+                return this.IsNull(this.tableTransaction.BranchAddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchAddressNull() {
+                this[this.tableTransaction.BranchAddressColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

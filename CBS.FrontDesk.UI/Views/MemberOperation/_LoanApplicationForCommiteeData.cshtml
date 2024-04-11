@@ -23,7 +23,7 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var d in Model.LoanApplications.OrderBy(app => app.ApplicationDate))
+                @foreach (var d in Model.LoanApplications.OrderByDescending(app => app.ApplicationDate))
                 {
                     <tr>
                         <td style="width:25%">@d.ApplicationDate</td>

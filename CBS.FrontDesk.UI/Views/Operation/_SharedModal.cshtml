@@ -1,0 +1,110 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+
+@if (Model.Customer != null)
+{
+    <div class="modal fade" id="customerInfoModal" tabindex="-1" aria-labelledby="customerInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customerInfoModalLabel">Member Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Place the customer information here -->
+                    <div class="card-body">
+                        <div class="image-upload-container">
+                            <!-- Image for picture -->
+                            @if (Model.Customer.photoUrl != null)
+                            {
+                                <!-- Clickable photo for preview -->
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
+                                    <img src="@Model.Customer.photoUrl" class="img-fluid preview-image" alt="Uploaded Image">
+                                </a>
+                                <!-- Modal for photo preview -->
+                                <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <img src="@Model.Customer.photoUrl" class="img-fluid" alt="Uploaded Image">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <img src="@Url.Content(Model.Customer.ImageNoVirtualPath)" class="img-fluid preview-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+                            }
+                            <!-- ... Other content ... -->
+                        </div>
+                        <h5 class="pb-3 border-bottom mb-3">Details</h5>
+                        <div class="info-container">
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-3">
+                                    <span class="fw-medium text-heading me-2">PIN:</span>
+                                    <span>@Model.Customer.taxIdentificationNumber</span>
+                                </li>
+                                <li class="mb-3">
+                                    <span class="fw-medium text-heading me-2">Identity Number:</span>
+                                    <span>@Model.Customer.idNumber</span>
+                                </li>
+                                <li class="mb-3">
+                                    <span class="fw-medium text-heading me-2">Email:</span>
+                                    <span>@Model.Customer.email</span>
+                                </li>
+                                <li class="mb-3">
+                                    <span class="fw-medium text-heading me-2">Status:</span>
+                                    <span class="badge bg-label-success rounded-pill">
+
+
+
+                                        @if (@Model.Customer.active)
+                                        {
+                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Active</span></label>
+                                        }
+                                        else
+                                        {
+                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Not active</span></label>
+                                        }
+                                    </span>
+                                </li>
+                                <li class="mb-3">
+                                    <span class="fw-medium text-heading me-2">Telephone:</span>
+                                    <span>@Model.Customer.phone</span>
+                                </li>
+                                <li class="mb-3">
+                                    <span class="fw-medium text-heading me-2">Home phone number:</span>
+                                    <span>@Model.Customer.phone</span>
+                                </li>
+                                <li class="mb-3">
+                                    <span class="fw-medium text-heading me-2">Address:</span>
+                                    <span>@Model.Customer.address</span>
+                                </li>
+                                <li class="mb-3">
+                                    <span class="fw-medium text-heading me-2">Online banking status</span>
+                                    <span class="badge bg-label-success rounded-pill">
+                                        @if (@Model.Customer.isUseOnLineMobileBanking)
+                                        {
+                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Active</span></label>
+                                        }
+                                        else
+                                        {
+                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Not active</span></label>
+                                        }
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="text-center my-3">
+        <p>Reload page to get customer details.</p>
+    </div>
+}

@@ -1,207 +1,57 @@
 ﻿
 
 @{
-    ViewBag.Title = "Product Configuration";
+    ViewBag.Title = "Ordinary accounts";
 }
+<div class="row">
 
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+        <div class="card">
+            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+                <div class="accordion-item active">
+                    <h2 class="accordion-header text-body d-flex justify-content-between"
+                        id="accordionPopoutIconThree">
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionPopoutIcon-3"
+                                aria-expanded="true"
+                                aria-controls="accordionPopoutIcon-3">
+                            <i class="mdi mdi-cog me-2"></i>
+                        </button>
+                    </h2>
+                    <div id="accordionPopoutIcon-3"
+                         class="accordion-collapse collapse show"
+                         data-bs-parent="#accordionPopoutIcon">
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+                                <div class="change-group">
+                                    <div class="card mb-4">
+                                        <div class="card-body d-sm-flex d-block">
+                                            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                                                Ordinary account management
+                                            </div>
+                                        </div>
 
-<div class="card mb-12">
-    <div class="card-header">
-        <h5 class="card-title mb-0">SAVING PRODUCT CONFIGURATION</h5>
-    </div>
-    <hr />
-    <div class="card-body">
-        <div class="row">
-            <!-- Navigation -->
-            <div class="col-12 col-md-3 mx-auto card-separator">
-                <div class="d-flex justify-content-between flex-column mb-3 mb-md-0 pe-md-3">
-                    <ul class="nav nav-align-left nav-pills flex-column">
-                        <li class="nav-item">
-                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#restock">
-                                <i class="mdi mdi-cube-outline me-2"></i>
-                                <span class="align-middle">Product</span>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#shipping">
-                                <i class="mdi mdi-cube-outline me-2"></i>
-                                <span class="align-middle">Deposit Limit</span>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#global-delivery">
-                                <i class="mdi mdi-cube-outline me-2"></i>
-                                <span class="align-middle">Withdrawal limit</span>
-                            </button>
-                        </li>
-
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#attributes">
-                                <i class="mdi mdi-cube-outline me-2"></i>
-                                <span class="align-middle">Transfer limit</span>
-                            </button>
-                        </li>
-                        @*<li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#clossing-fee">
-                                <i class="mdi mdi-cube-outline me-2"></i>
-                                <span class="align-middle">Clossing fee</span>
-                            </button>
-                        </li>*@
-                        @*<li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#entry-fee">
-                                <i class="mdi mdi-cube-outline me-2"></i>
-                                <span class="align-middle">Entry fee</span>
-                            </button>
-                        </li>*@
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#management-fee">
-                                <i class="mdi mdi-cube-outline me-2"></i>
-                                <span class="align-middle">Management fee</span>
-                            </button>
-                        </li>
-
-                        @*<li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#reopening-fee">
-                                <i class="mdi mdi-cube-outline me-2"></i>
-                                <span class="align-middle">Reopening</span>
-                            </button>
-                        </li>*@
-                    </ul>
-                </div>
-            </div>
-            <div class="col-12 col-md-9 pt-4 pt-md-0">
-                <div class="tab-content p-0 pe-xl-0 ps-md-3">
-                    <div class="tab-pane fade show active" id="restock" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_product','_ProductData',0,'datalistingview_product',null,'savingproduct','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_product','_ProductConfig','new','TransactionConfiguration','savingproduct')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
+                                    </div>
+                                    <div class="row justify-content-end">
+                                        <div class="demo-inline-spacing text-end">
+                                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_product','_ProductData',0,'datalistingview',null,'savingproduct','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                            </a>
+                                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_ProductConfig','new','TransactionConfiguration','savingproduct')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div id="datalistingview">
+                                        @Html.Partial("_ProductData")
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <hr />
-                        <div id="datalistingview_product">
-                            @Html.Partial("_ProductConfig")
-                        </div>
-
-                    </div>
-                    <div class="tab-pane fade" id="shipping" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit',null,'depositlimit','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Deposit','_DepositConfig','new','TransactionConfiguration','depositlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <hr />
-                        <div id="datalistingview_Deposit">
-                            @Html.Partial("_DepositConfig")
-                        </div>
-
-                    </div>
-                    <div class="tab-pane fade" id="global-delivery" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Withdrawal','_WithdrawalData',0,'datalistingview_Withdrawal',null,'withdrawallimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Withdrawal','_WithdrawalConfig','new','TransactionConfiguration','withdrawallimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <hr />
-                        <div id="datalistingview_Withdrawal">
-                            @Html.Partial("_WithdrawalConfig")
-                        </div>
-
-                    </div>
-                    <div class="tab-pane fade" id="attributes" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Transfer','_TransferData',0,'datalistingview_Transfer',null,'transferlimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Transfer','_TransferConfig','new','TransactionConfiguration','transferlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <hr />
-                        <div id="datalistingview_Transfer">
-                            @Html.Partial("_TransferConfig")
                         </div>
                     </div>
-                    @*<div class="tab-pane fade" id="clossing-fee" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_ClossingFee','_ClossingFeeData',0,'datalistingview_ClossingFee',null,'CloseFeeParameter')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_ClossingFee','_ClossingFeeConfig','new','TransactionConfiguration','CloseFeeParameter')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <hr />
-                        <div id="datalistingview_ClossingFee">
-                            @Html.Partial("_ClossingFeeConfig")
-                        </div>
-                    </div>*@
-                    @*<div class="tab-pane fade" id="entry-fee" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_EntryFee','_EntryFeeData',0,'datalistingview_EntryFee',null,'EntryFeeParameter')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_EntryFee','_EntryFeeConfig','new','TransactionConfiguration','EntryFeeParameter')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <hr />
-                        <div id="datalistingview_EntryFee">
-                            @Html.Partial("_EntryFeeConfig")
-                        </div>
-                    </div>*@
-                    <div class="tab-pane fade" id="management-fee" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_ManagementFeeConfig','_ManagementFeeConfigData',0,'datalistingview_ManagementFeeConfig',null,'ManagementFeeConfigParameter')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_ManagementFeeConfig','_ManagementFeeConfigConfig','new','TransactionConfiguration','ManagementFeeConfigParameter')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <hr />
-                        <div id="datalistingview_ManagementFeeConfig">
-                            @Html.Partial("_ManagementFeeConfig")
-                        </div>
-                    </div>
-                    @*<div class="tab-pane fade" id="reopening-fee" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_ReopeningFeeConfig','_ReopeningFeeConfigData',0,'datalistingview_ReopeningFeeConfig',null,'ReopeningFeeConfigParameter')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_ReopeningFeeConfig','_ReopeningFeeConfigConfig','new','TransactionConfiguration','ReopeningFeeConfigParameter')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <hr />
-                        <div id="datalistingview_ReopeningFeeConfig">
-                            @Html.Partial("_ReopeningFeeConfig")
-                        </div>
-                    </div>*@
                 </div>
             </div>
         </div>

@@ -41,8 +41,9 @@ namespace CBS.FrontDesk.Data.Entity
         public string productId { get; set; }
         public string customerId { get; set; }
         public string customerName { get; set; }
-        public string profileType { get; set; }
         public string createdDate { get; set; }
+        public string BranchName { get; set; }
+        public string BranchId { get; set; }
         public string createdBy { get; set; }
     }
     public class TransferLimit

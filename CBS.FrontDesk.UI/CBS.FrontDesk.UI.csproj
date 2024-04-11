@@ -219,6 +219,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppFiles\Images\BG.jpeg" />
+    <Content Include="AppFiles\Images\BG2.png" />
+    <Content Include="AppFiles\Images\BG3.jpeg" />
+    <Content Include="AppFiles\Images\Logog2.jpeg" />
+    <Content Include="AppFiles\Images\SideImageHeader.jpeg" />
+    <Content Include="AppFiles\Images\SideImageHeader.png" />
+    <Content Include="AppFiles\Images\SideImageHeader_login.png" />
     <Content Include="App_Code\Helper\HtmlExtension.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -2132,6 +2139,7 @@
     <Content Include="Scripts\Js\Crud\LoanProductCollateral\LoanProductCollateral.js" />
     <Content Include="Scripts\Js\Crud\LoanTransactions\Loans.js" />
     <Content Include="Scripts\Js\Budgetmanagement\Budget.js" />
+    <Content Include="Scripts\Js\Crud\Loan\Product\AccountMapping.js" />
     <Content Include="Scripts\Js\Crud\OperationPanel\Customers.js" />
     <Content Include="Scripts\Js\Crud\OperationPanel\Collateral.js" />
     <Content Include="Scripts\Js\Crud\OperationPanel\Attachedment.js" />
@@ -2141,6 +2149,9 @@
     <Content Include="Scripts\Js\Crud\OperationPanel\MyCustomers.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\MyCustomers.js" />
     <Content Include="Scripts\Js\Crud\EOD\EOD.js" />
+    <Content Include="Scripts\Js\Crud\Operation\TransferPending.js" />
+    <Content Include="Scripts\Js\Crud\Operation\Transfer.js" />
+    <Content Include="Scripts\Js\Crud\Operation\Transfers.js" />
     <Content Include="Scripts\Js\Crud\Penalty\Penalty.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />
     <Content Include="Scripts\Js\Crud\Config\Localization\Countries.js" />
@@ -2212,8 +2223,7 @@
     <Content Include="Views\Operation\_AccountInfo.cshtml" />
     <Content Include="Views\Operation\_OpenAccount.cshtml" />
     <Content Include="Views\Operation\_TotalBalance.cshtml" />
-    <Content Include="Views\Operation\_Deposit.cshtml" />
-    <Content Include="Views\Operation\_Withdrawal.cshtml" />
+    <Content Include="Views\Operation\_DepositAndWithdrawal.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SiteMapTitleHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SiteMapPathHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SiteMapNodeModelList.cshtml" />
@@ -2238,7 +2248,7 @@
     <Content Include="Views\Period\Index.cshtml" />
     <Content Include="Views\GlobalConfiguration\Index.cshtml" />
     <Content Include="Views\Saving\_AccountData.cshtml" />
-    <Content Include="Views\Saving\Index.cshtml" />
+    <Content Include="Views\Saving\Accounts.cshtml" />
     <Content Include="Views\Operation\_TransactionHistrotriesData.cshtml" />
     <Content Include="Views\Guaranty\Index.cshtml" />
     <Content Include="Views\Guaranty\_Update.cshtml" />
@@ -2388,7 +2398,7 @@
     <Content Include="Views\EndOfDayOperation\_PrimaryTellerViewOfOwnHistoryData.cshtml" />
     <Content Include="Views\EndOfDayOperation\_SubTellerTellerViewOfOwnHistoryData.cshtml" />
     <Content Include="Views\EndOfDayOperation\_AccountantViewOfPrimaryTellerHistoryData.cshtml" />
-    <Content Include="Views\Operation\Transfer.cshtml" />
+    <Content Include="Views\Operation\TransferRequest.cshtml" />
     <Content Include="Views\Operation\_Transfer.cshtml" />
     <Content Include="Views\TransactionConfiguration\_ManagementFeeConfig.cshtml" />
     <Content Include="Views\TransactionConfiguration\_ManagementFeeData.cshtml" />
@@ -2473,7 +2483,6 @@
     <Content Include="Views\MemberOperation\_LoanTerm.cshtml" />
     <Content Include="Views\Loan\Index.cshtml" />
     <Content Include="Views\Loan\_LoanData.cshtml" />
-    <Content Include="Views\LoanProduct\_LoanProductPolicy.cshtml" />
     <Content Include="Views\MemberOperation\LoanSimulation.cshtml" />
     <Content Include="Views\LoanProductCollateral\_LoanProductCollateral.cshtml" />
     <Content Include="Views\LoanProductCollateral\_Data.cshtml" />
@@ -2504,6 +2513,31 @@
     <Content Include="Views\BudgetManagement\_BudgetCategoryDetails.cshtml" />
     <Content Include="Views\BudgetManagement\_BudgetData.cshtml" />
     <Content Include="Views\BudgetManagement\_BudgetCategoryData.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_Policies.cshtml" />
+    <Content Include="Views\TransactionConfiguration\PolicyandSharing.cshtml" />
+    <Content Include="Views\TransactionConfiguration\AccountMapping.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_Mapping.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_AccountMapping.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_AccountMappingData.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_OrdinaryAccountData.cshtml" />
+    <Content Include="Views\TransactionConfiguration\OrdinaryAccounts.cshtml" />
+    <Content Include="Views\Operation\Withdrawal.cshtml" />
+    <Content Include="Views\Operation\Deposit.cshtml" />
+    <Content Include="Views\Operation\_AccountBalance.cshtml" />
+    <Content Include="Views\Operation\Statement.cshtml" />
+    <Content Include="Views\Operation\_SharedModal.cshtml" />
+    <Content Include="Views\Operation\_DenominationNotes.cshtml" />
+    <Content Include="Views\Operation\LoanRepayment.cshtml" />
+    <Content Include="Views\Operation\_LoanData.cshtml" />
+    <Content Include="Views\LoanProduct\_AccountMappingData.cshtml" />
+    <Content Include="Views\LoanProduct\_LoanAccountMapping.cshtml" />
+    <Content Include="Views\LoanProduct\LoanAccountMapping.cshtml" />
+    <Content Include="Views\Operation\_TransferInitiatorData.cshtml" />
+    <Content Include="Views\Operation\TransferPending.cshtml" />
+    <Content Include="Views\Operation\_TransferPendingData.cshtml" />
+    <Content Include="Views\Operation\Transfers.cshtml" />
+    <Content Include="Views\Operation\_TransferDetails.cshtml" />
+    <Content Include="Views\Operation\_TransferConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

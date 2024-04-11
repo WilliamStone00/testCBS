@@ -1,0 +1,75 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+
+@using (Html.BeginForm("Deposit", "Operation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <input type="hidden" name="OperationType" value="TransferConfirmation" id="OperationType" />
+    @Html.HiddenFor(m => m.TransferConfirmation.TransferId)
+    <fieldset class="fieldset-custom">
+        <legend>Transfer confirmation</legend>
+        <div class="row mt-2 gy-4">
+            <div class="col-md-4">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.Transfer.TransactionRef, new { @class = "form-control", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.Transfer.TransactionRef, "", new { @class = "text-danger" })
+                    <label>Reference</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.Transfer.Amount, new { @class = "form-control", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.Transfer.Amount, "", new { @class = "text-danger" })
+                    <label>Amount</label>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.Transfer.InitiatedByUSerName, new { @class = "form-control", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.Transfer.InitiatedByUSerName, "", new { @class = "text-danger" })
+                    <label>Initiator</label>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextAreaFor(m => m.Transfer.InitiatorComment, new { @class = "form-control", @style = "height: 75px;", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.Transfer.InitiatorComment, "", new { @class = "text-danger " })
+                    <label for="formValidationDob">Initiator's comment</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.Transfer.SourceAccountNumber, new { @class = "form-control", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.Transfer.SourceAccountNumber, "", new { @class = "text-danger" })
+                    <label>Source account</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.Transfer.DestinationAccountNumber, new { @class = "form-control", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.Transfer.DestinationAccountNumber, "", new { @class = "text-danger" })
+                    <label>Recieving account</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.TransferConfirmation.Status, new SelectList(ViewBag.Status, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.Transfer.Status, "", new { @class = "text-danger " })
+                    <label>Select approval status</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextAreaFor(m => m.TransferConfirmation.Note, new { @class = "form-control", @style = "height: 75px;" })
+                    @Html.ValidationMessageFor(m => m.TransferRequest.Note, "", new { @class = "text-danger" })
+                    <label>Note</label>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary me-2">Confirm request</button>
+        </div>
+    </fieldset>
+}
+
+
+

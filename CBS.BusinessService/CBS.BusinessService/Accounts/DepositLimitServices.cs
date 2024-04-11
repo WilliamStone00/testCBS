@@ -128,7 +128,10 @@ namespace CBS.BusinessService.Accounts
                     DepositLimit.depositFeeFlat = model.depositFeeFlat;
                     DepositLimit.depositFeeRate = model.depositFeeRate;
                     DepositLimit.productId = model.productId;
-                 
+                    DepositLimit.SourceBrachOfficeShare = model.SourceBrachOfficeShare;
+                    DepositLimit.DestinationBranchOfficeShare = model.DestinationBranchOfficeShare;
+                    DepositLimit.HeadOfficeShare = model.HeadOfficeShare;
+
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<DepositLimit>>(string.Format(APICallHelper.Get_Update_Delete_DepositLimit, model.id), DepositLimit);
                     if (response.IsSuccess)
                     {

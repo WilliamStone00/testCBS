@@ -25,21 +25,38 @@
                 @foreach (var d in Model.LoanCommiteeMembers)
                 {
                     <tr>
-                        <td style="width:60%">@d.LoanCommiteeGroup.Name</td>
-                        <td style="width:20%">@d.UserId</td>
-                        <td style="width:20%">
-                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_LoanCommitee','update','LoanCommitee','LoanCommiteeGroup')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select to edit">Edit</a> |
-                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete" onclick="DeleteRecordDataTable('LoanCommitee','@d.Id','myDataTable_commitee_members','_LoanCommiteeMemberData',0,'datalistingview')">Delete</a>|
+                        <td style="width:45%">@d.LoanCommiteeGroup.Name</td>
+                        <td style="width:40%">
+                            @{
+                                string memberInfo = d.User.name;
+                                if (d.User.Branch != null)
+                                {
+                                    memberInfo += " - " + d.User.Branch.Name;
+                                }
+                                else
+                                {
+                                    memberInfo += " - N/A";
+                                }
+
+
+                            }
+                            @memberInfo
+                        </td>
+                        <td style="width:15%">
+                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_LoanCommiteeMember','update','LoanCommitee','LoanCommiteeMember')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select to edit">Edit</a> |
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete" onclick="DeleteRecordDataTable('LoanCommitee','@d.Id','myDataTable_commitee_members','_LoanCommiteeMemberData',0,'datalistingview')">Delete</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
+
     </div>
 }
 else
 {
-    <div class="alert alert-info" role="alert">
-        No commitee member are available at the moment.
+    <div class="text-center my-3">
+        <p>No commitee member are available at the moment.</p>
     </div>
+    
 }

@@ -6,315 +6,325 @@
     {
         @Html.HiddenFor(m => m.Customer.customerId)
 
-        <div class="row my-4">
-            <div class="accordion" id="collapsibleSection">
-                <div class="card accordion-item">
-                    <h2 class="accordion-header" id="headingDeliveryAddress">
-                        <button type="button"
-                                class="accordion-button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapseDeliveryAddress"
-                                aria-expanded="true"
-                                aria-controls="collapseDeliveryAddress">
-                            Loan product
-                        </button>
-                    </h2>
-                    <div id="collapseDeliveryAddress"
-                         class="accordion-collapse collapse show"
-                         data-bs-parent="#collapsibleSection">
-                        <div class="accordion-body">
-                            <div class="row g-4">
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.LoanApplication.LoanProductId, new SelectList(ViewBag.LoanProducts, "Value", "Text"), "---Select loan product---", new { @class = "form-control select2", @search = "true", @onchange = "LoadDropDown(this.value,'loanrepayment_cycles','RepaymentCircle')" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.LoanProductId, "", new { @class = "text-danger " })
-                                        <label>Select loan product</label>
+            <legend>Loan Application</legend>
+            <br />
+            <div class="row my-4">
+                <div class="accordion" id="collapsibleSection">
+                    <div class="card accordion-item">
+                        <h2 class="accordion-header" id="headingDeliveryAddress">
+                            <button type="button"
+                                    class="accordion-button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDeliveryAddress"
+                                    aria-expanded="true"
+                                    aria-controls="collapseDeliveryAddress">
+                                Loan product
+                            </button>
+                        </h2>
+                        <div id="collapseDeliveryAddress"
+                             class="accordion-collapse collapse show"
+                             data-bs-parent="#collapsibleSection">
+                            <div class="accordion-body">
+                                <div class="row g-4">
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.LoanApplication.LoanProductId, new SelectList(ViewBag.LoanProducts, "Value", "Text"), "---Select loan product---", new { @class = "form-control select2", @search = "true", @onchange = "LoadDropDown(this.value,'loanrepayment_cycles','RepaymentCircle')" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.LoanProductId, "", new { @class = "text-danger " })
+                                            <label>Select loan product</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.LoanApplication.LoanType, new SelectList(ViewBag.LoanTypes, "Value", "Text"), "---Select loan type---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.LoanType, "", new { @class = "text-danger " })
-                                        <label>Select loan type</label>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.LoanApplication.LoanType, new SelectList(ViewBag.LoanTypes, "Value", "Text"), "---Select loan type---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.LoanType, "", new { @class = "text-danger " })
+                                            <label>Select loan type</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.Amount, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.Amount, "", new { @class = "text-danger" })
-                                        <label id="amount"> Amount</label>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.LoanApplication.Amount, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.Amount, "", new { @class = "text-danger" })
+                                            <label id="amount"> Amount</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.LoanDuration, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.LoanDuration, "", new { @class = "text-danger" })
-                                        <label id="loanduration">Loan duration</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card accordion-item">
-                    <h2 class="accordion-header" id="headingPaymentMethod3">
-                        <button type="button"
-                                class="accordion-button collapsed"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapsePaymentMethod3"
-                                aria-expanded="false"
-                                aria-controls="collapsePaymentMethod3">
-                            Guarantee and scoring
-                        </button>
-                    </h2>
-                    <div id="collapsePaymentMethod3"
-                         class="accordion-collapse collapse"
-                         aria-labelledby="headingPaymentMethod3"
-                         data-bs-parent="#collapsibleSection">
-                        <div class="accordion-body">
-                            <div class="row g-4">
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.LoanApplication.IsThereCollateral, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">Have member provided collateral?</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.LoanApplication.IsThereGuarantor, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">Have member provided guarantor?</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.ShareAccountCoverageRate, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.ShareAccountCoverageRate, "", new { @class = "text-danger" })
-                                        <label id="share">Share account coverage rate</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.SavingAccountCoverageRate, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.SavingAccountCoverageRate, "", new { @class = "text-danger" })
-                                        <label id="saving">Saving account coverage rate</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.SalaryAccountCoverageRate, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.SalaryAccountCoverageRate, "", new { @class = "text-danger" })
-                                        <label id="salary">Salary account coverage rate</label>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.LoanApplication.LoanDuration, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.LoanDuration, "", new { @class = "text-danger" })
+                                            <label id="loanduration">Loan duration</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="card accordion-item">
-                    <h2 class="accordion-header" id="headingPaymentMethod4">
-                        <button type="button"
-                                class="accordion-button collapsed"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapsePaymentMethod4"
-                                aria-expanded="false"
-                                aria-controls="collapsePaymentMethod4">
-                            Grace period
-                        </button>
-                    </h2>
-                    <div id="collapsePaymentMethod4"
-                         class="accordion-collapse collapse"
-                         aria-labelledby="headingPaymentMethod4"
-                         data-bs-parent="#collapsibleSection">
-                        <div class="accordion-body">
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.GracePeriodBeforeFirstPayment, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
-                                        <label>Enter grace period before repayment (in months. eg 1)</label>
+                    <div class="card accordion-item">
+                        <h2 class="accordion-header" id="headingPaymentMethod3">
+                            <button type="button"
+                                    class="accordion-button collapsed"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapsePaymentMethod3"
+                                    aria-expanded="false"
+                                    aria-controls="collapsePaymentMethod3">
+                                Guarantee and scoring
+                            </button>
+                        </h2>
+                        <div id="collapsePaymentMethod3"
+                             class="accordion-collapse collapse"
+                             aria-labelledby="headingPaymentMethod3"
+                             data-bs-parent="#collapsibleSection">
+                            <div class="accordion-body">
+                                <div class="row g-4">
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.LoanApplication.IsThereCollateral, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">Have member provided collateral?</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.GracePeriodAfterMaturityDate, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
-                                        <label>Enter grace period after entire loan is overdure (in days)</label>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.LoanApplication.IsThereGuarantor, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">Have member provided guarantor?</label>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card accordion-item">
-                    <h2 class="accordion-header" id="headingDeliveryOptions">
-                        <button type="button"
-                                class="accordion-button collapsed"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapseDeliveryOptions"
-                                aria-expanded="false"
-                                aria-controls="collapseDeliveryOptions">
-                            Interest
-                        </button>
-                    </h2>
-                    <div id="collapseDeliveryOptions"
-                         class="accordion-collapse collapse"
-                         aria-labelledby="headingDeliveryOptions"
-                         data-bs-parent="#collapsibleSection">
-                        <div class="accordion-body">
-                            <div class="row g-4">
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.LoanApplication.AmortizationType, new SelectList(ViewBag.AmortizationTypes, "Value", "Text"), "---Select loan type---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.AmortizationType, "", new { @class = "text-danger " })
-                                        <label>Select amortization type</label>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.LoanApplication.ShareAccountCoverageAmount, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.ShareAccountCoverageAmount, "", new { @class = "text-danger" })
+                                            <label id="share">Share account coverage amount</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.InterestRate, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.InterestRate, "", new { @class = "text-danger" })
-                                        <label id="interest">Interest in rate</label>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.LoanApplication.SavingAccountCoverageRate, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.SavingAccountCoverageRate, "", new { @class = "text-danger" })
+                                            <label id="saving">Saving account coverage rate</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.LoanApplication.SalaryAccountCoverageRate, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.SalaryAccountCoverageRate, "", new { @class = "text-danger" })
+                                            <label id="salary">Salary account coverage rate</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="card accordion-item">
-                    <h2 class="accordion-header" id="headingPaymentMethod">
-                        <button type="button"
-                                class="accordion-button collapsed"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapsePaymentMethod"
-                                aria-expanded="false"
-                                aria-controls="collapsePaymentMethod">
-                            Repayment and loan duration
-                        </button>
-                    </h2>
-                    <div id="collapsePaymentMethod"
-                         class="accordion-collapse collapse"
-                         aria-labelledby="headingPaymentMethod"
-                         data-bs-parent="#collapsibleSection">
-
-                        <div class="accordion-body">
-                            <div class="row g-4">
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.LoanApplication.RepaymentCircle, new SelectList(ViewBag.RepaymentCycles, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true",@id= "RepaymentCircle" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.RepaymentCircle, "", new { @class = "text-danger " })
-                                        <label>Repayment cycle</label>
+                    <div class="card accordion-item">
+                        <h2 class="accordion-header" id="headingPaymentMethod4">
+                            <button type="button"
+                                    class="accordion-button collapsed"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapsePaymentMethod4"
+                                    aria-expanded="false"
+                                    aria-controls="collapsePaymentMethod4">
+                                Grace period
+                            </button>
+                        </h2>
+                        <div id="collapsePaymentMethod4"
+                             class="accordion-collapse collapse"
+                             aria-labelledby="headingPaymentMethod4"
+                             data-bs-parent="#collapsibleSection">
+                            <div class="accordion-body">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.LoanApplication.GracePeriodBeforeFirstPayment, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
+                                            <label>Enter grace period before repayment (in months. eg 1)</label>
+                                        </div>
                                     </div>
-                                </div>
-                                @*<div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.NumberOfRepayment, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.NumberOfRepayment, "", new { @class = "text-danger" })
-                                        <label id="installment">Number of repayments</label>
-                                    </div>
-                                </div>*@
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card accordion-item">
-                    <h2 class="accordion-header" id="headingPaymentMethod7">
-                        <button type="button"
-                                class="accordion-button collapsed"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapsePaymentMethod7"
-                                aria-expanded="false"
-                                aria-controls="collapsePaymentMethod7">
-                            Fee
-                        </button>
-                    </h2>
-                    <div id="collapsePaymentMethod7"
-                         class="accordion-collapse collapse"
-                         aria-labelledby="headingPaymentMethod7"
-                         data-bs-parent="#collapsibleSection">
-                        <div class="accordion-body">
-                            <div class="row g-4">
-
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.ProcessingFee, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.ProcessingFee, "", new { @class = "text-danger" })
-                                        <label id="fee">Processing fee rate</label>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.LoanApplication.GracePeriodAfterMaturityDate, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
+                                            <label>Enter grace period after entire loan is overdure (in days)</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                </div>
-                <div class="card accordion-item">
-                    <h2 class="accordion-header" id="headingPaymentMethod8">
-                        <button type="button"
-                                class="accordion-button collapsed"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapsePaymentMethod8"
-                                aria-expanded="false"
-                                aria-controls="collapsePaymentMethod8">
-                            Purpose and activities
-                        </button>
-                    </h2>
-                    <div id="collapsePaymentMethod8"
-                         class="accordion-collapse collapse"
-                         aria-labelledby="headingPaymentMethod8"
-                         data-bs-parent="#collapsibleSection">
-
-                        <div class="accordion-body">
-                            <div class="row g-4">
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.LoanApplication.LoanPurposeId, new SelectList(ViewBag.LoanPurposes, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.LoanPurposeId, "", new { @class = "text-danger " })
-                                        <label>Purpose of taken loan</label>
+                    <div class="card accordion-item">
+                        <h2 class="accordion-header" id="headingDeliveryOptions">
+                            <button type="button"
+                                    class="accordion-button collapsed"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDeliveryOptions"
+                                    aria-expanded="false"
+                                    aria-controls="collapseDeliveryOptions">
+                                Interest
+                            </button>
+                        </h2>
+                        <div id="collapseDeliveryOptions"
+                             class="accordion-collapse collapse"
+                             aria-labelledby="headingDeliveryOptions"
+                             data-bs-parent="#collapsibleSection">
+                            <div class="accordion-body">
+                                <div class="row g-4">
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.LoanApplication.AmortizationType, new SelectList(ViewBag.AmortizationTypes, "Value", "Text"), "---Select loan type---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.AmortizationType, "", new { @class = "text-danger " })
+                                            <label>Select amortization type</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.LoanApplication.EconomicActivityId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.EconomicActivityId, "", new { @class = "text-danger " })
-                                        <label>Economic activity</label>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.LoanApplication.InterestRate, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.InterestRate, "", new { @class = "text-danger" })
+                                            <label id="interest">Interest in rate</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                </div>
+                    <div class="card accordion-item">
+                        <h2 class="accordion-header" id="headingPaymentMethod">
+                            <button type="button"
+                                    class="accordion-button collapsed"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapsePaymentMethod"
+                                    aria-expanded="false"
+                                    aria-controls="collapsePaymentMethod">
+                                Repayment and loan duration
+                            </button>
+                        </h2>
+                        <div id="collapsePaymentMethod"
+                             class="accordion-collapse collapse"
+                             aria-labelledby="headingPaymentMethod"
+                             data-bs-parent="#collapsibleSection">
 
-                <div class="card accordion-item">
-                    <h2 class="accordion-header" id="headingPaymentMethod6">
-                        <button type="button"
-                                class="accordion-button collapsed"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapsePaymentMethod6"
-                                aria-expanded="false"
-                                aria-controls="collapsePaymentMethod6">
-                            Save
-                        </button>
-                    </h2>
-                    <div id="collapsePaymentMethod6"
-                         class="accordion-collapse collapse"
-                         aria-labelledby="headingPaymentMethod6"
-                         data-bs-parent="#collapsibleSection">
-                        <div class="accordion-body">
-                            <div class="row g-4">
-                                <div class="mt-4">
-
-                                    <button type="submit" class="btn btn-primary me-2">Save</button>
-
+                            <div class="accordion-body">
+                                <div class="row g-4">
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.LoanApplication.RepaymentCircle, new SelectList(ViewBag.RepaymentCycles, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", @id = "RepaymentCircle" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.RepaymentCircle, "", new { @class = "text-danger " })
+                                            <label>Repayment cycle</label>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.LoanApplication.NumberOfRepayment, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.LoanApplication.NumberOfRepayment, "", new { @class = "text-danger" })
+                                                <label id="installment">Number of repayments</label>
+                                            </div>
+                                        </div>*@
                                 </div>
                             </div>
                         </div>
-
                     </div>
+                    <div class="card accordion-item">
+                        <h2 class="accordion-header" id="headingPaymentMethod7">
+                            <button type="button"
+                                    class="accordion-button collapsed"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapsePaymentMethod7"
+                                    aria-expanded="false"
+                                    aria-controls="collapsePaymentMethod7">
+                                Fee
+                            </button>
+                        </h2>
+                        <div id="collapsePaymentMethod7"
+                             class="accordion-collapse collapse"
+                             aria-labelledby="headingPaymentMethod7"
+                             data-bs-parent="#collapsibleSection">
+                            <div class="accordion-body">
+                                <div class="row g-4">
+
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.LoanApplication.ProcessingFee, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.ProcessingFee, "", new { @class = "text-danger" })
+                                            <label id="fee">Processing fee rate</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.LoanApplication.InspectionFee, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.InspectionFee, "", new { @class = "text-danger" })
+                                            <label id="inspectionfee">Inspection fee</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card accordion-item">
+                        <h2 class="accordion-header" id="headingPaymentMethod8">
+                            <button type="button"
+                                    class="accordion-button collapsed"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapsePaymentMethod8"
+                                    aria-expanded="false"
+                                    aria-controls="collapsePaymentMethod8">
+                                Purpose and activities
+                            </button>
+                        </h2>
+                        <div id="collapsePaymentMethod8"
+                             class="accordion-collapse collapse"
+                             aria-labelledby="headingPaymentMethod8"
+                             data-bs-parent="#collapsibleSection">
+
+                            <div class="accordion-body">
+                                <div class="row g-4">
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.LoanApplication.LoanPurposeId, new SelectList(ViewBag.LoanPurposes, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.LoanPurposeId, "", new { @class = "text-danger " })
+                                            <label>Purpose of taken loan</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.LoanApplication.EconomicActivityId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.LoanApplication.EconomicActivityId, "", new { @class = "text-danger " })
+                                            <label>Economic activity</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="card accordion-item">
+                        <h2 class="accordion-header" id="headingPaymentMethod6">
+                            <button type="button"
+                                    class="accordion-button collapsed"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapsePaymentMethod6"
+                                    aria-expanded="false"
+                                    aria-controls="collapsePaymentMethod6">
+                                Save
+                            </button>
+                        </h2>
+                        <div id="collapsePaymentMethod6"
+                             class="accordion-collapse collapse"
+                             aria-labelledby="headingPaymentMethod6"
+                             data-bs-parent="#collapsibleSection">
+                            <div class="accordion-body">
+                                <div class="row g-4">
+                                    <div class="mt-4">
+
+                                        <button type="submit" class="btn btn-primary me-2">Save</button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
 
-        </div>
 
 
     }

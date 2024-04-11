@@ -159,26 +159,44 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
+                List<Teller> pTellers;
 
-
-
-
-
-                var pTellers = (from a in await _userManagementServices.GetUSerRoles()  where a.IsTeller select new Teller
-                                { 
-                                 name=$"{a.RoleName}-{a.FirstName} {a.LastName}", id=a.UserId.ToString(),
+                if (IsHeadOffice())
+                {
+                    // Get all user roles and filter for tellers
+                    var userRoles = await _userManagementServices.GetUSerRoles();
+                    pTellers = (from a in userRoles
+                                where a.IsTeller
+                                select new Teller
+                                {
+                                    name = $"{a.RoleName}-{a.FirstName} {a.LastName}",
+                                    id = a.UserId.ToString(),
                                 }).ToList();
 
-                if (!pTellers.Any())
-                {
-                    pTellers.Add(new Teller { name = $"Primary Teller-Default Admin", id = "4b352b37-332a-40c6-ab05-e38fcf109719" });
+                    // If no tellers are found, add a default one
+                    if (!pTellers.Any())
+                    {
+                        pTellers.Add(new Teller { name = $"Primary Teller-Default Admin", id = "4b352b37-332a-40c6-ab05-e38fcf109719" });
+                    }
                 }
-                return pTellers.ToList();
+                else
+                {
+                    // Get user roles for the current branch and filter for tellers
+                    var userRoles = await _userManagementServices.GetUSerRoles();
+                    pTellers = (from a in userRoles
+                                where a.IsTeller && a.branchId == GetBranchID()
+                                select new Teller
+                                {
+                                    name = $"{a.RoleName}-{a.FirstName} {a.LastName}",
+                                    id = a.UserId.ToString(),
+                                }).ToList();
+                }
 
+                return pTellers;
             }
             catch (Exception ex)
             {
-                // Log and handle exception
+                // Log and rethrow exception
                 throw ex;
             }
         }
