@@ -114,13 +114,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     return View("Failed_Request_View", datas);
                 }
                 else
-                {
-              
+                {   
                     return View("Successfull_Request_View", result.Data);
                 }
-
             }
-
             var dataccs = DetailsDto.SetDefault(model);
             return View("Failed_Request_View", dataccs);
         }
@@ -128,12 +125,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         [HttpGet]
         public async Task<ActionResult> GetCashReplenimentRequest(string KEY)
         {
-            await GetList();
-  
+            await GetList(); 
             var datas = await Service.GetCashReplenimentRequest(KEY);
-
-     
-
             return View(datas);
         }
         [HttpGet]
