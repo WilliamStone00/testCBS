@@ -12,6 +12,7 @@ using System.Web.UI.WebControls;
 using CBS.BusinessService.Accounts;
 using System.Web.Services.Description;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -20,11 +21,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public TellerCashReplenishmentServices Service { get;   set; }
         private  AccountingEntryServices _accountingEntry { get; set; }
         public   BranchServices branchServices { get; set; }
+        private readonly AccountingServices _AccountServices;
         public TellerCashDemandController()
         {
            Service= new TellerCashReplenishmentServices();
             branchServices= new BranchServices();
-            _accountingEntry
+            _accountingEntry = new AccountingEntryServices();
+            _AccountServices= new AccountingServices();
         }
         public async Task<ActionResult> Index()
 
@@ -185,32 +188,29 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             // await GetList();
             if (path == "list")
             {
-                List<CashReplenimentRequestDto> cashRepleniments = new List<CashReplenimentRequestDto>();
-
+              
                 var datas = await Service.GetAllCashReplenimentRequest();
-                var dataUser = (await _accountingEntryServices.GetUserList()).ToList();
+                var dataUser = (await _accountingEntry.GetUserList()).ToList();
                 var branches = (await branchServices.GetBranches()).ToList();
                 var result = from request in datas
-                             join user in dataUser on request.IssuedBy equals user.id.ToString()
+                             join user in dataUser on request.requesterUserId equals user.id.ToString()
                              join branch in branches on request.BranchId equals branch.Id
-                             select new CashReplenimentRequestDto
+                             select new DetailsDto
                              {
-                                 Id = request.Id,
-                                 ReferenceId = request.ReferenceId,
-                                 AmountRequested = request.AmountRequested,
+                                 id = request.id,
+                                 //re = request.ReferenceId,
+                                 requestedAmount = request.requestedAmount,
                                  BranchOffice = branch.Name,
-                                 RequestMessage = request.RequestMessage,
-                                 IssuedBy = user.name + "," + user.roleName,
-                                 IssuedDate = request.IssuedDate,
-                                 ApprovedBy = request.ApprovedBy,
-                                 ApprovedDate = request.ApprovedDate,
-                                 IsApproved = request.IsApproved,
-                                 CurrencyCode = request.CurrencyCode,
-                                 Status = request.Status,
-                                 ApprovedMessage = request.ApprovedMessage
+                                 requetcomment = request.requetcomment,
+                                 requesterUserId = user.name + "," + user.roleName,
+                                 RequestDate = request.RequestDate,
+                                 approvedBy = request.approvedBy,
+                                 approvedDate = request.approvedDate,
+                                 approvedStatus = request.approvedStatus,
+                                 approvedComment = request.approvedComment
                              };
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
-                cashDemandDataEntity.ListCashReplenimentRequestDto = result.ToList();
+                cashDemandDataEntity.DetailsDtos = result.ToList();
 
 
                 return PartialView(partialView, cashDemandDataEntity);
@@ -223,7 +223,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             else if (path == "update")
             {
                 await GetList();
-                var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
+                var OperationEventAttribute = await _accountingEntry.GetCashReplenimentRequest(KEY);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.CashInfusionModel = OperationEventAttribute.ConvertToCashInfusionModel();
                 return PartialView(partialView, cashDemandDataEntity);
@@ -232,7 +232,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             else if (path == "status")
             {
                 await GetList();
-                var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
+                var OperationEventAttribute = await _accountingEntry.GetCashReplenimentRequest(KEY);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
 
@@ -242,7 +242,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             else if (path == "approve")
             {
 
-                var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
+                var OperationEventAttribute = await _accountingEntry.GetCashReplenimentRequest(KEY);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
                 var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
@@ -254,15 +254,35 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             else
             {
                 await GetList();
-                var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
+                var OperationEventAttribute = await _accountingEntry.GetCashReplenimentRequest(KEY);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.CashInfusionModel = OperationEventAttribute.ConvertToCashInfusionModel();
                 return PartialView(partialView, cashDemandDataEntity);
 
             }
         }
+        private IEnumerable<StringValues> GenerateAccountListView(List<Data.Account> accounts)
+        {
+            List<StringValues> stringValues = new List<StringValues>();
+            foreach (var branch in accounts)
+            {
 
+                stringValues.Add(new StringValues(branch.Id, $"{branch.AccountNumber}-{branch.AccountName}- {branch.CurrentBalance}"));
+            }
+            return stringValues;
+        }
+        private List<SelectListItem> BuildDropDown(IEnumerable<StringValues> stringValues)
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var item in stringValues)
+            {
 
+                list.Add(new SelectListItem { Text = item.Text, Value = item.Value });
+
+            }
+
+            return list;
+        }
 
 
     }

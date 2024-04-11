@@ -2548,6 +2548,7 @@
     <Content Include="Views\CashFlowManagement\_ViewCashRequestStatus.cshtml" />
     <Content Include="Views\CashFlowManagement\CreateCashReplenishmentRequest.cshtml" />
     <Content Include="Views\CashFlowManagement\_CashReplenishmentRequestDataWithOutApproval.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_AccountDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

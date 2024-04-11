@@ -356,6 +356,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                     return PartialView(partialView, new AccountingConfiguration { Account = new Data.Account() });
                 }
+                else if (path == "details")
+                {
+                    var data = await _AccountServices.GetAccount(key);
+                    return PartialView(partialView, new AccountingConfiguration { Account = data });
+
+                }
+
                 else
                 {
                     var data = await _AccountServices.GetAccount(key);
