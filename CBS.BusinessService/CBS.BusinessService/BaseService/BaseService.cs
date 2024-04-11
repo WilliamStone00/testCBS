@@ -1577,7 +1577,7 @@ namespace BusinessServices
             string numericPhoneNumber = new string(phoneNumber.Where(char.IsDigit).ToArray());
 
             // Check if the cleaned number has a length of 9
-            if (numericPhoneNumber.Length == 9)
+            if (numericPhoneNumber.Length == 9) 
             {
                 return numericPhoneNumber;
             }
@@ -1601,7 +1601,7 @@ namespace BusinessServices
         }
         public string GetOrganizationID()
         {
-            string str = "1"; /*HttpContext.Current.Session["OrganizationID"].ToString();*/
+            string str = "";// HttpContext.Current.Session["OrganizationID"].ToString();
             return str;
         }
         public string GetUserToDoAction()

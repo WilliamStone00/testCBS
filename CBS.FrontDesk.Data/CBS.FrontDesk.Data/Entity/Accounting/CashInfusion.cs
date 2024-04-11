@@ -11,15 +11,15 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
  
     public class CashInfusion
     {
-       
-       [PositiveAmountValidator]
+        public string Id { get; set; }
+        [PositiveAmountValidator]
         public decimal Amount { get; set; }
         [Required]
         public string RequestMessage { get; set; }
         
         public string ReferenceNumber { get; set; }
         [Required]
-        public string CurrentOperation { get; set; }
+        public string CurrentOpenOfDayHistoryId { get; set; }
         public CashInfusion()
         {
                 

@@ -59,6 +59,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string requetcomment { get; set; }
         [Required]
         public string approvedStatus { get; set; }
+        public object BranchId { get; set; }
+        public string BranchOffice { get; set; }
 
         public static DetailsDto SetDefault(CashInfusionRequest request)
         {

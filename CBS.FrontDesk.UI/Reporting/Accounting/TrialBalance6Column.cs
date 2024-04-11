@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.Reporting.Accounting {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class TrialBalance8Column : ReportClass {
+    public class TrialBalance6Column : ReportClass {
         
-        public TrialBalance8Column() {
+        public TrialBalance6Column() {
         }
         
         public override string ResourceName {
             get {
-                return "TrialBalance8Column.rpt";
+                return "TrialBalance6Column.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.Reporting.Accounting {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.Reporting.Accounting.TrialBalance8Column.rpt";
+                return "CBS.FrontDesk.UI.Reporting.Accounting.TrialBalance6Column.rpt";
             }
             set {
                 // Do nothing
@@ -90,7 +90,7 @@ namespace CBS.FrontDesk.UI.Reporting.Accounting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section ReportFooterSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[5];
             }
@@ -106,9 +106,9 @@ namespace CBS.FrontDesk.UI.Reporting.Accounting {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedTrialBalance8Column : Component, ICachedReport {
+    public class CachedTrialBalance6Column : Component, ICachedReport {
         
-        public CachedTrialBalance8Column() {
+        public CachedTrialBalance6Column() {
         }
         
         [Browsable(false)]
@@ -145,7 +145,7 @@ namespace CBS.FrontDesk.UI.Reporting.Accounting {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            TrialBalance8Column rpt = new TrialBalance8Column();
+            TrialBalance6Column rpt = new TrialBalance6Column();
             rpt.Site = this.Site;
             return rpt;
         }

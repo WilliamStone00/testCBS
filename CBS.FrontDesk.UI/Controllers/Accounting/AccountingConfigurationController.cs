@@ -98,10 +98,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private dynamic BuildMenuViewBag(IEnumerable<Data.Account> debitAccounts)
         {
             List<System.Web.WebPages.Html.SelectListItem> list = new List<System.Web.WebPages.Html.SelectListItem>();
+            if (debitAccounts!=null)
+          
             foreach (var item in debitAccounts)
             {
 
-                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.AccountNumber + "-" + item.AccountHolder });
+                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.AccountNumber + "-" + item.AccountName });
 
             }
 
@@ -351,15 +353,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                 else if (path == "new")
                 {
-                    var chartOfAccount = await _AccountServices.GetAccount(key);
-                    //Data.Account account = new Data.Account
-                    //{
-                    //    ChartOfAccountId =  chartOfAccount.Id,
-                    //    AccountNumber =  chartOfAccount.AccountNumber,
 
-                    //};
-                    return PartialView(partialView, new AccountingConfiguration {  });
+                    return PartialView(partialView, new AccountingConfiguration { Account = new Data.Account() });
                 }
+                else if (path == "details")
+                {
+                    var data = await _AccountServices.GetAccount(key);
+                    return PartialView(partialView, new AccountingConfiguration { Account = data });
+
+                }
+
                 else
                 {
                     var data = await _AccountServices.GetAccount(key);

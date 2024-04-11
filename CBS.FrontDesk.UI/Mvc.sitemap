@@ -86,7 +86,7 @@
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Transaction Reversal" controller="BankingOperations" action="GetAllTransasctionReversalRequest">
     </mvcSiteMapNode>
-    <mvcSiteMapNode title="General Ledger" controller="AccountingStatements" action="Index">
+    <mvcSiteMapNode title="Accounting Reports" controller="AccountingStatements" action="Index">
     </mvcSiteMapNode>
   
     <mvcSiteMapNode title="Cash Replenishment Request" controller="CashFlowManagement" action="CreateCashReplenishmentRequest">   

@@ -10,7 +10,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class EntryTempData
     {
         public string Id { get; set; }
-       
+        public string AccountId { get; set; }
         public string AccountName { get; set; }
         public string AccountNumber { get; set; }
         [Required]
@@ -18,6 +18,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         [PositiveAmountValidator]
         public decimal Amount { get; set; }
         public string AccountBalance { get; set; }
+
         public string Description { get; set; }
         [Required]
         public string Reference { get; set; }
@@ -26,12 +27,12 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         [Required]
         public string Description { get; set; }
-     
+        [Required]
         public string Reference { get; set; }
     }
     public class EntryTempDataResult
     {
-         
+
         public string AccountName { get; set; }
         public string AccountNumber { get; set; }
         public decimal SumDebit { get; set; }

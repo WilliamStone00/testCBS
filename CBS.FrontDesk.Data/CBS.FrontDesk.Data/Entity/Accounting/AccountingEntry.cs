@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.Config;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,22 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
- 
+    public class AccountingEntryServiceResponse
+    {
+        public List<AccountingEntry > Data { get; set; }
+        public int StatusCode { get; set; }
+        public string Message { get; set; }
+        public string Status { get; set; }
+        public string Description { get; set; }
+        public List<string> Errors { get; set; }
+    }
+    public class AccountingEntryQuery
+    {
+        public AccountingEntryDto AccountingEntry { get; set; }
+        public List<Branch> Branchs { get; set; }
+        public SystemQuery SystemQuery { get; set; }
+
+    }
     public class AccountingEntry 
     {
         // Unique ID number for the entry=
@@ -49,6 +65,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         }
     }
 
+
     public class AccountingEntryDto
     {
         // Unique ID number for the entry=
@@ -65,5 +82,27 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
    public string CurrentBalance { get; set; }
         public string CreditAccountBalance { get; set; }
         public string DebitAccountBalance { get; set; }
+    }
+
+
+    public class SystemQuery
+    {
+
+        public DateTime ToDate { get; set; }  
+        public DateTime FromDate { get; set; }  
+        public string FileType { get; set; }
+        public string ReportType { get; set; }
+        public string AccountId { get; set; }
+        public string BranchId { get; set; }
+    }
+ 
+    public class TrialBalance4Column
+    {
+        public DateTime ToDate { get; set; }
+        public DateTime FromDate { get; set; }
+        public string FileType { get; set; }
+        public string ReportType { get; set; }
+
+        public string BranchId { get; set; }
     }
 }

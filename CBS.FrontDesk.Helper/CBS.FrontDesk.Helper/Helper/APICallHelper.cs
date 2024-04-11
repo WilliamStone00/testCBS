@@ -436,9 +436,9 @@ namespace CBS.FrontDesk.Helper
         public static string Delete_ChartOfAccount = "/api/v1/ChartOfAccount/DeleteChartOfAccountByAccountNumber/{0}";
         // POST  Create a ChartOfAccount
         public static string ManualEntriePosting = "/api/v1/AccountingEntry/ManualPostingEventCommand";
- 
+
         //Account/api/v1/AccountingEntry/AddCashInfusionCommand
-        //Credit a specifique Account record AddCashInfusionCommand
+        //Credit a specifique Account record AddCashInfusionCommand   
         public static string CashInfusion = "/api/v1/AccountingEntry/AddCashInfusionCommand";
         public static string GetAccountByReference = "/api/v1/Account/GetAccountByReference/{0}";
         public static string GetAccountByAccountNumber = "/api/v1/Account/AccountNumber/{0}";
@@ -446,10 +446,12 @@ namespace CBS.FrontDesk.Helper
         public static string GetAccount = "/api/v1/Account/{0}";
         public static string Delete_Account = "/api/v1/Account/{0}";
         public static string GetAlAccounts = "/api/v1/Accounts";
+        public static string GetAllAccountByBranch = "/api/v1/Accounts/{0}";
+        public static string GetAllBranchAccountUsedToCreditCashFlow= "/api/v1/Account/GetAccountByMFIBankAccountNumberQuery/{0}";
         public static string CreateAccount = "/api/v1/Account";
         public static string GetAccountUploadFiles = "/api/v1/Accounts/UploadFiles/{0}";
         public static string PutAccount = "/api/v1/Account/{0}";
-
+        public static string GetSystemLiaisonAccountQueryUrl = "/api/v1/Account/GetSystemLiaisonAccountQuery/{0}";
 
         public static string GetAccountType = "/api/v1/AccountType/{0}";
         public static string GetAccountTypeAccountRubrique = "/api/v1/AccountType/AccountRubrique/{0}";
@@ -461,16 +463,23 @@ namespace CBS.FrontDesk.Helper
         public static string Update_AccountType = "/api/v1/AccountType/{0}";
         public static string Delete_AccountType = "/api/v1/AccountType/{0}";
         public static string Delete_AccountTypeAccountRubrique = "/api/v1/AccountType/AccountRubrique/{0}";
-      
-        
+        public static string AccountingEntry_Generate4ColumnTrialBalance = "api/v1/AccountingEntries/Generate4ColumnTrialBalance";
+        public static string AccountingEntry_Generate6ColumnTrialBalance = "api/v1/AccountingEntries/Generate6ColumnTrialBalance";
+        public static string AccountingEntry_BranchLiaisonEntries = "api/v1/AccountingEntries/BranchLiaisonEntries";
+        public static string AccountingEntry_LiaisonEntries = "/api/v1/AccountingEntries/LiaisonEntries";
         public static string AccountingEntry_Get_Update_delete = "/api/v1/AccountingEntry/{0}";
         public static string AccountingEntry_Get_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdQuery/{0}";
         public static string AccountingEntry_ReverseEntry = "/api/v1/AccountingEntry/ReverseAccountingEntry";
         public static string AccountingEntry_Entries = "/api/v1/AccountingEntries";
-
+        public static string AccountingEntry_Posting_Entries = "/api/v1/AccountingEntries/RetrieveEntries";
+        public static string Trialbalance4Column_Entries = "/api/v1/AccountingEntries/Trialbalance4Column";
         public static string CashReplenishmentRequest = "/api/v1/BankingOperation/RequestForCashReplenishment";
-        public static string CashReplenishmentResponse = "/api/v1/BankingOperation/ResponseToCashReplenishment";
+        
+    public static string UpdateCashReplenishmentRequest = "/api/v1/BankingOperation/UpdateRequestForCashReplenishment/{0}";
+    public static string CashReplenishmentResponse = "/api/v1/BankingOperation/ResponseToCashReplenishment";
         public static string GetAllCashReplenishmentRequests = "/api/v1/BankingOperation/GetAllCashReplenishmentRequests";
+        public static string GetCashReplenishmentRequestByBranchId = "/api/v1/BankingOperation/GetCashReplenishmentRequestByBranchId/{0}";
+
         public static string GetCashReplenishmentRequestById = "/api/v1/BankingOperation/GetCashReplenishmentRequestById/{0}";
         public static string GetCashReplenishmentRequestIdReference = "/api/v1/BankingOperation/GetCashReplenishmentRequestByRefereceId/{0}";
         public static string TransactionReversalRequest = "/api/v1/BankingOperation/TransactionReversalRequest";

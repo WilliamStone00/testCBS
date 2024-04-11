@@ -2,38 +2,77 @@
     $("#btnData").click(function () {
         LoadData();
     });
-    GetTransactionHistory(null, 'datalistingview', '_GeneralLedgerData', 'export_generalLedger', 'myDataTable', '0');
+    $(document).on('change', '#SystemQuery_BranchId', function () {
+        // Get the selected value AccountNumber
+        var selectedValue = $(this).val();
+
+        var selectedReportType = $("#SystemQuery_ReportType").val();
+
+        if (selectedReportType=="LL") {
+            // Load another dropdown based on the selected value
+            loadBranchLiasonAccount(selectedValue);
+        }
+       
+    });
+
 });
 
 function GetTransactionHistory(KEY, divToLoadData, partialView, path, myDataTable, order) {
     LoadDataTableNew("AccountingStatements", myDataTable, "InitializeData", KEY, partialView, order, path, divToLoadData);
 
 }
+function AjaxPostSearch(form) {
+    $.validator.unobtrusive.parse(form);
+    if ($(form).valid()) {
+        var ajaxConfig = {
+            type: 'POST',
+            url: form.action,
+            data: new FormData(form),
+            success: function (response) {
+ 
+                    appalert(response.message, 2, 1);
+                    
+                    window.open("/Reports/DownloadExcelFile", "_blank"); // Updated URL
+                   
+                 
 
-function ExportFile(controller, serviceOption, action, KEY, ReadOptions, path, rptType, ReportName, reportoption, reportpath, fileTitle, datefrom, dateto) {
-    appalert("Please wait, downloading file", 1);
+            }
+            , error: function (err) {
+                appalert(err.statusText, 0, 1);
+            }
+        };
 
-    $.post(
-        '/' + controller + '/' + action,
-        {
-            controller: controller,
-            serviceOption: serviceOption,
-            action: action,
-            KEY: KEY,
-            ReadOptions: ReadOptions,
-            path: path,
-            rptType: rptType,
-            ReportName: ReportName,
-            reportoption: reportoption,
-            reportpath: reportpath,
-            fileTitle: fileTitle,
-            datefrom: datefrom,
-            dateto: dateto
-        },
-        function () {
-            window.open("/Reports/" + reportoption, "_blank"); // Updated URL
+        if ($(form).attr('enctype') === "multipart/form-data") {
+            ajaxConfig["contentType"] = false;
+            ajaxConfig["processData"] = false;
         }
-    ).fail(function (err) {
-        appalert(err.statusText, 1, 3);
+        $.ajax(ajaxConfig);
+
+    }
+    return false;
+
+}
+
+
+function loadBranchLiasonAccount(branchId) {
+    console.log(branchId);
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/AccountingStatements/GetAllLiasionAccount',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId: branchId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+            $('#SystemQuery_AccountNumber').empty();
+
+            // Add new options based on the fetched data
+            $.each(data, function (index, item) {
+                $('#SystemQuery_AccountNumber').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
     });
 }

@@ -1,0 +1,65 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+
+<div class="row invoice-preview">
+    <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+        <div class="accordion-item active">
+            <h2 class="accordion-header text-body d-flex justify-content-between"
+                id="accordionPopoutIconThree">
+                <button type="button"
+                        class="accordion-button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#accordionPopoutIcon-3"
+                        aria-expanded="true"
+                        aria-controls="accordionPopoutIcon-3">
+                    <i class="mdi mdi-bank-plus me-2"></i>
+                    Account Information : @Model.Account.AccountName : @Model.Account.AccountNumber
+                </button>
+            </h2>
+            <div class="card-body">
+
+                <br />
+                <div class="collapse show">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Details</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            <tr>
+                                <td>AccountOwner</td>
+                                <td>@Model.Account.AccountOwnerId </td>
+                            </tr>
+                          
+                            <tr>
+                                <td>AccountNumber As Affiliate</td>
+                                <td>@Model.Account.AccountNumberAffiliate </td>
+                            </tr>
+                            <tr>
+                                <td>AccountNumber at level of the network </td>
+                                <td> @Model.Account.AccountNumberCamCCUL </td>
+                            </tr>
+                           
+                       
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card card-action mb-5">
+                    <h5 class="card-header"><span style="color:forestgreen">Your cash replenishment request has been sent succesfully. Patiently wait for your managers approval</span> </h5>
+
+                    <div class="col-12 shift-right">
+
+                        <button type="submit" class="btn btn-primary click-to-go-back-to-menu" onclick="refreshPageHome()">Back to home. </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>

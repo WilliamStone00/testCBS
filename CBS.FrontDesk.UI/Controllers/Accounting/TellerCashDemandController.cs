@@ -9,16 +9,25 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using CBS.BusinessService.Accounts;
+using System.Web.Services.Description;
+using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
     public class TellerCashDemandController : BaseController
     {
-        public TellerCashReplenishmentServices Service { get; private set; }
-
+        public TellerCashReplenishmentServices Service { get;   set; }
+        private  AccountingEntryServices _accountingEntry { get; set; }
+        public   BranchServices branchServices { get; set; }
+        private readonly AccountingServices _AccountServices;
         public TellerCashDemandController()
         {
            Service= new TellerCashReplenishmentServices();
+            branchServices= new BranchServices();
+            _accountingEntry = new AccountingEntryServices();
+            _AccountServices= new AccountingServices();
         }
         public async Task<ActionResult> Index()
 
@@ -27,6 +36,43 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return View();
         }
 
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        {
+            await GetList();
+            var partialResult = await GetServiceAction(path, partialView, KEY, serviceOption);
+
+            return partialResult;
+        }
+
+        private async Task<PartialViewResult> GetServiceAction(string path, string partialView, string key, string serviceOption)
+        {
+            if (serviceOption == "cashRequest")
+            {
+                if (path == "list")
+                {
+                    var dataChart = await Service.GetAllCashReplenimentRequest();
+                   
+                    var sysData = new CashDemandDataEntity { DetailsDtos  = dataChart.ToList() };
+                    return PartialView(partialView, sysData);
+                }
+
+                else if (path == "new")
+                {
+                    
+                    return PartialView(partialView, new CashDemandDataEntity { });
+                }
+                else
+                {
+                    var data = await Service.GetCashReplenimentRequest(key);
+                    return PartialView(partialView, new CashDemandDataEntity { DetailsDtoModel = data });
+
+                }
+
+
+            }
+         
+            return null;
+        }
 
         public async Task GetList(string language = "En")
         {
@@ -136,6 +182,108 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         }
 
-      
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
+        {
+
+            // await GetList();
+            if (path == "list")
+            {
+              
+                var datas = await Service.GetAllCashReplenimentRequest();
+                var dataUser = (await _accountingEntry.GetUserList()).ToList();
+                var branches = (await branchServices.GetBranches()).ToList();
+                var result = from request in datas
+                             join user in dataUser on request.requesterUserId equals user.id.ToString()
+                             join branch in branches on request.BranchId equals branch.Id
+                             select new DetailsDto
+                             {
+                                 id = request.id,
+                                 //re = request.ReferenceId,
+                                 requestedAmount = request.requestedAmount,
+                                 BranchOffice = branch.Name,
+                                 requetcomment = request.requetcomment,
+                                 requesterUserId = user.name + "," + user.roleName,
+                                 RequestDate = request.RequestDate,
+                                 approvedBy = request.approvedBy,
+                                 approvedDate = request.approvedDate,
+                                 approvedStatus = request.approvedStatus,
+                                 approvedComment = request.approvedComment
+                             };
+                CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+                cashDemandDataEntity.DetailsDtos = result.ToList();
+
+
+                return PartialView(partialView, cashDemandDataEntity);
+            }
+            else if (path == "new")
+            {
+                await GetList();
+                return PartialView(partialView, new CashDemandDataEntity { CashReplenimentRequest = new CashReplenimentRequest(), CashInfusionModel = new CashInfusion() });
+            }
+            else if (path == "update")
+            {
+                await GetList();
+                var OperationEventAttribute = await _accountingEntry.GetCashReplenimentRequest(KEY);
+                CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+                cashDemandDataEntity.CashInfusionModel = OperationEventAttribute.ConvertToCashInfusionModel();
+                return PartialView(partialView, cashDemandDataEntity);
+
+            }
+            else if (path == "status")
+            {
+                await GetList();
+                var OperationEventAttribute = await _accountingEntry.GetCashReplenimentRequest(KEY);
+                CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+                cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
+
+                return PartialView(partialView, cashDemandDataEntity);
+
+            }
+            else if (path == "approve")
+            {
+
+                var OperationEventAttribute = await _accountingEntry.GetCashReplenimentRequest(KEY);
+                CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+                cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
+                var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
+                ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
+                ViewBag.Decisions = BuildMenuViewBag();
+                return PartialView(partialView, cashDemandDataEntity);
+
+            }
+            else
+            {
+                await GetList();
+                var OperationEventAttribute = await _accountingEntry.GetCashReplenimentRequest(KEY);
+                CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+                cashDemandDataEntity.CashInfusionModel = OperationEventAttribute.ConvertToCashInfusionModel();
+                return PartialView(partialView, cashDemandDataEntity);
+
+            }
+        }
+        private IEnumerable<StringValues> GenerateAccountListView(List<Data.Account> accounts)
+        {
+            List<StringValues> stringValues = new List<StringValues>();
+            foreach (var branch in accounts)
+            {
+
+                stringValues.Add(new StringValues(branch.Id, $"{branch.AccountNumber}-{branch.AccountName}- {branch.CurrentBalance}"));
+            }
+            return stringValues;
+        }
+        private List<SelectListItem> BuildDropDown(IEnumerable<StringValues> stringValues)
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var item in stringValues)
+            {
+
+                list.Add(new SelectListItem { Text = item.Text, Value = item.Value });
+
+            }
+
+            return list;
+        }
+
+
     }
 }

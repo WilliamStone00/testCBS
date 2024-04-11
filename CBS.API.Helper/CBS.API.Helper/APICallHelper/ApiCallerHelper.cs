@@ -17,6 +17,7 @@ using System.IO;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using System.Net.Http.Headers;
 using System.Web.UI.WebControls;
+using CBS.FrontDesk.Data.Entity.Accounting;
 
 namespace CBS.API.Helper
 {
@@ -56,7 +57,7 @@ namespace CBS.API.Helper
             catch (Exception ex)
             {
 
-                throw(ex);
+                throw (ex);
             }
         }
         public async Task<ApiResponse<T>> PostImageAsync<T>(string apiUrl, HttpPostedFileBase imageFile)
@@ -245,7 +246,53 @@ namespace CBS.API.Helper
             HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
             return await HandleResponse<T>(response);
         }
+        public async Task<List<AccountingEntry>> PostAccountingAsync(string apiUrl, object data)
+        {
+            string jsonData = JsonConvert.SerializeObject(data);
+            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            AddAuthorizationHeader(_httpClient);
+            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+            var Model = await HandleAccountingResponse(response);
+            return Model.Data;
+        }
 
+        public async Task<List<LiaisonLedgerEntry>> PostLiaisonAccountAsync(string apiUrl, object data)
+        {
+            string jsonData = JsonConvert.SerializeObject(data);
+            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            AddAuthorizationHeader(_httpClient);
+            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+            var Model = await HandleLiaisonResponse(response);
+            return Model.Data;
+        }
+        public async Task<List<BranchLiaisonLedgerEntry>> PostBranchLiaisonAccountAsync(string apiUrl, object data)
+        {
+            string jsonData = JsonConvert.SerializeObject(data);
+            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            AddAuthorizationHeader(_httpClient);
+            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+            var Model = await HandleBranchLiaisonResponse(response);
+            return Model.Data;
+        }
+
+        public async Task<List<TrialBalance6ColumnDto>> PostTrialBalance6ColumnAsyncAsync(string apiUrl, object data)
+        {
+            string jsonData = JsonConvert.SerializeObject(data);
+            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            AddAuthorizationHeader(_httpClient);
+            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+            var Model = await HandleTrialBalance6ColumnResponse(response);
+            return Model.Data;
+        }
+        public async Task<List<TrialBalance4ColumnDto>> PostTrialBalance4ColumnAsyncAsync(string apiUrl, object data)
+        {
+            string jsonData = JsonConvert.SerializeObject(data);
+            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            AddAuthorizationHeader(_httpClient);
+            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+            var Model = await HandleTrialBalance4ColumnResponse(response);
+            return Model.Data;
+        }
         public async Task<ServiceResponseXX<T>> PostxxAsync<T>(string apiUrl, object data)
         {
             string jsonData = JsonConvert.SerializeObject(data);
@@ -279,7 +326,7 @@ namespace CBS.API.Helper
             HttpResponseMessage response = await _httpClient.DeleteAsync(apiUrl);
             return await HandleResponse<T>(response);
         }
-    
+
 
 
 
@@ -301,6 +348,37 @@ namespace CBS.API.Helper
             public override void WriteJson(JsonWriter writer, double? value, JsonSerializer serializer)
             {
                 throw new NotImplementedException(); // Optional if you don't need to serialize back
+            }
+        }
+        // Define a method to deserialize JSON data
+        public static T DeserializeJson<T>(string jsonData)
+        {
+            try
+            {
+                // Check if the JSON data represents a single object
+                if (!jsonData.StartsWith("["))
+                {
+                    // Deserialize as a single object
+                    return JsonConvert.DeserializeObject<T>(jsonData, new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new NullableDoubleConverter() },
+                        DateParseHandling = DateParseHandling.DateTimeOffset // Depending on your date format
+                    });
+                }
+                else
+                {
+                    // Deserialize as a collection
+                    return JsonConvert.DeserializeObject<List<T>>(jsonData, new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new NullableDoubleConverter() },
+                        DateParseHandling = DateParseHandling.DateTimeOffset // Depending on your date format
+                    }).FirstOrDefault(); // Return the first object from the collection
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
             }
         }
         private async Task<ApiResponse<T>> HandleResponse<T>(HttpResponseMessage response)
@@ -332,22 +410,23 @@ namespace CBS.API.Helper
                             return new ApiResponse<T>
                             {
                                 IsSuccess = false,
-                                Message = "InternalServerError upexpected error"
+                                Message = "InternalServerError unexpected error"
                             };
                         }
                         else
                         {
                             return new ApiResponse<T>
                             {
-                                IsSuccess = true,
-                                Message = "Empty response data received"
+                                IsSuccess = false,
+                                Message = "Resource not Found"
                             };
                         }
-                     
+
                     }
 
                     if (response.IsSuccessStatusCode)
                     {
+
                         if (responseData.Contains("\"status\":SUCCESS") || responseData.Contains("\"data\":true") || responseData.Contains("\"isSuccess\":true"))
                         {
                             jsonResponse = JObject.Parse(responseData);
@@ -361,11 +440,12 @@ namespace CBS.API.Helper
                                 Message = statusDescription + " " + message
                             };
                         }
+
                         T data = JsonConvert.DeserializeObject<T>(responseData, new JsonSerializerSettings
                         {
                             Converters = new List<JsonConverter> { new NullableDoubleConverter() },
                             DateParseHandling = DateParseHandling.DateTimeOffset // Depending on your date format
-                        });
+                        }); //DeserializeJson<T>(responseData);
                         if (responseData.StartsWith("[") && responseData.EndsWith("]"))
                         {
                             return new ApiResponse<T>
@@ -400,8 +480,9 @@ namespace CBS.API.Helper
                             {
                                 jsonResponse = JObject.Parse(responseData);
                                 message = jsonResponse["message"]?.ToString();
+                                var dataStr = jsonResponse["data"]?.ToString();
                                 statusDescription = jsonResponse["statusDescription"]?.ToString();
-                                if (responseData.Contains("\"isSuccess\":false") )
+                                if (responseData.Contains("\"isSuccess\":false"))
                                 {
                                     return new ApiResponse<T>
                                     {
@@ -419,9 +500,9 @@ namespace CBS.API.Helper
                                         Message = $"Success: {message}, Description: {statusDescription}"
                                     };
                                 }
-                                
+
                             }
-                            
+
 
                         }
                     }
@@ -446,10 +527,10 @@ namespace CBS.API.Helper
 
 
                         }
-                        
-                        else if (response.StatusCode == HttpStatusCode.BadRequest||response.StatusCode == HttpStatusCode.Conflict || response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.Forbidden)
+
+                        else if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == HttpStatusCode.Conflict || response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.Forbidden)
                         {
-                            
+
                             T data;
                             try
                             {
@@ -472,18 +553,18 @@ namespace CBS.API.Helper
                                     var obj = JsonConvert.DeserializeObject<dynamic>(responseData);
                                     message = jsonResponse["message"]?.ToString();
                                     statusDescription = jsonResponse["statusDescription"]?.ToString();
-                               
-                                        return new ApiResponse<T>
-                                        {
-                                            IsSuccess = false,
-                                            Message = statusDescription+" "+ message
-                                        };
-                                    
+
+                                    return new ApiResponse<T>
+                                    {
+                                        IsSuccess = false,
+                                        Message = statusDescription + " " + message
+                                    };
+
                                 }
                                 else
                                 {
                                     jsonResponse = JObject.Parse(responseData);
-                                   
+
 
                                     if (jsonResponse["errors"] != null)
                                     {
@@ -620,6 +701,104 @@ namespace CBS.API.Helper
             }
         }
 
+        private async Task<BranchLiaisonLedgerEntryServiceResponse> HandleBranchLiaisonResponse(HttpResponseMessage response)
+        {
+
+            BranchLiaisonLedgerEntryServiceResponse entries = new BranchLiaisonLedgerEntryServiceResponse();
+            try
+            {
+                if (response.Content != null)
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    entries = JsonConvert.DeserializeObject<BranchLiaisonLedgerEntryServiceResponse>(responseData);
+                }
+                return entries;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
+        private async Task<TrialBalance6ColumnDtoServiceResponse> HandleTrialBalance6ColumnResponse(HttpResponseMessage response)
+        {
+
+            TrialBalance6ColumnDtoServiceResponse entries = new TrialBalance6ColumnDtoServiceResponse();
+            try
+            {
+                if (response.Content != null)
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    entries = JsonConvert.DeserializeObject<TrialBalance6ColumnDtoServiceResponse>(responseData);
+                }
+                return entries;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
+        private async Task<TrialBalance4ColumnDtoServiceResponse> HandleTrialBalance4ColumnResponse(HttpResponseMessage response)
+        {
+
+            TrialBalance4ColumnDtoServiceResponse entries = new TrialBalance4ColumnDtoServiceResponse();
+            try
+            {
+                if (response.Content != null)
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    entries = JsonConvert.DeserializeObject<TrialBalance4ColumnDtoServiceResponse>(responseData);
+                }
+                return entries;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
+        private async Task<LiaisonLedgerEntryServiceResponse> HandleLiaisonResponse(HttpResponseMessage response)
+        {
+
+            LiaisonLedgerEntryServiceResponse entries = new LiaisonLedgerEntryServiceResponse();
+            try
+            {
+                if (response.Content != null)
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    entries = JsonConvert.DeserializeObject<LiaisonLedgerEntryServiceResponse>(responseData);
+                }
+                return entries;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+        private async Task<AccountingEntryServiceResponse> HandleAccountingResponse(HttpResponseMessage response)
+        {
+
+            AccountingEntryServiceResponse entries = new AccountingEntryServiceResponse();
+            try
+            {
+                if (response.Content != null)
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    entries = JsonConvert.DeserializeObject<AccountingEntryServiceResponse>(responseData);
+                }
+                return entries;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
         private async Task<ServiceResponseXX<T>> HandleResponsed<T>(HttpResponseMessage response)
         {
             string message = null;

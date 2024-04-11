@@ -1,7 +1,7 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashInfusionRequest
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 
 @{
-    ViewBag.Title = "Cash Replenishment Request";
+    ViewBag.Title = "Teller Cash Replenishment Request";
 
 }
 
@@ -10,18 +10,9 @@
 <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
     <div class="accordion-item active">
-        <h2 class="accordion-header text-body d-flex justify-content-between"
-            id="accordionPopoutIconThree">
-            <button type="button"
-                    class="accordion-button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#accordionPopoutIcon-3"
-                    aria-expanded="true"
-                    aria-controls="accordionPopoutIcon-3">
-                <i class="mdi mdi-bank-plus me-2"></i>
-                PROVISIONING SECONDARY TELLER ACCOUNT
-            </button>
-        </h2>
+ 
+           
+       
         <div id="accordionPopoutIcon-3"
              class="accordion-collapse collapse show"
              data-bs-parent="#accordionPopoutIcon">
@@ -29,32 +20,30 @@
                 <div id="mainviewChange">
                     <div class="change-group">
 
-                        @using (Html.BeginForm("CreateCashReplenishmentRequest", "TellerCashDemand", FormMethod.Post))
+                        @using (Html.BeginForm("CreateCashReplenishmentRequest", "TellerCashDemand", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
                             <div class="row mt-2 gy-4">
 
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         <label for="Account">Select CurrentOperation</label>
-                                        @Html.DropDownListFor(m => m.CurrentOperation, new SelectList(ViewBag.OpeningOfDayId == null ? "" : ViewBag.OpeningOfDayId, "Text", "Value"), "---Select CurrentOperation ---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(model => model.CurrentOperation, "", new { @class = "text-danger" })
+                                        @Html.DropDownListFor(m => m.CashInfusionModel.CurrentOpenOfDayHistoryId, new SelectList(ViewBag.OpeningOfDayId == null ? "" : ViewBag.OpeningOfDayId, "Text", "Value"), "---Select OpeningOfDay ---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(model => model.CashInfusionModel.CurrentOpenOfDayHistoryId, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(model => model.RequestedAmount, new { @class = "form-control", placeholder = "XFA 0.0" })
-                                        @Html.ValidationMessageFor(model => model.RequestedAmount, "", new { @class = "text-danger" })
+                                        @Html.TextBoxFor(model => model.CashInfusionModel.Amount, new { @class = "form-control", placeholder = "XFA 0.0" })
+                                        @Html.ValidationMessageFor(model => model.CashInfusionModel.Amount, "", new { @class = "text-danger" })
                                         <label for="Amount">Amount</label>
                                     </div>
                                 </div>
 
 
-
-
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextAreaFor(m => m.Requetcomment, new { @class = "form-control", @style = "height: 200px;" })
-                                        @Html.ValidationMessageFor(model => model.Requetcomment, "", new { @class = "text-danger" })
+                                        @Html.TextAreaFor(m => m.CashInfusionModel.RequestMessage, new { @class = "form-control", @style = "height: 200px;" })
+                                        @Html.ValidationMessageFor(model => model.CashInfusionModel.RequestMessage, "", new { @class = "text-danger" })
 
                                         <label for="Description"> RequestMessage</label>
                                     </div>
@@ -72,6 +61,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
 
@@ -79,4 +69,7 @@
 </div>
 
 
+
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")}
+
+

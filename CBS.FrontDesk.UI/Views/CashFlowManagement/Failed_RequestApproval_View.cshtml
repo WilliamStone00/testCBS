@@ -1,4 +1,4 @@
-﻿
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 @{
     ViewBag.Title = "Failed_RequestApproval_View";
 
@@ -58,24 +58,24 @@
                                 <td> Status</td>
                                 @if (@Model.IsApproved)
                                 {
-                                    <td class="badge bg-label-success rounded-pill text-uppercase">
-                                        @Model.Status
-                                    </td>
+                                <td class="badge bg-label-success rounded-pill text-uppercase">
+                                    @Model.Status
+                                </td>
 
                                 }
                                 else
                                 {
                                     if (@Model.Status.ToUpper().Equals("PENDING"))
                                     {
-                                        <td class="badge bg-label-primary rounded-pill text-uppercase">
-                                            @Model.Status
-                                        </td>
+                                <td class="badge bg-label-primary rounded-pill text-uppercase">
+                                    @Model.Status
+                                </td>
                                     }
                                     else
                                     {
-                                        <td class="badge bg-label-danger rounded-pill text-uppercase">
-                                            @Model.Status
-                                        </td>
+                                <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                    @Model.Status
+                                </td>
                                     }
 
                                 }

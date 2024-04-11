@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashReplenimentRequest
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 @{
     ViewBag.Title = "Failed -Cash Replenishment Request";
 
@@ -38,43 +38,43 @@
                             </tr>
                             <tr>
                                 <td>Amount Requested</td>
-                                <td>@Model.AmountRequested.ToString("N") </td>
+                                <td>@Model.CashReplenimentRequest.AmountRequested.ToString("N") </td>
                             </tr>
                             <tr>
                                 <td>Request Message</td>
-                                <td>@Model.RequestMessage </td>
+                                <td>@Model.CashReplenimentRequest.RequestMessage </td>
                             </tr>
                             <tr>
                                 <td>Requested By </td>
-                                <td> @Model.IssuedBy </td>
+                                <td> @Model.CashReplenimentRequest.IssuedBy </td>
                             </tr>
                             <tr>
                                 <td>Requested Date</td>
-                                <td>@Model.IssuedDate </td>
+                                <td>@Model.CashReplenimentRequest.IssuedDate </td>
                             </tr>
                             <tr>
                               
 
                                 <td> Status</td>
-                                @if (@Model.IsApproved)
+                                @if (@Model.CashReplenimentRequest.IsApproved)
                                 {
                                     <td class="badge bg-label-success rounded-pill text-uppercase">
-                                        @Model.Status
+                                        @Model.CashReplenimentRequest.Status
                                     </td>
 
                                 }
                                 else
                                 {
-                                    if (@Model.Status.ToUpper().Equals("PENDING"))
+                                    if (@Model.CashReplenimentRequest.Status.ToUpper().Equals("PENDING"))
                                     {
                                         <td class="badge bg-label-primary rounded-pill text-uppercase">
-                                            @Model.Status
+                                            @Model.CashReplenimentRequest.Status
                                         </td>
                                     }
                                     else
                                     {
                                         <td class="badge bg-label-danger rounded-pill text-uppercase">
-                                            @Model.Status
+                                            @Model.CashReplenimentRequest.Status
                                         </td>
                                     }
 

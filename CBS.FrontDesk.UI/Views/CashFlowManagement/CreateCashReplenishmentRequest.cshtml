@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashInfusion
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 
 @{
     ViewBag.Title = "Cash Replenishment Request";
@@ -19,54 +19,26 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-bank-plus me-2"></i>
-                PROVISION BANK TO VAULT
+                CASH REQUISITION FOR VAULT
             </button>
         </h2>
+        <div class="demo-inline-spacing text-end" style="padding-right:2em">
+           
+                <a type="button" onclick="LoadDataGen('CashFlowManagement','ListOfCashReplenishmentData','_CashReplenishmentRequestDataWithOutApproval',0,'datalistingview_CashReplenishmentRequest')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                </a>
+                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_CashReplenishmentRequest','_CreateCashReplenishmentRequest','new','CashFlowManagement')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                </a>
+           
+        </div>
+     
         <div id="accordionPopoutIcon-3"
              class="accordion-collapse collapse show"
              data-bs-parent="#accordionPopoutIcon">
             <div class="accordion-body">
-                <div id="mainviewChange">
-                    <div class="change-group">
+                <div id="datalistingview_CashReplenishmentRequest">
 
-                        @using (Html.BeginForm("CreateCashReplenishmentRequest", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-                        {
-                            <div class="row mt-2 gy-4">
-
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        <label for="Account">Select CurrentOperation</label>
-                                        @Html.DropDownListFor(m => m.CurrentOperation, new SelectList(ViewBag.OpeningOfDayId == null ? "" : ViewBag.OpeningOfDayId, "Text", "Value"), "---Select OpeningOfDay ---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(model => model.CurrentOperation, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", placeholder = "XFA 0.0" })
-                                        @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
-                                        <label for="Amount">Amount</label>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextAreaFor(m => m.RequestMessage, new { @class = "form-control", @style = "height: 200px;" })
-                                        @Html.ValidationMessageFor(model => model.RequestMessage, "", new { @class = "text-danger" })
-
-                                        <label for="Description"> RequestMessage</label>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="mt-4">
-                                <button type="submit" class="btn btn-primary me-2">Send Request</button>
-                                <button type="reset" class="btn btn-outline-secondary">Reset</button>
-                            </div>
-                        }
-
-                    </div>
                 </div>
             </div>
         </div>
@@ -78,5 +50,8 @@
 
 
 
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")}
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/main.js/CashFlowManagement.js"></script>
+
+}
 

@@ -17,42 +17,91 @@ using System.Data;
 using CBS.FrontDesk.Data;
 using System.Security.Cryptography.Xml;
 using CBS.FrontDesk.Helper;
+using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity;
+using System.Web.UI.WebControls;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
+ 
     public class CashFlowManagementController : BaseController
     {
-        private readonly ChartOfAccountServices _chartOfAccountServices;
+        private readonly AccountingServices _AccountServices;
         private readonly AccountingEntryServices _accountingEntryServices;
-
+        private readonly BranchServices branchServices;
         public CashFlowManagementController()
         {
-            _chartOfAccountServices = new ChartOfAccountServices();
+            _AccountServices = new AccountingServices();
             _accountingEntryServices = new AccountingEntryServices();
+            branchServices = new BranchServices();
         }
         // GET: BankingOperation
-        public async Task<ActionResult> Index()
-
-        {
-            await GetList();
-            return View();
-        }
+     
 
         public async Task GetList(string language = "En")
         {
-
-            ViewBag.BookingDirections = await _chartOfAccountServices.GetBookingDirections();
-            var DebitAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
-            var CreditAccounts = BuildMenuViewBag(DebitAccounts, language);
+            var DebitAccounts = new  List<Data.Account>();
+            var listBranch = await branchServices.GetBranches();
+             ViewBag.Branches = BuildDropDown(GenerateBranchListView(listBranch.ToList()));
+ 
+            ViewBag.Accounts = BuildDropDown(GenerateAccountListView( DebitAccounts));
             ViewBag.Decisions = BuildMenuViewBag();
-            ViewBag.Accounts = CreditAccounts;
-     
-            ViewBag.OpeningOfDayId = await _accountingEntryServices.GetCashReplenimentRequestId();
-            if (ViewBag.OpeningOfDayId == null)
+          var models=   BuildMenuViewBag(await _accountingEntryServices.GetCashReplenimentCurrentOpenOfDayHistoryRequestId());
+
+
+            ViewBag.OpeningOfDayId = models;//BuildMenuViewBag(await _accountingEntryServices.GetCashReplenimentCurrentOpenOfDayHistoryRequestId());
+          
+            if (models.Count()==0)
             {
-                ViewBag.OpeningOfDayId = new SelectListItem { Text = "Id001", Value ="Current Opening Reference" };
+                ViewBag.OpeningOfDayId = new List<StringValues> { new StringValues { Text = "Id001", Value = "Current Opening Reference" } };
             }
+            
         }
+        private IEnumerable<StringValues> GenerateAccountListView(List<Data.Account> accounts)
+        {
+            List<StringValues> stringValues = new List<StringValues>();
+            foreach (var branch in accounts)
+            {
+
+                stringValues.Add(new StringValues(branch.Id, $"{branch.AccountNumber}-{branch.AccountName}- {branch.CurrentBalance}"));
+            }
+            return stringValues;
+        }
+        private IEnumerable<StringValues> GenerateBranchListView(List<Branch> branches)
+        {
+            List<StringValues> stringValues = new List<StringValues>();
+            foreach (var branch in branches)
+            {
+
+                stringValues.Add(new StringValues(branch.Id, branch.Name));
+            }
+            return stringValues;
+        }
+        private List<SelectListItem> BuildDropDown(IEnumerable<StringValues> stringValues)
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var item in stringValues)
+            {
+
+                list.Add(new SelectListItem { Text = item.Text, Value = item.Value });
+
+            }
+
+            return list;
+        }
+        private List<SelectListItem> BuildMenuViewBag(IEnumerable<CashRoot> debitAccounts)
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var item in debitAccounts)
+            {
+            
+                    list.Add(new SelectListItem { Text = item.id, Value = item.text });
+                
+            }
+
+            return list;
+        }
+
         private dynamic BuildMenuViewBagCurrency(List<CBS.FrontDesk.Data.Entity.Accounting.Currency> currencies)
         {
             List<SelectListItem> list = new List<SelectListItem>();
@@ -94,44 +143,189 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             return list;
         }
-        [HttpPost]
-        public async Task<ActionResult> Create(CashFlowManagement model)
-        {
-            if (ModelState.IsValid)
-            {
 
-
-                var data = await _accountingEntryServices.CreateManualAccountingEntry(model.ManualAccountingEntry);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-            }
-
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
-        }
-
-        public async Task<ActionResult>  CreateCashReplenishmentRequest()
+        [HttpGet]
+        public async Task<ActionResult> CreateCashReplenishmentRequest()
         {
             await GetList();
             return View();
         }
-        [HttpPost]
-        public async Task<ActionResult> CreateCashReplenishmentRequest(CashInfusion model)
+
+        [HttpGet]
+        public async Task<ActionResult> Index()
         {
-            if (ModelState.IsValid)
+            await GetList();
+            return View();
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetAllBranchAccountUsedToCreditCashFlow(string branchId)
+        {
+            if (!string.IsNullOrEmpty(branchId))
             {
-                var data = await _accountingEntryServices.CashReplenishmentRequest(model);
-                if (data.MessageStatus.Equals("Failed"))
+                var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(branchId);
+
+                var data = BuildDropDown(GenerateAccountListView(listOfAccounts));
+                //jjjj
+                return Json(data, JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+                return Json(new { success = "", status = "notOk" });
+            }
+
+            return Json(new { success = false, status = false, message = "Fill the required fields." });
+        }
+        [HttpPost]
+        public async Task<ActionResult> AddOrUpdate(CashDemandDataEntity model)
+        {
+            if (model.ServiceOption.Equals("CashInfusionModel"))
+            {
+                if (model.Action.Equals("insert"))
                 {
-                    return View("Failed_Request_View", model.ConvertToCashReplenimentRequest());
+                    var datac = await _accountingEntryServices.CashReplenishmentRequest(model.CashInfusionModel);
+
+                    return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
+
                 }
                 else
                 {
-                    var datasw = await _accountingEntryServices.GetCashReplenimentReferenceRequest(model.ReferenceNumber);
-                    return View("Successfull_Request_View", datasw);
+                    //update
+                    var datac = await _accountingEntryServices.Update(model.CashInfusionModel);
+                    return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
+
+                }
+            }
+            else if (model.ServiceOption.Equals("CashRequestApproval"))
+            {
+                model.CashReplenimentRequestdto.IsApproved = model.CashReplenimentRequestdto.ApprovedBy == "Approve" ? true : false;
+
+                var datac = await _accountingEntryServices.CreateApprovalRequest(model.CashReplenimentRequestdto.ConvertToCashApprovalResponse(_AccountServices.GetBranchCode()));
+
+                return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
+
+            }
+            else
+            {
+                var datac = await _accountingEntryServices.CashReplenishmentRequest(model.CashInfusionModel);
+
+                return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
+
+
+            }
+
+        }
+        
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
+        {
+           
+            // await GetList();
+            if (path == "list")
+            {
+                List<CashReplenimentRequestDto> cashRepleniments = new List<CashReplenimentRequestDto>();
+
+                var datas = await _accountingEntryServices.GetAllCashReplenimentRequest();
+                var dataUser = (await _accountingEntryServices.GetUserList()).ToList();
+                var branches = (await branchServices.GetBranches()).ToList();
+                var result = from request in datas
+                             join user in dataUser on request.IssuedBy equals user.id.ToString()
+                             join branch in branches on request.BranchId equals branch.Id
+                             select new CashReplenimentRequestDto
+                             {
+                                 Id = request.Id,
+                                 ReferenceId = request.ReferenceId,
+                                 AmountRequested = request.AmountRequested,
+                                 BranchOffice= branch.Name,
+                                 RequestMessage = request.RequestMessage,
+                                 IssuedBy = user.name + "," + user.roleName,
+                                 IssuedDate = request.IssuedDate,
+                                 ApprovedBy = request.ApprovedBy,
+                                 ApprovedDate = request.ApprovedDate,
+                                 IsApproved = request.IsApproved,
+                                 CurrencyCode = request.CurrencyCode,
+                                 Status = request.Status,
+                                 ApprovedMessage = request.ApprovedMessage
+                             };
+                CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+                cashDemandDataEntity.ListCashReplenimentRequestDto = result.ToList();
+
+
+                return PartialView(partialView, cashDemandDataEntity);
+            }
+            else if (path == "new")
+            {
+                await GetList();
+                return PartialView(partialView, new CashDemandDataEntity { CashReplenimentRequest = new CashReplenimentRequest() , CashInfusionModel = new CashInfusion()});
+            }
+            else if (path == "update")
+            {
+                await GetList();
+                var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
+                CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+                cashDemandDataEntity.CashInfusionModel = OperationEventAttribute.ConvertToCashInfusionModel();
+                return PartialView(partialView, cashDemandDataEntity);
+                
+            }
+            else if (path == "status")
+            {
+                await GetList();
+                var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
+                CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+                cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
+             
+                return PartialView(partialView, cashDemandDataEntity);
+
+            }
+            else if (path == "approve")
+            {
+   
+                var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
+                CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+                cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
+                var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
+                ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
+                ViewBag.Decisions = BuildMenuViewBag();
+                return PartialView(partialView, cashDemandDataEntity);
+      
+            }
+            else  
+            {
+                await GetList();
+                var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
+                CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+                cashDemandDataEntity.CashInfusionModel = OperationEventAttribute.ConvertToCashInfusionModel();
+                return PartialView(partialView, cashDemandDataEntity);
+
+            }
+        }
+
+    
+  
+
+ 
+
+        public async Task<ActionResult> CreateCashReplenishmentRequest(CashDemandDataEntity model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.CashInfusionModel.ReferenceNumber = model.CashInfusionModel.CurrentOpenOfDayHistoryId;
+                var data = await _accountingEntryServices.CashReplenishmentRequest(model.CashInfusionModel);
+                if (data.MessageStatus.Equals("Failed"))
+                {
+                    return View("Failed_Request_View", model.CashInfusionModel.ConvertToCashReplenimentRequest());
+                }
+                else
+                {
+                   
+                    var datasw = await _accountingEntryServices.GetCashReplenimentReferenceRequest(model.CashInfusionModel.ReferenceNumber);
+                    datasw.CurrentOpenOfDayHistoryId =model.CashInfusionModel.CurrentOpenOfDayHistoryId;
+                    CashDemandDataEntity cashDemandDataEntity= new CashDemandDataEntity { CashReplenimentRequest= datasw };
+                    return View("Successfull_Request_View", cashDemandDataEntity);
                 }
            
             }
 
-            return View("Failed_Request_View", model.ConvertToCashReplenimentRequest());
+            return View("Failed_Request_View", model.CashInfusionModel.ConvertToCashReplenimentRequest());
         }
 
         [HttpGet]
@@ -141,8 +335,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             var datas = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
 
             CashReplenimentRequestDto model = datas.ConvertToCashReplenimentRequestDto();
+            CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity { CashReplenimentRequestdto = model };
+            return View(cashDemandDataEntity);
 
-            return View(model);
         }
         [HttpGet]
         public async Task<ActionResult> GetAllCashReplenimentRequestData()
@@ -167,8 +362,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                              Status = request.Status,
                              ApprovedMessage = request.ApprovedMessage
                          };
- 
-            return View(result);
+                CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+            cashDemandDataEntity.ListCashReplenimentRequest = result.ToList();
+            return View(cashDemandDataEntity);
         }
 
         [HttpGet]
@@ -177,35 +373,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             return View();
         }
-        [HttpPost]
-        public async Task<ActionResult> CreateApprovalRequest( CashReplenimentRequestDto model)
-        
-        {
-            model.IsApproved = model.ApprovedBy == "Approve" ? true: false;
-            if (ModelState.IsValid)
-            {
-                var datas = await _accountingEntryServices.CreateApprovalRequest(model.ConvertToCashApprovalResponse());
-                if (datas.MessageStatus.Equals("Failed"))
-                {
-                    var datasw = await _accountingEntryServices.GetCashReplenimentRequest(model.Id);
-                    return View("Failed_RequestApproval_View", datasw);
-                }
-                else
-                {
-                    var datasw = await _accountingEntryServices.GetCashReplenimentRequest(model.Id);
-                    return View("Successfull_RequestApproval_View", datasw);
-                }
-
-            }
-            else
-            {
-                var datasw = await _accountingEntryServices.GetCashReplenimentRequest(model.Id);
-                return View("Failed_RequestApproval_View", datasw);
-            }
-
-
-
-
-        }
+ 
     }
 }
