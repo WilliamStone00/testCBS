@@ -35,6 +35,13 @@
                                         <label>Name</label>
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 75px;", @readonly = true })
+                                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                                        <label>Description</label>
+                                    </div>
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanMinimumAmount, new { @class = "form-control" })
@@ -152,16 +159,16 @@
                                 <h6>Members account</h6>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.MinimumShareAccountBalanceRateForTheRequestAmount, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.MinimumShareAccountBalanceRateForTheRequestAmount, "", new { @class = "text-danger" })
-                                        <label>Minimum share account rate</label>
+                                        @Html.TextBoxFor(m => m.MinimumShareAccountBalanceForTheRequestAmount, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.MinimumShareAccountBalanceForTheRequestAmount, "", new { @class = "text-danger" })
+                                        <label>Minimum share account balance reqired</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.MaximumShareAccountBalanceRateForTheRequestAmount, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.MaximumShareAccountBalanceRateForTheRequestAmount, "", new { @class = "text-danger" })
-                                        <label>Maximum share account rate</label>
+                                        @Html.TextBoxFor(m => m.MaximumShareAccountBalanceForTheRequestAmount, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.MaximumShareAccountBalanceForTheRequestAmount, "", new { @class = "text-danger" })
+                                        <label>Maximum share account balance required</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -541,7 +548,7 @@
                         {
                             <div class="row g-4">
 
-                                <div class="col-12">
+                                @*<div class="col-12">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.IsEarlyPartialRepaymentFeeRate, new { @class = "form-check-input" })
                                         <label class="form-check-label" for="isActive">Support early partial payment?</label>
@@ -566,7 +573,7 @@
                                         @Html.ValidationMessageFor(m => m.EarlyTotalRepaymentFee, "", new { @class = "text-danger" })
                                         <label>Early total payment fee</label>
                                     </div>
-                                </div>
+                                </div>*@
                                 <div class="col-md-4">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.MinimumProcessingFeeRate, new { @class = "form-control" })
@@ -588,12 +595,34 @@
                                         <label>Maximum processing fee rate</label>
                                     </div>
                                 </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.MinimumInspectionFeeRate, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.MinimumInspectionFeeRate, "", new { @class = "text-danger" })
+                                        <label>Minimum inspection fee rate</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.DefaultInspectionFeeRate, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.DefaultInspectionFeeRate, "", new { @class = "text-danger" })
+                                        <label>Default inspection fee rate</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.MaximumInspectionFeeRate, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.MaximumInspectionFeeRate, "", new { @class = "text-danger" })
+                                        <label>Maximum inspection fee rate</label>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="mt-4">
                                 <button type="submit" class="btn btn-primary me-2">Update</button>
                                 @Html.HiddenFor(m => m.Id)
-                                <input type="hidden" name="ServiceOption" value="taxandfee" id="ServiceOption" />
+                                <input type="hidden" name="ServiceOption" value="fee" id="ServiceOption" />
                             </div>
                         }
                     </div>
@@ -668,95 +697,6 @@
                     </div>
                 </div>
             </div>
-            <div class="card accordion-item">
-                <h2 class="accordion-header" id="headingPaymentMethod2">
-                    <button type="button"
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapsePaymentMethod2"
-                            aria-expanded="false"
-                            aria-controls="collapsePaymentMethod2">
-                        Accounting
-                    </button>
-                </h2>
-                <div id="collapsePaymentMethod2"
-                     class="accordion-collapse collapse"
-                     aria-labelledby="headingPaymentMethod2"
-                     data-bs-parent="#collapsibleSection">
-                    <div class="accordion-body">
-                        @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-                        {
-                            <div class="row g-4">
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.ChartOfAccountIdForPrincipalAmount, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForPrincipalAmount, "", new { @class = "text-danger " })
-                                        <label>Principal</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.ChartOfAccountIdForAccrualInterest, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForAccrualInterest, "", new { @class = "text-danger " })
-                                        <label>Interest accrual</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.ChartOfAccountIdForInterestIncome, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForInterestIncome, "", new { @class = "text-danger " })
-                                        <label>Interest income</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.ChartOfAccountIdForWriteOffPotfolio, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForWriteOffPotfolio, "", new { @class = "text-danger " })
-                                        <label>Write off portfolio</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.ChartOfAccountIdForWriteOffInterest, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForWriteOffInterest, "", new { @class = "text-danger " })
-                                        <label>Write off interest</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.ChartOfAccountIdForLoanLossReserve, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForLoanLossReserve, "", new { @class = "text-danger " })
-                                        <label>Loan loss reserve</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionOnPrincipal, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionOnPrincipal, "", new { @class = "text-danger " })
-                                        <label>Provision on principal</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionReversalOnPrincipal, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionReversalOnPrincipal, "", new { @class = "text-danger " })
-                                        <label>Provision reversal on principal</label>
-                                    </div>
-                                </div>
-
-                            </div>
-
-
-                            <div class="mt-4">
-                                <button type="submit" class="btn btn-primary me-2">Update</button>
-                                @Html.HiddenFor(m => m.Id)
-                                <input type="hidden" name="ServiceOption" value="accounting" id="ServiceOption" />
-                            </div>
-                        }
-                    </div>
-
-                </div>
-            </div>
         </div>
 
     </div>
@@ -766,173 +706,3 @@
 </div>
 
 
-
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script>
-
-    $(document).ready(function () {
-        // Load the partial view
-        $("#yourPartialViewContainer").load("yourPartialViewUrl", function () {
-            // Hide all input fields initially
-            hideAllInputFields();
-
-            // Check if IsRequiredSalaryccount checkbox is checked
-            var isRequiredSalaryAccount = $("#IsRequiredSalaryccount");
-            if (isRequiredSalaryAccount.prop("checked")) {
-                // Show MinimumSalaryAccountBalanceRateForTheRequestAmount and MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount
-                showInputField("MinimumSalaryAccountBalanceRateForTheRequestAmount");
-                showInputField("MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount");
-            }
-
-            // Check if IsRequiredShareAccount checkbox is checked
-            var isRequiredShareAccount = $("#IsRequiredShareAccount");
-            if (isRequiredShareAccount.prop("checked")) {
-                // Show MinimumSavingAccountBalanceRateForTheRequestAmount and MaximumSavingAccountBalanceRateForTheRequestAmount
-                showInputField("MinimumSavingAccountBalanceRateForTheRequestAmount");
-                showInputField("MaximumSavingAccountBalanceRateForTheRequestAmount");
-            }
-
-            // Check if IsRequiredSavingAccount checkbox is checked
-            var isRequiredSavingAccount = $("#IsRequiredSavingAccount");
-            if (isRequiredSavingAccount.prop("checked")) {
-                // Show MinimumShareAccountBalanceRateForTheRequestAmount and MaximumShareAccountBalanceRateForTheRequestAmount
-                showInputField("MinimumShareAccountBalanceRateForTheRequestAmount");
-                showInputField("MaximumShareAccountBalanceRateForTheRequestAmount");
-            }
-
-            // Add change event listeners to checkboxes
-            isRequiredSalaryAccount.change(function () {
-                if (isRequiredSalaryAccount.prop("checked")) {
-                    showInputField("MinimumSalaryAccountBalanceRateForTheRequestAmount");
-                    showInputField("MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount");
-                } else {
-                    hideInputField("MinimumSalaryAccountBalanceRateForTheRequestAmount");
-                    hideInputField("MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount");
-                }
-            });
-
-            isRequiredShareAccount.change(function () {
-                if (isRequiredShareAccount.prop("checked")) {
-                    showInputField("MinimumSavingAccountBalanceRateForTheRequestAmount");
-                    showInputField("MaximumSavingAccountBalanceRateForTheRequestAmount");
-                } else {
-                    hideInputField("MinimumSavingAccountBalanceRateForTheRequestAmount");
-                    hideInputField("MaximumSavingAccountBalanceRateForTheRequestAmount");
-                }
-            });
-
-            isRequiredSavingAccount.change(function () {
-                if (isRequiredSavingAccount.prop("checked")) {
-                    showInputField("MinimumShareAccountBalanceRateForTheRequestAmount");
-                    showInputField("MaximumShareAccountBalanceRateForTheRequestAmount");
-                } else {
-                    hideInputField("MinimumShareAccountBalanceRateForTheRequestAmount");
-                    hideInputField("MaximumShareAccountBalanceRateForTheRequestAmount");
-                }
-            });
-        });
-    });
-
-    // Function to hide all input fields
-    function hideAllInputFields() {
-        $("input[type='text']").hide();
-    }
-
-    // Function to show a specific input field
-    function showInputField(id) {
-        $("#" + id).show();
-    }
-
-    // Function to hide a specific input field
-    function hideInputField(id) {
-        $("#" + id).hide();
-    }
-
-
-    //// Wait for the document to be fully loaded
-    //document.addEventListener("DOMContentLoaded", function () {
-    //    // Hide all input fields initially
-    //    hideAllInputFields();
-
-    //    // Check if IsRequiredSalaryccount checkbox is checked
-    //    var isRequiredSalaryAccount = document.getElementById("IsRequiredSalaryccount");
-    //    if (isRequiredSalaryAccount.checked) {
-    //        // Show MinimumSalaryAccountBalanceRateForTheRequestAmount and MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount
-    //        showInputField("MinimumSalaryAccountBalanceRateForTheRequestAmount");
-    //        showInputField("MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount");
-    //    }
-
-    //    // Check if IsRequiredShareAccount checkbox is checked
-    //    var isRequiredShareAccount = document.getElementById("IsRequiredShareAccount");
-    //    if (isRequiredShareAccount.checked) {
-    //        // Show MinimumSavingAccountBalanceRateForTheRequestAmount and MaximumSavingAccountBalanceRateForTheRequestAmount
-    //        showInputField("MinimumSavingAccountBalanceRateForTheRequestAmount");
-    //        showInputField("MaximumSavingAccountBalanceRateForTheRequestAmount");
-    //    }
-
-    //    // Check if IsRequiredSavingAccount checkbox is checked
-    //    var isRequiredSavingAccount = document.getElementById("IsRequiredSavingAccount");
-    //    if (isRequiredSavingAccount.checked) {
-    //        // Show MinimumShareAccountBalanceRateForTheRequestAmount and MaximumShareAccountBalanceRateForTheRequestAmount
-    //        showInputField("MinimumShareAccountBalanceRateForTheRequestAmount");
-    //        showInputField("MaximumShareAccountBalanceRateForTheRequestAmount");
-    //    }
-
-    //    // Add event listeners to checkboxes for change events
-    //    isRequiredSalaryAccount.addEventListener("change", function () {
-    //        if (isRequiredSalaryAccount.checked) {
-    //            showInputField("MinimumSalaryAccountBalanceRateForTheRequestAmount");
-    //            showInputField("MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount");
-    //        } else {
-    //            hideInputField("MinimumSalaryAccountBalanceRateForTheRequestAmount");
-    //            hideInputField("MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount");
-    //        }
-    //    });
-
-    //    isRequiredShareAccount.addEventListener("change", function () {
-    //        if (isRequiredShareAccount.checked) {
-    //            showInputField("MinimumSavingAccountBalanceRateForTheRequestAmount");
-    //            showInputField("MaximumSavingAccountBalanceRateForTheRequestAmount");
-    //        } else {
-    //            hideInputField("MinimumSavingAccountBalanceRateForTheRequestAmount");
-    //            hideInputField("MaximumSavingAccountBalanceRateForTheRequestAmount");
-    //        }
-    //    });
-
-    //    isRequiredSavingAccount.addEventListener("change", function () {
-    //        if (isRequiredSavingAccount.checked) {
-    //            showInputField("MinimumShareAccountBalanceRateForTheRequestAmount");
-    //            showInputField("MaximumShareAccountBalanceRateForTheRequestAmount");
-    //        } else {
-    //            hideInputField("MinimumShareAccountBalanceRateForTheRequestAmount");
-    //            hideInputField("MaximumShareAccountBalanceRateForTheRequestAmount");
-    //        }
-    //    });
-    //});
-
-    //// Function to hide all input fields
-    //function hideAllInputFields() {
-    //    var inputs = document.querySelectorAll("input[type='text']");
-    //    inputs.forEach(function (input) {
-    //        input.style.display = "none";
-    //    });
-    //}
-
-    //// Function to show a specific input field
-    //function showInputField(id) {
-    //    var input = document.getElementById(id);
-    //    if (input) {
-    //        input.style.display = "block";
-    //    }
-    //}
-
-    //// Function to hide a specific input field
-    //function hideInputField(id) {
-    //    var input = document.getElementById(id);
-    //    if (input) {
-    //        input.style.display = "none";
-    //    }
-    //}
-
-</script>
-}

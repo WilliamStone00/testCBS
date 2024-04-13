@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 
 namespace CBS.FrontDesk.Data.ReportDataSetDto
 {
@@ -12,22 +13,38 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
     {
         public decimal Amount { get; set; }
         public decimal OriginalDepositAmount { get; set; }
-        public string CustomerName { get; set; }
         public decimal Debit { get; set; }
         public decimal Credit { get; set; }
         public string AccountNumber { get; set; }
-        public string CustomerNumber { get; set; }
         public string TransactionType { get; set; }
         public string OperationType { get; set; }
+        public string Status { get; set; }
         public string TransactionRef { get; set; }
-        public string AccountType { get; set; }
+        public string SendingBranch { get; set; }
+        public string RecievingBranch { get; set; }
         public decimal Tax { get; set; }
-        public DateTime TransactionDate { get; set; }
+        public string Operation { get; set; }
         public decimal PreviousBalance { get; set; }
-        public decimal CurrentBalance { get; set; }
+        public decimal SourceBranchCommission { get; set; }
+        public decimal DestinationBranchCommission { get; set; }
         public string Note { get; set; }
+        public string SenderName { get; set; }
+        public string RecieverName { get; set; }
+        public string DepositorIDNumber { get; set; }
+        public string DepositerTelephone { get; set; }
+        public bool IsDepositDoneByAccountOwner { get; set; }
+        public string DepositorName { get; set; }
+        public string DepositorIDIssueDate { get; set; }
+        public string DepositorIDExpiryDate { get; set; }
+        public string DepositorIDNumberPlaceOfIssue { get; set; }
+        public string DepositerNote { get; set; }
+        public bool IsInterBrachOperation { get; set; }
+        public string InterBrachOperation { get; set; }
+        public decimal Balance { get; set; }
+        public string ProductName { get; set; }
         public decimal Fee { get; set; }
         public string FeeType { get; set; }
+        public string SourceType { get; set; }
         public int Coin1 { get; set; }
         public int Coin5 { get; set; }
         public int Coin10 { get; set; }
@@ -40,25 +57,35 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public int Note2000 { get; set; }
         public int Note5000 { get; set; }
         public int Note10000 { get; set; }
-        public string BranchCode { get; set; }
-        public string BranchName { get; set; }
-        public string BName { get; set; }
-        public string BLocation { get; set; }
-        public string BTelephone { get; set; }
-        public string BEmail { get; set; }
-        public string BAddress { get; set; }
-        public string BCapital { get; set; }
-        public string BRegistrationNumber { get; set; }
-        public string BLogoUrl { get; set; }
-        public string BImmatriculationNumber { get; set; }
-        public string BTaxPayerNUmber { get; set; }
-        public string BPBox { get; set; }
-        public string BWebSite { get; set; }
-        public string BBankInitial { get; set; }
-        public string BMotto { get; set; }
-        public string BHeadOfficeTelehoneNumber { get; set; }
-        public string BHeadOfficeAddress { get; set; }
+        public DateTime TransactionDate { get; set; }
         public string TellerName { get; set; }
         public string CashierName { get; set; }
+        public string Logo { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchAddress { get; set; }
+        public string BranchTelephone { get; set; }
+        public string HeadOfficeName { get; set; }
+        public string HeadOfficeAddress { get; set; }
+        public string HeadOfficeTelephone { get; set; }
+        public string HeadOfficeEmail { get; set; }
+        public string HeadOfficeWebSite { get; set; }
+        public string HeadOfficeInitial { get; set; }
+        public string HeadOfficeCode { get; set; }
+        public string AccountType { get; set; }
+        public string AccountName { get; set; }
+        public string CustomerName { get; set; }
+        public string ExpireDate { get; set; }
+        public string Address { get; set; }
+        public string Town { get; set; }
+        public string Village { get; set; }
+        public string Country { get; set; }
+        public string DeliveryDate { get; set; }
+        public decimal Charges { get; set; }
+        public string Telephone { get; set; }
+        public string Key { get; set; }
+        public string BarCode { get; set; }
+        public decimal ClosingBalance { get; set; }
+        public decimal OpeningBalance { get; set; }
     }
 }

@@ -31,6 +31,11 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             await GetValues();
             return View(new LoanProduct());
         }
+        public async Task<ActionResult> LoanAccountMapping()
+        {
+   
+            return View();
+        }
         [HttpPost]
         public async Task<ActionResult> Create(LoanProduct model)
         {
@@ -114,6 +119,14 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                     LoanProduct.Penalty.LoanProductId = LoanProduct.Id;
                     return PartialView(partialView, LoanProduct);
                 }
+                else if (path == "account_mapping")
+                {
+                    var chartOfAccounts = await _accountingServices.GetChartOfAccounts();
+                    ViewBag.ChartOfAccounts = chartOfAccounts;
+                    var LoanProduct = await _LoanProductServices.GetLoanProduct(KEY);
+                    LoanProduct.Penalty.LoanProductId = LoanProduct.Id;
+                    return PartialView(partialView, LoanProduct);
+                }
                 else
                 {
                     await GetValues();
@@ -129,7 +142,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         {
             var agreggates= await _LoanProductServices.GetAgreggates();
             var productEnumAgregates = await _LoanProductServices.GetLoanProductEnumAggregates();
-            var chartOfAccounts = await _accountingServices.GetChartOfAccounts();
+       
             ViewBag.SheduleTypes = _LoanProductServices.GetScheduleTypes();
             ViewBag.Penalties = agreggates.Penalties;
             ViewBag.Fees = agreggates.Fees;
@@ -139,7 +152,6 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             ViewBag.FundingLines = agreggates.FundingLines;
             ViewBag.InstallmentTypes = agreggates.InstallmentTypes;
             ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
-            ViewBag.ChartOfAccounts = chartOfAccounts;
             ViewBag.RepaymentCycles = productEnumAgregates.RepaymentCycles;
             ViewBag.LoanInterestMethods = productEnumAgregates.LoanInterestMethods;
             ViewBag.LoanStatuses = productEnumAgregates.LoanStatuses;

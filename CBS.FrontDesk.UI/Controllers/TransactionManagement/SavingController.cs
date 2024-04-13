@@ -25,16 +25,24 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             _acountServices = acountServices;
         }
-        public ActionResult Index()
+        public ActionResult Accounts()
         {
             return View();
         }
         //
 
         [HttpPost]
-        public async Task<ActionResult> LoadData()
+        public async Task<ActionResult> LoadData(string Path)
         {
-            var dataTable = await _acountServices.GetDataTable(GetDataTableOptions());
+            var dataTable = await _acountServices.GetDataTable(GetDataTableOptions(),Path);
+            return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data });
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> LoadDataSearch(string search)
+        {
+            var dataTable = await _acountServices.GetDataTableSearch(GetDataTableOptions(), search);
             return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data });
 
         }

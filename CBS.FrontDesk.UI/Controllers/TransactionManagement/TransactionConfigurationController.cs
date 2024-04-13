@@ -43,10 +43,31 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         public async Task<ActionResult> Index()
         {
-            await GetList();
-            return View(new SavingConfiguration());
+            var savingProduct = await _savingProductServices.GetSavingProducts();
+            return View(new SavingConfiguration { SavingProducts = savingProduct.ToList() });
         }
-
+        public async Task<ActionResult> OrdinaryAccounts()
+        {
+            var savingProduct = await _savingProductServices.GetSavingProducts();
+            return View(new SavingConfiguration { SavingProducts=savingProduct.ToList()});
+        }
+        //
+        public async Task<ActionResult> PolicyandSharing(string Key, string serviceOption = null)
+        {
+            await GetListPolicies();
+            var savingProduct = await _savingProductServices.GetSavingProduct(Key);
+            var deposit=new DepositLimit { productId = savingProduct.id };
+            var transfer = new TransferLimit { productId = savingProduct.id };
+            var withdrawal = new WithdrawalLimit { productId = savingProduct.id };
+            return View(new SavingConfiguration { SavingProduct = savingProduct, DepositLimit= deposit, TransferLimit = transfer, WithdrawalLimit = withdrawal });
+        }
+        public async Task<ActionResult> AccountMapping(string Key, string serviceOption = null)
+        {
+            await GetChartOfAccounts();
+            var savingProduct = await _savingProductServices.GetSavingProduct(Key);
+            return View(new SavingConfiguration { SavingProduct = savingProduct});
+        }
+        //
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(SavingConfiguration model)
         {
@@ -111,7 +132,11 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 return () => _reopenFeeParameterServices.Create(model.ReopenFeeParameter);
             }
-
+            else if (serviceOption == "AccountMapping")
+            {
+                return () => _savingProductServices.UpdateProductAccountMapping(model.SavingProduct);
+            }
+            //accountmapping
             else if (serviceOption == "teller")
             {
                 return () => _tellerServices.Create(model.Teller);
@@ -131,6 +156,10 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             else if (serviceOption == "depositlimit")
             {
                 return () => _depositLimitServices.Update(model.DepositLimit);
+            }
+            else if (serviceOption == "accountmapping")
+            {
+                return () => _savingProductServices.UpdateProductAccountMapping(model.SavingProduct);
             }
             else if (serviceOption == "transferlimit")
             {
@@ -396,10 +425,30 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             ViewBag.operationAccounts = conf.operationAccounts.ToList();
             return true;
         }
+        public async Task<bool> GetChartOfAccounts()
+        {
+            var chartOfAccounts = await _accountingServices.GetChartOfAccounts();
+            ViewBag.chartOfAccounts = chartOfAccounts.ToList();
+            return true;
+        }
+        public async Task<bool> GetListPolicies()
+        {
+            var conf = await _savingProductServices.GetSavingConfigurationAggregates();
+            ViewBag.DepositLimitTypes = conf.depositTypes.ToList();
+            ViewBag.TransferLimitTypes = conf.transferTypes.ToList();
+            ViewBag.WithdrawalLimitTypes = conf.withdrawalTypes.ToList();
+            ViewBag.Frequences = conf.freeQuencies.ToList();
+            return true;
+        }
         public async Task<ActionResult> Ajaxloader(string Key)
         {
             var listing = await _accountingServices.GetEventAttributeByOperationTypeID(Key);
             return Json(listing, JsonRequestBehavior.AllowGet);
+        }
+        public async Task<ActionResult> Delete(string id)
+        {
+            var data = await _savingProductServices.Delete(id);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
     }
 }

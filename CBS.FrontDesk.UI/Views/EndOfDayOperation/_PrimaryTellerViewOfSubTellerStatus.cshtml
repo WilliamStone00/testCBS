@@ -188,20 +188,20 @@
                                     </thead>
                                     <tbody>
                                         @{
-                                            var orderedTransactions = Model.TransactionHistories.OrderBy(d => d.createdDate);
+                                            var orderedTransactions = Model.TransactionHistories.OrderBy(d => d.CreatedDate);
                                         }
                                         @foreach (var d in orderedTransactions)
                                         {
                                             <tr>
-                                                <td style="width: 10%">@d.createdDate</td>
-                                                <td style="width: 10%">@d.operationType</td>
-                                                <td style="width: 10%">@d.originalDepositAmount</td>
-                                                <td style="width: 8%">@d.fee</td>
-                                                <td style="width: 10%">@d.amount</td>
-                                                <td style="width: 10%">@d.previousBalance</td>
-                                                <td style="width: 10%">@d.balanceBroughtForward</td>
-                                                <td style="width: 10%">@d.feeType</td>
-                                                <td style="width: 10%">@d.transactionType</td>
+                                                <td style="width: 10%">@d.CreatedDate</td>
+                                                <td style="width: 10%">@d.OperationType</td>
+                                                <td style="width: 10%">@d.OriginalDepositAmount</td>
+                                                <td style="width: 8%">@d.Fee</td>
+                                                <td style="width: 10%">@d.Amount</td>
+                                                <td style="width: 10%">@d.PreviousBalance</td>
+                                                <td style="width: 10%">@d.Balance</td>
+                                                <td style="width: 10%">@d.FeeType</td>
+                                                <td style="width: 10%">@d.TransactionType</td>
                                             </tr>
                                         }
                                     </tbody>

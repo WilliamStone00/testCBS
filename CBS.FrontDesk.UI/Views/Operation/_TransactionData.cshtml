@@ -1,38 +1,49 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+<div class="card-body pt-2 mt-1">
+    <fieldset class="fieldset-custom">
+        @if (!Model.TransactionHistories.Any())
+        {
+            <div class="text-center my-3">
+                <p>No transaction(s) are available for account @Model.AccountNumber</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Account statements of @Model.AccountType (Acc No: @Model.AccountNumber)</h5>
+                </div>
+
+                <table class="table table-hover" id="myDataTableT">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Fee</th>
+                            <th>Credit</th>
+                            <th>Debit</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in Model.TransactionHistories.OrderBy(t => t.CreatedDate))
+                        {
+                            <tr>
+                                <td style="width:50%">@d.CreatedDate.ToString("dd-MM-yyyy, hh:mm:ss")</td>
+                                <td style="width:10%">@d.OriginalDepositAmount.ToString("#,##0.0")</td>
+                                <td style="width:10%">@d.Fee.ToString("#,##0.0")</td>
+                                <td style="width:10%">@d.Credit.ToString("#,##0.0")</td>
+                                <td style="width:10%">@d.Debit.ToString("#,##0.0")</td>
+                                <td style="width:10%">@d.Balance.ToString("#,##0.0")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
 
 
-<div class="table-responsive mb-3">
-    <table class="table table-hover" id="myDataTable">
-        <thead class="table-light">
-            <tr>
-                <th>Date</th>
-                <th>Deposited</th>
-                <th>Fee</th>
-                <th>Acctual Amount</th>
-                <th>Balance</th>
-                <th>Previouse Balance</th>
-                <th>Charge Type</th>
-                <th>Transaction Type</th>
-                <th>Operation Type</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var d in Model.TransactionHistories)
-            {
-                <tr>
-                    <td style="width:20%">@d.createdDate</td>
-                    <td style="width:15%">@d.originalDepositAmount</td>
-                    <td style="width:8%">@d.fee</td>
-                    <td style="width:8%">@d.amount</td>
-                    <td style="width:8%">@d.previousBalance</td>
-                    <td style="width:11%">@d.balanceBroughtForward</td>
-                    <td style="width:15%">@d.feeType</td>
-                    <td style="width:10%">@d.transactionType</td>
-                    <td style="width:10%">@d.operationType</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+            </div>
+        }
+
+    </fieldset>
+
 </div>
-
-

@@ -1,0 +1,91 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+
+<div class="card mb-4 border-2">
+    <div class="card-header">
+        <h5 class="card-title">Transfer details</h5>
+    </div>
+    <div class="mt-3">
+
+        <table class="table">
+            <tr>
+                <td><strong>Source account number, Account type:</strong></td>
+                <td>@Model.Transfer.SourceAccountNumber,  @Model.Transfer.SourceAccountType</td>
+            </tr>
+            <tr>
+                <td><strong>Destination account number, Account type:</strong></td>
+                <td>@Model.Transfer.DestinationAccountNumber, @Model.Transfer.DestinationAccountType</td>
+            </tr>
+            <tr>
+                <td><strong>Amount:</strong></td>
+                <td>@Model.Transfer.Amount.ToString("#,##0.00") FCFA</td>
+            </tr>
+            <tr>
+                <td><strong>Source commision</strong></td>
+                <td>@Model.Transfer.SourceCommision.ToString("#,##0.00") FCFA</td>
+            </tr>
+            <tr>
+                <td><strong>Destination commision</strong></td>
+                <td>@Model.Transfer.DestinationCommision.ToString("#,##0.00") FCFA</td>
+            </tr>
+            <tr>
+                <td><strong>Amount:</strong></td>
+                <td>@Model.Transfer.Amount.ToString("#,##0.00") FCFA</td>
+            </tr>
+            <tr>
+                <td><strong>Request source:</strong></td>
+                <td>@Model.Transfer.SourceType</td>
+            </tr>
+            <tr>
+                <td><strong>Transactiontype:</strong></td>
+                <td>@Model.Transfer.TransactionType </td>
+            </tr>
+            <tr>
+                <td><strong>Reference number</strong></td>
+                <td>@Model.Transfer.TransactionRef</td>
+            </tr>
+
+            <tr>
+                <td><strong>Status</strong></td>
+                <td>@Model.Transfer.Status</td>
+            </tr>
+            <tr>
+                <td><strong>Initiated by:</strong></td>
+                <td>@Model.Transfer.InitiatedByUSerName</td>
+
+            </tr>
+            <tr>
+                <td><strong>Initiator comment:</strong></td>
+                <td>@Model.Transfer.InitiatorComment</td>
+
+            </tr>
+            <tr>
+                <td><strong>Initiation date:</strong></td>
+                <td>@Model.Transfer.DateOfInitiation</td>
+            </tr>
+            <tr>
+                <td><strong>Approved by:</strong></td>
+                <td>@Model.Transfer.ApprovedByUserName</td>
+            </tr>
+            <tr>
+                <td><strong>Approved comment:</strong></td>
+                <td>@Model.Transfer.ValidatorComment</td>
+            </tr>
+            <tr>
+                <td><strong>Approval date:</strong></td>
+                <td>@Model.Transfer.DateOfApproval</td>
+            </tr>
+            <tr>
+                <td><strong>Teller:</strong></td>
+                <td>@Model.Transfer.Teller.name.</td>
+            </tr>
+        </table>
+
+    </div>
+
+</div>
+
+
+
+
+
+

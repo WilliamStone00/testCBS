@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanCommitee;
 using CBS.FrontDesk.Data.Entity.LoanConf;
@@ -17,30 +18,30 @@ namespace CBS.BusinessService.LoanCommitee
     public class LoanCommiteeMemberServices : BaseService
     {
         private readonly ApiCallerHelper _loanConfigApiHelper;
-
-        public LoanCommiteeMemberServices()
+        private readonly UserManagementServices _UserManagementServices;
+        public LoanCommiteeMemberServices(UserManagementServices userManagementServices = null)
         {
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
+            _UserManagementServices = userManagementServices;
         }
 
         public async Task<ExecutionMessages> Delete(string id)
         {
             try
             {
-                var objLoanCommiteeMember = await GetLoanCommiteeMember(id);
                 var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.Get_Update_Delete_LoanCommeteeMember, id));
                 if (inResponse.IsSuccess)
                 {
 
                     GetExecutionMessages(inResponse, true, $"Loan commitee member", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objLoanCommiteeMember, false, $"Loan commitee member", MessagesResults.Failed,
+                    GetExecutionMessages(null, false, $"Loan commitee member", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -56,9 +57,24 @@ namespace CBS.BusinessService.LoanCommitee
             try
             {
                 var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanCommiteeMember>>>(APICallHelper.GetAllLoanCommeteeMember);
-                if (couApiResponse.IsSuccess)
+                if (couApiResponse.ApiResponseData!=null)
                 {
-                    return couApiResponse.ApiResponseData.Data;
+                    var users=await _UserManagementServices.GetUserList();
+
+                    var data = (from a in couApiResponse.ApiResponseData.Data
+                               join b in users on
+                    a.UserId equals b.id.ToString()
+                               select new LoanCommiteeMember
+                               {
+                                   Id = a.Id,
+                                   User = b,
+                                   LoanCommiteeGroupId = a.LoanCommiteeGroupId,
+                                   LoanCommiteeGroup = a.LoanCommiteeGroup,
+                                   UserId = a.UserId,
+                                   LoanCommiteeValidationHistories = a.LoanCommiteeValidationHistories
+                               }).ToList();
+
+                    return data;
                 }
                 return new List<LoanCommiteeMember>();
             }

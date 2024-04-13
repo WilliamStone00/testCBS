@@ -16,7 +16,7 @@
             <tr>
                 <td style="width:25%">@d.product.name</td>
                 <td style="width:15%">@d.transferType</td>
-                <td style="width:20%">@d.minAmount-@d.maxAmount</td>
+                <td style="width:20%">@d.minAmount.ToString("0#,00.0")-@d.maxAmount.ToString("0#,00.0")</td>
                 <td style="width:10%">@d.transferFeeRate %</td>
                 <td style="width:10%">@d.transferFeeFlat</td>
                 <td style="width:20%">

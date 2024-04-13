@@ -14,7 +14,7 @@
             new Cleave(phoneMask, {
                 phone: true,
                 phoneRegionCode: 'US'
-            });r
+            }); r
         });
     }
 
@@ -200,17 +200,98 @@ function DownloadFile(url) {
 //});
 
 
-function PrintSingleObject(objectID, option, reportStructureType) {
-    var url = "/Reporting/Report?objectID=" + objectID + "&reportStructureType=" + reportStructureType + "&option=" + option;
+//function PrintSingleObject(objectID, option, reportStructureType) {
+//    var url = "/Reporting/Report?objectID=" + objectID + "&reportStructureType=" + reportStructureType + "&option=" + option;
+//    $.ajax({
+//        type: "Get",
+//        url: "/Reporting/AjaxCaller",
+//        cache: false,
+//        success: function (response) {
+
+//            if (response.success) {
+//                appalert("Plaese wait, downloading file", 1);
+//                window.open(url, '_blank');
+
+//            }
+//            else {
+
+
+//                appalert(response.message, 0);
+//            }
+
+
+//        }, error: function (err) {
+
+//            appalert(err.statusText);
+//        }
+//    });
+
+
+//}
+//function calculateBalance() {
+//    // Get the total amount of currency notes and coins
+//    var note10000 = parseInt(document.getElementById('Notes_note10000').value) || 0;
+//    var note5000 = parseInt(document.getElementById('Notes_note5000').value) || 0;
+//    var note2000 = parseInt(document.getElementById('Notes_note2000').value) || 0;
+//    var note1000 = parseInt(document.getElementById('Notes_note1000').value) || 0;
+//    var note500 = parseInt(document.getElementById('Notes_note500').value) || 0;
+//    var coin500 = parseInt(document.getElementById('Notes_coin500').value) || 0;
+//    var coin100 = parseInt(document.getElementById('Notes_coin100').value) || 0;
+//    var coin50 = parseInt(document.getElementById('Notes_coin50').value) || 0;
+//    var coin25 = parseInt(document.getElementById('Notes_coin25').value) || 0;
+//    var coin10 = parseInt(document.getElementById('Notes_coin10').value) || 0;
+//    var coin5 = parseInt(document.getElementById('Notes_coin5').value) || 0;
+//    var coin1 = parseInt(document.getElementById('Notes_coin1').value) || 0;
+
+//    // Calculate total amount
+//    var totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
+//        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
+
+//    // Update the DepositRequest_amount input field with the total amount
+//    document.getElementById("DepositRequest_amount").value = totalAmount.toFixed(2);
+
+//}
+function calculateBalance() {
+    // Get the total amount of currency notes and coins
+    var note10000 = parseInt(document.getElementById('Notes_note10000').value) || 0;
+    var note5000 = parseInt(document.getElementById('Notes_note5000').value) || 0;
+    var note2000 = parseInt(document.getElementById('Notes_note2000').value) || 0;
+    var note1000 = parseInt(document.getElementById('Notes_note1000').value) || 0;
+    var note500 = parseInt(document.getElementById('Notes_note500').value) || 0;
+    var coin500 = parseInt(document.getElementById('Notes_coin500').value) || 0;
+    var coin100 = parseInt(document.getElementById('Notes_coin100').value) || 0;
+    var coin50 = parseInt(document.getElementById('Notes_coin50').value) || 0;
+    var coin25 = parseInt(document.getElementById('Notes_coin25').value) || 0;
+    var coin10 = parseInt(document.getElementById('Notes_coin10').value) || 0;
+    var coin5 = parseInt(document.getElementById('Notes_coin5').value) || 0;
+    var coin1 = parseInt(document.getElementById('Notes_coin1').value) || 0;
+
+    // Calculate total amount
+    var totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
+        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
+
+    // Format total amount as currency
+    var formattedTotalAmount = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
+
+    // Update the lblDepositRequest_amount span with the formatted total amount
+    document.getElementById("lblDepositRequest_amount").textContent = "Total Amount: " + formattedTotalAmount;
+}
+function PrintSingleObject(controller, objectID, path, rptType) {
+    var url = "/" + controller + "/GetReport?KEY=" + objectID + "&path=" + path;
     $.ajax({
-        type: "Get",
-        url: "/Reporting/AjaxCaller",
+        type: "POST",
+        url: url,
         cache: false,
         success: function (response) {
 
             if (response.success) {
-                appalert("Plaese wait, downloading file", 1);
-                window.open(url, '_blank');
+                if (response.message == "OK") {
+                    appalert(response.message, 1, 1);
+                    window.open("/Reports/" + rptType, "_blank");
+                }
+                else {
+                    appalert(response.message, 0);
+                }
 
             }
             else {
@@ -229,9 +310,7 @@ function PrintSingleObject(objectID, option, reportStructureType) {
 
 }
 
-
-function LoadDT(tableID, order)
-{
+function LoadDT(tableID, order) {
 
     if (order === "desc") {
         var T = '#' + tableID;
@@ -258,8 +337,7 @@ function LoadDT(tableID, order)
         });
     }
 
-    else
-    {
+    else {
         var T = '#' + tableID;
         var dataThumbView = $(T).DataTable({
             responsive: false,
@@ -474,11 +552,11 @@ function DeleteWithRedirect(controller, KEY, option, url_redirect) {
 
 }
 //LoadDataTableNew("Country", "myDataTable", "InitializeData", null, "_Data", 1);
-function DeleteRecordDataTable(controller, KEY, tableID, partialView, order,divToLoadTheData) {
+function DeleteRecordDataTable(controller, KEY, tableID, partialView, order, divToLoadTheData) {
 
     alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
         function () {
-            var url = "/" + controller + "/Delete?KEY=" + KEY;
+            var url = "/" + controller + "/Delete?id=" + KEY;
             $.ajax({
                 type: "Get",
                 url: url,
@@ -535,7 +613,7 @@ function DeleteDynamic(controller, deleteActionName, KEY, tableID, partialView, 
 
 
 }
-function DeleteDynamicRolePermission(controller, deleteActionName, KEY, tableID, partialView, order, divToLoadTheData,roleid,seviceoption) {
+function DeleteDynamicRolePermission(controller, deleteActionName, KEY, tableID, partialView, order, divToLoadTheData, roleid, seviceoption) {
 
     alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
         function () {
@@ -594,7 +672,9 @@ function DeleteDataConfiguration(controller, KEY, tableID, partialView, order, d
         function () {
             appalert('Transaction cancelled', 3, 1);
 
-        });
+        }
+
+    );
 
 
 }
@@ -767,61 +847,81 @@ function PageReload() {
 }
 
 function AjaxPostAndUpdate(form) {
-$.validator.unobtrusive.parse(form);
+
+
+    $.validator.unobtrusive.parse(form);
     if ($(form).valid()) {
-        var ajaxConfig = {
-            type: 'POST',
-            url: form.action,
-            data: new FormData(form),
-            success: function (response) {
 
-                if (response.success) {
-                    if (response.status === "Exist") {
-                        appalert(response.message, 3, 1);
-                    }
-                    else if (response.status === "Failed") {
-                        appalert(response.message, 2, 1);
-                    }
-                    else {
-                        appalert(response.message, 1, 1);
+
+        alertify.confirm("WARNING!!!", "Are you sure you want to perform this action! ",
+            function () {
+
+
+                var ajaxConfig = {
+                    type: 'POST',
+                    url: form.action,
+                    data: new FormData(form),
+                    success: function (response) {
+
+                        if (response.success) {
+                            if (response.status === "Exist") {
+                                appalert(response.message, 3, 1);
+                            }
+                            else if (response.status === "Failed") {
+                                appalert(response.message, 2, 1);
+                            }
+                            else {
+                                appalert(response.message, 1, 1);
+
+                            }
+                            if (response.option === 'Update' && response.reloadDataView === "Yes") {
+                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                            }
+                            else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
+                                EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
+                            }
+                            else if (response.reloadDataView === "Yes") {
+                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                            }
+                        }
+                        else {
+                            if (response.Status === "Exist") {
+                                appalert(response.message, 3, 1);
+                            }
+                            else {
+                                appalert(response.message, 2, 1);
+                            }
+
+                        }
 
                     }
-                    if (response.option === 'Update' && response.reloadDataView === "Yes") {
-                        LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                    , error: function (err) {
+                        console.log(err.statusText);
+                        appalert(err.statusText, 0, 1);
                     }
-                    else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
-                        EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
-                    }
-                    else if (response.reloadDataView === "Yes") {
-                        LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
-                    }
+                };
+
+                if ($(form).attr('enctype') === "multipart/form-data") {
+                    ajaxConfig["contentType"] = false;
+                    ajaxConfig["processData"] = false;
                 }
-                else {
-                    if (response.Status === "Exist") {
-                        appalert(response.message, 3, 1);
-                    }
-                    else {
-                        appalert(response.message, 2, 1);
-                    }
-
-                }
+                console.log(ajaxConfig);
+                $.ajax(ajaxConfig);
+            },
+            function () {
+                appalert('Transaction cancelled', 3, 1);
 
             }
-            , error: function (err) {
-                appalert(err.statusText, 0, 1);
-            }
-        };
 
-        if ($(form).attr('enctype') === "multipart/form-data") {
-            ajaxConfig["contentType"] = false;
-            ajaxConfig["processData"] = false;
-        }
-        $.ajax(ajaxConfig);
-
+        );
     }
     return false;
 
+
 }
+
+
+
 function AjaxPostAndUpdateValidationDecision(form) {
 
     $.validator.unobtrusive.parse(form);
@@ -873,11 +973,11 @@ function EditResetModal(KEY, modalBodyID, ModalcontentID, controller, actionMeth
     });
 }
 
-function LoadDataGen(controller, tableID, partialView, order, datalistingview, KEY, serviceOption, path ='list') {
+function LoadDataGen(controller, tableID, partialView, order, datalistingview, KEY, serviceOption, path = 'list') {
     LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, path, datalistingview, serviceOption);
 
 }
-function AddORUpdateGen(KEY, divToLoadData, partialView, path, controller,serviceOption) {
+function AddORUpdateGen(KEY, divToLoadData, partialView, path, controller, serviceOption) {
     EditResetMain(KEY, partialView, divToLoadData, controller, "InitializeData", null, path, null, serviceOption);
     $('.select2').select2();
 }
@@ -1054,7 +1154,7 @@ function ExportFile(controller, serviceOption, action, KEY, ReadOptions, path, r
 }
 
 
-function LoadDataTableNew(controller, tableID, action, KEY, partialView, order, path, diveToloadtheData,serviceOption) {
+function LoadDataTableNew(controller, tableID, action, KEY, partialView, order, path, diveToloadtheData, serviceOption) {
     var encodedURL = '/' + controller + '/' + action +
         '?KEY=' + encodeURIComponent(KEY) +
         '&partialView=' + encodeURIComponent(partialView) +

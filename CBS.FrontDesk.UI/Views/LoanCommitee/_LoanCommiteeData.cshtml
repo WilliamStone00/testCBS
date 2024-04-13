@@ -19,6 +19,8 @@
                     <th>Name</th>
                     <th>Leader</th>
                     <th>Range</th>
+                    <th>Size</th>
+                    <th>Validation required</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -27,10 +29,12 @@
                 @foreach (var d in Model.LoanCommiteeGroups)
                 {
                     <tr>
-                        <td style="width:40%">@d.Name</td>
-                        <td style="width:15%">@d.CommiteeLeaderUserId</td>
-                        <td style="width:20%">@d.MinimumLoanAmount.ToString("0#,00.0")-@d.MaximumLoanAmount.ToString("0#,00.0")</td>
-                        <td style="width:10%">
+                        <td style="width:20%">@d.Name</td>
+                        <td style="width:25%">@d.User.name - @d.User.Branch.Name</td>
+                        <td style="width:22%">@d.MinimumLoanAmount.ToString("0#,00.0")-@d.MaximumLoanAmount.ToString("0#,00.0")</td>
+                        <td style="width:5%">@d.NumberOfMembers</td>
+                        <td style="width:5%">@d.NumberToApprovalsToValidationALoan</td>
+                        <td style="width:8%">
                             @if (d.Status)
                             {
                                 <span class="badge bg-info">Active</span>
@@ -42,7 +46,7 @@
                         </td>
                         <td style="width:15%">
                             <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_LoanCommitee','update','LoanCommitee','LoanCommiteeGroup')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a> |
-                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('LoanCommitee','@d.Id','myDataTable_commitee_group','_LoanCommiteeData',0,'datalistingview')">Delete</a>|
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('LoanCommitee','@d.Id','myDataTable_commitee_group','_LoanCommiteeData',0,'datalistingview')">Delete</a>
                         </td>
                     </tr>
                 }
@@ -52,7 +56,8 @@
 }
 else
 {
-    <div class="alert alert-info" role="alert">
-        No commitee groups are available at the moment.
+    <div class="text-center my-3">
+        <p>No commitee groups are available at the moment.</p>
     </div>
+   
 }

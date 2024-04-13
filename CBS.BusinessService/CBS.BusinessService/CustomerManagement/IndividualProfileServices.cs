@@ -393,7 +393,7 @@ namespace CBS.BusinessService.CustomerManagement
                 {
                     var aggregates = subscriptionAggregatesResponse?.ApiResponseData.Data ?? new Aggregrate();
                     var savingsResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<SavingProduct>>>(APICallHelper.GetSavingProducts);
-                    aggregates.Savings = savingsResponse?.ApiResponseData == null ? new List<SavingProduct>() : savingsResponse.ApiResponseData.Data;
+                    aggregates.Savings = savingsResponse?.ApiResponseData == null ? new List<SavingProduct>() : savingsResponse.ApiResponseData.Data.Where(x=>!x.isUsedForTellerProvisioning).ToList();
                     var customerDefaultEnum = await _customerApiHelper.GetAsync<ResponseObject<CustomerDefaultEnum>>(APICallHelper.GetCustomerDefaultEnums);
                     aggregates.CustomerDefaultEnum = customerDefaultEnum?.ApiResponseData == null ? new CustomerDefaultEnum() : customerDefaultEnum.ApiResponseData.Data;
                     return aggregates;
@@ -462,7 +462,7 @@ namespace CBS.BusinessService.CustomerManagement
                 {
                     // Handle failure scenario
                     GetExecutionMessages(model, false, "Account", MessagesResults.Failed,
-                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, null);
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
 
                 }
             }
@@ -568,9 +568,13 @@ namespace CBS.BusinessService.CustomerManagement
                 customer.membershipApprovalStatus = objCustomerProfile.CustomerList.membershipApprovalStatus;
                 customer.membershipApprovalBy = GetUserFullName();
                 customer.membershipApprovedDate = DateTime.Now.ToString();
+                if (customer.VillageOfOrigin==null)
+                {
+                    customer.VillageOfOrigin = "N/A";
+                }
                 var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.customerId), customer);
                 if (inResponse.IsSuccess)
-                {
+                { 
                     // Handle success scenario
                     GetExecutionMessages(inResponse, true, $"{customer.firstName} {customer.lastName}", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
@@ -723,10 +727,7 @@ namespace CBS.BusinessService.CustomerManagement
             try
             {
                 var apiResponse = await _transactionApiHelper.GetAsync<ResponseObject<Account>>(string.Format(APICallHelper.GetAccountByAccountNumber, model.accountNumber));
-
-
-
-                model.branchMangerId = apiResponse.ApiResponseData.Data.createdBy;
+                model.branchMangerId = apiResponse.ApiResponseData.Data.CreatedBy;
                 model.cardSignatureSpecimenDetails.Add(model.cardSignatureSpecimenDetail);
                 model.branchId = GetBranchID();
                 var response = await _customerApiHelper.PostAsync<ServiceResponse<CardSignatureSpecimen>>(APICallHelper.CreateCardSignatureSpecimenDetails, model);
@@ -761,7 +762,7 @@ namespace CBS.BusinessService.CustomerManagement
             try
             {
                 var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.customerId);
-                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.ResetPin, customer.customerId), customer);
+                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.ResetPin, customer.phone), new ResetPinCode { Phone= customer.phone});
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario

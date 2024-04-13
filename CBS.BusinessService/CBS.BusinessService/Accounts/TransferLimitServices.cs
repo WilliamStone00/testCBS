@@ -127,6 +127,9 @@ namespace CBS.BusinessService.Accounts
                     TransferLimit.transferFeeFlat = model.transferFeeFlat;
                     TransferLimit.transferFeeRate = model.transferFeeRate;
                     TransferLimit.productId = model.productId;
+                    TransferLimit.SourceBrachOfficeShare = model.SourceBrachOfficeShare;
+                    TransferLimit.DestinationBranchOfficeShare = model.DestinationBranchOfficeShare;
+                    TransferLimit.HeadOfficeShare = model.HeadOfficeShare;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<TransferLimit>>(string.Format(APICallHelper.Get_Update_Delete_TransferLimits, model.id), TransferLimit);
                     if (response.IsSuccess)
                     {

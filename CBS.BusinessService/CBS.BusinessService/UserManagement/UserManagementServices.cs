@@ -23,34 +23,81 @@ namespace CBS.BusinessService.UserManagement
         {
             try
             {
-                //user.userRoles=new List<UserRole>{new UserRole{roleId = user.roleID} };
+                // Initialize lists
+                user.userRoles = new List<UserRole>();
                 if (user.allowedIP != null)
                 {
                     user.userAllowedIPs = new List<UserAllowedIP> { new UserAllowedIP() { ipAddress = user.allowedIP } };
                 }
+                else
+                {
+                    user.userAllowedIPs = new List<UserAllowedIP>();
+                }
+
+                // Add user role
                 user.userRoles.Add(new UserRole { roleId = user.roleID });
-                user.userAllowedIPs = new List<UserAllowedIP>();
-                var ApiCallerHelper =new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+                user.BankID = GetBankID();
+                // Call API to create user
+                var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var reUser = await ApiCallerHelper.PostAsync<ResponseObject<UserList>>(APICallHelper.createUserUrl, user);
+
+                // Handle API response
                 if (reUser.IsSuccess)
                 {
-                    GetExecutionMessages(reUser, true, user.firstName+" "+ user.lastName, MessagesResults.Success,
+                    GetExecutionMessages(reUser, true, user.firstName + " " + user.lastName, MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null,
                         null);
                     return ExecutionMessage;
                 }
-                GetExecutionMessages(user, false, user.firstName, MessagesResults.Failed,
-                    ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null,
-                    reUser.Message);
-
+                else
+                {
+                    GetExecutionMessages(user, false, user.firstName, MessagesResults.Failed,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null,
+                        reUser.Message);
+                    return ExecutionMessage;
+                }
             }
             catch (Exception ex)
             {
+                // Log or handle the exception appropriately
                 GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
                     SystemMessageStatus.Failed.ToString(), ex);
+                return ExecutionMessage;
             }
-            return ExecutionMessage;
         }
+
+        //public async Task<ExecutionMessages> CreateUser(User user)
+        //{
+        //    try
+        //    {
+        //        //user.userRoles=new List<UserRole>{new UserRole{roleId = user.roleID} };
+        //        if (user.allowedIP != null)
+        //        {
+        //            user.userAllowedIPs = new List<UserAllowedIP> { new UserAllowedIP() { ipAddress = user.allowedIP } };
+        //        }
+        //        user.userRoles.Add(new UserRole { roleId = user.roleID });
+        //        user.userAllowedIPs = new List<UserAllowedIP>();
+        //        var ApiCallerHelper =new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+        //        var reUser = await ApiCallerHelper.PostAsync<ResponseObject<UserList>>(APICallHelper.createUserUrl, user);
+        //        if (reUser.IsSuccess)
+        //        {
+        //            GetExecutionMessages(reUser, true, user.firstName+" "+ user.lastName, MessagesResults.Success,
+        //                ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null,
+        //                null);
+        //            return ExecutionMessage;
+        //        }
+        //        GetExecutionMessages(user, false, user.firstName, MessagesResults.Failed,
+        //            ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null,
+        //            reUser.Message);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+        //            SystemMessageStatus.Failed.ToString(), ex);
+        //    }
+        //    return ExecutionMessage;
+        //}
         public async Task<IEnumerable<Role>> GetRoles()
         {
             try
@@ -70,7 +117,17 @@ namespace CBS.BusinessService.UserManagement
             {
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var roles = await ApiCallerHelper.GetAsync<ResponseObject<List<UserRoleDto>>>(APICallHelper.GetAllUserRoles);
-                return roles.ApiResponseData.Data;
+                if (IsHeadOffice())
+                {
+                  
+                    return roles.ApiResponseData.Data;
+                }
+                else
+                {
+                    var rolesx= roles.ApiResponseData.Data.Where(x => x.branchId == GetBranchID());
+                    return rolesx;
+                }
+              
             }
             catch (Exception ex)
             {
@@ -91,7 +148,7 @@ namespace CBS.BusinessService.UserManagement
                 if (userListsResponse != null && userListsResponse.IsSuccess)
                 {
                     var userLists = userListsResponse.ApiResponseData.Data;
-                    var isHeadOffice = HttpContext.Current.Session["IsHeadOffice"] == "True";
+                    var isHeadOffice = IsHeadOffice();
                     var branchId = GetBranchID();
                     var branches = await GetBranches();
 
@@ -145,7 +202,7 @@ namespace CBS.BusinessService.UserManagement
                 if (userListsResponse != null && userListsResponse.IsSuccess)
                 {
                     var userLists = userListsResponse.ApiResponseData.Data;
-                    var isHeadOffice = HttpContext.Current.Session["IsHeadOffice"] == "True";
+                    var isHeadOffice = IsHeadOffice();
                     var branchId = GetBranchID();
                     var branches = await GetBranches();
 
@@ -200,7 +257,7 @@ namespace CBS.BusinessService.UserManagement
             try
             {
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
-                if (HttpContext.Current.Session["IsHeadOffice"] == "True")
+                if (IsHeadOffice())
                 {
                     var branchApiResponse = await ApiCallerHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
                     var bracBranches = branchApiResponse.ApiResponseData.Data;
@@ -217,6 +274,23 @@ namespace CBS.BusinessService.UserManagement
                 }
          
            ;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<User> GetUser(string userid)
+        {
+            try
+            {
+                var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+                var user = await ApiCallerHelper.GetAsync<ResponseObject<User>>(string.Format(APICallHelper.GetUserByID, ConvertStringToGuid(userid)));
+                if (user.ApiResponseData!=null)
+                {
+                    return user.ApiResponseData.Data;
+                }
+                return null;
             }
             catch (Exception ex)
             {

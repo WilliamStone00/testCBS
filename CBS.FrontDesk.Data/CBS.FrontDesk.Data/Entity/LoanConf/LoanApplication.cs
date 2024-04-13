@@ -49,6 +49,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IsThereCollateral { get; set; }
         public decimal InterestRate { get; set; }
         public decimal ProcessingFee { get; set; }
+        public decimal InspectionFee { get; set; }
         public decimal VatRate { get; set; }
         public int NumberOfRepayment { get; set; }
         public string RepaymentCircle { get; set; }
@@ -67,7 +68,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public int GracePeriodAfterMaturityDate { get; set; }
         public string Status { get; set; }
         public decimal CollateralCoverageRate { get; set; }
-        public decimal ShareAccountCoverageRate { get; set; }
+        public decimal ShareAccountCoverageAmount { get; set; }
         public decimal SavingAccountCoverageRate { get; set; }
         public decimal SalaryAccountCoverageRate { get; set; }
         public decimal GuaratorSavingAccountCoverageRate { get; set; }
@@ -97,7 +98,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             ProcessingFee = 0;
             VatRate= 0;
             CollateralCoverageRate = 0;
-            ShareAccountCoverageRate = 0;
+            ShareAccountCoverageAmount = 0;
             SavingAccountCoverageRate = 0;
             TotalLoanRiskCoverage = 0;
             LoanDuration = 0;

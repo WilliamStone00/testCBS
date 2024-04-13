@@ -102,6 +102,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
             }
         }
+
         public void CleanReport(ReportDocument rd)
         {
             rd.Close();
@@ -171,7 +172,10 @@ namespace CBS.FrontDesk.UI.Controllers
 
             return new EmptyResult();
         }
-
+        //this.HttpContext.Session["rptType"] = rptType;
+        //        this.HttpContext.Session["ReportName"] = $"{ReportName}.rpt";
+        //        this.HttpContext.Session["rptpath"] = $"~/{reportpath}/" + ReportName + ".rpt";
+        //        this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
 
     }
     public class Export

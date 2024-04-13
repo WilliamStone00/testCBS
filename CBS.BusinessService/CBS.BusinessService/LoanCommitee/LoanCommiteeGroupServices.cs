@@ -1,11 +1,13 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity.LoanCommitee;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CBS.BusinessService.LoanCommitee
@@ -13,10 +15,11 @@ namespace CBS.BusinessService.LoanCommitee
     public class LoanCommiteeGroupServices : BaseService
     {
         private readonly ApiCallerHelper _loanConfigApiHelper;
-
-        public LoanCommiteeGroupServices()
+        private readonly UserManagementServices _UserManagementServices;
+        public LoanCommiteeGroupServices(UserManagementServices userManagementServices = null)
         {
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
+            _UserManagementServices = userManagementServices;
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -29,7 +32,7 @@ namespace CBS.BusinessService.LoanCommitee
                 {
 
                     GetExecutionMessages(inResponse, true, $"{objLoanCommiteeGroup.Name}", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }
@@ -46,15 +49,34 @@ namespace CBS.BusinessService.LoanCommitee
             }
             return ExecutionMessage;
         }
-        
         public async Task<IEnumerable<LoanCommiteeGroup>> GetLoanCommiteeGroups()
         {
             try
             {
                 var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanCommiteeGroup>>>(APICallHelper.GetAllLoanCommiteeValidationCriteria);
-                if (couApiResponse.IsSuccess)
+                if (couApiResponse.ApiResponseData != null)
                 {
-                    return couApiResponse.ApiResponseData.Data;
+                    var users = await _UserManagementServices.GetUserList();
+
+                    var data = (from a in couApiResponse.ApiResponseData.Data
+                                join b in users on
+                     a.CommiteeLeaderUserId equals b.id.ToString()
+                                select new LoanCommiteeGroup
+                                {
+                                    Id = a.Id,
+                                    User = b,
+                                    CommiteeLeaderUserId = a.CommiteeLeaderUserId,
+                                    Description = a.Description,
+                                    LoanCommiteeMembers = a.LoanCommiteeMembers,
+                                    MaximumLoanAmount = a.MaximumLoanAmount,
+                                    MinimumLoanAmount = a.MinimumLoanAmount,
+                                    Name = a.Name,
+                                    NumberOfMembers = a.NumberOfMembers,
+                                    NumberToApprovalsToValidationALoan = a.NumberToApprovalsToValidationALoan,
+                                    Status = a.Status
+                                }).ToList();
+
+                    return data;
                 }
                 return new List<LoanCommiteeGroup>();
             }

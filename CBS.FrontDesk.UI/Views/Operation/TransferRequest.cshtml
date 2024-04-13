@@ -1,9 +1,9 @@
 ﻿
 @{
-    ViewBag.Title = "Transfer Account to Account";
+    ViewBag.Title = "Transfer request";
 }
 <div class="row">
-    <div class="col-xl-9col-lg-9 col-md-9 order-0 order-md-1">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
         <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
             <div class="accordion-item active">
@@ -15,7 +15,10 @@
                             data-bs-target="#accordionPopoutIcon-3"
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-format-list-numbered me-2"></i>
+                        <i class="mdi mdi-transfer me-2"></i>
+                        <div class="d-flex justify-content-center">
+                            <div class="fw-bold fs-4">TRANSFER REQUEST FORM</div>
+                        </div>
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
@@ -27,14 +30,17 @@
                                 <div class="card mb-4">
                                     <div class="card-body d-sm-flex d-block">
                                         <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            TRANSFER ACCOUNT TO ACCOUNT
+                                            <a href="#" onclick="GetAllTransfers(null,'datalistingview','_TransferInitiatorData','pending_request','myDataTableT')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="Perform member deposit operation">
+                                                <span class="tf-icons mdi mdi-list-status mdi-18px"></span>
+                                            </a>
+                                            <a href="#" onclick="AddORUpdateGen(null,'datalistingview','_Transfer','transfer_request','Operation')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="New transfer operation">
+                                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                                 <div id="datalistingview">
-                                    <div id="datalistingview">
-                                        @Html.Partial("_Transfer")
-                                    </div>
+                                    @Html.Partial("_Transfer")
                                 </div>
                             </div>
                         </div>
@@ -51,5 +57,5 @@
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
 
-
+<script src="~/Scripts/Js/Crud/Operation/Transfer.js"></script>
 }

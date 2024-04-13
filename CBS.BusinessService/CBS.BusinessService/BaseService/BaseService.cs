@@ -27,6 +27,7 @@ using CBS.FrontDesk.Data.Entity.Accounting;
 using System.Threading.Tasks;
 using CBS.FrontDesk.Helper;
 using System.Text.RegularExpressions;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 
 namespace BusinessServices
 {
@@ -107,6 +108,23 @@ namespace BusinessServices
             InCurrentMonth = CurrentDate.Month;
             StringCurrentDay = CurrentDate.DayOfWeek.ToString();
             InCurrentMonth = CurrentDate.Day;
+        }
+        public int ComputeDenomination(CurrencyNotes currencyNotes)
+        {
+            int totalNotesValue = currencyNotes.note10000 * 10000 +
+                                  currencyNotes.note5000 * 5000 +
+                                  currencyNotes.note2000 * 2000 +
+                                  currencyNotes.note1000 * 1000 +
+                                  currencyNotes.note500 * 500 +
+                                  currencyNotes.coin500 * 500 +
+                                  currencyNotes.coin100 * 100 +
+                                  currencyNotes.coin50 * 50 +
+                                  currencyNotes.coin25 * 25 +
+                                  currencyNotes.coin10 * 10 +
+                                  currencyNotes.coin5 * 5 +
+                                  currencyNotes.coin1;
+
+            return totalNotesValue;
         }
         public Guid ConvertStringToGuid(string input)
         {

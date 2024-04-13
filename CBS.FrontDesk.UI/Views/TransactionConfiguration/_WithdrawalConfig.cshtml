@@ -6,83 +6,67 @@
 </style>
 @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
-
-    <input type="hidden" name="ServiceOption" value="withdrawallimit" id="ServiceOption" />
-    <div class="row mt-2 gy-4">
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.WithdrawalLimit.productId, new SelectList(ViewBag.Products, "Id", "name"), "---Select product---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.WithdrawalLimit.productId, "", new { @class = "text-danger" })
-                <label>Select product</label>
+    <fieldset class="fieldset-custom">
+        <legend>Set up withdrawal policies</legend>
+        @Html.HiddenFor(m => m.WithdrawalLimit.productId)
+        <input type="hidden" name="ServiceOption" value="withdrawallimit" id="ServiceOption" />
+        <div class="row mt-2 gy-4">
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.WithdrawalLimit.withdrawalType, new SelectList(ViewBag.WithdrawalLimitTypes, "Text", "Value"), "---Select deposit type---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.withdrawalType, "", new { @class = "text-danger" })
+                    <label>Select withdrawal limit type</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.minAmount, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.minAmount, "", new { @class = "text-danger" })
+                    <label>Minimum withdrawal amount which can be withdrawn from @Model.SavingProduct.name at once</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.maxAmount, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.maxAmount, "", new { @class = "text-danger" })
+                    <label>Maximum withdrawal amount which can be withdrawn from @Model.SavingProduct.name at once</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.withdrawalFeeFlat, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.withdrawalFeeFlat, "", new { @class = "text-danger" })
+                    <label>Flat fee</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.withdrawalFeeRate, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.withdrawalFeeRate, "", new { @class = "text-danger" })
+                    <label>Fee rate</label>
+                </div>
             </div>
         </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.WithdrawalLimit.withdrawalType, new SelectList(ViewBag.WithdrawalLimitTypes, "Text", "Value"), "---Select deposit type---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.WithdrawalLimit.withdrawalType, "", new { @class = "text-danger" })
-                <label>Select withdrawal limit type</label>
+    </fieldset>
+    <fieldset class="fieldset-custom">
+        <legend>Sharing</legend>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.SourceBrachOfficeShare, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.SourceBrachOfficeShare, "", new { @class = "text-danger" })
+                    <label>Source branch share (in percentage %)</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.DestinationBranchOfficeShare, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.DestinationBranchOfficeShare, "", new { @class = "text-danger" })
+                    <label>Destination branch share (in percentage %)</label>
+                </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.WithdrawalLimit.minAmount, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.WithdrawalLimit.minAmount, "", new { @class = "text-danger" })
-                <label>Min withdrawal amount</label>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.WithdrawalLimit.maxAmount, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.WithdrawalLimit.maxAmount, "", new { @class = "text-danger" })
-                <label>Max withdrawal amount</label>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.WithdrawalLimit.withdrawalFeeFlat, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.WithdrawalLimit.withdrawalFeeFlat, "", new { @class = "text-danger" })
-                <label>Flat fee</label>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.WithdrawalLimit.withdrawalFeeRate, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.WithdrawalLimit.withdrawalFeeRate, "", new { @class = "text-danger" })
-                <label>Fee rate</label>
-            </div>
-        </div>
-        <h3>Sharing</h3>
-        <br />
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.WithdrawalLimit.SourceBrachOfficeShare, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CloseFeeParameter.SourceBrachOfficeShare, "", new { @class = "text-danger" })
-                <label>Source branch share (in percentage %)</label>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.WithdrawalLimit.DestinationBranchOfficeShare, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CloseFeeParameter.DestinationBranchOfficeShare, "", new { @class = "text-danger" })
-                <label>Destination branch share (in percentage %)</label>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.WithdrawalLimit.HeadOfficeShare, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CloseFeeParameter.HeadOfficeShare, "", new { @class = "text-danger" })
-                <label>Head office share (in percentage %)</label>
-            </div>
-        </div>
-        @*<div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CloseFeeParameter.PartnerShare, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CloseFeeParameter.PartnerShare, "", new { @class = "text-danger" })
-                <label>Partner branch share (in percentage %)</label>
-            </div>
-        </div>*@
-
-    </div>
+    </fieldset>
 
     <div class="mt-4">
         @if (Model.WithdrawalLimit.id == null)

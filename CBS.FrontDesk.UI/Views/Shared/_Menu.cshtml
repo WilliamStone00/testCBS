@@ -4,15 +4,15 @@
 
 @if (menuItems != null && menuItems.Any())
 {
-    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-white">
         <div class="app-brand demo">
-           <a href="/" class="app-brand-link">
-               <span class="app-brand-logo demo">
-                   <span style="color: var(--bs-primary)">
-                       <img src="~/AppFiles/Images/TrustBankTitle.png" alt="TrustBank Logo" />
-                   </span>
-               </span>
-           </a>
+            <a href="/" class="app-brand-link">
+                <span class="app-brand-logo demo">
+                    <span style="color: var(--bs-primary)">
+                        <img src="~/AppFiles/Images/SideImageHeader.png" alt="TrustBank Logo" />
+                    </span>
+                </span>
+            </a>
 
             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
                 <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -64,14 +64,15 @@
 
 @helper RenderSubMenu(CBS.FrontDesk.Data.Entity.DatabaseMenus menuItem, List<CBS.FrontDesk.Data.Entity.DatabaseMenus> menuItems)
 {
-    // Check if the current menu item has any child items
+
     var hasChildItems = menuItems.Any(m => m.ParentId == menuItem.MenuMasterId);
 
-    // Render the submenu only if there are child items
+
     if (hasChildItems)
     {
         <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <a href="javascript:void(0);" class="menu-link menu-toggle text-dark">
+                <!-- Adding text-dark class here -->
                 <i class="@menuItem.IconClass"></i> <div> @menuItem.MenuText</div>
             </a>
             <ul class="menu-sub">
@@ -79,11 +80,11 @@
                 {
                     <li class="menu-item">
                         <a href="@Url.Action(childItem.ActionName, childItem.ControllerName)" class="menu-link">
-                            <div>@childItem.MenuText</div>
+                            <div class="text-dark">@childItem.MenuText</div> <!-- Adding text-dark class here -->
                         </a>
                         @if (menuItems.Any(m => m.ParentId == childItem.MenuMasterId))
                         {
-                            @RenderSubMenu(childItem, menuItems)// Recursive call for submenus
+                            @RenderSubMenu(childItem, menuItems)
                         }
                     </li>
                 }
@@ -91,30 +92,3 @@
         </li>
     }
 }
-
-
-@*@helper RenderSubMenu(CBS.FrontDesk.Data.Entity.DatabaseMenus menuItem, List<CBS.FrontDesk.Data.Entity.DatabaseMenus> menuItems)
-    {
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="@menuItem.IconClass"></i> <div> @menuItem.MenuText</div>
-            </a>
-            @if (menuItems.Any(m => m.ParentId == menuItem.MenuMasterId))
-            {
-                <ul class="menu-sub">
-                    @foreach (var childItem in menuItems.Where(m => m.ParentId == menuItem.MenuMasterId))
-                    {
-                        <li class="menu-item">
-                            <a href="@Url.Action(childItem.ActionName, childItem.ControllerName)" class="menu-link">
-                                <div>@childItem.MenuText</div>
-                            </a>
-                            @if (menuItems.Any(m => m.ParentId == childItem.MenuMasterId))
-                            {
-                                @RenderSubMenu(childItem, menuItems)// Recursive call for submenus
-                            }
-                        </li>
-                    }
-                </ul>
-            }
-        </li>
-    }*@

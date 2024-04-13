@@ -62,7 +62,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
         [Required]
         public int DefaultNumberOfRepayment { get; set; }
-
+        [Required]
         public string TaxId { get; set; }
         public decimal LoanMinimumAmount { get; set; }
         [Required]
@@ -84,8 +84,11 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal MaximumSavingAccountBalanceRateForTheRequestAmount { get; set; }
         public decimal MinimumSalaryAccountBalanceRateForTheRequestAmount { get; set; }
         public decimal MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount { get; set; }
-        public decimal MinimumShareAccountBalanceRateForTheRequestAmount { get; set; }
-        public decimal MaximumShareAccountBalanceRateForTheRequestAmount { get; set; }
+        public decimal MinimumShareAccountBalanceForTheRequestAmount { get; set; }
+        public decimal MaximumShareAccountBalanceForTheRequestAmount { get; set; }
+        public decimal MinimumInspectionFeeRate { get; set; }
+        public decimal MaximumInspectionFeeRate { get; set; }
+        public decimal DefaultInspectionFeeRate { get; set; }
         public double MinimumCollateralPercentage { get; set; }
 
         public double MaximumCollateralPercentage { get; set; }
@@ -124,42 +127,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string LoanScheduleDescription { get; set; }
 
         public string ChartOfAccountIdForPrincipalAmount { get; set; }
-
+        public string ChartOfAccountIdForLoanTransition { get; set; }
         public string ChartOfAccountIdForAccrualInterest { get; set; }
-
         public string ChartOfAccountIdForPenalty { get; set; }
-
         public string ChartOfAccountIdForFee { get; set; }
-
         public string ChartOfAccountIdForTax { get; set; }
-
-        public string ChartOfAccountIdForWriteOffPotfolio { get; set; }
-
-        public string ChartOfAccountIdForInterestIncome { get; set; }
-
-        public string ChartOfAccountIdForWriteOffInterest { get; set; }
-
-        public string ChartOfAccountIdForLoanLossReserve { get; set; }
-
+        public string ChartOfAccountIdForWriteOffPrincipal { get; set; }
         public string ChartOfAccountIdForProvisionOnPrincipal { get; set; }
-
-        public string ChartOfAccountIdForProvisionReversalOnPrincipal { get; set; }
-
-        public string ChartOfAccountIdForLoanLossReserveInterest { get; set; }
-
-        public string ChartOfAccountIdForProvisionOnInterest { get; set; }
-
-        public string ChartOfAccountIdForProvisionReversalOnInterest { get; set; }
-
-        public string ChartOfAccountIdForLoanLossReservePenalties { get; set; }
-
-        public string ChartOfAccountIdForProvisionOnLateFees { get; set; }
-
-        public string ChartOfAccountIdForProvisionReversalOnLateFees { get; set; }
         public Penalty Penalty { get; set; }
-        public string ChartOfAccountIdForEarlyPartialRepaymentFeeIncome { get; set; }
-
-        public string ChartOfAccountIdForEarlyTotalRepaymentFeeIncome { get; set; }
+       
 
         public Tax Tax { get; set; }
 
@@ -178,6 +154,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public List<LoanProductMaturityPeriodExtension> LoanProductMaturityPeriodExtensions { get; set; }
         public string ServiceOption { get; set; }
         public string Action { get; set; }
+        public string UpdateOption { get; set; }
+
         public LoanProduct()
         {
             MinimumInterestRate = 0;

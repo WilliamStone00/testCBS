@@ -172,7 +172,10 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
             MemberAccountActivationPolicy = new MemberAccountActivationPolicy();
         }
     }
-
+    public class ResetPinCode
+    {
+        public string Phone { get; set; }
+    }
     public class MemberAccountActivationPolicy
     {
         public string Id { get; set; }
@@ -228,11 +231,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string description { get; set; }
         [Required]
-        public string ChartOfAccountIdPricipalSavingAccount { get; set; }
+        public string ChartOfAccountIdPricipalAccount { get; set; }
         [Required]
-        public string ChartOfAccountIdInterestSavingAccount { get; set; }
+        public string ChartOfAccountIdInterestAccount { get; set; }
         [Required]
-        public string ChartOfAccountIdInterestSavingExpenseAccount { get; set; }
+        public string ChartOfAccountIdInterestExpenseAccount { get; set; }
+        [Required]
+        public string ChartOfAccountIdCommissionAccount { get; set; }
+        [Required]
+        public string ChartOfAccountIdLiassonAccount { get; set; }
         [Required]
         public string ChartOfAccountIdSavingFee { get; set; }
         [Required]
@@ -240,17 +247,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string ChartOfAccountIdTransferFee { get; set; }
         [Required]
-        public string ChartOfAccountIdManagementFee { get; set; }
-        public string ChartOfAccountIdClossingFee { get; set; }
-        [Required]
-        public string ChartOfAccountIdInterestCommissionAccount { get; set; }
-        [Required]
-        public string ChartOfAccountIdInterestLiassonAccount { get; set; }
-        [Required]
         public string AccountType { get; set; }
-        public string ChartOfAccountIdRepoeningFee { get; set; }
         [Required]
-        public string bankId { get; set; }
         public List<CloseFeeParameter> CloseFeeParameters { get; set; }
         public List<EntryFeeParameter> EntryFeeParameters { get; set; }
         public List<ManagementFeeParameter> ManagementFeeParameters { get; set; }
@@ -258,6 +256,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<DepositLimit> CashDepositParameters { get; set; }
         public List<WithdrawalLimit> WithdrawalParameters { get; set; }
         public List<TransferLimit> TransferParameters { get; set; }
+        public string UpdateOption { get; set; }
     }
     public class WithdrawalLimit : Sharing
     {
@@ -396,6 +395,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<StringValues> operationAccounts { get; set; } = new List<StringValues>();
         public List<StringValues> primaryTellerEODStatuses { get; set; } = new List<StringValues>();
         public List<StringValues> accountantEODStatuses { get; set; } = new List<StringValues>();
+        public List<StringValues> Statuses { get; set; } = new List<StringValues>();
 
     }
     public class AddCustomerAccount

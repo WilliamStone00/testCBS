@@ -23,8 +23,7 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
 
             if (!string.IsNullOrEmpty(searchValue))
             {
-                data = data.Where(m => m.GetType().GetProperties().Any(prop =>
-                    prop.GetValue(m).ToString().ToLower().Contains(searchValue) == true)).ToList();
+                data = data.Where(m => m.GetType().GetProperties().Any(prop =>prop.GetValue(m).ToString().ToLower().Contains(searchValue) == true)).ToList();
             }
 
             dataTableOptions.recordsTotal = data.Count;

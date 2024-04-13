@@ -67,7 +67,7 @@
             </div>
         </div>
         <div class="col-12">
-            <label for="accountType"><b>Select the member account type</b></label><hr />
+            <label for="accountType"><b>Select account type</b></label><hr />
             <div class="form-check form-check-inline" id="accountType">
                 @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "PreferenceShare", new { id = "preferenceShare", @class = "form-check-input" })
                 <label class="form-check-label" for="preferenceShare">Preference share account.</label>
@@ -89,91 +89,27 @@
                 <label class="form-check-label" for="loan">Loan account.</label>
             </div>
             <div class="form-check form-check-inline">
-                @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Other", new { id = "other", @class = "form-check-input" })
+                @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Atm", new { id = "atm", @class = "form-check-input" })
+                <label class="form-check-label" for="atm">Automatic Teller Machine (ATM).</label>
+            </div>
+            <div class="form-check form-check-inline">
+                @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Gav", new { id = "gav", @class = "form-check-input" })
+                <label class="form-check-label" for="gav">Guichet automatic virtuel (GAV).</label>
+            </div>
+            <div class="form-check form-check-inline">
+                @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "DailyCollection", new { id = "dailyCollection", @class = "form-check-input" })
+                <label class="form-check-label" for="dailyCollection">Daily collection.</label>
+            </div>
+            <div class="form-check form-check-inline">
+                @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Teller", new { id = "teller", @class = "form-check-input" })
+                <label class="form-check-label" for="teller">Teller account (Reserved for operations).</label>
+            </div>
+            <div class="form-check form-check-inline">
+                @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Other", new { id = "other", @class = "form-check-input"})
                 <label class="form-check-label" for="other">Other</label>
             </div>
             <hr />
         </div>
-
-
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdPricipalSavingAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdPricipalSavingAccount, "", new { @class = "text-danger" })
-                <label>Capital (This is an account that holds the sum of the savings of this product.)</label>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestSavingAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestSavingAccount, "", new { @class = "text-danger" })
-                <label>Interest account (This is an account that receive all interest generated from saving products)</label>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestSavingExpenseAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestSavingExpenseAccount, "", new { @class = "text-danger" })
-                <label>Interest expense account (This is an account that receive all interest paid out to other accounts)</label>
-            </div>
-        </div>
-
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestCommissionAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestCommissionAccount, "", new { @class = "text-danger" })
-                <label>Commision account. (This account holds commissions generated from inter-operations)</label>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestLiassonAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestLiassonAccount, "", new { @class = "text-danger" })
-                <label>Liasson account. (This account holds cash for compensation managed at the level of head-office)</label>
-            </div>
-        </div>
-        @*<div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdSavingFee, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdSavingFee, "", new { @class = "text-danger" })
-                <label>Entry fee (This is an account that receive all entry fee generated from this saving products)</label>
-            </div>
-        </div>*@
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdWithrawalFee, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdWithrawalFee, "", new { @class = "text-danger" })
-                <label>Withdrawal fee (This is an account that receive all withdrawal fee generated from this saving products)</label>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdTransferFee, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdTransferFee, "", new { @class = "text-danger" })
-                <label>Transfer fee (This is an account that receive all transfer fee generated from this saving products)</label>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdManagementFee, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdManagementFee, "", new { @class = "text-danger" })
-                <label>Management fee (This is an account that receive all management fee generated from this saving products)</label>
-            </div>
-        </div>
-        @*<div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdClossingFee, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdClossingFee, "", new { @class = "text-danger" })
-                <label>Closing fee (This is an account that receive all closing fee generated from this saving products)</label>
-            </div>
-        </div>*@
-        @*<div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdRepoeningFee, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdRepoeningFee, "", new { @class = "text-danger" })
-                <label>Re-opening fee (This is an account that receive all re-opening fee generated from this saving products)</label>
-            </div>
-        </div>*@
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.TextAreaFor(m => m.SavingProduct.description, new { @class = "form-control", @style = "height: 75px;" })
@@ -181,6 +117,7 @@
                 <label>Description</label>
             </div>
         </div>
+
     </div>
     <div class="mt-4">
         @if (Model.SavingProduct.id==null)

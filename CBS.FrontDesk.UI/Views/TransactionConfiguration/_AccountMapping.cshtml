@@ -1,0 +1,124 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+<div class="col">
+
+    <div class="row my-4">
+        <div class="accordion" id="collapsibleSection">
+            <div class="card accordion-item">
+                <h2 class="accordion-header" id="headingDeliveryAddress">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDeliveryAddress"
+                            aria-expanded="true"
+                            aria-controls="collapseDeliveryAddress">
+                        Mapping ordinary accounts to the account chart.
+                    </button>
+                </h2>
+                <div id="collapseDeliveryAddress"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div class="row g-4">
+                            @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            {
+                                <fieldset class="fieldset-custom">
+                                    <legend>Account Mappings</legend>
+                                    <input type="hidden" name="ServiceOption" value="accountmapping" id="ServiceOption" />
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.SavingProduct.code, new { @class = "form-control", @readonly = true })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.code, "", new { @class = "text-danger" })
+                                                <label>Product Code</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.SavingProduct.name, new { @class = "form-control", @readonly = true })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.name, "", new { @class = "text-danger" })
+                                                <label>Product name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextAreaFor(m => m.SavingProduct.description, new { @class = "form-control", @style = "height: 75px;", @readonly = true })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.description, "", new { @class = "text-danger" })
+                                                <label>Description</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdPricipalAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdPricipalAccount, "", new { @class = "text-danger" })
+                                                <label>Capital (This is an account that holds the sum of the product.)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestAccount, "", new { @class = "text-danger" })
+                                                <label>Interest account (This is an account that receive all interest generated from products)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestExpenseAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestExpenseAccount, "", new { @class = "text-danger" })
+                                                <label>Interest expense account (This is an account that receive all interest paid out to other accounts)</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdCommissionAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdCommissionAccount, "", new { @class = "text-danger" })
+                                                <label>Commision account. (This account holds commissions generated from operations)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdLiassonAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdLiassonAccount, "", new { @class = "text-danger" })
+                                                <label>Liasson account. (This account is used as transit for inter-operations between branches)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdWithrawalFee, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdWithrawalFee, "", new { @class = "text-danger" })
+                                                <label>Withdrawal fee (This is an account that receive all withdrawal fee generated from this saving products)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdTransferFee, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdTransferFee, "", new { @class = "text-danger" })
+                                                <label>Transfer fee (This is an account that receive all transfer fee generated from this saving products)</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </fieldset>
+                                <div class="mt-4">
+                                    @if (Model.SavingProduct.id == null)
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Save</button>
+                                        <input type="hidden" name="Action" value="insert" id="Action" />
+                                    }
+                                    else
+                                    { <button type="submit" class="btn btn-primary me-2">Update</button>
+                                        @Html.HiddenFor(m => m.SavingProduct.id)
+                                        <input type="hidden" name="Action" value="update" id="Action" />
+                                    }
+
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

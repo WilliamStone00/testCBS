@@ -14,6 +14,11 @@ using CBS.BusinessService.Accounts;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using System.Web.Services.Description;
+using CBS.BusinessService.Application;
+using CBS.BusinessService;
+using CBS.BusinessService.Accounting;
+using CBS.FrontDesk.UI.Reporting.Transactions.Reciepts;
+using CBS.BusinessService.Config;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -22,16 +27,56 @@ namespace CBS.FrontDesk.UI.Controllers
         // GET: Operation/Transfer
         private readonly AccountServices _acountServices;
         private readonly TellerProvissioningServices _services;
-        public OperationController(AccountServices acountServices, TellerProvissioningServices services = null)
+        private readonly LoanServices _loanServices;
+        private readonly BranchServices _branchServices;
+        private readonly IndividualProfileServices _individualProfileServices;
+        public OperationController(AccountServices acountServices, TellerProvissioningServices services = null, LoanServices loanServices = null, BranchServices branchServices = null, IndividualProfileServices individualProfileServices = null)
         {
             _acountServices = acountServices;
             _services = services;
+            _loanServices = loanServices;
+            _branchServices = branchServices;
+            _individualProfileServices = individualProfileServices;
         }
         public async Task<ActionResult> AccountDetails(string KEY = null)
         {
 
             //502846231941202110
+            ViewBag.Sources = _acountServices.GetPaymentSources();
+            var account = await _acountServices.GetAccountByAccountNumber(KEY);
+            return View(account);
+        }
+        public async Task<ActionResult> Deposit(string KEY = null)
+        {
+            //Statement
 
+            ViewBag.Operation = "Deposit";
+            ViewBag.Sources = _acountServices.GetPaymentSources();
+            var account = await _acountServices.GetAccountByAccountNumber(KEY);
+            return View(account);
+        }
+        public async Task<ActionResult> Statement(string KEY = null)
+        {
+            ViewBag.Operation = "Deposit";
+            ViewBag.Sources = _acountServices.GetPaymentSources();
+            var account = await _acountServices.GetAccountByAccountNumber(KEY);
+            return View(account);
+        }
+        public async Task<ActionResult> LoanRepayment(string KEY = null)
+        {
+            ViewBag.Operation = "LoanRepayment";
+            ViewBag.Sources = _acountServices.GetPaymentSources();
+            var account = await _acountServices.GetAccountByAccountNumber(KEY);
+            var loan = await _loanServices.GetLoanByCustomerID(account.CustomerId);
+            account.Loans = loan.Where(x => x.LoanStatus == "Open").ToList();
+            account.LoanRepayments = loan.SelectMany(x=>x.Refunds).ToList();
+            return View(account);
+        }
+        //LoanRepayment
+        public async Task<ActionResult> Withdrawal(string KEY = null)
+        {
+            ViewBag.Operation = "Withdrawal";
+            ViewBag.Sources = _acountServices.GetPaymentSources();
             var account = await _acountServices.GetAccountByAccountNumber(KEY);
             return View(account);
         }
@@ -39,6 +84,24 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             return View();
         }
+        public async Task<ActionResult> Transfers()
+        {
+            return View();
+        }
+        public async Task<ActionResult> TransferPending()
+        {
+            return View();
+        }
+        public async Task<ActionResult> TransferRequest()
+        {
+            var account = await _acountServices.SourceAndDestinationAccount();
+            var conf = await _acountServices.GetSavingConfigurationAggregates();
+            ViewBag.Source = account;
+            ViewBag.Destination = account;
+            ViewBag.TransferTypes = conf.transferTypes;
+            return View(new Account());
+        }
+       
         //Transactions
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
@@ -50,6 +113,42 @@ namespace CBS.FrontDesk.UI.Controllers
                     var account = await _acountServices.GetTransactionsAsync();
                     return PartialView(partialView, account);
                 }
+                else if (path== "confirmation_request")
+                {
+                    var Statuses = await _acountServices.GetSavingConfigurationAggregates();
+                    ViewBag.Status = Statuses.Statuses;
+                    var transfer = await _acountServices.GetTransfer(KEY);
+                    var account=new Account {Transfer=transfer, TransferConfirmation=new TransferConfirmation{ TransferId= transfer.Id} };
+                    return PartialView(partialView, account);
+                }
+                else if (path == "details")
+                {
+                    var transfer = await _acountServices.GetTransfer(KEY);
+                    var account = new Account { Transfer = transfer};
+                    return PartialView(partialView, account);
+                }
+                else if (path == "pending_request")
+                {
+                   
+                    var transfers = await _acountServices.GetPendingTransfers();
+                    var account = new Account { Transfers = transfers };
+                    return PartialView(partialView, account);
+                }
+                else if (path == "all_transfer_request")
+                {
+                    var transfers = await _acountServices.GetTransfers();
+                    var account = new Account { Transfers = transfers };
+                    return PartialView(partialView, account);
+                }
+                else if (path == "transfer_request")
+                {
+                    var account = await _acountServices.SourceAndDestinationAccount();
+                    var conf = await _acountServices.GetSavingConfigurationAggregates();
+                    ViewBag.Source = account;
+                    ViewBag.Destination = account;
+                    ViewBag.TransferTypes = conf.transferTypes;
+                    return PartialView(partialView, new Account());
+                }
                 else
                 {
                     var account = await _acountServices.GetAccountByAccountNumber(KEY);
@@ -57,7 +156,6 @@ namespace CBS.FrontDesk.UI.Controllers
                     return PartialView(partialView, account);
                 }
 
-                return PartialView(KEY, partialView);
             }
             catch (Exception ex)
             {
@@ -84,13 +182,28 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             else if (model.OperationType == "Withdrawal")
             {
-                var data = await _acountServices.Withdrawal(model.WithdrawalRequest);
+
+                var data = await _acountServices.Withdrawal(model.DepositRequest);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else if (model.OperationType == "LoanRepayment")
+            {
+
+                var data = await _acountServices.LoanRepayment(model.DepositRequest);
+               
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
             else if (model.OperationType == "Transfer")
             {
                 var data = await _acountServices.Transfer(model.TransferRequest);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else if (model.OperationType == "TransferConfirmation")
+            {
+                var data = await _acountServices.TransferConfirmation(model.TransferConfirmation);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
@@ -129,6 +242,40 @@ namespace CBS.FrontDesk.UI.Controllers
                 this.HttpContext.Session["rptpath"] = $"~/{reportpath}/" + ReportName + ".rpt";
                 this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
             }
+            else if (path == "receipts")
+            {
+                this.HttpContext.Session["rptType"] = "ReportParameterLess";
+                this.HttpContext.Session["ReportName"] = $"Receipts.rpt";
+                this.HttpContext.Session["rptpath"] = $"~/Reporting/Transactions/Reciepts/Receipts.rpt";
+                this.HttpContext.Session["rpttitle"] = $"MemberReceipts";
+            }
+            else if (path == "customer_account_transaction_rpt")
+            {
+                var transactionHistories = await _acountServices.GetCustomerTransactionsByAccountNumber(KEY);
+                var customer = await _individualProfileServices.GetSingleCustomer(transactionHistories.FirstOrDefault().Account.CustomerId);
+                if (customer==null)
+                {
+                    return Json(new { success = true, status = false, message = "Failed getting customer" }, JsonRequestBehavior.AllowGet);
+
+                }
+                var branch = await _branchServices.GetBranch(customer.branchId);
+                var rpt = _acountServices.MaprptSource(transactionHistories, branch, customer);
+                this.HttpContext.Session["rptSource"] = rpt;
+                string accountnumber = null;
+                if (!transactionHistories.Any())
+                {
+                    return Json(new { success = true, status = false, message = "No data was found." }, JsonRequestBehavior.AllowGet);
+
+                }
+                else
+                {
+                    accountnumber = transactionHistories.FirstOrDefault().AccountNumber;
+                }
+                this.HttpContext.Session["rptType"] = "ReportParameterLess";
+                this.HttpContext.Session["ReportName"] = $"IAccountStatement.rpt";
+                this.HttpContext.Session["rptpath"] = $"~/Reporting/Transactions/Statement/IAccountStatement.rpt";
+                this.HttpContext.Session["rpttitle"] = $"{accountnumber}_Statement";
+            }
             else if (path == "by_date_history")
             {
                 //this.HttpContext.Session["rptSource"] = _helper._object.Receipts;
@@ -137,17 +284,16 @@ namespace CBS.FrontDesk.UI.Controllers
             }
            
 
-            return Json("", JsonRequestBehavior.AllowGet);
+            return Json(new { success = true, status = false, message = "Fill the required fields." }, JsonRequestBehavior.AllowGet);
 
         }
-        public async Task<ActionResult> Transfer()
+       
+        public async Task<ActionResult> GetLoan(string Key)
         {
-            var account = await _acountServices.SourceAndDestinationAccount();
-            var conf = await _acountServices.GetSavingConfigurationAggregates();
-            ViewBag.Source = account;
-            ViewBag.Destination = account;
-            ViewBag.TransferTypes = conf.transferTypes;
-            return View(new Account());
+            var loan = await _loanServices.GetLoan(Key);
+            //return Json(loan, JsonRequestBehavior.AllowGet);
+            return Json(loan, JsonRequestBehavior.AllowGet);
+
         }
     }
 }

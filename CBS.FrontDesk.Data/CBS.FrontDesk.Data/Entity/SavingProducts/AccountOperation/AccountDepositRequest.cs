@@ -61,25 +61,100 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string depositorIDNumberPlaceOfIssue { get; set; }
         public string bankId { get; set; }
         public string branchId { get; set; }
+
+        public decimal Principal { get; set; }
+        public decimal Interest { get; set; }
+        public decimal Tax { get; set; }
+        public decimal Penalty { get; set; }
+        public string LoanId { get; set; }
+
+
         public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
+    }
+    public class LoanRepaymentCommand
+    {
+        public decimal Amount { get; set; }
+        public decimal Principal { get; set; }
+        public decimal Interest { get; set; }
+        public decimal Tax { get; set; }
+        public decimal Penalty { get; set; }
+        public string LoanId { get; set; }
+        public string AccountNumber { get; set; }
+        public string PaymentMethod { get; set; }
+        public string PaymentChannel { get; set; }
+        public string DepositType { get; set; }
+        public string Note { get; set; }
+        public CurrencyNotes CurrencyNotes { get; set; }
+        public bool IsDepositDoneByAccountOwner { get; set; }
+        public string DepositerTelephone { get; set; }
+        public string DepositorIDNumberPlaceOfIssue { get; set; }
+        public string DepositerNote { get; set; }
+        public string DepositorIDNumber { get; set; }
+        public string DepositorName { get; set; }
+        public string DepositorIDIssueDate { get; set; }
+        public string DepositorIDExpiryDate { get; set; }
+
     }
     public class TransferRequest
     {
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(1, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
-        public int amount { get; set; }
+        public int Amount { get; set; }
         [Required(ErrorMessage = "Sender account number is required")]
-        public string senderAccountNumber { get; set; }
+        public string SenderAccountNumber { get; set; }
         [Required(ErrorMessage = "Receiver account number is required")]
-        public string receiverAccountNumber { get; set; }
-        [Required(ErrorMessage = "Source type is required")]
-        public string transferType { get; set; }
-       
-        public string note { get; set; }
-        [Required(ErrorMessage = "Teller is required")]
-        public string tellerId { get; set; }
-        [Required(ErrorMessage = "Currency is required")]
-        public string currency { get; set; }
+        public string ReceiverAccountNumber { get; set; }
+        public string Note { get; set; }
+        public TransferRequest()
+        {
+            Note = "Commencing transfer process now. Initiating transfer from [Sender's Account] to [Receiver's Account]. Thank you for your patience.";
+        }
+    }
+    public class TransferConfirmation
+    {
+        [Required]
+        public string TransferId { get; set; }
+        [Required]
+        public string Status { get; set; }
+        [Required]
+        public string Note { get; set; }
+        public TransferConfirmation()
+        {
+            Status="Approved";
+            Note= "After careful review, I've examined this operation and am pleased to grant my approval.";
+        }
+    }
+    public class Transfer
+    {
+        public string Id { get; set; }
+        public string SourceAccountNumber { get; set; }
+        public string DestinationAccountNumber { get; set; }
+        public string SourceAccountType { get; set; }
+        public string DestinationAccountType { get; set; }
+        public decimal Charges { get; set; }
+        public decimal Tax { get; set; }
+        public string TransactionRef { get; set; }
+        public string TransactionType { get; set; }
+        public decimal SourceCommision { get; set; }
+        public decimal DestinationCommision { get; set; }
+        public bool IsInterBranchOperation { get; set; }
+        public decimal Amount { get; set; }
+        public string SourceType { get; set; }
+        public string Status { get; set; }
+        public string ApprovedByUserName { get; set; }
+        public string InitiatedByUSerName { get; set; }
+        public DateTime DateOfInitiation { get; set; } = DateTime.Now;
+        public DateTime DateOfApproval { get; set; } = DateTime.MinValue;
+        public string InitiatorComment { get; set; }
+        public string ValidatorComment { get; set; }
+        public string BranchId { get; set; }
+        public string AccountId { get; set; }
+        public string TellerId { get; set; }
+        public string SourceBrachId { get; set; }
+        public string DestinationBrachId { get; set; }
+        public virtual Account Account { get; set; }
+        public virtual Teller Teller { get; set; }
+ 
     }
 
     //

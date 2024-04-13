@@ -1,6 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
 @{
-    ViewBag.Title = "Member's loan profile";
+    ViewBag.Title = "Loan panel";
 }
 
 
@@ -111,6 +111,7 @@
         </div>
     </div>
     <div class="col-xl-9 col-lg-8 col-md-8 order-0 order-md-1">
+
         <div class="card">
             <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
                 <div class="accordion-item active">
@@ -123,6 +124,9 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-application-cog me-2"></i>
+                            <div class="d-flex justify-content-center">
+                                <div class="fw-bold fs-4">LOAN OPERATION PANEL</div>
+                            </div>
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -164,10 +168,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="datalistingview">
-                                        @Html.Partial("_LoanData")
-                                    </div>
+                                    <fieldset class="fieldset-custom">
 
+                                        <div id="datalistingview">
+                                            @Html.Partial("_LoanData")
+                                        </div>
+                                    </fieldset>
                                 </div>
                             </div>
                         </div>
@@ -175,6 +181,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 

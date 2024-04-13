@@ -29,11 +29,12 @@ function GetLoanApplication(KEY) {
             $('#interest').html("Enter interest between:" + data.MinimumInterestRate + "% and " + data.MaximumInterestRate + "%. Calculated on daily bases: " + data.LoanInterestPeriod);
             $('#installment').html("Minimum repayment installment is:" + data.MinimumNumberOfRepayment + " and Maximum is " + data.MaximumNumberOfRepayment);
             $('#saving').html("Enter balance saving rate between:" + data.MinimumSavingAccountBalanceRateForTheRequestAmount + "% and " + data.MaximumSavingAccountBalanceRateForTheRequestAmount+"%");
-            $('#share').html("Enter balance share rate between:" + data.MinimumShareAccountBalanceRateForTheRequestAmount + "% and " + data.MaximumShareAccountBalanceRateForTheRequestAmount + "%");
+            $('#share').html("Enter required share amount between:" + data.MinimumShareAccountBalanceForTheRequestAmount + " and " + data.MaximumShareAccountBalanceForTheRequestAmount + "");
             $('#salary').html("Enter Salary rate between:" + data.MinimumSalaryAccountBalanceRateForTheRequestAmount + "% and " + data.MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount + "%");
             $('#fee').html("Enter processing fee rate between:" + data.MinimumProcessingFeeRate + "% and " + data.MaximumProcessingFeeRate + "%.");
+            $('#inspectionfee').html("Enter inspection fee between:" + data.MinimumInspectionFeeRate + "% and " + data.MaximumInspectionFeeRate + "%.");
 
-
+            //InspectionFee
         }, error: function (err) {
 
             appalert(err.statusText, 1, 3);
