@@ -126,14 +126,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 ViewBag.KEY = KEY;
                 if (path == "export_generalLedger")
                 {
-                    ////var account = await _acountServices.GenerateAccountingLedgerForAnumber();
-                    ////return PartialView(partialView, account);
+               
                 }
                 else
-                {
-                    //var account = await _acountServices.GetAccountByAccountNumber(KEY);
-                    //ViewBag.Sources = _acountServices.GetPaymentSources();
-                    //return PartialView(partialView, account);
+                { 
                 }
 
                 return PartialView(KEY, partialView);
