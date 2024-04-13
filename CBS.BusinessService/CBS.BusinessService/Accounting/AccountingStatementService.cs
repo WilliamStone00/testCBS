@@ -3,6 +3,7 @@ using CBS.FrontDesk.Data.Entity.Accounting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -107,6 +108,27 @@ namespace CBS.BusinessService.Accounting
 
 
         }
- 
+
+        public async Task<List<TrialBalance4ColumnDto>> GenerateTrialBalance_4column(SystemQuery model)
+        {
+            List<AccountingEntry> filteredEntries = new List<AccountingEntry>();
+            return await _Service.RetrieveTrialBalance4ColumnEntries(model);
+        }
+        public async Task<List<TrialBalance6ColumnDto>> GenerateTrialBalance_6column(SystemQuery model)
+        {
+            List<AccountingEntry> filteredEntries = new List<AccountingEntry>();
+            return await _Service.RetrieveTrialBalance6ColumnEntries(model);
+        }
+        public async Task<List<ModelBalanceSheetAssets>> GenerateBalanceSheet(SystemQuery model)
+        {
+            List<AccountingEntry> filteredEntries = new List<AccountingEntry>();
+            return await _Service.RetrieveBalanceSheetColumnEntries(model);
+        }
+
+        public async Task<List<ModelExpenses>> GenerateIncomeStatement(SystemQuery model)
+        {
+            List<AccountingEntry> filteredEntries = new List<AccountingEntry>();
+            return await _Service.RetrieveIncomeAndExpenseEntries(model);
+        }
     }
 }

@@ -193,23 +193,51 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             break;
                         case "TB4":
                             {
-
+                            string fileTitle = $"TrialBalance_4column{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                            var account = await _acountServices.GenerateTrialBalance_4column(model.SystemQuery);
+                            this.HttpContext.Session["rptSource"] = account;
+                            if (!account.Any())
+                            {
+                                this.HttpContext.Session["rptSource"] = "empty";
                             }
+                            this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                        }
                             break;
                         case "TB6":
                             {
-
+                            string fileTitle = $"TrialBalance_6column{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                            var account = await _acountServices.GenerateTrialBalance_6column(model.SystemQuery);
+                            this.HttpContext.Session["rptSource"] = account;
+                            if (!account.Any())
+                            {
+                                this.HttpContext.Session["rptSource"] = "empty";
                             }
+                            this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                        }
                             break;
                         case "BS":
                             {
-
+                            string fileTitle = $"BalanceSheet{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                            var account = await _acountServices.GenerateBalanceSheet(model.SystemQuery);
+                            this.HttpContext.Session["rptSource"] = account;
+                            if (!account.Any())
+                            {
+                                this.HttpContext.Session["rptSource"] = "empty";
                             }
+                            this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                        }
                             break;
                         case "PANDL":
                             {
-
+                            string fileTitle = $"InComeStatement{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                            var account = await _acountServices.GenerateIncomeStatement(model.SystemQuery);
+                            this.HttpContext.Session["rptSource"] = account;
+                            if (!account.Any())
+                            {
+                                this.HttpContext.Session["rptSource"] = "empty";
                             }
+                            this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                        }
                             break;
                     }
                

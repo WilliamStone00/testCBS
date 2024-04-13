@@ -690,6 +690,46 @@ namespace CBS.BusinessService
                 throw (ex);
             }
         }
+
+        public async Task<List<ModelBalanceSheetAssets>> RetrieveBalanceSheetColumnEntries(SystemQuery model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+
+                return await _accountingApiCallerHelper.PostModelBalanceSheetAssetsAsync(APICallHelper.AccountingEntry_BalanceSheetColumn, model);
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+                throw (ex);
+            }
+        }
+
+        public async Task<List<ModelExpenses>> RetrieveIncomeAndExpenseEntries(SystemQuery model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+
+                return await _accountingApiCallerHelper.PostIncomeAndExpenseEntriesAsync(APICallHelper.AccountingEntry_BalanceSheetColumn, model);
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+                throw (ex);
+            }
+        }
     }
 
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);

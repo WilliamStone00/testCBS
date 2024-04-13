@@ -293,6 +293,26 @@ namespace CBS.API.Helper
             var Model = await HandleTrialBalance4ColumnResponse(response);
             return Model.Data;
         }
+        
+        public async Task<List<ModelBalanceSheetAssets>> PostModelBalanceSheetAssetsAsync(string apiUrl, object data)
+        {
+            string jsonData = JsonConvert.SerializeObject(data);
+            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            AddAuthorizationHeader(_httpClient);
+            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+            var Model = await HandleBalanceSheetAssetsResponse(response);
+            return Model.Data;
+        }
+
+        public async Task<List<ModelExpenses>> PostIncomeAndExpenseEntriesAsync(string apiUrl, object data)
+        {
+            string jsonData = JsonConvert.SerializeObject(data);
+            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            AddAuthorizationHeader(_httpClient);
+            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+            var Model = await HandleModelExpensesServiceResponse(response);
+            return Model.Data;
+        }
         public async Task<ServiceResponseXX<T>> PostxxAsync<T>(string apiUrl, object data)
         {
             string jsonData = JsonConvert.SerializeObject(data);
@@ -761,6 +781,44 @@ namespace CBS.API.Helper
             }
         }
 
+        private async Task<ModelBalanceSheetAssetsServiceResponse> HandleBalanceSheetAssetsResponse(HttpResponseMessage response)
+        {
+
+            ModelBalanceSheetAssetsServiceResponse entries = new ModelBalanceSheetAssetsServiceResponse();
+            try
+            {
+                if (response.Content != null)
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    entries = JsonConvert.DeserializeObject<ModelBalanceSheetAssetsServiceResponse>(responseData);
+                }
+                return entries;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+        private async Task<ModelExpensesServiceResponse> HandleModelExpensesServiceResponse(HttpResponseMessage response)
+        {
+
+            ModelExpensesServiceResponse entries = new ModelExpensesServiceResponse();
+            try
+            {
+                if (response.Content != null)
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    entries = JsonConvert.DeserializeObject<ModelExpensesServiceResponse>(responseData);
+                }
+                return entries;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
         private async Task<LiaisonLedgerEntryServiceResponse> HandleLiaisonResponse(HttpResponseMessage response)
         {
 
