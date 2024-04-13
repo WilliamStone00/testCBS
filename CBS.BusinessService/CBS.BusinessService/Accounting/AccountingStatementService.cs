@@ -69,24 +69,24 @@ namespace CBS.BusinessService.Accounting
             var accounts = await _AccountServices.GetAllAccounting();
 
             // Filter entries based on BranchId and AccountId
-            if ( IsHeadOffice())
-            {
-                filteredEntries = (accountingEntries.Where(entry =>
-                (model.BranchId == "XXXXXX" || entry.BranchId == model.BranchId) &&
-                (model.AccountId == "XXXXXX" || entry.DrAccountId == model.AccountId || entry.CrAccountId == model.AccountId))).ToList();
+            //if ( IsHeadOffice())
+            //{
+            //    filteredEntries = (accountingEntries.Where(entry =>
+            //    (model.BranchId == "XXXXXX" || entry.BranchId == model.BranchId) &&
+            //    (model.AccountId == "XXXXXX" || entry.DrAccountId == model.AccountId || entry.CrAccountId == model.AccountId))).ToList();
+                
+
+            //}
+            //else
+            //{
+            //    filteredEntries = (accountingEntries.Where(entry =>
+            //    (model.BranchId == "XXXXXX" || entry.BranchId == GetBranchID()) &&
+            //    (model.AccountId == "XXXXXX" || entry.DrAccountId == model.AccountId || entry.CrAccountId == model.AccountId))).ToList();
 
 
-            }
-            else
-            {
-                filteredEntries = (accountingEntries.Where(entry =>
-                (model.BranchId == "XXXXXX" || entry.BranchId == GetBranchID()) &&
-                (model.AccountId == "XXXXXX" || entry.DrAccountId == model.AccountId || entry.CrAccountId == model.AccountId))).ToList();
-
-
-            }
+            //}
             // Project the filtered entries to AccountingEntryDto
-            var query = from entry in filteredEntries
+            var query = from entry in accountingEntries
                         join drAccount in accounts on entry.DrAccountId equals drAccount.Id into drJoined
                         from drAccountData in drJoined.DefaultIfEmpty()
                         join crAccount in accounts on entry.CrAccountId equals crAccount.Id into crJoined
