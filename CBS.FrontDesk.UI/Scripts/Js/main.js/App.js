@@ -200,17 +200,98 @@ function DownloadFile(url) {
 //});
 
 
-function PrintSingleObject(objectID, option, reportStructureType) {
-    var url = "/Reporting/Report?objectID=" + objectID + "&reportStructureType=" + reportStructureType + "&option=" + option;
+//function PrintSingleObject(objectID, option, reportStructureType) {
+//    var url = "/Reporting/Report?objectID=" + objectID + "&reportStructureType=" + reportStructureType + "&option=" + option;
+//    $.ajax({
+//        type: "Get",
+//        url: "/Reporting/AjaxCaller",
+//        cache: false,
+//        success: function (response) {
+
+//            if (response.success) {
+//                appalert("Plaese wait, downloading file", 1);
+//                window.open(url, '_blank');
+
+//            }
+//            else {
+
+
+//                appalert(response.message, 0);
+//            }
+
+
+//        }, error: function (err) {
+
+//            appalert(err.statusText);
+//        }
+//    });
+
+
+//}
+//function calculateBalance() {
+//    // Get the total amount of currency notes and coins
+//    var note10000 = parseInt(document.getElementById('Notes_note10000').value) || 0;
+//    var note5000 = parseInt(document.getElementById('Notes_note5000').value) || 0;
+//    var note2000 = parseInt(document.getElementById('Notes_note2000').value) || 0;
+//    var note1000 = parseInt(document.getElementById('Notes_note1000').value) || 0;
+//    var note500 = parseInt(document.getElementById('Notes_note500').value) || 0;
+//    var coin500 = parseInt(document.getElementById('Notes_coin500').value) || 0;
+//    var coin100 = parseInt(document.getElementById('Notes_coin100').value) || 0;
+//    var coin50 = parseInt(document.getElementById('Notes_coin50').value) || 0;
+//    var coin25 = parseInt(document.getElementById('Notes_coin25').value) || 0;
+//    var coin10 = parseInt(document.getElementById('Notes_coin10').value) || 0;
+//    var coin5 = parseInt(document.getElementById('Notes_coin5').value) || 0;
+//    var coin1 = parseInt(document.getElementById('Notes_coin1').value) || 0;
+
+//    // Calculate total amount
+//    var totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
+//        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
+
+//    // Update the DepositRequest_amount input field with the total amount
+//    document.getElementById("DepositRequest_amount").value = totalAmount.toFixed(2);
+
+//}
+function calculateBalance() {
+    // Get the total amount of currency notes and coins
+    var note10000 = parseInt(document.getElementById('Notes_note10000').value) || 0;
+    var note5000 = parseInt(document.getElementById('Notes_note5000').value) || 0;
+    var note2000 = parseInt(document.getElementById('Notes_note2000').value) || 0;
+    var note1000 = parseInt(document.getElementById('Notes_note1000').value) || 0;
+    var note500 = parseInt(document.getElementById('Notes_note500').value) || 0;
+    var coin500 = parseInt(document.getElementById('Notes_coin500').value) || 0;
+    var coin100 = parseInt(document.getElementById('Notes_coin100').value) || 0;
+    var coin50 = parseInt(document.getElementById('Notes_coin50').value) || 0;
+    var coin25 = parseInt(document.getElementById('Notes_coin25').value) || 0;
+    var coin10 = parseInt(document.getElementById('Notes_coin10').value) || 0;
+    var coin5 = parseInt(document.getElementById('Notes_coin5').value) || 0;
+    var coin1 = parseInt(document.getElementById('Notes_coin1').value) || 0;
+
+    // Calculate total amount
+    var totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
+        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
+
+    // Format total amount as currency
+    var formattedTotalAmount = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
+
+    // Update the lblDepositRequest_amount span with the formatted total amount
+    document.getElementById("lblDepositRequest_amount").textContent = "Total Amount: " + formattedTotalAmount;
+}
+function PrintSingleObject(controller, objectID, path, rptType) {
+    var url = "/" + controller + "/GetReport?KEY=" + objectID + "&path=" + path;
     $.ajax({
-        type: "Get",
-        url: "/Reporting/AjaxCaller",
+        type: "POST",
+        url: url,
         cache: false,
         success: function (response) {
 
             if (response.success) {
-                appalert("Plaese wait, downloading file", 1);
-                window.open(url, '_blank');
+                if (response.message == "OK") {
+                    appalert(response.message, 1, 1);
+                    window.open("/Reports/" + rptType, "_blank");
+                }
+                else {
+                    appalert(response.message, 0);
+                }
 
             }
             else {
@@ -228,7 +309,6 @@ function PrintSingleObject(objectID, option, reportStructureType) {
 
 
 }
-
 
 function LoadDT(tableID, order) {
 

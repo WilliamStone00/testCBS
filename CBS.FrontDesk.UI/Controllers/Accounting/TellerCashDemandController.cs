@@ -238,9 +238,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var OperationEventAttribute = await _accountingEntry.GetCashReplenimentRequest(KEY);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
-                var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
-                ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
-                ViewBag.Decisions = BuildMenuViewBag();
+                //var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
+                //ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
+                //ViewBag.Decisions = BuildMenuViewBag();
                 return PartialView(partialView, cashDemandDataEntity);
 
             }

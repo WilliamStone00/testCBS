@@ -39,6 +39,14 @@ namespace CBS.FrontDesk.UI.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<ActionResult> LoadDataSearch(string search)
+        {
+            var dataTable = await _acountServices.GetDataTableSearch(GetDataTableOptions(), search);
+            return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data });
+
+        }
+
 
     }
 }

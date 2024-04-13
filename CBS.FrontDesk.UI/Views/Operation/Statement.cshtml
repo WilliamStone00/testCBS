@@ -49,6 +49,9 @@
                                                     <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('Operation', null,'GetReport', '@Model.AccountNumber', 'List', 'customer_account_transaction', null,'customer_account_transaction','DownloadExcelFile',null,'@Model.AccountNumber')" data-bs-toggle="tooltip" title="Export members account @Model.AccountNumber statements">
                                                         <span class="tf-icons mdi mdi-file-excel mdi-18px"></span>
                                                     </a>
+                                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('Operation', '@Model.AccountNumber','customer_account_transaction_rpt','ReportParameterLess')" data-bs-toggle="tooltip" title="print members account @Model.AccountNumber statements">
+                                                        <span class="tf-icons mdi mdi-printer mdi-18px"></span>
+                                                    </a>
                                                 </div>
                                             </div>
                                             <div id="datalistingview">

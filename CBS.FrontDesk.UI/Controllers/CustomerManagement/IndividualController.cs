@@ -170,6 +170,21 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             }
         }
         [HttpPost]
+        public async Task<ActionResult> LoadDataSearch(string Search = "All")
+        {
+            try
+            {
+                var dataTable = await _individualProfileServices.GetDataTable(GetDataTableOptions());
+                return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data });
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        //"url": "/Saving/LoadDataSearch?Search=" + search,
+        [HttpPost]
         public async Task<ActionResult> Update(IndividualCustomerProfile model)
         {
 

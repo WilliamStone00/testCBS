@@ -41,12 +41,21 @@
                                 <!-- Manual Search Bar -->
                                 <div class="card mb-4">
                                     <div class="card-body">
-                                        <div class="input-group mb-3">
-                                            <input type="text" id="manualSearchInput" class="form-control" placeholder="Search...">
-                                            <button class="btn btn-primary" onclick="manualSearch()">Search</button>
+                                        <div class="row">
+                                            <div class="col-md-8 d-flex align-items-center">
+                                                <label for="manualSearchInput" class="search-label">Search by account number or member's name or telephone number...</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Enter search criteria...">
+                                                    <button class="btn btn-primary" onclick="manualSearch()">Search</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
+
                                 <!-- End Manual Search Bar -->
                                 <div id="datalistingview">
                                     @Html.Partial("_AccountData")

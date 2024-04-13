@@ -50,6 +50,7 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string subDivisionId { get; set; }
         public string taxIdentificationNumber { get; set; }
         public string customerId { get; set; }
+        public string customerCode { get; set; }
         public bool isMemberOfACompany { get; set; }
         public bool isMemberOfAGroup { get; set; }
         [Required]

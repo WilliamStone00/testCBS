@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CBS.FrontDesk.UI.Reporting.Transactions.Reciepts {
+namespace CBS.FrontDesk.UI.Reporting.Transactions.Statement {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.Reporting.Transactions.Reciepts {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class Receipts : ReportClass {
+    public class IAccountStatement : ReportClass {
         
-        public Receipts() {
+        public IAccountStatement() {
         }
         
         public override string ResourceName {
             get {
-                return "Receipts.rpt";
+                return "IAccountStatement.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.Reporting.Transactions.Reciepts {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.Reporting.Transactions.Reciepts.Receipts.rpt";
+                return "CBS.FrontDesk.UI.Reporting.Transactions.Statement.IAccountStatement.rpt";
             }
             set {
                 // Do nothing
@@ -90,9 +90,9 @@ namespace CBS.FrontDesk.UI.Reporting.Transactions.Reciepts {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedReceipts : Component, ICachedReport {
+    public class CachedIAccountStatement : Component, ICachedReport {
         
-        public CachedReceipts() {
+        public CachedIAccountStatement() {
         }
         
         [Browsable(false)]
@@ -129,7 +129,7 @@ namespace CBS.FrontDesk.UI.Reporting.Transactions.Reciepts {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            Receipts rpt = new Receipts();
+            IAccountStatement rpt = new IAccountStatement();
             rpt.Site = this.Site;
             return rpt;
         }

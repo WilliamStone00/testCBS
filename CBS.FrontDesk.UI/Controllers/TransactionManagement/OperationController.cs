@@ -17,6 +17,8 @@ using System.Web.Services.Description;
 using CBS.BusinessService.Application;
 using CBS.BusinessService;
 using CBS.BusinessService.Accounting;
+using CBS.FrontDesk.UI.Reporting.Transactions.Reciepts;
+using CBS.BusinessService.Config;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -26,11 +28,15 @@ namespace CBS.FrontDesk.UI.Controllers
         private readonly AccountServices _acountServices;
         private readonly TellerProvissioningServices _services;
         private readonly LoanServices _loanServices;
-        public OperationController(AccountServices acountServices, TellerProvissioningServices services = null, LoanServices loanServices = null)
+        private readonly BranchServices _branchServices;
+        private readonly IndividualProfileServices _individualProfileServices;
+        public OperationController(AccountServices acountServices, TellerProvissioningServices services = null, LoanServices loanServices = null, BranchServices branchServices = null, IndividualProfileServices individualProfileServices = null)
         {
             _acountServices = acountServices;
             _services = services;
             _loanServices = loanServices;
+            _branchServices = branchServices;
+            _individualProfileServices = individualProfileServices;
         }
         public async Task<ActionResult> AccountDetails(string KEY = null)
         {
@@ -236,6 +242,40 @@ namespace CBS.FrontDesk.UI.Controllers
                 this.HttpContext.Session["rptpath"] = $"~/{reportpath}/" + ReportName + ".rpt";
                 this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
             }
+            else if (path == "receipts")
+            {
+                this.HttpContext.Session["rptType"] = "ReportParameterLess";
+                this.HttpContext.Session["ReportName"] = $"Receipts.rpt";
+                this.HttpContext.Session["rptpath"] = $"~/Reporting/Transactions/Reciepts/Receipts.rpt";
+                this.HttpContext.Session["rpttitle"] = $"MemberReceipts";
+            }
+            else if (path == "customer_account_transaction_rpt")
+            {
+                var transactionHistories = await _acountServices.GetCustomerTransactionsByAccountNumber(KEY);
+                var customer = await _individualProfileServices.GetSingleCustomer(transactionHistories.FirstOrDefault().Account.CustomerId);
+                if (customer==null)
+                {
+                    return Json(new { success = true, status = false, message = "Failed getting customer" }, JsonRequestBehavior.AllowGet);
+
+                }
+                var branch = await _branchServices.GetBranch(customer.branchId);
+                var rpt = _acountServices.MaprptSource(transactionHistories, branch, customer);
+                this.HttpContext.Session["rptSource"] = rpt;
+                string accountnumber = null;
+                if (!transactionHistories.Any())
+                {
+                    return Json(new { success = true, status = false, message = "No data was found." }, JsonRequestBehavior.AllowGet);
+
+                }
+                else
+                {
+                    accountnumber = transactionHistories.FirstOrDefault().AccountNumber;
+                }
+                this.HttpContext.Session["rptType"] = "ReportParameterLess";
+                this.HttpContext.Session["ReportName"] = $"IAccountStatement.rpt";
+                this.HttpContext.Session["rptpath"] = $"~/Reporting/Transactions/Statement/IAccountStatement.rpt";
+                this.HttpContext.Session["rpttitle"] = $"{accountnumber}_Statement";
+            }
             else if (path == "by_date_history")
             {
                 //this.HttpContext.Session["rptSource"] = _helper._object.Receipts;
@@ -244,7 +284,7 @@ namespace CBS.FrontDesk.UI.Controllers
             }
            
 
-            return Json("", JsonRequestBehavior.AllowGet);
+            return Json(new { success = true, status = false, message = "Fill the required fields." }, JsonRequestBehavior.AllowGet);
 
         }
        

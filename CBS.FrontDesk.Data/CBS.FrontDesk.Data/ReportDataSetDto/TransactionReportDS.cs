@@ -17,8 +17,8 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public decimal Credit { get; set; }
         public string AccountNumber { get; set; }
         public string TransactionType { get; set; }
-        public string OperationType { get; set; }//Debit or Credit
-        public string Status { get; set; } = "PENDING";
+        public string OperationType { get; set; }
+        public string Status { get; set; }
         public string TransactionRef { get; set; }
         public string SendingBranch { get; set; }
         public string RecievingBranch { get; set; }
@@ -75,5 +75,17 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public string AccountType { get; set; }
         public string AccountName { get; set; }
         public string CustomerName { get; set; }
+        public string ExpireDate { get; set; }
+        public string Address { get; set; }
+        public string Town { get; set; }
+        public string Village { get; set; }
+        public string Country { get; set; }
+        public string DeliveryDate { get; set; }
+        public decimal Charges { get; set; }
+        public string Telephone { get; set; }
+        public string Key { get; set; }
+        public string BarCode { get; set; }
+        public decimal ClosingBalance { get; set; }
+        public decimal OpeningBalance { get; set; }
     }
 }

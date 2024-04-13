@@ -86,8 +86,10 @@ namespace CBS.FrontDesk.Helper
         public static string CreateReopenFeeParameter = "/api/v1/ReopenFeeParameter";
 
         //Customer
+        ///api/v1/Customers/{BranchId}
         public static string CreateIndividualProfile = "/api/v1/Customer";
         public static string GetAllIndividualProfile = "/api/v1/Customers";
+        public static string GetAllIndividualProfileByBranch = "/api/v1/Customers/{0}";
         public static string SubcriptionAggregates = "/api/v1/SubcriptionAggregates";
         public static string DeleteCustomer = "/api/v1/Customer/{0}";
         public static string GetCustomerByID = "/api/v1/Customer/{0}";
@@ -110,6 +112,7 @@ namespace CBS.FrontDesk.Helper
         
         public static string GetCustomerAccounts = "/api/v1/Account/Customer/{0}";
         public static string InitialDeposit = "/api/v1/Transaction/Initiate/{0}";
+        public static string GetAllAccountsByBranchIdQuery = "/api/v1/Account/GetAllAccountsByBranchIdQuery/{0}";
         public static string GetAllAccounts = "/api/v1/Account";
         public static string MakeDepoit = "/api/v1/Transaction/Deposit";
         public static string MakeWithdrawal = "/api/v1/Transaction/Withdrawal";
@@ -169,7 +172,7 @@ namespace CBS.FrontDesk.Helper
         public static string CreateDepositLimit = "/api/v1/DepositLimits";
         //TransferLimits
         public static string Get_Update_Delete_TransferLimits = "/api/v1/TransferLimits/{0}";
-        public static string GetAllTransferLimits = "/api/v1/v1/TransferLimits";
+        public static string GetAllTransferLimits = "/api/v1/TransferLimits";
         public static string CreateTransferLimits = "/api/v1/TransferLimits";
         //WithdrawalLimitss
         public static string Get_Update_Delete_WithdrawalLimits = "/api/v1/WithdrawalLimits/{0}";

@@ -17,7 +17,7 @@ using CBS.BusinessService.UserManagement;
 
 namespace CBS.BusinessService.Accounts
 {
-    public class TellerProvissioningServices:BaseService
+    public class TellerProvissioningServices : BaseService
     {
         private readonly TellerServices _tellerServices;
         private readonly RoleServices _role;
@@ -25,58 +25,42 @@ namespace CBS.BusinessService.Accounts
         private readonly ApiCallerHelper _transactionApiHelper;
         public TellerProvissioningServices()
         {
-            _tellerServices=new TellerServices();
-            _role= new RoleServices();
-            _userManagementServices =new UserManagementServices();
+            _tellerServices = new TellerServices();
+            _role = new RoleServices();
+            _userManagementServices = new UserManagementServices();
             _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
         }
-        public bool IsCurrencySumValid(CurrencyNotes currencyNotes, int amount)
-        {
-            int totalNotesValue = currencyNotes.note10000 * 10000 +
-                                  currencyNotes.note5000 * 5000 +
-                                  currencyNotes.note2000 * 2000 +
-                                  currencyNotes.note1000 * 1000 +
-                                  currencyNotes.note500 * 500 +
-                                  currencyNotes.coin500 * 500 +
-                                  currencyNotes.coin100 * 100 +
-                                  currencyNotes.coin50 * 50 +
-                                  currencyNotes.coin25 * 25 +
-                                  currencyNotes.coin10 * 10 +
-                                  currencyNotes.coin5 * 5 +
-                                  currencyNotes.coin1;
 
-            return totalNotesValue == amount;
-        }
         public async Task<ExecutionMessages> PrimaryTellerProvision(PrimaryTellerProvissioning model)
         {
             try
             {
-                if (IsCurrencySumValid(model.currencyNotes, model.amount))
+                model.amount = ComputeDenomination(model.currencyNotes);
+                if (model.amount <= 0)
                 {
-                    model.bankId = GetBankID();
-                    model.branchId = GetBranchID();
-                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<OpeningOfTheDayResponse>>(APICallHelper.PrimaryTellerProvisioning, model);
-                    if (response.IsSuccess)
-                    {
-                        
-                        GetExecutionMessages(response, true, $"{model.amount}", MessagesResults.Success,
-                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
-                        return ExecutionMessage;
-                    }
-                    else
-                    {
-                        // Failed creation
-                        GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
-                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
-                    }
+                    GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered be greater than 0");
+                    return ExecutionMessage;
+                }
+
+                model.bankId = GetBankID();
+                model.branchId = GetBranchID();
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<OpeningOfTheDayResponse>>(APICallHelper.PrimaryTellerProvisioning, model);
+                if (response.IsSuccess)
+                {
+
+                    GetExecutionMessages(response, true, $"{model.amount}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
                 }
                 else
                 {
+                    // Failed creation
                     GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Sum of notes and coins must be equal to deposit amount.");
-
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
-                // Make an API call to create an individual profile
+
+
 
             }
             catch (Exception ex)
@@ -91,9 +75,14 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                if (IsCurrencySumValid(model.currencyNotes, ConverToInteger(model.initialAmount.ToString())))
+                model.initialAmount = ComputeDenomination(model.currencyNotes);
+                if (model.initialAmount <= 0)
                 {
-                    model.bankId = GetBankID();
+                    GetExecutionMessages(model, false, $"{model.initialAmount}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered be greater than 0");
+                    return ExecutionMessage;
+                }
+                model.bankId = GetBankID();
                     model.branchId = GetBranchID();
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<OpeningOfTheDayResponse>>(APICallHelper.SubTellerProvisioning, model);
                     if (response.IsSuccess)
@@ -109,14 +98,8 @@ namespace CBS.BusinessService.Accounts
                         GetExecutionMessages(model, false, $"{model.initialAmount}", MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
-                }
-                else
-                {
-                    GetExecutionMessages(model, false, $"{model.initialAmount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Sum of notes and coins must be equal to deposit amount.");
-
-                }
-                // Make an API call to create an individual profile
+           
+              
 
             }
             catch (Exception ex)
@@ -131,7 +114,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var pTellers= (from a in await _tellerServices.GetTellers() where a.isPrimary select a);
+                var pTellers = (from a in await _tellerServices.GetTellers() where a.isPrimary select a);
                 return pTellers.ToList();
 
             }
