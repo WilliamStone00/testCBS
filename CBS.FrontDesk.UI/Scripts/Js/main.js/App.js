@@ -272,7 +272,7 @@ function calculateBalance() {
 
     // Format total amount as currency
     var formattedTotalAmount = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
-
+    $("#totalNoteAmount").val(totalAmount);
     // Update the lblDepositRequest_amount span with the formatted total amount
     document.getElementById("lblDepositRequest_amount").textContent = "Total Amount: " + formattedTotalAmount;
 }

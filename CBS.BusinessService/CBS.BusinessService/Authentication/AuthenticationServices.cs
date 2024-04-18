@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CBS.FrontDesk.Data.Entity.User;
 using CBS.API.Helper;
 using CBS.FrontDesk.Helper;
 using System.Configuration;
 using BusinessServices;
 using CBS.FrontDesk.Data.Message;
-using System.Reflection;
-using CBS.FrontDesk.Data.Entity.Config;
-using CBS.FrontDesk.Data.Entity.LoanConf;
-using CBS.FrontDesk.Data.UserManagement;
 using System.Web;
+using CBS.FrontDesk.Data.Entity;
 
 namespace CBS.FrontDesk.Service
 {

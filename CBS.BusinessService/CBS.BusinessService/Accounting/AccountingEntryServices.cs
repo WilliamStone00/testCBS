@@ -382,13 +382,13 @@ namespace CBS.BusinessService
             return ExecutionMessage;
         }
 
-        public async Task<IEnumerable<UserList>> GetUserList()
+        public async Task<IEnumerable<User>> GetUserList()
         {
             try
             {
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var userLists = await ApiCallerHelper.GetAsync<ResponseObject<List<UserList>>>(APICallHelper.GetUsers);
-                var newList = new List<UserList>();
+                var userLists = await ApiCallerHelper.GetAsync<ResponseObject<List<User>>>(APICallHelper.GetUsers);
+                var newList = new List<User>();
                 
                 if (userLists!=null)
                 {
@@ -398,11 +398,11 @@ namespace CBS.BusinessService
                     foreach (var a in userLists.ApiResponseData.Data)
                     {
                         a.name = $"{a.firstName} {a.lastName}";
-                        a.strlastLoginDate = a.lastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
+                        a.strlastLoginDate = a.LastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
                         a.status = a.isActive ? "Active" : "In-active";
                         if (a.BranchID!=null)
                         {
-                            a.Branch = braches.Where(x => x.Id == a.BranchID).FirstOrDefault();
+                            a.Brancch = braches.Where(x => x.Id == a.BranchID).FirstOrDefault();
                             a.Bank= braches.Where(x => x.Id == a.BranchID).FirstOrDefault().Bank;
                             if (a.Bank==null)
                             {
@@ -414,7 +414,7 @@ namespace CBS.BusinessService
                         else
                         {
                             a.Bank = new FrontDesk.Data.Entity.Config.Bank();
-                            a.Branch = new FrontDesk.Data.Entity.Config.Branch();
+                            a.Brancch = new FrontDesk.Data.Entity.Config.Branch();
                         }
                         newList.Add(a);
                     }
@@ -445,16 +445,16 @@ namespace CBS.BusinessService
                 throw ex;
             }
         }
-        public async Task<UserList> GetUser(string userid)
+        public async Task<User> GetUser(string userid)
         {
             try
             {
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var user = await ApiCallerHelper.GetAsync<ResponseObject<UserList>>(string.Format(APICallHelper.GetUserByID, userid));
+                var user = await ApiCallerHelper.GetAsync<ResponseObject<User>>(string.Format(APICallHelper.GetUserByID, userid));
                 if (user.IsSuccess)
                 {
                     user.ApiResponseData.Data.name = $"{user.ApiResponseData.Data.firstName} {user.ApiResponseData.Data.lastName}";
-                    user.ApiResponseData.Data.strlastLoginDate = user.ApiResponseData.Data.lastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
+                    user.ApiResponseData.Data.strlastLoginDate = user.ApiResponseData.Data.LastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
                     user.ApiResponseData.Data.status = user.ApiResponseData.Data.isActive ? "Active" : "In-active";
                     user.ApiResponseData.Data.ChangePassword.userName = user.ApiResponseData.Data.userName;
                     user.ApiResponseData.Data.roleID = user.ApiResponseData.Data.userRoles.Select(role => role.roleId).First();

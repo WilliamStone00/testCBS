@@ -1,6 +1,6 @@
 ﻿
 <div class="col-lg-4 col-md-6">
-    <small class="text-light fw-medium">Vertically centered</small>
+    <small class="text-light fw-medium"></small>
     <div class="mt-3">
         <div class="modal fade" id="modal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -9,11 +9,15 @@
                         <h4 class="modal-title" id="modalLabel"></h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <hr />
                     <div class="modal-body">
                         <div id="modalContent">
 
 
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Add depositer</button>                        <!-- Add a button for saving the depositor information if needed -->
                     </div>
                     @Html.Partial("_modalFooter")
                 </div>

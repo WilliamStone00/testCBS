@@ -1,8 +1,8 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Security;
-using CBS.FrontDesk.Data.Entity.User;
 
 namespace CBS.FrontDesk.Service
 {

@@ -13,15 +13,11 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
-using System.Web.Util;
-using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.Data.UserManagement;
-using System.Web.Mvc;
 using System.Web;
 using CBS.BusinessService.UserManagement;
 using CBS.BusinessService.Config;
@@ -29,7 +25,7 @@ using CBS.BusinessService.Config;
 namespace CBS.BusinessService.Accounts
 {
 
-    public class AccountServices : BaseService
+    public class CashDeskServices : BaseService
     {
         private readonly ApiCallerHelper _customerApiHelper;
         private readonly ApiCallerHelper _transactionApiHelper;
@@ -38,7 +34,7 @@ namespace CBS.BusinessService.Accounts
         private readonly IndividualProfileServices _individualProfileServices;
 
         private readonly BranchServices _branchServices;
-        public AccountServices(UserManagementServices userManagementServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, ApiCallerHelper branchConfigApiHelper = null)
+        public CashDeskServices(UserManagementServices userManagementServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, ApiCallerHelper branchConfigApiHelper = null)
         {
             _customerApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["CustomerBaseUrl"].ToString());
             _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
@@ -46,46 +42,6 @@ namespace CBS.BusinessService.Accounts
             _individualProfileServices = individualProfileServices;
             _branchServices = branchServices;
             _BranchConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
-        }
-        public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string path)
-        {
-            Func<Task<List<CustomerAccountDto>>> getDataFunc = async () => (await GetCustomersAccounts(path)).ToList();
-            var dataTable = await DatatableHelper.GenerateDataTable<CustomerAccountDto>(dataTableOptions, getDataFunc);
-            return dataTable;
-        }
-
-        public async Task<CustomDataTable> GetDataTableSearch(DataTableOptions dataTableOptions, string searchCriterial)
-        {
-            //CustomerSearch
-            var customers = await GetCustomersAccounts("all");
-            Func<Task<List<CustomerAccountDto>>> getDataFunc = async () => (await CustomerSearch(customers.ToList(), searchCriterial)).ToList();
-            var dataTable = await DatatableHelper.GenerateDataTable<CustomerAccountDto>(dataTableOptions, getDataFunc);
-            return dataTable;
-        }
-        public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccountsForTransfter()
-        {
-            try
-            {
-                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.GetAllIndividualProfile);
-                var accounts = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(APICallHelper.GetAllAccounts);
-                var branchesx = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
-                var branches = branchesx.ApiResponseData.Data;
-                // Join individual profiles with accounts and map to DTOs
-                var data = (from a in individualProfiles.ApiResponseData.Data
-                            join ca in accounts.ApiResponseData.Data on a.customerId equals ca.customerId
-                            join b in branches on a.branchId equals b.Id
-                            select MapCustomersToAccounts(a, ca, b)).ToList();
-
-                // Filter data based on the 'path' parameter
-                //var distinctData = data.GroupBy(x => x.customerId).Select(g => g.First());
-                return data;
-
-            }
-            catch (Exception ex)
-            {
-                // Log and handle exception
-                throw;
-            }
         }
 
         public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccounts(string path = null)
@@ -97,8 +53,8 @@ namespace CBS.BusinessService.Accounts
                     // Fetch individual profiles and accounts for head office
                     var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.GetAllIndividualProfile);
                     var accounts = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(APICallHelper.GetAllAccounts);
-                    var branchesx =  await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
-                   var branches = branchesx.ApiResponseData.Data; 
+                    var branchesx = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
+                    var branches = branchesx.ApiResponseData.Data;
                     // Join individual profiles with accounts and map to DTOs
                     var data = (from a in individualProfiles.ApiResponseData.Data
                                 join ca in accounts.ApiResponseData.Data on a.customerId equals ca.customerId
@@ -271,7 +227,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var accounts = from a in await GetCustomersAccountsForTransfter()
+                var accounts = from a in await GetCustomersAccounts()
                                select new StringValues
                                {
                                    Text = $"{a.accountNumber}-{a.productName}-{a.customerName}",
@@ -359,7 +315,11 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(string.Format(APICallHelper.GetCustomerAccounts, customerID));
-                return cusResponseObject.ApiResponseData.Data;
+                if (cusResponseObject.ApiResponseData!=null)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
             }
             catch (Exception ex)
             {
@@ -380,7 +340,8 @@ namespace CBS.BusinessService.Accounts
                 productId = caAccount.productId,
                 productName = caAccount.product.name,
                 BranchId = caAccount.branchId,
-                BranchName = b.Name, customerCode=a.customerCode,
+                BranchName = b.Name,
+                customerCode = a.customerCode,
                 createdDate = caAccount.createdDate.ToString(),
             };
         }
@@ -464,7 +425,7 @@ namespace CBS.BusinessService.Accounts
                     InterBrachOperation = t.IsInterBrachOperation ? "YES" : "NO",
                     Logo = b.Bank.LogoUrl,
                     Operation = t.Operation,
-                    ProductName = t.Account.Product?.name ?? "N/A",
+                    ProductName = t.Account.Product.name,
                     RecieverName = "",
                     SenderName = "",
                     RecievingBranch = "",
@@ -572,7 +533,7 @@ namespace CBS.BusinessService.Accounts
 
                     reports.Add(rpt);
                 }
-                results=reports.OrderBy(t => t.TransactionDate).ToList();
+                results = reports.OrderBy(t => t.TransactionDate).ToList();
                 return results;
             }
             catch (Exception ex)
@@ -927,60 +888,46 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-
-        public async Task<Account> GetAccountByAccountNumber(string accountNumber)
+        public async Task<CashDesk> GetAccountByAccountNumberSearch(string customerId)
         {
             try
             {
-                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<Account>>(string.Format(APICallHelper.MakeTrGetAccountByAccountNumber, accountNumber));
-                if (cusResponseObject.IsSuccess)
+
+                var cusResponseObject = await GetCustomerAccounts(customerId);
+                if (cusResponseObject.Any())
                 {
-                    if (cusResponseObject.ApiResponseData.Data != null)
-                    {
-                        var account = cusResponseObject.ApiResponseData.Data;
-
-                        var customer = await GetCustomer(cusResponseObject.ApiResponseData.Data.CustomerId);
-                        cusResponseObject.ApiResponseData.Data.Customer = customer;
-                        customer.name = $"{customer.firstName} {customer.lastName}";
-                        var balance = await GetCustomerBalance(cusResponseObject.ApiResponseData.Data.CustomerId);
-                        var Accounts = await GetCustomerAccounts(cusResponseObject.ApiResponseData.Data.CustomerId);
-                        var transactionHistories = await GetCustomerTransactionsByAccountNumber(cusResponseObject.ApiResponseData.Data.AccountNumber);
-                        account.AccountBalance = balance;
-                        account.Accounts = Accounts;
-                        account.AccountActivationRequest = new AccountDepositRequest
-                        {
-                            accountNumber = account.AccountNumber,
-                            amount = 0,
-                        };
-                        account.DepositRequest = new DepositRequest
-                        {
-                            accountNumber = account.AccountNumber,
-                            amount = 0,
-                            note = string.Empty,
-                            currencyNotes = new CurrencyNotes(),
-                            depositType = string.Empty,
-                        };
-                        account.WithdrawalRequest = new WithdrawalRequest
-                        {
-                            accountNumber = account.AccountNumber,
-                            amount = 0,
-                            note = string.Empty,
-                            withDrawalType = string.Empty,
-                        };
-
-                        account.TransferRequest = new TransferRequest
-                        {
-                            ReceiverAccountNumber = string.Empty,
-                            Amount = 0,
-                            Note = string.Empty,
-                            SenderAccountNumber = account.AccountNumber,
-                        };
-                        account.TransactionHistories = transactionHistories;
-                        return account;
-                    }
+                    var Accounts = cusResponseObject;
+                    var customer = await GetCustomer(customerId);
+                    var branch = await _branchServices.GetBranch(customer.branchId);
+                    customer.name = $"{customer.firstName} {customer.lastName}";
+                    var cashDesk = new CashDesk { Branch = branch, Accounts = Accounts, BulkDeposit = new BulkDeposit(), BulkDeposits = BuidObject(Accounts), Customer = customer, LoanId = null, CustomerId = customerId };
+                    return cashDesk;
                 }
 
-                return new Account();
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<CashDesk> GetMember(string customerId)
+        {
+            try
+            {
+
+                var cusResponseObject = await GetCustomer(customerId);
+                if (cusResponseObject!=null)
+                {
+                    var customer = cusResponseObject;
+                    var branch = await _branchServices.GetBranch(customer.branchId); 
+                    customer.name = $"{customer.firstName} {customer.lastName}";
+                    var cashDesk = new CashDesk {Branch= branch, Accounts = null, BulkDeposit = new BulkDeposit(), BulkDeposits = new List<BulkDeposit>(), Customer = customer, LoanId = null, CustomerId = customerId };
+                    return cashDesk;
+                }
+
+                return null;
             }
             catch (Exception ex)
             {
@@ -989,6 +936,23 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
+        public List<BulkDeposit> BuidObject(List<CustomerAccount> accounts)
+        {
+            return accounts.Select(a => new BulkDeposit
+            {
+                AccountNumber = a.accountNumber,
+                AccountType = a.accountType,
+                Amount = 0,
+                Balance = a.balance,
+                currencyNotes = new CurrencyNotes(),
+                CustomerId = a.customerId,
+                Fee = 0,
+                Interest = 0,
+                LoanId = null,
+                Penalty = 0,
+                Total = 0
+            }).ToList();
+        }
 
     }
 

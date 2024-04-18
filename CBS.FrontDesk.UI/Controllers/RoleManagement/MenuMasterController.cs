@@ -24,8 +24,8 @@ namespace CBS.FrontDesk.UI.Controllers.RoleManagement
 
         public async Task<ActionResult> Index()
         {
-            await GetList();
-            return View(new MenuMaster());
+            //await GetList();
+            return View();
         }
 
         [HttpPost]
@@ -72,7 +72,11 @@ namespace CBS.FrontDesk.UI.Controllers.RoleManagement
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
-            await GetList();
+            if (path!="list")
+            {
+                await GetList();
+            }
+
             Func<Task<PartialViewResult>> serviceAction = GetServiceAction(path, partialView, KEY, serviceOption);
 
             if (serviceAction != null)
@@ -107,7 +111,6 @@ namespace CBS.FrontDesk.UI.Controllers.RoleManagement
             {
                 return async () =>
                 {
-                    var data = _menuMasterServices.GetMenuMaster(key);
                     return PartialView(partialView, new MenuMaster());
 
                 };

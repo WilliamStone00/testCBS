@@ -181,10 +181,9 @@
     <Compile Include="PropertiesBuilder\PropertyBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportDataSetDto\TransactionReportDS.cs" />
-    <Compile Include="UserManagement\Request\User.cs" />
     <Compile Include="UserManagement\Request\UserAllowedIP.cs" />
     <Compile Include="UserManagement\Response\UserClaim.cs" />
-    <Compile Include="UserManagement\Response\UserList.cs" />
+    <Compile Include="UserManagement\Response\User.cs" />
     <Compile Include="UserManagement\Request\UserRole.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -29,8 +29,8 @@ function GetObject(KEY, divToLoadData, partialView, path) {
 }
 function PostData(form) {
     var partialView = $("#partialView").val();
-    var amount = parseFloat(document.getElementById("DepositRequest_amount").value)
-    var formatedAmount = amount.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    var amount = document.getElementById("lblDepositRequest_amount").innerText;
+    //var amount = parseFloat(amountText);
 
     var operation = $("#OperationType").val();
     var accountNumber = $("#accountnumber").val();
@@ -41,39 +41,39 @@ function PostData(form) {
     $.validator.unobtrusive.parse(form);
     if ($(form).valid()) {
 
-        alertify.confirm("WARNING!!!","Are you sure you want to perform a " + operation + " of " + formatedAmount + " to Account Number " + accountNumber + ", Account Name: " + $("#accountname").val() + " ?",
+        alertify.confirm("WARNING!!!", "Are you sure you want to perform a " + operation + " of " + amount + " to Account Number " + accountNumber + ", Account Name: " + $("#accountname").val() + " ?",
             function () {
 
-        var ajaxConfig = {
-            type: 'POST',
-            url: form.action,
-            data: new FormData(form),
-            success: function (response) {
+                var ajaxConfig = {
+                    type: 'POST',
+                    url: form.action,
+                    data: new FormData(form),
+                    success: function (response) {
 
-                if (response.success) {
-                    appalert(response.message, 1, 1);
-                    location.reload();
-                    ReportView("Operation", null, "GetReport", null, null, "receipts","ReportParameterLess");
+                        if (response.success) {
+                            appalert(response.message, 1, 1);
+                            location.reload();
+                            ReportView("Operation", null, "GetReport", null, null, "receipts", "ReportParameterLess");
+                        }
+                        else
+                            if (response.message === undefined) {
+                                alert("Your session is expired.")
+                            }
+                            else {
+                                appalert(response.message, 3, 1);
+                            }
+
+
+                    }
+                    , error: function (err) {
+                        appalert(err.statusText, 0, 1);
+                    }
+                };
+
+                if ($(form).attr('enctype') === "multipart/form-data") {
+                    ajaxConfig["contentType"] = false;
+                    ajaxConfig["processData"] = false;
                 }
-                else
-                    if (response.message === undefined) {
-                        alert("Your session is expired.")
-                    }
-                    else {
-                        appalert(response.message, 3, 1);
-                    }
-
-
-            }
-            , error: function (err) {
-                appalert(err.statusText, 0, 1);
-            }
-        };
-
-        if ($(form).attr('enctype') === "multipart/form-data") {
-            ajaxConfig["contentType"] = false;
-            ajaxConfig["processData"] = false;
-        }
                 $.ajax(ajaxConfig);
             },
             function () {

@@ -1,19 +1,10 @@
 ﻿using CBS.FrontDesk.Data.Message;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.UserManagement;
-using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity;
-using CBS.BusinessService.Config.Localization;
-using CBS.FrontDesk.Data.Entity.Config;
-using System.Security.Policy;
-using CBS.FrontDesk.Data.Entity.User;
 
 namespace CBS.FrontDesk.UI.Controllers.UserManagement
 {
@@ -29,7 +20,6 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
         }
         public async Task<ActionResult> Index()
         {
-            //var userList = await _userManagementServices.GetUserList();
 
             return View();
         }
@@ -37,9 +27,9 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
         {
 
             ViewBag.KEY = KEY;
-            if (path == "list")
+            if (path.ToLower() == "list")
             {
-                var data = await _userManagementServices.GetUserList();
+                var data = await _userManagementServices.GetUsers();
                 return PartialView(partialView, data);
 
             }
@@ -102,13 +92,46 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
         public async Task<ActionResult> AddOrEdit(User model)
         {
 
-            var data = await _userManagementServices.CreateUser(model);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            if (model.Option == "Profile")
+            {
+                var data = await _userManagementServices.UpdateUserProfile(model);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
+            }
+            else if (model.Option == "ChangePassword")
+            {
+                var data = await _userManagementServices.ChangePassword(model);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else if (model.Option == "ResetPassword")
+            {
+                var data = await _userManagementServices.ResetPassword(model);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else if (model.Option == "ActivateAccount")
+            {
+                var data = await _userManagementServices.ResetPassword(model);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else if (model.Option == "PhotoUpload")
+            {
+                var data = await _userManagementServices.UploadPicture(model.FileUpload);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else
+            {
+                var data = await _userManagementServices.CreateUser(model);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
 
         }
         [HttpPost]
-        public async Task<ActionResult> Update(UserList model)
+        public async Task<ActionResult> UpdateUser(User model)
         {
             if (model.Option == "Profile")
             {
@@ -166,7 +189,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
         }
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> ChangePassword(UserList model)
+        public async Task<ActionResult> ChangePassword(User model)
         {
 
             if (!VerifyCookies("CBS4U"))

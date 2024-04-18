@@ -1,14 +1,17 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.Config;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace CBS.FrontDesk.Data.UserManagement
 {
     public class User
     {
+        public Guid id { get; set; }
         [Required]
         [Display(Name = "User Name")]
         public string userName { get; set; }
@@ -44,11 +47,13 @@ namespace CBS.FrontDesk.Data.UserManagement
         [Required]
         [Display(Name = "Branch")]
         public string BranchID { get; set; }
+        public string status { get; set; }
+
         public string allowedIP { get; set; }
-        public List<UserAllowedIP> userAllowedIPs { get; set; }=new List<UserAllowedIP>();
-        public List<UserRole> userRoles { get; set; }=new List<UserRole>();
+        public List<UserAllowedIP> userAllowedIPs { get; set; } = new List<UserAllowedIP>();
+        public List<UserRole> userRoles { get; set; } = new List<UserRole>();
         public string Option { get; set; }
-        
+
         public bool IsGoogleAuthenticatorEnabled { get; set; }
         public bool IsVerified { get; set; }
         public bool IsBlocked { get; set; }
@@ -61,10 +66,23 @@ namespace CBS.FrontDesk.Data.UserManagement
         public DateTime? DeletedDate { get; set; }
         public bool IsRoot { get; set; }
         public DateTime LastLoginDate { get; set; }
+        public string profilePhoto { get; set; }
+        public string provider { get; set; }
+
+        public string name { get; set; }
+        public string roleName { get; set; }
+        public Bank Bank { get; set; }
+        public Branch Brancch { get; set; }
+        public string strlastLoginDate { get; set; }
+        public ChangePassword ChangePassword { get; set; } = new ChangePassword();
+        public List<UserClaim> userClaims { get; set; }
+        public HttpPostedFileBase FileUpload { get; set; }
+        public string ImageVirtualPath { get; set; }
+        public User()
+        {
+            ImageVirtualPath = "~/Appfiles/Images/p.jpg";
+        }
     }
-
-
-
     public class ChangePassword
     {
         [Required]
@@ -83,5 +101,4 @@ namespace CBS.FrontDesk.Data.UserManagement
         [Compare("password", ErrorMessage = "The password and confirmation password do not match.")]
         public string confirmPassword { get; set; }
     }
-
 }

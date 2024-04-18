@@ -14,7 +14,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanCommitee
         public string LoanCommiteeGroupId { get; set; }
         public string UserId { get; set; }
         public virtual LoanCommiteeGroup LoanCommiteeGroup { get; set; }
-        public virtual UserList User { get; set; }
+        public virtual User User { get; set; }
         public List<LoanCommiteeValidationHistory> LoanCommiteeValidationHistories { get; set; }
     }
 

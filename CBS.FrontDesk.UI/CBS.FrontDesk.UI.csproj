@@ -302,6 +302,7 @@
     <Content Include="AppFiles\Images\BG.jpeg" />
     <Content Include="AppFiles\Images\BG2.png" />
     <Content Include="AppFiles\Images\BG3.jpeg" />
+    <Content Include="AppFiles\Images\BG3.png" />
     <Content Include="AppFiles\Images\Logog2.jpeg" />
     <Content Include="AppFiles\Images\SideImageHeader.jpeg" />
     <Content Include="AppFiles\Images\SideImageHeader.png" />
@@ -328,6 +329,7 @@
     <Compile Include="Controllers\Accounting\TellerCashDemandController.cs" />
     <Compile Include="Controllers\Authentication\AuthenticationController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
+    <Compile Include="Controllers\CashDeskOperations\CashDeskController.cs" />
     <Compile Include="Controllers\Commitee\LoanCommiteeController.cs" />
     <Compile Include="Controllers\BudgetManagement\BudgetManagementController.cs" />
     <Compile Include="Controllers\Configuration\Localization\CountryController.cs" />
@@ -2179,6 +2181,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
+    <Content Include="Scripts\Js\Crud\CashDesk\CashDeskOperations.js" />
     <Content Include="Scripts\Js\Crud\Collateral\Collateral.js" />
     <Content Include="Scripts\Js\Crud\LoanProductCollateral\LoanProductCollateral.js" />
     <Content Include="Scripts\Js\Crud\LoanTransactions\Loans.js" />
@@ -2206,13 +2209,13 @@
     <Content Include="Scripts\Js\Crud\Operation\Operation.js" />
     <Content Include="Scripts\Js\Crud\Operation\Savings.js" />
     <Content Include="Scripts\Js\Crud\RolePermission.js" />
-    <Content Include="Scripts\Js\Crud\User\AlertProfile.js" />
+    <Content Include="Scripts\Js\Crud\User\Users.js" />
     <Content Include="Scripts\Js\Crud\User\PromoWhitelist.js" />
     <Content Include="Scripts\Js\Crud\User\Services.js" />
     <Content Include="Scripts\Js\Crud\User\StringConfiguration.js" />
     <Content Include="Scripts\Js\Crud\User\SystemStatus.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\Customers.js" />
-    <Content Include="Scripts\Js\Crud\User\UserListing.js" />
+    <Content Include="Scripts\Js\Crud\MenuMaster\Menus.js" />
     <Content Include="Scripts\Js\main.js\AccountingStatements.js" />
     <Content Include="Scripts\Js\main.js\App.js" />
     <Content Include="Scripts\Js\main.js\BankingOperations.js" />
@@ -2589,6 +2592,15 @@
     <Content Include="Views\Operation\Transfers.cshtml" />
     <Content Include="Views\Operation\_TransferDetails.cshtml" />
     <Content Include="Views\Operation\_TransferConfirmation.cshtml" />
+    <Content Include="Views\CashDesk\Index.cshtml" />
+    <Content Include="Views\CashDesk\_CustomerCard.cshtml" />
+    <Content Include="Views\CashDesk\_Tabs.cshtml" />
+    <Content Include="Views\CashDesk\_SearchBox.cshtml" />
+    <Content Include="Views\CashDesk\_OperationDesk.cshtml" />
+    <Content Include="Views\Shared\_DataNotFound.cshtml" />
+    <Content Include="Views\CashDesk\_OperationForm.cshtml" />
+    <Content Include="Views\CashDesk\_DenominationBreakDown.cshtml" />
+    <Content Include="Views\CashDesk\_DepositerForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

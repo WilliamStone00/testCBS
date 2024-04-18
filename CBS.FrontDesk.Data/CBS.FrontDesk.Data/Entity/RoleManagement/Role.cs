@@ -1,14 +1,10 @@
-﻿using CBS.FrontDesk.Data.Entity.User;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity
 {
-    
+
     public class PermissionMenuLoader
     {
         public int MenuMasterId { get; set; }

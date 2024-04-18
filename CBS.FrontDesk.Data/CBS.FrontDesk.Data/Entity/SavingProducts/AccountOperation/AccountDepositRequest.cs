@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,6 +23,55 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string depositType { get; set; }
        
 
+    }
+    public class CashDesk
+    {
+        public string CustomerId { get; set; }
+        public string LoanId { get; set; }
+        public Depositer Depositer { get; set; } = new Depositer();
+        public BulkDeposit BulkDeposit { get; set; } = new BulkDeposit();
+        public Branch Branch { get; set; } = new Branch();
+        public List<BulkDeposit> BulkDeposits { get; set; } = new List<BulkDeposit>();
+        public IndividualProfile Customer { get; set; } = new IndividualProfile();
+        public List<CustomerAccount> Accounts { get; set; } = new List<CustomerAccount>();
+    }
+    public class BulkDeposit
+    {
+        public string AccountNumber { get; set; }
+        public decimal Fee { get; set; }
+        public string CustomerId { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Balance { get; set; }
+        public decimal Penalty { get; set; }
+        public decimal Interest { get; set; }
+        public decimal Total { get; set; }
+        public string AccountType { get; set; }
+        public string LoanId { get; set; }
+        public string Note { get; set; }
+        public string OperationType { get; set; }
+        public bool isDepositDoneByAccountOwner { get; set; }
+        public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
+        public Depositer Depositer { get; set; } = new Depositer();
+
+        public BulkDeposit()
+        {
+            Fee = 0;
+            Amount = 0;
+            Balance = 0;
+            Penalty = 0;
+            Interest = 0;
+            Total = 0;
+        }
+    }
+    public class Depositer
+    {
+        public string DepositorName { get; set; }
+        public string DepositerNote { get; set; }
+        public string DepositerTelephone { get; set; }
+        public string DepositorIDNumber { get; set; }
+        public string DepositorIDIssueDate { get; set; }
+        public string DepositorIDExpiryDate { get; set; }
+        public string DepositorIDNumberPlaceOfIssue { get; set; }
     }
     public class WithdrawalRequest
     {

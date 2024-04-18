@@ -15,12 +15,12 @@ namespace CBS.BusinessService.UserManagement
         Task<ExecutionMessages> CreateUser(User user);
         Task<IEnumerable<Role>> GetRoles();
         Guid ConvertStringToGuid(string input);
-        Task<IEnumerable<UserList>> GetUserList();
-        Task<UserList> GetUser(Guid userid);
+        Task<IEnumerable<User>> GetUsers();
+        Task<User> GetUser(Guid userid);
         Task<ExecutionMessages> DeleteUser(Guid userid);
-        Task<ExecutionMessages> UpdateUserProfile(UserList user);
-        Task<ExecutionMessages> ChangePassword(UserList user);
-        Task<ExecutionMessages> ResetPassword(UserList user);
+        Task<ExecutionMessages> UpdateUserProfile(User user);
+        Task<ExecutionMessages> ChangePassword(User user);
+        Task<ExecutionMessages> ResetPassword(User user);
         Task<ExecutionMessages> UploadPicture(HttpPostedFileBase uploadBase);
         Task<CustomDataTable> GetUsersDataTable(DataTableOptions dataTableOptions);
         Task<IEnumerable<Branch>> GetBranches();
