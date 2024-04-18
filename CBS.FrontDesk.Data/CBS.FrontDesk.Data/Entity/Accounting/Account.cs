@@ -16,6 +16,7 @@ namespace CBS.FrontDesk.Data
         public string AccountName { get; set; }
         public string AccountTypeId { get; set; }
         public string ChartOfAccountId { get; set; }
+        public string AccountCategoryId { get; set; }
         public string AccountOwnerId { get; set; }
         public string BookingDirection { get; set; }
         public bool CanBeNegative { get; set; }
@@ -32,5 +33,20 @@ namespace CBS.FrontDesk.Data
         public string AccountTypeId { get; set; }
         public string ChartOfAccountDetails { get; set; }
         public string AccountOwnerId { get; set; }
+    }
+
+
+    public class AccountInfo
+    {
+        public string AccountNumberCamCCUL { get; set; } = "";
+
+        public string AccountNumberAffiliate { get; set; } = "";
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public string AccountTypeId { get; set; }
+        public string ChartOfAccountId { get; set; }
+        public string AccountOwnerId { get; set; }
+        public string BookingDirection { get; set; }
+      
     }
 }

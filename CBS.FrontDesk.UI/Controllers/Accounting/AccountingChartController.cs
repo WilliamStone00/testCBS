@@ -36,22 +36,51 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             if (ModelState.IsValid)
             {
-                string accNum = modeldto.AccountNumber.Substring(0, modeldto.AccountNumber.Length - 1);
+                string accNum = (modeldto.AccountNumber.Length==1)? modeldto.AccountNumber:modeldto.AccountNumber.Substring(0, modeldto.AccountNumber.Length - 1);
                 var mode = await _Services.GetChartOfAccountByAccountNumber(accNum);
-                ChartOfAccountDto model = new ChartOfAccountDto
+                if (mode==null)
                 {
-                    RootParentId= mode.Id,
-                    LabelEn = modeldto.LabelEn,
-                    LabelFr = modeldto.LabelFr,
-                    IsBalanceAccount = modeldto.IsBalanceSheetAccount,
-                    AccountNumber = modeldto.AccountNumber,
-                    CanBeNegative= modeldto.CanBeNegative,
-                    IsDebit= modeldto.OperationDirection == "DEBIT",
-                    AccountCartegoryId = modeldto.AccountCartegoryId
-                };
+                    if (accNum.Length==1) 
+                    {
+                        ChartOfAccountDto model = new ChartOfAccountDto
+                        {
+                            RootParentId = "",
+                            LabelEn = modeldto.LabelEn,
+                            LabelFr = modeldto.LabelFr,
+                            IsBalanceAccount = modeldto.IsBalanceSheetAccount,
+                            AccountNumber = modeldto.AccountNumber,
+                            CanBeNegative = modeldto.CanBeNegative,
+                            IsDebit = modeldto.OperationDirection == "DEBIT",
+                            AccountCartegoryId = modeldto.AccountCartegoryId
+                        };
+
+                        var data = await _Services.Create(model);
+                        return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, status = "failed", message = "There no root account " + accNum + " inside the chartofAccount" });
+                    }
+                   
+                }
+                else
+                {
+                    ChartOfAccountDto model = new ChartOfAccountDto
+                    {
+                        RootParentId = mode.Id,
+                        LabelEn = modeldto.LabelEn,
+                        LabelFr = modeldto.LabelFr,
+                        IsBalanceAccount = modeldto.IsBalanceSheetAccount,
+                        AccountNumber = modeldto.AccountNumber,
+                        CanBeNegative = modeldto.CanBeNegative,
+                        IsDebit = modeldto.OperationDirection == "DEBIT",
+                        AccountCartegoryId = modeldto.AccountCartegoryId
+                    };
+
+                    var data = await _Services.Create(model);
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
                
-                var data = await _Services.Create(model);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
             }
 
             return Json(new { success = false, status = false, message = "Fill the required fields." });

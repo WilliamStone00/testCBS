@@ -73,10 +73,7 @@
                                 @Html.CheckBoxFor(model => model.ChartOfAccount.CanBeNegative, new { @class = "form-check-input" })
                                 @Html.LabelFor(model => model.ChartOfAccount.CanBeNegative, new { @class = "form-check-label" })
                             </div>
-                            <div class="form-check mb-4">
-                                @Html.CheckBoxFor(model => model.ChartOfAccount.IsBalanceSheetAccount, new { @class = "form-check-input" })
-                                @Html.LabelFor(model => model.ChartOfAccount.IsBalanceSheetAccount, new { @class = "form-check-label" })
-                            </div>
+                       
                         
                             @if (@Model.ChartOfAccount == null)
                             {

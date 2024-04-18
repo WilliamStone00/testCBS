@@ -1553,7 +1553,13 @@ namespace BusinessServices
         }
         public string GetBankID()
         {
-            string str = HttpContext.Current.Session["BankID"].ToString();
+        
+            string str = "";
+            if (HttpContext.Current.Session["BankID"] != null)
+            {
+                str = HttpContext.Current.Session["BankID"].ToString();
+            }
+
             return str;
         }
         public bool IsHeadOffice()
@@ -1585,7 +1591,12 @@ namespace BusinessServices
         }
         public string GetBranchID()
         {
-         string str = HttpContext.Current.Session["BranchID"].ToString();
+            string str = "";
+            if (HttpContext.Current.Session["BranchID"]!=null)
+            {
+                str = HttpContext.Current.Session["BranchID"].ToString();
+            }
+      
             return str;
         }
       

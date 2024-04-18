@@ -138,7 +138,7 @@ namespace CBS.BusinessService
                 {
 
                     GetExecutionMessages(inResponse, true, $"{model.name} {model.operationAccountTypeId}", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }

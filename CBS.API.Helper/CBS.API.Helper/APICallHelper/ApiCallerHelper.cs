@@ -282,7 +282,7 @@ namespace CBS.API.Helper
             AddAuthorizationHeader(_httpClient);
             HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
             var Model = await HandleTrialBalance6ColumnResponse(response);
-            return Model.Data;
+            return Model.data;
         }
         public async Task<List<TrialBalance4ColumnDto>> PostTrialBalance4ColumnAsyncAsync(string apiUrl, object data)
         {

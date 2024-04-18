@@ -659,8 +659,8 @@ namespace CBS.BusinessService
                 // Make an API call to create an individual profile
 
 
-                return await _accountingApiCallerHelper.PostTrialBalance6ColumnAsyncAsync(APICallHelper.AccountingEntry_Generate6ColumnTrialBalance, model);
-
+                var modelc= await _accountingApiCallerHelper.PostTrialBalance6ColumnAsyncAsync(APICallHelper.AccountingEntry_Generate6ColumnTrialBalance, model);
+                return modelc;
             }
             catch (Exception ex)
             {
