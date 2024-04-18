@@ -1,13 +1,15 @@
 ﻿$(document).ready(function () {
     $(document).on('change', '#EntryTempData_AccountId', function () {
         var EventId = $(this).val();
+        alert(EventId);
+        loadAccountBalance(EventId);
 
-        loadAccountBalance(EventId)
+    
     });
     $(document).on('change', '#EntryTempData_BookingDirection', function () {
         var EventId = $(this).val();
-
-        loadDescriptionByOperationDirection(EventId)
+      
+        loadDescriptionByOperationDirection(EventId);
     });
 });
 

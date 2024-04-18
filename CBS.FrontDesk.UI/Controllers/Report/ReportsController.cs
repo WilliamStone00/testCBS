@@ -166,16 +166,44 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
             string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
+            string rpTType = System.Web.HttpContext.Current.Session["rptType"].ToString();
+            string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
             var model = rptSource;
-            Export export = new Export();
-            export.ToExcel(Response, model as IEnumerable<object>, strtitle);
+            if (rpTType== "EXCEL")
+            {
+                Export export = new Export();
+                export.ToExcel(Response, model as IEnumerable<object>, strtitle);
+  
+            }
+            else
+            {
+                ReportDocument rd = new ReportDocument();
+                string strRptPath = Server.MapPath(rptpath);
+                rd.Load(strRptPath);
+            
+                    rd.SetDataSource(rptSource);
+                string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.ToString("dd_mm_yyyy_hhmmss")}");
+                // Export the report to a byte array
+                Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+                byte[] bytes = new byte[stream.Length];
+                stream.Read(bytes, 0, bytes.Length);
+
+                // Clear the response and set the content type
+                Response.ClearContent();
+                Response.ClearHeaders();
+                Response.ContentType = "application/pdf";
+
+                // Write the report bytes to the response
+                Response.BinaryWrite(bytes);
+                Response.Flush();
+                Response.End();
+                //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+                //CleanReport(rd);
+            }
 
             return new EmptyResult();
         }
-        //this.HttpContext.Session["rptType"] = rptType;
-        //        this.HttpContext.Session["ReportName"] = $"{ReportName}.rpt";
-        //        this.HttpContext.Session["rptpath"] = $"~/{reportpath}/" + ReportName + ".rpt";
-        //        this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+  
 
     }
     public class Export

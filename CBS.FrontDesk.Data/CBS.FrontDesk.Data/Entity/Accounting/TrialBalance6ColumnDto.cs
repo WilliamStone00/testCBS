@@ -6,46 +6,52 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
-    public class TrialBalance6ColumnDtoServiceResponse
-    {
-        public List<TrialBalance6ColumnDto> Data { get; set; }
-        public int StatusCode { get; set; }
-        public string Message { get; set; }
-        public string Status { get; set; }
-        public string Description { get; set; }
-        public List<string> Errors { get; set; }
-    }
+ 
+    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class TrialBalance6ColumnDto
     {
-        public string EntityId { get; set; }
-        public string EntityType { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
-        public string BranchName { get; set; }
-        public string BranchLocation { get; set; }
-        public string BranchAddress { get; set; }
-        public string Capital { get; set; }
-        public string ImmatriculationNumber { get; set; }
-        public string WebSite { get; set; }
-        public string BranchTelephone { get; set; }
-        public string HeadOfficeTelePhone { get; set; }
-        public string Name { get; set; }
-        public string Location { get; set; }
-        public string Address { get; set; }
-        public string AccountNumber { get; set; }
-        public string AccountName { get; set; }
-        public string BeginningDebitBalance { get; set; }
-        public string BeginningCreditBalance { get; set; }
-        public string DebitBalance { get; set; }
-        public string CreditBalance { get; set; }
-        public string EndDebitBalance { get; set; }
-        public string EndCreditBalance { get; set; }
-        public decimal TotalBeginningDebitBalance { get; set; }
-        public decimal TotalBeginningCreditBalance { get; set; }
-        public decimal TotalDebitBalance { get; set; }
-        public decimal TotalCreditBalance { get; set; }
-        public decimal TotalEndDebitBalance { get; set; }
-        public decimal TotalEndCreditBalance { get; set; }
+        public string entityId { get; set; }
+        public string entityType { get; set; }
+        public DateTime fromDate { get; set; }
+        public DateTime toDate { get; set; }
+        public string branchName { get; set; }
+        public object branchLocation { get; set; }
+        public string branchAddress { get; set; }
+        public string capital { get; set; }
+        public string immatriculationNumber { get; set; }
+        public string webSite { get; set; }
+        public string branchTelephone { get; set; }
+        public string headOfficeTelePhone { get; set; }
+        public string name { get; set; }
+        public string location { get; set; }
+        public string address { get; set; }
+        public string accountNumber { get; set; }
+        public string accountName { get; set; }
+        public string beginningDebitBalance { get; set; }
+        public string beginningCreditBalance { get; set; }
+        public string debitBalance { get; set; }
+        public string creditBalance { get; set; }
+        public string endDebitBalance { get; set; }
+        public string endCreditBalance { get; set; }
+        public object totalBeginningDebitBalance { get; set; }
+        public object totalBeginningCreditBalance { get; set; }
+        public object totalDebitBalance { get; set; }
+        public object totalCreditBalance { get; set; }
+        public object totalEndDebitBalance { get; set; }
+        public object totalEndCreditBalance { get; set; }
+        public string cartegory { get; set; }
     }
+
+    public class TrialBalance6ColumnDtoServiceResponse
+    {
+        public List<TrialBalance6ColumnDto> data { get; set; }
+        public List<object> errors { get; set; }
+        public int statusCode { get; set; }
+        public string statusDescription { get; set; }
+        public string message { get; set; }
+        public string status { get; set; }
+    }
+
+
 
 }

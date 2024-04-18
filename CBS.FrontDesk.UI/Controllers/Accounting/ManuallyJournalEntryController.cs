@@ -160,6 +160,9 @@ namespace CBS.FrontDesk.UI.Controllers
                         model.EntryTempData.AccountName = chartOfAccount.AccountName;
                         model.EntryTempData.Description = "xxxxxxxxxx";
                     }
+                    model.EntryTempData.AccountNumber= chartOfAccount.AccountNumber;
+                    model.EntryTempData.AccountName= chartOfAccount.AccountName;
+                    
                     serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
                 }
                 else

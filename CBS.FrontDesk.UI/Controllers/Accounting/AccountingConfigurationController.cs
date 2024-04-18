@@ -359,6 +359,26 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else if (path == "details")
                 {
                     var data = await _AccountServices.GetAccount(key);
+                    var chartOfAccount = await _chartOfAccountServices.GetChartOfAccountByAccountNumber(data.AccountNumber);
+               
+                    if (chartOfAccount == null)
+                    {
+                        chartOfAccount = new ChartOfAccount
+                        {
+                            Id = key,
+                            AccountNumber = key
+                        };
+                    }
+                    var chartOfAccountf = await _chartOfAccountServices.GetChartOfAccountByAccountNumber(data.AccountNumber.Substring(0, data.AccountNumber.Length-1));
+
+                    if (chartOfAccountf == null)
+                    {
+                        chartOfAccountf = new ChartOfAccount
+                        {
+                            Id = key,
+                            AccountNumber = key
+                        };
+                    }
                     return PartialView(partialView, new AccountingConfiguration { Account = data });
 
                 }

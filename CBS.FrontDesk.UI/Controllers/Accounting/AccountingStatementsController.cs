@@ -71,7 +71,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             List<StringValues> stringValues = new List<StringValues>();
             stringValues.Add(new StringValues("EXCEL", "EXCEL"));
-            stringValues.Add(new StringValues("EXCEL", "PDF"));
+            stringValues.Add(new StringValues("PDF", "PDF"));
 
             return stringValues;
         }
@@ -126,14 +126,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 ViewBag.KEY = KEY;
                 if (path == "export_generalLedger")
                 {
-                    ////var account = await _acountServices.GenerateAccountingLedgerForAnumber();
-                    ////return PartialView(partialView, account);
+               
                 }
                 else
-                {
-                    //var account = await _acountServices.GetAccountByAccountNumber(KEY);
-                    //ViewBag.Sources = _acountServices.GetPaymentSources();
-                    //return PartialView(partialView, account);
+                { 
                 }
 
                 return PartialView(KEY, partialView);
@@ -205,7 +201,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             break;
                         case "TB6":
                             {
-                            string fileTitle = $"TrialBalance_6column{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                            string fileTitle = $"TrialBalance_8column{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                            string ReportName = $"TrialBalance8Column.rpt";
                             var account = await _acountServices.GenerateTrialBalance_6column(model.SystemQuery);
                             this.HttpContext.Session["rptSource"] = account;
                             if (!account.Any())
@@ -213,11 +210,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 this.HttpContext.Session["rptSource"] = "empty";
                             }
                             this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                            this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
+                            this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                            this.HttpContext.Session["rptpath"] = $"~/Reporting/Accounting/TrialBalance8Column.rpt";
+
                         }
-                            break;
+                        break;
                         case "BS":
                             {
-                            string fileTitle = $"BalanceSheet{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                            string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
                             var account = await _acountServices.GenerateBalanceSheet(model.SystemQuery);
                             this.HttpContext.Session["rptSource"] = account;
                             if (!account.Any())

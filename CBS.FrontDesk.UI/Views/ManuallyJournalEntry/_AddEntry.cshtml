@@ -8,7 +8,7 @@
     <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
         <div class="col-12">
             <div class="card">
-                <h5 class="card-header">ReferenceId: @Html.TextBoxFor(m => m.EntryTempData.Reference, new { @class = "form-control textbox" })</h5>
+                <h5 class="card-header">ReferenceId: @Html.TextBoxFor(m => m.EntryTempData.Reference, new { @class = "form-control" })</h5>
                 @Html.ValidationMessageFor(m => m.EntryTempData.Reference, "", new { @class = "text-danger" })
 
                 <div class="row card-body">

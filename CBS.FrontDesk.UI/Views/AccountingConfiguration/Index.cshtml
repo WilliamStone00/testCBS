@@ -5,213 +5,265 @@
 }
 
 <div class="card mb-12">
-    <div class="card-header">
-        <h5 class="card-title mb-0">ACCOUNTING CONFIGURATION</h5>
-    </div>
-    <div class="card-body">
-        <div class="row">
 
-            <!-- Navigation -->
-            <div class="col-12 col-md-3 mx-auto card-separator">
-                <div class="d-flex justify-content-between flex-column mb-3 mb-md-0 pe-md-3">
-                    <ul class="nav nav-align-left nav-pills flex-column">
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#attributesChartOfAccount">
-                                <i class="mdi mdi-book-open-page-variant me-2"></i>
-                                <span class="align-middle">Chart Of Account</span>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#restock">
-                                <i class="mdi mdi-book-open-page-variant me-2"></i>
-                                <span class="align-middle">Account</span>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#shippingAccountType">
-                                <i class="mdi mdi-book-edit me-2"></i>
-                                <span class="align-middle">AccountType</span>
-                            </button>
-                        </li>
+    <h2> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Accounting Configuration Panel </h2>
+    <div class="row">
+        <div class="col-md-12">
 
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#attributes">
-                                <i class="mdi mdi-square-edit-outline me-2"></i>
-                                <span class="align-middle">Operation</span>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#global-delivery">
-                                <i class="mdi mdi-circle-expand me-2"></i>
-                                <span class="align-middle">Operation Attribute</span>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#shipping">
-                                <i class="mdi mdi-book-edit me-2"></i>
-                                <span class="align-middle">Accounting EntryRule</span>
-                            </button>
-                        </li>
-                    
+            <div class="accordion mt-3" id="accordionExample">
+                <div class="accordion-item active">
+                    <h2 class="accordion-header" id="headingOne">
 
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionOne"
+                                aria-expanded="true"
+                                aria-controls="accordionOne">
+                            &nbsp; &nbsp; &nbsp; &nbsp;   Account Class (This is the representation of the 9 class of account according to OHADA)
+                        </button>
+                    </h2>
 
+                    <div id="accordionOne"
+                         class="accordion-collapse collapse show"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="row justify-content-end">
+                                    <div class="demo-inline-spacing text-end">
+                                        <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountClass','_AccountClassData','desc','datalistingview_AccountClass',0,'accountClass','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                            <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                        </a>
+                                        <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountClass','_CreateAccountClass','new','AccountingConfiguration','accountClass')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                            <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                        </a>
 
-                    </ul>
+                                    </div>
+                                </div>
+                                <br />
+                                <div id="datalistingview_AccountClass">
+                                    @Html.Partial("_AccountTypeData")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <!-- Navigation Body -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionTwo"
+                                aria-expanded="false"
+                                aria-controls="accordionTwo">
+                            &nbsp; &nbsp; &nbsp; &nbsp;   Account Cartegory (Asset,Liabilities,expense ...etc)
+                        </button>
+                    </h2>
+                    <div id="accordionTwo"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingTwo"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountCartegory','_AccountCartegoryData','desc','datalistingview_AccountCartegory',0,'accountCartegory','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountCartegory','_CreateAccountCartegory','new','AccountingConfiguration','accountCartegory')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
 
-            <div class="col-12 col-md-9 pt-4 pt-md-0">
-                <div class="tab-content p-0 pe-xl-0 ps-md-3">
-                    <div class="tab-pane fade" id="attributesChartOfAccount" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_ChartOfAccount','_ChartOfAccountDtoData','new','AccountingConfiguration','chartOfAccount')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Back to chart of account">
-                                    <span class="tf-icons mdi mdi-chart-box mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_ChartOfAccount','_ChartOfAccountDtoDataChart',0,'datalistingview_ChartOfAccount',null,'chartOfAccount')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_ChartOfAccount','_CreateChartOfAccount','new','AccountingConfiguration','chartOfAccount')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-                                <a type="button" id="loadChartAccount" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Reload Chart Of Account">
-                                    <span class="tf-icons mdi mdi-refresh-auto mdi-18px"></span>
-                                </a>
+                                </div>
                             </div>
                             <br />
-                            <div class="datalistingview_ChartOfAccount" id="datalistingview_ChartOfAccount">
-                                @Html.Partial("_ChartOfAccountDtoData")
+                            <div id="datalistingview_AccountCartegory">
+                                @Html.Partial("_AccountTypeData")
                             </div>
                         </div>
-
                     </div>
-                    <div class="tab-pane fade show active" id="restock" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Account','_ChartOfAccountData','new','AccountingConfiguration','account')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Back to chart of account">
-                                    <span class="tf-icons mdi mdi-chart-box mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_Account','_AccountData','desc','datalistingview_Account',0,'account','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Account','_CreateAccount','new','AccountingConfiguration','account')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                    <span class="tf-icons mdi mdi-bank-plus mdi-18px"></span>
-                                </a>
-                                <a type="button" id="loadAccounts" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Reload Chart Of Account">
-                                    <span class="tf-icons mdi mdi-refresh-auto mdi-18px"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <br />
-
-                        <div class="datalistingview_Account" id="datalistingview_Account">
-                            @Html.Partial("_AccountData")
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="shippingAccountType" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountType','_AccountTypeData','desc','datalistingview_AccountType',0,'accountType','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountType','_CreateAccountType','new','AccountingConfiguration','accountType')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-                               
-                            </div>
-                        </div>
-                        <br />
-                        <div id="datalistingview_AccountType">
-                            @Html.Partial("_AccountTypeData")
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="attributes" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_OperationEvent','_OperationEventData','desc','datalistingview_OperationEvent',0,'operationEvent','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span> 
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEvent','_CreateOperationEvent','new','AccountingConfiguration','operationEvent')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <br />
-                        <div id="datalistingview_OperationEvent">
-                            @Html.Partial("_OperationEventData")
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="global-delivery" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_OperationEventAttribute','_OperationEventAttributeData','desc','datalistingview_OperationEventAttribute',0,'operationEventAttribute','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEventAttribute','_CreateOperationEventAttribute','new','AccountingConfiguration','operationEventAttribute')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <br />
-                        <div id="datalistingview_OperationEventAttribute">
-                            @Html.Partial("_OperationEventAttributeData")
-                        </div>
-
-                    </div>
-                    <div class="tab-pane fade" id="shipping" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountingEntryRule','_AccountingEntryRuleData','desc','datalistingview_AccountingEntryRule',0,'accountingEntryRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountingEntryRule','_CreateAccountingEntryRule','new','AccountingConfiguration','accountingEntryRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <br />
-
-                        <div id="datalistingview_AccountingEntryRule">
-                            @Html.Partial("_AccountingEntryRuleData")
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="shippingOpeningOfTheDay" role="tabpanel">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_OpeningOfTheDay','_OpeningOfTheDayData',0,'datalistingview_OpeningOfTheDay',null,'openingOfTheDay')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OpeningOfTheDay','_CreateOpeningOfTheDay','new','AccountingConfiguration','openingOfTheDay')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <br />
-
-                        <div id="datalistingview_OpeningOfTheDay">
-                       
-                        </div>
-                    </div>
-
-
-
                 </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionThree"
+                                aria-expanded="false"
+                                aria-controls="accordionThree">
+                            &nbsp; &nbsp; &nbsp; &nbsp;   Account Type (Ordinary Account,Operations Account ...etc)
+                        </button>
+                    </h2>
+                    <div id="accordionThree"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingThree"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountType','_AccountTypeData','desc','datalistingview_AccountType',0,'accountType','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountType','_CreateAccountType','new','AccountingConfiguration','accountType')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
 
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_AccountType">
+                                @Html.Partial("_CreateAccountType")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+      
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingfive">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionfive"
+                                aria-expanded="false"
+                                aria-controls="accordionfive">
+                            &nbsp; &nbsp; &nbsp; &nbsp;   Account Management
+                        </button>
+                    </h2>
+                    <div id="accordionfive"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingThree"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountData','_AccountData','desc','datalistingview_Account',0,'account','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Account','_CreateAccount','new','AccountingConfiguration','account')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_Account">
+                                @Html.Partial("_AccountData")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingsix">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionsix"
+                                aria-expanded="false"
+                                aria-controls="accordionsix">
+                            &nbsp; &nbsp; &nbsp; &nbsp;   Operation Event Management
+                        </button>
+                    </h2>
+                    <div id="accordionsix"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingsix"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_OperationEvent','_OperationEventData','desc','datalistingview_OperationEvent',0,'operationEvent','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEvent','_CreateOperationEvent','new','AccountingConfiguration','operationEvent')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_OperationEvent">
+                                @Html.Partial("_OperationEventData")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingseven">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionseven"
+                                aria-expanded="false"
+                                aria-controls="accordionseven">
+                            &nbsp; &nbsp; &nbsp; &nbsp;   Operation Event Attribute Management
+                        </button>
+                    </h2>
+                    <div id="accordionseven"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingseven"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_OperationEventAttribute','_OperationEventAttributeData','desc','datalistingview_OperationEventAttribute',0,'operationEventAttribute','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEventAttribute','_CreateOperationEventAttribute','new','AccountingConfiguration','operationEventAttribute')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_OperationEventAttribute">
+                                @Html.Partial("_OperationEventAttributeData")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingeight">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordioneight"
+                                aria-expanded="false"
+                                aria-controls="accordioneight">
+                            &nbsp; &nbsp; &nbsp; &nbsp;   Accounting Event EntryRule Management
+                        </button>
+                    </h2>
+                    <div id="accordioneight"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingeight"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountingEntryRule','_AccountingEntryRuleData','desc','datalistingview_AccountingEntryRule',0,'accountingEntryRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountingEntryRule','_CreateAccountingEntryRule','new','AccountingConfiguration','accountingEntryRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_AccountingEntryRule">
+                                @Html.Partial("_AccountingEntryRuleData")
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
 
+    <!--/ Accordion -->
 
 
+</div>
 
-
-
-
-
-    @section Scripts {@Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/Js/main.js/Account.js"></script>
  
-    }
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/main.js/Account.js"></script>
+
+}
 
