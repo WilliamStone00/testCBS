@@ -189,7 +189,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             break;
                         case "TB4":
                             {
-                            string fileTitle = $"TrialBalance_4column{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                            string fileTitle = $"TrialBalance_6column{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
                             var account = await _acountServices.GenerateTrialBalance_4column(model.SystemQuery);
                             this.HttpContext.Session["rptSource"] = account;
                             if (!account.Any())
@@ -204,7 +204,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             string fileTitle = $"TrialBalance_8column{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
                             string ReportName = $"TrialBalance8Column.rpt";
                             var account = await _acountServices.GenerateTrialBalance_6column(model.SystemQuery);
-                            this.HttpContext.Session["rptSource"] = account;
+                            this.HttpContext.Session["rptSource"] = (model.SystemQuery.FileType=="PDF")? account: account[0].ConvertToExcelTrialBalance(account);
                             if (!account.Any())
                             {
                                 this.HttpContext.Session["rptSource"] = "empty";

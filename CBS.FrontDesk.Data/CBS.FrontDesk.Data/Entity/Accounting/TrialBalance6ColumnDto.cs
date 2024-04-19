@@ -40,6 +40,33 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public object totalEndDebitBalance { get; set; }
         public object totalEndCreditBalance { get; set; }
         public string cartegory { get; set; }
+
+        public List<TrialBalanceDto> ConvertToExcelTrialBalance(List<TrialBalance6ColumnDto> trialBalances)
+        {
+            List < TrialBalanceDto > trialBalanceses = new List<TrialBalanceDto> ();
+            foreach (var item in trialBalances)
+            {
+                trialBalanceses.Add(item.ConvertToTrialBalance());
+            }
+            return trialBalanceses;
+        }
+
+        private TrialBalanceDto ConvertToTrialBalance()
+        {
+            return new TrialBalanceDto 
+            {
+                accountNumber = this.accountNumber,
+                accountName = this.accountNumber,
+                beginningDebitBalance = this.beginningDebitBalance,
+                beginningCreditBalance = this.beginningCreditBalance,
+                debitBalance = this.debitBalance,
+                creditBalance = this.creditBalance,
+                endDebitBalance = this.endDebitBalance,
+                endCreditBalance = this.endCreditBalance,
+
+
+            };
+        }
     }
 
     public class TrialBalance6ColumnDtoServiceResponse

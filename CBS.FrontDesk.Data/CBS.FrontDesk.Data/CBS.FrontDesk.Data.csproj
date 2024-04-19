@@ -103,6 +103,7 @@
     <Compile Include="Entity\Accounting\OperationEventAttributeDto.cs" />
     <Compile Include="Entity\Accounting\OperationEventDto.cs" />
     <Compile Include="Entity\Accounting\CashInfusion.cs" />
+    <Compile Include="Entity\Accounting\TrialBalanceDto.cs" />
     <Compile Include="Entity\BudgetManagement\BubgetConfiguration.cs" />
     <Compile Include="Entity\BudgetManagement\BudgetCategorie.cs" />
     <Compile Include="Entity\BudgetManagement\Budget.cs" />
