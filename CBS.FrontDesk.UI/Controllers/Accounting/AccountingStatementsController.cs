@@ -212,7 +212,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                             this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
                             this.HttpContext.Session["ReportName"] = $"{ReportName}";
-                            this.HttpContext.Session["rptpath"] = $"~/Reporting/Accounting/TrialBalance8Column.rpt";
+                            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/TrialBalance8Column.rpt";
 
                         }
                         break;
