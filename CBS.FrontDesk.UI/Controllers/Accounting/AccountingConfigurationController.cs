@@ -16,6 +16,7 @@ using CBS.FrontDesk.Data;
 using System.Reflection;
 using System.Web.WebPages.Html;
 using Microsoft.Ajax.Utilities;
+using CBS.FrontDesk.Data.Entity;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -29,8 +30,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly OperationEventServices _OperationEventService;
         private readonly AccountingServices _AccountServices;
         private readonly AccountTypeServices _AccountTypeServices;
-
         private readonly AccountCategoryServices _AccountCategoryServices;
+ 
 
         public AccountingConfigurationController()
         {
@@ -109,7 +110,23 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             return list;
         }
+        public async Task<ActionResult> GetAccountCartegoryById(string Id)
+        {
 
+
+            try
+            {
+                //var number = chartOfAccountNumber.Length==1? chartOfAccountNumber: chartOfAccountNumber.Substring(0, 1);
+                var data = await _chartOfAccountServices.GetChartOfAccountById(Id);
+                var dataList = new List<StringValues>();
+                dataList.Add(new StringValues { Text= (await _AccountCategoryServices.GetAccountCategory(data.AccountCartegoryId)).Name, Value= data.AccountCartegoryId });
+                return Json(dataList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
         public async Task<ActionResult> GetOperationEventAttribute(string operationEventId)
         {
             
@@ -230,6 +247,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             if (serviceOption == "account")
             {
+                var chartOfAccount =await  _chartOfAccountServices.GetChartOfAccountByAccountNumber(model.Account.AccountNumber.Substring(0,model.Account.AccountNumber.Length-1));
+                if (chartOfAccount == null)
+                {
+
+                }
+                else
+                {
+                    model.Account.AccountCategoryId = chartOfAccount.AccountCartegoryId;
+                }
                 return () => _AccountServices.Create(model.Account);
             }
             else if (serviceOption == "accountType")

@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+    $('#AccountToHide').hide();
     $("#btnData").click(function () {
         LoadData();
     });
@@ -14,7 +15,22 @@
         }
        
     });
+ 
+    $(document).on('change', '#SystemQuery_ReportType', function () {
+        var selectedValue = $(this).val();
 
+        // Check if the selected value matches the specific value
+        if (selectedValue === 'GL') {
+            // Show the element
+            $('#AccountToHide').show();
+        } else {
+            // Hide the element
+            $('#AccountToHide').hide();
+        }
+
+    });
+
+ 
 });
 
 function GetTransactionHistory(KEY, divToLoadData, partialView, path, myDataTable, order) {

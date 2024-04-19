@@ -2589,6 +2589,7 @@
     <Content Include="Views\Operation\Transfers.cshtml" />
     <Content Include="Views\Operation\_TransferDetails.cshtml" />
     <Content Include="Views\Operation\_TransferConfirmation.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateIncomeStatementStructure.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

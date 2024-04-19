@@ -22,9 +22,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public ChartOfAccountDto ChartOfAccountDto { get; set; } = new ChartOfAccountDto();
         public List<ChartOfAccountDto> ChartOfAccountDtos { get; set; } = new List<ChartOfAccountDto>();
         public Account Account { get; set; } = new Account();
+        public List<Account> Accounts { get; set; } = new List<Account>();
         public List<ChartOfAccount> ChartOfAccounts { get; set; } = new List<ChartOfAccount>();
         public List<AccountType> AccountTypes { get; set; } = new List<AccountType>();
-        public List<Account> Accounts { get; set; } = new List<Account>();
+        public StatementModel IncomeStatement { get; set; } = new StatementModel();
+        public List<StatementModel> IncomeStatements { get; set; } = new List<StatementModel>();
         public List<AccountHoDto> AccountHoDtos { get; set; } = new List<AccountHoDto>();
         public List<AccountTreeNode> AccountTreeNodes { get; set; } = new List<AccountTreeNode>();
         public List<OperationEvent> OperationEvents { get; set; } = new List<OperationEvent>();
