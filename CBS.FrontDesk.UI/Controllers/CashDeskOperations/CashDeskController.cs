@@ -1,4 +1,5 @@
 ﻿using CBS.BusinessService.Accounts;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
@@ -28,7 +29,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 ViewBag.KEY = KEY;
                 if (path == "search")
                 {
-                    if (KEY==null || KEY=="")
+                    if (KEY == null || KEY == "")
                     {
                         ViewBag.message = "Empty data was submited. Please enter search criterial";
                         return PartialView("_DataNotFound", new CashDesk());
@@ -43,7 +44,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
 
                 }
-                else if (path == "cashin" || path == "cashout"|| path== "repayment")
+                else if (path == "cashin" || path == "cashout" || path == "repayment")
                 {
                     if (KEY == null || KEY == "")
                     {
@@ -54,7 +55,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                     var cashDesk = await _cashDeskService.GetAccountByAccountNumberSearch(KEY);
                     if (cashDesk == null)
                     {
-            
+
                         ViewBag.message = $"{KEY} was not found in the database.";
                         return PartialView("_DataNotFound", new CashDesk());
                     }
@@ -83,15 +84,24 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             try
             {
-                return Json(new { success = true, status = false, message = $"Operation was successfull." });
-                //var data = await serviceAction();
-                //return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                var data = await _cashDeskService.BulkDeposi(deposits);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
             }
         }
-        //BulkDeposit
+        [HttpPost]
+        public async Task<ActionResult> GetReport()
+        {
+            this.HttpContext.Session["rptType"] = "ReportParameterLess";
+            this.HttpContext.Session["ReportName"] = $"Receipts.rpt";
+            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/Reciepts/Receipts.rpt";
+            this.HttpContext.Session["rpttitle"] = $"MemberReceipts";
+            return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
+
+        }
+
     }
 }

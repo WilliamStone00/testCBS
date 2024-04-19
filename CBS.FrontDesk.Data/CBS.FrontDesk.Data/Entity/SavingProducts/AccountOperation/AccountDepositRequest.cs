@@ -35,6 +35,10 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public IndividualProfile Customer { get; set; } = new IndividualProfile();
         public List<CustomerAccount> Accounts { get; set; } = new List<CustomerAccount>();
     }
+    public class  BulkOperation
+    {
+        public List<BulkDeposit> BulkOperations { get; set; } = new List<BulkDeposit>();
+    }
     public class BulkDeposit
     {
         public string AccountNumber { get; set; }
@@ -248,5 +252,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public int coin1 { get; set; }
     }
-    
+    public class CurrencyNotesDto
+    {
+        public string Id { get; set; }
+        public string DinominationType { get; set; }
+        public string Denomination { get; set; }
+        public int Value { get; set; }
+        public decimal SubTotal { get; set; }
+        public decimal Total { get; set; }
+        public string ReferenceId { get; set; }
+    }
+
 }

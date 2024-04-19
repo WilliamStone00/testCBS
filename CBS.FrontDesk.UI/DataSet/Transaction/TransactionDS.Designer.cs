@@ -429,6 +429,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             private global::System.Data.DataColumn columnOpeningBalance;
             
+            private global::System.Data.DataColumn columnAmountInWord;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public TransactionDataTable() {
@@ -1064,6 +1066,14 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn AmountInWordColumn {
+                get {
+                    return this.columnAmountInWord;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1174,7 +1184,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         string Key, 
                         string BarCode, 
                         decimal ClosingBalance, 
-                        decimal OpeningBalance) {
+                        decimal OpeningBalance, 
+                        string AmountInWord) {
                 TransactionRow rowTransactionRow = ((TransactionRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Coin1,
@@ -1251,7 +1262,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         Key,
                         BarCode,
                         ClosingBalance,
-                        OpeningBalance};
+                        OpeningBalance,
+                        AmountInWord};
                 rowTransactionRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowTransactionRow);
                 return rowTransactionRow;
@@ -1349,6 +1361,7 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 this.columnBarCode = base.Columns["BarCode"];
                 this.columnClosingBalance = base.Columns["ClosingBalance"];
                 this.columnOpeningBalance = base.Columns["OpeningBalance"];
+                this.columnAmountInWord = base.Columns["AmountInWord"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1504,6 +1517,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 base.Columns.Add(this.columnClosingBalance);
                 this.columnOpeningBalance = new global::System.Data.DataColumn("OpeningBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOpeningBalance);
+                this.columnAmountInWord = new global::System.Data.DataColumn("AmountInWord", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAmountInWord);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2849,6 +2864,22 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string AmountInWord {
+                get {
+                    try {
+                        return ((string)(this[this.tableTransaction.AmountInWordColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AmountInWord\' in table \'Transaction\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransaction.AmountInWordColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsCoin1Null() {
                 return this.IsNull(this.tableTransaction.Coin1Column);
             }
@@ -3745,6 +3776,18 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetOpeningBalanceNull() {
                 this[this.tableTransaction.OpeningBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsAmountInWordNull() {
+                return this.IsNull(this.tableTransaction.AmountInWordColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetAmountInWordNull() {
+                this[this.tableTransaction.AmountInWordColumn] = global::System.Convert.DBNull;
             }
         }
         

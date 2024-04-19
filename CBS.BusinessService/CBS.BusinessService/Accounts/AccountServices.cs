@@ -402,23 +402,21 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                if (t.currencyNotes == null)
-                {
-                    t.currencyNotes = new CurrencyNotes();
-                }
+                t.currencyNote = CurrencyMapper.MapToCurrencyNotesRequest(t.currencyNotes);
+
                 var rpt = new TransactionReportDS
                 {
                     AccountNumber = t.AccountNumber,
                     AccountType = t.Account.AccountType,
                     Amount = t.OriginalDepositAmount,
                     TransactionDate = t.CreatedDate,
-                    Note500 = t.currencyNotes.note500,
-                    Note2000 = t.currencyNotes.note2000,
-                    Note1000 = t.currencyNotes.note1000,
-                    Note5000 = t.currencyNotes.note5000,
-                    Note10000 = t.currencyNotes.note10000,
-                    Coin500 = t.currencyNotes.coin500,
-                    Coin100 = t.currencyNotes.coin100,
+                    Note500 = t.currencyNote.note500,
+                    Note2000 = t.currencyNote.note2000,
+                    Note1000 = t.currencyNote.note1000,
+                    Note5000 = t.currencyNote.note5000,
+                    Note10000 = t.currencyNote.note10000,
+                    Coin500 = t.currencyNote.coin500,
+                    Coin100 = t.currencyNote.coin100,
                     FeeType = t.FeeType,
                     OriginalDepositAmount = t.OriginalDepositAmount,
                     HeadOfficeAddress = b.Bank.Address,
@@ -431,11 +429,11 @@ namespace CBS.BusinessService.Accounts
                     HeadOfficeTelephone = b.Bank.Telephone,
                     HeadOfficeWebSite = b.Bank.WebSite,
                     CashierName = u.firstName + " " + u.lastName,
-                    Coin1 = t.currencyNotes.coin1,
-                    Coin5 = t.currencyNotes.coin5,
-                    Coin10 = t.currencyNotes.coin10,
-                    Coin25 = t.currencyNotes.coin25,
-                    Coin50 = t.currencyNotes.coin50,
+                    Coin1 = t.currencyNote.coin1,
+                    Coin5 = t.currencyNote.coin5,
+                    Coin10 = t.currencyNote.coin10,
+                    Coin25 = t.currencyNote.coin25,
+                    Coin50 = t.currencyNote.coin50,
                     Credit = t.Credit,
                     Debit = t.Debit,
                     Balance = t.Balance,
@@ -494,10 +492,15 @@ namespace CBS.BusinessService.Accounts
 
                 foreach (TransactionHistory t in transactions)
                 {
-                    if (t.currencyNotes == null)
+                    if (t.currencyNote==null)
                     {
-                        t.currencyNotes = new CurrencyNotes();
+                        t.currencyNote = new CurrencyNotes();
                     }
+                    else
+                    {
+                        t.currencyNote = CurrencyMapper.MapToCurrencyNotesRequest(t.currencyNotes);
+                    }
+
 
                     //closingBalance += t.Credit - t.Debit;
 
@@ -507,13 +510,13 @@ namespace CBS.BusinessService.Accounts
                         AccountType = t.Account.AccountType,
                         Amount = t.OriginalDepositAmount,
                         TransactionDate = t.CreatedDate,
-                        Note500 = t.currencyNotes.note500,
-                        Note2000 = t.currencyNotes.note2000,
-                        Note1000 = t.currencyNotes.note1000,
-                        Note5000 = t.currencyNotes.note5000,
-                        Note10000 = t.currencyNotes.note10000,
-                        Coin500 = t.currencyNotes.coin500,
-                        Coin100 = t.currencyNotes.coin100,
+                        Note500 = t.currencyNote.note500,
+                        Note2000 = t.currencyNote.note2000,
+                        Note1000 = t.currencyNote.note1000,
+                        Note5000 = t.currencyNote.note5000,
+                        Note10000 = t.currencyNote.note10000,
+                        Coin500 = t.currencyNote.coin500,
+                        Coin100 = t.currencyNote.coin100,
                         FeeType = t.FeeType,
                         OriginalDepositAmount = t.OriginalDepositAmount,
                         HeadOfficeAddress = b.Bank.Address,
@@ -525,11 +528,11 @@ namespace CBS.BusinessService.Accounts
                         HeadOfficeCode = b.Bank.BankCode,
                         HeadOfficeTelephone = b.Bank.Telephone,
                         HeadOfficeWebSite = b.Bank.WebSite,
-                        Coin1 = t.currencyNotes.coin1,
-                        Coin5 = t.currencyNotes.coin5,
-                        Coin10 = t.currencyNotes.coin10,
-                        Coin25 = t.currencyNotes.coin25,
-                        Coin50 = t.currencyNotes.coin50,
+                        Coin1 = t.currencyNote.coin1,
+                        Coin5 = t.currencyNote.coin5,
+                        Coin10 = t.currencyNote.coin10,
+                        Coin25 = t.currencyNote.coin25,
+                        Coin50 = t.currencyNote.coin50,
                         Credit = t.Credit,
                         Debit = t.Debit,
                         Balance = t.Balance,

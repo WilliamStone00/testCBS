@@ -197,8 +197,8 @@ namespace CBS.FrontDesk.UI.Controllers
                 Response.BinaryWrite(bytes);
                 Response.Flush();
                 Response.End();
-                //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
-                //CleanReport(rd);
+                rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+                CleanReport(rd);
             }
 
             return new EmptyResult();

@@ -39,6 +39,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public bool IsInterBrachOperation { get; set; }
         public string SourceBrachId { get; set; }
         public string DestinationBrachId { get; set; }
+        public string AmountInWord { get; set; }
         public decimal Balance { get; set; }
         public string ProductId { get; set; }
         public decimal Fee { get; set; }
@@ -51,7 +52,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public virtual Teller Teller { get; set; }
         public virtual Account Account { get; set; }
         public DateTime CreatedDate { get; set; }
-        public CurrencyNotes currencyNotes { get; set; }
+        public List<CurrencyNotesDto> currencyNotes { get; set; }
+        public CurrencyNotes currencyNote { get; set; }
 
     }
     public class TellerOperation

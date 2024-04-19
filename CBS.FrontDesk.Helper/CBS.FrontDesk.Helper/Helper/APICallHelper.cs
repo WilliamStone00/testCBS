@@ -110,6 +110,8 @@
         public static string GetAllAccountsByBranchIdQuery = "/api/v1/Account/GetAllAccountsByBranchIdQuery/{0}";
         public static string GetAllAccounts = "/api/v1/Account";
         public static string MakeDepoit = "/api/v1/Transaction/Deposit";
+        public static string BulkDeposit = "/api/v1/Transaction/BulkDeposit";
+        //
         public static string MakeWithdrawal = "/api/v1/Transaction/Withdrawal";
         public static string MakeLoanRepayment = "/api/v1/Transaction/LoanRepaymentCommand";
         public static string TransferRequest = "/api/v1/Transaction/TransferRequestCommand";

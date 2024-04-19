@@ -315,7 +315,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(string.Format(APICallHelper.GetCustomerAccounts, customerID));
-                if (cusResponseObject.ApiResponseData!=null)
+                if (cusResponseObject.ApiResponseData != null)
                 {
                     return cusResponseObject.ApiResponseData.Data;
                 }
@@ -363,23 +363,26 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                if (t.currencyNotes == null)
-                {
-                    t.currencyNotes = new CurrencyNotes();
-                }
+
+                t.currencyNote = CurrencyMapper.MapToCurrencyNotesRequest(t.currencyNotes);
+
                 var rpt = new TransactionReportDS
                 {
                     AccountNumber = t.AccountNumber,
                     AccountType = t.Account.AccountType,
                     Amount = t.OriginalDepositAmount,
+                    Telephone = c.phone,
+                    Address = c.address,
+                    Charges = t.Fee,
                     TransactionDate = t.CreatedDate,
-                    Note500 = t.currencyNotes.note500,
-                    Note2000 = t.currencyNotes.note2000,
-                    Note1000 = t.currencyNotes.note1000,
-                    Note5000 = t.currencyNotes.note5000,
-                    Note10000 = t.currencyNotes.note10000,
-                    Coin500 = t.currencyNotes.coin500,
-                    Coin100 = t.currencyNotes.coin100,
+                    Note500 = t.currencyNote.note500,
+                    Note2000 = t.currencyNote.note2000,
+                    Note1000 = t.currencyNote.note1000,
+                    Note5000 = t.currencyNote.note5000,
+                    Note10000 = t.currencyNote.note10000,
+                    Coin500 = t.currencyNote.coin500,
+                    Coin100 = t.currencyNote.coin100,
+                    AmountInWord = t.AmountInWord,
                     FeeType = t.FeeType,
                     OriginalDepositAmount = t.OriginalDepositAmount,
                     HeadOfficeAddress = b.Bank.Address,
@@ -392,11 +395,11 @@ namespace CBS.BusinessService.Accounts
                     HeadOfficeTelephone = b.Bank.Telephone,
                     HeadOfficeWebSite = b.Bank.WebSite,
                     CashierName = u.firstName + " " + u.lastName,
-                    Coin1 = t.currencyNotes.coin1,
-                    Coin5 = t.currencyNotes.coin5,
-                    Coin10 = t.currencyNotes.coin10,
-                    Coin25 = t.currencyNotes.coin25,
-                    Coin50 = t.currencyNotes.coin50,
+                    Coin1 = t.currencyNote.coin1,
+                    Coin5 = t.currencyNote.coin5,
+                    Coin10 = t.currencyNote.coin10,
+                    Coin25 = t.currencyNote.coin25,
+                    Coin50 = t.currencyNote.coin50,
                     Credit = t.Credit,
                     Debit = t.Debit,
                     Balance = t.Balance,
@@ -432,7 +435,7 @@ namespace CBS.BusinessService.Accounts
                     SendingBranch = "",
                     SourceBranchCommission = t.SourceBranchCommission,
                     SourceType = t.SourceType,
-                    Status = t.Status
+                    Status = t.Status, 
                 };
                 return rpt;
 
@@ -455,9 +458,9 @@ namespace CBS.BusinessService.Accounts
 
                 foreach (TransactionHistory t in transactions)
                 {
-                    if (t.currencyNotes == null)
+                    if (t.currencyNote == null)
                     {
-                        t.currencyNotes = new CurrencyNotes();
+                        t.currencyNote = new CurrencyNotes();
                     }
 
                     //closingBalance += t.Credit - t.Debit;
@@ -468,13 +471,13 @@ namespace CBS.BusinessService.Accounts
                         AccountType = t.Account.AccountType,
                         Amount = t.OriginalDepositAmount,
                         TransactionDate = t.CreatedDate,
-                        Note500 = t.currencyNotes.note500,
-                        Note2000 = t.currencyNotes.note2000,
-                        Note1000 = t.currencyNotes.note1000,
-                        Note5000 = t.currencyNotes.note5000,
-                        Note10000 = t.currencyNotes.note10000,
-                        Coin500 = t.currencyNotes.coin500,
-                        Coin100 = t.currencyNotes.coin100,
+                        Note500 = t.currencyNote.note500,
+                        Note2000 = t.currencyNote.note2000,
+                        Note1000 = t.currencyNote.note1000,
+                        Note5000 = t.currencyNote.note5000,
+                        Note10000 = t.currencyNote.note10000,
+                        Coin500 = t.currencyNote.coin500,
+                        Coin100 = t.currencyNote.coin100,
                         FeeType = t.FeeType,
                         OriginalDepositAmount = t.OriginalDepositAmount,
                         HeadOfficeAddress = b.Bank.Address,
@@ -486,11 +489,11 @@ namespace CBS.BusinessService.Accounts
                         HeadOfficeCode = b.Bank.BankCode,
                         HeadOfficeTelephone = b.Bank.Telephone,
                         HeadOfficeWebSite = b.Bank.WebSite,
-                        Coin1 = t.currencyNotes.coin1,
-                        Coin5 = t.currencyNotes.coin5,
-                        Coin10 = t.currencyNotes.coin10,
-                        Coin25 = t.currencyNotes.coin25,
-                        Coin50 = t.currencyNotes.coin50,
+                        Coin1 = t.currencyNote.coin1,
+                        Coin5 = t.currencyNote.coin5,
+                        Coin10 = t.currencyNote.coin10,
+                        Coin25 = t.currencyNote.coin25,
+                        Coin50 = t.currencyNote.coin50,
                         Credit = t.Credit,
                         Debit = t.Debit,
                         Balance = t.Balance,
@@ -610,6 +613,82 @@ namespace CBS.BusinessService.Accounts
             }
             return null;
         }
+        public async Task<ExecutionMessages> BulkDeposi(List<BulkDeposit> bulkDeposits)
+        {
+            try
+            {
+                if (bulkDeposits.FirstOrDefault().OperationType== "Withdrawal")
+                {
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits };
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.MakeWithdrawal, BulkOperation);
+                    if (response.ApiResponseData != null)
+                    {
+                        var transaction = response.ApiResponseData.Data;
+                        Branch branch = RetrieveBranchFromSession();
+                        IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
+                        User user = await RetrieveUserFromSession(transaction.Teller.inUsedByUserId);
+                        var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
+                        var rptSource = new List<TransactionReportDS>();
+                        rptSource.Add(rpt);
+                        HttpContext.Current.Session["rptSource"] = rptSource;
+                        GetExecutionMessages(response, true, $"Deposit", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(null, false, $"Bulk deposit", MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+                else if (bulkDeposits.FirstOrDefault().OperationType == "Loan")
+                {
+
+                }
+                else if (bulkDeposits.FirstOrDefault().OperationType == "CashIn")
+                {
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits };
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.BulkDeposit, BulkOperation);
+                    if (response.ApiResponseData != null)
+                    {
+                        var transaction = response.ApiResponseData.Data;
+                        Branch branch = RetrieveBranchFromSession();
+                        IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
+                        User user = await RetrieveUserFromSession(transaction.Teller.inUsedByUserId);
+                        var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
+                        var rptSource = new List<TransactionReportDS>();
+                        rptSource.Add(rpt);
+                        HttpContext.Current.Session["rptSource"] = rptSource;
+                        GetExecutionMessages(response, true, $"Deposit", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(null, false, $"Bulk deposit", MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+                else
+                {
+
+                }
+             
+
+                // Make an API call to create an individual profile
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
         public async Task<ExecutionMessages> Deposit(DepositRequest model)
         {
             try
@@ -918,12 +997,12 @@ namespace CBS.BusinessService.Accounts
             {
 
                 var cusResponseObject = await GetCustomer(customerId);
-                if (cusResponseObject!=null)
+                if (cusResponseObject != null)
                 {
                     var customer = cusResponseObject;
-                    var branch = await _branchServices.GetBranch(customer.branchId); 
+                    var branch = await _branchServices.GetBranch(customer.branchId);
                     customer.name = $"{customer.firstName} {customer.lastName}";
-                    var cashDesk = new CashDesk {Branch= branch, Accounts = null, BulkDeposit = new BulkDeposit(), BulkDeposits = new List<BulkDeposit>(), Customer = customer, LoanId = null, CustomerId = customerId };
+                    var cashDesk = new CashDesk { Branch = branch, Accounts = null, BulkDeposit = new BulkDeposit(), BulkDeposits = new List<BulkDeposit>(), Customer = customer, LoanId = null, CustomerId = customerId };
                     return cashDesk;
                 }
 
