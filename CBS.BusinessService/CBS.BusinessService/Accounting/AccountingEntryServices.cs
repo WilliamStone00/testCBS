@@ -168,9 +168,6 @@ namespace CBS.BusinessService
             try
             {
 
-                // Make an API call to create an individual profile
-
-
                 return await _accountingApiCallerHelper.PostLiaisonAccountAsync(APICallHelper.AccountingEntry_LiaisonEntries, model);
 
             }
@@ -181,7 +178,6 @@ namespace CBS.BusinessService
                     SystemMessageStatus.Failed.ToString(), ex);
                 throw (ex);
             }
-
         }
         public async Task<List<AccountingEntry>> RetrieveAccountingEntries(SystemQuery model)
         {
