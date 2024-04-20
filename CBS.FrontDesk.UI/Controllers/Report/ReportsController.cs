@@ -177,28 +177,32 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             else
             {
-                ReportDocument rd = new ReportDocument();
-                string strRptPath = Server.MapPath(rptpath);
-                rd.Load(strRptPath);
-            
+                if (rptSource!="empty")
+                {
+                    ReportDocument rd = new ReportDocument();
+                    string strRptPath = Server.MapPath(rptpath);
+                    rd.Load(strRptPath);
+
                     rd.SetDataSource(rptSource);
-                string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.ToString("dd_mm_yyyy_hhmmss")}");
-                // Export the report to a byte array
-                Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
-                byte[] bytes = new byte[stream.Length];
-                stream.Read(bytes, 0, bytes.Length);
+                    string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.ToString("dd_mm_yyyy_hhmmss")}");
+                    // Export the report to a byte array
+                    Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+                    byte[] bytes = new byte[stream.Length];
+                    stream.Read(bytes, 0, bytes.Length);
 
-                // Clear the response and set the content type
-                Response.ClearContent();
-                Response.ClearHeaders();
-                Response.ContentType = "application/pdf";
+                    // Clear the response and set the content type
+                    Response.ClearContent();
+                    Response.ClearHeaders();
+                    Response.ContentType = "application/pdf";
 
-                // Write the report bytes to the response
-                Response.BinaryWrite(bytes);
-                Response.Flush();
-                Response.End();
-                //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
-                //CleanReport(rd);
+                    // Write the report bytes to the response
+                    Response.BinaryWrite(bytes);
+                    Response.Flush();
+                    Response.End();
+                    rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+                    CleanReport(rd);
+                }
+              
             }
 
             return new EmptyResult();

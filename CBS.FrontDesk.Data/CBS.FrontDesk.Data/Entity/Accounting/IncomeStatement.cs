@@ -2,10 +2,11 @@
 {
     public class StatementModel
     {
-        public string reference { get; set; }
-        public string heading { get; set; }
+        public string Id { get; set; }
+        public string Reference { get; set; }
+        public string Heading { get; set; }
 
-        public string document_type { get; set; }
+        public string Document_type { get; set; }
         public StatementModel()
         {
         }

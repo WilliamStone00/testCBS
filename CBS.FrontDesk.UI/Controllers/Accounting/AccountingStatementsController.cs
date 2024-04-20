@@ -154,12 +154,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 string fileTitle = $"GeneralLedger_{ model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
                                 var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery);
                                 this.HttpContext.Session["rptSource"] = account;
-                                if (!account.Any())
+                            string ReportName = $"TrialBalance8Column.rpt";
+                            if (!account.Any())
                                 {
                                     this.HttpContext.Session["rptSource"] = "empty";
                                 }
                                 this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
-                            }
+                            this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                            this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
+                            this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                            this.HttpContext.Session["rptpath"] = $"~/Reporting/Accounting/TrialBalance8Column.rpt";
+                        }
                             break;
                         case "LL":
                             {
@@ -204,7 +209,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             string fileTitle = $"TrialBalance_8column{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
                             string ReportName = $"TrialBalance8Column.rpt";
                             var account = await _acountServices.GenerateTrialBalance_6column(model.SystemQuery);
-                            this.HttpContext.Session["rptSource"] = (model.SystemQuery.FileType=="PDF")? account: account[0].ConvertToExcelTrialBalance(account);
+                            if (model.SystemQuery.FileType == "PDF")
+                            {
+                                this.HttpContext.Session["rptSource"] = account;
+                            }
+                            else
+                            {
+                                this.HttpContext.Session["rptSource"] = account[0].ConvertToExcelTrialBalance(account);
+                            }
+                     
                             if (!account.Any())
                             {
                                 this.HttpContext.Session["rptSource"] = "empty";
