@@ -160,16 +160,11 @@ namespace CBS.BusinessService
             }
             return ExecutionMessage;
         }
-
-        //
-
         public async Task<List<LiaisonLedgerEntry>> RetrieveLiasonAccountingEntries(SystemQuery model)
         {
             try
             {
-
                 return await _accountingApiCallerHelper.PostLiaisonAccountAsync(APICallHelper.AccountingEntry_LiaisonEntries, model);
-
             }
             catch (Exception ex)
             {
@@ -199,7 +194,6 @@ namespace CBS.BusinessService
             }
             
         }
-
         public async Task<List<AccountingEntry>> GetAllAccountingEntries()
         {
             try
