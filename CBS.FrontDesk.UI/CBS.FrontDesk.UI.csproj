@@ -302,11 +302,24 @@
     <Content Include="AppFiles\Images\BG.jpeg" />
     <Content Include="AppFiles\Images\BG2.png" />
     <Content Include="AppFiles\Images\BG3.jpeg" />
+    <Content Include="AppFiles\Images\BG3.png" />
     <Content Include="AppFiles\Images\Logog2.jpeg" />
     <Content Include="AppFiles\Images\SideImageHeader.jpeg" />
     <Content Include="AppFiles\Images\SideImageHeader.png" />
     <Content Include="AppFiles\Images\SideImageHeader_login.png" />
     <Content Include="App_Code\Helper\HtmlExtension.cs" />
+    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\Receipts_Duplicate.cs">
+      <DependentUpon>Receipts_Duplicate.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Statement\AllIAccountStatement.cs">
+      <DependentUpon>AllIAccountStatement.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -328,6 +341,7 @@
     <Compile Include="Controllers\Accounting\TellerCashDemandController.cs" />
     <Compile Include="Controllers\Authentication\AuthenticationController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
+    <Compile Include="Controllers\CashDeskOperations\CashDeskController.cs" />
     <Compile Include="Controllers\Commitee\LoanCommiteeController.cs" />
     <Compile Include="Controllers\BudgetManagement\BudgetManagementController.cs" />
     <Compile Include="Controllers\Configuration\Localization\CountryController.cs" />
@@ -391,25 +405,25 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Reporting\Accounting\TrialBalance6Column.cs">
+    <Compile Include="AppFiles\Reporting\Accounting\TrialBalance6Column.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TrialBalance6Column.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reporting\Accounting\TrialBalance8Column.cs">
+    <Compile Include="AppFiles\Reporting\Accounting\TrialBalance8Column.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TrialBalance8Column.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reporting\Transactions\Reciepts\Receipts.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\Receipts.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Receipts.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reporting\Transactions\Statement\IAccountStatement.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\Statement\IAccountStatement.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>IAccountStatement.rpt</DependentUpon>
@@ -2179,6 +2193,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
+    <Content Include="Scripts\Js\Crud\CashDesk\CashDeskOperations.js" />
     <Content Include="Scripts\Js\Crud\Collateral\Collateral.js" />
     <Content Include="Scripts\Js\Crud\LoanProductCollateral\LoanProductCollateral.js" />
     <Content Include="Scripts\Js\Crud\LoanTransactions\Loans.js" />
@@ -2206,13 +2221,13 @@
     <Content Include="Scripts\Js\Crud\Operation\Operation.js" />
     <Content Include="Scripts\Js\Crud\Operation\Savings.js" />
     <Content Include="Scripts\Js\Crud\RolePermission.js" />
-    <Content Include="Scripts\Js\Crud\User\AlertProfile.js" />
+    <Content Include="Scripts\Js\Crud\User\Users.js" />
     <Content Include="Scripts\Js\Crud\User\PromoWhitelist.js" />
     <Content Include="Scripts\Js\Crud\User\Services.js" />
     <Content Include="Scripts\Js\Crud\User\StringConfiguration.js" />
     <Content Include="Scripts\Js\Crud\User\SystemStatus.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\Customers.js" />
-    <Content Include="Scripts\Js\Crud\User\UserListing.js" />
+    <Content Include="Scripts\Js\Crud\MenuMaster\Menus.js" />
     <Content Include="Scripts\Js\main.js\AccountingStatements.js" />
     <Content Include="Scripts\Js\main.js\App.js" />
     <Content Include="Scripts\Js\main.js\BankingOperations.js" />
@@ -2589,7 +2604,6 @@
     <Content Include="Views\Operation\Transfers.cshtml" />
     <Content Include="Views\Operation\_TransferDetails.cshtml" />
     <Content Include="Views\Operation\_TransferConfirmation.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_CreateIncomeStatementStructure.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2645,19 +2659,27 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Reporting\Accounting\TrialBalance6Column.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\TrialBalance6Column.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TrialBalance6Column.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reporting\Accounting\TrialBalance8Column.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\TrialBalance8Column.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TrialBalance8Column.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reporting\Transactions\Reciepts\Receipts.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\Receipts_Duplicate.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Receipts_Duplicate.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\Receipts.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Receipts.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reporting\Transactions\Statement\IAccountStatement.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Statement\AllIAccountStatement.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AllIAccountStatement.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Statement\IAccountStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>IAccountStatement.cs</LastGenOutput>
     </EmbeddedResource>

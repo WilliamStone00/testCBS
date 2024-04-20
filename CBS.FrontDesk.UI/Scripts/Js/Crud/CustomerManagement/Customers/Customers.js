@@ -26,8 +26,7 @@ function showConfirmMessage(KEY, ServiceOption, tableID) {
 }
 function EditReset(KEY, ServiceOption) {
     EditResetMain(KEY, ServiceOption, "mainview", "Transactions", "InitializeData");
-}
-function LoadUsers() {
+}function LoadUsers() {
     LoadDataGen('Individual', 'myDataTable', '_IndividualData', 0, 'datalistingview', "KEY")
     //$("#myDataTable").DataTable({
     //    "destroy": true,
@@ -74,6 +73,7 @@ function LoadUsers() {
 
 
 }
+
 
 
 function DownloadLoans(path) {

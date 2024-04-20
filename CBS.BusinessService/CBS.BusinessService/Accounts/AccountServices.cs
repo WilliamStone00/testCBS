@@ -62,6 +62,31 @@ namespace CBS.BusinessService.Accounts
             var dataTable = await DatatableHelper.GenerateDataTable<CustomerAccountDto>(dataTableOptions, getDataFunc);
             return dataTable;
         }
+        public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccountsForTransfter()
+        {
+            try
+            {
+                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.GetAllIndividualProfile);
+                var accounts = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(APICallHelper.GetAllAccounts);
+                var branchesx = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
+                var branches = branchesx.ApiResponseData.Data;
+                // Join individual profiles with accounts and map to DTOs
+                var data = (from a in individualProfiles.ApiResponseData.Data
+                            join ca in accounts.ApiResponseData.Data on a.customerId equals ca.customerId
+                            join b in branches on a.branchId equals b.Id
+                            select MapCustomersToAccounts(a, ca, b)).ToList();
+
+                // Filter data based on the 'path' parameter
+                //var distinctData = data.GroupBy(x => x.customerId).Select(g => g.First());
+                return data;
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
 
         public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccounts(string path = null)
         {
@@ -246,7 +271,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var accounts = from a in await GetCustomersAccounts()
+                var accounts = from a in await GetCustomersAccountsForTransfter()
                                select new StringValues
                                {
                                    Text = $"{a.accountNumber}-{a.productName}-{a.customerName}",
@@ -377,23 +402,21 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                if (t.currencyNotes == null)
-                {
-                    t.currencyNotes = new CurrencyNotes();
-                }
+                t.currencyNote = CurrencyMapper.MapToCurrencyNotesRequest(t.currencyNotes);
+
                 var rpt = new TransactionReportDS
                 {
                     AccountNumber = t.AccountNumber,
                     AccountType = t.Account.AccountType,
                     Amount = t.OriginalDepositAmount,
                     TransactionDate = t.CreatedDate,
-                    Note500 = t.currencyNotes.note500,
-                    Note2000 = t.currencyNotes.note2000,
-                    Note1000 = t.currencyNotes.note1000,
-                    Note5000 = t.currencyNotes.note5000,
-                    Note10000 = t.currencyNotes.note10000,
-                    Coin500 = t.currencyNotes.coin500,
-                    Coin100 = t.currencyNotes.coin100,
+                    Note500 = t.currencyNote.note500,
+                    Note2000 = t.currencyNote.note2000,
+                    Note1000 = t.currencyNote.note1000,
+                    Note5000 = t.currencyNote.note5000,
+                    Note10000 = t.currencyNote.note10000,
+                    Coin500 = t.currencyNote.coin500,
+                    Coin100 = t.currencyNote.coin100,
                     FeeType = t.FeeType,
                     OriginalDepositAmount = t.OriginalDepositAmount,
                     HeadOfficeAddress = b.Bank.Address,
@@ -406,11 +429,11 @@ namespace CBS.BusinessService.Accounts
                     HeadOfficeTelephone = b.Bank.Telephone,
                     HeadOfficeWebSite = b.Bank.WebSite,
                     CashierName = u.firstName + " " + u.lastName,
-                    Coin1 = t.currencyNotes.coin1,
-                    Coin5 = t.currencyNotes.coin5,
-                    Coin10 = t.currencyNotes.coin10,
-                    Coin25 = t.currencyNotes.coin25,
-                    Coin50 = t.currencyNotes.coin50,
+                    Coin1 = t.currencyNote.coin1,
+                    Coin5 = t.currencyNote.coin5,
+                    Coin10 = t.currencyNote.coin10,
+                    Coin25 = t.currencyNote.coin25,
+                    Coin50 = t.currencyNote.coin50,
                     Credit = t.Credit,
                     Debit = t.Debit,
                     Balance = t.Balance,
@@ -439,7 +462,7 @@ namespace CBS.BusinessService.Accounts
                     InterBrachOperation = t.IsInterBrachOperation ? "YES" : "NO",
                     Logo = b.Bank.LogoUrl,
                     Operation = t.Operation,
-                    ProductName = t.Account.Product.name,
+                    ProductName = t.Account.Product?.name ?? "N/A",
                     RecieverName = "",
                     SenderName = "",
                     RecievingBranch = "",
@@ -463,17 +486,23 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 List<TransactionReportDS> reports = new List<TransactionReportDS>();
-                decimal openingBalance = transactions.FirstOrDefault()?.PreviousBalance ?? 0;
-                decimal closingBalance = openingBalance;
+                List<TransactionReportDS> results = new List<TransactionReportDS>();
+                decimal openingBalance = transactions.OrderBy(t => t.CreatedDate).ToList().FirstOrDefault()?.PreviousBalance ?? 0;
+                //decimal closingBalance = openingBalance;
 
                 foreach (TransactionHistory t in transactions)
                 {
-                    if (t.currencyNotes == null)
+                    if (t.currencyNote==null)
                     {
-                        t.currencyNotes = new CurrencyNotes();
+                        t.currencyNote = new CurrencyNotes();
+                    }
+                    else
+                    {
+                        t.currencyNote = CurrencyMapper.MapToCurrencyNotesRequest(t.currencyNotes);
                     }
 
-                    closingBalance += t.Credit - t.Debit;
+
+                    //closingBalance += t.Credit - t.Debit;
 
                     TransactionReportDS rpt = new TransactionReportDS
                     {
@@ -481,13 +510,13 @@ namespace CBS.BusinessService.Accounts
                         AccountType = t.Account.AccountType,
                         Amount = t.OriginalDepositAmount,
                         TransactionDate = t.CreatedDate,
-                        Note500 = t.currencyNotes.note500,
-                        Note2000 = t.currencyNotes.note2000,
-                        Note1000 = t.currencyNotes.note1000,
-                        Note5000 = t.currencyNotes.note5000,
-                        Note10000 = t.currencyNotes.note10000,
-                        Coin500 = t.currencyNotes.coin500,
-                        Coin100 = t.currencyNotes.coin100,
+                        Note500 = t.currencyNote.note500,
+                        Note2000 = t.currencyNote.note2000,
+                        Note1000 = t.currencyNote.note1000,
+                        Note5000 = t.currencyNote.note5000,
+                        Note10000 = t.currencyNote.note10000,
+                        Coin500 = t.currencyNote.coin500,
+                        Coin100 = t.currencyNote.coin100,
                         FeeType = t.FeeType,
                         OriginalDepositAmount = t.OriginalDepositAmount,
                         HeadOfficeAddress = b.Bank.Address,
@@ -499,11 +528,11 @@ namespace CBS.BusinessService.Accounts
                         HeadOfficeCode = b.Bank.BankCode,
                         HeadOfficeTelephone = b.Bank.Telephone,
                         HeadOfficeWebSite = b.Bank.WebSite,
-                        Coin1 = t.currencyNotes.coin1,
-                        Coin5 = t.currencyNotes.coin5,
-                        Coin10 = t.currencyNotes.coin10,
-                        Coin25 = t.currencyNotes.coin25,
-                        Coin50 = t.currencyNotes.coin50,
+                        Coin1 = t.currencyNote.coin1,
+                        Coin5 = t.currencyNote.coin5,
+                        Coin10 = t.currencyNote.coin10,
+                        Coin25 = t.currencyNote.coin25,
+                        Coin50 = t.currencyNote.coin50,
                         Credit = t.Credit,
                         Debit = t.Debit,
                         Balance = t.Balance,
@@ -541,13 +570,13 @@ namespace CBS.BusinessService.Accounts
                         SourceType = t.SourceType,
                         Status = t.Status,
                         OpeningBalance = openingBalance,
-                        ClosingBalance = closingBalance
+                        ClosingBalance = t.Account.Balance
                     };
 
                     reports.Add(rpt);
                 }
-                reports.OrderBy(t => t.TransactionDate);
-                return reports;
+                results=reports.OrderBy(t => t.TransactionDate).ToList();
+                return results;
             }
             catch (Exception ex)
             {

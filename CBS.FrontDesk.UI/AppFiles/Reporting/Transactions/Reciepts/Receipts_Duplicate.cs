@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CBS.FrontDesk.UI.Reporting.Accounting {
+namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.Reporting.Accounting {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class TrialBalance8Column : ReportClass {
+    public class Receipts_Duplicate : ReportClass {
         
-        public TrialBalance8Column() {
+        public Receipts_Duplicate() {
         }
         
         public override string ResourceName {
             get {
-                return "TrialBalance8Column.rpt";
+                return "Receipts_Duplicate.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.Reporting.Accounting {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.Reporting.Accounting.TrialBalance8Column.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts.Receipts_Duplicate.rpt";
             }
             set {
                 // Do nothing
@@ -66,7 +66,7 @@ namespace CBS.FrontDesk.UI.Reporting.Accounting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -74,7 +74,7 @@ namespace CBS.FrontDesk.UI.Reporting.Accounting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,33 +82,17 @@ namespace CBS.FrontDesk.UI.Reporting.Accounting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
-            get {
-                return this.ReportDefinition.Sections[4];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section ReportFooterSection1 {
-            get {
-                return this.ReportDefinition.Sections[5];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
-                return this.ReportDefinition.Sections[6];
+                return this.ReportDefinition.Sections[4];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedTrialBalance8Column : Component, ICachedReport {
+    public class CachedReceipts_Duplicate : Component, ICachedReport {
         
-        public CachedTrialBalance8Column() {
+        public CachedReceipts_Duplicate() {
         }
         
         [Browsable(false)]
@@ -145,7 +129,7 @@ namespace CBS.FrontDesk.UI.Reporting.Accounting {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            TrialBalance8Column rpt = new TrialBalance8Column();
+            Receipts_Duplicate rpt = new Receipts_Duplicate();
             rpt.Site = this.Site;
             return rpt;
         }

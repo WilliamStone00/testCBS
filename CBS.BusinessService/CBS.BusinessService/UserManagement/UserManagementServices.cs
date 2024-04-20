@@ -12,8 +12,6 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using System.Web;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity;
-using CBS.FrontDesk.Data.Entity.User;
-using CBS.FrontDesk.Data.Entity.SavingProducts;
 
 namespace CBS.BusinessService.UserManagement
 {
@@ -39,7 +37,7 @@ namespace CBS.BusinessService.UserManagement
                 user.BankID = GetBankID();
                 // Call API to create user
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<UserList>>(APICallHelper.createUserUrl, user);
+                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<User>>(APICallHelper.createUserUrl, user);
 
                 // Handle API response
                 if (reUser.IsSuccess)
@@ -78,7 +76,7 @@ namespace CBS.BusinessService.UserManagement
         //        user.userRoles.Add(new UserRole { roleId = user.roleID });
         //        user.userAllowedIPs = new List<UserAllowedIP>();
         //        var ApiCallerHelper =new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-        //        var reUser = await ApiCallerHelper.PostAsync<ResponseObject<UserList>>(APICallHelper.createUserUrl, user);
+        //        var reUser = await ApiCallerHelper.PostAsync<ResponseObject<User>>(APICallHelper.createUserUrl, user);
         //        if (reUser.IsSuccess)
         //        {
         //            GetExecutionMessages(reUser, true, user.firstName+" "+ user.lastName, MessagesResults.Success,
@@ -135,27 +133,27 @@ namespace CBS.BusinessService.UserManagement
             }
         }
 
-        public async Task<IEnumerable<UserList>> GetUserList()
+        public async Task<IEnumerable<User>> GetUsers()
         {
             try
             {
                 var identityServerBaseUrl = ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString();
                 var apiCallerHelper = new ApiCallerHelper(identityServerBaseUrl);
 
-                var userListsResponse = await apiCallerHelper.GetAsync<ResponseObject<List<UserList>>>(APICallHelper.GetUsers);
-                var newList = new List<UserList>();
+                var UsersResponse = await apiCallerHelper.GetAsync<ResponseObject<List<User>>>(APICallHelper.GetUsers);
+                var newList = new List<User>();
 
-                if (userListsResponse != null && userListsResponse.IsSuccess)
+                if (UsersResponse != null && UsersResponse.IsSuccess)
                 {
-                    var userLists = userListsResponse.ApiResponseData.Data;
+                    var Users = UsersResponse.ApiResponseData.Data;
                     var isHeadOffice = IsHeadOffice();
                     var branchId = GetBranchID();
                     var branches = await GetBranches();
 
-                    foreach (var user in userLists.Where(u => isHeadOffice || u.BranchID == branchId))
+                    foreach (var user in Users.Where(u => isHeadOffice || u.BranchID == branchId))
                     {
                         user.name = $"{user.firstName} {user.lastName}";
-                        user.strlastLoginDate = user.lastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
+                        user.strlastLoginDate = user.LastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
                         user.status = user.isActive ? "Active" : "In-active";
 
                         if (user.BranchID != null)
@@ -163,13 +161,13 @@ namespace CBS.BusinessService.UserManagement
                             var branch = branches.FirstOrDefault(b => b.Id == user.BranchID);
                             if (branch != null)
                             {
-                                user.Branch = branch;
+                                user.Brancch = branch;
                                 user.Bank = branch.Bank ?? new Bank();
                             }
                         }
                         else
                         {
-                            user.Branch = new Branch();
+                            user.Brancch = new Branch();
                             user.Bank = new Bank();
                         }
 
@@ -180,7 +178,7 @@ namespace CBS.BusinessService.UserManagement
                 }
                 else
                 {
-                    return Enumerable.Empty<UserList>();
+                    return Enumerable.Empty<User>();
                 }
             }
             catch (Exception ex)
@@ -196,20 +194,20 @@ namespace CBS.BusinessService.UserManagement
                 var identityServerBaseUrl = ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString();
                 var apiCallerHelper = new ApiCallerHelper(identityServerBaseUrl);
 
-                var userListsResponse = await apiCallerHelper.GetAsync<ResponseObject<List<UserList>>>(APICallHelper.GetUsers);
-                var newList = new List<UserList>();
+                var UsersResponse = await apiCallerHelper.GetAsync<ResponseObject<List<User>>>(APICallHelper.GetUsers);
+                var newList = new List<User>();
                 var stringValues = new List<StringValues>();
-                if (userListsResponse != null && userListsResponse.IsSuccess)
+                if (UsersResponse != null && UsersResponse.IsSuccess)
                 {
-                    var userLists = userListsResponse.ApiResponseData.Data;
+                    var Users = UsersResponse.ApiResponseData.Data;
                     var isHeadOffice = IsHeadOffice();
                     var branchId = GetBranchID();
                     var branches = await GetBranches();
 
-                    foreach (var user in userLists.Where(u => isHeadOffice || u.BranchID == branchId))
+                    foreach (var user in Users.Where(u => isHeadOffice || u.BranchID == branchId))
                     {
                         user.name = $"{user.firstName} {user.lastName}";
-                        user.strlastLoginDate = user.lastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
+                        user.strlastLoginDate = user.LastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
                         user.status = user.isActive ? "Active" : "In-active";
 
                         if (user.BranchID != null)
@@ -217,13 +215,13 @@ namespace CBS.BusinessService.UserManagement
                             var branch = branches.FirstOrDefault(b => b.Id == user.BranchID);
                             if (branch != null)
                             {
-                                user.Branch = branch;
+                                user.Brancch = branch;
                                 user.Bank = branch.Bank ?? new Bank();
                             }
                         }
                         else
                         {
-                            user.Branch = new Branch();
+                            user.Brancch = new Branch();
                             user.Bank = new Bank();
                         }
 
@@ -234,7 +232,7 @@ namespace CBS.BusinessService.UserManagement
                     stringValues = (from a in newList
                                     select new StringValues
                                     {
-                                        Text = $"{a.firstName}{a.lastName}, Branch: {a.Branch.Name}",
+                                        Text = $"{a.firstName}{a.lastName}, Branch: {a.Brancch.Name}",
                                         Value = a.id.ToString(),
                                     }).ToList();
 
@@ -297,16 +295,16 @@ namespace CBS.BusinessService.UserManagement
                 throw ex;
             }
         }
-        public async Task<UserList> GetUser(Guid userid)
+        public async Task<User> GetUser(Guid userid)
         {
             try
             {
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var user = await ApiCallerHelper.GetAsync<ResponseObject<UserList>>(string.Format(APICallHelper.GetUserByID, userid));
+                var user = await ApiCallerHelper.GetAsync<ResponseObject<User>>(string.Format(APICallHelper.GetUserByID, userid));
                 if (user.IsSuccess)
                 {
                     user.ApiResponseData.Data.name = $"{user.ApiResponseData.Data.firstName} {user.ApiResponseData.Data.lastName}";
-                    user.ApiResponseData.Data.strlastLoginDate = user.ApiResponseData.Data.lastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
+                    user.ApiResponseData.Data.strlastLoginDate = user.ApiResponseData.Data.LastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
                     user.ApiResponseData.Data.status = user.ApiResponseData.Data.isActive ? "Active" : "In-active";
                     user.ApiResponseData.Data.ChangePassword.userName = user.ApiResponseData.Data.userName;
                     user.ApiResponseData.Data.roleID= user.ApiResponseData.Data.userRoles.Select(role => role.roleId).First();
@@ -345,7 +343,7 @@ namespace CBS.BusinessService.UserManagement
                 throw ex;
             }
         }
-        public async Task<ExecutionMessages> UpdateUserProfile(UserList user)
+        public async Task<ExecutionMessages> UpdateUserProfile(User user)
         {
             try
             {
@@ -363,7 +361,7 @@ namespace CBS.BusinessService.UserManagement
                 user.userRoles.Add(new UserRole { roleId = user.roleID, userId = user.id });
 
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var reUser = await ApiCallerHelper.PutAsync<ResponseObject<UserList>>(string.Format(APICallHelper.UpdateUser, user.id), user);
+                var reUser = await ApiCallerHelper.PutAsync<ResponseObject<User>>(string.Format(APICallHelper.UpdateUser, user.id), user);
                 if (reUser.IsSuccess)
                 {
                     GetExecutionMessages(reUser, true, reUser.ApiResponseData.Data.firstName, MessagesResults.Success,
@@ -383,13 +381,13 @@ namespace CBS.BusinessService.UserManagement
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> ChangePassword(UserList user)
+        public async Task<ExecutionMessages> ChangePassword(User user)
         {
             try
             {
                 user.ChangePasswordOnFirstLogin = true;
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<UserList>>(APICallHelper.ChangePassword, user.ChangePassword);
+                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<User>>(APICallHelper.ChangePassword, user.ChangePassword);
                 if (reUser.IsSuccess)
                 {
                     GetExecutionMessages(reUser, true, user.ChangePassword.userName, MessagesResults.Success,
@@ -409,13 +407,13 @@ namespace CBS.BusinessService.UserManagement
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> ResetPassword(UserList user)
+        public async Task<ExecutionMessages> ResetPassword(User user)
         {
             try
             {
 
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<UserList>>(APICallHelper.ResetPassword, user.ChangePassword);
+                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<User>>(APICallHelper.ResetPassword, user.ChangePassword);
                 if (reUser.IsSuccess)
                 {
                     GetExecutionMessages(reUser, true, user.ChangePassword.userName, MessagesResults.Success,
@@ -446,7 +444,7 @@ namespace CBS.BusinessService.UserManagement
                 List<HttpPostedFileBase> image =new List<HttpPostedFileBase>();
                 image.Add(user);
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var reUser = await ApiCallerHelper.PostFilesAndParamsAsync<ResponseObject<UserList>>(APICallHelper.UploadProfilePhoto, additionalParams, image);
+                var reUser = await ApiCallerHelper.PostFilesAndParamsAsync<ResponseObject<User>>(APICallHelper.UploadProfilePhoto, additionalParams, image);
                 if (reUser.IsSuccess)
                 {
                     GetExecutionMessages(reUser, true, null, MessagesResults.Success,
@@ -469,13 +467,12 @@ namespace CBS.BusinessService.UserManagement
         public async Task<CustomDataTable> GetUsersDataTable(DataTableOptions dataTableOptions)
         
         {
-            Func<Task<List<UserList>>> getUsersFunc = async () => (await GetUserList()).ToList();
-            var dataTable = await DatatableHelper.GenerateDataTable<UserList>(dataTableOptions, getUsersFunc);
+            Func<Task<List<User>>> getUsersFunc = async () => (await GetUsers()).ToList();
+            var dataTable = await DatatableHelper.GenerateDataTable<User>(dataTableOptions, getUsersFunc);
             return dataTable;
         }
 
-
-
+      
     }
 
 

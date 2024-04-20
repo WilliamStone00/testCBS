@@ -143,16 +143,16 @@ namespace CBS.BusinessService.Accounting
                 throw (ex);
             }
         }
-        public async Task<UserList> GetUser(string userid)
+        public async Task<User> GetUser(string userid)
         {
             try
             {
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var user = await ApiCallerHelper.GetAsync<ResponseObject<UserList>>(string.Format(APICallHelper.GetUserByID, userid));
+                var user = await ApiCallerHelper.GetAsync<ResponseObject<User>>(string.Format(APICallHelper.GetUserByID, userid));
                 if (user.IsSuccess)
                 {
                     user.ApiResponseData.Data.name = $"{user.ApiResponseData.Data.firstName} {user.ApiResponseData.Data.lastName}";
-                    user.ApiResponseData.Data.strlastLoginDate = user.ApiResponseData.Data.lastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
+                    user.ApiResponseData.Data.strlastLoginDate = user.ApiResponseData.Data.LastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
                     user.ApiResponseData.Data.status = user.ApiResponseData.Data.isActive ? "Active" : "In-active";
                     user.ApiResponseData.Data.ChangePassword.userName = user.ApiResponseData.Data.userName;
                     user.ApiResponseData.Data.roleID = user.ApiResponseData.Data.userRoles.Select(role => role.roleId).First();

@@ -1,9 +1,4 @@
-﻿
-using System.Threading.Tasks;
-using CBS.API.Helper;
-using CBS.FrontDesk.Data.Entity.User;
-
-namespace CBS.FrontDesk.Helper
+﻿namespace CBS.FrontDesk.Helper
 {
     public abstract class APICallHelper
     {
@@ -115,6 +110,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllAccountsByBranchIdQuery = "/api/v1/Account/GetAllAccountsByBranchIdQuery/{0}";
         public static string GetAllAccounts = "/api/v1/Account";
         public static string MakeDepoit = "/api/v1/Transaction/Deposit";
+        public static string BulkDeposit = "/api/v1/Transaction/BulkDeposit";
+        //
         public static string MakeWithdrawal = "/api/v1/Transaction/Withdrawal";
         public static string MakeLoanRepayment = "/api/v1/Transaction/LoanRepaymentCommand";
         public static string TransferRequest = "/api/v1/Transaction/TransferRequestCommand";
@@ -122,6 +119,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetTransfer = "/api/v1/Transfer/{0}";
         public static string GetPendingTransfers = "/api/v1/Transfer/Pending";
         public static string GetTransfers = "/api/v1/Transfers";
+        public static string GetAllCustomerAccountsByCustomerId = "/api/v1/Account/Customer/{0}";
+        ///api/v1/Account/Customer/{id}
         public static string MakeTrGetAccountByAccountNumber = "/api/v1/Account/AccountNumber/{0}";
         public static string GetTransactionHistoryByAccountNumber = "/api/v1/Transaction/AccountNumber/{0}";
         public static string GetTransactionHistoryByCustomerNumber = "/api/v1/Transaction/Customer/{0}";

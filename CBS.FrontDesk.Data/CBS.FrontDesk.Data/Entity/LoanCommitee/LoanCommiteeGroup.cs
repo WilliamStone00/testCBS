@@ -19,7 +19,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanCommitee
         public int NumberToApprovalsToValidationALoan { get; set; }
         public string CommiteeLeaderUserId { get; set; }
         public bool Status { get; set; }
-        public UserList User { get; set; }
+        public User User { get; set; }
         public List<LoanCommiteeMember> LoanCommiteeMembers { get; set; }
         public LoanCommiteeGroup()
         {

@@ -28,6 +28,7 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public decimal SourceBranchCommission { get; set; }
         public decimal DestinationBranchCommission { get; set; }
         public string Note { get; set; }
+        public string AmountInWord { get; set; }
         public string SenderName { get; set; }
         public string RecieverName { get; set; }
         public string DepositorIDNumber { get; set; }

@@ -7,12 +7,9 @@ using System.Web.Security;
 using System.Web;
 using CBS.FrontDesk.Service;
 using CBS.API.Helper;
-using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
-using CBS.FrontDesk.Data.Entity.User;
 using CBS.FrontDesk.Data.Message;
-using Newtonsoft.Json;
-using Microsoft.AspNet.Identity;
+using CBS.FrontDesk.Data.Entity;
 
 namespace CBS.FrontDesk.UI.Controllers
 {

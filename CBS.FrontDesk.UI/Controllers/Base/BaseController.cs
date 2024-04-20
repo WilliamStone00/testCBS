@@ -1,5 +1,4 @@
-﻿using CBS.FrontDesk.Data.Entity.User;
-using CBS.FrontDesk.Service;
+﻿using CBS.FrontDesk.Service;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,6 @@ using System.Linq;
 using CBS.FrontDesk.Helper;
 using CBS.API.Helper;
 using System.IdentityModel.Tokens.Jwt;
-using CBS.FrontDesk.Data.UserManagement;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -164,7 +162,15 @@ namespace CBS.FrontDesk.UI.Controllers
             HttpCookie faCookie = new HttpCookie(cookieName, encryptedTicket);
             Session.Timeout = 30;
             HttpContext.Session["Token"] = reqDto.bearerToken;
-            HttpContext.Session["menu"] = reqDto.Permissions.ToList();
+            if (reqDto.Permissions == null)
+            {
+                HttpContext.Session["menu"] = new List<Permission>(); // Assuming Permission is your type
+            }
+            else
+            {
+                HttpContext.Session["menu"] = reqDto.Permissions.ToList();
+            }
+
 
             Response.Cookies.Add(faCookie);
         }

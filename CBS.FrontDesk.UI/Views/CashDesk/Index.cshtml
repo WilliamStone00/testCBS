@@ -1,0 +1,51 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@{
+    ViewBag.Title = "Cash desk";
+}
+<div class="row">
+    <div class="col">
+        <div class="row my-4">
+            <div class="accordion" id="collapsibleSection">
+                <div class="card accordion-item">
+                    <h2 class="accordion-header" id="headingDeliveryAddress">
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseDeliveryAddress"
+                                aria-expanded="true"
+                                aria-controls="collapseDeliveryAddress">
+                            <div class="d-flex justify-content-center">
+                                <!-- Center-align text -->
+                                <div>MEMBER'S CASH DESK OPERATIONS </div> <!-- Make text bold and increase font size -->
+                            </div>
+                        </button>
+                    </h2>
+                    <hr />
+                    <div id="collapseDeliveryAddress"
+                         data-bs-parent="#collapsibleSection">
+                        <div class="accordion-body">
+                            @Html.Partial("_SearchBox")
+                            <div id="datalistingview">
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*}*@
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal to display customer information -->
+@Html.Partial("_model")
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/Crud/CashDesk/CashDeskOperations.js"></script>
+@*<script src="~/Scripts/Js/Crud/Operation/Operation.js"></script>*@
+
+}

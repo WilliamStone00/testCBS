@@ -195,14 +195,12 @@ namespace CBS.FrontDesk.UI.Controllers
                     Response.ClearHeaders();
                     Response.ContentType = "application/pdf";
 
-                    // Write the report bytes to the response
-                    Response.BinaryWrite(bytes);
-                    Response.Flush();
-                    Response.End();
-                    rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
-                    CleanReport(rd);
-                }
-              
+                // Write the report bytes to the response
+                Response.BinaryWrite(bytes);
+                Response.Flush();
+                Response.End();
+                //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+                //CleanReport(rd);
             }
 
             return new EmptyResult();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity;
 
-namespace CBS.FrontDesk.Data.Entity.User
+namespace CBS.FrontDesk.Data.Entity
 {
    
     public class Claim

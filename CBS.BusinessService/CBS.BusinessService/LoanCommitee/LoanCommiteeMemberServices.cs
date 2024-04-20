@@ -59,7 +59,7 @@ namespace CBS.BusinessService.LoanCommitee
                 var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanCommiteeMember>>>(APICallHelper.GetAllLoanCommeteeMember);
                 if (couApiResponse.ApiResponseData!=null)
                 {
-                    var users=await _UserManagementServices.GetUserList();
+                    var users=await _UserManagementServices.GetUsers();
 
                     var data = (from a in couApiResponse.ApiResponseData.Data
                                join b in users on
