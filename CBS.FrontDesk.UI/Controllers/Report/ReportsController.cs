@@ -30,7 +30,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 string strToDate = "Non";         // Setting ToDate    
                 if (!string.IsNullOrEmpty(Session["Year"] as string))
                 {
-                    year =System.Web.HttpContext.Current.Session["Year"].ToString();
+                    year = System.Web.HttpContext.Current.Session["Year"].ToString();
                 }
                 if (!string.IsNullOrEmpty(Session["Dates"] as string))
                 {
@@ -44,7 +44,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 {
                     strToDate = System.Web.HttpContext.Current.Session["DateTo"].ToString();
                 }
-                
+
 
                 if (string.IsNullOrEmpty(strReportName))
                 {
@@ -59,12 +59,12 @@ namespace CBS.FrontDesk.UI.Controllers
                         rd.Load(strRptPath);
                         if (rptSource != null && rptSource.GetType().ToString() != "System.String")
                             rd.SetDataSource(rptSource);
-                        if (year!="Non")
+                        if (year != "Non")
                         {
                             rd.SetParameterValue("param", $"Header summary: {year}");
 
                         }
-                        if (dates!="Non")
+                        if (dates != "Non")
                         {
                             if (!string.IsNullOrEmpty(strFromDate))
                                 rd.SetParameterValue("DateFrom", strFromDate);
@@ -169,14 +169,15 @@ namespace CBS.FrontDesk.UI.Controllers
             string rpTType = System.Web.HttpContext.Current.Session["rptType"].ToString();
             string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
             var model = rptSource;
-            if (rpTType== "EXCEL")
+            if (rpTType == "EXCEL")
             {
                 Export export = new Export();
                 export.ToExcel(Response, model as IEnumerable<object>, strtitle);
-  
+
             }
             else
             {
+
                 if (rptSource!="empty")
                 {
                     ReportDocument rd = new ReportDocument();
@@ -195,54 +196,56 @@ namespace CBS.FrontDesk.UI.Controllers
                     Response.ClearHeaders();
                     Response.ContentType = "application/pdf";
 
-                // Write the report bytes to the response
-                Response.BinaryWrite(bytes);
-                Response.Flush();
-                Response.End();
-                //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
-                //CleanReport(rd);
+                    // Write the report bytes to the response
+                    Response.BinaryWrite(bytes);
+                    Response.Flush();
+                    Response.End();
+                    rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+                    CleanReport(rd);
+
+
+                }
+             
             }
-
             return new EmptyResult();
+
         }
-  
-
-    }
-    public class Export
-    {
-        public void ToExcel(HttpResponseBase response, IEnumerable<object> object_list, string strtitle)
+        public class Export
         {
-            try
+            public void ToExcel(HttpResponseBase response, IEnumerable<object> object_list, string strtitle)
             {
-                var grid = new System.Web.UI.WebControls.GridView();
-
-                // Ensure type safety
-                var nonNullClientsList = object_list?.Where(item => item != null) ?? Enumerable.Empty<object>();
-
-                grid.DataSource = nonNullClientsList;
-                grid.DataBind();
-
-                response.ClearContent();
-                response.AddHeader("content-disposition", $"attachment; filename={strtitle}_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xls");
-                response.ContentType = "application/excel";
-
-                using (StringWriter sw = new StringWriter())
+                try
                 {
-                    using (HtmlTextWriter htw = new HtmlTextWriter(sw))
+                    var grid = new System.Web.UI.WebControls.GridView();
+
+                    // Ensure type safety
+                    var nonNullClientsList = object_list?.Where(item => item != null) ?? Enumerable.Empty<object>();
+
+                    grid.DataSource = nonNullClientsList;
+                    grid.DataBind();
+
+                    response.ClearContent();
+                    response.AddHeader("content-disposition", $"attachment; filename={strtitle}_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xls");
+                    response.ContentType = "application/excel";
+
+                    using (StringWriter sw = new StringWriter())
                     {
-                        grid.RenderControl(htw);
-                        response.Write(sw.ToString());
-                        response.End();
+                        using (HtmlTextWriter htw = new HtmlTextWriter(sw))
+                        {
+                            grid.RenderControl(htw);
+                            response.Write(sw.ToString());
+                            response.End();
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it as needed
-                Console.WriteLine($"Error exporting to Excel: {ex.Message}");
+                catch (Exception ex)
+                {
+                    // Log the exception or handle it as needed
+                    Console.WriteLine($"Error exporting to Excel: {ex.Message}");
+                }
             }
         }
+
+
     }
-
-
 }

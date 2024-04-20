@@ -32,9 +32,7 @@ namespace CBS.BusinessService.Accounting
                         from crAccount in crJoined.DefaultIfEmpty()
                         select new AccountingEntryDto
                         {
-                      
                             EntryDate = entry.EntryDate.Date.ToShortDateString(),
-                           
                             AccountNumber = entry.EntryType == "DEBIT" ? drAccount?.AccountNumber : crAccount?.AccountNumber,
                             AccountName = entry.EntryType == "DEBIT" ? drAccount?.AccountName : crAccount?.AccountName,
                             Description = entry.Description,
