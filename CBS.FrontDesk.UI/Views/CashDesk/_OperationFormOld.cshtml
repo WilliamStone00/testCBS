@@ -27,13 +27,14 @@
                                     <th style="display:none;">ProductID</th>
                                     <th>Ordinary accounts</th>
                                     <th>Amount</th>
-                                    <th>Fee</th>
+                                    <th>Fee/Interest</th>
+                                    <th>Penalty</th>
                                     <th>Total</th>
                                     <th>Select</th> <!-- New column for checkbox -->
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var d in Model.BulkDeposits.Where(x => x.AccountType.ToLower() != "loan").OrderBy(t => t.AccountType))
+                                @foreach (var d in Model.BulkDeposits.OrderBy(t => t.AccountType))
                                 {
                                     <tr>
                                         <td style="display:none;">@d.AccountNumber</td>
@@ -42,7 +43,24 @@
                                             <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
+                                            @if (d.AccountType != "Loan")
+                                            {
+                                                <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
+                                            }
+                                            else
+                                            {
+                                                <input type="number" class="form-control interest-input shadow-input-boxes" value="@d.Interest">
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (d.AccountType != "Loan")
+                                            {
+                                                <!-- If not a loan, show an empty cell -->
+                                            }
+                                            else
+                                            {
+                                                <input type="number" class="form-control penalty-input shadow-input-boxes" value="@d.Penalty">
+                                            }
                                         </td>
                                         <td>
                                             <span class="total-span">@d.Total</span>
@@ -55,24 +73,20 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+                                    <td colspan="4" style="text-align: right;"><strong>Total:</strong></td>
                                     <td id="tableTotal">0</td>
                                     <td></td> <!-- Empty cell to align with the checkbox column -->
-                                </tr>
-                                <tr>
-                                    <td colspan="4" style="text-align: right;"><strong>Balance:</strong></td>
-                                    <td id="tableBalance">0</td>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
-                    @*<div class="col-md-12">
+                    <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
                             @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id="Note" })
                             @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
                             <label for="formValidationDob">Reasons for cashin</label>
                         </div>
-                    </div>*@
+                    </div>
                 </div>
                 <div class="header-buttons mt-4 float-end">
                     <input type="hidden" name="OperationType" value="CashIn" id="OperationType" />
@@ -143,20 +157,16 @@ else if (ViewBag.Operation == "cashout")
                                     <td id="tableTotal">0</td>
                                     <td></td> <!-- Empty cell to align with the checkbox column -->
                                 </tr>
-                                <tr>
-                                    <td colspan="4" style="text-align: right;"><strong>Balance:</strong></td>
-                                    <td id="tableBalance">0</td>
-                                </tr>
                             </tfoot>
                         </table>
                     </div>
-                    @*<div class="col-md-12">
+                    <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
                             @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id = "Note" })
                             @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
                             <label for="formValidationDob">Reasons for cash out</label>
                         </div>
-                    </div>*@
+                    </div>
                 </div>
                 <div class="header-buttons mt-4 float-end">
                     <input type="hidden" name="OperationType" value="Withdrawal" id="OperationType" />
@@ -246,20 +256,16 @@ else if (ViewBag.Operation == "repayment")
                                     <td id="tableTotal">0</td>
                                     <td></td> <!-- Empty cell to align with the checkbox column -->
                                 </tr>
-                                <tr>
-                                    <td colspan="5" style="text-align: right;"><strong>Balance:</strong></td>
-                                    <td id="tableBalance">0</td>
-                                </tr>
                             </tfoot>
                         </table>
                     </div>
-                    @*<div class="col-md-12">
+                    <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
                             @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id = "Note" })
                             @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
                             <label for="formValidationDob">Repayment note</label>
                         </div>
-                    </div>*@
+                    </div>
                 </div>
                 <div class="header-buttons mt-4 float-end">
                     <input type="hidden" name="OperationType" value="Loan" id="OperationType" />

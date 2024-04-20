@@ -124,6 +124,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal TotalPrincipalPaid { get; set; }
         public decimal PrincipalBalance { get; set; }
         public decimal Tax { get; set; }
+        public int Deliquency { get; set; }
         public decimal TaxPaid { get; set; }
         public decimal TaxBalance { get; set; }
         public decimal FeePaid { get; set; }

@@ -32,9 +32,9 @@ namespace CBS.BusinessService.Accounts
         private readonly UserManagementServices _userManagementServices;
         private readonly ApiCallerHelper _BranchConfigApiHelper;
         private readonly IndividualProfileServices _individualProfileServices;
-
+        private readonly LoanServices _loanServices;
         private readonly BranchServices _branchServices;
-        public CashDeskServices(UserManagementServices userManagementServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, ApiCallerHelper branchConfigApiHelper = null)
+        public CashDeskServices(UserManagementServices userManagementServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, ApiCallerHelper branchConfigApiHelper = null, LoanServices loanServices = null)
         {
             _customerApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["CustomerBaseUrl"].ToString());
             _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
@@ -42,6 +42,7 @@ namespace CBS.BusinessService.Accounts
             _individualProfileServices = individualProfileServices;
             _branchServices = branchServices;
             _BranchConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
+            _loanServices = loanServices;
         }
 
         public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccounts(string path = null)
@@ -351,7 +352,11 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var cusResponseObject = await _customerApiHelper.GetAsync<ResponseObject<IndividualProfile>>(string.Format(APICallHelper.GetCustomerByID, id));
-                return cusResponseObject.ApiResponseData.Data;
+                if (cusResponseObject.ApiResponseData!=null)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
             }
             catch (Exception ex)
             {
@@ -978,8 +983,9 @@ namespace CBS.BusinessService.Accounts
                     var Accounts = cusResponseObject;
                     var customer = await GetCustomer(customerId);
                     var branch = await _branchServices.GetBranch(customer.branchId);
+                    var loans = await _loanServices.GetLoanByCustomerID(customer.customerId);
                     customer.name = $"{customer.firstName} {customer.lastName}";
-                    var cashDesk = new CashDesk { Branch = branch, Accounts = Accounts, BulkDeposit = new BulkDeposit(), BulkDeposits = BuidObject(Accounts), Customer = customer, LoanId = null, CustomerId = customerId };
+                    var cashDesk = new CashDesk { Branch = branch, Accounts = Accounts, BulkDeposit = new BulkDeposit(), BulkDeposits = BuidObject(Accounts), Customer = customer, LoanId = null, CustomerId = customerId, Loans= loans.ToList() };
                     return cashDesk;
                 }
 
@@ -991,6 +997,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+        
         public async Task<CashDesk> GetMember(string customerId)
         {
             try
@@ -1011,6 +1018,27 @@ namespace CBS.BusinessService.Accounts
             catch (Exception ex)
             {
                 // Log and handle exception
+                throw ex;
+            }
+        }
+
+        public async Task<CashDesk> GetMembers()
+        {
+            try
+            {
+
+                var cusResponseObject = await _individualProfileServices.GetMembers();
+                if (cusResponseObject != null)
+                {
+                    var customer = cusResponseObject;
+                    var cashDesk = new CashDesk { Customers= cusResponseObject.ToList() };
+                    return cashDesk;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }

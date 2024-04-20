@@ -372,6 +372,7 @@
     <Compile Include="Controllers\RoleManagement\MenuMasterController.cs" />
     <Compile Include="Controllers\RoleManagement\RoleController.cs" />
     <Compile Include="Controllers\RoleManagement\RolePermissionController.cs" />
+    <Compile Include="Controllers\Series\MembersFSeriesController.cs" />
     <Compile Include="Controllers\Session\SessionController.cs" />
     <Compile Include="Controllers\Settings\GlobalConfigurationController.cs" />
     <Compile Include="Controllers\TransactionManagement\EndOfDayOperationController.cs" />
@@ -2195,6 +2196,8 @@
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\CashDeskOperations.js" />
     <Content Include="Scripts\Js\Crud\Collateral\Collateral.js" />
+    <Content Include="Scripts\Js\Crud\MembersFSeries\FSeries.js" />
+    <Content Include="Scripts\Js\Crud\MembersFSeries\Members.js" />
     <Content Include="Scripts\Js\Crud\LoanProductCollateral\LoanProductCollateral.js" />
     <Content Include="Scripts\Js\Crud\LoanTransactions\Loans.js" />
     <Content Include="Scripts\Js\Budgetmanagement\Budget.js" />
@@ -2613,6 +2616,16 @@
     <Content Include="Views\CashDesk\_OperationForm.cshtml" />
     <Content Include="Views\CashDesk\_DenominationBreakDown.cshtml" />
     <Content Include="Views\CashDesk\_DepositerForm.cshtml" />
+    <Content Include="Views\CashDesk\_OperationFormOld.cshtml" />
+    <Content Include="Views\CashDesk\_Note.cshtml" />
+    <Content Include="Views\MembersFSeries\Index.cshtml" />
+    <Content Include="Views\MembersFSeries\_MembersData.cshtml" />
+    <Content Include="Views\MembersFSeries\_Tabs.cshtml" />
+    <Content Include="Views\MembersFSeries\_CustomerCard.cshtml" />
+    <Content Include="Views\MembersFSeries\F2MembersGeneratSituation.cshtml" />
+    <Content Include="Views\MembersFSeries\_MembersAccount.cshtml" />
+    <Content Include="Views\MembersFSeries\_MembersProfile.cshtml" />
+    <Content Include="Views\MembersFSeries\_MembersAccountStatement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

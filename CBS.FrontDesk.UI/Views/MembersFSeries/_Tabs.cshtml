@@ -2,10 +2,14 @@
 
 <div class="card-body d-sm-flex d-block">
     <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-        <a href="#" onclick="SearchByCustomerNumber('_CustomerCard','datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="View customer details">
+        <a href="#" onclick="GetMembersData('@Model.CustomerId','_MembersProfile','datalistingview','members_profile')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="View customer details">
             <i class="fas fa-user"></i>
         </a>
-        <a href="#" onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashin')" class="btn btn-icon btn-label-success btn-sm btn-fab demo btn-space cashin" data-bs-toggle="tooltip" title="Perform cashin operation">
+        <a href="#" onclick="GetMembersAccounts('@Model.CustomerId','_MembersAccount','datalistingview','members_account')" data-toggle="modal" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="Members accounts status">
+            <i class="fas fa-user"></i> <!-- Customer details icon -->
+            <i class="fas fa-money-check"></i> <!-- Depositor icon -->
+        </a>
+        <!--<a href="#" onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashin')" class="btn btn-icon btn-label-success btn-sm btn-fab demo btn-space cashin" data-bs-toggle="tooltip" title="Perform cashin operation">
             <i class="fas fa-money-check"></i>
         </a>
         <a href="#" onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashout')" class="btn btn-icon btn-label-danger btn-sm btn-fab demo btn-space cashout" data-bs-toggle="tooltip" title="Perform cashout operation">
@@ -15,12 +19,12 @@
             <i class="fas fa-hand-holding-usd"></i>
         </a>
         <a href="#" onclick="AddDepositor()" data-toggle="modal" data-target="#depositerModal" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="Add depositor">
-            <i class="fas fa-user"></i> <!-- Customer details icon -->
-            <i class="fas fa-money-check"></i> <!-- Depositor icon -->
-        </a>
+            <i class="fas fa-user"></i>--> <!-- Customer details icon -->
+            <!--<i class="fas fa-money-check"></i>--> <!-- Depositor icon -->
+        <!--</a>
         <a href="#" onclick="AddNote()" data-toggle="modal" data-target="#depositerModal" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="Add note">
-            <i class="fas fa-user"></i> <!-- Customer details icon -->
-            <i class="fas fa-sticky-note"></i> <!-- Note icon -->
-        </a>
+            <i class="fas fa-user"></i>--> <!-- Customer details icon -->
+            <!--<i class="fas fa-sticky-note"></i>--> <!-- Note icon -->
+        <!--</a>-->
     </div>
 </div>

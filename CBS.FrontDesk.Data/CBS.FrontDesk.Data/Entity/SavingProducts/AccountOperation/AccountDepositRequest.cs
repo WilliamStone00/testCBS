@@ -1,5 +1,7 @@
 ﻿using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -34,6 +36,11 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<BulkDeposit> BulkDeposits { get; set; } = new List<BulkDeposit>();
         public IndividualProfile Customer { get; set; } = new IndividualProfile();
         public List<CustomerAccount> Accounts { get; set; } = new List<CustomerAccount>();
+        public List<Loan> Loans { get; set; } = new List<Loan>();
+        public List<Refund> Refunds { get; set; } = new List<Refund>();
+        public List<IndividualProfile> Customers { get; set; } = new List<IndividualProfile>();
+        public List<TransactionHistory> Transactions { get; set; } = new List<TransactionHistory>();
+
     }
     public class  BulkOperation
     {

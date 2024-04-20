@@ -232,6 +232,19 @@ namespace CBS.FrontDesk.UI.Controllers
                 this.HttpContext.Session["rptpath"] = $"~/{reportpath}/" + ReportName + ".rpt";
                 this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
             }
+            else if (path == "transactions_by_dates")
+            {
+                var transactionHistories = await _acountServices.GetCustomerTransactionsByAccountNumber(KEY);
+                this.HttpContext.Session["rptSource"] = _acountServices.GetTransactionHistoryExports(transactionHistories);
+                if (!transactionHistories.Any())
+                {
+                    this.HttpContext.Session["rptSource"] = "empty";
+                }
+                this.HttpContext.Session["rptType"] = rptType;
+                this.HttpContext.Session["ReportName"] = $"{ReportName}.rpt";
+                this.HttpContext.Session["rptpath"] = $"~/{reportpath}/" + ReportName + ".rpt";
+                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+            }
             else if (path == "receipts")
             {
                 this.HttpContext.Session["rptType"] = "ReportParameterLess";

@@ -1,0 +1,63 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+
+@{
+    ViewBag.Title = "F2 series";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+            <div class="accordion-item active">
+                <h2 class="accordion-header text-body d-flex justify-content-between"
+                    id="accordionPopoutIconThree">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accordionPopoutIcon-3"
+                            aria-expanded="true"
+                            aria-controls="accordionPopoutIcon-3">
+                        <i class="mdi mdi-account me-2"></i>
+                        Members General Situation (F2 series)
+                    </button>
+                </h2>
+                <div id="accordionPopoutIcon-3"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#accordionPopoutIcon">
+                    <div class="accordion-body">
+                        <div id="mainviewChange">
+                            <div class="change-group">
+                                <div id="datalistingview">
+                                    <div class="row g-4">
+                                        <div class="col-md-12">
+                                            <div class="card mb-3 border-2">
+                                                @Html.Partial("_Tabs")
+                                            </div>
+                                            <div class="mb-3 border-2">
+                                                <div id="datalistingview_inner">
+                                                    @Html.Partial("_CustomerCard")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/Crud/MembersFSeries/FSeries.js"></script>
+}
+
+
+
+
+

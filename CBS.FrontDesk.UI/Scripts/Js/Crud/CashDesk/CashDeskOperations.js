@@ -14,13 +14,9 @@
 
 });
 
-// Bind change event to the checkbox
-// Add an event listener to the checkbox
-//<a href="#" onclick="EditResetModal(null,'modal','modalContent','CashDesk','InitializeData','_DepositerForm','new_depositor','Depositor information','modalLabel')" data-toggle="modal" data-target="#depositerModal" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="View customer details">
-//    <i class="fas fa-user"></i> <!-- Customer details icon -->
-//    <i class="fas fa-money-check"></i> <!-- Depositor icon -->
-//</a>
-
+function AddNote() {
+    EditResetModal(null, 'modal', 'modalContent', 'CashDesk', 'InitializeData', '_Note', 'new_depositor', 'NOTE', 'modalLabel')
+}
 function AddDepositor() {
     EditResetModal(null, 'modal', 'modalContent', 'CashDesk', 'InitializeData', '_DepositerForm', 'new_depositor', 'Depositor information', 'modalLabel')
     $('#DepositorIDIssueDate, #DepositorIDExpiryDate').on('input', function () {
@@ -55,12 +51,25 @@ $(document).on('input', '.amount-input, .fee-input, .interest-input, .penalty-in
     calculateTableTotal();
 });
 function calculateTableTotal() {
-    calculateBalance();
     var total = 0;
     $('.total-span').each(function () {
         total += parseFloat($(this).text());
     });
+
+    // Calculate balance
     var totalNotes = parseFloat($("#totalNoteAmount").val());
+    var balance = totalNotes - total;
+
+    // Update balance in the table footer
+    var formattedBalance = balance.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
+    $('#tableBalance').text(formattedBalance);
+
+    // Change color of balance text if negative
+    if (balance < 0) {
+        $('#tableBalance').addClass('text-danger');
+    } else {
+        $('#tableBalance').removeClass('text-danger');
+    }
 
     // Remove any existing icon
     $('#tableTotal .total-icon').remove();
@@ -94,6 +103,7 @@ function calculateTableTotal() {
         $('#submit').prop('disabled', true); // Disable the button
     }
 }
+
 
 function checkTotalNotes() {
     var totalNotes = parseFloat($("#totalNoteAmount").val());
