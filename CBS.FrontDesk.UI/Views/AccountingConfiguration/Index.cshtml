@@ -11,77 +11,77 @@
         <div class="col-md-12">
 
             <div class="accordion mt-3" id="accordionExample">
-                <div class="accordion-item active">
-                    <h2 class="accordion-header" id="headingOne">
+                @*<div class="accordion-item active">
+            <h2 class="accordion-header" id="headingOne">
 
-                        <button type="button"
-                                class="accordion-button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#accordionOne"
-                                aria-expanded="true"
-                                aria-controls="accordionOne">
-                            &nbsp; &nbsp; &nbsp; &nbsp;   Account Class (This is the representation of the 9 class of account according to OHADA)
-                        </button>
-                    </h2>
+                <button type="button"
+                        class="accordion-button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#accordionOne"
+                        aria-expanded="true"
+                        aria-controls="accordionOne">
+                    &nbsp; &nbsp; &nbsp; &nbsp;   Account Class (This is the representation of the 9 class of account according to OHADA)
+                </button>
+            </h2>
 
-                    <div id="accordionOne"
-                         class="accordion-collapse collapse show"
-                         data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <div class="row justify-content-end">
-                                <div class="row justify-content-end">
-                                    <div class="demo-inline-spacing text-end">
-                                        <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountClass','_AccountClassData','desc','datalistingview_AccountClass',0,'accountClass','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                            <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                        </a>
-                                        <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountClass','_CreateAccountClass','new','AccountingConfiguration','accountClass')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                            <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                        </a>
+            <div id="accordionOne"
+                 class="accordion-collapse collapse show"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="row justify-content-end">
+                        <div class="row justify-content-end">
+                            <div class="demo-inline-spacing text-end">
+                                <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountClass','_AccountClassData','desc','datalistingview_AccountClass',0,'accountClass','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                </a>
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountClass','_CreateAccountClass','new','AccountingConfiguration','accountClass')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                </a>
 
-                                    </div>
-                                </div>
-                                <br />
-                                <div id="datalistingview_AccountClass">
-                                    @Html.Partial("_AccountTypeData")
-                                </div>
                             </div>
+                        </div>
+                        <br />
+                        <div id="datalistingview_AccountClass">
+                            @Html.Partial("_AccountTypeData")
                         </div>
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button type="button"
-                                class="accordion-button collapsed"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#accordionTwo"
-                                aria-expanded="false"
-                                aria-controls="accordionTwo">
-                            &nbsp; &nbsp; &nbsp; &nbsp;   Account Cartegory (Asset,Liabilities,expense ...etc)
-                        </button>
-                    </h2>
-                    <div id="accordionTwo"
-                         class="accordion-collapse collapse"
-                         aria-labelledby="headingTwo"
-                         data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <div class="row justify-content-end">
-                                <div class="demo-inline-spacing text-end">
-                                    <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountCartegory','_AccountCartegoryData','desc','datalistingview_AccountCartegory',0,'accountCartegory','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                    </a>
-                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountCartegory','_CreateAccountCartegory','new','AccountingConfiguration','accountCartegory')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                    </a>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button type="button"
+                        class="accordion-button collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#accordionTwo"
+                        aria-expanded="false"
+                        aria-controls="accordionTwo">
+                    &nbsp; &nbsp; &nbsp; &nbsp;   Account Cartegory (Asset,Liabilities,expense ...etc)
+                </button>
+            </h2>
+            <div id="accordionTwo"
+                 class="accordion-collapse collapse"
+                 aria-labelledby="headingTwo"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="row justify-content-end">
+                        <div class="demo-inline-spacing text-end">
+                            <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountCartegory','_AccountCartegoryData','desc','datalistingview_AccountCartegory',0,'accountCartegory','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                            </a>
+                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountCartegory','_CreateAccountCartegory','new','AccountingConfiguration','accountCartegory')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                            </a>
 
-                                </div>
-                            </div>
-                            <br />
-                            <div id="datalistingview_AccountCartegory">
-                                @Html.Partial("_AccountTypeData")
-                            </div>
                         </div>
                     </div>
+                    <br />
+                    <div id="datalistingview_AccountCartegory">
+                        @Html.Partial("_AccountTypeData")
+                    </div>
                 </div>
+            </div>
+        </div>*@
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingThree">
                         <button type="button"
@@ -116,7 +116,7 @@
                         </div>
                     </div>
                 </div>
-      
+
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingfive">
                         <button type="button"
@@ -146,7 +146,7 @@
                             </div>
                             <br />
                             <div id="datalistingview_Account">
-                                @Html.Partial("_AccountData")
+                                @Html.Partial("_CreateAccount")
                             </div>
                         </div>
                     </div>
@@ -179,7 +179,7 @@
                             </div>
                             <br />
                             <div id="datalistingview_OperationEvent">
-                                @Html.Partial("_OperationEventData")
+                                @Html.Partial("_CreateOperationEvent")
                             </div>
                         </div>
                     </div>
@@ -212,7 +212,7 @@
                             </div>
                             <br />
                             <div id="datalistingview_OperationEventAttribute">
-                                @Html.Partial("_OperationEventAttributeData")
+                                @Html.Partial("_CreateOperationEventAttribute")
                             </div>
                         </div>
                     </div>
@@ -245,7 +245,1296 @@
                             </div>
                             <br />
                             <div id="datalistingview_AccountingEntryRule">
-                                @Html.Partial("_AccountingEntryRuleData")
+                                @Html.Partial("_CreateAccountingEntryRule")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingnine">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionnine"
+                                aria-expanded="false"
+                                aria-controls="accordionnine">
+                            &nbsp; &nbsp; &nbsp; &nbsp;  Management of the Balance Sheet Statement<br>
+
+                        </button>
+                    </h2>
+                    <div id="accordionnine"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingnine"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+
+                            <div class="card mb-4">
+                                <div class="card-header p-0">
+                                    <div class="nav-align-top">
+                                        <ul class="nav nav-tabs nav-fill" role="tablist">
+                                            <li class="nav-item">
+                                                <button type="button"
+                                                        class="nav-link active"
+                                                        role="tab"
+                                                        data-bs-toggle="tab"
+                                                        data-bs-target="#navs-justified-modelbalancesheetassets"
+                                                        aria-controls="navs-justified-modelbalancesheetassets"
+                                                        aria-selected="true">
+                                                    <i class="tf-icons mdi mdi-file-document-alert-outline me-1"></i> Balance Sheet Assets Document
+                                                    @*<span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">3</span>*@
+                                                </button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button type="button"
+                                                        class="nav-link"
+                                                        role="tab"
+                                                        data-bs-toggle="tab"
+                                                        data-bs-target="#navs-justified-modelbalancesheetlibilities"
+                                                        aria-controls="navs-justified-modelbalancesheetlibilities"
+                                                        aria-selected="false">
+                                                    <i class="tf-icons mdi mdi-file-document-alert-outline  me-1"></i> Balance Sheet Liabilities Document
+                                                </button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button type="button"
+                                                        class="nav-link"
+                                                        role="tab"
+                                                        data-bs-toggle="tab"
+                                                        data-bs-target="#navs-justified-crudbalancesheet"
+                                                        aria-controls="navs-justified-crudbalancesheet"
+                                                        aria-selected="false">
+                                                    <i class="tf-icons mdi mdi-toolbox-outline me-1"></i> Balance Sheet Document Management
+                                                </button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button type="button"
+                                                        class="nav-link"
+                                                        role="tab"
+                                                        data-bs-toggle="tab"
+                                                        data-bs-target="#navs-justified-account"
+                                                        aria-controls="navs-justified-account"
+                                                        aria-selected="false">
+                                                    <i class="tf-icons mdi mdi-account me-1"></i> Account
+                                                </button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button type="button"
+                                                        class="nav-link"
+                                                        role="tab"
+                                                        data-bs-toggle="tab"
+                                                        data-bs-target="#navs-justified-nextofking"
+                                                        aria-controls="navs-justified-nextofking"
+                                                        aria-selected="false">
+                                                    <i class="tf-icons mdi mdi-account me-1"></i> Next of king
+                                                </button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button type="button"
+                                                        class="nav-link"
+                                                        role="tab"
+                                                        data-bs-toggle="tab"
+                                                        data-bs-target="#navs-justified-cardsignature"
+                                                        aria-controls="navs-justified-cardsignature"
+                                                        aria-selected="false">
+                                                    <i class="tf-icons mdi mdi-account me-1"></i> Signature card
+                                                </button>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content p-0">
+                                        <div class="tab-pane fade show active" id="navs-justified-modelbalancesheetassets" role="tabpanel">
+
+                                            <div class="col-lg-12 col-md-8 col-12">
+                                                Current Balance Sheet Assets Model Document structure.
+                                                <table>
+                                                    <tr>
+                                                        <th>Ref.</th>
+                                                        <th>Heading</th>
+                                                        <th>Gross</th>
+                                                        <th>Amort./Prov.</th>
+                                                        <th>Net N</th>
+                                                        <th>Net N-1</th>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP01</td>
+                                                        <td>CAPITAL</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP02</td>
+                                                        <td>Capitalized costs</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP03</td>
+                                                        <td>Intangible fixed assets</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP04</td>
+                                                        <td>Lands</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP05</td>
+                                                        <td>Other tangible assets</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP06</td>
+                                                        <td>Fixed assets under construction, Advanced payments</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP07</td>
+                                                        <td>Deposits and guarantees</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP08</td>
+                                                        <td>Equity securities and government papers</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP09</td>
+                                                        <td>CREDITS TO MEMBERS</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP10</td>
+                                                        <td>Healthy long terms credits</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP11</td>
+                                                        <td>Healthy medium term credits</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP12</td>
+                                                        <td>Healthy short term credits</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP13</td>
+                                                        <td>Healthy debtor accounts</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP14</td>
+                                                        <td>Unpaid credits</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP15</td>
+                                                        <td>Capitalized credits</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP16</td>
+                                                        <td>Doubtful credits</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP17</td>
+                                                        <td>GOODS INVENTORY AND OTHER SIMILAR OPERATIONS</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP18</td>
+                                                        <td>THIRD PARTY ACCOUNTS</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP19</td>
+                                                        <td>Suppliers</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP20</td>
+                                                        <td>Staff</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP21</td>
+                                                        <td>State</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP22</td>
+                                                        <td>Members</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP23</td>
+                                                        <td>Sundry deebtors</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP24</td>
+                                                        <td>Sundry outstanding claims</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP25</td>
+                                                        <td>CASH RECEIPTS</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP26</td>
+                                                        <td>Securities to be collected</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr> <td>EP27</td> <td>Values on receipt in arrears</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP28</td> <td>ACCRUALS</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP29</td> <td>Costs recorded in advance</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP30</td> <td>Proceeds receivable</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP31</td> <td>Other adjustment operations</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP32</td> <td>RECIPROCAL ACCOUNTS</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP33</td> <td>Liaison headquarters and branches</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP34</td> <td>Liaison apex body and affiliated MFIs</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP35</td> <td>Liaison between affiliated MFIs</td> <td></td> <td></td> <td></td> <td></td> </tr>
+                                                    <tr> <td>EP36</td> <td>Liaison between branches off network</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP37</td> <td>Internal liaison</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP38</td> <td>Sundry outstanding operations</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP39</td> <td>TREASURY ACCOUNTS</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP40</td> <td>Treasury securities</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP41</td> <td>Money market</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP42</td> <td>Demand and fixed term accounts in the apex body</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP43</td> <td>Demand and fixed term accounts in MFIs affiliated to the network</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP44</td> <td>Demand and fixed term accounts in other MFIs</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP45</td> <td>Demand and fixed term accounts in banks and financial institutions</td> <td></td> <td></td> <td></td> <td></td> </tr>
+                                                    <tr> <td>EP46</td> <td>Other demand and fixed term accounts of correspondents</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP47</td> <td>Overdue claims on correspondents</td> <td></td> <td></td> <td></td> <td></td> </tr>
+                                                    <tr> <td>EP48</td> <td>Cash</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP49</td> <td>RESULT AWAITING APPROVAL</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP50</td> <td>SURPLUS EXPENDITURE OVER REVENUE (1)</td> <td></td> <td></td> <td></td> <td></td> </tr>
+                                                    <tr> <td></td> <td>GRAND TOTAL</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="navs-justified-modelbalancesheetlibilities" role="tabpanel">
+
+                                            Current Balance Sheet Liabilities Model Document structure.
+
+                                            <table>
+                                                <tr>
+                                                    <th>Ref.</th>
+                                                    <th>Heading</th>
+                                                    <th>N</th>
+                                                    <th>N-1</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP01</td>
+                                                    <td>HERITAGE FUNDS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP02</td>
+                                                    <td>Subscribed capital called and endowment fund</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP03</td>
+                                                    <td>Subscribed partnership capital called unpaid</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP04</td>
+                                                    <td>Legal reserves</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP05</td>
+                                                    <td>Free reserves</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP06</td>
+                                                    <td>Required regulatory reserve</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP07</td>
+                                                    <td>Solidarity fund</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP08</td>
+                                                    <td>Other reserve funds</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP09</td>
+                                                    <td>Regulatory provisions and reserves</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP10</td>
+                                                    <td>Investment grant</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP11</td>
+                                                    <td>Carry forward</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP12</td>
+                                                    <td>Provisions for general risks</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP13</td>
+                                                    <td>Net income after certification</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP14</td>
+                                                    <td>PROVISIONS FOR RISKS AND COSTS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP15</td>
+                                                    <td>BORROWINGS OFF NETWORK</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP16</td>
+                                                    <td>BORROWING FROM THE NETWORK</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP17</td>
+                                                    <td>L.T. borrowing</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP18</td>
+                                                    <td>M.T. borrowing</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP19</td>
+                                                    <td>DEPOSITS OF MEMBERS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP20</td>
+                                                    <td>Special regime deposits</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP21</td>
+                                                    <td>Term deposits of affiliated MFIs</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP22</td>
+                                                    <td>Demand depsosits of affiliated MFIs</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP23</td>
+                                                    <td>Other deposits</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP24</td>
+                                                    <td>SHORT TERM DEBTS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP25</td>
+                                                    <td>Suppliers</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP26</td>
+                                                    <td>Staff</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP27</td>
+                                                    <td>State</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP28</td>
+                                                    <td>Members</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP29</td>
+                                                    <td>Sundry creditors</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP30</td>
+                                                    <td>CASH RECEIPT ACCOUNTS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP31</td>
+                                                    <td>ACCRUALS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP32</td>
+                                                    <td>Costs payable</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP33</td>
+                                                    <td>Revenue recorded in advance</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP34</td>
+                                                    <td>Other adjustment operations</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP35</td>
+                                                    <td>RECIPROCAL ACCOUNTS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP36</td>
+                                                    <td>Liaison headquarters and branches</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP37</td>
+                                                    <td>Liaison apex body and affiliated MFIs</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP38</td>
+                                                    <td>Liaison between affiliated MFIs</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP39</td>
+                                                    <td>Liaison between branches off network</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP40</td>
+                                                    <td>Internal liaison</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP41</td>
+                                                    <td>TREASURY ACCOUNTS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP42</td>
+                                                    <td>Treasury securities</td>
+                                                    <td></td>
+                                                <tr>
+                                            </table>
+
+
+                                        </div>
+                                        <div class="tab-pane fade" id="navs-justified-crudbalancesheet" role="tabpanel">
+                                            <div class="row justify-content-end">
+                                                <div class="demo-inline-spacing text-end">
+                                                    <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountingEntryRule','_AccountingEntryRuleData','desc','datalistingview_AccountingEntryRule',0,'accountingEntryRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                                    </a>
+                                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountingEntryRule','_CreateAccountingEntryRule','new','AccountingConfiguration','accountingEntryRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div id="datalistingview_AccountingEntryRule">
+                                                @Html.Partial("_CreateAccountingEntryRule")
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingnine">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionnine"
+                                aria-expanded="false"
+                                aria-controls="accordionnine">
+                            &nbsp; &nbsp; &nbsp; &nbsp;  Management of Income and Expense Statement<br>
+
+                        </button>
+                    </h2>
+                    <div id="accordionnine"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingnine"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+
+                            <div class="card mb-4">
+                                <div class="card-header p-0">
+                                    <div class="nav-align-top">
+                                        <ul class="nav nav-tabs nav-fill" role="tablist">
+                                            <li class="nav-item">
+                                                <button type="button"
+                                                        class="nav-link active"
+                                                        role="tab"
+                                                        data-bs-toggle="tab"
+                                                        data-bs-target="#navs-justified-modelbalancesheetassets"
+                                                        aria-controls="navs-justified-modelbalancesheetassets"
+                                                        aria-selected="true">
+                                                    <i class="tf-icons mdi mdi-file-document-alert-outline me-1"></i> Income Document
+                                                    @*<span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">3</span>*@
+                                                </button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button type="button"
+                                                        class="nav-link"
+                                                        role="tab"
+                                                        data-bs-toggle="tab"
+                                                        data-bs-target="#navs-justified-modelbalancesheetlibilities"
+                                                        aria-controls="navs-justified-modelbalancesheetlibilities"
+                                                        aria-selected="false">
+                                                    <i class="tf-icons mdi mdi-file-document-alert-outline  me-1"></i> Expense Document
+                                                </button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button type="button"
+                                                        class="nav-link"
+                                                        role="tab"
+                                                        data-bs-toggle="tab"
+                                                        data-bs-target="#navs-justified-crudbalancesheet"
+                                                        aria-controls="navs-justified-crudbalancesheet"
+                                                        aria-selected="false">
+                                                    <i class="tf-icons mdi mdi-toolbox-outline me-1"></i> Income and Expense Document Management
+                                                </button>
+                                            </li>
+                               
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content p-0">
+                                        <div class="tab-pane fade show active" id="navs-justified-modelbalancesheetassets" role="tabpanel">
+
+                                            <div class="col-lg-12 col-md-8 col-12">
+                                                Current Balance Sheet Assets Model Document structure.
+                                                <table>
+                                                    <tr>
+                                                        <th>Ref.</th>
+                                                        <th>Heading</th>
+                                                        <th>Gross</th>
+                                                        <th>Amort./Prov.</th>
+                                                        <th>Net N</th>
+                                                        <th>Net N-1</th>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP01</td>
+                                                        <td>CAPITAL</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP02</td>
+                                                        <td>Capitalized costs</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP03</td>
+                                                        <td>Intangible fixed assets</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP04</td>
+                                                        <td>Lands</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP05</td>
+                                                        <td>Other tangible assets</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP06</td>
+                                                        <td>Fixed assets under construction, Advanced payments</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP07</td>
+                                                        <td>Deposits and guarantees</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP08</td>
+                                                        <td>Equity securities and government papers</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP09</td>
+                                                        <td>CREDITS TO MEMBERS</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP10</td>
+                                                        <td>Healthy long terms credits</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP11</td>
+                                                        <td>Healthy medium term credits</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP12</td>
+                                                        <td>Healthy short term credits</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP13</td>
+                                                        <td>Healthy debtor accounts</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP14</td>
+                                                        <td>Unpaid credits</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP15</td>
+                                                        <td>Capitalized credits</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP16</td>
+                                                        <td>Doubtful credits</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP17</td>
+                                                        <td>GOODS INVENTORY AND OTHER SIMILAR OPERATIONS</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP18</td>
+                                                        <td>THIRD PARTY ACCOUNTS</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP19</td>
+                                                        <td>Suppliers</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP20</td>
+                                                        <td>Staff</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP21</td>
+                                                        <td>State</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP22</td>
+                                                        <td>Members</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP23</td>
+                                                        <td>Sundry deebtors</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP24</td>
+                                                        <td>Sundry outstanding claims</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP25</td>
+                                                        <td>CASH RECEIPTS</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>EP26</td>
+                                                        <td>Securities to be collected</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr> <td>EP27</td> <td>Values on receipt in arrears</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP28</td> <td>ACCRUALS</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP29</td> <td>Costs recorded in advance</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP30</td> <td>Proceeds receivable</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP31</td> <td>Other adjustment operations</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP32</td> <td>RECIPROCAL ACCOUNTS</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP33</td> <td>Liaison headquarters and branches</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP34</td> <td>Liaison apex body and affiliated MFIs</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP35</td> <td>Liaison between affiliated MFIs</td> <td></td> <td></td> <td></td> <td></td> </tr>
+                                                    <tr> <td>EP36</td> <td>Liaison between branches off network</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP37</td> <td>Internal liaison</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP38</td> <td>Sundry outstanding operations</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP39</td> <td>TREASURY ACCOUNTS</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP40</td> <td>Treasury securities</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP41</td> <td>Money market</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP42</td> <td>Demand and fixed term accounts in the apex body</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP43</td> <td>Demand and fixed term accounts in MFIs affiliated to the network</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP44</td> <td>Demand and fixed term accounts in other MFIs</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP45</td> <td>Demand and fixed term accounts in banks and financial institutions</td> <td></td> <td></td> <td></td> <td></td> </tr>
+                                                    <tr> <td>EP46</td> <td>Other demand and fixed term accounts of correspondents</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP47</td> <td>Overdue claims on correspondents</td> <td></td> <td></td> <td></td> <td></td> </tr>
+                                                    <tr> <td>EP48</td> <td>Cash</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                    <tr> <td>EP49</td> <td>RESULT AWAITING APPROVAL</td> <td></td> <td></td> <td></td> <td></td>   </tr>
+                                                    <tr> <td>EP50</td> <td>SURPLUS EXPENDITURE OVER REVENUE (1)</td> <td></td> <td></td> <td></td> <td></td> </tr>
+                                                    <tr> <td></td> <td>GRAND TOTAL</td> <td></td> <td></td> <td></td> <td></td>  </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="navs-justified-modelbalancesheetlibilities" role="tabpanel">
+
+                                            Current Balance Sheet Liabilities Model Document structure.
+
+                                            <table>
+                                                <tr>
+                                                    <th>Ref.</th>
+                                                    <th>Heading</th>
+                                                    <th>N</th>
+                                                    <th>N-1</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP01</td>
+                                                    <td>HERITAGE FUNDS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP02</td>
+                                                    <td>Subscribed capital called and endowment fund</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP03</td>
+                                                    <td>Subscribed partnership capital called unpaid</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP04</td>
+                                                    <td>Legal reserves</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP05</td>
+                                                    <td>Free reserves</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP06</td>
+                                                    <td>Required regulatory reserve</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP07</td>
+                                                    <td>Solidarity fund</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP08</td>
+                                                    <td>Other reserve funds</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP09</td>
+                                                    <td>Regulatory provisions and reserves</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP10</td>
+                                                    <td>Investment grant</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP11</td>
+                                                    <td>Carry forward</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP12</td>
+                                                    <td>Provisions for general risks</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP13</td>
+                                                    <td>Net income after certification</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP14</td>
+                                                    <td>PROVISIONS FOR RISKS AND COSTS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP15</td>
+                                                    <td>BORROWINGS OFF NETWORK</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP16</td>
+                                                    <td>BORROWING FROM THE NETWORK</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP17</td>
+                                                    <td>L.T. borrowing</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP18</td>
+                                                    <td>M.T. borrowing</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP19</td>
+                                                    <td>DEPOSITS OF MEMBERS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP20</td>
+                                                    <td>Special regime deposits</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP21</td>
+                                                    <td>Term deposits of affiliated MFIs</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP22</td>
+                                                    <td>Demand depsosits of affiliated MFIs</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP23</td>
+                                                    <td>Other deposits</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP24</td>
+                                                    <td>SHORT TERM DEBTS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP25</td>
+                                                    <td>Suppliers</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP26</td>
+                                                    <td>Staff</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP27</td>
+                                                    <td>State</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP28</td>
+                                                    <td>Members</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP29</td>
+                                                    <td>Sundry creditors</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP30</td>
+                                                    <td>CASH RECEIPT ACCOUNTS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP31</td>
+                                                    <td>ACCRUALS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP32</td>
+                                                    <td>Costs payable</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP33</td>
+                                                    <td>Revenue recorded in advance</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP34</td>
+                                                    <td>Other adjustment operations</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP35</td>
+                                                    <td>RECIPROCAL ACCOUNTS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP36</td>
+                                                    <td>Liaison headquarters and branches</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP37</td>
+                                                    <td>Liaison apex body and affiliated MFIs</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP38</td>
+                                                    <td>Liaison between affiliated MFIs</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP39</td>
+                                                    <td>Liaison between branches off network</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP40</td>
+                                                    <td>Internal liaison</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP41</td>
+                                                    <td>TREASURY ACCOUNTS</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RP42</td>
+                                                    <td>Treasury securities</td>
+                                                    <td></td>
+                                                <tr>
+                                            </table>
+
+
+                                        </div>
+                                        <div class="tab-pane fade" id="navs-justified-crudbalancesheet" role="tabpanel">
+                                            <div class="row justify-content-end">
+                                                <div class="demo-inline-spacing text-end">
+                                                    <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountingEntryRule','_AccountingEntryRuleData','desc','datalistingview_AccountingEntryRule',0,'accountingEntryRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                                    </a>
+                                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountingEntryRule','_CreateAccountingEntryRule','new','AccountingConfiguration','accountingEntryRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div id="datalistingview_AccountingEntryRule">
+                                                @Html.Partial("_CreateAccountingEntryRule")
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -260,7 +1549,7 @@
 
 </div>
 
- 
+
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
 <script src="~/Scripts/Js/main.js/Account.js"></script>

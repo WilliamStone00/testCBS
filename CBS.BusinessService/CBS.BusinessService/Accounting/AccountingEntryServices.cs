@@ -160,19 +160,11 @@ namespace CBS.BusinessService
             }
             return ExecutionMessage;
         }
-
-        //
-
         public async Task<List<LiaisonLedgerEntry>> RetrieveLiasonAccountingEntries(SystemQuery model)
         {
             try
             {
-
-                // Make an API call to create an individual profile
-
-
                 return await _accountingApiCallerHelper.PostLiaisonAccountAsync(APICallHelper.AccountingEntry_LiaisonEntries, model);
-
             }
             catch (Exception ex)
             {
@@ -181,7 +173,6 @@ namespace CBS.BusinessService
                     SystemMessageStatus.Failed.ToString(), ex);
                 throw (ex);
             }
-
         }
         public async Task<List<AccountingEntry>> RetrieveAccountingEntries(SystemQuery model)
         {
@@ -203,7 +194,6 @@ namespace CBS.BusinessService
             }
             
         }
-
         public async Task<List<AccountingEntry>> GetAllAccountingEntries()
         {
             try

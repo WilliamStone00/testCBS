@@ -80,6 +80,7 @@
     <Compile Include="Entity\Accounting\CashReplenimentRequest.cs" />
     <Compile Include="Entity\Accounting\CashInfusionRequest.cs" />
     <Compile Include="Entity\Accounting\BranchLiaisonLedgerEntry.cs" />
+    <Compile Include="Entity\Accounting\IncomeStatement.cs" />
     <Compile Include="Entity\Accounting\ModelIncomeExpenses.cs" />
     <Compile Include="Entity\Accounting\ModelBalanceSheetAssets.cs" />
     <Compile Include="Entity\Accounting\TrialBalance6ColumnDto.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Entity\Accounting\OperationEventAttributeDto.cs" />
     <Compile Include="Entity\Accounting\OperationEventDto.cs" />
     <Compile Include="Entity\Accounting\CashInfusion.cs" />
+    <Compile Include="Entity\Accounting\TrialBalanceDto.cs" />
     <Compile Include="Entity\BudgetManagement\BubgetConfiguration.cs" />
     <Compile Include="Entity\BudgetManagement\BudgetCategorie.cs" />
     <Compile Include="Entity\BudgetManagement\Budget.cs" />

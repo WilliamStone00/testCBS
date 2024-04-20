@@ -14,8 +14,36 @@
         console.log("Operation Event Id selected: " + EventId);
         loadOperationEventAttributeIds(EventId);
     });
+    $(document).on('change', '#Account_ChartOfAccountId', function () {
+        var EventId = $(this).val();
+        console.log("Account_ChartOfAccountId selected: " + EventId);
+        loadAccountCartegoryByChartNumber(EventId);
+    });
 });
  
+
+function loadAccountCartegoryByChartNumber(number) {
+    console.log(number);
+    
+    $.ajax({
+        url: '/AccountingConfiguration/GetAccountCartegoryById',
+        type: 'GET',
+        dataType: 'json',
+        data: { Id: number },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+            $('#Account_AccountCategoryId').empty();
+
+            // Add new options based on the fetched data
+            $.each(data, function (index, item) {
+                $('#Account_AccountCategoryId').append($('<option>').text(item.Text).attr('value', item.Value));
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
 
 function loadOperationEventAttributeIds(operationEventId) {
     console.log(operationEventId);
