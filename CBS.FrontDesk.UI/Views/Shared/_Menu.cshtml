@@ -30,11 +30,11 @@
         <ul class="menu-inner py-1">
             @foreach (var group in menuItems.Select(m => m.MenuGroup).Distinct()) // Loop through distinct menu groups
             {
-                // Get menu items for the current group
-                var groupMenuItems = menuItems.Where(m => m.MenuGroup == group && m.ParentId == 0);
+                // Get unique menu items for the current group based on MenuMasterId
+                var uniqueGroupMenuItems = menuItems.Where(m => m.MenuGroup == group && m.ParentId == 0).GroupBy(m => m.MenuMasterId).Select(g => g.First());
 
                 // Check if any menu item in the group has child menus
-                var groupHasChildMenus = groupMenuItems.Any(m => menuItems.Any(cm => cm.ParentId == m.MenuMasterId));
+                var groupHasChildMenus = uniqueGroupMenuItems.Any(m => menuItems.Any(cm => cm.ParentId == m.MenuMasterId));
 
                 // Render the group only if it has associated menu items with child menus
                 if (groupHasChildMenus)
@@ -43,7 +43,7 @@
                         <span class="menu-header-text">@group</span>
                     </li>
 
-                    foreach (var menuItem in groupMenuItems) // Loop through menu items in the group
+                    foreach (var menuItem in uniqueGroupMenuItems) // Loop through unique menu items in the group
                     {
                         // Check if the current menu item has child menus
                         var menuItemHasChildMenus = menuItems.Any(cm => cm.ParentId == menuItem.MenuMasterId);
@@ -51,7 +51,8 @@
                         // Render sub-menu only if the current menu item has child menus
                         if (menuItemHasChildMenus)
                         {
-                            @RenderSubMenu(menuItem, menuItems)
+                            var renderedItems = new HashSet<int>();
+                            @RenderSubMenu(menuItem, menuItems, renderedItems)
                         }
                     }
                 }
@@ -60,33 +61,36 @@
     </aside>
 }
 
-
-
-@helper RenderSubMenu(CBS.FrontDesk.Data.Entity.DatabaseMenus menuItem, List<CBS.FrontDesk.Data.Entity.DatabaseMenus> menuItems)
+@helper RenderSubMenu(CBS.FrontDesk.Data.Entity.DatabaseMenus menuItem, List<CBS.FrontDesk.Data.Entity.DatabaseMenus> menuItems, HashSet<int> renderedItems)
 {
-
     var hasChildItems = menuItems.Any(m => m.ParentId == menuItem.MenuMasterId);
 
-
-    if (hasChildItems)
+    if (hasChildItems && !renderedItems.Contains(menuItem.MenuMasterId))
     {
+        renderedItems.Add(menuItem.MenuMasterId);
+
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle text-dark">
-                <!-- Adding text-dark class here -->
                 <i class="@menuItem.IconClass"></i> <div> @menuItem.MenuText</div>
             </a>
             <ul class="menu-sub">
                 @foreach (var childItem in menuItems.Where(m => m.ParentId == menuItem.MenuMasterId))
                 {
-                    <li class="menu-item">
-                        <a href="@Url.Action(childItem.ActionName, childItem.ControllerName)" class="menu-link">
-                            <div class="text-dark">@childItem.MenuText</div> <!-- Adding text-dark class here -->
-                        </a>
-                        @if (menuItems.Any(m => m.ParentId == childItem.MenuMasterId))
-                        {
-                            @RenderSubMenu(childItem, menuItems)
-                        }
-                    </li>
+                    // Check if the child item is recurring
+                    var isRecurring = renderedItems.Contains(childItem.MenuMasterId);
+
+                    if (!isRecurring)
+                    {
+                        <li class="menu-item">
+                            <a href="@Url.Action(childItem.ActionName, childItem.ControllerName)" class="menu-link">
+                                <div class="text-dark">@childItem.MenuText</div>
+                            </a>
+                            @if (menuItems.Any(m => m.ParentId == childItem.MenuMasterId))
+                            {
+                                @RenderSubMenu(childItem, menuItems, renderedItems)
+                            }
+                        </li>
+                    }
                 }
             </ul>
         </li>

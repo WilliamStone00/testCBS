@@ -5,18 +5,25 @@ using System.Web.Mvc;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.Data.Entity;
+using CBS.API.Helper;
+using System.Linq;
+using CBS.BusinessService.Config;
+using CBS.BusinessService;
 
 namespace CBS.FrontDesk.UI.Controllers.UserManagement
 {
     //[SessionTimeoutFilterAttribute]
-    public class UserManagementController: BaseController
+    public class UserManagementController : BaseController
     {
         // GET: UserManagement
         private readonly IUserManagementServices _userManagementServices;
-
-        public UserManagementController(IUserManagementServices userManagementServices)
+        private readonly BranchServices _branchServices;
+        private readonly RoleServices _roleServices;
+        public UserManagementController(IUserManagementServices userManagementServices, BranchServices branchServices = null, RoleServices roleServices = null)
         {
-            _userManagementServices=userManagementServices;
+            _userManagementServices = userManagementServices;
+            _branchServices = branchServices;
+            _roleServices = roleServices;
         }
         public async Task<ActionResult> Index()
         {
@@ -42,8 +49,11 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                 ViewBag.KEY = KEY;
                 var data = await _userManagementServices.GetUser(_userManagementServices.ConvertStringToGuid(KEY));
                 string view = null;
-                var roles = await _userManagementServices.GetRoles();
-                ViewBag.Branches = await _userManagementServices.GetBranches(); 
+                //var roles = await _userManagementServices.GetRoles();
+                var branch= await _branchServices.GetBranch(data.BranchID);
+                var role = await _roleServices.GetRole(data.roleID.ToString());
+                data.Brancch=branch;
+                data.roleName=role.Name;
                 return PartialView(partialView, data);
             }
 
@@ -59,7 +69,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             //}
             //return PartialView(view, "");
         }
-        
+
         public async Task<ActionResult> UserProfile(string serviceoption = null, string KEY = null, string ReadOptions = null, string path = null, string group = null, string datefrom = null, string dateto = null)
         {
             Session["userid_action"] = KEY;
@@ -172,43 +182,55 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
         }
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> ChangePassword(string serviceoption = "None", string KEY = "KEY", string secrete = "none", string usersecreteid = "secrete", string path = null)
+        public async Task<ActionResult> FLoginChangePassword(string serviceoption = "None", string KEY = "KEY", string secrete = "none", string usersecreteid = "secrete", string path = null)
         {
-            if (!VerifyCookies("CBS4U"))
+            if (!VerifyCookies("PWD"))
             {
-                var user=await _userManagementServices.GetUser(_userManagementServices.ConvertStringToGuid(KEY));
-                if (user.ChangePasswordOnFirstLogin)
+                var user = await _userManagementServices.GetUser(_userManagementServices.ConvertStringToGuid(KEY));
+                if (user!=null)
                 {
-                    return View(user);
+                    var Flogin = new FLoginChangePassword { ConfirmPassword = string.Empty, Password = string.Empty, UserName = user.userName, FullName = $"{user.firstName} {user.lastName}", UserId = user.id };
+                    return View(Flogin);
                 }
 
             }
-
-
             return Redirect("~/Authentication/Logout");
         }
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> ChangePassword(User model)
+        public async Task<ActionResult> FLoginChangePassword(FLoginChangePassword model)
         {
 
-            if (!VerifyCookies("CBS4U"))
+            // Check if model state is valid
+            if (ModelState.IsValid)
             {
-                var data = await _userManagementServices.ChangePassword(model);
-                if (data.Result)
+                // Verify cookies
+                if (!VerifyCookies("PWD"))
                 {
-                    var dto = new UserDto { };
+                    var data = await _userManagementServices.FLoginChangePassword(model);
+                    if (data.Result)
+                    {
+                        var userDto = (UserDto)data.Data;
+                        CreateToken(userDto, "CBS4U");
 
-                    CreateToken(dto);
-
+                    }
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
                 }
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+                // Session expired
+                var url = "~/Authentication/Login";
+                return Json(new { success = false, message = "Session expired.", urldirect = url, state = "Expired" }, JsonRequestBehavior.AllowGet);
             }
+            else
+            {
+                // Model state is not valid, return validation errors as a concatenated string with numbers
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select((e, index) => $"{index + 1}. {e.ErrorMessage}");
 
-
-            var url = "~/Authentication/Login";
-            return Json(new { success = false, message = "Session expired.", urldirect = url, state = "Expired" }, JsonRequestBehavior.AllowGet);
-
+                var errorMessage = string.Join("<br>", errors);
+                return Json(new { success = false, message = $"Model state is not valid. Errors:<br>{errorMessage}" });
+            }
 
 
 

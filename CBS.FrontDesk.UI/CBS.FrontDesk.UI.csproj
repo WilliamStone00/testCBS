@@ -304,6 +304,8 @@
     <Content Include="AppFiles\Images\BG3.jpeg" />
     <Content Include="AppFiles\Images\BG3.png" />
     <Content Include="AppFiles\Images\Logog2.jpeg" />
+    <Content Include="AppFiles\Images\Logog2X.jpeg" />
+    <Content Include="AppFiles\Images\Logog2XI.png" />
     <Content Include="AppFiles\Images\SideImageHeader.jpeg" />
     <Content Include="AppFiles\Images\SideImageHeader.png" />
     <Content Include="AppFiles\Images\SideImageHeader_login.png" />
@@ -338,6 +340,12 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Statement\IAccountStatementGroupByAccounts.cs">
+      <DependentUpon>IAccountStatementGroupByAccounts.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -367,6 +375,7 @@
     <Compile Include="Controllers\CustomerManagement\IndividualController.cs" />
     <Compile Include="Controllers\CustomerManagement\Policy\MemberAccountActivationPolicyController.cs" />
     <Compile Include="Controllers\ErrorHandler\ErrorController.cs" />
+    <Compile Include="Controllers\Home\DashboardController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Loan\Configuration\AlertProfileController.cs" />
     <Compile Include="Controllers\Loan\Configuration\AttachedLoanDocumentsController.cs" />
@@ -390,6 +399,7 @@
     <Compile Include="Controllers\RoleManagement\MenuMasterController.cs" />
     <Compile Include="Controllers\RoleManagement\RoleController.cs" />
     <Compile Include="Controllers\RoleManagement\RolePermissionController.cs" />
+    <Compile Include="Controllers\Series\MembersFSeriesController.cs" />
     <Compile Include="Controllers\Session\SessionController.cs" />
     <Compile Include="Controllers\Settings\GlobalConfigurationController.cs" />
     <Compile Include="Controllers\TransactionManagement\EndOfDayOperationController.cs" />
@@ -2213,6 +2223,8 @@
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\CashDeskOperations.js" />
     <Content Include="Scripts\Js\Crud\Collateral\Collateral.js" />
+    <Content Include="Scripts\Js\Crud\MembersFSeries\FSeries.js" />
+    <Content Include="Scripts\Js\Crud\MembersFSeries\Members.js" />
     <Content Include="Scripts\Js\Crud\LoanProductCollateral\LoanProductCollateral.js" />
     <Content Include="Scripts\Js\Crud\LoanTransactions\Loans.js" />
     <Content Include="Scripts\Js\Budgetmanagement\Budget.js" />
@@ -2230,6 +2242,7 @@
     <Content Include="Scripts\Js\Crud\Operation\Transfer.js" />
     <Content Include="Scripts\Js\Crud\Operation\Transfers.js" />
     <Content Include="Scripts\Js\Crud\Penalty\Penalty.js" />
+    <Content Include="Scripts\Js\Crud\Teller\Teller.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />
     <Content Include="Scripts\Js\Crud\Config\Localization\Countries.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\CustomersProfile.js" />
@@ -2622,14 +2635,34 @@
     <Content Include="Views\Operation\Transfers.cshtml" />
     <Content Include="Views\Operation\_TransferDetails.cshtml" />
     <Content Include="Views\Operation\_TransferConfirmation.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_CreateStatementModel.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_statementModelData.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_CreateTrialBalanceReference.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_statementModelDetails.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_UpdateStatementModel.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_CreateStatementModelBS.cshtml" />
+    <Content Include="Views\CashDesk\Index.cshtml" />
+    <Content Include="Views\CashDesk\_CustomerCard.cshtml" />
+    <Content Include="Views\CashDesk\_Tabs.cshtml" />
+    <Content Include="Views\CashDesk\_SearchBox.cshtml" />
+    <Content Include="Views\CashDesk\_OperationDesk.cshtml" />
+    <Content Include="Views\Shared\_DataNotFound.cshtml" />
+    <Content Include="Views\CashDesk\_OperationForm.cshtml" />
+    <Content Include="Views\CashDesk\_DenominationBreakDown.cshtml" />
+    <Content Include="Views\CashDesk\_DepositerForm.cshtml" />
+    <Content Include="Views\CashDesk\_OperationFormOld.cshtml" />
+    <Content Include="Views\CashDesk\_Note.cshtml" />
+    <Content Include="Views\MembersFSeries\Index.cshtml" />
+    <Content Include="Views\MembersFSeries\_MembersData.cshtml" />
+    <Content Include="Views\MembersFSeries\_Tabs.cshtml" />
+    <Content Include="Views\MembersFSeries\_CustomerCard.cshtml" />
+    <Content Include="Views\MembersFSeries\F2MembersGeneratSituation.cshtml" />
+    <Content Include="Views\MembersFSeries\_MembersAccount.cshtml" />
+    <Content Include="Views\MembersFSeries\_MembersProfile.cshtml" />
+    <Content Include="Views\MembersFSeries\_MembersAccountStatement.cshtml" />
+    <Content Include="Views\MembersFSeries\_PrintDateForm.cshtml" />
+    <Content Include="Views\MembersFSeries\_Transactions.cshtml" />
+    <Content Include="Views\Dashboard\HeadOffice.cshtml" />
+    <Content Include="Views\Dashboard\BranchOffice.cshtml" />
+    <Content Include="Views\UserManagement\FLoginChangePassword.cshtml" />
+    <Content Include="Views\UserManagement\_UserDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AppFiles\BarCodeImages\" />
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\CustomerManagement\MemberActivation\" />
     <Folder Include="Views\DocumentPack\" />
@@ -2714,6 +2747,10 @@
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\Statement\AllIAccountStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AllIAccountStatement.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Statement\IAccountStatementGroupByAccounts.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>IAccountStatementGroupByAccounts.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\Statement\IAccountStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

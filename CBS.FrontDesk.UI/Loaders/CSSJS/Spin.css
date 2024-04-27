@@ -1,4 +1,7 @@
-﻿#loading {
+﻿
+
+/* Additional styling as needed */
+#loading {
     display: none;
     position: fixed;
     left: 0;

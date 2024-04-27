@@ -31,10 +31,11 @@
         public static string UpdateUserProfile = "/api/User/profile";
         public static string ChangePassword = "/api/User/changepassword";
         public static string ResetPassword = "/api/User/resetpassword";
+        public static string FLoginChangePasswordCommand = "/api/User/FLoginChangePasswordCommand";
         public static string UploadProfilePhoto = "/api/User/UpdateUserProfilePhoto";
         public static string GetRecentRegisteredUsers = "/api/User/GetRecentlyRegisteredUsers";
         public static string UpdateUser = "/api/User/{0}";
-
+        //FLoginChangePasswordCommand
         //Role
         public static string Get_Update_Delete_Role = "/api/Role/{0}";
         public static string GetAllRoles = "/api/Role";
@@ -124,6 +125,8 @@
         public static string MakeTrGetAccountByAccountNumber = "/api/v1/Account/AccountNumber/{0}";
         public static string GetTransactionHistoryByAccountNumber = "/api/v1/Transaction/AccountNumber/{0}";
         public static string GetTransactionHistoryByCustomerNumber = "/api/v1/Transaction/Customer/{0}";
+        public static string GetAllTransactionsByDatesAndCustomerIDQuery = "/api/v1/Transaction/GetAllTransactionsByDatesAndCustomerIDQuery";
+        //
         public static string GetAllTransactions = "/api/v1/Transaction";
         public static string GetTransaction = "/api/v1/Transaction/{0}";
         //Teller

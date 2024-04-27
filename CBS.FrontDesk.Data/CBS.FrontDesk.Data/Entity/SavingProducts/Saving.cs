@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using System;
@@ -300,6 +301,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal MaximumWithdrawalAmount { get; set; } = 0m;
         public decimal MinimumTransferAmount { get; set; } = 0m;
         public decimal MaximumTransferAmount { get; set; } = 0m;
+        public Branch Branch { get; set; }
         public bool inUseStatus { get; set; }
         public string inUsedByUserId { get; set; }
         public bool activeStatus { get; set; }

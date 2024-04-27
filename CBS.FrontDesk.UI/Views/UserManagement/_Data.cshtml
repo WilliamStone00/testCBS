@@ -12,9 +12,7 @@ else
         <table class="table table-hover" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th>userName</th>
                     <th>Name</th>
-                    <th>Email</th>
                     <th>Status</th>
                     <th>Branch</th>
                     <th>Last login</th>
@@ -25,9 +23,8 @@ else
                 @foreach (var d in Model)
                 {
                     <tr>
-                        <td style="width:10%">@d.userName</td>
-                        <td style="width:20%">@d.name</td>
-                        <td style="width:10%">@d.email</td>
+                        @*<td style="width:13%">@d.userName</td>*@
+                        <td style="width:30%">@d.name</td>
                         <td style="width:5%">
                             @if (d.status == "Active")
                             {
@@ -38,11 +35,12 @@ else
                                 <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Blocked</span></label>
                             }
                         </td>
-                        <td style="width:20%">@(d.Brancch != null ? d.Brancch.Name : "N/A")</td>
+                        <td style="width:27%">@(d.Brancch != null ? d.Brancch.Name : "N/A")</td>
                         <td style="width:20%">@d.strlastLoginDate</td>
-                        <td style="width:15%">
-                            <a href="/UserManagement/UserProfile?KEY=@d.id" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit</a>
-                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('UserManagement','@d.id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                        <td style="width:18%">
+                            <a href="/UserManagement/UserProfile?KEY=@d.id" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit</a> | 
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('UserManagement','@d.id','myDataTable','_Data',0,'datalistingview')">Delete</a> | 
+                            <a href="#" class="mr-2" data-toggle="tooltip" onclick="UserDetail('@d.id')" data-placement="top" title="View detail">Detail</a>
                         </td>
                     </tr>
                 }
@@ -51,17 +49,3 @@ else
     </div>
 }
 
-
-
-@*<table class="datatables-users table  table-hover" id="myDataTable">
-        <thead class="table-light">
-            <tr>
-                <th>userName</th>
-                <th>Name</th>
-                <th>phoneNumber</th>
-                <th>Last login</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-    </table>*@

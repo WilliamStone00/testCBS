@@ -556,7 +556,7 @@ function DeleteRecordDataTable(controller, KEY, tableID, partialView, order, div
 
     alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
         function () {
-            var url = "/" + controller + "/Delete?id=" + KEY;
+            var url = "/" + controller + "/Delete?KEY=" + KEY;
             $.ajax({
                 type: "Get",
                 url: url,
@@ -853,7 +853,7 @@ function AjaxPostAndUpdate(form) {
     if ($(form).valid()) {
 
 
-        alertify.confirm("WARNING!!!", "Are you sure you want to perform this action! ",
+        alertify.confirm("Confirmation", "Are you sure you want to perform this action! ",
             function () {
 
 

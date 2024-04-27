@@ -312,7 +312,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         }
                         else if (serviceOption == "all")
                         {
-                            var data = await _individualProfileServices.GetIndividualProfile();
+                            var data = await _individualProfileServices.GetMembers();
                             return PartialView(partialView, new MemberOperationPanel { Customers = data.ToList() });
                         }
 

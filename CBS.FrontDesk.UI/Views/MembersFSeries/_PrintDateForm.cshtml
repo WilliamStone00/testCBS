@@ -1,0 +1,25 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+
+
+<div class="change-group">
+    <div class="row mt-2 gy-4">
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.PrintDate.DateFrom, new { @class = "form-control date-picker", @id = "DateFrom" })
+                @Html.ValidationMessageFor(m => m.PrintDate.DateFrom, "", new { @class = "text-danger" })
+                <label>Start date</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.PrintDate.DateTo, new { @class = "form-control date-picker", @id = "DateTo" })
+                @Html.ValidationMessageFor(m => m.PrintDate.DateTo, "", new { @class = "text-danger" })
+                <label>End date</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <button class="btn btn-primary" onclick="ExportIndividaulReport(@Model.CustomerId)">Print</button>
+        </div>
+    </div>
+</div>
+

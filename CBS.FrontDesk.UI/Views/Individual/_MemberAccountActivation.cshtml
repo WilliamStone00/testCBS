@@ -1,7 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
 
-<h5 class="card-header">Member Fee Set-Up</h5>
-<hr />
+<div class="card-header">
+    <h5 class="card-title">Member Fee Set-Up</h5>
+</div>
 <div class="card-body">
     @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
     {

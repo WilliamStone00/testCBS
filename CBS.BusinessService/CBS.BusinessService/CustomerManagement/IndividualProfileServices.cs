@@ -121,17 +121,16 @@ namespace CBS.BusinessService.CustomerManagement
 
         public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions)
         {
-            Func<Task<List<IndividualProfile>>> getDataFunc = async () => (await GetIndividualProfile()).ToList();
+            Func<Task<List<IndividualProfile>>> getDataFunc = async () => (await GetMembers()).ToList();
             var dataTable = await DatatableHelper.GenerateDataTable<IndividualProfile>(dataTableOptions, getDataFunc);
             return dataTable;
         }
-        public async Task<IEnumerable<IndividualProfile>> GetIndividualProfile()
+        public async Task<IEnumerable<IndividualProfile>> GetMembers()
         {
             try
             {
                 var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.GetAllIndividualProfile);
                 var aggregates = await GetAggregates();
-
                 var data = (from a in individualProfiles.ApiResponseData.Data
                             join b in aggregates.Branches on a.branchId equals b.Id
                             join t in aggregates.Towns on a.townId equals t.Id
@@ -326,10 +325,6 @@ namespace CBS.BusinessService.CustomerManagement
             {
 
                 var cusResponseObject = await GetSingleCustomer(id);
-                if (true)
-                {
-
-                }
                 var Branch = await _branchServices.GetBranch(cusResponseObject.branchId);
                 var data = TransformToCustomerList(cusResponseObject, Branch, null);
                 var result = new IndividualCustomerProfile(data);

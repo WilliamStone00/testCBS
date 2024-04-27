@@ -1,0 +1,104 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+
+
+
+<div class="row g-4">
+    <div class="col-md-12">
+        <div class="card mb-3 border-2 exclude-from-print">
+            @Html.Partial("_Tabs")
+        </div>
+        <div id="accountsSection">
+            <div class="mb-3 border-2">
+                <div class="form-wrapper">
+                    <fieldset class="fieldset-custom">
+                        <legend>TRANSACTIONS</legend>
+                        <div class="change-group">
+                            <div class="row mt-2 gy-4">
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
+                                    </div>
+                                </div>
+                                @*<div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        <span class="formatted-amount shadow-box" id="closingBalance">Closing balance: 0.0</span>
+                                    </div>
+                                </div>*@
+
+                                <div class="row mt-2 gy-4">
+                                    @if (!Model.Transactions.Any())
+                                    {
+                                        <div class="text-center my-3">
+                                            <p>No transaction(s) are available for @Model.Customer.name</p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="table-responsive" style="width: 100%;">
+                                            <table class="table table-hover" id="myDataTableTransactions">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Account number</th>
+                                                        <th>Amount</th>
+                                                        <th>Fee</th>
+                                                        <th>Credit</th>
+                                                        <th>Debit</th>
+                                                        <th>Balance</th>
+                                                        <th>Account type</th>
+                                                        <th>Receipts</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{
+                                                        decimal totalClosingBalance = 0;
+                                                    }
+                                                    @foreach (var transaction in Model.Transactions.OrderBy(t => t.CreatedDate))
+                                                    {
+                                                        decimal balance = transaction.Credit - transaction.Debit;
+                                                        totalClosingBalance += balance;
+                                                        <tr>
+                                                            <td>@transaction.CreatedDate.ToString("dd-MM-yyyy, hh:mm:ss")</td>
+                                                            <td>@transaction.AccountNumber</td>
+                                                            <td>@transaction.OriginalDepositAmount.ToString("#,##0.0")</td>
+                                                            <td>@transaction.Fee.ToString("#,##0.0")</td>
+                                                            <td>@transaction.Credit.ToString("#,##0.0")</td>
+                                                            <td>@transaction.Debit.ToString("#,##0.0")</td>
+                                                            <td>@balance.ToString("#,##0.0")</td>
+                                                            <td>@transaction.Account.AccountType</td>
+                                                            <td>
+                                                                <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('MembersFSeries', '@transaction.Id','receipts','ReportParameterLess')" data-bs-toggle="tooltip" title="Print receipt with reference @transaction.TransactionRef">
+                                                                    <span class="tf-icons mdi mdi-printer mdi-18px"></span>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="6" style="text-align:right;"><strong>Total Closing Balance:</strong></td>
+                                                        <td>@totalClosingBalance.ToString("#,##0.0")</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                </tfoot>
+
+                                            </table>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

@@ -19,87 +19,50 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             try
             {
-                bool isValid = true;
-                string strReportName = System.Web.HttpContext.Current.Session["ReportName"].ToString();
+                string strReportName = System.Web.HttpContext.Current.Session["ReportName"]?.ToString();
                 var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
-                var rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
-                var rpttitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
-                string year = "Non";
-                string dates = "Non";
-                string strFromDate = "Non";     // Setting FromDate 
-                string strToDate = "Non";         // Setting ToDate    
-                if (!string.IsNullOrEmpty(Session["Year"] as string))
-                {
-                    year = System.Web.HttpContext.Current.Session["Year"].ToString();
-                }
-                if (!string.IsNullOrEmpty(Session["Dates"] as string))
-                {
-                    dates = System.Web.HttpContext.Current.Session["Dates"].ToString();
-                }
-                if (!string.IsNullOrEmpty(Session["DateFrom"] as string))
-                {
-                    strFromDate = System.Web.HttpContext.Current.Session["DateFrom"].ToString();
-                }
-                if (!string.IsNullOrEmpty(Session["DateTo"] as string))
-                {
-                    strToDate = System.Web.HttpContext.Current.Session["DateTo"].ToString();
-                }
+                var rptpath = System.Web.HttpContext.Current.Session["rptpath"]?.ToString();
+                var rpttitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
 
-
-                if (string.IsNullOrEmpty(strReportName))
-                {
-                    isValid = false;
-                }
-                if (isValid)
-                {
-                    ReportDocument rd = new ReportDocument();
-                    string strRptPath = Server.MapPath(rptpath);
-                    if (!rptSource.Equals("empty"))
-                    {
-                        rd.Load(strRptPath);
-                        if (rptSource != null && rptSource.GetType().ToString() != "System.String")
-                            rd.SetDataSource(rptSource);
-                        if (year != "Non")
-                        {
-                            rd.SetParameterValue("param", $"Header summary: {year}");
-
-                        }
-                        if (dates != "Non")
-                        {
-                            if (!string.IsNullOrEmpty(strFromDate))
-                                rd.SetParameterValue("DateFrom", strFromDate);
-                            if (!string.IsNullOrEmpty(strToDate))
-                                rd.SetParameterValue("DateTo", strToDate);
-                        }
-
-                        string SavedFileName = string.Format($"{rpttitle}-{DateTime.UtcNow.ToString("dd_mm_yyyy_hhmmss")}");
-                        rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
-                        CleanReport(rd);
-
-
-                    }
-                    else
-                    {
-                        Response.Write("<p>Data source is empty</p>");
-                    }
-                }
-                else
+                if (string.IsNullOrEmpty(strReportName) || rptSource == null || rptpath == null || rpttitle == null)
                 {
                     Response.Write("<H2>No Report with such name found</H2>");
+                    return;
                 }
+
+                ReportDocument rd = new ReportDocument();
+                string strRptPath = Server.MapPath(rptpath);
+                rd.Load(strRptPath);
+                if (rptSource.GetType() != typeof(string))
+                {
+                    rd.SetDataSource(rptSource);
+                }
+
+                string year = System.Web.HttpContext.Current.Session["Year"]?.ToString() ?? "Non";
+                string dates = System.Web.HttpContext.Current.Session["Dates"]?.ToString() ?? "Non";
+                string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"]?.ToString() ?? "Non";
+                string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? "Non";
+
+                if (year != "Non")
+                {
+                    rd.SetParameterValue("param", $"Header summary: {year}");
+                }
+
+                if (dates != "Non" && !string.IsNullOrEmpty(strFromDate) && !string.IsNullOrEmpty(strToDate))
+                {
+                    rd.SetParameterValue("DateFrom", strFromDate);
+                    rd.SetParameterValue("DateTo", strToDate);
+                }
+
+                string savedFileName = $"{rpttitle}-{DateTime.UtcNow.ToString("dd_mm_yyyy_hhmmss")}";
+                rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, savedFileName);
+                CleanReport(rd);
             }
             catch (Exception ex)
             {
-                // Response.Write(ex.ToString());
-                if (ex.Message.Contains("Error in formula  PercentagePassed"))
-                {
-                    Response.Write("<H2>No Data was found</H2>");
-                }
-                else
-                {
-                    Response.Write(ex.ToString() + "<H2>Nothing Found; report session expired</H2>");
-                }
-
+                // Log the exception
+                // Handle specific exceptions if needed
+                Response.Write("<H2>An error occurred while generating the report</H2>");
             }
         }
 

@@ -5,7 +5,7 @@
 }
 
 <style>
-    .authentication-inner {
+    /*.authentication-inner {
         display: flex;
         flex-wrap: wrap;
     }
@@ -17,9 +17,9 @@
     }
 
     .authentication-bg {
-        background-color: #f8f9fa; /* Choose your desired background color */
-        border-radius: 10px;
-    }
+        background-color: #f8f9fa;*/ /* Choose your desired background color */
+        /*border-radius: 10px;
+    }*/
 
     .authentication-text {
         color: #007bff; /* Choose your desired text color */
@@ -83,18 +83,18 @@
 
 <div class="authentication-inner row m-0">
     <!-- Left Section -->
-    <div class="d-none d-lg-flex col-lg-7 col-xl-8 align-items-center justify-content-center" style="background-image: url('~/AppFiles/Images/Logog2.JPEG'); background-size: cover; background-position: center;">
-        <img src="~/AppFiles/Images/Logog2.JPEG" class="authentication-image" alt="mask" />
+    <div class="d-none d-lg-flex col-lg-7 col-xl-8 align-items-center justify-content-center">
+        <img src="~/AppFiles/Images/Logog2X.JPEG" class="authentication-image" alt="mask" />
     </div>
     <div class="d-flex col-12 col-lg-5 col-xl-4 align-items-center authentication-bg position-relative">
         <div class="w-px-400 mx-auto pt-5 pt-lg-0 form-container">
             <div class="image-container">
-                <img src="~/AppFiles/Images/SideImageHeader_login.png" />
+                <img src="~/AppFiles/Images/Logog2XI.png" />
             </div>
             <hr />
             <h5 class="mb-2 trustbank-text" style="display: inline-block; font-size: 1rem;">T R U S T B A N K S O F T <span class="authentication-text" style="display: inline-block;">Authentication</span></h5>
             <hr />
-            <p class="mb-4">Please sign-in to your account and start the adventure</p>
+            <p class="mb-4">Please sign-in to your account.</p>
 
             @using (Html.BeginForm("Login", "Authentication", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left" }))
             {
@@ -119,10 +119,10 @@
 
                 <!-- Remember Me and Forgot Password Link -->
                 <div class="mb-3 d-flex justify-content-between">
-                    <div class="form-check">
+                    @*<div class="form-check">
                         <input class="form-check-input" type="checkbox" id="remember-me" />
                         <label class="form-check-label" for="remember-me"> Remember Me </label>
-                    </div>
+                    </div>*@
                     <a href="/" class="forgot-password-link">Forgot Password?</a>
                 </div>
 

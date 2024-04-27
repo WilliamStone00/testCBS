@@ -1,0 +1,162 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+
+
+
+<div class="row g-4">
+    <div class="col-md-12">
+        <div class="card mb-3 border-2 exclude-from-print">
+            @Html.Partial("_Tabs")
+        </div>
+        <div id="accountsSection">
+            <div class="mb-3 border-2">
+                <div class="form-wrapper">
+                    <fieldset class="fieldset-custom">
+                        <legend>ACCOUNTS</legend>
+                        <div class="change-group">
+                            <div class="row mt-2 gy-4">
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        <span class="formatted-amount shadow-box" id="totalAccountBalance">Total account balance: 0.0</span>
+                                    </div>
+                                </div>
+                                <div class="table-responsive" style="width: 100%;">
+                                    <table class="table table-hover" id="myDataTableT">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Account number</th>
+                                                <th>Ordinary accounts</th>
+                                                <th>Balance</th>
+                                                <th>Blocked</th>
+                                                <th style="display:none">Balance</th>
+                                                <th style="display:none">Blocked</th>
+                                                <th>Account Status</th>
+                                                <th>Print</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var d in Model.Accounts.OrderBy(t => t.accountType))
+                                            {
+                                                <tr>
+                                                    <td style="width: 10%">@d.accountNumber</td>
+                                                    <td style="width: 35%">@d.product.name</td>
+                                                    <td style="width: 25%" class="float-right">
+                                                        @d.balance.ToString("#,##0.0")
+                                                    </td>
+                                                    <td style="width: 20%" class="float-right">
+                                                        @d.blockedAmount.ToString("#,##0.0")
+                                                    </td>
+
+                                                    <td style="width: 25%; display:none" class="float-right">
+                                                        <input type="number" class="form-control amount-input shadow-input-boxes" readonly value="@d.balance">
+                                                    </td>
+                                                    <td style="width: 20%; display:none" class="float-right">
+                                                        <input type="number" class="form-control blocked-input shadow-input-boxes" readonly value="@d.blockedAmount">
+                                                    </td>
+                                                    <td style="width: 10%">@d.status</td>
+                                                    <td style="width: 10%">
+                                                        <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('MembersFSeries', '@d.accountNumber','customer_account_transaction_rpt','ReportParameterLess')" data-bs-toggle="tooltip" title="print members account @d.accountNumber statements">
+                                                            <span class="tf-icons mdi mdi-printer mdi-18px"></span>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="2" style="text-align: right;"><strong>Total:</strong></td>
+                                                <td>
+                                                    <span class="formatted-amount shadow-box float-start" id="tableTotalAccountBalance">0</span>
+                                                </td>
+                                                <td>
+                                                    <span class="formatted-amount shadow-box float-start" id="totalBlockedAmount">0</span>
+                                                </td>
+                                                <td>
+                                                    <strong>Print all</strong>
+                                                </td>
+                                                <td>
+                                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ModalShowUp()" data-bs-toggle="tooltip" title="print all account statements">
+                                                        <span class="tf-icons mdi mdi-printer mdi-18px"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="fieldset-custom">
+                        <legend>LOAN</legend>
+                        <div class="change-group">
+                            <div class="row mt-2 gy-4">
+                                @if (Model.Loans.Count == 0)
+                                {
+                                    <div class="text-center my-3">
+                                        <p>No loans have been contracted.</p>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="table-responsive" style="width: 100%;">
+                                        <table class="table table-hover" id="myDataTableLoan">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Principal</th>
+                                                    <th>Interest rate</th>
+                                                    <th>Accrual Interest</th>
+                                                    <th>Charges</th>
+                                                    <th>VAT</th>
+                                                    <th>Repayments</th>
+                                                    <th>Balance</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var d in Model.Loans.OrderBy(t => t.LoanDate))
+                                                {
+                                                    <tr>
+                                                        <td>@d.LoanDate</td>
+                                                        <td>@d.Principal.ToString("#,##0.0")</td>
+                                                        <td>@d.InterestRate %</td>
+                                                        <td>@d.AccrualInterest.ToString("#,##0.0")</td>
+                                                        <td>@d.Penalty.ToString("#,##0.0")</td>
+                                                        <td>@d.Tax.ToString("#,##0.0")</td>
+                                                        <td>@d.Paid.ToString("#,##0.0")</td>
+                                                        <td>@d.Balance.ToString("#,##0.0")</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="6" style="text-align: right;"><strong>Total:</strong></td>
+                                                    <td><span class="formatted-amount shadow-box float-start" id="totalPaid">0</span></td>
+                                                    <td><span class="formatted-amount shadow-box float-start" id="totalBalance">0</span></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<button onclick="printAccountsSection()" class="btn btn-primary">Print</button>*@
+
+
+
+
+
+

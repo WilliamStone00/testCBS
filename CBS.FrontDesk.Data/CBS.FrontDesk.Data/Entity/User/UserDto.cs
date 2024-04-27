@@ -20,6 +20,7 @@ namespace CBS.FrontDesk.Data.Entity
         public string id { get; set; }
         public string userName { get; set; }
         public string firstName { get; set; }
+        public int LoginAttempts { get; set; }
         public string lastName { get; set; }
         public string email { get; set; }
         public int expirationTime { get; set; }

@@ -12,6 +12,7 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using System.Web;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
 
 namespace CBS.BusinessService.UserManagement
 {
@@ -324,7 +325,7 @@ namespace CBS.BusinessService.UserManagement
                 var staus = await ApiCallerHelper.DeleteAsync<ResponseObject<bool>>(string.Format(APICallHelper.DeleteUser, userid));
                 if (staus.IsSuccess)
                 {
-                    GetExecutionMessages(staus, true, "", MessagesResults.Success,
+                    GetExecutionMessages(staus, true, "User", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null,
                         null);
                     return ExecutionMessage;
@@ -396,6 +397,37 @@ namespace CBS.BusinessService.UserManagement
                     return ExecutionMessage;
                 }
                 GetExecutionMessages(user, false, user.ChangePassword.userName, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Failed.ToString(), null,
+                    reUser.Message);
+
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> FLoginChangePassword(FLoginChangePassword fLogin)
+        {
+            try
+            {
+                
+                var resetPassword = new ResetPassword { userName= fLogin.UserName, password=fLogin.Password};
+                var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<UserDto>>(APICallHelper.FLoginChangePasswordCommand, resetPassword);
+                if (reUser.IsSuccess)
+                {
+                    var userAuth = reUser.ApiResponseData.Data;
+                    HttpContext.Current.Session["Token"] = userAuth.bearerToken;
+                    HttpContext.Current.Session["BranchObject"] = userAuth.Branch;
+                    userAuth.password = fLogin.Password;
+                    GetExecutionMessages(userAuth, true, fLogin.UserName, MessagesResults.Success,
+                        ExecutionProcessOption.LoginSuccessful, SystemMessageStatus.Success.ToString(), null,
+                        userAuth.refreshToken);
+                    return ExecutionMessage;
+                }
+                GetExecutionMessages(fLogin, false, fLogin.UserName, MessagesResults.Failed,
                     ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Failed.ToString(), null,
                     reUser.Message);
 

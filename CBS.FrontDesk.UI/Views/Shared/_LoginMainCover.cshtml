@@ -40,7 +40,10 @@
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.css" />
-
+    <link href="~/Loaders/CSSJS/Spin.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/toastr/toastr.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/toastr/toastr.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/animate-css/animate.css" />
     <!-- Page CSS -->
     <!-- Page -->
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/pages/page-auth.css" />
@@ -131,7 +134,9 @@
     <!-- Content -->
 
     <div class="authentication-wrapper authentication-cover">
+
         @RenderBody()
+        @Html.Partial("_AjaxSpinner")
     </div>
 
     <!-- / Content -->
@@ -146,12 +151,12 @@
     <script src="~/CBSTemp/ui/assets/vendor/libs/i18n/i18n.js"></script>
     <script src="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.js"></script>
     <script src="~/CBSTemp/ui/assets/vendor/js/menu.js"></script>
-
-    
+    <script src="~/Loaders/CSSJS/Spin.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/toastr/toastr.js"></script>
 
     <!-- Main JS -->
     <script src="~/CBSTemp/ui/assets/js/main.js"></script>
-
+    <script src="~/Scripts/Js/main.js/App.js"></script>
     <!-- Page JS -->
     <script src="~/CBSTemp/ui/assets/js/pages-auth.js"></script>
     @RenderSection("scripts", required: false)

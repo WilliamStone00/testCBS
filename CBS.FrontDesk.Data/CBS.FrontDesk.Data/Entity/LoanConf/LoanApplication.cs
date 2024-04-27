@@ -110,8 +110,11 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     public class Loan
     {
         public string Id { get; set; }
+        public int NumberOfInstallments { get; set; }
+        public string RepaymentCycle { get; set; }
         public string LoanApplicationId { get; set; }
         public decimal Principal { get; set; }
+        public decimal LoanAmount { get; set; }
         public decimal InterestForcasted { get; set; }
         public decimal InterestRate { get; set; }
         public decimal LastPayment { get; set; }
@@ -120,17 +123,13 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal DueAmount { get; set; }
         public decimal AccrualInterest { get; set; }
         public decimal AccrualInterestPaid { get; set; }
-        public decimal AccrualInterestBalance { get; set; }
         public decimal TotalPrincipalPaid { get; set; }
-        public decimal PrincipalBalance { get; set; }
         public decimal Tax { get; set; }
         public decimal TaxPaid { get; set; }
-        public decimal TaxBalance { get; set; }
         public decimal FeePaid { get; set; }
-        public decimal FeeBalance { get; set; }
+        public decimal Fee { get; set; }
         public decimal Penalty { get; set; }
         public decimal PenaltyPaid { get; set; }
-        public decimal PenaltyBalance { get; set; }
         public DateTime DisbursementDate { get; set; }
         public DateTime FirstInstallmentDate { get; set; }
         public DateTime NextInstallmentDate { get; set; }
@@ -138,6 +137,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IsLoanDisbursted { get; set; }
         public DateTime LastInterestCalculatedDate { get; set; }
         public DateTime LastRefundDate { get; set; }
+        public DateTime LastEventData { get; set; }
         public string CustomerId { get; set; }
         public string LoanManager { get; set; }
         public string LoanStatus { get; set; }
@@ -150,9 +150,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string OrganizationId { get; set; }
         public string BranchId { get; set; }
         public string BankId { get; set; }
-        public LoanApplication LoanApplication { get; set; }
-        public List<Refund> Refunds { get; set; }
-        public List<LoanAmortization> LoanAmortizations { get; set; }
+        public virtual LoanApplication LoanApplication { get; set; }
+        public virtual ICollection<Refund> Refunds { get; set; }
+        public virtual ICollection<LoanAmortization> LoanAmortizations { get; set; }
     }
     public class Refund
     {

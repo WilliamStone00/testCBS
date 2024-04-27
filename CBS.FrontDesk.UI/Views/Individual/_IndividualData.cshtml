@@ -6,9 +6,7 @@
                 <th>Name</th>
                 <th>Member number</th>
                 <th>phone</th>
-                <th>Town</th>
                 <th>Branch</th>
-                <th>Status</th>
                 <th>Membership</th>
                 <th>Action</th>
             </tr>
@@ -17,24 +15,10 @@
             @foreach (var d in Model)
             {
                 <tr>
-                    <td style="width:20%">@d.name</td>
-                    <td style="width:8%">@d.customerId</td>
-                    <td style="width:8%">@d.phone</td>
-                    <td style="width:15%">@d.town</td>
-                    <td style="width:15%">@d.branch</td>
-                    <td style="width:8%">
-
-
-                        @if (d.activeStatus == "Active")
-                        {
-                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@d.activeStatus</span></label>
-                        }
-                        else
-                        {
-                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Blocked</span></label>
-                        }
-
-                    </td>
+                    <td style="width:25%">@d.name</td>
+                    <td style="width:10%">@d.customerId</td>
+                    <td style="width:10%">@d.phone</td>
+                    <td style="width:35%">@d.branch</td>
                     <td style="width:10%">
                         @if (d.membershipApprovalStatus == "Approved")
                         {

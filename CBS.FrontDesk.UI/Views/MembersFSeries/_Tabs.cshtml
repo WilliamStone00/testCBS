@@ -1,0 +1,16 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+
+<div class="card-body d-sm-flex d-block">
+    <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+        <a href="#" onclick="GetMembersData('@Model.CustomerId','_MembersProfile','datalistingview','members_profile')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="View customer details">
+            <i class="fas fa-user"></i>
+        </a>
+        <a href="#" onclick="GetMembersAccounts('@Model.CustomerId','_MembersAccount','datalistingview','members_account')" data-toggle="modal" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="Members accounts status">
+            <i class="fas fa-user"></i> <!-- Customer details icon -->
+            <i class="fas fa-money-check"></i> <!-- Depositor icon -->
+        </a>
+        <a href="#" onclick="GetTransactionMembersTransactions('@Model.CustomerId','datalistingview','_Transactions','transactions','myDataTableTransactions')" class="btn btn-icon btn-label-success btn-sm btn-fab demo btn-space transaction" data-bs-toggle="tooltip" title="Get or view members transactions">
+            <i class="fas fa-exchange-alt"></i>
+        </a>
+    </div>
+</div>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
+using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
@@ -23,6 +24,7 @@ namespace CBS.BusinessService.UserManagement
         Task<ExecutionMessages> ResetPassword(User user);
         Task<ExecutionMessages> UploadPicture(HttpPostedFileBase uploadBase);
         Task<CustomDataTable> GetUsersDataTable(DataTableOptions dataTableOptions);
+        Task<ExecutionMessages> FLoginChangePassword(FLoginChangePassword fLogin);
         Task<IEnumerable<Branch>> GetBranches();
 
 

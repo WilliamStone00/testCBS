@@ -4,61 +4,47 @@
     @using (Html.BeginForm("AddOrEdit", "UserManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
         <div class="row mt-2 gy-4">
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.firstName, new { @class = "form-control", @placeholder = "First name" })
+                    @Html.TextBoxFor(m => m.firstName, new { @class = "form-control"})
                     @Html.ValidationMessageFor(m => m.firstName, "", new { @class = "text-danger" })
                     <label>First Name</label>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.lastName, new { @class = "form-control", @placeholder = "Last name" })
+                    @Html.TextBoxFor(m => m.lastName, new { @class = "form-control"})
                     @Html.ValidationMessageFor(m => m.lastName, "", new { @class = "text-danger" })
                     <label>Last Name</label>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.email, new { @class = "form-control", @placeholder = "email" })
+                    @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
                     <label>E-mail</label>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.phoneNumber, new { @class = "form-control", @placeholder = "+237650535634" })
+                    @Html.TextBoxFor(m => m.phoneNumber, new { @class = "form-control"})
                     @Html.ValidationMessageFor(m => m.phoneNumber, "", new { @class = "text-danger" })
                     <label>Telephone number</label>
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.userName, new { @class = "form-control", @placeholder = "B.Awath" })
+                    @Html.TextBoxFor(m => m.userName, new { @class = "form-control"})
                     @Html.ValidationMessageFor(m => m.userName, "", new { @class = "text-danger" })
                     <label>User Name</label>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.PasswordFor(m => m.password, new { @class = "form-control", @placeholder = "Password" })
-                    @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
-                    <label>Password</label>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-floating form-floating-outline">
-                    @Html.PasswordFor(m => m.confirmPassword, new { @class = "form-control", @placeholder = "Password" })
-                    @Html.ValidationMessageFor(m => m.confirmPassword, "", new { @class = "text-danger" })
-                    <label>Confirm password</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.allowedIP, new { @class = "form-control", @placeholder = "192.168.11.1" })
+                    @Html.TextBoxFor(m => m.allowedIP, new { @class = "form-control"})
                     @Html.ValidationMessageFor(m => m.allowedIP, "", new { @class = "text-danger" })
-                    <label>White list ip address</label>
+                    <label>White list ip address (Example 192.168.11.1)</label>
                 </div>
             </div>
             <div class="col-md-6">
@@ -68,7 +54,7 @@
                     <label>Role</label>
                 </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.DropDownListFor(m => m.BranchID, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select branch---", new { @class = "form-control select2", @search = "true" })
                     @Html.ValidationMessageFor(m => m.BranchID, "", new { @class = "text-danger " })
@@ -84,11 +70,18 @@
             </div>
             <div class="col-12">
                 <div class="form-check">
-                    @Html.CheckBoxFor(m => m.isActive, new { @class = "form-check-input" })
+                    @Html.CheckBoxFor(m => m.isActive, new { @class = "form-check-input"})
                     <label class="form-check-label" for="isActive">Set account status active</label>
                 </div>
             </div>
-           
+
+            @*<div class="col-12">
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.ChangePasswordOnFirstLogin, new { @class = "form-check-input" })
+                <label class="form-check-label" for="isActive">Check if user must change password on first login</label>
+            </div>
+        </div>*@
+
         </div>
         <div class="mt-4">
             <button type="submit" class="btn btn-primary me-2">Create account</button>
