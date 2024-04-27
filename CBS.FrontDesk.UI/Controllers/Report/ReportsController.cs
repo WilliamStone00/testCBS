@@ -169,45 +169,47 @@ namespace CBS.FrontDesk.UI.Controllers
             string rpTType = System.Web.HttpContext.Current.Session["rptType"].ToString();
             string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
             var model = rptSource;
-            if (rpTType == "EXCEL")
-            {
-                Export export = new Export();
-                export.ToExcel(Response, model as IEnumerable<object>, strtitle);
-
-            }
-            else
-            {
-
-                if (rptSource!="empty")
+           
+                if (rpTType == "EXCEL")
                 {
-                    ReportDocument rd = new ReportDocument();
-                    string strRptPath = Server.MapPath(rptpath);
-                    rd.Load(strRptPath);
-
-                    rd.SetDataSource(rptSource);
-                    string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.ToString("dd_mm_yyyy_hhmmss")}");
-                    // Export the report to a byte array
-                    Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
-                    byte[] bytes = new byte[stream.Length];
-                    stream.Read(bytes, 0, bytes.Length);
-
-                    // Clear the response and set the content type
-                    Response.ClearContent();
-                    Response.ClearHeaders();
-                    Response.ContentType = "application/pdf";
-
-                    // Write the report bytes to the response
-                    Response.BinaryWrite(bytes);
-                    Response.Flush();
-                    Response.End();
-                    rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
-                    CleanReport(rd);
-
+                    Export export = new Export();
+                    export.ToExcel(Response, model as IEnumerable<object>, strtitle);
 
                 }
-             
-            }
-            return new EmptyResult();
+                else
+                {
+
+                    if (rptSource != "empty")
+                    {
+                        ReportDocument rd = new ReportDocument();
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+
+                        rd.SetDataSource(rptSource);
+                        string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
+                        // Export the report to a byte array
+                        Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+                        byte[] bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, bytes.Length);
+
+                        // Clear the response and set the content type
+                        Response.ClearContent();
+                        Response.ClearHeaders();
+                        Response.ContentType = "application/pdf";
+
+                        // Write the report bytes to the response
+                        Response.BinaryWrite(bytes);
+                        Response.Flush();
+                        Response.End();
+                        //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+                        //CleanReport(rd);
+
+
+                    }
+
+                }
+                return new EmptyResult();
+          
 
         }
         public class Export

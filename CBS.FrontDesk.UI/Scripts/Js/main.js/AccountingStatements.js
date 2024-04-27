@@ -30,7 +30,7 @@
 
     });
 
- 
+
 });
 
 function GetTransactionHistory(KEY, divToLoadData, partialView, path, myDataTable, order) {

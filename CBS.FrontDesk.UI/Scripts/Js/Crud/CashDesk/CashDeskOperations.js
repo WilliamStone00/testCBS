@@ -120,6 +120,7 @@ function calculateTotalAmount() {
     return { total: total, anyRowsSelected: anyRowsSelected };
 }
 
+
 function validateTotalAmount(total, totalNotes) {
     if (!total.anyRowsSelected) {
         appalert("Please select at least one account to perform operation.", 3, 1);

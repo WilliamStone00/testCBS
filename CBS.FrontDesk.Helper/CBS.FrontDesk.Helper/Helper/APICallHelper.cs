@@ -422,6 +422,24 @@
         // POST  Create a AccountClass
         public static string CreateAccountCategory = "/api/v1/AccountCartegory";
 
+        //Statementmodel
+        //Get,Update,Delete AccountCategory By Id api/v1/StatementModel/
+        public static string Get_Update_Delete_Statementmodel = "api/v1/StatementModel/{0}";
+        public static string Get_Statementmodel = "/api/v1/StatementmodelCartegory/{0}";
+        //Get All AccountCategory
+        public static string GetAllStatementmodel = "/api/v1/StatementModels";
+        // POST  Create a AccountClass
+        public static string CreateStatementmodel = "/api/v1/StatementModel/";
+        public static string CreateStatementmodelBS = "/api/v1/StatementModelBS/";
+        //TrialBalanceReference
+        //Get,Update,Delete AccountCategory By Id api/v1/StatementModel/
+        public static string Get_Update_Delete_TrialBalanceReference = "api/v1/TrialBalanceReference/{0}";
+        public static string Get_TrialBalanceReference = "/api/v1/TrialBalanceReferenceCartegory/{0}";
+        //Get All AccountCategory
+        public static string GetAllTrialBalanceReference = "/api/v1/TrialBalanceReferences";
+        // POST  Create a AccountClass
+        public static string CreateTrialBalanceReference = "/api/v1/TrialBalanceReference/";
+
         //ChartOfAccount
         //Get,Update,Delete ChartOfAccount By Id
         public static string Get_Update_Delete_ChartOfAccount = "/api/v1/ChartOfAccount/{0}";

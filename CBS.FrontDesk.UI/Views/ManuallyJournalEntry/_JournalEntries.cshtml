@@ -55,16 +55,22 @@
 
         </tbody>
     </table>
-    @using (Html.BeginForm("AddOrUpdate", "ManuallyJournalEntry", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateJournalEntry(this);" }))
+    @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "" }))
     {
-        <input type="hidden" name="ServiceOption" value="EntryDescription" id="ServiceOption" />
+        <input type="hidden" name="ServiceOption" value="EntryDescription" id="ServiceOptionEntryDescription" />
 
         <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
             <div class="col-12">
                 <div class="card">
-                    <h5 class="card-header">Purpose of the Entry: @Html.TextAreaFor(m => m.EntryDescription.Description, new { @class = "form-control textbox" })</h5>
-                    @Html.ValidationMessageFor(m => m.EntryDescription.Description, "", new { @class = "text-danger" })
-                    <hr />
+                    <div class="card-header">
+
+                        <h5 class="card-title">
+                            Purpose of the Entry: @Html.TextAreaFor(m => m.EntryDescription.Description, new { @class = "form-control textbox" })
+                            @Html.ValidationMessageFor(m => m.EntryDescription.Description, "", new { @class = "text-danger" })
+                        </h5>
+                    
+                    </div>
+                 
                     @if (Model.EntryTempDataResult.Count() > 0)
                     {
                         @Html.HiddenFor(x => x.EntryTempDataResult[0].Reference)
@@ -73,7 +79,7 @@
                     @Html.ValidationMessageFor(m => m.EntryTempData.Reference, "", new { @class = "text-danger" })
 
                     <div class="shift-right">
-                        <button type="submit" class="btn btn-primary" id="post-entries">
+                        <button type="button" onclick="DoPosting()" class="btn btn-primary" id="post-entries">
                             Post Entries &nbsp;&nbsp;<i class="mdi mdi-database-plus"></i>
                         </button>
                         <input type="hidden" name="Action" value="insert" id="Action" />

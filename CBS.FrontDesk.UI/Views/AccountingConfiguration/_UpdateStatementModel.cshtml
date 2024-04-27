@@ -1,0 +1,48 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+
+<div class="card-body">
+    @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        <input type="hidden" name="ServiceOption" value="statementModel" id="ServiceOption" />
+        <div class="row mt-2 gy-4">
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+
+                    @Html.TextBoxFor(model => model.IncomeStatement.Reference, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.IncomeStatement.Reference, "", new { @class = "text-danger" })
+                    <label for="Reference">Reference</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.IncomeStatement.Document_type, new SelectList(ViewBag.Document_type == null ? "" : ViewBag.Document_type, "Text", "Value"), "---Select DocumentType---", new { @class = "form-control select2", @search = "true", id = "OperationEventId" })
+                    @Html.ValidationMessageFor(model => model.IncomeStatement.Document_type, "", new { @class = "text-danger" })
+                    <label for="Document_type">Document Type</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+
+                    @Html.TextAreaFor(m => m.IncomeStatement.Heading, new { @class = "form-control", @style = "height: 150px;" })
+                    @Html.ValidationMessageFor(m => m.IncomeStatement.Heading, "", new { @class = "text-danger" })
+                    <label>Heading (Description)</label>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            @if (Model.IncomeStatement.Id == null)
+            {
+                <button type="submit" class="btn btn-primary me-2">Save</button>
+                <input type="hidden" name="Action" value="insert" id="Action" />
+            }
+            else
+            { <button type="submit" class="btn btn-primary me-2">Update</button>
+                @Html.HiddenFor(m => m.IncomeStatement.Id)
+                <input type="hidden" name="Action" value="update" id="Action" />
+            }
+        </div>
+    }
+</div>

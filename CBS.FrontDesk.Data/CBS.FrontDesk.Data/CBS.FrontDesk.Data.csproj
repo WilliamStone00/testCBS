@@ -166,6 +166,7 @@
     <Compile Include="Entity\Organization\Oranization.cs" />
     <Compile Include="Entity\SavingProducts\AccountOperation\AccountDepositRequest.cs" />
     <Compile Include="Entity\SavingProducts\AccountOperation\TransactionRespose.cs" />
+    <Compile Include="Entity\TrialBalanceReference.cs" />
     <Compile Include="Entity\UserSession.cs" />
     <Compile Include="Entity\Config\Aggregrate.cs" />
     <Compile Include="Entity\CustomerManagement\Group\GroupProfile.cs" />

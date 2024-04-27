@@ -154,12 +154,12 @@ namespace CBS.FrontDesk.UI.Controllers
                 if (model.Action == "insert")
                 {
                     var chartOfAccount = await _AccountServices.GetAccount(model.EntryTempData.AccountId);
-                    if (chartOfAccount == null)
-                    {
-                        chartOfAccount = AccountDataSample.Accounts.Find(i => i.Id == model.EntryTempData.AccountName);
-                        model.EntryTempData.AccountName = chartOfAccount.AccountName;
-                        model.EntryTempData.Description = "xxxxxxxxxx";
-                    }
+                    //if (chartOfAccount == null)
+                    //{
+                    //    chartOfAccount = AccountDataSample.Accounts.Find(i => i.Id == model.EntryTempData.AccountName);
+                    //    model.EntryTempData.AccountName = chartOfAccount.AccountName;
+                    //    model.EntryTempData.Description = "xxxxxxxxxx";
+                    //}
                     model.EntryTempData.AccountNumber= chartOfAccount.AccountNumber;
                     model.EntryTempData.AccountName= chartOfAccount.AccountName;
                     
@@ -252,13 +252,12 @@ namespace CBS.FrontDesk.UI.Controllers
             if (serviceOption == "EntryTempData")
             {
                 if (path == "list")
-                {
-                 
+                {       
                     var data = await _Service.GetAllEntriesForJournalEntryReference(key);
                     var dataAccounts = await _AccountServices.GetAllAccounting();
+                    dataAccounts = dataAccounts.Where(po=>po.AccountOwnerId== _AccountServices.GetBranchID()).ToList();
                     var dataset = from entry in data
                                   join account in dataAccounts on entry.AccountNumber equals account.AccountNumber 
-                                 
                                   select new EntryTempDataResult
                                   {
                                       Id = entry.Id,

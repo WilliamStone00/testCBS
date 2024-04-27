@@ -2,15 +2,21 @@
 
 
 
-@using (Html.BeginForm("AddOrUpdate", "ManuallyJournalEntry", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateJournalEntry(this);" }))
+@using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <input type="hidden" name="ServiceOption" value="EntryTempData" id="ServiceOption" />
     <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
         <div class="col-12">
             <div class="card">
-                <h5 class="card-header">ReferenceId: @Html.TextBoxFor(m => m.EntryTempData.Reference, new { @class = "form-control" })</h5>
-                @Html.ValidationMessageFor(m => m.EntryTempData.Reference, "", new { @class = "text-danger" })
+                
+                <div class="card-header">
+              
+                    <h5 class="card-title">
+                        ReferenceId: @Html.TextBoxFor(m => m.EntryTempData.Reference, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.EntryTempData.Reference, "", new { @class = "text-danger" })
 
+                    </h5>
+                </div>
                 <div class="row card-body">
 
 
@@ -47,10 +53,10 @@
                                 <label>Amount</label>
                             </div>
                         </div>
-                     
+
                     </div>
                     <div class="mt-4">
-                        <button type="submit" class="btn btn-primary" id="post-entries">
+                        <button type="button" onclick="PostEntries()" class="btn btn-primary" id="post-entries">
                             Add Entries&nbsp; &nbsp; <i class="mdi mdi-plus-box-multiple"></i>
                         </button>
                         <input type="hidden" name="Action" value="insert" id="Action" />

@@ -74,6 +74,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounting\TrialBalanceReferenceServices.cs" />
+    <Compile Include="Accounting\StatementModelServices.cs" />
     <Compile Include="Accounting\AccountCategoryServices.cs" />
     <Compile Include="Accounting\AccountClassServices.cs" />
     <Compile Include="Accounting\AccountingEntryRuleService.cs" />

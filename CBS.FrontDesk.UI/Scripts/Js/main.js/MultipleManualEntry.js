@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     $(document).on('change', '#EntryTempData_AccountId', function () {
         var EventId = $(this).val();
-        alert(EventId);
+      
         loadAccountBalance(EventId);
 
     
@@ -26,7 +26,7 @@ function loadAccountBalance(accountId) {
             $('.account_name').empty();
             $('.account_number').empty();
             $(".account_balance").val(data.Account.CurrentBalance);
-            $(".account_name").val(data.Account.AccountHolder);
+            $(".account_name").val(data.Account.AccountName);
             $(".account_number").val(data.Account.AccountNumber);
             // Add new options based on the fetched data
             console.log(data.Account.CurrentBalance);
@@ -157,6 +157,102 @@ function AjaxPostAndUpdateJournalEntry(form) {
     }
     return false;
 
+}
+
+function postingconfirmTransactions(title, message, ajaxUrl, data) {
+    alertify.confirm(title, message,
+        function () {
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response.success) {
+                        LoadJournalEntryData("ManuallyJournalEntry", "InitializeData", "datalistingview_JournalEntries", "JournalEntryDataTable", "EntryTempData", "", "_JournalEntries", "list", "desc");
+
+                    }
+                    else {
+                        appalert(response.message, 3, 1);
+               
+                            LoadJournalEntryData("ManuallyJournalEntry", "InitializeData", "datalistingview_JournalEntries", "JournalEntryDataTable", "EntryTempData", "", "_JournalEntries", "list", "desc");
+
+                    }
+                },
+                error: function ()
+                {
+                    appalert(error, 0, 3);
+                }
+            });
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
+        }
+    );
+}
+
+function collectpostEntries() {
+    const formData = {
+        ServiceOption: $("#ServiceOptionEntryDescription").val(),
+        EntryDescription: {
+            Description: $("#EntryDescription_Description").val()
+        },
+        EntryTempDataResult: []
+    };
+
+    if ($('#EntryTempDataResult_0__Reference').length > 0) {
+        formData.EntryTempDataResult.push({
+            Reference: $('#EntryTempDataResult_0__Reference').val()
+        });
+    }
+
+    formData.Action = $("#Action").val();
+    return formData;
+}
+function collectEntries() {
+    const formData = {
+        ServiceOption: "EntryTempData",
+        EntryTempData: {
+            Reference: $("#EntryTempData_Reference").val(),
+            AccountId: $("#EntryTempData_AccountId").val(),
+            AccountBalance: $("#EntryTempData_AccountBalance").val(),
+            AccountName: $(".account_name").val(),
+            AccountNumber: $("#EntryTempData_AccountNumber").val(),
+            BookingDirection: $("#EntryTempData_BookingDirection").val(),
+            Description: $("#EntryTempData_Description").val(),
+            Amount: $("#EntryTempData_Amount").val()
+        },
+        Action: $("#Action").val()
+     
+    };
+    return formData;
+    }
+function DoPosting(){
+    var entry = collectpostEntries();
+    if (entry.EntryTempDataResult[0].Reference === null || entry.EntryTempDataResult[0].Reference === "") {
+        appalert("Please kindly enter the reference number for the entry", 3, 1);
+        return;
+    }
+    if (entry.EntryDescription.Description === '')
+    {
+        appalert("Please kindly enter the purpose of the entries", 3, 1);
+        return;
+    }
+    var message = "WARNING!!!\n";
+    message += "Are you sure you want to confirm this various account adjustment?\n";
+    postingconfirmTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/AddOrUpdate', entry);
+}
+function PostEntries() {
+ 
+
+    var entry = collectEntries();
+    if (entry.EntryTempData.Reference === null || entry.EntryTempData.Reference==="") {
+        appalert("Please kindly enter the reference number", 3, 1);
+        return;
+    }
+    var message = "WARNING!!!\n";
+    message += "Are you sure you want to add a " + entry.EntryTempData.BookingDirection + " manual entry of XAF" + entry.EntryTempData.Amount + " into " + entry.EntryTempData.AccountNumber + "-" + entry.EntryTempData.AccountName +"?\n";
+    postingconfirmTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/AddOrUpdate', entry);
 }
 function loadPartialView2(nodeId, view, path, serviceOption, divToLoadContent) {
     // Use AJAX to load the partial view based on the nodeId

@@ -79,6 +79,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             List<StringValues> stringValues = new List<StringValues>();
             stringValues.Add(new StringValues("GL", "General Ledger"));
+            stringValues.Add(new StringValues("JE", "Journal Entries"));
             stringValues.Add(new StringValues("LL", "Liaison Ledger"));
             stringValues.Add(new StringValues("LLA", "Liaison Ledger An Account"));
             stringValues.Add(new StringValues("TB6", "Trial Balance 6C"));
@@ -149,12 +150,28 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             
                     switch (model.SystemQuery.ReportType)
                     {
-                        case "GL":
+                    case "JE":
+                        {
+                            string fileTitle = $"GeneralLedger_{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                            var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery);
+                            this.HttpContext.Session["rptSource"] = account;
+                            string ReportName = $"TrialBalance8Column.rpt";
+                            if (!account.Any())
+                            {
+                                this.HttpContext.Session["rptSource"] = "empty";
+                            }
+                            this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                            this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                            this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
+                            this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/JournalEntries.rpt";
+                        }break;
+                    case "GL":
                             {
                                 string fileTitle = $"GeneralLedger_{ model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
-                                var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery);
+                                var account = await _acountServices.GenerateAccountLedger(model.SystemQuery);
                                 this.HttpContext.Session["rptSource"] = account;
-                            string ReportName = $"TrialBalance8Column.rpt";
+                            string ReportName = $"GeneralLedger.rpt";
                             if (!account.Any())
                                 {
                                     this.HttpContext.Session["rptSource"] = "empty";
@@ -163,7 +180,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                             this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
                             this.HttpContext.Session["ReportName"] = $"{ReportName}";
-                            this.HttpContext.Session["rptpath"] = $"~/Reporting/Accounting/TrialBalance8Column.rpt";
+                            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/GeneralLedger.rpt";
                         }
                             break;
                         case "LL":
@@ -194,16 +211,22 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             break;
                         case "TB4":
                             {
-                            string fileTitle = $"TrialBalance_6column{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                            string fileTitle = $"TrialBalance_6column{model.SystemQuery.FromDate.Date.ToString("yyyyMMddhhmmss")}_{model.SystemQuery.ToDate.Date.ToString("yyyyMMddhhmmss")}";
                             var account = await _acountServices.GenerateTrialBalance_4column(model.SystemQuery);
                             this.HttpContext.Session["rptSource"] = account;
+                            string ReportName = $"TrialBalance6Column.rpt";
                             if (!account.Any())
                             {
                                 this.HttpContext.Session["rptSource"] = "empty";
                             }
                             this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                            this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                            this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
+                            this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/TrialBalance6Column.rpt";
+
                         }
-                            break;
+                        break;
                         case "TB6":
                             {
                             string fileTitle = $"TrialBalance_8column{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
@@ -225,7 +248,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                             this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
                             this.HttpContext.Session["ReportName"] = $"{ReportName}";
-                            this.HttpContext.Session["rptpath"] = $"~/Reporting/Accounting/TrialBalance8Column.rpt";
+                            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/TrialBalance8Column.rpt";
+
 
                         }
                         break;

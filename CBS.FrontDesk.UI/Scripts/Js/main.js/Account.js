@@ -19,6 +19,26 @@
         console.log("Account_ChartOfAccountId selected: " + EventId);
         loadAccountCartegoryByChartNumber(EventId);
     });
+    // Show the element
+    $('#itemsToHide1').hide();
+    $('#itemsToHide2').hide();
+    $('#itemsToHide3').hide();
+    $('#itemsToHide4').hide();
+    $('#itemsToShow1').show();
+    $('#itemsToShow2').show();
+    $(document).on('change', '#Document_typeBS', function () {
+        var selectedValue = $(this).val();
+        var isBalanceSheet = ['BalanceSheet Liabilities', 'Balance SheetAsset'].includes(selectedValue);
+        var isIncomeOrExpense = ['Income Statement', 'Expense Statement'].includes(selectedValue);
+
+        $('#itemsToHide1').toggle(isBalanceSheet);
+        $('#itemsToHide2').toggle(isBalanceSheet);
+        $('#itemsToHide3').toggle(isBalanceSheet);
+        $('#itemsToHide4').toggle(isBalanceSheet);
+        $('#itemsToShow1').toggle(!isBalanceSheet && isIncomeOrExpense);
+        $('#itemsToShow2').toggle(!isBalanceSheet && isIncomeOrExpense);
+    });
+
 });
  
 
@@ -197,7 +217,10 @@ function loadPartialView2(nodeId, view, path, serviceOption, divToLoadContent) {
             alert('Error loading partial view:', error);
         }
     });
+
 }
 
-
+function TrialBalanceReferenceDataConfiguration(controller, KEY, tableID, partialView, order, divToLoadTheData, serviceOption) {
+    LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, "details", divToLoadTheData, serviceOption);
+}
 

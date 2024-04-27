@@ -38,9 +38,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string  DebitBalance { get; set; }
         public string  CreditBalance { get; set; }
         public string  EndingBalance { get; set; }
-        public decimal totalBeginningBalance { get; set; }
-        public decimal totalDebitBalance { get; set; }
-        public decimal totalCreditBalance { get; set; }
-        public decimal totalEndingBalance { get; set; }
+        public object totalBeginningBalance { get; set; }
+        public object totalDebitBalance { get; set; }
+        public object totalCreditBalance { get; set; }
+        public object totalEndingBalance { get; set; }
     }
 }

@@ -31,8 +31,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly AccountingServices _AccountServices;
         private readonly AccountTypeServices _AccountTypeServices;
         private readonly AccountCategoryServices _AccountCategoryServices;
- 
-
+        private readonly StatementModelServices _statementModelServices;
+        private readonly TrialBalanceReferenceServices _trialBalanceReferenceServices;
         public AccountingConfigurationController()
         {
             _Service = new AccountingEntryRuleService();
@@ -43,6 +43,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _AccountServices = new AccountingServices();
             _AccountTypeServices = new AccountTypeServices();
             _AccountCategoryServices = new AccountCategoryServices();
+            _trialBalanceReferenceServices = new TrialBalanceReferenceServices();
+            _statementModelServices = new StatementModelServices();
         }
         // GET: AccountingConfiguration
 
@@ -67,6 +69,34 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.CreditAccounts = ViewBag.ChartOfAccounts;
             ViewBag.DebitAccounts = ViewBag.ChartOfAccounts;
             ViewBag.AccountCartegories = await _AccountCategoryServices.GetAccountCategory();
+            ViewBag.Document_type = BuildMenuViewBag();
+         
+            ViewBag.OperationSide = BuildMenuViewBagopside();
+        }
+
+        private dynamic BuildMenuViewBag()
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem> 
+            {
+            new System.Web.WebPages.Html.SelectListItem { Value = "Income Statement", Text = "Income Statement" },
+            new System.Web.WebPages.Html.SelectListItem { Value = "Expense Statement", Text = "Expense Statement" },
+            new System.Web.WebPages.Html.SelectListItem { Value = "Balance SheetAsset", Text = "Balance SheetAsset" },
+            new System.Web.WebPages.Html.SelectListItem { Value = "BalanceSheet Liabilities", Text = "BalanceSheet Liabilities" },
+            };    
+            return selectListItems;
+        }
+     
+
+        private dynamic BuildMenuViewBagopside()
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>
+            {
+            new System.Web.WebPages.Html.SelectListItem { Value = "Debit", Text = "Debit" },
+            new System.Web.WebPages.Html.SelectListItem { Value = "Credit", Text = "Credit" },
+             new System.Web.WebPages.Html.SelectListItem { Value = "NONE", Text = "NONE" }
+
+            };
+            return selectListItems;
         }
 
         private dynamic BuildMenuAccountViewBag(List<ChartOfAccount> ListchartOfAccounts)
@@ -225,9 +255,34 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
             }
+            else if (model.ServiceOption == "trialbalancereference")
+            {
+                if (model.Action == "insert")
+                {
+                    serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+                }
+                else
+                {
+
+                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                }
 
 
+            }
+            else if (model.ServiceOption == "statementModel")
+            {
+                if (model.Action == "insert")
+                {
+                    serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+                }
+                else
+                {
 
+                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                }
+
+
+            }
             if (serviceAction != null)
             {
                 try
@@ -273,6 +328,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             else if (serviceOption == "accountingRuleEntry")
             {
                 return () => _accountingEntryRuleService.Create(model.AccountingRuleEntry);
+            }
+            else if (serviceOption == "trialbalancereference")
+            {
+                return () => _trialBalanceReferenceServices.Create(model.TrialBalanceReference);
+            }
+            else if (serviceOption == "statementModel")
+            {
+                return () => _statementModelServices.Create(model.IncomeStatement);
             }
             else if (serviceOption == "chartOfAccount")
             {
@@ -350,6 +413,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
 
                 return () => _AccountTypeServices.Update(model.AccountType);
+            }
+            else if (serviceOption == "statementModel")
+            {
+
+                return () => _statementModelServices.Update(model.IncomeStatement);
+            }
+            else if (serviceOption == "trialbalancereference")
+            {
+
+                return () => _trialBalanceReferenceServices.Update(model.TrialBalanceReference);
             }
             else
             {
@@ -548,6 +621,78 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
 
             }
+            else if (serviceOption == "trialbalancereference")
+            {
+                if (path == "list")
+                {
+
+                    var data = await _trialBalanceReferenceServices.GetAllTrialBalanceReference();
+
+                    var sysData = new AccountingConfiguration { TrialBalanceReferences = data.ToList() };
+                    return PartialView(partialView, sysData);
+
+                }
+                else if (path == "new")
+                {
+                    var data = await _statementModelServices.GetStatementModel(key);
+                    return PartialView(partialView, new AccountingConfiguration {ServiceOption= "trialbalancereference", IncomeStatement=data , TrialBalanceReference= new TrialBalanceReference { StatementModelId=data.Id} });
+                }
+                else
+                {
+                    var data = await _trialBalanceReferenceServices.GetTrialBalanceReference(key);
+                    var datast = await _statementModelServices.GetStatementModel(data.StatementModelId);
+                    return PartialView(partialView, new AccountingConfiguration { ServiceOption = "trialbalancereference", TrialBalanceReference = data , IncomeStatement=datast});
+                }
+
+            }
+            else if (serviceOption == "statementmodel")
+            {
+                if (path == "list")
+                {
+
+                    var data = await _statementModelServices.GetAllStatementModel();
+
+                    var sysData = new AccountingConfiguration { IncomeStatements = data.ToList() };
+                    return PartialView(partialView, sysData);
+
+                }
+                else if (path == "new")
+                {
+                    return PartialView(partialView, new AccountingConfiguration { });
+                }
+                else if (path == "details")
+                {
+
+                    var data = await _statementModelServices.GetStatementModel(key);
+                    var datas = (await _trialBalanceReferenceServices.GetAllTrialBalanceReference()).Where(c=>c.StatementModelId==data.Id).ToList();
+                    var chartOfAccounts = (await _chartOfAccountServices.GetAllChartOfAccounts());
+                    var result = from tr in datas
+                                 join acc in chartOfAccounts
+                                 on tr.ChartOfAccountId equals acc.Id  
+
+                                 select new TrialBalanceReference
+                                 {
+                                     Id = tr.Id,
+                                     ChartOfAccountId = tr.ChartOfAccountId,
+                                         AccountInfo = acc.AccountNumber+"-"+acc.LabelEn,
+                                         OperationSide=tr.OperationSide,
+                                         StatementModelId=data.Id
+                                 };
+                    
+                    return PartialView(partialView, new AccountingConfiguration { IncomeStatement=data, TrialBalanceReferences= result.ToList() });
+                }
+                else
+                {
+                    var data = await _statementModelServices.GetStatementModel(key);
+                    var AccountIds = (from d in (await _trialBalanceReferenceServices.GetAllTrialBalanceReference())
+                                select d.ChartOfAccountId).ToList();
+                    data.AccountIds = AccountIds;
+                   //data.OperationSide= 
+                  
+                    return PartialView(partialView, new AccountingConfiguration { IncomeStatement = data });
+                }
+
+            }
             return null;
         }
         public List<OperationEventAttributeDto> ConvertToOperationEventAttributeDtos(List<OperationEventAttribute> attributes, List<OperationEvent> events)
@@ -601,6 +746,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
 
                 var data = await _AccountTypeServices.Delete(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
+            else if (serviceOption == "statementmodel")
+            {
+
+                var data = await _statementModelServices.Delete(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
+            else if (serviceOption == "trialbalancereference")
+            {
+
+                var data = await _trialBalanceReferenceServices.Delete(KEY);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
 
             }

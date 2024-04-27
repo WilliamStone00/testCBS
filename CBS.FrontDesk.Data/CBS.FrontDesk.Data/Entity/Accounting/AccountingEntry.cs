@@ -70,6 +70,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         // Unique ID number for the entry=
         //public string Id { get; set; }
+        public string EntryDateTime { get; set; }
         public string EntryDate { get; set; }
         public string Description { get; set; }
         public string TransactionReference { get; set; }

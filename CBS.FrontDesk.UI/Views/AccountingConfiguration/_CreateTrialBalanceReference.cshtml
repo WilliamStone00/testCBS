@@ -1,0 +1,65 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+
+<div class="card-body">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Financial document </th>
+                <th>@Model.IncomeStatement.Document_type</th>
+            </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+            <tr>
+                <td style="width: 30%;">Heading</td>
+                <td style="width: 70%;">@Model.IncomeStatement.Heading</td>
+            </tr>
+            <tr>
+                <td style="width: 30%;">Reference code</td>
+                <td style="width: 70%;">@Model.IncomeStatement.Reference</td>
+            </tr>
+        </tbody>
+    </table>
+    @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+
+
+        @Html.HiddenFor(Model => Model.TrialBalanceReference.StatementModelId)
+        @Html.HiddenFor(Model => Model.ServiceOption)
+        <div class="row mt-2 gy-4">
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.TrialBalanceReference.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---Select chartOfaccount---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(model => model.TrialBalanceReference.ChartOfAccountId, "", new { @class = "text-danger" })
+                    <label for="Document_type">Select Account number</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.TrialBalanceReference.OperationSide, new SelectList(ViewBag.OperationSide == null ? "" : ViewBag.OperationSide, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(model => model.TrialBalanceReference.OperationSide, "", new { @class = "text-danger" })
+                    <label for="Document_type">Select Opertation side</label>
+                </div>
+            </div>
+
+
+            @*60709 / 61510 / 61511 / 601 / 602 / 603 /  604 / 605*@
+        </div>
+
+        <div class="mt-4">
+            @if (Model.TrialBalanceReference.Id == null)
+            {
+                <button type="submit" class="btn btn-primary me-2">Save</button>
+                <input type="hidden" name="Action" value="insert" id="Action" />
+            }
+            else
+            { <button type="submit" class="btn btn-primary me-2">Update</button>
+                @Html.HiddenFor(m => m.TrialBalanceReference.Id)
+                <input type="hidden" name="Action" value="update" id="Action" />
+
+            }
+        </div>
+    }
+</div>
+

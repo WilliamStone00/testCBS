@@ -1,4 +1,5 @@
 ﻿using BusinessServices;
+using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using System;
 using System.Collections.Generic;
@@ -39,10 +40,10 @@ namespace CBS.BusinessService.Accounting
                             TransactionReference = entry.ReferenceID,
                             DebitAmount = entry.EntryType == "DEBIT" ? entry.DrAmount.ToString() : "0",
                             CreditAmount = entry.EntryType == "CREDIT" ? entry.CrAmount.ToString() : "0",
-                            DebitAccountBalance = entry.CrCurrentBalance.ToString(),
-                            CreditAccountBalance = entry.DrCurrentBalance.ToString()
+                            EntryDateTime = entry.EntryDate.ToString(),
+                            //CreditAccountBalance = entry.DrCurrentBalance.ToString()
                         };
-           return query.ToList();
+            return query.OrderByDescending(n => n.EntryDateTime).ToList();
         }
         public async Task<List<BranchLiaisonLedgerEntry>> GenerateLiasonAccountBranchLiaison(SystemQuery model)
         {
@@ -85,7 +86,38 @@ namespace CBS.BusinessService.Accounting
                                 //CreditAccountBalance = entry.DrCurrentBalance.ToString()
                             };
 
-                return query.ToList();
+                return query.OrderByDescending(n=>n.EntryDateTime).ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+
+        }
+
+        public async Task<List<Account>> GenerateAccountLedger(SystemQuery model)
+        {
+            try
+            {
+                List<Account> query = new List<Account>();
+                //var accountingEntries = await _Service.RetrieveAccountingEntries(model);
+                var accounts = await _AccountServices.GetAllAccounting();
+                if (_AccountServices.IsHeadOffice() && model.BranchId == "XXXXXX")
+                {
+                     query = accounts.ToList();
+
+                }
+                else
+                { 
+                
+                
+                }
+              
+
+
+                return query.OrderByDescending(n => n.AccountNumber).ToList();
             }
             catch (Exception ex)
             {

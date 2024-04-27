@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class TrialBalance6Column : ReportClass {
+    public class GeneralLedger : ReportClass {
         
-        public TrialBalance6Column() {
+        public GeneralLedger() {
         }
         
         public override string ResourceName {
             get {
-                return "TrialBalance6Column.rpt";
+                return "GeneralLedger.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Accounting.TrialBalance6Column.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Accounting.GeneralLedger.rpt";
             }
             set {
                 // Do nothing
@@ -90,9 +90,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedTrialBalance6Column : Component, ICachedReport {
+    public class CachedGeneralLedger : Component, ICachedReport {
         
-        public CachedTrialBalance6Column() {
+        public CachedGeneralLedger() {
         }
         
         [Browsable(false)]
@@ -129,7 +129,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            TrialBalance6Column rpt = new TrialBalance6Column();
+            GeneralLedger rpt = new GeneralLedger();
             rpt.Site = this.Site;
             return rpt;
         }

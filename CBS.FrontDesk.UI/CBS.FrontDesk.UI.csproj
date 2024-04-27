@@ -308,6 +308,24 @@
     <Content Include="AppFiles\Images\SideImageHeader.png" />
     <Content Include="AppFiles\Images\SideImageHeader_login.png" />
     <Content Include="App_Code\Helper\HtmlExtension.cs" />
+    <Compile Include="AppFiles\Reporting\Accounting\GeneralLedger.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralLedger.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\JournalEntries.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JournalEntries.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\LiaisonLedger.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LiaisonLedger.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\Reciepts\Receipts_Duplicate.cs">
       <DependentUpon>Receipts_Duplicate.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -2604,6 +2622,12 @@
     <Content Include="Views\Operation\Transfers.cshtml" />
     <Content Include="Views\Operation\_TransferDetails.cshtml" />
     <Content Include="Views\Operation\_TransferConfirmation.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateStatementModel.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_statementModelData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateTrialBalanceReference.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_statementModelDetails.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_UpdateStatementModel.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateStatementModelBS.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2659,6 +2683,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\GeneralLedger.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GeneralLedger.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\JournalEntries.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>JournalEntries.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\LiaisonLedger.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LiaisonLedger.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\TrialBalance6Column.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TrialBalance6Column.cs</LastGenOutput>
