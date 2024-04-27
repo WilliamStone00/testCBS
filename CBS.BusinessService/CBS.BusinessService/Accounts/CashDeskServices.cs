@@ -187,7 +187,8 @@ namespace CBS.BusinessService.Accounts
                     SendingBranch = "",
                     SourceBranchCommission = t.SourceBranchCommission,
                     SourceType = t.SourceType,
-                    Status = t.Status, ReceiptTitle=t.ReceiptTitle,
+                    Status = t.Status, 
+                    ReceiptTitle=t.ReceiptTitle,
                     BarCode = BarCodeHelper.GenerateBarcodeImage($"{t.TransactionRef}-{t.OriginalDepositAmount}"),
 
                 };
