@@ -51,7 +51,37 @@
 
     </div>
 </div>
-
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">Print statements from all @Model.Customer.name accounts</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.PrintDate.DateFrom, new { @class = "form-control date-picker", @id = "DateFrom" })
+                            @Html.ValidationMessageFor(m => m.PrintDate.DateFrom, "", new { @class = "text-danger" })
+                            <label for="DateFrom">Start date</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.PrintDate.DateTo, new { @class = "form-control date-picker", @id = "DateTo" })
+                            @Html.ValidationMessageFor(m => m.PrintDate.DateTo, "", new { @class = "text-danger" })
+                            <label for="DateTo">End date</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <button class="btn btn-primary" onclick="ExportIndividaulReport('@Model.CustomerId','all_by_dates_customer_account_transaction')">Print</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
 <script src="~/Scripts/Js/Crud/MembersFSeries/FSeries.js"></script>

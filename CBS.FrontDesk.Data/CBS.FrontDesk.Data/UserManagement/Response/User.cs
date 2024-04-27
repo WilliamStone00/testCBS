@@ -25,14 +25,8 @@ namespace CBS.FrontDesk.Data.UserManagement
         [Required]
         [Display(Name = "Last Name")]
         public string lastName { get; set; }
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        
         public string password { get; set; }
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("password", ErrorMessage = "The password and confirmation password do not match.")]
         public string confirmPassword { get; set; }
         [Display(Name = "Phone number")]
         public string phoneNumber { get; set; }
@@ -53,7 +47,7 @@ namespace CBS.FrontDesk.Data.UserManagement
         public List<UserAllowedIP> userAllowedIPs { get; set; } = new List<UserAllowedIP>();
         public List<UserRole> userRoles { get; set; } = new List<UserRole>();
         public string Option { get; set; }
-
+        public int LoginAttempts { get; set; }
         public bool IsGoogleAuthenticatorEnabled { get; set; }
         public bool IsVerified { get; set; }
         public bool IsBlocked { get; set; }
@@ -75,11 +69,13 @@ namespace CBS.FrontDesk.Data.UserManagement
         public Branch Brancch { get; set; }
         public string strlastLoginDate { get; set; }
         public ChangePassword ChangePassword { get; set; } = new ChangePassword();
+        public ResetPassword ResetPassword { get; set; } = new ResetPassword();
         public List<UserClaim> userClaims { get; set; }
         public HttpPostedFileBase FileUpload { get; set; }
         public string ImageVirtualPath { get; set; }
         public User()
         {
+            isActive = true;
             ImageVirtualPath = "~/Appfiles/Images/p.jpg";
         }
     }
@@ -100,5 +96,12 @@ namespace CBS.FrontDesk.Data.UserManagement
         [Display(Name = "Confirm password")]
         [Compare("password", ErrorMessage = "The password and confirmation password do not match.")]
         public string confirmPassword { get; set; }
+    }
+    public class ResetPassword
+    {
+        
+        public string userName { get; set; }
+        public string password { get; set; }
+       
     }
 }

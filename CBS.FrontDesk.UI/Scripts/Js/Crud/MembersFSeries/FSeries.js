@@ -1,5 +1,8 @@
 ﻿
 $(document).ready(function () {
+    $('#openModalButton').click(function () {
+        $('#searchModal').modal('show'); // Show the modal
+    });
     $('#myDataTableT tbody tr').each(function () {
         let balanceInput = $(this).find('.amount-input');
         let blockedInput = $(this).find('.blocked-input');
@@ -17,6 +20,45 @@ $(document).ready(function () {
     });
 
 });
+function ModalShowUp() {
+    $('#searchModal').modal('show')
+}
+function GetPrintForm(customerId) {
+    EditResetModal(customerId, 'modal', 'modalContent', 'MembersFSeries', 'InitializeData', '_PrintDateForm', 'print_by_date', 'Print parameters', 'modalLabel')
+}
+function GetTransactionMembersTransactions(KEY, divToLoadData, partialView, path, myDataTable, order) {
+    LoadDataTableNew("MembersFSeries", myDataTable, "InitializeData", KEY, partialView, order, path, divToLoadData);
+}
+function ExportIndividaulReport(customerId, path) {
+    var dateFrom = $('#DateFrom').val();
+    var dateTo = $('#DateTo').val();
+    $.ajax({
+        url: '/MembersFSeries/GetReport',
+        type: 'POST',
+        data: {
+            datefrom: dateFrom,
+            dateto: dateTo,
+            KEY: customerId,
+            path: path
+        },
+        success: function (response) {
+            if (response.success) {
+                appalert("Plaese wait, downloading file", 1);
+                window.open("/Reports/ReportWithParameter","_blank")
+            } else {
+                if (response.message === undefined) {
+                    alert("Your session is expired.");
+                } else {
+                    appalert(response.message, 3, 1);
+                }
+            }
+        },
+        error: function (xhr, status, error) {
+            // Handle error
+            console.error(xhr.responseText);
+        }
+    });
+}
 function printAccountsSection() {
     // Get the HTML content of the desired section
     var accountsSection = document.getElementById('accountsSection').innerHTML;
@@ -39,7 +81,7 @@ function printAccountsSection() {
 }
 function GetMembersData(Key, partialView, divToloadPV, path) {
 
-   
+
     AddORUpdateGen(Key, divToloadPV, partialView, path, "MembersFSeries");
 }
 
@@ -95,7 +137,7 @@ function calculateTotalAmounts() {
     $('#totalBlockedAmount').text(formattedTotalBlockedAmount);
 
     // Format input fields with currency
- 
+
 
 }
 function calculateLoanTotals() {

@@ -1,4 +1,5 @@
 ﻿using CBS.BusinessService.Accounts;
+using CBS.BusinessService.Config;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
@@ -15,12 +16,11 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
     {
         // GET: TellerProvissioing
         private readonly TellerProvissioningServices _services;
-
         public TellerProvissioingController(TellerProvissioningServices services)
         {
             _services = services;
         }
-       
+
         public async Task<ActionResult> Index()
         {
             await GetList();
@@ -53,7 +53,24 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         }
 
-
+        public async Task<ActionResult> Ajaxloader(string Key, string path)
+        {
+            if (Key != null)
+            {
+                if (path=="")
+                {
+                    var listing = await _services.GetUserTellerRole(Key);
+                    return Json(listing, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    var listing = await _services.GetSubTellers(Key);
+                    return Json(listing, JsonRequestBehavior.AllowGet);
+                }
+              
+            }
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
 
         public async Task<bool> GetList()
         {

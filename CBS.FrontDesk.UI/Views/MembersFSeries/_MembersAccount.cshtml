@@ -2,7 +2,6 @@
 
 
 
-
 <div class="row g-4">
     <div class="col-md-12">
         <div class="card mb-3 border-2 exclude-from-print">
@@ -60,7 +59,7 @@
                                                     </td>
                                                     <td style="width: 10%">@d.status</td>
                                                     <td style="width: 10%">
-                                                        <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('Operation', '@d.accountNumber','customer_account_transaction_rpt','ReportParameterLess')" data-bs-toggle="tooltip" title="print members account @d.accountNumber statements">
+                                                        <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('MembersFSeries', '@d.accountNumber','customer_account_transaction_rpt','ReportParameterLess')" data-bs-toggle="tooltip" title="print members account @d.accountNumber statements">
                                                             <span class="tf-icons mdi mdi-printer mdi-18px"></span>
                                                         </a>
                                                     </td>
@@ -77,10 +76,10 @@
                                                     <span class="formatted-amount shadow-box float-start" id="totalBlockedAmount">0</span>
                                                 </td>
                                                 <td>
-                                                    <strong>Print for all</strong>
+                                                    <strong>Print all</strong>
                                                 </td>
                                                 <td>
-                                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('Operation', '','customer_account_transaction_rpt','ReportParameterLess')" data-bs-toggle="tooltip" title="print all account statements">
+                                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ModalShowUp()" data-bs-toggle="tooltip" title="print all account statements">
                                                         <span class="tf-icons mdi mdi-printer mdi-18px"></span>
                                                     </a>
                                                 </td>
@@ -113,9 +112,9 @@
                                                     <th>Principal</th>
                                                     <th>Interest rate</th>
                                                     <th>Accrual Interest</th>
-                                                    <th>Penalty/Fine</th>
-                                                    <th>Tax/VAT</th>
-                                                    <th>Paid</th>
+                                                    <th>Charges</th>
+                                                    <th>VAT</th>
+                                                    <th>Repayments</th>
                                                     <th>Balance</th>
                                                 </tr>
                                             </thead>
@@ -149,14 +148,12 @@
                     </fieldset>
 
                 </div>
-
             </div>
-
         </div>
     </div>
 </div>
 
-<button onclick="printAccountsSection()" class="btn btn-primary">Print</button>
+@*<button onclick="printAccountsSection()" class="btn btn-primary">Print</button>*@
 
 
 

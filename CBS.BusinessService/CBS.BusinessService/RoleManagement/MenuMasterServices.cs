@@ -28,7 +28,7 @@ namespace CBS.BusinessService
             try
             {
                 var objMenuMaster = await GetMenuMaster(id);
-                var inResponse = await _identityConfigApiHelper.DeleteAsync<ResponseObject<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_MenuMaster, id), id));
+                var inResponse = await _identityConfigApiHelper.DeleteAsync<ResponseObject<bool>>(string.Format(APICallHelper.Get_Update_Delete_MenuMaster,id));
                 if (inResponse.IsSuccess)
                 {
 

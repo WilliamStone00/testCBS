@@ -201,8 +201,11 @@ function collectDepositorInfo() {
         DepositerNote: $('#DepositerNote').val()
     };
 }
+function Reprint() {
+    ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
 
-function confirmTransaction(title, message, ajaxUrl, data) {
+}
+function confirmTransaction(title, message, ajaxUrl, data,operationType) {
     alertify.confirm(title, message,
         function () {
             $.ajax({
@@ -212,14 +215,14 @@ function confirmTransaction(title, message, ajaxUrl, data) {
                 data: JSON.stringify(data),
                 success: function (response) {
                     if (response.success) {
-                        if (data.OperationType ==='CashIn') {
-                            GetMemberData(data.CustomerId, '_OperationDesk', 'datalistingview', 'cashin')
+                        if (operationType ==='CashIn') {
+                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashin')
                         }
-                        else if (data.OperationType === 'Withdrawal') {
-                            GetMemberData(data.CustomerId, '_OperationDesk', 'datalistingview', 'cashout')
+                        else if (operationType === 'Withdrawal') {
+                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashout')
                         }
-                        else if (data.OperationType === 'Loan') {
-                            GetMemberData(data.CustomerId, '_OperationDesk', 'datalistingview', 'repayment')
+                        else if (operationType === 'Loan') {
+                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'repayment')
                         }
                         appalert(response.message, 1, 1);
                         ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
@@ -281,10 +284,10 @@ function PostCashIn() {
     deposits[0].currencyNotes = collectCurrencyNotes();
     deposits[0].Depositer = collectDepositorInfo();
 
-    var message = "WARNING!!!\n";
+    var message = "";
     message += "Are you sure you want to perform a cash-in of " + totalInfo.total + " to the selected account numbers?\n";
     message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-    confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits);
+    confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits,'CashIn');
 }
 
 // Similarly update PostCashOut() and PostLoanRepayment() functions
@@ -306,10 +309,10 @@ function PostCashOut() {
     deposits[0].currencyNotes = collectCurrencyNotes();
     deposits[0].Depositer = collectDepositorInfo();
 
-    var message = "WARNING!!!\n";
+    var message = "";
     message += "Are you sure you want to perform a cash-out of " + totalInfo.total + " from the selected account numbers?\n";
     message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-    confirmTransaction('Confirm Cash-Out Operation', message, '/CashDesk/PostRequestCash', deposits);
+    confirmTransaction('Confirm Cash-Out Operation', message, '/CashDesk/PostRequestCash', deposits,'Withdrawal');
 }
 
 function PostLoanRepayment() {
@@ -329,10 +332,10 @@ function PostLoanRepayment() {
     deposits[0].currencyNotes = collectCurrencyNotes();
     deposits[0].Depositer = collectDepositorInfo();
 
-    var message = "WARNING!!!\n";
+    var message = "";
     message += "Are you sure you want to perform loan repayment of " + totalInfo.total + " to the selected account numbers?\n";
     message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-    confirmTransaction('Confirm Loan Repayment Operation', message, '/CashDesk/PostRequestCash', deposits);
+    confirmTransaction('Confirm Loan Repayment Operation', message, '/CashDesk/PostRequestCash', deposits,'Loan');
 }
 
 

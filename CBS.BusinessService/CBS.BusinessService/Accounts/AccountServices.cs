@@ -341,6 +341,23 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+        public async Task<List<TransactionHistory>> GetCustomerTransactionsByCustomerNumberAndByDates(PrintDate printDate)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.PostAsync<ResponseObject<List<TransactionHistory>>>(APICallHelper.GetAllTransactionsByDatesAndCustomerIDQuery, printDate);
+                if (cusResponseObject.ApiResponseData!=null)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
         public async Task<List<TransactionHistory>> GetAllTransactions()
         {
             try
@@ -492,7 +509,7 @@ namespace CBS.BusinessService.Accounts
 
                 foreach (TransactionHistory t in transactions)
                 {
-                    if (t.currencyNote==null)
+                    if (t.currencyNotes==null)
                     {
                         t.currencyNote = new CurrencyNotes();
                     }
@@ -508,7 +525,7 @@ namespace CBS.BusinessService.Accounts
                     {
                         AccountNumber = t.AccountNumber,
                         AccountType = t.Account.AccountType,
-                        Amount = t.OriginalDepositAmount,
+                        Amount = t.Amount,
                         TransactionDate = t.CreatedDate,
                         Note500 = t.currencyNote.note500,
                         Note2000 = t.currencyNote.note2000,
@@ -533,7 +550,7 @@ namespace CBS.BusinessService.Accounts
                         Coin10 = t.currencyNote.coin10,
                         Coin25 = t.currencyNote.coin25,
                         Coin50 = t.currencyNote.coin50,
-                        Credit = t.Credit,
+                        Credit = t.Credit, Charges=t.Fee,
                         Debit = t.Debit,
                         Balance = t.Balance,
                         CustomerName = c.firstName + " " + c.lastName,
@@ -570,7 +587,7 @@ namespace CBS.BusinessService.Accounts
                         SourceType = t.SourceType,
                         Status = t.Status,
                         OpeningBalance = openingBalance,
-                        ClosingBalance = t.Account.Balance
+                        ClosingBalance = t.Account.Balance,
                     };
 
                     reports.Add(rpt);

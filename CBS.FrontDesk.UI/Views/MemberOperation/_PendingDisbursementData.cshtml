@@ -12,39 +12,27 @@ else
         <table class="table table-hover" id="myDataTable_customer_loan">
             <thead class="table-light">
                 <tr>
-                    <th style="width: 7%">Date</th>
-                    <th style="width: 8%">Maturity Date</th>
-                    <th style="width: 10%">Principal</th>
-                    <th style="width: 7%">Interest Rate</th>
-                    <th style="width: 8%">Accrual interest</th>
-                    <th style="width: 8%">Tax</th>
-                    <th style="width: 8%">Penalty</th>
-                    <th style="width: 8%">Due</th>
-                    <th style="width: 8%">Paid</th>
-                    <th style="width: 8%">Balance</th>
-                    <th style="width: 8%">Last Payment</th>
-                    <th style="width: 7%">Status</th>
-                    <th style="width: 7%">State</th>
-                    <th style="width: 7%">Action</th>
+                    <th>Date</th>
+                    <th>Principal</th>
+                    <th>Interest Rate</th>
+                    <th>Fee</th>
+                    <th>Balance</th>
+                    <th>Status</th>
+                    <th>State</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var d in Model.Loans.OrderBy(app => app.LoanDate))
                 {
                     <tr>
-                        <td style="width: 7%">@d.LoanDate</td>
-                        <td style="width: 8%">@d.MaturityDate</td>
+                        <td style="width: 30%">@d.LoanDate</td>
                         <td style="width: 10%">@d.Principal.ToString("#,0.00")</td>
-                        <td style="width: 7%">@d.InterestRate %</td>
-                        <td style="width: 8%">@d.AccrualInterestBalance.ToString("#,0.00")</td>
-                        <td style="width: 8%">@d.Tax.ToString("#,0.00")</td>
-                        <td style="width: 8%">@d.PenaltyBalance.ToString("#,0.00")</td>
-                        <td style="width: 8%">@d.DueAmount.ToString("#,0.00")</td>
-                        <td style="width: 8%">@d.Paid.ToString("#,0.00")</td>
-                        <td style="width: 8%">@d.Balance.ToString("#,0.00")</td>
-                        <td style="width: 8%">@d.LastPayment.ToString("#,0.00")</td>
-                        <td style="width: 7%">@d.LoanStatus</td>
-                        <td style="width: 7%">
+                        <td style="width: 10%">@d.InterestRate %</td>
+                        <td style="width: 10%">@d.Fee.ToString("#,0.00")</td>
+                        <td style="width: 10%">@d.Balance.ToString("#,0.00")</td>
+                        <td style="width: 10%">@d.LoanStatus</td>
+                        <td style="width: 10%">
                             @if (d.IsCurrentLoan)
                             {
                                 <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Current</span>
@@ -54,9 +42,9 @@ else
                                 <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Restructured</span>
                             }
                         </td>
-                        <td style="width: 7%">
+                        <td style="width: 10%">
                             <a href="#" onclick="GetPendingLoans('@d.Id')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select for detail">
-                                Disbursed options
+                                Disbursed
                             </a>
                         </td>
                     </tr>

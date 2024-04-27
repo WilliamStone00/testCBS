@@ -29,7 +29,7 @@
                                     <th>Amount</th>
                                     <th>Fee</th>
                                     <th>Total</th>
-                                    <th>Select</th> <!-- New column for checkbox -->
+                                    <th>confirm</th> <!-- New column for checkbox -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -77,8 +77,15 @@
                 <div class="header-buttons mt-4 float-end">
                     <input type="hidden" name="OperationType" value="CashIn" id="OperationType" />
                     <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
-                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashIn()">Cash-in</button>
-                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashIn()">
+                        <i class="fas fa-money-bill-wave me-1"></i> Cash-In
+                    </button>
+                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
+                        <i class="fas fa-print me-1"></i> Re-print
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary">
+                        <i class="fas fa-sync-alt me-1"></i> Reset
+                    </button>
                 </div>
             </div>
         </fieldset>
@@ -113,7 +120,7 @@ else if (ViewBag.Operation == "cashout")
                                     <th>Amount</th>
                                     <th>Fee/Charges</th>
                                     <th>Total</th>
-                                    <th>Select</th>
+                                    <th>confirm</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -161,8 +168,15 @@ else if (ViewBag.Operation == "cashout")
                 <div class="header-buttons mt-4 float-end">
                     <input type="hidden" name="OperationType" value="Withdrawal" id="OperationType" />
                     <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
-                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashOut()">Withdraw</button>
-                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashOut()">
+                        <i class="fas fa-money-bill-wave me-1"></i> Cash-out
+                    </button>
+                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
+                        <i class="fas fa-print me-1"></i> Re-print
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary">
+                        <i class="fas fa-sync-alt me-1"></i> Reset
+                    </button>
                 </div>
             </div>
         </fieldset>
@@ -197,9 +211,9 @@ else if (ViewBag.Operation == "repayment")
                                     <th>Ordinary accounts</th>
                                     <th>Amount</th>
                                     <th>Interest</th>
-                                    <th>Penalty</th>
+                                    <th>charges</th>
                                     <th>Total</th>
-                                    <th>Select</th> <!-- New column for checkbox -->
+                                    <th>confirm</th> <!-- New column for checkbox -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -264,8 +278,15 @@ else if (ViewBag.Operation == "repayment")
                 <div class="header-buttons mt-4 float-end">
                     <input type="hidden" name="OperationType" value="Loan" id="OperationType" />
                     <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
-                    <button type="submit" id="submit" onclick="PostLoanRepayment()" class="btn btn-primary me-2">Pay-Now</button>
-                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostLoanRepayment()">
+                        <i class="fas fa-money-bill-wave me-1"></i> Re-Pay
+                    </button>
+                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
+                        <i class="fas fa-print me-1"></i> Re-print
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary">
+                        <i class="fas fa-sync-alt me-1"></i> Reset
+                    </button>
                 </div>
             </div>
         </fieldset>

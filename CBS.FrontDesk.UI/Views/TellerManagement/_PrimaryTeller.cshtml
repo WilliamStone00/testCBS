@@ -26,7 +26,13 @@
                                     <legend>Teller details</legend>
                                     <div class="row mt-2 gy-4">
 
-
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.Teller.branchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select branch---", new { @class = "form-control select2", @search = "true"})
+                                                @Html.ValidationMessageFor(m => m.Teller.branchId, "", new { @class = "text-danger" })
+                                                <label>Branch</label>
+                                            </div>
+                                        </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Teller.code, new { @class = "form-control" })

@@ -1,27 +1,4 @@
-﻿/* print-styles.css */
-
-/* Hide unnecessary elements */
-body * {
-    visibility: hidden;
-}
-
-/* Show only the desired section */
-#accountsSection,
-#accountsSection * {
-    visibility: visible;
-}
-
-/* Adjust margins */
-#accountsSection {
-    margin: 0;
-    padding: 0;
-}
-
-/* Specify font styles */
-#accountsSection {
-    font-family: Arial, sans-serif;
-    font-size: 12pt;
-}
+﻿
 
 /* Additional styling as needed */
 #loading {

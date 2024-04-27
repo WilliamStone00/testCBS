@@ -51,7 +51,7 @@ namespace CBS.FrontDesk.UI.Controllers
                             {
                                 var user = Data;
                                 CreateToken(user, "PWD", 10);
-                                string url = string.Format("~/UserManagement/ChangePassword?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}"
+                                string url = string.Format("~/UserManagement/FLoginChangePassword?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}"
                                     , "User", user.id, user.refreshToken, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "internaluserobject:" + user.firstName);
                                 return RedirectToLocal(url);
                             }

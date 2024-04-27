@@ -1,5 +1,6 @@
 ﻿using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using System;
@@ -16,11 +17,13 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         // GET: TellerManagement
         private readonly TellerServices _tellerServices;
         private readonly ChartOfAccountServicesAnnex _accountingServices;
-        public TellerManagementController(ChartOfAccountServicesAnnex accountingServices, TellerServices tellerServices)
+        private readonly BranchServices _branchServices;
+
+        public TellerManagementController(ChartOfAccountServicesAnnex accountingServices, TellerServices tellerServices, BranchServices branchServices = null)
         {
             _accountingServices = accountingServices;
             _tellerServices = tellerServices;
-           
+            _branchServices = branchServices;
         }
 
         public async Task<ActionResult> Index()
@@ -112,20 +115,20 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         public async Task<bool> GetList()
         {
-            var chartOfAccounts = await _accountingServices.GetChartOfAccounts();
-            ViewBag.chartOfAccounts = chartOfAccounts.ToList();
-            ViewBag.OperationEventAttributes = await _accountingServices.GetEventAttributeByOperationTypeID();
+            //var chartOfAccounts = await _accountingServices.GetChartOfAccounts();
+            //ViewBag.chartOfAccounts = chartOfAccounts.ToList();
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.Branches = Branches;
+
+            //ViewBag.OperationEventAttributes = await _accountingServices.GetEventAttributeByOperationTypeID();
             return true;
         }
-        public async Task<ActionResult> Ajaxloader(string Key)
-        {
-            var listing = await _accountingServices.GetEventAttributeByOperationTypeID(Key);
-            return Json(listing, JsonRequestBehavior.AllowGet);
-        }
+       
         public async Task<ActionResult> Delete(string id)
         {
             var data = await _tellerServices.Delete(id);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
+        
     }
 }

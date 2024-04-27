@@ -13,6 +13,12 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public decimal Amount { get; set; }
         public decimal OriginalDepositAmount { get; set; }
         public decimal Debit { get; set; }
+        public string CustomerId { get; set; }
+        public string ExternalReference { get; set; }
+        public bool IsExternalOperation { get; set; }
+        public string ExternalApplicationName { get; set; }
+        public string Currency { get; set; }
+        public string TransactionReference { get; set; }
         public decimal Credit { get; set; }
         public string AccountId { get; set; }
         public string AccountNumber { get; set; }
@@ -48,6 +54,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public string BankId { get; set; }
         public string BranchId { get; set; }
         public string TellerId { get; set; }
+        public string ReceiptTitle { get; set; }
         public virtual ICollection<TellerOperation> TellerOperations { get; set; }
         public virtual Teller Teller { get; set; }
         public virtual Account Account { get; set; }

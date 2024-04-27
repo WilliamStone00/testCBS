@@ -1,5 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -15,10 +17,12 @@ namespace CBS.BusinessService.Accounts
     public class TellerServices : BaseService
     {
         private readonly ApiCallerHelper _savingConfigApiHelper;
+        private readonly BranchServices _branchServices;
 
         public TellerServices()
         {
             _savingConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
+            _branchServices = new BranchServices();
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -48,28 +52,60 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-
         public async Task<IEnumerable<Teller>> GetTellers()
         {
             try
             {
+                var couApiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<Teller>>>(APICallHelper.GetAllTeller);
+                var branches = await _branchServices.GetBranches();
+
                 if (IsHeadOffice())
                 {
-                    var couApiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<Teller>>>(APICallHelper.GetAllTeller);
-                    if (couApiResponse.IsSuccess)
-                    {
-                        return couApiResponse.ApiResponseData.Data;
-                    }
 
+                    if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+                    {
+                        var data = from teller in couApiResponse.ApiResponseData.Data
+                                   join branch in branches on teller.branchId equals branch.Id
+                                   select new Teller
+                                   {
+                                       id = teller.id,
+                                       isPrimary = teller.isPrimary,
+                                       name = teller.name,
+                                       code = teller.code,
+                                       bankId = teller.bankId,
+                                       branchId = teller.branchId,
+                                       MinimumAmountToManage = teller.MinimumAmountToManage,
+                                       MaximumAmountToManage = teller.MaximumAmountToManage,
+                                       MinimumDepositAmount = teller.MinimumDepositAmount,
+                                       MaximumDepositAmount = teller.MaximumDepositAmount,
+                                       MinimumWithdrawalAmount = teller.MinimumWithdrawalAmount,
+                                       MaximumWithdrawalAmount = teller.MaximumWithdrawalAmount,
+                                       MinimumTransferAmount = teller.MinimumTransferAmount,
+                                       MaximumTransferAmount = teller.MaximumTransferAmount,
+                                       Branch = branch,
+                                       inUseStatus = teller.inUseStatus,
+                                       inUsedByUserId = teller.inUsedByUserId,
+                                       activeStatus = teller.activeStatus,
+                                       Transactions = teller.Transactions
+                                   };
+
+                        return data;
+                    }
                 }
                 else
                 {
-                    var couApiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<Teller>>>(APICallHelper.GetAllTeller);
-                    if (couApiResponse.IsSuccess)
+                    if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
                     {
-                        return couApiResponse.ApiResponseData.Data.Where(x=>x.branchId == GetBranchID());
+                        var tellers = couApiResponse.ApiResponseData.Data.Where(x => x.branchId == GetBranchID())
+                                                                        .Select(teller =>
+                                                                        {
+                                                                            teller.Branch = branches.FirstOrDefault(b => b.Id == teller.branchId);
+                                                                            return teller;
+                                                                        });
+                        return tellers;
                     }
                 }
+
                 return new List<Teller>();
             }
             catch (Exception ex)
@@ -78,6 +114,8 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
+
+
         public async Task<IEnumerable<Teller>> GetTellersPrimary()
         {
             try
@@ -118,7 +156,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 model.bankId = GetBankID();
-                model.branchId = GetBranchID();
+                //model.branchId = GetBranchID();
                 // Make an API call to create an individual profile
                 var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<Teller>>(APICallHelper.CreateTeller, model);
                 if (response.IsSuccess)

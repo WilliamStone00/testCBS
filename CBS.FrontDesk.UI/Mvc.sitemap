@@ -18,6 +18,7 @@
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Primary teller provissioning" controller="TellerProvissioing" action="Primary">
     </mvcSiteMapNode>
+   
     <mvcSiteMapNode title="Sub teller provissioning" controller="TellerProvissioing" action="SubTeller">
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Global Configuration" controller="GlobalConfiguration" action="Index">
@@ -88,7 +89,10 @@
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Accounting Reports" controller="AccountingStatements" action="Index">
     </mvcSiteMapNode>
-  
+    <mvcSiteMapNode title="Dashboard" controller="Dashboard" action="Index">
+      <mvcSiteMapNode title="Head office dashboard" controller="Dashboard" action="HeadOffice"/>
+      <mvcSiteMapNode title="Branch office dashboard" controller="Dashboard" action="BranchOffice"/>
+    </mvcSiteMapNode>
     <mvcSiteMapNode title="Cash Replenishment Request" controller="CashFlowManagement" action="CreateCashReplenishmentRequest">   
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Cash Replenishment Approval" controller="CashFlowManagement" action="CreateApprovalRequest">

@@ -94,18 +94,7 @@
                             <tr>
                                 <td><strong>Approval status</strong></td>
                                 <td>
-                                    @if (Model.Customer.membershipApprovalStatus == "Approved")
-                                    {
-                                        <span class="text-success">
-                                            <i class="bi bi-check-circle-fill"></i>                                    @Model.Customer.membershipApprovalStatus
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-danger">
-                                            <i class="bi bi-x-circle-fill"></i>                                    @Model.Customer.membershipApprovalStatus
-                                        </span>
-                                    }
+                                    @Model.Customer.membershipApprovalStatus
                                 </td>
                             </tr>
 

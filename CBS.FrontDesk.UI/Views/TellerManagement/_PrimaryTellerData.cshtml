@@ -9,6 +9,7 @@
                 <th>Min-Max Amount to manage</th>
                 <th>Teller type</th>
                 <th>Status</th>
+                <th>Branch</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -16,8 +17,8 @@
             @foreach (var d in Model.Tellers)
             {
                 <tr>
-                    <td style="width:40%">@d.name</td>
-                    <td style="width:10%">@d.code</td>
+                    <td style="width:20%">@d.name</td>
+                    <td style="width:5%">@d.code</td>
                     <td style="width:20%">
                         @d.MinimumAmountToManage.ToString("#,##0.0") - @d.MaximumAmountToManage.ToString("#,##0.0")
                     </td>
@@ -41,6 +42,7 @@
                             <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">In-Active</span></label>
                         }
                     </td>
+                    <td style="width:25%">@d.Branch.Name</td>
                     <td style="width:10%">
                         <a href="#" onclick="AddORUpdateGen('@d.id','datalistingview','_PrimaryTeller','get','TellerManagement',null)" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit |</a>
                         <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('TellerManagement','@d.id','myDataTable','_PrimaryTellerData',0,'datalistingview')">Delete</a>

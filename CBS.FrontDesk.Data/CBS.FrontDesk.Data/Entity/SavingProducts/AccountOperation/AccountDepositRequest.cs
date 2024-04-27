@@ -32,6 +32,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string LoanId { get; set; }
         public Depositer Depositer { get; set; } = new Depositer();
         public BulkDeposit BulkDeposit { get; set; } = new BulkDeposit();
+        public PrintDate PrintDate { get; set; } = new PrintDate();
         public Branch Branch { get; set; } = new Branch();
         public List<BulkDeposit> BulkDeposits { get; set; } = new List<BulkDeposit>();
         public IndividualProfile Customer { get; set; } = new IndividualProfile();
@@ -42,10 +43,18 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<TransactionHistory> Transactions { get; set; } = new List<TransactionHistory>();
 
     }
+    public class PrintDate
+    {
+        public string DateFrom { get; set; }
+        public string DateTo { get; set; }
+        public string CustomerID { get; set; }
+        public string ReportType { get; set; }
+    }
     public class  BulkOperation
     {
         public List<BulkDeposit> BulkOperations { get; set; } = new List<BulkDeposit>();
     }
+
     public class BulkDeposit
     {
         public string AccountNumber { get; set; }

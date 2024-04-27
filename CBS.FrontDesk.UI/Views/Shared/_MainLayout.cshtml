@@ -38,6 +38,9 @@
    
     <style>
 
+        .card-header {
+            color: black;
+        }
 
         .shadow-input-boxes {
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adjust the values as needed */
@@ -700,7 +703,7 @@
 
                         <!-- #endregion -->
 
-                       
+
                         @RenderBody()
                     </div>
                     @Html.Partial("_AjaxSpinner")
@@ -783,7 +786,7 @@
                 startSessionWarning();
             });
         </script>*@
-   
+
     @RenderSection("scripts", required: false)
 </body>
 

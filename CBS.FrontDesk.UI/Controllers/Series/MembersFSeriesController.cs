@@ -2,7 +2,9 @@
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.ReportDataSetDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +75,11 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                     }
                     return PartialView(partialView, cashDesk);
 
+                    
+                }
+                else if (path == "print_by_date")
+                {
+                    return PartialView(partialView, new CashDesk { CustomerId = KEY });
 
                 }
                 else if (path == "members_account")
@@ -93,6 +100,24 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                     return PartialView(partialView, cashDesk);
 
                 }
+                else if (path == "transactions")
+                {
+                    if (KEY == null || KEY == "")
+                    {
+                        ViewBag.message = "Empty data was submited. Please enter search criterial";
+                        return PartialView("_DataNotFound", new CashDesk());
+                    }
+                    var cashDesk = await _cashDeskService.GetMember(KEY);
+                    if (cashDesk == null)
+                    {
+
+                        ViewBag.message = $"{KEY} was not found in the database.";
+                        return PartialView("_DataNotFound", new CashDesk());
+                    }
+                    var transactionHistories = await _cashDeskService.GetCustomerTransactionsByCustomerNumber(KEY);
+                    cashDesk.Transactions = transactionHistories.ToList();
+                    return PartialView(partialView, cashDesk);
+                }
                 ViewBag.message = "Invalid option selected";
                 return PartialView("_NoRecordFound", new CashDesk());
 
@@ -104,95 +129,98 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                 return PartialView("_NoRecordFound", new CashDesk());
             }
         }
-       
-        [HttpPost]
+     
+            [HttpPost]
         public async Task<ActionResult> GetReport(string rptType = null, string ReportName = null, string serviceoption = null, string reportpath = null, string fileTitle = null, string ReadOptions = null, string KEY = null, string path = null, string yearID = null, string datefrom = null, string dateto = null)
         {
-            if (path == "export_transactions")
+            try
             {
-                var account = await _accountServices.GetTransactionsAsync();
-                this.HttpContext.Session["rptSource"] = _accountServices.GetTransactionHistoryExports(account.TransactionHistories);
-                if (!account.TransactionHistories.Any())
+                switch (path)
                 {
-                    this.HttpContext.Session["rptSource"] = "empty";
-                }
-                this.HttpContext.Session["rptType"] = rptType;
-                this.HttpContext.Session["ReportName"] = $"{ReportName}.rpt";
-                this.HttpContext.Session["rptpath"] = $"~/{reportpath}/" + ReportName + ".rpt";
-                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                    case "receipts":
+                        var receiptTransaction = await _accountServices.GetTransactionsAsync(KEY);
+                        var receiptCustomer = receiptTransaction != null ? await _individualProfileServices.GetSingleCustomer(receiptTransaction.CustomerId) : null;
+                        var receiptBranch = receiptCustomer != null ? await _branchServices.GetBranch(receiptCustomer.branchId) : null;
+                        var receiptUser = receiptTransaction != null ? await _cashDeskService.RetrieveUserFromSession(receiptTransaction.Teller.inUsedByUserId) : null;
 
+                        if (receiptTransaction == null)
+                            return Json(new { success = false, status = false, message = "No transactions are found." }, JsonRequestBehavior.AllowGet);
+
+                        if (receiptCustomer == null)
+                            return Json(new { success = false, status = false, message = "Failed getting customer" }, JsonRequestBehavior.AllowGet);
+
+                        var receiptRpt = _cashDeskService.MaprptSource(receiptTransaction, receiptBranch, receiptUser, receiptCustomer);
+                        var receiptTransactionReports = new List<TransactionReportDS> { receiptRpt };
+                        var receiptRptSource = receiptTransactionReports.ToList();
+
+                        SetSessionVariables(receiptRptSource, "Receipts.rpt", "~/AppFiles/Reporting/Transactions/Reciepts/Receipts.rpt", $"{receiptTransaction.TransactionRef}");
+                        break;
+
+                    case "customer_account_transaction_rpt":
+                        var accountTransactionHistories = await _accountServices.GetCustomerTransactionsByAccountNumber(KEY);
+
+                        if (!accountTransactionHistories.Any())
+                            return Json(new { success = false, status = false, message = "No transactions are found." }, JsonRequestBehavior.AllowGet);
+
+                        var accountCustomer = await _individualProfileServices.GetSingleCustomer(accountTransactionHistories.FirstOrDefault().Account.CustomerId);
+                        var accountBranch = await _branchServices.GetBranch(accountCustomer.branchId);
+                        var accountNumber = accountTransactionHistories.Any() ? accountTransactionHistories.FirstOrDefault().AccountNumber : null;
+                        var accountRpt = _accountServices.MaprptSource(accountTransactionHistories, accountBranch, accountCustomer);
+
+                        SetSessionVariables(accountRpt, "IAccountStatement.rpt", "~/AppFiles/Reporting/Transactions/Statement/IAccountStatement.rpt", $"{accountNumber ?? "Unknown"}_Statement", "ReportParameterLess");
+
+                        if (!accountTransactionHistories.Any())
+                            return Json(new { success = true, status = false, message = "No data was found." }, JsonRequestBehavior.AllowGet);
+                        break;
+
+                    case "all_by_dates_customer_account_transaction":
+                        var printDate = new PrintDate { CustomerID = KEY, DateFrom = datefrom, DateTo = dateto };
+                        var dateTransactionHistories = await _accountServices.GetCustomerTransactionsByCustomerNumberAndByDates(printDate);
+
+                        if (!dateTransactionHistories.Any())
+                            return Json(new { success = false, status = false, message = "No transaction found" }, JsonRequestBehavior.AllowGet);
+
+                        var dateCustomer = await _individualProfileServices.GetSingleCustomer(KEY);
+
+                        if (dateCustomer == null)
+                            return Json(new { success = false, status = false, message = "Failed getting customer" }, JsonRequestBehavior.AllowGet);
+
+                        var dateBranch = await _branchServices.GetBranch(dateCustomer.branchId);
+                        var dateRpt = _accountServices.MaprptSource(dateTransactionHistories, dateBranch, dateCustomer);
+
+                        SetSessionVariables(dateRpt, "IAccountStatementGroupByAccounts.rpt", "~/AppFiles/Reporting/Transactions/Statement/IAccountStatementGroupByAccounts.rpt", $"{dateCustomer.name}_Statement");
+
+                        SetSessionVariables(datefrom, dateto); // Set date range session variables
+
+                        break;
+
+                    default:
+                        break;
+                }
+
+                return Json(new { success = true, status = false, message = "OK" }, JsonRequestBehavior.AllowGet);
             }
-            else if (path == "customer_account_transaction")
+            catch (Exception ex)
             {
-                var transactionHistories = await _accountServices.GetCustomerTransactionsByAccountNumber(KEY);
-                this.HttpContext.Session["rptSource"] = _accountServices.GetTransactionHistoryExports(transactionHistories);
-                if (!transactionHistories.Any())
-                {
-                    this.HttpContext.Session["rptSource"] = "empty";
-                }
-                this.HttpContext.Session["rptType"] = rptType;
-                this.HttpContext.Session["ReportName"] = $"{ReportName}.rpt";
-                this.HttpContext.Session["rptpath"] = $"~/{reportpath}/" + ReportName + ".rpt";
-                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                // Handle exceptions
+                return Json(new { success = false, status = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
-            else if (path == "transactions_by_dates")
-            {
-                var transactionHistories = await _accountServices.GetCustomerTransactionsByAccountNumber(KEY);
-                this.HttpContext.Session["rptSource"] = _accountServices.GetTransactionHistoryExports(transactionHistories);
-                if (!transactionHistories.Any())
-                {
-                    this.HttpContext.Session["rptSource"] = "empty";
-                }
-                this.HttpContext.Session["rptType"] = rptType;
-                this.HttpContext.Session["ReportName"] = $"{ReportName}.rpt";
-                this.HttpContext.Session["rptpath"] = $"~/{reportpath}/" + ReportName + ".rpt";
-                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
-            }
-            else if (path == "receipts")
-            {
-                this.HttpContext.Session["rptType"] = "ReportParameterLess";
-                this.HttpContext.Session["ReportName"] = $"Receipts.rpt";
-                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/Reciepts/Receipts.rpt";
-                this.HttpContext.Session["rpttitle"] = $"MemberReceipts";
-            }
-            else if (path == "customer_account_transaction_rpt")
-            {
-                var transactionHistories = await _accountServices.GetCustomerTransactionsByAccountNumber(KEY);
-                var customer = await _individualProfileServices.GetSingleCustomer(transactionHistories.FirstOrDefault().Account.CustomerId);
-                if (customer == null)
-                {
-                    return Json(new { success = true, status = false, message = "Failed getting customer" }, JsonRequestBehavior.AllowGet);
-
-                }
-                var branch = await _branchServices.GetBranch(customer.branchId);
-                var rpt = _accountServices.MaprptSource(transactionHistories, branch, customer);
-
-                string accountnumber = null;
-                if (!transactionHistories.Any())
-                {
-                    return Json(new { success = true, status = false, message = "No data was found." }, JsonRequestBehavior.AllowGet);
-
-                }
-                else
-                {
-                    accountnumber = transactionHistories.FirstOrDefault().AccountNumber;
-                }
-                this.HttpContext.Session["rptSource"] = rpt;
-                this.HttpContext.Session["rptType"] = "ReportParameterLess";
-                this.HttpContext.Session["ReportName"] = $"IAccountStatement.rpt";
-                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/Statement/IAccountStatement.rpt";
-                this.HttpContext.Session["rpttitle"] = $"{accountnumber}_Statement";
-            }
-            else if (path == "by_date_history")
-            {
-                //this.HttpContext.Session["rptSource"] = _helper._object.Receipts;
-                //this.HttpContext.Session["DateFrom"] = datefrom;
-                //this.HttpContext.Session["DateTo"] = dateto;
-            }
-
-
-            return Json(new { success = true, status = false, message = "OK" }, JsonRequestBehavior.AllowGet);
-
         }
+
+        private void SetSessionVariables(object rptSource, string reportName, string reportPath, string reportTitle, string rptType = null)
+        {
+            this.HttpContext.Session["rptSource"] = rptSource;
+            this.HttpContext.Session["ReportName"] = reportName;
+            this.HttpContext.Session["rptpath"] = reportPath;
+            this.HttpContext.Session["rpttitle"] = reportTitle;
+            this.HttpContext.Session["rptType"] = rptType;
+        }
+
+        private void SetSessionVariables(string datefrom, string dateto)
+        {
+            this.HttpContext.Session["DateFrom"] = datefrom;
+            this.HttpContext.Session["DateTo"] = dateto;
+        }
+
     }
 }

@@ -431,6 +431,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             private global::System.Data.DataColumn columnAmountInWord;
             
+            private global::System.Data.DataColumn columnReceiptTitle;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public TransactionDataTable() {
@@ -1074,6 +1076,14 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ReceiptTitleColumn {
+                get {
+                    return this.columnReceiptTitle;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1185,7 +1195,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         string BarCode, 
                         decimal ClosingBalance, 
                         decimal OpeningBalance, 
-                        string AmountInWord) {
+                        string AmountInWord, 
+                        string ReceiptTitle) {
                 TransactionRow rowTransactionRow = ((TransactionRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Coin1,
@@ -1263,7 +1274,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         BarCode,
                         ClosingBalance,
                         OpeningBalance,
-                        AmountInWord};
+                        AmountInWord,
+                        ReceiptTitle};
                 rowTransactionRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowTransactionRow);
                 return rowTransactionRow;
@@ -1362,6 +1374,7 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 this.columnClosingBalance = base.Columns["ClosingBalance"];
                 this.columnOpeningBalance = base.Columns["OpeningBalance"];
                 this.columnAmountInWord = base.Columns["AmountInWord"];
+                this.columnReceiptTitle = base.Columns["ReceiptTitle"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1519,6 +1532,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 base.Columns.Add(this.columnOpeningBalance);
                 this.columnAmountInWord = new global::System.Data.DataColumn("AmountInWord", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAmountInWord);
+                this.columnReceiptTitle = new global::System.Data.DataColumn("ReceiptTitle", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReceiptTitle);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2880,6 +2895,22 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ReceiptTitle {
+                get {
+                    try {
+                        return ((string)(this[this.tableTransaction.ReceiptTitleColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReceiptTitle\' in table \'Transaction\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransaction.ReceiptTitleColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsCoin1Null() {
                 return this.IsNull(this.tableTransaction.Coin1Column);
             }
@@ -3788,6 +3819,18 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetAmountInWordNull() {
                 this[this.tableTransaction.AmountInWordColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsReceiptTitleNull() {
+                return this.IsNull(this.tableTransaction.ReceiptTitleColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetReceiptTitleNull() {
+                this[this.tableTransaction.ReceiptTitleColumn] = global::System.Convert.DBNull;
             }
         }
         
