@@ -117,7 +117,9 @@ namespace CBS.BusinessService
                 var cusResponseObject = await _identityConfigApiHelper.GetAsync<ResponseObject<List<PermissionMenuLoader>>>(APICallHelper.GetAssignPemissions);
                 if (cusResponseObject!=null)
                 {
-                    return cusResponseObject.ApiResponseData.Data;
+                    MenuLoaderHelper menuLoaderHelper = new MenuLoaderHelper();
+                    List<PermissionMenuLoader> menuLoadersWithParentNames = menuLoaderHelper.AddParentNames(cusResponseObject.ApiResponseData.Data);
+                    return menuLoadersWithParentNames;
                 }
                 return null;
             }

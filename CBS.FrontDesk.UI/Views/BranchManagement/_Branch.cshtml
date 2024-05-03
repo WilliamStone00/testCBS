@@ -2,161 +2,180 @@
 
 @using (Html.BeginForm("AddOrUpdate", "BranchManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
-    <input type="hidden" name="ServiceOption" value="branch" id="ServiceOption" />
+    <fieldset class="fieldset-custom">
+        <legend>Branch Information</legend>
+        <input type="hidden" name="ServiceOption" value="branch" id="ServiceOption" />
 
-    <div class="row mt-2 gy-4">
         <div class="row mt-2 gy-4">
-            <div class="col-md-3">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.BranchCode, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.BranchCode, "", new { @class = "text-danger" })
-                    <label>Branch code</label>
+            <div class="row mt-2 gy-4">
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.BranchCode, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.BranchCode, "", new { @class = "text-danger" })
+                        <label>Branch code</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.Name, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.Name, "", new { @class = "text-danger" })
-                    <label>Branch name</label>
+                <div class="col-md-9">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.Name, "", new { @class = "text-danger" })
+                        <label>Branch name</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-3">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.Branch.IsHeadOffice, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="isActive">Set as head office branch</label>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.Branch.ActiveStatus, new { @class = "form-check-input" })
+                        <label class="form-check-label" for="isActive">Active</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-12">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.Branch.ActiveStatus, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="isActive">Active</label>
+                @if (Model.Branch.Id != null)
+                {
+                    if (Model.Branch.IsHeadOffice)
+                    {
+                        <span class="badge bg-success">Head-Office</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-dark">Branch-office</span>
+                    }
+                }
+                else
+                {
+                    <div class="col-6">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.Branch.IsHeadOffice, new { @class = "form-check-input" })
+                            <label class="form-check-label" for="isActive">Set as head office branch</label>
+                        </div>
+                    </div>
+                }
+
+
+                <div class="col-md-5">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.Address, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.Address, "", new { @class = "text-danger" })
+                        <label>Address</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-5">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.Address, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.Address, "", new { @class = "text-danger" })
-                    <label>Address</label>
+                <div class="col-md-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.PBox, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.PBox, "", new { @class = "text-danger" })
+                        <label>PBox</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.PBox, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.PBox, "", new { @class = "text-danger" })
-                    <label>PBox</label>
+                <div class="col-md-4">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.Email, "", new { @class = "text-danger" })
+                        <label>Email</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.Email, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.Email, "", new { @class = "text-danger" })
-                    <label>Email</label>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.Location, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.Location, "", new { @class = "text-danger" })
+                        <label>Location</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.Location, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.Location, "", new { @class = "text-danger" })
-                    <label>Location</label>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.Telephone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.Telephone, "", new { @class = "text-danger" })
+                        <label>Telephone</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.Telephone, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.Telephone, "", new { @class = "text-danger" })
-                    <label>Telephone</label>
+                @*<div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.Branch.Capital, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Branch.Capital, "", new { @class = "text-danger" })
+                            <label>Capital</label>
+                        </div>
+                    </div>*@
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.RegistrationNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.RegistrationNumber, "", new { @class = "text-danger" })
+                        <label>Registration number</label>
+                    </div>
                 </div>
-            </div>
-            @*<div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.Capital, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.Capital, "", new { @class = "text-danger" })
-                    <label>Capital</label>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.ImmatriculationNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.ImmatriculationNumber, "", new { @class = "text-danger" })
+                        <label>Immatriculation number</label>
+                    </div>
                 </div>
-            </div>*@
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.RegistrationNumber, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.RegistrationNumber, "", new { @class = "text-danger" })
-                    <label>Registration number</label>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.TaxPayerNUmber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.TaxPayerNUmber, "", new { @class = "text-danger" })
+                        <label>TaxPayerNUmber</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.ImmatriculationNumber, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.ImmatriculationNumber, "", new { @class = "text-danger" })
-                    <label>Immatriculation number</label>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.PBox, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.PBox, "", new { @class = "text-danger" })
+                        <label>Box code</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.TaxPayerNUmber, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.TaxPayerNUmber, "", new { @class = "text-danger" })
-                    <label>TaxPayerNUmber</label>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.WebSite, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.WebSite, "", new { @class = "text-danger" })
+                        <label>Web site</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.PBox, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.PBox, "", new { @class = "text-danger" })
-                    <label>Box code</label>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.DateOfCreation, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.DateOfCreation, "", new { @class = "text-danger" })
+                        <label>Date of creation</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.WebSite, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.WebSite, "", new { @class = "text-danger" })
-                    <label>Web site</label>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.BankInitial, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.BankInitial, "", new { @class = "text-danger" })
+                        <label>Bank initial</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.DateOfCreation, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.DateOfCreation, "", new { @class = "text-danger" })
-                    <label>Date of creation</label>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.Motto, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.Motto, "", new { @class = "text-danger" })
+                        <label>Motto</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.BankInitial, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.BankInitial, "", new { @class = "text-danger" })
-                    <label>Bank initial</label>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.HeadOfficeTelehoneNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.HeadOfficeTelehoneNumber, "", new { @class = "text-danger" })
+                        <label>Head office telehone number</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.Motto, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.Motto, "", new { @class = "text-danger" })
-                    <label>Motto</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.HeadOfficeTelehoneNumber, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.HeadOfficeTelehoneNumber, "", new { @class = "text-danger" })
-                    <label>Head office telehone number</label>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Branch.HeadOfficeAddress, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Branch.HeadOfficeAddress, "", new { @class = "text-danger" })
-                    <label>Head office address</label>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Branch.HeadOfficeAddress, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Branch.HeadOfficeAddress, "", new { @class = "text-danger" })
+                        <label>Head office address</label>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="mt-4">
-        @if (Model.Branch.Id == null)
-        {
-            @Html.HiddenFor(m => m.Branch.BankId)
-            <button type="submit" class="btn btn-primary me-2">Save</button>
-            <input type="hidden" name="Action" value="insert" id="Action" />
-        }
-        else
-        { <button type="submit" class="btn btn-primary me-2">Update</button>
-            @Html.HiddenFor(m => m.Branch.Id)
-            <input type="hidden" name="Action" value="update" id="Action" />
-        }
-    </div>
+        <div class="mt-4">
+            @if (Model.Branch.Id == null)
+            {
+                @Html.HiddenFor(m => m.Branch.BankId)
+                <button type="submit" class="btn btn-primary me-2">Save</button>
+                <input type="hidden" name="Action" value="insert" id="Action" />
+            }
+            else
+            { <button type="submit" class="btn btn-primary me-2">Update</button>
+                @Html.HiddenFor(m => m.Branch.Id)
+                <input type="hidden" name="Action" value="update" id="Action" />
+            }
+        </div>
+    </fieldset>
 }

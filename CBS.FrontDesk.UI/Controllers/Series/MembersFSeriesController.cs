@@ -89,7 +89,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                         ViewBag.message = "Empty data was submited. Please enter search criterial";
                         return PartialView("_DataNotFound", new CashDesk());
                     }
-                    var cashDesk = await _cashDeskService.GetAccountByAccountNumberSearch(KEY);
+                    var cashDesk = await _cashDeskService.GetAccountByAccountNumberSearch(KEY,"F5");
                     if (cashDesk == null)
                     {
 
@@ -153,7 +153,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                         var receiptTransactionReports = new List<TransactionReportDS> { receiptRpt };
                         var receiptRptSource = receiptTransactionReports.ToList();
 
-                        SetSessionVariables(receiptRptSource, "Receipts.rpt", "~/AppFiles/Reporting/Transactions/Reciepts/Receipts.rpt", $"{receiptTransaction.TransactionRef}");
+                        SetSessionVariables(receiptRptSource, "Receipts.rpt", "~/AppFiles/Reporting/Transactions/Reciepts/Receipts.rpt", $"{receiptTransaction.TransactionReference}");
                         break;
 
                     case "customer_account_transaction_rpt":

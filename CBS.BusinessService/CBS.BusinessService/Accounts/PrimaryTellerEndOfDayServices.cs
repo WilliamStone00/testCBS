@@ -81,7 +81,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
              
-                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<SubTellerProvioningHistory>>(APICallHelper.PrimaryTellerEndOfDay, model);
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<SubTellerProvioningHistory>>(APICallHelper.EndOfDayAccountant, model);
                     if (response.IsSuccess)
                     {
 

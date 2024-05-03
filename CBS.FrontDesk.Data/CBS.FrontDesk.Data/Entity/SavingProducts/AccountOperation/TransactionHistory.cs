@@ -18,14 +18,13 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public bool IsExternalOperation { get; set; }
         public string ExternalApplicationName { get; set; }
         public string Currency { get; set; }
-        public string TransactionReference { get; set; }
         public decimal Credit { get; set; }
         public string AccountId { get; set; }
         public string AccountNumber { get; set; }
         public string TransactionType { get; set; }
         public string OperationType { get; set; }//Debit or Credit
         public string Status { get; set; } = "PENDING";
-        public string TransactionRef { get; set; }
+        public string TransactionReference { get; set; }
         public decimal Tax { get; set; }
         public string Operation { get; set; }
         public decimal PreviousBalance { get; set; }

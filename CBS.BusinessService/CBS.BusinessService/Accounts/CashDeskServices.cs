@@ -19,6 +19,7 @@ using CBS.FrontDesk.Data.UserManagement;
 using System.Web;
 using CBS.BusinessService.UserManagement;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -162,7 +163,7 @@ namespace CBS.BusinessService.Accounts
                     PreviousBalance = t.PreviousBalance,
                     Tax = t.Tax,
                     TellerName = t.Teller.name,
-                    TransactionRef = t.TransactionRef,
+                    TransactionRef = t.TransactionReference,
                     TransactionType = t.Operation,
                     AccountName = t.Account.AccountName,
                     BranchAddress = b.Address,
@@ -189,7 +190,7 @@ namespace CBS.BusinessService.Accounts
                     SourceType = t.SourceType,
                     Status = t.Status, 
                     ReceiptTitle=t.ReceiptTitle,
-                    BarCode = BarCodeHelper.GenerateBarcodeImage($"{t.TransactionRef}-{t.OriginalDepositAmount}"),
+                    BarCode = BarCodeHelper.GenerateBarcodeImage($"{c.customerId}-{t.TransactionReference}-{t.OriginalDepositAmount}"),
 
                 };
                 return rpt;
@@ -231,6 +232,7 @@ namespace CBS.BusinessService.Accounts
             }
             return null;
         }
+
         public async Task<ExecutionMessages> BulkDeposi(List<BulkDeposit> bulkDeposits)
         {
             try
@@ -307,7 +309,7 @@ namespace CBS.BusinessService.Accounts
             return ExecutionMessage;
         }
 
-        public async Task<CashDesk> GetAccountByAccountNumberSearch(string customerId)
+        public async Task<CashDesk> GetAccountByAccountNumberSearch(string customerId, string path)
         {
             try
             {
@@ -318,7 +320,12 @@ namespace CBS.BusinessService.Accounts
                     var Accounts = cusResponseObject;
                     var customer = await GetCustomer(customerId);
                     var branch = await _branchServices.GetBranch(customer.branchId);
-                    var loans = await _loanServices.GetLoanByCustomerID(customer.customerId);
+                    var loans=new List<Loan>();
+                    if (path== "repayment" || path == "F5")
+                    {
+                        loans = (from a in await _loanServices.GetLoanByCustomerID(customer.customerId) select a).ToList();
+                        
+                    }
                     customer.name = $"{customer.firstName} {customer.lastName}";
                     var cashDesk = new CashDesk { Branch = branch, Accounts = Accounts, BulkDeposit = new BulkDeposit(), BulkDeposits = BuidObject(Accounts), Customer = customer, LoanId = null, CustomerId = customerId, Loans = loans.ToList() };
                     return cashDesk;
@@ -383,7 +390,7 @@ namespace CBS.BusinessService.Accounts
             return accounts.Select(a => new BulkDeposit
             {
                 AccountNumber = a.accountNumber,
-                AccountType = a.accountType,
+                AccountType = a.product.name,
                 Amount = 0,
                 Balance = a.balance,
                 currencyNotes = new CurrencyNotes(),

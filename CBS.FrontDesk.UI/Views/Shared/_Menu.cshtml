@@ -5,94 +5,82 @@
 @if (menuItems != null && menuItems.Any())
 {
     <aside id="layout-menu" class="layout-menu menu-vertical menu bg-white">
-        <div class="app-brand demo">
-            <a href="/" class="app-brand-link">
+        <div class="app-brand demo d-flex align-items-center">
+            <a href="/" class="app-brand-link me-auto">
                 <span class="app-brand-logo demo">
                     <span style="color: var(--bs-primary)">
-                        <img src="~/AppFiles/Images/SideImageHeader.png" alt="TrustBank Logo" />
+                        <img src="~/AppFiles/Images/SideImageHeader_login.png" alt="TrustBank Logo" style="max-width: 100px; height: auto;" /> <!-- Adjust the max-width as needed -->
                     </span>
                 </span>
             </a>
 
-            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11.4854 4.88844C11.0081 4.41121 10.2344 4.41121 9.75715 4.88844L4.51028 10.1353C4.03297 10.6126 4.03297 11.3865 4.51028 11.8638L9.75715 17.1107C10.2344 17.5879 11.0081 17.5879 11.4854 17.1107C11.9626 16.6334 11.9626 15.8597 11.4854 15.3824L7.96672 11.8638C7.48942 11.3865 7.48942 10.6126 7.96672 10.1353L11.4854 6.61667C11.9626 6.13943 11.9626 5.36568 11.4854 4.88844Z"
-                          fill="currentColor"
-                          fill-opacity="0.6" />
-                    <path d="M15.8683 4.88844L10.6214 10.1353C10.1441 10.6126 10.1441 11.3865 10.6214 11.8638L15.8683 17.1107C16.3455 17.5879 17.1192 17.5879 17.5965 17.1107C18.0737 16.6334 18.0737 15.8597 17.5965 15.3824L14.0778 11.8638C13.6005 11.3865 13.6005 10.6126 14.0778 10.1353L17.5965 6.61667C18.0737 6.13943 18.0737 5.36568 17.5965 4.88844C17.1192 4.41121 16.3455 4.41121 15.8683 4.88844Z"
-                          fill="currentColor"
-                          fill-opacity="0.38" />
-                </svg>
-            </a>
+            <button class="layout-menu-toggle btn btn-outline-primary btn-sm">
+                <i class="fas fa-bars"></i> <!-- Font Awesome icon for bars -->
+            </button>
         </div>
-        <!-- Rest of your menu HTML -->
+        <hr />
         <div class="menu-inner-shadow"></div>
+        <div class="d-flex align-items-center">
+            <div class="user-image me-3 ml-1 d-flex align-items-center justify-content-center">
+                <img src="@Session["Photo"].ToString()" alt="User Profile Image" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" />
+            </div>
+            <div class="user-info">
+                <span class="user-name">@Session["FullName"].ToString()</span>
+            </div>
+        </div>
+
+        <hr />
         <ul class="menu-inner py-1">
-            @foreach (var group in menuItems.Select(m => m.MenuGroup).Distinct()) // Loop through distinct menu groups
+
+            @foreach (var item in menuItems.Where(m => m.ParentId == 0 && m.IsVisible))
             {
-                // Get unique menu items for the current group based on MenuMasterId
-                var uniqueGroupMenuItems = menuItems.Where(m => m.MenuGroup == group && m.ParentId == 0).GroupBy(m => m.MenuMasterId).Select(g => g.First());
-
-                // Check if any menu item in the group has child menus
-                var groupHasChildMenus = uniqueGroupMenuItems.Any(m => menuItems.Any(cm => cm.ParentId == m.MenuMasterId));
-
-                // Render the group only if it has associated menu items with child menus
-                if (groupHasChildMenus)
-                {
-                    <li class="menu-header fw-medium mt-4">
-                        <span class="menu-header-text">@group</span>
-                    </li>
-
-                    foreach (var menuItem in uniqueGroupMenuItems) // Loop through unique menu items in the group
+                <li class="menu-item">
+                    @if (menuItems.Any(m => m.ParentId == item.MenuMasterId && m.IsVisible))
                     {
-                        // Check if the current menu item has child menus
-                        var menuItemHasChildMenus = menuItems.Any(cm => cm.ParentId == menuItem.MenuMasterId);
-
-                        // Render sub-menu only if the current menu item has child menus
-                        if (menuItemHasChildMenus)
-                        {
-                            var renderedItems = new HashSet<int>();
-                            @RenderSubMenu(menuItem, menuItems, renderedItems)
-                        }
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="@item.IconClass" style="margin-right: 10px;"></i> <!-- Added margin -->
+                            <div style="color: black;">@item.MenuText</div> <!-- Menu text colored black -->
+                        </a>
+                        <ul class="menu-sub">
+                            @foreach (var subItem in menuItems.Where(m => m.ParentId == item.MenuMasterId && m.IsVisible))
+                            {
+                                <li class="menu-item">
+                                    @if (menuItems.Any(m => m.ParentId == subItem.MenuMasterId && m.IsVisible))
+                                    {
+                                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                                            <div style="color: black;">@subItem.MenuText</div> <!-- Menu text colored black -->
+                                        </a>
+                                        <ul class="menu-sub">
+                                            @foreach (var subSubItem in menuItems.Where(m => m.ParentId == subItem.MenuMasterId && m.IsVisible))
+                                            {
+                                                <li class="menu-item">
+                                                    <a href="@Url.Action(subSubItem.ActionName, subSubItem.ControllerName)" class="menu-link">
+                                                        <div style="color: black;">@subSubItem.MenuText</div> <!-- Menu text colored black -->
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action(subItem.ActionName, subItem.ControllerName)" class="menu-link">
+                                            <div style="color: black;">@subItem.MenuText</div> <!-- Menu text colored black -->
+                                        </a>
+                                    }
+                                </li>
+                            }
+                        </ul>
                     }
-                }
+                    else
+                    {
+                        <a href="@Url.Action(item.ActionName, item.ControllerName)" class="menu-link">
+                            <i class="@item.IconClass" style="margin-right: 10px;"></i> <!-- Added margin -->
+                            <div style="color: black;">@item.MenuText</div> <!-- Menu text colored black -->
+                        </a>
+                    }
+                </li>
             }
         </ul>
     </aside>
 }
 
-@helper RenderSubMenu(CBS.FrontDesk.Data.Entity.DatabaseMenus menuItem, List<CBS.FrontDesk.Data.Entity.DatabaseMenus> menuItems, HashSet<int> renderedItems)
-{
-    var hasChildItems = menuItems.Any(m => m.ParentId == menuItem.MenuMasterId);
-
-    if (hasChildItems && !renderedItems.Contains(menuItem.MenuMasterId))
-    {
-        renderedItems.Add(menuItem.MenuMasterId);
-
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle text-dark">
-                <i class="@menuItem.IconClass"></i> <div> @menuItem.MenuText</div>
-            </a>
-            <ul class="menu-sub">
-                @foreach (var childItem in menuItems.Where(m => m.ParentId == menuItem.MenuMasterId))
-                {
-                    // Check if the child item is recurring
-                    var isRecurring = renderedItems.Contains(childItem.MenuMasterId);
-
-                    if (!isRecurring)
-                    {
-                        <li class="menu-item">
-                            <a href="@Url.Action(childItem.ActionName, childItem.ControllerName)" class="menu-link">
-                                <div class="text-dark">@childItem.MenuText</div>
-                            </a>
-                            @if (menuItems.Any(m => m.ParentId == childItem.MenuMasterId))
-                            {
-                                @RenderSubMenu(childItem, menuItems, renderedItems)
-                            }
-                        </li>
-                    }
-                }
-            </ul>
-        </li>
-    }
-}

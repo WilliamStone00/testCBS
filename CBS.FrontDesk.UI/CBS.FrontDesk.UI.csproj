@@ -371,7 +371,10 @@
     <Compile Include="Controllers\Commitee\LoanCommiteeController.cs" />
     <Compile Include="Controllers\BudgetManagement\BudgetManagementController.cs" />
     <Compile Include="Controllers\Configuration\Localization\CountryController.cs" />
+    <Compile Include="Controllers\Configuration\Organ\BankController.cs" />
     <Compile Include="Controllers\Configuration\Organ\BranchManagementController.cs" />
+    <Compile Include="Controllers\Configuration\Organ\EconomicActivityController.cs" />
+    <Compile Include="Controllers\Configuration\Organ\MembersCategoryController.cs" />
     <Compile Include="Controllers\CustomerManagement\IndividualController.cs" />
     <Compile Include="Controllers\CustomerManagement\Policy\MemberAccountActivationPolicyController.cs" />
     <Compile Include="Controllers\ErrorHandler\ErrorController.cs" />
@@ -2221,6 +2224,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
+    <Content Include="Scripts\Js\Crud\Bank\Banks.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\CashDeskOperations.js" />
     <Content Include="Scripts\Js\Crud\Collateral\Collateral.js" />
     <Content Include="Scripts\Js\Crud\MembersFSeries\FSeries.js" />
@@ -2660,6 +2664,16 @@
     <Content Include="Views\Dashboard\BranchOffice.cshtml" />
     <Content Include="Views\UserManagement\FLoginChangePassword.cshtml" />
     <Content Include="Views\UserManagement\_UserDetails.cshtml" />
+    <Content Include="Views\Bank\_Bank.cshtml" />
+    <Content Include="Views\Bank\_BankData.cshtml" />
+    <Content Include="Views\Bank\_ImageUploader.cshtml" />
+    <Content Include="Views\Bank\Index.cshtml" />
+    <Content Include="Views\EconomicActivity\_EconomicActivity.cshtml" />
+    <Content Include="Views\EconomicActivity\_EconomicActivityData.cshtml" />
+    <Content Include="Views\EconomicActivity\Index.cshtml" />
+    <Content Include="Views\MembersCategory\Index.cshtml" />
+    <Content Include="Views\MembersCategory\_CustomerCategoryData.cshtml" />
+    <Content Include="Views\MembersCategory\_CustomerCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

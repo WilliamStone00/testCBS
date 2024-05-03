@@ -145,6 +145,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {
             var conf = await _savingProductServices.GetSavingConfigurationAggregates();
             ViewBag.Statuses = conf.primaryTellerEODStatuses.ToList();
+            ViewBag.ClosedStatus = conf.accountantEODStatuses.ToList();
+            ViewBag.Statuses = conf.Statuses.ToList();
             return true;
         }
     }

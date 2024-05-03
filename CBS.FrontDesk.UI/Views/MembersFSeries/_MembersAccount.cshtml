@@ -32,6 +32,7 @@
                                                 <th>Ordinary accounts</th>
                                                 <th>Balance</th>
                                                 <th>Blocked</th>
+                                                <th>Actual Balance</th>
                                                 <th style="display:none">Balance</th>
                                                 <th style="display:none">Blocked</th>
                                                 <th>Account Status</th>
@@ -41,16 +42,20 @@
                                         <tbody>
                                             @foreach (var d in Model.Accounts.OrderBy(t => t.accountType))
                                             {
+                                                decimal ActualBalance = d.balance - d.blockedAmount;
                                                 <tr>
                                                     <td style="width: 10%">@d.accountNumber</td>
                                                     <td style="width: 35%">@d.product.name</td>
                                                     <td style="width: 25%" class="float-right">
                                                         @d.balance.ToString("#,##0.0")
                                                     </td>
+
                                                     <td style="width: 20%" class="float-right">
                                                         @d.blockedAmount.ToString("#,##0.0")
                                                     </td>
-
+                                                    <td style="width: 25%" class="float-right">
+                                                        @ActualBalance.ToString("#,##0.0")
+                                                    </td>
                                                     <td style="width: 25%; display:none" class="float-right">
                                                         <input type="number" class="form-control amount-input shadow-input-boxes" readonly value="@d.balance">
                                                     </td>
@@ -68,7 +73,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td colspan="2" style="text-align: right;"><strong>Total:</strong></td>
+                                                <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
                                                 <td>
                                                     <span class="formatted-amount shadow-box float-start" id="tableTotalAccountBalance">0</span>
                                                 </td>

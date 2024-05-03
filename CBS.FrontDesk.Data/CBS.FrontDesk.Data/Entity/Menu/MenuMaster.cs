@@ -45,6 +45,7 @@ namespace CBS.FrontDesk.Data.Entity
         public Guid RoleID { get; set; }
         public string RoleName { get; set; }
         public string FullName { get; set; }
+        public string ParentName { get; set; }
         public bool Create { get; set; }
         public bool Read { get; set; }
         public bool Delete { get; set; }
@@ -73,6 +74,7 @@ namespace CBS.FrontDesk.Data.Entity
     // Root myDeserializedClass = JsonConvert.DeserializeObject<List<Root>>(myJsonResponse);
 
 
+    
 
 
 

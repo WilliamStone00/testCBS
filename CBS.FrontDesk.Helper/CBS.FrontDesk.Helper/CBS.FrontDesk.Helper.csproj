@@ -125,7 +125,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="MenuLoaderHelper.cs" />
     <Compile Include="Helper\APICallHelper.cs" />
     <Compile Include="Helper\BaseUtilities.cs" />
     <Compile Include="Helper\ExportOption.cs" />

@@ -125,20 +125,7 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
             ImageVirtualNoSignaturePath = "~/AppFiles/Images/no signature.png";
         }
 
-        public class CustomerCategory
-        {
-            public DateTime createdDate { get; set; }
-            public string createdBy { get; set; }
-            public DateTime modifiedDate { get; set; }
-            public string modifiedBy { get; set; }
-            public DateTime deletedDate { get; set; }
-            public string deletedBy { get; set; }
-            public int objectState { get; set; }
-            public bool isDeleted { get; set; }
-            public string customerCategoryId { get; set; }
-            public string categoryCode { get; set; }
-            public string categoryName { get; set; }
-        }
+       
 
         public class CustomerDocument
         {

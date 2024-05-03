@@ -52,7 +52,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                         return PartialView("_DataNotFound", new CashDesk());
                     }
 
-                    var cashDesk = await _cashDeskService.GetAccountByAccountNumberSearch(KEY);
+                    var cashDesk = await _cashDeskService.GetAccountByAccountNumberSearch(KEY, path);
                     if (cashDesk == null)
                     {
 
