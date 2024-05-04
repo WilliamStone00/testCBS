@@ -423,6 +423,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TransactionDS.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Filter\AuthorizeAttributeEASIMS.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

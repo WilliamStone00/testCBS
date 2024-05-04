@@ -13,6 +13,8 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration.Organ
 {
+    [CheckSessionTimeOutAttribute]
+
     public class BranchManagementController : BaseController
     {
         // GET: BranchManagement

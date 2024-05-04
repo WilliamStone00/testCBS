@@ -10,6 +10,8 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
+    [CheckSessionTimeOutAttribute]
+
     public class LoanProductCollateralController : BaseController
     {
         // GET: LoanProductCollateral

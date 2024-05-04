@@ -13,6 +13,8 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
 {
+    [CheckSessionTimeOutAttribute]
+
     public class LoanController : BaseController
     {
         // GET: Loan

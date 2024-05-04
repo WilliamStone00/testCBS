@@ -9,6 +9,8 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Commitee
 {
+    [CheckSessionTimeOutAttribute]
+
     public class LoanCommiteeController : BaseController
     {
         // GET: LoanCommitee

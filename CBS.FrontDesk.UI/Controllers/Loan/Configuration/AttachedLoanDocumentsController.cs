@@ -12,6 +12,8 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
+    [CheckSessionTimeOutAttribute]
+
     public class AttachedLoanDocumentsController : BaseController
     {
         // GET: AttachedLoanDocuments

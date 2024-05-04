@@ -21,6 +21,8 @@ using System.IO;
 
 namespace CBS.FrontDesk.UI.Controllers.MemberOperation
 {
+    [CheckSessionTimeOutAttribute]
+
     public class MemberOperationController : BaseController
     {
         // GET: MemberOperation

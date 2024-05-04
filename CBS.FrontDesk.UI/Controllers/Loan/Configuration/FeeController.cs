@@ -12,6 +12,8 @@ using CBS.BusinessService.Config;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
+    [CheckSessionTimeOutAttribute]
+
     public class FeeController : BaseController
     {
         // GET: Fee

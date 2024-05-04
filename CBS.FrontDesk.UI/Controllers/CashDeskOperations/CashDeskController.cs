@@ -10,6 +10,8 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 {
+    [CheckSessionTimeOutAttribute]
+
     public class CashDeskController : BaseController
     {
         private readonly CashDeskServices _cashDeskService;

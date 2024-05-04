@@ -13,6 +13,8 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.RoleManagement
 {
+    [CheckSessionTimeOutAttribute]
+
     public class RoleController : BaseController
     {
         // GET: Role

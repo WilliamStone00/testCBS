@@ -10,6 +10,8 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.RoleManagement
 {
+    [CheckSessionTimeOutAttribute]
+
     public class RolePermissionController : BaseController
     {
         // GET: RolePermission

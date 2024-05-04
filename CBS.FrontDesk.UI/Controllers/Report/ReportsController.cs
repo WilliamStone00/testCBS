@@ -11,6 +11,7 @@ using System.Web.UI;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
+    [CheckSessionTimeOutAttribute]
 
     public class ReportsController : Controller
     {

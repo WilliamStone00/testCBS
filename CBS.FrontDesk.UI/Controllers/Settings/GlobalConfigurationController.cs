@@ -6,6 +6,8 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Settings
 {
+    [CheckSessionTimeOutAttribute]
+
     public class GlobalConfigurationController : BaseController
     {
         // GET: GlobalConfiguration
