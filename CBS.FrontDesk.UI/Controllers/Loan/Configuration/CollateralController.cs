@@ -11,6 +11,8 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
+    [CheckSessionTimeOutAttribute]
+
     public class CollateralController : BaseController
     {
         // GET: Collateral

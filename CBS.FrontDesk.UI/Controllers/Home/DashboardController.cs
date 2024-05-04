@@ -6,6 +6,8 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Home
 {
+    [CheckSessionTimeOutAttribute]
+
     public class DashboardController : BaseController
     {
         // GET: Dashboard

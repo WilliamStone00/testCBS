@@ -13,6 +13,7 @@ using CBS.BusinessService.Config;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
+    [CheckSessionTimeOutAttribute]
     public class DocumentController : BaseController
     {
         // GET: Document

@@ -21,7 +21,8 @@ using CBS.BusinessService.MembersAccountSettings;
 
 namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
 {
-    //[SessionTimeoutFilterAttribute]
+    [CheckSessionTimeOutAttribute]
+
     public class IndividualController : BaseController
     {
         // GET: Individual

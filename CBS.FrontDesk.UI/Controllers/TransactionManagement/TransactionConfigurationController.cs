@@ -13,6 +13,8 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
+    [CheckSessionTimeOutAttribute]
+
     public class TransactionConfigurationController : BaseController
     {
         // GET: TransactionConfiguration

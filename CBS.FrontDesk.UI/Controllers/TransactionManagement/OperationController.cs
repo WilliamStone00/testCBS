@@ -12,6 +12,8 @@ using CBS.BusinessService.Config;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
+    [CheckSessionTimeOutAttribute]
+
     public class OperationController : BaseController
     {
         // GET: Operation/Transfer

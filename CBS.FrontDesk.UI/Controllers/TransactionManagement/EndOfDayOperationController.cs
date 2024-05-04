@@ -11,6 +11,8 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
+    [CheckSessionTimeOutAttribute]
+
     public class EndOfDayOperationController : BaseController
     {
         // GET: EndOfDayOperation

@@ -13,6 +13,8 @@ using CBS.BusinessService.Config;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
+    [CheckSessionTimeOutAttribute]
+
     public class PeriodController : BaseController
     {
         // GET: Period

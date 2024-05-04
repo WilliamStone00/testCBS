@@ -12,7 +12,8 @@ using CBS.BusinessService;
 
 namespace CBS.FrontDesk.UI.Controllers.UserManagement
 {
-    //[SessionTimeoutFilterAttribute]
+    [CheckSessionTimeOutAttribute]
+
     public class UserManagementController : BaseController
     {
         // GET: UserManagement

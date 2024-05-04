@@ -13,7 +13,8 @@ using CBS.FrontDesk.Data.Entity;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration.Localization
 {
-    //[SessionTimeoutFilterAttribute]
+    [CheckSessionTimeOutAttribute]
+
     public class CountryController : BaseController
     {
         // GET: Country

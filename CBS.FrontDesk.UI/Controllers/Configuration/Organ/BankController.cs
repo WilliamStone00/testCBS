@@ -10,6 +10,8 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration.Organ
 {
+    [CheckSessionTimeOutAttribute]
+
     public class BankController : BaseController
     {
         // GET: Bank

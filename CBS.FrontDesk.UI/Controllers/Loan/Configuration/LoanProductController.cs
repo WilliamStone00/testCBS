@@ -14,6 +14,8 @@ using CBS.BusinessService.Config;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
+    [CheckSessionTimeOutAttribute]
+
     public class LoanProductController : BaseController
     {
         // GET: LoanProduct

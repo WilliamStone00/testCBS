@@ -16,6 +16,8 @@ using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
+    [CheckSessionTimeOutAttribute]
+
     public class SavingController : BaseController
     {
         // GET: TransactionManagement
