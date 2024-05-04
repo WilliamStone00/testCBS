@@ -17,7 +17,7 @@ namespace CBS.BusinessService.Accounting
     public class TellerCashReplenishmentServices : BaseService
     {
         private readonly ApiCallerHelper _accountingApiCallerHelper;
-        
+
 
         public TellerCashReplenishmentServices()
         {
@@ -97,7 +97,7 @@ namespace CBS.BusinessService.Accounting
                 throw (ex);
             }
         }
-    
+
 
         public async Task<DetailsDto> GetCashReplenimentRequest(string Id)
         {
@@ -107,7 +107,7 @@ namespace CBS.BusinessService.Accounting
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<DetailsDto>>(url);
                 if (couApiResponse.IsSuccess)
                 {
-                    
+
                     return couApiResponse.ApiResponseData.Data;
                 }
                 return new DetailsDto();
@@ -164,7 +164,86 @@ namespace CBS.BusinessService.Accounting
                 throw ex;
             }
         }
-      
+
+        public async Task<IExecutionMessages> Update(CashInfusion cashInfusionModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ExecutionMessages> Delete(string id)
+        {
+            try
+            {
+                var objAccountCategory = await GetCashReplenimentRequest(id);
+
+                var inResponse = await _accountingApiCallerHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.TellerCashReplenishmentRequestApproval, id));
+                if (inResponse.IsSuccess)
+                {
+
+                    GetExecutionMessages(inResponse, true, $"{objAccountCategory.requesterUserId} cashreplenishement request has been deleted successfully", MessagesResults.Success,
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
+
+
+                }
+                else
+                {
+                    // Handle failure scenario
+                    GetExecutionMessages(objAccountCategory, false, $"{objAccountCategory.requesterUserId} cashreplenishement request  failed to be deleted", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+            }
+            return ExecutionMessage;
+        }
+
+        //public async Task<ExecutionMessages> Update(CashInfusionRequest model)
+        //{
+        //    try
+        //    {
+
+        //        var OperationEvent = await GetCashReplenimentRequest(model.Id);
+        //        if (OperationEvent != null)
+        //        {
+        //            //model.BankId = this.BankId;
+        //            ////model.BranchId = this.BranchId;
+        //            ////model.OrganizationId = this.OrganizationId;
+        //            //OperationEvent.DeterminationAccountId = model.DeterminationAccountId;
+        //            //OperationEvent.BalancingAccountId = model.BalancingAccountId;
+        //            //OperationEvent.AccountingRuleEntryName = model.AccountingRuleEntryName;
+        //            //OperationEvent.BookingDirection = model.BookingDirection;
+        //            //OperationEvent.BankId = model.BankId;
+        //            //OperationEvent.OperationEventAttributeId = model.OperationEventAttributeId;
+
+        //            var response = await -_.PutAsync<ServiceResponse<AccountingRuleEntry>>(string.Format(APICallHelper.Get_Update_Delete_AccountingRuleEntry, model.Id), OperationEvent);
+        //            if (response.IsSuccess)
+        //            {
+        //                // Successful creation
+        //                GetExecutionMessages(response, true, $"", MessagesResults.Success,
+        //                    ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+        //                return ExecutionMessage;
+        //            }
+        //            else
+        //            {
+        //                // Failed creation
+        //                GetExecutionMessages(model, false, (string)"", MessagesResults.Failed,
+        //                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+        //                return ExecutionMessage;
+        //            }
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log and handle exception
+        //        GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+        //            SystemMessageStatus.Failed.ToString(), ex);
+        //    }
+        //    return ExecutionMessage;
+        //}
+
 
     }
 }

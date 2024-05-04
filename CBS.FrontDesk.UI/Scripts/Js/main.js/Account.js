@@ -1,5 +1,102 @@
 ﻿$(document).ready(function () {
-     
+    //$(document).on('change', '#Document_typeBS', function () {
+    //    var selectedValue = $(this).val();
+    //    console.log(selectedValue);
+    //    $.ajax({
+    //        url: '/AccountingConfiguration/BuildMenuViewBag',
+    //        type: 'GET',
+    //        dataType: 'json',
+    //        data: { DocumentId: selectedValue },
+    //        success: function (data) {
+    //            // Clear existing options in the OperationEventAttributeId combo
+    //            $('#Document_Sub_type').empty();
+    //            // Add new options based on the fetched data
+    //            $.each(data, function (index, item) {
+    //                $('#Document_Sub_type').append($('<option>').text(item.Name).attr('value', item.Id));
+    //            });
+    //        },
+    //        error: function (xhr, status, error) {
+    //            console.error(xhr.responseText);
+    //        }
+    //    });
+    //});
+
+    $('#document_type').change(function () {
+        var selectedValue = $(this).val();
+
+        // Check if the selected value is not empty
+        if (selectedValue !== '') {
+            // Show the second dropdown
+            $('#document_Sub_type').show();
+            // Clear previous options
+            $('#document_Sub_type').empty();
+            // Populate the second dropdown based on the selected value
+            if (selectedValue === 'PANDL') {
+                $('#document_Sub_type').append('<option value="incomeStatement">Income Statement</option>');
+                $('#document_Sub_type').append('<option value="expenseStatement">Expense Statement</option>');
+                $('#document_Sub_type').append('<option value="none">none</option>');
+                // Show the element
+                $('#itemsToHide1').hide();
+                $('#itemsToHide2').hide();
+                $('#itemsToHide3').hide();
+                $('#itemsToHide4').hide();
+                $('#itemsToShow1').show();
+                $('#itemsToShow2').show();
+            } else if (selectedValue === 'BS') {
+                $('#document_Sub_type').append('<option value="asset">Asset</option>');
+                $('#document_Sub_type').append('<option value="liability">Liability</option>');
+                $('#document_Sub_type').append('<option value="none">none</option>');
+                // Show the element
+                $('#itemsToHide1').show();
+                $('#itemsToHide2').show();
+                $('#itemsToHide3').show();
+                $('#itemsToHide4').show();
+                $('#itemsToShow1').hide();
+                $('#itemsToShow2').hide();
+            }
+        } else {
+            // If the selected value is empty, hide the second dropdown
+            $('#document_Sub_type').hide();
+        }
+    });
+
+    $('#document_Sub_type').change(function () {
+        var selectedValue = $(this).val();
+        var IdModel = "";
+        console.log(selectedValue);
+        $.ajax({
+            url: '/AccountingConfiguration/GetAccountNUMBERByDOCUMENTYPE',
+            type: 'GET',
+            dataType: 'json',
+            data: { DocumentId: selectedValue },
+            success: function (data) {
+                // Clear existing options in the OperationEventAttributeId combo
+                if (selectedValue === "asset" || selectedValue === "liability") {
+                    IdModel = "#GrossChartOfAccountId";
+                    $(IdModel).empty();
+                    // Add new options based on the fetched data
+                    $.each(data, function (index, item) {
+                        $('#GrossChartOfAccountId').append($('<option>').text(item.Value).attr('value', item.Text));
+                    });
+                    $.each(data, function (index, item) {
+                        $('#AmortizationChartOfAccountId').append($('<option>').text(item.Value).attr('value', item.Text));
+                    });
+                }
+                if (selectedValue === "incomeStatement" || selectedValue === "expenseStatement") {
+                    IdModel = "#incomeOrExpense";
+                    $(IdModel).empty();
+                    // Add new options based on the fetched data
+                    $.each(data, function (index, item) {
+                        $('#incomeOrExpense').append($('<option>').text(item.Value).attr('value', item.Text));
+                    });
+                }
+
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    });
     $("#loadChartAccount").click(function () {
         console.log("loadChartAccount");
         loadChartAccount();
@@ -19,32 +116,15 @@
         console.log("Account_ChartOfAccountId selected: " + EventId);
         loadAccountCartegoryByChartNumber(EventId);
     });
-    // Show the element
-    $('#itemsToHide1').hide();
-    $('#itemsToHide2').hide();
-    $('#itemsToHide3').hide();
-    $('#itemsToHide4').hide();
-    $('#itemsToShow1').show();
-    $('#itemsToShow2').show();
-    $(document).on('change', '#Document_typeBS', function () {
-        var selectedValue = $(this).val();
-        var isBalanceSheet = ['BalanceSheet Liabilities', 'Balance SheetAsset'].includes(selectedValue);
-        var isIncomeOrExpense = ['Income Statement', 'Expense Statement'].includes(selectedValue);
 
-        $('#itemsToHide1').toggle(isBalanceSheet);
-        $('#itemsToHide2').toggle(isBalanceSheet);
-        $('#itemsToHide3').toggle(isBalanceSheet);
-        $('#itemsToHide4').toggle(isBalanceSheet);
-        $('#itemsToShow1').toggle(!isBalanceSheet && isIncomeOrExpense);
-        $('#itemsToShow2').toggle(!isBalanceSheet && isIncomeOrExpense);
-    });
+
 
 });
- 
+
 
 function loadAccountCartegoryByChartNumber(number) {
     console.log(number);
-    
+
     $.ajax({
         url: '/AccountingConfiguration/GetAccountCartegoryById',
         type: 'GET',
@@ -169,7 +249,7 @@ $('#jstree-context-menu').on('click', '.parent', function (e, data) {
     var nodeName = clickedElement.text();
 
     // Example: Display information about the clicked node
-  alert('Clicked Node ID: ' + nodeId + '\nClicked Node Name: ' + nodeName);
+    alert('Clicked Node ID: ' + nodeId + '\nClicked Node Name: ' + nodeName);
     $("#selectedID").val(nodeId);
     $(".RootId").val(nodeId);
 
@@ -182,7 +262,7 @@ $('#jstree-checkbox').on('click', '.parent', function (e, data) {
     var nodeName = clickedElement.text();
 
     // Example: Display information about the clicked node
-      alert('Clicked Node ID: ' + nodeId + '\nClicked Node Name: ' + nodeName);
+    alert('Clicked Node ID: ' + nodeId + '\nClicked Node Name: ' + nodeName);
     $("#selectedIDchart").val(nodeId);
     $(".RootId").val(nodeId);
 

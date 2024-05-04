@@ -1,0 +1,41 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+<div class="col-12">
+    <div class="card mb-4">
+        <h5 class="card-title">Upload Accounts Details</h5>
+        <div class="card-body">
+            <form action="/upload" class="dropzone needsclick dz-clickable" id="dropzone-basic">
+
+
+                @using (Html.BeginForm("UploadAccounts", "BankAccount", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="form-group">
+
+                        <input type="file" name="file" id="file" class="btn btn-primary" required>
+                    </div>
+
+                }
+
+                <div>
+                    @ViewBag.Message
+                </div>
+                <table class="table table-hover" id="myDataTable_AccountData">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ChartOfAccountNumber</th>
+                            <th>Account Number</th>
+                            <th>Account Label</th>
+                            <th>BeginningBalance</th>
+                            <th>DebitBalance</th>
+                            <th>CreditBalance</th>
+                            <th>CurrentBalance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+

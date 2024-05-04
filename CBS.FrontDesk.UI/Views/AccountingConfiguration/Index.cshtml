@@ -71,7 +71,9 @@
                                     <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Account','_CreateAccount','new','AccountingConfiguration','account')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
                                         <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                     </a>
-
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Account','_AccountUpload','upload','AccountingConfiguration','account')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-upload mdi-18px"></span>
+                                    </a>
                                 </div>
                             </div>
                             <br />
@@ -191,36 +193,36 @@
                     </h2>
                     <div id="accordionnine" class="accordion-collapse collapse" aria-labelledby="headingnine" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                             
-                                            <div class="row justify-content-end">
-                                                <div class="demo-inline-spacing text-end">
-                                                    <button type="submit" onclick="LoadDataGen('AccountingConfiguration','myDataTable_Statementmodel','_statementModelData','desc','datalistingview_Statementmodel',0,'statementmodel','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                                    </button>
-                                                    <button type="submit" onclick="AddORUpdateGen(null,'datalistingview_Statementmodel','_CreateStatementModel','new','AccountingConfiguration','statementmodel')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <br />
-                                            <div id="datalistingview_Statementmodel">
-                                                @Html.Partial("_CreateStatementModel")
-                                            </div>
-                                        </div>
-                                      
-                         
+
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <button type="submit" onclick="LoadDataGen('AccountingConfiguration','myDataTable_Statementmodel','_statementModelData','desc','datalistingview_Statementmodel',0,'statementmodel','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </button>
+                                    <button type="submit" onclick="AddORUpdateGen(null,'datalistingview_Statementmodel','_CreateStatementModel','new','AccountingConfiguration','statementmodel')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_Statementmodel">
+                                @Html.Partial("_CreateStatementModel")
+                            </div>
                         </div>
+
+
                     </div>
                 </div>
-
-         
-
             </div>
-        </div>
 
+
+
+        </div>
     </div>
 
-    <!--/ Accordion -->
+</div>
+
+<!--/ Accordion -->
 
 
 

@@ -23,7 +23,7 @@ using System.Web.UI.WebControls;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
- 
+
     public class CashFlowManagementController : BaseController
     {
         private readonly AccountingServices _AccountServices;
@@ -36,26 +36,26 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             branchServices = new BranchServices();
         }
         // GET: BankingOperation
-     
+
 
         public async Task GetList(string language = "En")
         {
-            var DebitAccounts = new  List<Data.Account>();
+            var DebitAccounts = new List<Data.Account>();
             var listBranch = await branchServices.GetBranches();
-             ViewBag.Branches = BuildDropDown(GenerateBranchListView(listBranch.ToList()));
- 
-            ViewBag.Accounts = BuildDropDown(GenerateAccountListView( DebitAccounts));
+            ViewBag.Branches = BuildDropDown(GenerateBranchListView(listBranch.ToList()));
+
+            ViewBag.Accounts = BuildDropDown(GenerateAccountListView(DebitAccounts));
             ViewBag.Decisions = BuildMenuViewBag();
-          var models=   BuildMenuViewBag(await _accountingEntryServices.GetCashReplenimentCurrentOpenOfDayHistoryRequestId());
+            var models = BuildMenuViewBag(await _accountingEntryServices.GetCashReplenimentCurrentOpenOfDayHistoryRequestId());
 
 
             ViewBag.OpeningOfDayId = models;//BuildMenuViewBag(await _accountingEntryServices.GetCashReplenimentCurrentOpenOfDayHistoryRequestId());
-          
-            if (models.Count()==0)
+
+            if (models.Count() == 0)
             {
                 ViewBag.OpeningOfDayId = new List<StringValues> { new StringValues { Text = "Id001", Value = "Current Opening Reference" } };
             }
-            
+
         }
         private IEnumerable<StringValues> GenerateAccountListView(List<Data.Account> accounts)
         {
@@ -94,9 +94,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             List<SelectListItem> list = new List<SelectListItem>();
             foreach (var item in debitAccounts)
             {
-            
-                    list.Add(new SelectListItem { Text = item.id, Value = item.text });
-                
+
+                list.Add(new SelectListItem { Text = item.id, Value = item.text });
+
             }
 
             return list;
@@ -135,8 +135,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private dynamic BuildMenuViewBag()
         {
             List<SelectListItem> list = new List<SelectListItem>();
-           
-                    list.Add(new SelectListItem { Text = $"Approve", Value = "Approve" });
+
+            list.Add(new SelectListItem { Text = $"Approve", Value = "Approve" });
 
             list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
 
@@ -155,7 +155,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public async Task<ActionResult> Index()
         {
             await GetList();
-            return View();
+            return View(new CashDemandDataEntity());
         }
         [HttpGet]
         public async Task<ActionResult> GetAllBranchAccountUsedToCreditCashFlow(string branchId)
@@ -215,10 +215,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
 
         }
-        
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
-           
+
             // await GetList();
             if (path == "list")
             {
@@ -235,7 +235,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                  Id = request.Id,
                                  ReferenceId = request.ReferenceId,
                                  AmountRequested = request.AmountRequested,
-                                 BranchOffice= branch.Name,
+                                 BranchOffice = branch.Name,
                                  RequestMessage = request.RequestMessage,
                                  IssuedBy = user.name + "," + user.roleName,
                                  IssuedDate = request.IssuedDate,
@@ -255,7 +255,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             else if (path == "new")
             {
                 await GetList();
-                return PartialView(partialView, new CashDemandDataEntity { CashReplenimentRequest = new CashReplenimentRequest() , CashInfusionModel = new CashInfusion()});
+                return PartialView(partialView, new CashDemandDataEntity { CashReplenimentRequest = new CashReplenimentRequest(), CashInfusionModel = new CashInfusion() });
             }
             else if (path == "update")
             {
@@ -264,7 +264,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.CashInfusionModel = OperationEventAttribute.ConvertToCashInfusionModel();
                 return PartialView(partialView, cashDemandDataEntity);
-                
+
             }
             else if (path == "status")
             {
@@ -272,13 +272,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
-             
+
                 return PartialView(partialView, cashDemandDataEntity);
 
             }
             else if (path == "approve")
             {
-   
+
                 var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
@@ -286,9 +286,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
                 ViewBag.Decisions = BuildMenuViewBag();
                 return PartialView(partialView, cashDemandDataEntity);
-      
+
             }
-            else  
+            else
             {
                 await GetList();
                 var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
@@ -299,10 +299,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
         }
 
-    
-  
 
- 
+
+
+
 
         public async Task<ActionResult> CreateCashReplenishmentRequest(CashDemandDataEntity model)
         {
@@ -316,13 +316,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
                 else
                 {
-                   
+
                     var datasw = await _accountingEntryServices.GetCashReplenimentReferenceRequest(model.CashInfusionModel.ReferenceNumber);
-                    datasw.CurrentOpenOfDayHistoryId =model.CashInfusionModel.CurrentOpenOfDayHistoryId;
-                    CashDemandDataEntity cashDemandDataEntity= new CashDemandDataEntity { CashReplenimentRequest= datasw };
+                    datasw.CurrentOpenOfDayHistoryId = model.CashInfusionModel.CurrentOpenOfDayHistoryId;
+                    CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity { CashReplenimentRequest = datasw };
                     return View("Successfull_Request_View", cashDemandDataEntity);
                 }
-           
+
             }
 
             return View("Failed_Request_View", model.CashInfusionModel.ConvertToCashReplenimentRequest());
@@ -362,7 +362,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                              Status = request.Status,
                              ApprovedMessage = request.ApprovedMessage
                          };
-                CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+            CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
             cashDemandDataEntity.ListCashReplenimentRequest = result.ToList();
             return View(cashDemandDataEntity);
         }
@@ -373,6 +373,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             return View();
         }
- 
+
     }
 }

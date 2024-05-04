@@ -2665,16 +2665,6 @@
     <Content Include="Views\Dashboard\BranchOffice.cshtml" />
     <Content Include="Views\UserManagement\FLoginChangePassword.cshtml" />
     <Content Include="Views\UserManagement\_UserDetails.cshtml" />
-    <Content Include="Views\Bank\_Bank.cshtml" />
-    <Content Include="Views\Bank\_BankData.cshtml" />
-    <Content Include="Views\Bank\_ImageUploader.cshtml" />
-    <Content Include="Views\Bank\Index.cshtml" />
-    <Content Include="Views\EconomicActivity\_EconomicActivity.cshtml" />
-    <Content Include="Views\EconomicActivity\_EconomicActivityData.cshtml" />
-    <Content Include="Views\EconomicActivity\Index.cshtml" />
-    <Content Include="Views\MembersCategory\Index.cshtml" />
-    <Content Include="Views\MembersCategory\_CustomerCategoryData.cshtml" />
-    <Content Include="Views\MembersCategory\_CustomerCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
