@@ -66,7 +66,7 @@ namespace CBS.FrontDesk.UI
                 // If the URL is not "/MenuMaster", redirect to unauthorized page.
                 if (url != "/MenuMaster")
                 {
-                    filterContext.Result = new RedirectResult("~/Unauthorized");
+                    filterContext.Result = new RedirectResult("~/Error/Unauthorized");
                     return;
                 }
             }
