@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
-  
+
     public class AccountingConfiguration
     {
         public AccountTreeNode AccountTreeNode { get; set; }
 
-        public AccountType AccountType { get; set; }= new AccountType();
+        public AccountType AccountType { get; set; } = new AccountType();
         public OperationEvent OperationEvent { get; set; } = new OperationEvent();
         public OperationEventAttribute OperationEventAttribute { get; set; } = new OperationEventAttribute();
         public List<OperationEventAttributeDto> OperationEventAttributeDtos { get; set; } = new List<OperationEventAttributeDto>();
@@ -36,7 +36,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<AccountingRuleEntry> AccountingRuleEntries { get; set; } = new List<AccountingRuleEntry>();
         public List<AccountingRuleEntryDto> AccountingRuleEntriesDTOS { get; set; } = new List<AccountingRuleEntryDto>();
 
-        public  string ManualOperationCode { get; set; }
+        public string ManualOperationCode { get; set; }
         public string ManualOperationName { get; set; }
         public string ServiceOption { get; set; }
         public string Action { get; set; }

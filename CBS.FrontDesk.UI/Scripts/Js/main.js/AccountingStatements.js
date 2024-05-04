@@ -9,13 +9,13 @@
 
         var selectedReportType = $("#SystemQuery_ReportType").val();
 
-        if (selectedReportType=="LL") {
+        if (selectedReportType == "LL") {
             // Load another dropdown based on the selected value
             loadBranchLiasonAccount(selectedValue);
         }
-       
+
     });
- 
+
     $(document).on('change', '#SystemQuery_ReportType', function () {
         var selectedValue = $(this).val();
 
@@ -38,6 +38,9 @@ function GetTransactionHistory(KEY, divToLoadData, partialView, path, myDataTabl
 
 }
 function AjaxPostSearch(form) {
+    var fileType = $("#SystemQuery_FileType").val();
+    var reportType = $("#SystemQuery_ReportType").val();
+    alert(fileType + reportType);
     $.validator.unobtrusive.parse(form);
     if ($(form).valid()) {
         var ajaxConfig = {
@@ -45,12 +48,22 @@ function AjaxPostSearch(form) {
             url: form.action,
             data: new FormData(form),
             success: function (response) {
- 
-                    appalert(response.message, 2, 1);
-                    
-                    window.open("/Reports/DownloadExcelFile", "_blank"); // Updated URL
-                   
-                 
+
+                appalert(response.message, 2, 1);
+                if (fileType === "EXCEL") {
+                    if (reportType === "TB4") {
+                        window.open("/Reports/PrintTrialBalance4Column", "_blank");
+                    } else if (reportType === "TB6") {
+
+                        window.open("/Reports/PrintTrialBalance6Column", "_blank");
+                    }
+                } else {
+                    window.open("/Reports/DownloadExcelFile", "_blank");
+                }
+
+                // Updated URL
+
+
 
             }
             , error: function (err) {

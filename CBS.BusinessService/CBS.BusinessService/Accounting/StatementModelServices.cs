@@ -18,12 +18,12 @@ namespace CBS.BusinessService.Accounting
     {
         private readonly ApiCallerHelper _loanConfigApiHelper;
 
-       
+
 
         public StatementModelServices()
         {
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
-        
+
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -36,7 +36,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     GetExecutionMessages(inResponse, true, $"{model.Reference} -{model.Heading} ", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
-           
+
 
                 }
                 else
@@ -104,7 +104,7 @@ namespace CBS.BusinessService.Accounting
                 var AccountCategory = await GetStatementModel(model.Id);
                 if (AccountCategory != null)
                 {
-                   
+
                     var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<StatementModel>>(string.Format(APICallHelper.Get_Update_Delete_Statementmodel, model.Id), model);
                     if (response.IsSuccess)
                     {
@@ -136,7 +136,7 @@ namespace CBS.BusinessService.Accounting
             try
             {
 
-                string url = (model.AmortizationChartOfAccountId.Count == 0) ? APICallHelper.CreateStatementmodel : APICallHelper.CreateStatementmodelBS;
+                string url = (model.AmortizationChartOfAccountId == null) ? APICallHelper.CreateStatementmodel : APICallHelper.CreateStatementmodelBS;
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<StatementModel>>(url, model);
                 if (response.IsSuccess)
                 {

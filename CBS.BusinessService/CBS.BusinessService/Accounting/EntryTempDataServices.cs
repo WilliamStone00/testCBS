@@ -58,13 +58,42 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
-
+        //   
         public async Task<ExecutionMessages> PostAccountingEntry(EntryDescription model)
         {
             try
             {
 
                 var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<EntryTempData>>(APICallHelper.Post_AccountingEntry_Entries, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, response.Message, MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, response.Message, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task<ExecutionMessages> ApproveAccountingEntry(EntryApproval model)
+        {
+            try
+            {
+
+                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.Post_ManaulEntryApproval_Entries, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
@@ -172,6 +201,24 @@ namespace CBS.BusinessService.Accounting
             try
             {
                 var cusResponseObject = await _accountingApiCallerHelper.GetAsync<ResponseObject<EntryTempData>>(string.Format(APICallHelper.Url_Get_Update_delete_EntryTempData, id));
+                if (cusResponseObject.IsSuccess)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+
+        public async Task<List<PostedEntry>> GetManualEntriesAsync()
+        {
+            try
+            {
+                var cusResponseObject = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<PostedEntry>>>(APICallHelper.Url_Get_AllPostedEntries);
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;

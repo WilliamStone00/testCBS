@@ -1,0 +1,99 @@
+﻿<div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel3"> Loading ...</h4>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th colspan="2">  <h5 class="card-title" style="text-justify:auto">Issuer Information</h5></th>
+
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        <tr>
+                            <td>Issuer</td>
+                            <td id="issuer"> loading ... </td>
+                        </tr>
+                        <tr>
+                            <td>Branch Code</td>
+                            <td id="branchCode">loading ...</td>
+                        </tr>
+                        <tr>
+                            <td>Date Issued</td>
+                            <td id="dateIssued">loading ...</td>
+                        </tr>
+                        <tr>
+                            <td>Journal Entry Status</td>
+                            <td id="status">loading ...</td>
+                        </tr>
+                        <tr>
+
+                            <td colspan="2">  <h5 class="card-title" style="text-justify:auto" id="referenceID">Journal Entries Reference:loading</h5></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-hover" id="ReferenceEntriesDataTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Account Number</th>
+                            <th>Description</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <input type="hidden" id="selectedId" value="" />
+                <input type="hidden" id="status_button" value="" />
+               
+            </div>
+            <div id="under_review">
+                <div class="card-header">
+
+                    <form id="myCommentForm">
+                        <h5 class="card-title">
+                            Comment : <textarea class="form-control textbox" cols="20" data-val="true" data-val-required="The comment field is required." id="comment_description" name="EntryDescription.Description" rows="2"></textarea>
+                            <span class="field-validation-valid text-danger" data-valmsg-for="EntryDescription.Description" data-valmsg-replace="true"></span>
+                        </h5>
+               
+                        <div class="modal-footer">
+                            <button type="button" onclick="ApproveJournalEntry(false)" class="btn btn-outline-secondary">
+                                Reject
+                            </button>
+                            <button type="button" onclick="ApproveJournalEntry(true)" class="btn btn-primary">
+                                Approve
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+                   
+            </div>
+            <div id="rejected">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+            <div id="approved">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

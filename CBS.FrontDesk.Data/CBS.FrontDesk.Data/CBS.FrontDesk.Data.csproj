@@ -80,6 +80,7 @@
     <Compile Include="Entity\Accounting\CashReplenimentRequest.cs" />
     <Compile Include="Entity\Accounting\CashInfusionRequest.cs" />
     <Compile Include="Entity\Accounting\BranchLiaisonLedgerEntry.cs" />
+    <Compile Include="Entity\Accounting\Class1.cs" />
     <Compile Include="Entity\Accounting\IncomeStatement.cs" />
     <Compile Include="Entity\Accounting\ModelIncomeExpenses.cs" />
     <Compile Include="Entity\Accounting\ModelBalanceSheetAssets.cs" />

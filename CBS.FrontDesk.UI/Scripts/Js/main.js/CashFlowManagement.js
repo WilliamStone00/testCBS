@@ -5,7 +5,7 @@
     $(document).on('change', '#CashReplenimentRequestdto_BranchId', function () {
         // Get the selected value
         var selectedValue = $(this).val();
-    
+
         // Load another dropdown based on the selected value
         loadBranchCreditingAccount(selectedValue);
     });
@@ -52,10 +52,10 @@ function loadBranchCreditingAccount(branchId) {
 
 function LoadCashReplenishmentDataDT(tableID) {
 
-     
-        var T = '#' + tableID;
-        var dataThumbView = $(T).DataTable({
-            responsive: false,
+
+    var T = '#' + tableID;
+    var dataThumbView = $(T).DataTable({
+        responsive: false,
         "columns": [
             //{ "data": "ReferenceId", "name": "ReferenceId", "autoWidth": true },
             //{ "data": "Amount", "name": "Amount", "autoWidth": true },
@@ -77,21 +77,173 @@ function LoadCashReplenishmentDataDT(tableID) {
             { "targets": 4, "searchable": true, "orderable": true, "width": "20%" },
 
         ],
-            
-            oLanguage: {
-                sLengthMenu: "_MENU_",
-                sSearch: ""
-            },
-            aLengthMenu: [[4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
+
+        oLanguage: {
+            sLengthMenu: "_MENU_",
+            sSearch: ""
+        },
+        aLengthMenu: [[4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
 
 
-            order: [[0, "asc"]],
-            bInfo: true,
-            pageLength: 10
+        order: [[0, "asc"]],
+        bInfo: true,
+        pageLength: 10
+
+    });
+}
+
+//InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+function LoadDataTable(controller, tableID, KEY, partialView, order, path, diveToLoadTheData, serviceOption) {
+    var action = 'InitializeData';
+    var encodedURL = '/' + controller + '/' + action + '?KEY=' + encodeURIComponent(KEY) + '&partialView=' + encodeURIComponent(partialView) + '&path=' + encodeURIComponent(path) + '&serviceOption=' + encodeURIComponent(serviceOption);
+    $.ajax({
+        type: "GET",
+        url: encodedURL,
+        success: function (data) {
+            $('#' + diveToLoadTheData).html(data);
+            LoadDT(tableID, order);
+        },
+        error: function (xhr, status, error) {
+            appalert(error, 1, 3);
+        }
+    });
+}
+
+
+function DeleteCashRequestData(controller, KEY, serviceOption, status) {
+
+    alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
+        function () {
+            var url = "/" + controller + "/Delete?KEY=" + KEY + "&serviceOption=" + serviceOption;
+            $.ajax({
+                type: "Get",
+                url: url,
+                success: function (response) {
+                    console.log(response.success);
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        window.location.reload();
+                    }
+                    else {
+                        appalert(response.message, 3, 1);
+                    }
+
+                }, error: function (err) {
+
+                    appalert(err.statusText, 3, 1);
+                }
+            });
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
 
         });
+
+
+}
+
+function GetCashReplenimentRequest(Id) {
+    $('#exampleModalLabel_CashRequestApproval').empty();
+
+    $.ajax({
+        url: '/TellerCashDemand/GetCashReplenimentRequest',
+        type: 'GET',
+        dataType: 'json',
+        data: { KEY: Id },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+            // Update the Reference ID
+            console.log(data);
+            var newReferenceId = data.id == null ? "Not Defined" : data.id;
+            var newRequestedBy = data.requesterUserId == null ? "Not Defined" : data.requesterUserId;
+            var newApprovedMessage = data.approvedComment === null ? "Not Defined" : data.approvedComment;
+            var newApprovedBy = data.approvedByUserId === null ? "Not Defined" : data.approvedByUserId;
+            var newApprovedAmount = data.confirmedAmount === null ? 0.0 : data.confirmedAmount;
+            var newApprovedDate = data.approvedDate === null ? "Not Defined" : data.approvedDate;
+            var newStatus = data.approvedStatus === null ? "Not Defined" : data.approvedStatus;
+
+            var newRequestedAmount = data.approvedStatus === null ? "Not Defined" : data.approvedStatus;
+            $('#exampleModalLabel_CashRequestApproval').text('Voucher ReferenceId: ' + data.id);
+            $('#requestedBy').text(data.requesterUserId);
+            // Update the table data
+            $('#invoiceNumber').text(data.id);
+            $('#newStatus').text(data.approvedStatus);
+            $('#amountRequested').text('XFA ' + data.requestedAmount + '.0');
+            $('#requestMessage').text(data.requetcomment);
+            $('#requestedBy').text(data.requesterUserId);
+            $('#approvedBy').text(newApprovedBy);
+            $('#amountApproved').text('XFA ' + newApprovedAmount + '.0');
+            $('#approvedDate').text(formatDate(newApprovedDate));
+            $('#approvedMessage').text(newApprovedMessage);
+            $('#requestedBy').text(data.requesterUserId);
+            // Update the status badge
+            var statusBadge = $('#statusBadge');
+            if (newStatus.toUpperCase() === 'PENDING') {
+                statusBadge.text('PENDING').removeClass('bg-label-success bg-label-danger').addClass('bg-label-primary');
+            } else if (newStatus.toUpperCase() === 'APPROVE') {
+                statusBadge.text('APPROVE').removeClass('bg-label-primary bg-label-danger').addClass('bg-label-success');
+            } else {
+                statusBadge.text('REJECTED').removeClass('bg-label-primary bg-label-success').addClass('bg-label-danger');
+            }
+
+            // Update the alert message
+            var alertMessage = $('.alert-heading');
+            if (newStatus.toUpperCase() === 'APPROVE') {
+                alertMessage.text('The Cash replenishment request issued by ' + newRequestedBy + ' with reference: ' + newReferenceId + ' with Amount ' + newApprovedAmount + ' has already been approved.');
+            } else if (newStatus.toUpperCase() === 'REJECTED') {
+                alertMessage.text('The Cash replenishment request issued by ' + newRequestedBy + ' with reference: ' + newReferenceId + ' with Amount ' + newRequestedAmount + ' has already been rejected.');
+            } else {
+                alertMessage.text('ReferenceId: ' + newReferenceId + ' with Amount ' + newRequestedAmount + ' has not yet been approved');
+            }
+
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+
+    // Helper function to format the date
+    function formatDate(dateString) {
+        if (!dateString) return 'Not defined';
+
+        // Check if the date string is in the /Date(ticks)/ format
+        const ticksRegex = /^\/Date\((-?\d+)\)\/$/;
+        const match = dateString.match(ticksRegex);
+
+        if (match) {
+            // Convert ticks to milliseconds and create a Date object
+            const ticks = parseInt(match[1], 10);
+            const date = new Date(ticks);
+
+            // Format the date
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+
+            return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+        } else {
+            // If the date string is not in the /Date(ticks)/ format, treat it as a regular date string
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) {
+                return 'Not defined';
+            }
+
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+
+            return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+        }
     }
 
+
+}
 
 
 

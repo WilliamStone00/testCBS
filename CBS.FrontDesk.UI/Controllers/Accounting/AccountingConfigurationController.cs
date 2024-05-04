@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Web.WebPages.Html;
 using Microsoft.Ajax.Utilities;
 using CBS.FrontDesk.Data.Entity;
+using DocumentFormat.OpenXml.Office2010.Word;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -57,12 +58,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private async Task GetList()
         {
             ViewBag.AccountTypes = await GetAccountTypesAsync();
-          
+
             var DebitAccounts = await _AccountServices.GetAllAccounting();
             var CreditAccounts = BuildMenuViewBag(DebitAccounts);
             ViewBag.Accounts = CreditAccounts;
             var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
-            ViewBag.ChartOfAccounts= BuildMenuAccountViewBag(listAccounts.ToList());
+            ViewBag.ChartOfAccounts = BuildMenuAccountViewBag(listAccounts.ToList());
             ViewBag.OperationEvent = await _OperationEventService.GetOperationEvents();
             ViewBag.BookingDirections = await this.GetBookingDirections();
             ViewBag.OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
@@ -70,22 +71,54 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.DebitAccounts = ViewBag.ChartOfAccounts;
             ViewBag.AccountCartegories = await _AccountCategoryServices.GetAccountCategory();
             ViewBag.Document_type = BuildMenuViewBag();
-         
+            ViewBag.Document_Sub_type = BuildMenuISViewBag();
             ViewBag.OperationSide = BuildMenuViewBagopside();
+            ViewBag.ChartOfAccountReport = BuildMenuAccountViewBag(listAccounts.ToList());
         }
 
-        private dynamic BuildMenuViewBag()
+        private dynamic BuildMenuViewBag(string DocumentId)
         {
-            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem> 
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            if ((DocumentId == "Income Statement") || (DocumentId == "Expense Statement"))
+            {
+                selectListItems = BuildMenuISViewBag();
+            }
+            else
+            {
+                selectListItems = BuildMenuBSViewBag();
+            }
+            return Json(selectListItems, JsonRequestBehavior.AllowGet);
+        }
+        private dynamic BuildMenuISViewBag()
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>
             {
             new System.Web.WebPages.Html.SelectListItem { Value = "Income Statement", Text = "Income Statement" },
-            new System.Web.WebPages.Html.SelectListItem { Value = "Expense Statement", Text = "Expense Statement" },
-            new System.Web.WebPages.Html.SelectListItem { Value = "Balance SheetAsset", Text = "Balance SheetAsset" },
-            new System.Web.WebPages.Html.SelectListItem { Value = "BalanceSheet Liabilities", Text = "BalanceSheet Liabilities" },
-            };    
+            new System.Web.WebPages.Html.SelectListItem { Value = "Expense Statement", Text = "Expense Statement" }
+
+            };
             return selectListItems;
         }
-     
+        private dynamic BuildMenuViewBag()
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>
+            {
+            new System.Web.WebPages.Html.SelectListItem { Value = "PROFIT AND LOSS", Text = "PANDL" },
+            new System.Web.WebPages.Html.SelectListItem { Value = "BALANCE SHEET", Text = "BS" }
+
+            };
+            return selectListItems;
+        }
+        private dynamic BuildMenuBSViewBag()
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>
+            {
+
+            new System.Web.WebPages.Html.SelectListItem { Value = "Balance SheetAsset", Text = "Balance SheetAsset" },
+            new System.Web.WebPages.Html.SelectListItem { Value = "BalanceSheet Liabilities", Text = "BalanceSheet Liabilities" }
+            };
+            return selectListItems;
+        }
 
         private dynamic BuildMenuViewBagopside()
         {
@@ -102,7 +135,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private dynamic BuildMenuAccountViewBag(List<ChartOfAccount> ListchartOfAccounts)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-            
+
             foreach (var item in ListchartOfAccounts)
             {
                 selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.AccountNumber} - {item.LabelEn}" });
@@ -110,11 +143,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return selectListItems;
         }
 
+        private List<StringValues> BuildStringValuesViewBag(List<ChartOfAccount> ListchartOfAccounts)
+        {
+            List<StringValues> selectListItems = new List<StringValues>();
+
+            foreach (var item in ListchartOfAccounts)
+            {
+                selectListItems.Add(new StringValues { Text = item.Id, Value = $"{item.AccountNumber} - {item.LabelEn}" });
+            }
+            return selectListItems;
+        }
         private async Task<List<System.Web.WebPages.Html.SelectListItem>> GetAccountTypesAsync()
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-            var models =await _AccountTypeServices.GetAllAccountTypes();
-            foreach ( var item in models )
+            var models = await _AccountTypeServices.GetAllAccountTypes();
+            foreach (var item in models)
             {
                 selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.name });
             }
@@ -129,16 +172,59 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private dynamic BuildMenuViewBag(IEnumerable<Data.Account> debitAccounts)
         {
             List<System.Web.WebPages.Html.SelectListItem> list = new List<System.Web.WebPages.Html.SelectListItem>();
-            if (debitAccounts!=null)
-          
-            foreach (var item in debitAccounts)
-            {
+            if (debitAccounts != null)
 
-                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.AccountNumber + "-" + item.AccountName });
+                foreach (var item in debitAccounts)
+                {
 
-            }
+                    list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.AccountNumber + "-" + item.AccountName });
+
+                }
 
             return list;
+        }
+
+        public async Task<ActionResult> GetAccountNUMBERByDOCUMENTYPE(string DocumentId)
+        {
+
+            List<ChartOfAccount> chartOfAccounts = new List<ChartOfAccount>();
+
+            try
+            {
+                //var number = chartOfAccountNumber.Length==1? chartOfAccountNumber: chartOfAccountNumber.Substring(0, 1);
+                List<ChartOfAccount> data = (await _chartOfAccountServices.GetAllChartOfAccounts()).ToList();
+                if (DocumentId == "liability")
+                {
+                    var filteredAccounts = data.Where(account => account.AccountNumber.StartsWith("4") || account.AccountNumber.StartsWith("3")).ToList();
+
+                    data = filteredAccounts;
+                }
+                else if (DocumentId == "asset")
+                {
+                    var filteredAccounts = data.Where(account => account.AccountNumber.StartsWith("1") || account.AccountNumber.StartsWith("2") || account.AccountNumber.StartsWith("5")).ToList();
+
+                    data = filteredAccounts;
+                }
+                else if (DocumentId == "expenseStatement")
+                {
+                    var filteredAccounts = data.Where(account => account.AccountNumber.StartsWith("6")).ToList();
+
+                    data = filteredAccounts;
+                }
+                else if (DocumentId == "incomeStatement")
+                {
+                    var filteredAccounts = data.Where(account => account.AccountNumber.StartsWith("7")).ToList();
+
+                    data = filteredAccounts;
+                }
+                var dataList = new List<StringValues>();
+                dataList.AddRange(BuildStringValuesViewBag(data.ToList()));
+                return Json(dataList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
         }
         public async Task<ActionResult> GetAccountCartegoryById(string Id)
         {
@@ -149,7 +235,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 //var number = chartOfAccountNumber.Length==1? chartOfAccountNumber: chartOfAccountNumber.Substring(0, 1);
                 var data = await _chartOfAccountServices.GetChartOfAccountById(Id);
                 var dataList = new List<StringValues>();
-                dataList.Add(new StringValues { Text= (await _AccountCategoryServices.GetAccountCategory(data.AccountCartegoryId)).Name, Value= data.AccountCartegoryId });
+                dataList.Add(new StringValues { Text = (await _AccountCategoryServices.GetAccountCategory(data.AccountCartegoryId)).Name, Value = data.AccountCartegoryId });
                 return Json(dataList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -159,12 +245,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
         public async Task<ActionResult> GetOperationEventAttribute(string operationEventId)
         {
-            
+
 
             try
             {
-               var data = await _OperationEventAttributeService.GetOperationEventAttributes();
-                 var dataList = data.Where(x=>x.OperationEventId.Equals(operationEventId)).ToList();
+                var data = await _OperationEventAttributeService.GetOperationEventAttributes();
+                var dataList = data.Where(x => x.OperationEventId.Equals(operationEventId)).ToList();
                 return Json(dataList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -302,7 +388,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             if (serviceOption == "account")
             {
-                var chartOfAccount =await  _chartOfAccountServices.GetChartOfAccountByAccountNumber(model.Account.AccountNumber.Substring(0,model.Account.AccountNumber.Length-1));
+                var chartOfAccount = await _chartOfAccountServices.GetChartOfAccountByAccountNumber(model.Account.AccountNumber.Substring(0, model.Account.AccountNumber.Length - 1));
                 if (chartOfAccount == null)
                 {
 
@@ -344,10 +430,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 do
                 {
                     string accNum = model.ChartOfAccount.AccountNumber.Substring(0, model.ChartOfAccount.AccountNumber.Length - numberLength);
-                      mode = await _chartOfAccountServices.GetChartOfAccountByAccountNumber(accNum);
+                    mode = await _chartOfAccountServices.GetChartOfAccountByAccountNumber(accNum);
                     numberLength++;
-                } while (mode==null);
-       
+                } while (mode == null);
+
                 if (model.ChartOfAccount.IsForUpdate == false)
                 {
                     ChartOfAccountDto modelc = new ChartOfAccountDto
@@ -357,10 +443,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         LabelFr = model.ChartOfAccount.LabelFr,
                         IsBalanceAccount = model.ChartOfAccount.IsBalanceSheetAccount,
                         AccountNumber = model.ChartOfAccount.AccountNumber,
-                      CanBeNegative = model.ChartOfAccount.CanBeNegative,
-                      IsDebit = model.ChartOfAccount.IsDebit,
-                       AccountCartegoryId = model.ChartOfAccount.AccountCartegoryId
-                         
+                        CanBeNegative = model.ChartOfAccount.CanBeNegative,
+                        IsDebit = model.ChartOfAccount.IsDebit,
+                        AccountCartegoryId = model.ChartOfAccount.AccountCartegoryId
+
                     };
                     return () => _chartOfAccountServices.Create(modelc);
                 }
@@ -436,7 +522,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             return partialResult;
         }
-       
+
         private async Task<PartialViewResult> GetServiceAction(string path, string partialView, string key, string serviceOption)
         {
             if (serviceOption == "account")
@@ -459,7 +545,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     var data = await _AccountServices.GetAccount(key);
                     var chartOfAccount = await _chartOfAccountServices.GetChartOfAccountByAccountNumber(data.AccountNumber);
-               
+
                     if (chartOfAccount == null)
                     {
                         chartOfAccount = new ChartOfAccount
@@ -468,7 +554,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             AccountNumber = key
                         };
                     }
-                    var chartOfAccountf = await _chartOfAccountServices.GetChartOfAccountByAccountNumber(data.AccountNumber.Substring(0, data.AccountNumber.Length-1));
+                    var chartOfAccountf = await _chartOfAccountServices.GetChartOfAccountByAccountNumber(data.AccountNumber.Substring(0, data.AccountNumber.Length - 1));
 
                     if (chartOfAccountf == null)
                     {
@@ -505,21 +591,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else if (path == "new")
                 {
                     var chartOfAccount = await _chartOfAccountServices.GetChartOfAccountByAccountNumber(key);
-                    if (chartOfAccount==null)
+                    if (chartOfAccount == null)
                     {
-                        chartOfAccount = new  ChartOfAccount
+                        chartOfAccount = new ChartOfAccount
                         {
                             Id = key,
                             AccountNumber = key
                         };
                     }
-                     
+
                     return PartialView(partialView, new AccountingConfiguration { ChartOfAccount = chartOfAccount });
                 }
                 else
                 {
                     var data = await _chartOfAccountServices.GetChartOfAccountById(key);
-                    return PartialView(partialView, new AccountingConfiguration { ChartOfAccount =data });
+                    return PartialView(partialView, new AccountingConfiguration { ChartOfAccount = data });
 
                 }
 
@@ -593,9 +679,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
                 else
                 {
-                    
+
                     var data = await _accountingEntryRuleService.GetAccountingRuleEntryById(key);
-                    return PartialView(partialView, new AccountingConfiguration { AccountingRuleEntry =data});
+                    return PartialView(partialView, new AccountingConfiguration { AccountingRuleEntry = data });
                 }
 
             }
@@ -605,8 +691,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
 
                     var data = await _AccountTypeServices.GetAllAccountTypes();
-               
-                    var sysData = new AccountingConfiguration { AccountTypes = data.ToList()};
+
+                    var sysData = new AccountingConfiguration { AccountTypes = data.ToList() };
                     return PartialView(partialView, sysData);
 
                 }
@@ -635,13 +721,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else if (path == "new")
                 {
                     var data = await _statementModelServices.GetStatementModel(key);
-                    return PartialView(partialView, new AccountingConfiguration {ServiceOption= "trialbalancereference", IncomeStatement=data , TrialBalanceReference= new TrialBalanceReference { StatementModelId=data.Id} });
+                    return PartialView(partialView, new AccountingConfiguration { ServiceOption = "trialbalancereference", IncomeStatement = data, TrialBalanceReference = new TrialBalanceReference { StatementModelId = data.Id } });
                 }
                 else
                 {
                     var data = await _trialBalanceReferenceServices.GetTrialBalanceReference(key);
                     var datast = await _statementModelServices.GetStatementModel(data.StatementModelId);
-                    return PartialView(partialView, new AccountingConfiguration { ServiceOption = "trialbalancereference", TrialBalanceReference = data , IncomeStatement=datast});
+                    return PartialView(partialView, new AccountingConfiguration { ServiceOption = "trialbalancereference", TrialBalanceReference = data, IncomeStatement = datast });
                 }
 
             }
@@ -664,31 +750,31 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
 
                     var data = await _statementModelServices.GetStatementModel(key);
-                    var datas = (await _trialBalanceReferenceServices.GetAllTrialBalanceReference()).Where(c=>c.StatementModelId==data.Id).ToList();
+                    var datas = (await _trialBalanceReferenceServices.GetAllTrialBalanceReference()).Where(c => c.StatementModelId == data.Id).ToList();
                     var chartOfAccounts = (await _chartOfAccountServices.GetAllChartOfAccounts());
                     var result = from tr in datas
                                  join acc in chartOfAccounts
-                                 on tr.ChartOfAccountId equals acc.Id  
+                                 on tr.ChartOfAccountId equals acc.Id
 
                                  select new TrialBalanceReference
                                  {
                                      Id = tr.Id,
                                      ChartOfAccountId = tr.ChartOfAccountId,
-                                         AccountInfo = acc.AccountNumber+"-"+acc.LabelEn,
-                                         OperationSide=tr.OperationSide,
-                                         StatementModelId=data.Id
+                                     AccountInfo = acc.AccountNumber + "-" + acc.LabelEn,
+                                     OperationSide = tr.OperationSide,
+                                     StatementModelId = data.Id
                                  };
-                    
-                    return PartialView(partialView, new AccountingConfiguration { IncomeStatement=data, TrialBalanceReferences= result.ToList() });
+
+                    return PartialView(partialView, new AccountingConfiguration { IncomeStatement = data, TrialBalanceReferences = result.ToList() });
                 }
                 else
                 {
                     var data = await _statementModelServices.GetStatementModel(key);
                     var AccountIds = (from d in (await _trialBalanceReferenceServices.GetAllTrialBalanceReference())
-                                select d.ChartOfAccountId).ToList();
+                                      select d.ChartOfAccountId).ToList();
                     data.AccountIds = AccountIds;
-                   //data.OperationSide= 
-                  
+                    //data.OperationSide= 
+
                     return PartialView(partialView, new AccountingConfiguration { IncomeStatement = data });
                 }
 

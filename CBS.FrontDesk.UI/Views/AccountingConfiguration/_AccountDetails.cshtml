@@ -13,7 +13,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    Account Information : @Model.Account.AccountName : @Model.Account.AccountNumber
+                    Account Information
                 </button>
             </h2>
             <div class="card-body">
@@ -23,41 +23,54 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Details</th>
-                                <th></th>
+                                <th colspan="2"> Account Information Details</th>
+
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
                             <tr>
-                                <td>AccountOwner</td>
+                                <td>Account Owner</td>
                                 <td>@Model.Account.AccountOwnerId </td>
                             </tr>
 
                             <tr>
-                                <td>AccountNumber As Affiliate</td>
-                                <td>@Model.Account.AccountNumberAffiliate </td>
+                                <td>AccountNumber at level of the union</td>
+                                <td>@Model.Account.AccountNumberCU </td>
                             </tr>
                             <tr>
                                 <td>AccountNumber at level of the network </td>
-                                <td> @Model.Account.AccountNumberCamCCUL </td>
+                                <td> @Model.Account.AccountNumberNetwork </td>
                             </tr>
                             <tr>
-                                <td>Booking Direction</td>
-                                <td> @Model.Account.BookingDirection </td>
+                                <td>Account Description</td>
+                                <td>@Model.Account.AccountName </td>
+                            </tr>
+
+                            <tr>
+                                <td>Beginning Balance</td>
+                                <td>@Model.Account.BeginningBalance </td>
                             </tr>
                             <tr>
-                                <td>Account Category</td>
-                                <td> @Model.Account.ChartOfAccountId </td>
+                                <td>Current Balance </td>
+                                <td> @Model.Account.CurrentBalance </td>
                             </tr>
                             <tr>
-                                <td>Account Family</td>
-                                <td> @Model.Account.ChartOfAccountId </td>
+                                <td>Credit Balance </td>
+                                <td> @Model.Account.CreditBalance </td>
+                            </tr>
+                            <tr>
+                                <td>Debit Balance</td>
+                                <td> @Model.Account.AccountCategoryId </td>
+                            </tr>
+                            <tr>
+                                <td>Last Balance</td>
+                                <td> @Model.Account.LastBalance </td>
                             </tr>
 
                         </tbody>
                     </table>
                 </div>
-         
+
 
             </div>
         </div>

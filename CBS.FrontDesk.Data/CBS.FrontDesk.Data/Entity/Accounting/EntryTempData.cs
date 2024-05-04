@@ -30,6 +30,13 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         [Required]
         public string Reference { get; set; }
     }
+    public class EntryApproval
+    {
+
+        public string Id { get; set; }
+
+        public bool HasApproved { get; set; }
+    }
     public class EntryTempDataResult
     {
 
@@ -49,9 +56,12 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public Data.Account Account { get; set; }
         public EntryDescription EntryDescription { get; set; }
         public List<EntryTempData> EntryTempDatas { get; set; }
+        public List<PostedEntry> PostedEntries { get; set; }
         public List<EntryTempDataResult> EntryTempDataResult { get; set; }
         public List<Account> Accounts { get; set; }
         public string ServiceOption { get; set; }
         public string Action { get; set; }
+        public string Key { get; set; }
+        public bool HasApproved { get; set; }
     }
 }
