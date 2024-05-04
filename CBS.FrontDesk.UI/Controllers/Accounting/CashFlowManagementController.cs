@@ -23,7 +23,7 @@ using System.Web.UI.WebControls;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
-
+    [CheckSessionTimeOutAttribute]
     public class CashFlowManagementController : BaseController
     {
         private readonly AccountingServices _AccountServices;

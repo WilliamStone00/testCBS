@@ -16,6 +16,7 @@ using CBS.FrontDesk.Data.Entity;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
+    [CheckSessionTimeOutAttribute]
     public class TellerCashDemandController : BaseController
     {
         public TellerCashReplenishmentServices Service { get; set; }

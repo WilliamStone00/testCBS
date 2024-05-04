@@ -15,6 +15,7 @@ using CBS.BusinessService.Accounts;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
+    [CheckSessionTimeOutAttribute]
     public class AccountingEntryRuleController : BaseController
     {
         

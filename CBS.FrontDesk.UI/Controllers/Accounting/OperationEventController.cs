@@ -13,6 +13,7 @@ using CBS.BusinessService;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
+    [CheckSessionTimeOutAttribute]
     public class OperationEventController : BaseController
     {
         // GET: OperationEvent

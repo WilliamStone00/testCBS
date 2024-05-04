@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
+    [CheckSessionTimeOutAttribute]
     public class AccountCategoryController : BaseController
     {
         // GET: AccountCategory

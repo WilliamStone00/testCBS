@@ -21,6 +21,7 @@ using DocumentFormat.OpenXml.Office2010.Word;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
+    [CheckSessionTimeOutAttribute]
     public class AccountingConfigurationController : BaseController
     {
         private readonly AccountingEntryRuleService _Service;

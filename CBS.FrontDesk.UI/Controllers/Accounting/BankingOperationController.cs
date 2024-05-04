@@ -16,6 +16,7 @@ using CBS.FrontDesk.Data;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
+    [CheckSessionTimeOutAttribute]
     public class BankingOperationsController : BaseController
     {
         private readonly ChartOfAccountServices _chartOfAccountServices;

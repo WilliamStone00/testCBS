@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
-
+    [CheckSessionTimeOutAttribute]
     public class AccountClassController : BaseController
     {
         // GET: AccountClass

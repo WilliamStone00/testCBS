@@ -19,6 +19,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
+    [CheckSessionTimeOutAttribute]
     public class AccountingStatementsController : BaseController
     {
         private readonly AccountingStatementService _acountServices;

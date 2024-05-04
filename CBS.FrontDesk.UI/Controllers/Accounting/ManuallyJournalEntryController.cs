@@ -21,6 +21,7 @@ using CBS.BusinessService.Config;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
+    [CheckSessionTimeOutAttribute]
     public class ManuallyJournalEntryController : BaseController
     {
         private readonly EntryTempDataServices _Service;
