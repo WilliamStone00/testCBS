@@ -223,6 +223,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 if (path == "list")
                 {
+                   
                     return async () =>
                     {
                         var data = await _savingProductServices.GetSavingProducts();
@@ -243,6 +244,15 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 if (path == "list")
                 {
+                    if (key!=null)
+                    {
+                        return async () =>
+                        {
+                            var data = await _depositLimitServices.GetDepositLimits();
+                            var sysData = new SavingConfiguration { DepositLimits = data.Where(x=>x.productId==key).ToList() };
+                            return PartialView(partialView, sysData);
+                        };
+                    }
                     return async () =>
                     {
                         var data = await _depositLimitServices.GetDepositLimits();
@@ -252,7 +262,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 }
                 else if (path == "new")
                 {
-                    return async () => PartialView(partialView, new SavingConfiguration { DepositLimit = new DepositLimit() });
+                    return async () => PartialView(partialView, new SavingConfiguration { DepositLimit = new DepositLimit { productId=key} });
                 }
                 else
                 {
@@ -264,6 +274,15 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 if (path == "list")
                 {
+                    if (key != null)
+                    {
+                        return async () =>
+                        {
+                            var data = await _transferLimitServices.GetTransferLimits();
+                            var sysData = new SavingConfiguration { TransferLimits = data.Where(x => x.productId == key).ToList() };
+                            return PartialView(partialView, sysData);
+                        };
+                    }
                     return async () =>
                     {
                         var data = await _transferLimitServices.GetTransferLimits();
@@ -273,7 +292,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 }
                 else if (path == "new")
                 {
-                    return async () => PartialView(partialView, new SavingConfiguration { TransferLimit = new TransferLimit() });
+                    return async () => PartialView(partialView, new SavingConfiguration { TransferLimit = new TransferLimit { productId = key } });
                 }
                 else
                 {
@@ -285,6 +304,15 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 if (path == "list")
                 {
+                    if (key != null)
+                    {
+                        return async () =>
+                        {
+                            var data = await _withdrawalLimitServices.GetWithdrawalLimits();
+                            var sysData = new SavingConfiguration { WithdrawalLimits = data.Where(x => x.productId == key).ToList() };
+                            return PartialView(partialView, sysData);
+                        };
+                    }
                     return async () =>
                     {
                         var data = await _withdrawalLimitServices.GetWithdrawalLimits();
@@ -294,7 +322,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 }
                 else if (path == "new")
                 {
-                    return async () => PartialView(partialView, new SavingConfiguration { WithdrawalLimit = new WithdrawalLimit() });
+                    return async () => PartialView(partialView, new SavingConfiguration { WithdrawalLimit = new WithdrawalLimit { productId = key } });
                 }
                 else
                 {
@@ -445,9 +473,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var listing = await _accountingServices.GetEventAttributeByOperationTypeID(Key);
             return Json(listing, JsonRequestBehavior.AllowGet);
         }
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete(string Key)
         {
-            var data = await _savingProductServices.Delete(id);
+            var data = await _savingProductServices.Delete(Key);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
     }

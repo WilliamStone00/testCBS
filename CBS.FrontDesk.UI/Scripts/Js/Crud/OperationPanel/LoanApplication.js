@@ -33,6 +33,11 @@ function GetLoanApplication(KEY) {
             $('#salary').html("Enter Salary rate between:" + data.MinimumSalaryAccountBalanceRateForTheRequestAmount + "% and " + data.MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount + "%");
             $('#fee').html("Enter processing fee rate between:" + data.MinimumProcessingFeeRate + "% and " + data.MaximumProcessingFeeRate + "%.");
             $('#inspectionfee').html("Enter inspection fee between:" + data.MinimumInspectionFeeRate + "% and " + data.MaximumInspectionFeeRate + "%.");
+            $('#chargeparcentages').html("Enter charge percentage between:" + data.MinimumChargesToAppliedInPercentage + " % and " + data.MaximumChargesToAppliedPercentage + "%");
+            $('#chargedayranges').html("Enter in days when charges starts between:" + data.MinimumChargesStartDayAfterLoanDueDate + " to " + data.MaximumChargesStartDayAfterLoanDueDate + "days");
+            $('#waiverranges').html("Enter in percentage interest to waive between:" + data.MinimumInterestWaiver + "% and " + data.MaximumInterestWaiver + "%.");
+
+
 
             //InspectionFee
         }, error: function (err) {

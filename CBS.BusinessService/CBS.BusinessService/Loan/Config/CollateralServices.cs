@@ -122,7 +122,6 @@ namespace CBS.BusinessService.Config
                 if (Collateral != null)
                 {
                     Collateral.name = model.name;
-                    Collateral.description = model.description;
                     var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Collateral>>(string.Format(APICallHelper.Get_Update_Delete_Collateral, model.id), Collateral);
                     if (response.IsSuccess)
                     {

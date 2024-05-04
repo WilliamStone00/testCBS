@@ -223,7 +223,7 @@ namespace CBS.BusinessService.Config
         {
             try
             {
-                
+
                 var LoanProduct = await GetLoanProduct(model.Id);
                 LoanProduct.UpdateOption = "N/A";
                 if (LoanProduct != null)
@@ -275,9 +275,12 @@ namespace CBS.BusinessService.Config
 
 
                     }
-                    
+
                     else if (model.ServiceOption == "interest")
                     {
+                        LoanProduct.IsInterestWaiverApplied = model.IsInterestWaiverApplied;
+                        LoanProduct.MinimumInterestWaiver = model.MinimumInterestWaiver;
+                        LoanProduct.MaximumInterestWaiver = model.MaximumInterestWaiver;
                         LoanProduct.LoanInterestType = model.LoanInterestType;
                         LoanProduct.LoanInterestPeriod = model.LoanInterestPeriod;
                         LoanProduct.MinimumInterestRate = model.MinimumInterestRate;
@@ -307,7 +310,7 @@ namespace CBS.BusinessService.Config
                     }
                     else if (model.ServiceOption == "fee")
                     {
-        
+
                         LoanProduct.IsEarlyPartialRepaymentFeeRate = model.IsEarlyPartialRepaymentFeeRate;
                         LoanProduct.EarlyPartialRepaymentFee = model.EarlyPartialRepaymentFee;
                         LoanProduct.IsEarlyTotalRepaymentFeeRate = model.IsEarlyTotalRepaymentFeeRate;
@@ -341,6 +344,19 @@ namespace CBS.BusinessService.Config
                         LoanProduct.UpdateOption = model.UpdateOption;
                     }
 
+                    else if (model.ServiceOption == "charges")
+                    {
+                        LoanProduct.IsChargesApplied = model.IsChargesApplied;
+                        LoanProduct.MinimumChargesToAppliedInPercentage = model.MinimumChargesToAppliedInPercentage;
+                        LoanProduct.MaximumChargesToAppliedPercentage = model.MaximumChargesToAppliedPercentage;
+                        LoanProduct.ChargesAreAppliedToInterestOrBalance = model.ChargesAreAppliedToInterestOrBalance;
+                        LoanProduct.ChargesStopAfterHowManyDaysFromStart = model.ChargesStopAfterHowManyDaysFromStart;
+                        LoanProduct.DefaultChargeToAppliedPercentage = model.DefaultChargeToAppliedPercentage;
+                        LoanProduct.MinimumChargesStartDayAfterLoanDueDate = model.MinimumChargesStartDayAfterLoanDueDate;
+                        LoanProduct.MaximumChargesStartDayAfterLoanDueDate = model.MaximumChargesStartDayAfterLoanDueDate;
+                        LoanProduct.DefaulChargesStartDayAfterLoanDueDate = model.DefaulChargesStartDayAfterLoanDueDate;
+                    }
+
                     var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanProduct>>(string.Format(APICallHelper.Get_Update_Delete_LoanProduct, model.Id), LoanProduct);
                     if (response.IsSuccess)
                     {
@@ -356,7 +372,7 @@ namespace CBS.BusinessService.Config
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }
-
+                
             }
             catch (Exception ex)
             {
