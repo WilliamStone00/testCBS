@@ -2665,6 +2665,14 @@
     <Content Include="Views\Dashboard\BranchOffice.cshtml" />
     <Content Include="Views\UserManagement\FLoginChangePassword.cshtml" />
     <Content Include="Views\UserManagement\_UserDetails.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_AccountUploud.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateIncomeStatementStructure.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateStatementModel.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateStatementModelBS.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateTrialBalanceReference.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_statementModelData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_statementModelDetails.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_UpdateStatementModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
