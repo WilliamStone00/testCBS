@@ -23,69 +23,67 @@
                 <div class="accordion-body">
                     <div id="mainviewChange">
                         <div class="change-group">
-
-                            <div class="row mt-2 gy-4">
-                                <div class="col-md-8">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvioningHistory.openOfDayAmount, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">Open of day amount</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvioningHistory.openedDate, new { @class = "form-control date-picker", @placeholder = "Operation date" })
-                                        <label>Opened date</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvioningHistory.ReplenishedAmount, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">Replenished amount</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvioningHistory.cashAtHand, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">Cash at hand</label>
-                                    </div>
-                                </div> <div class="col-md-4">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvioningHistory.clossedDate, new { @class = "form-control date-picker", @placeholder = "Operation date" })
-                                        <label>Date to close</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvioningHistory.accountBalance, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">System difference</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvioningHistory.tellerAccountBalance, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">Teller account balance</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvioningHistory.clossedStatus, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">Close of day status</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.SubTellerProvioningHistory.primaryTellerConfirmationStatus, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">Validation status</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextAreaFor(m => m.SubTellerProvioningHistory.subTellerComment, new { @class = "form-control", @style = "height: 75px;" })
-                                        <label for="formValidationDob">Teller note</label>
-                                    </div>
-                                </div>
-                            </div>
-
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" class="separation-text"><h5 class="card-title">CLOSE OF DAY DETAILS</h5></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Opened date:</strong></td>
+                                        <td><span id="calculatedBalance">@Model.SubTellerProvioningHistory.openedDate</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Open of day amount:</strong></td>
+                                        <td><span id="notes10000Required">@Model.SubTellerProvioningHistory.openOfDayAmount</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Replenished amount:</strong></td>
+                                        <td><span id="notes5000Required">@Model.SubTellerProvioningHistory.ReplenishedAmount</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Close of day amount:</strong></td>
+                                        <td><span id="notes2000Required">@Model.SubTellerProvioningHistory.cashAtHand</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Teller account balance:</strong></td>
+                                        <td><span id="notes500Required">@Model.SubTellerProvioningHistory.tellerAccountBalance</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>System balance:</strong></td>
+                                        <td><span id="notes500Required">@Model.SubTellerProvioningHistory.accountBalance</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Closed date:</strong></td>
+                                        <td><span id="notes1000Required">@Model.SubTellerProvioningHistory.clossedDate</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Closed status:</strong></td>
+                                        <td><span id="notes500Required">@Model.SubTellerProvioningHistory.clossedStatus</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Primary teller confirmation:</strong></td>
+                                        <td><span id="notes500Required">@Model.SubTellerProvioningHistory.primaryTellerConfirmationStatus</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Primary teller comentary:</strong></td>
+                                        <td><span id="notes500Required">@Model.SubTellerProvioningHistory.primaryTellerComment</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Teller Name:</strong></td>
+                                        <td><span id="notes500Required">@Model.SubTellerProvioningHistory.teller.name</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Teller User:</strong></td>
+                                        <td><span id="notes500Required">@Model.SubTellerProvioningHistory.teller.inUsedByUserId</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Sub teller commentary:</strong></td>
+                                        <td><span id="notes500Required">@Model.SubTellerProvioningHistory.subTellerComment</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
 
                         </div>
@@ -176,10 +174,10 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Date</th>
-                                            <th>Direction</th>
-                                            <th>O.Amount</th>
+                                            <th>Debit</th>
+                                            <th>Credit</th>
                                             <th>Charges</th>
-                                            <th>Amount</th>
+                                            <th>O.Amount</th>
                                             <th>Previous balance</th>
                                             <th>Balance</th>
                                             <th>Fee type</th>
@@ -190,39 +188,50 @@
                                         @{
                                             var orderedTransactions = Model.TransactionHistories.OrderBy(d => d.CreatedDate);
                                         }
-                                        @foreach (var d in orderedTransactions)
+
+                                        @if (orderedTransactions != null)
                                         {
-                                            <tr>
-                                                <td style="width: 10%">@d.CreatedDate</td>
-                                                <td style="width: 10%">@d.OperationType</td>
-                                                <td style="width: 10%">@d.OriginalDepositAmount</td>
-                                                <td style="width: 8%">@d.Fee</td>
-                                                <td style="width: 10%">@d.Amount</td>
-                                                <td style="width: 10%">@d.PreviousBalance</td>
-                                                <td style="width: 10%">@d.Balance</td>
-                                                <td style="width: 10%">@d.FeeType</td>
-                                                <td style="width: 10%">@d.TransactionType</td>
-                                            </tr>
+                                            foreach (var d in orderedTransactions)
+                                            {
+                                                <tr>
+                                                    <td style="width: 20%">@d.CreatedDate</td>
+                                                    <td style="width: 10%">@d.Debit</td>
+                                                    <td style="width: 10%">@d.Credit</td>
+                                                    <td style="width: 10%">@d.Fee</td>
+                                                    <td style="width: 10%">@d.OriginalDepositAmount</td>
+                                                    <td style="width: 10%">@d.PreviousBalance</td>
+                                                    <td style="width: 10%">@d.Balance</td>
+                                                    <td style="width: 10%">@d.FeeType</td>
+                                                    <td style="width: 10%">@d.Operation</td>
+                                                </tr>
+                                            }
                                         }
+                                        else
+                                        {
+                                            <div class="text-center my-3">
+                                                <p>No Data was found.</p>
+                                            </div>
+                                        }
+
                                     </tbody>
                                     @*<tfoot>
-                    <tr>
-                        <td colspan="6"></td>
-                        <td>
-                            <strong>Balance:</strong>
-                            @if (Model.TransactionHistories.Any())
-                            {
-                                var totalBalance = Model.TransactionHistories.Sum(d => d.amount);
-                                @totalBalance
-                            }
-                            else
-                            {
-                                <label>0</label>
-                            }
-                        </td>
-                        <td colspan="3"></td>
-                    </tr>
-                </tfoot>*@
+                                            <tr>
+                                                <td colspan="6"></td>
+                                                <td>
+                                                    <strong>Balance:</strong>
+                                                    @if (Model.TransactionHistories.Any())
+                                                    {
+                                                        var totalBalance = Model.TransactionHistories.Sum(d => d.amount);
+                                                        @totalBalance
+                                                    }
+                                                    else
+                                                    {
+                                                        <label>0</label>
+                                                    }
+                                                </td>
+                                                <td colspan="3"></td>
+                                            </tr>
+                                        </tfoot>*@
                                 </table>
                             </div>
                         </div>

@@ -17,8 +17,8 @@
                             data-bs-target="#accordionPopoutIcon-3"
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-calculator me-2"> </i>
-                        COLLATERALS
+                        <i class="mdi mdi-security me-2"></i> Collateral
+
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
@@ -27,14 +27,27 @@
                     <div class="accordion-body">
                         <div id="mainviewChange">
                             <div class="change-group">
+                                <div class="card mb-4">
+                                    <div class="card-body d-sm-flex d-block">
+                                        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0 ms-auto">
+                                            <div class="ms-3">
+                                                <a type="button" onclick="LoadDataGen('Collateral','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                                </a>
+                                            </div>
+                                            <div class="ms-3">
+                                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','Collateral')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div id="datalistingview">
                                     @Html.Partial("_Create")
                                 </div>
-                                <div class="accordion-body">
-                                    <div id="datalistingview_data">
 
-                                    </div>
-                                </div>
 
                             </div>
                         </div>
@@ -48,39 +61,6 @@
 
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/Crud/Collateral/Collateral.js"></script>
 }
-
-
-
-@*@{
-        ViewBag.Title = "Collateral";
-    }
-    <div class="row justify-content-end">
-        <div class="demo-inline-spacing text-end">
-            <a type="button"  onclick="LoadDataGen('Collateral','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-            </a>
-            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','Collateral')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-            </a>
-        </div>
-    </div>
-    <br/>
-        <div class="card">
-            <div class="card-body">
-                <div id="datalistingview">
-                    @Html.Partial("_Create")
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-
-
-    @section Scripts {@Scripts.Render("~/bundles/jqueryval")}*@
 
 

@@ -6,7 +6,7 @@
     {
         <div class="row my-4">
             <div class="accordion" id="collapsibleSection">
-                <div class="card accordion-item">
+                <div class="card accordion-item mb-3">
                     <h2 class="accordion-header" id="headingDeliveryAddress">
                         <button type="button"
                                 class="accordion-button"
@@ -125,18 +125,18 @@
                                         <label for="formValidationDob">Select customer category</label>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                @*<div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.membershipApprovalStatus, new SelectList(ViewBag.membershipApprovalStatuses, "Text", "Value"), "---Select membership status---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.membershipApprovalStatus, "", new { @class = "text-danger " })
                                         <label for="formValidationDob">Membership status</label>
                                     </div>
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card accordion-item">
+                <div class="card accordion-item mb-3">
                     <h2 class="accordion-header" id="headingPaymentMethod3">
                         <button type="button"
                                 class="accordion-button collapsed"
@@ -227,7 +227,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card accordion-item">
+                <div class="card accordion-item mb-3">
                     <h2 class="accordion-header" id="headingPaymentMethod5">
                         <button type="button"
                                 class="accordion-button collapsed"
@@ -290,7 +290,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card accordion-item">
+                <div class="card accordion-item mb-3">
                     <h2 class="accordion-header" id="headingDeliveryOptions">
                         <button type="button"
                                 class="accordion-button collapsed"
@@ -346,7 +346,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card accordion-item">
+                <div class="card accordion-item mb-3">
                     <h2 class="accordion-header" id="headingPaymentMethod">
                         <button type="button"
                                 class="accordion-button collapsed"
@@ -392,7 +392,7 @@
                     </div>
                 </div>
                
-                <div class="card accordion-item">
+                <div class="card accordion-item mb-3">
                     <h2 class="accordion-header" id="headingPaymentMethod6">
                         <button type="button"
                                 class="accordion-button collapsed"

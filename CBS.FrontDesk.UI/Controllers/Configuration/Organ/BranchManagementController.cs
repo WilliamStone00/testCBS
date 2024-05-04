@@ -27,7 +27,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration.Organ
 
         public async Task<ActionResult> Index()
         {
-            await GetList();
+            //await GetList();
             return View(new BankConfig());
         }
 
@@ -107,7 +107,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration.Organ
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
-            await GetList();
+            //await GetList();
             Func<Task<PartialViewResult>> serviceAction = GetServiceAction(path, partialView, KEY, serviceOption);
 
             if (serviceAction != null)

@@ -129,13 +129,14 @@ namespace CBS.BusinessService.Config
                     bank.DateOfCreation = model.DateOfCreation;
                     bank.Email = model.Email;
                     bank.Telephone = model.Telephone;
-                    bank.Description = model.Description;
+                    bank.Description = model.Description ?? "N/A";
                     bank.TaxPayerNUmber = model.TaxPayerNUmber;
                     bank.PBox = model.PBox;
                     bank.WebSite = model.WebSite;
                     bank.BankInitial = model.BankInitial;
                     bank.Motto = model.Motto;
-                    bank.OrganizationId = model.OrganizationId;
+                    bank.Capital = model.Capital ?? "0";
+                    bank.SignatureURL = model.SignatureURL ?? model.LogoUrl;
                     var response = await _bankConfigApiHelper.PutAsync<ServiceResponse<Teller>>(string.Format(APICallHelper.Get_Update_Delete_Bank, model.Id), bank);
                     if (response.IsSuccess)
                     {

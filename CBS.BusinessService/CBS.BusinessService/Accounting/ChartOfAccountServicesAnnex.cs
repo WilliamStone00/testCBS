@@ -73,7 +73,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     return couApiResponse.Data.Select(a => new StringValues
                     {
-                        Text = $"{a.AccountNumberAffiliate}-{a.LabelEn}",
+                        Text = $"{a.AccountNumber}-{a.LabelEn}",
                         Value = a.Id
                     });
                 }

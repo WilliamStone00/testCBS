@@ -22,10 +22,10 @@
                     <div class="accordion-body">
                         <!-- Deposit Content -->
                         <div class="demo-inline-spacing text-end">
-                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit',null,'depositlimit','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit',@Model.SavingProduct.id,'depositlimit','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                             </a>
-                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Deposit','_DepositConfig','new','TransactionConfiguration','depositlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                            <a type="button" onclick="AddORUpdateGen('@Model.SavingProduct.id','datalistingview_Deposit','_DepositConfig','new','TransactionConfiguration','depositlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
                                 <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                             </a>
                         </div>
@@ -57,10 +57,10 @@
                     <div class="accordion-body">
                         <!-- Withdrawal Content -->
                         <div class="demo-inline-spacing text-end">
-                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Withdrawal','_WithdrawalData',0,'datalistingview_Withdrawal',null,'withdrawallimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Withdrawal','_WithdrawalData',0,'datalistingview_Withdrawal','@Model.SavingProduct.id','withdrawallimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                             </a>
-                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Withdrawal','_WithdrawalConfig','new','TransactionConfiguration','withdrawallimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                            <a type="button" onclick="AddORUpdateGen('@Model.SavingProduct.id','datalistingview_Withdrawal','_WithdrawalConfig','new','TransactionConfiguration','withdrawallimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
                                 <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                             </a>
                         </div>
@@ -92,10 +92,10 @@
                     <div class="accordion-body">
                         <!-- Transfer Content -->
                         <div class="demo-inline-spacing text-end">
-                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Transfer','_TransferData',0,'datalistingview_Transfer',null,'transferlimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Transfer','_TransferData',0,'datalistingview_Transfer','@Model.SavingProduct.id','transferlimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                             </a>
-                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Transfer','_TransferConfig','new','TransactionConfiguration','transferlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                            <a type="button" onclick="AddORUpdateGen('@Model.SavingProduct.id','datalistingview_Transfer','_TransferConfig','new','TransactionConfiguration','transferlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
                                 <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                             </a>
                         </div>

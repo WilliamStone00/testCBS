@@ -92,7 +92,7 @@ namespace CBS.BusinessService.CustomerManagement
             {
                 var customer = await GetSingleCustomer(id);
                 var inResponse = await _customerApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.DeleteCustomer, id));
-                if (inResponse.ApiResponseData!=null && inResponse.IsSuccess)
+                if (inResponse.ApiResponseData != null && inResponse.IsSuccess)
                 {
 
                     // Handle success scenario
@@ -271,6 +271,10 @@ namespace CBS.BusinessService.CustomerManagement
                 spouseContactNumber = a.spouseContactNumber,
                 spouseName = a.spouseName,
                 spouseOccupation = a.spouseOccupation,
+                bankName = b.Bank.Name,
+                customerCode = a.customerCode,
+                VillageOfOrigin = a.VillageOfOrigin,
+                cardSignatureSpecimenDetails = a.cardSignatureSpecimenDetails
 
 
             };
@@ -283,7 +287,7 @@ namespace CBS.BusinessService.CustomerManagement
                 var cusResponseObject = await GetSingleCustomer(id);
                 var accountBalance = await GetCustomerBalance(id);
                 var accounts = await GetCustomerAccounts(id);
-                var policies=await _memberAccountActivationPolicyServices.GetMemberAccountActivationPolicys();
+                var policies = await _memberAccountActivationPolicyServices.GetMemberAccountActivationPolicys();
                 var memberAccountActivation = await _memberAccountActivationServices.GetMemberAccountActivationByMemberId(id);
                 var data = (from a in new List<IndividualProfile> { cusResponseObject }
                             join b in aggregrates.Branches on a.branchId equals b.Id
@@ -294,15 +298,22 @@ namespace CBS.BusinessService.CustomerManagement
                 var cardSignatureSpecimen = new CardSignatureSpecimen { customerId = id };
                 var result = new IndividualCustomerProfile(data.First(), aggregrates, accountBalance, accounts, addaccount, nextOfKingsMember, cardSignatureSpecimen);
                 result.SavingProducts = aggregrates.Savings;
-                var policy=new MemberAccountActivationPolicy();
+                var policy = new MemberAccountActivationPolicy();
                 if (policies.Any())
                 {
-                    policy=policies.FirstOrDefault();
+                    policy = policies.FirstOrDefault();
                 }
-                if (memberAccountActivation==null)
+                if (memberAccountActivation == null)
                 {
-                    result.MemberAccountActivation = new MemberAccountActivation { CustomerId = id, RegistrationFee= policy .MaximumRegistrationFee
-                    , ReopeningFee= policy .MaximumReopeningFee, ClossingFee= policy.MaximumAccountClossingFee, MemberAccountActivationPolicyId=policy.Id};
+                    result.MemberAccountActivation = new MemberAccountActivation
+                    {
+                        CustomerId = id,
+                        RegistrationFee = policy.MaximumRegistrationFee
+                    ,
+                        ReopeningFee = policy.MaximumReopeningFee,
+                        ClossingFee = policy.MaximumAccountClossingFee,
+                        MemberAccountActivationPolicyId = policy.Id
+                    };
                     result.option = "AddMemberAccount";
                 }
                 else
@@ -310,7 +321,7 @@ namespace CBS.BusinessService.CustomerManagement
                     result.MemberAccountActivation = memberAccountActivation;
                     result.option = "UpdateMemberAccount";
                 }
-                
+
                 return result;
             }
             catch (Exception ex)
@@ -388,7 +399,7 @@ namespace CBS.BusinessService.CustomerManagement
                 {
                     var aggregates = subscriptionAggregatesResponse?.ApiResponseData.Data ?? new Aggregrate();
                     var savingsResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<SavingProduct>>>(APICallHelper.GetSavingProducts);
-                    aggregates.Savings = savingsResponse?.ApiResponseData == null ? new List<SavingProduct>() : savingsResponse.ApiResponseData.Data.Where(x=>!x.isUsedForTellerProvisioning).ToList();
+                    aggregates.Savings = savingsResponse?.ApiResponseData == null ? new List<SavingProduct>() : savingsResponse.ApiResponseData.Data.Where(x => !x.isUsedForTellerProvisioning).ToList();
                     var customerDefaultEnum = await _customerApiHelper.GetAsync<ResponseObject<CustomerDefaultEnum>>(APICallHelper.GetCustomerDefaultEnums);
                     aggregates.CustomerDefaultEnum = customerDefaultEnum?.ApiResponseData == null ? new CustomerDefaultEnum() : customerDefaultEnum.ApiResponseData.Data;
                     return aggregates;
@@ -563,13 +574,13 @@ namespace CBS.BusinessService.CustomerManagement
                 customer.membershipApprovalStatus = objCustomerProfile.CustomerList.membershipApprovalStatus;
                 customer.membershipApprovalBy = GetUserFullName();
                 customer.membershipApprovedDate = DateTime.Now.ToString();
-                if (customer.VillageOfOrigin==null)
+                if (customer.VillageOfOrigin == null)
                 {
                     customer.VillageOfOrigin = "N/A";
                 }
                 var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.customerId), customer);
                 if (inResponse.IsSuccess)
-                { 
+                {
                     // Handle success scenario
                     GetExecutionMessages(inResponse, true, $"{customer.firstName} {customer.lastName}", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
@@ -662,7 +673,9 @@ namespace CBS.BusinessService.CustomerManagement
                 model.branchId = GetBranchID();
                 model.bankId = GetBankID();
                 model.employerTelephone = tel;
+                model.membershipApprovalStatus = "Awaits_Validation";
                 model.bankName = GetBranchName();
+                model.email = model.email ?? "cbs@cbs.com";
                 model.membershipApplicantDate = DateTime.Now.ToString();
                 var response = await _customerApiHelper.PostAsync<ServiceResponse<IndividualProfile>>(APICallHelper.CreateIndividualProfile, model);
                 if (response.IsSuccess)
@@ -757,7 +770,7 @@ namespace CBS.BusinessService.CustomerManagement
             try
             {
                 var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.customerId);
-                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.ResetPin, customer.phone), new ResetPinCode { Phone= customer.phone});
+                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.ResetPin, customer.phone), new ResetPinCode { Phone = customer.phone });
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario

@@ -1,0 +1,39 @@
+﻿@model CBS.FrontDesk.Data.Entity.Config.BankConfig
+
+<div class="card-body">
+    @using (Html.BeginForm("AddOrUpdate", "Bank", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+    {
+
+        <fieldset class="fieldset-custom">
+            <legend>Update @Model.Bank.Name LOGO</legend>
+            <input type="hidden" name="ServiceOption" value="update_bank_logo" id="ServiceOption" />
+            <div class="row mt-2 gy-4">
+                <input type="hidden" name="serviceOption" value="update_branch_logo" />
+                <input type="hidden" name="CustomerDocumentRequest.DocumentType" value="Logo" />
+                <div class="form-group">
+                    <div class="upload-container">
+                        <div class="image-preview">
+                            <img src="@Url.Content(Model.Bank.LogoUrl)" alt="No Image Found" id="previewimage" class="img-fluid" />
+                        </div>
+                        <label for="imageuploadSignature" class="custom-file-upload">
+                            <i class="fas fa-cloud-upload-alt"></i> Choose Logo Image
+                        </label>
+                        <input type="file" name="CustomerDocumentRequest.AttachedFiles" accept="image/jpeg,image/png,image/JPG" id="imageuploadSignature" onchange="ShowImagePreview(this, document.getElementById('previewimage'))" />
+                    </div>
+                </div>
+                @Html.HiddenFor(m => m.Bank.Id)
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Upload Logo</button>
+            </div>
+        </fieldset>
+
+
+
+       
+    }
+
+
+</div>
+

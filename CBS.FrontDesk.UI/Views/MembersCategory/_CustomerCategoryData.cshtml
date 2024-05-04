@@ -1,0 +1,25 @@
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.CustomerCategory>
+
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td style="width:25%">@d.Name</td>
+                <td style="width:60%">@d.Description</td>
+                <td style="width:15%">
+                    <a href="#" onclick="AddOrUpdateGen('@d.Id','datalistingview','_CustomerCategory','get','MembersCategory')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a> |
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('MembersCategory','@d.Id','myDataTable','_CustomerCategoryData',0,'datalistingview')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

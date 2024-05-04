@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
-@if (Model.SavingProduct.ChartOfAccountIdInterestSavingAccount==null)
+@if (Model.SavingProduct.ChartOfAccountIdPricipalAccount == null)
 {
     <div class="text-center my-3">
         <p>No ordinary account is mapped.</p>
@@ -35,37 +35,37 @@ else
         <div class="row mt-2 gy-4">
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdPricipalSavingAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdPricipalSavingAccount, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdPricipalAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdPricipalAccount, "", new { @class = "text-danger" })
                     <label>Capital (This is an account that holds the sum of the savings of this product.)</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestSavingAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestSavingAccount, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestAccount, "", new { @class = "text-danger" })
                     <label>Interest account (This is an account that receive all interest generated from saving products)</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestSavingExpenseAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestSavingExpenseAccount, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestExpenseAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestExpenseAccount, "", new { @class = "text-danger" })
                     <label>Interest expense account (This is an account that receive all interest paid out to other accounts)</label>
                 </div>
             </div>
 
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestCommissionAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestCommissionAccount, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdCommissionAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdCommissionAccount, "", new { @class = "text-danger" })
                     <label>Commision account. (This account holds commissions generated from inter-operations)</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestLiassonAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestLiassonAccount, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdLiassonAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdLiassonAccount, "", new { @class = "text-danger" })
                     <label>Liasson account. (This account holds cash for compensation managed at the level of head-office)</label>
                 </div>
             </div>

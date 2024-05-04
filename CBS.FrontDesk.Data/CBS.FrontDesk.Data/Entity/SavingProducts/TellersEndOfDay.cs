@@ -151,7 +151,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string comment { get; set; }
         [Required]
-        public int amountRecieved { get; set; }
+        public decimal amountRecieved { get; set; }
         public string primaryTellerProvioningHistoryID { get; set; }
         [Required]
         public string eodClosedStatus { get; set; }

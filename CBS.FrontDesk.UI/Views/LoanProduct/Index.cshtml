@@ -17,7 +17,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-cog me-2"></i>
+                            <i class="mdi mdi-cash-multiple me-2"></i> Loan Product
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -28,23 +28,20 @@
                                 <div class="change-group">
                                     <div class="card mb-4">
                                         <div class="card-body d-sm-flex d-block">
-                                            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                                Loan Product and configurations
+                                            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0 ms-auto">
+                                                <div class="ms-3">
+                                                    <a type="button" onclick="LoadDataGen('LoanProduct','myDataTable','_Data',0,'datalistingview',null,null,'list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                                    </a>
+                                                </div>
+                                                <div class="ms-3">
+                                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_LoanProduct','new','LoanProduct',null)" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-
                                     </div>
-                                    <div class="row justify-content-end">
-                                        <div class="demo-inline-spacing text-end">
-                                            <a type="button" onclick="LoadDataGen('LoanProduct','myDataTable','_Data',0,'datalistingview',null,null,'list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                            </a>
-                                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_LoanProduct','new','LoanProduct',null)" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <hr />
                                     <div id="datalistingview">
                                         @Html.Partial("_LoanProduct")
                                     </div>
@@ -73,6 +70,29 @@
 
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script>
+    function preserveSelectionOrder(selectElement) {
+        // Get the selected values and their order
+        var selectedValues = Array.from(selectElement.selectedOptions).map(option => option.value);
+
+        // Remove all options from the select element
+        while (selectElement.options.length > 0) {
+            selectElement.remove(0);
+        }
+
+        // Add the options back in the original order
+        var refundOrders = @Html.Raw(Json.Encode(ViewBag.RefundOrders));
+        refundOrders.forEach(function (order) {
+            var option = document.createElement("option");
+            option.value = order.Value;
+            option.text = order.Text;
+            if (selectedValues.includes(order.Value)) {
+                option.selected = true;
+            }
+            selectElement.add(option);
+        });
+    }
+</script>
 }
 
 

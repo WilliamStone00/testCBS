@@ -37,12 +37,12 @@ function AjaxPost(form) {
 
 
 function showConfirmMessage(KEY, tableID) {
-    DeleteDataConfiguration("Collateral", KEY, tableID, "_Data", 0, "datalistingview_data");
+    DeleteDataConfiguration("Collateral", KEY, tableID, "_Data", 0, "datalistingview");
 
 }
 
 function LoadCollateral() {
-    LoadDataGen('Collateral', 'myDataTable', '_Data', 0, 'datalistingview_data', "KEY",null,'list')
+    LoadDataGen('Collateral', 'myDataTable', '_Data', 0, 'datalistingview', "KEY",null,'list')
 }
 
 

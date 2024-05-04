@@ -14,6 +14,7 @@ namespace CBS.FrontDesk.Data.Entity
         public string ActionName { get; set; }
         public string MenuGroup { get; set; }
         public string Description { get; set; }
+        public string ParentName { get; set; }
         public bool Create { get; set; }
         public bool Read { get; set; }
         public bool Delete { get; set; }

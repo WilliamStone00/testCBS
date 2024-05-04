@@ -112,10 +112,13 @@
     <Compile Include="Entity\BudgetManagement\BudgetPeriod.cs" />
     <Compile Include="Entity\BudgetManagement\OrganizationUnit.cs" />
     <Compile Include="Entity\Config\Organization\BankConfig.cs" />
+    <Compile Include="Entity\Config\Others\CustomerCategory.cs" />
     <Compile Include="Entity\CustomerManagement\Individual\CustomerActivation.cs" />
     <Compile Include="Entity\CustomerManagement\MembershipNextOfKingsMember.cs" />
     <Compile Include="Entity\CustomerManagement\CustomerDocument.cs" />
     <Compile Include="Entity\CustomerManagement\SecretQuestion.cs" />
+    <Compile Include="Entity\DashBoards\DashboardData.cs" />
+    <Compile Include="Entity\DashBoards\DashboardStatistics.cs" />
     <Compile Include="Entity\LoanCommitee\LoanCommitee.cs" />
     <Compile Include="Entity\LoanCommitee\LoanCommiteeGroup.cs" />
     <Compile Include="Entity\LoanCommitee\LoanCommiteeMember.cs" />

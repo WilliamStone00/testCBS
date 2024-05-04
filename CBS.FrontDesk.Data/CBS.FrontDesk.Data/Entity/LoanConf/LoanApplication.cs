@@ -82,6 +82,11 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IsApproved { get; set; }
         public bool IsDisbursed { get; set; }
         public string ApprovalComment { get; set; }
+        public bool IsInterestWaiverApplied { get; set; }
+        public decimal InterestWaiverPercentage { get; set; }
+        public bool IsChargesApplied { get; set; }
+        public decimal ChargesPercentage { get; set; }
+        public int NumberOfDaysToApplyCharges { get; set; }
         public virtual LoanProduct LoanProduct { get; set; }
         public virtual ICollection<LoanApplicationCollateral> Collateras { get; set; }
         public virtual ICollection<LoanGuarantor> Guarantors { get; set; }

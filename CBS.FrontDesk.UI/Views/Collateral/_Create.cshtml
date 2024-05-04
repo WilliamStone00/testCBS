@@ -1,27 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Collateral
-<div class="change-group">
-    <div class="card mb-4">
-        <div class="card-body d-sm-flex d-block">
-            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                <div class="ms-3">
-                    <a type="button" onclick="LoadCollateral()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                    </a>
-                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','Collateral')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 <div class="col">
-    @using (Html.BeginForm("Create", "Collateral", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPost(this);" }))
+    @using (Html.BeginForm("Create", "Collateral", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
         <input type="hidden" name="ServiceOption" value="loan_schedule" id="ServiceOption" />
         <div class="row my-4">
             <div class="accordion" id="collapsibleSection">
-                <div class="card accordion-item">
+                <div class="card accordion-item mb-3">
                     <h2 class="accordion-header" id="headingDeliveryAddress">
                         <button type="button"
                                 class="accordion-button"
@@ -36,19 +21,13 @@
                          class="accordion-collapse collapse show"
                          data-bs-parent="#collapsibleSection">
                         <div class="accordion-body">
+                            @Html.HiddenFor(m => m.id)
                             <div class="row mt-2 gy-4">
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
                                         <label>Name</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextAreaFor(m => m.description, new { @class = "form-control", @style = "height: 200px;" })
-                                        @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
-                                        <label>Description</label>
                                     </div>
                                 </div>
                             </div>

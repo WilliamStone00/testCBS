@@ -132,7 +132,8 @@ function calculateTotalAmounts() {
     let formattedTotalBlockedAmount = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XAF' }).format(totalBlockedAmount);
 
     // Update the corresponding elements with formatted amounts
-    $('#totalAccountBalance').text('Total account balance: ' + formattedTotalAccountBalance);
+    $('#totalAccountBalance').text('Actual account balance: ' + formattedTotalAccountBalance);
+    $('#actualAccountBalance').text(formattedTotalAccountBalance);
     $('#tableTotalAccountBalance').text(formattedTotalTableAccountBalance);
     $('#totalBlockedAmount').text(formattedTotalBlockedAmount);
 

@@ -786,6 +786,16 @@
                 startSessionWarning();
             });
         </script>*@
+    @*<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuToggle = document.querySelector(".layout-menu-toggle");
+            const userProfile = document.querySelector(".user-profile");
+
+            menuToggle.addEventListener("click", function () {
+                userProfile.classList.toggle("hidden");
+            });
+        });
+    </script>*@
 
     @RenderSection("scripts", required: false)
 </body>

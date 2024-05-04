@@ -38,7 +38,7 @@ namespace CBS.BusinessService.Accounting
                 {
 
                     GetExecutionMessages(inResponse, true, $"{objAccountCategory.Name}", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
            
 
                 }

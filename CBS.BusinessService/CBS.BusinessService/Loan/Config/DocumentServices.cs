@@ -33,7 +33,7 @@ namespace CBS.BusinessService.Config
                 {
 
                     GetExecutionMessages(inResponse, true, $"{objDocument.Name}", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }
@@ -80,7 +80,7 @@ namespace CBS.BusinessService.Config
                 var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Document>>>(APICallHelper.GetAllDocument);
                 if (couApiResponse.ApiResponseData!=null && couApiResponse.IsSuccess)
                 {
-                    var results= (from a in couApiResponse.ApiResponseData.Data select new StringValues() { Text = $"{a.DocumentType} {a.Name}", Value = a.Id }).ToList();
+                    var results= (from a in couApiResponse.ApiResponseData.Data select new StringValues() { Text = $" {a.Name}", Value = a.Id }).ToList();
                     return results;
                 }
                 return new List<StringValues>();
@@ -146,9 +146,6 @@ namespace CBS.BusinessService.Config
                 if (Document != null)
                 {
                     Document.Name = model.Name;
-                    Document.LinkDoc = model.LinkDoc;
-                    Document.DocumentType = model.DocumentType;
-                    Document.Description = model.Description;
                     var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Document>>(string.Format(APICallHelper.Get_Update_Delete_Document, model.Id), Document);
                     if (response.IsSuccess)
                     {

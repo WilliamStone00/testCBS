@@ -32,6 +32,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(AuthRequest model, string returnUrl = "")
         {
             var result = new ExecutionMessages();

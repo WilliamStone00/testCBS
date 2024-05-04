@@ -228,6 +228,13 @@
                                         <label for="formValidationDob">Teller note</label>
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.EndOfDayPrimaryTellerCommand.clossedStatus, new SelectList(ViewBag.Statuses, "Text", "Value"), "---Select status type---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.EndOfDayPrimaryTellerCommand.clossedStatus, "", new { @class = "text-danger " })
+                                        <label for="formValidationDob">Status</label>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mt-4">
                                 <button type="submit" class="btn btn-primary me-2">Close day @Model.PrimaryTellerProvisioningHistory.openedDate</button>
@@ -274,32 +281,26 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Date</th>
-                                            <th>Direction</th>
-                                            <th>O.Amount</th>
-                                            <th>Charges</th>
-                                            <th>Amount</th>
+                                            <th>Debit</th>
+                                            <th>Credit</th>
                                             <th>Previous balance</th>
                                             <th>Balance</th>
-                                            <th>Fee type</th>
                                             <th>Type</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @{
-                                            var orderedTransactions = Model.TransactionHistories.OrderBy(d => d.createdDate);
+                                            var orderedTransactions = Model.TransactionHistories.OrderBy(d => d.CreatedDate);
                                         }
                                         @foreach (var d in orderedTransactions)
                                         {
                                             <tr>
-                                                <td style="width: 10%">@d.createdDate</td>
-                                                <td style="width: 10%">@d.operationType</td>
-                                                <td style="width: 10%">@d.originalDepositAmount</td>
-                                                <td style="width: 8%">@d.fee</td>
-                                                <td style="width: 10%">@d.amount</td>
-                                                <td style="width: 10%">@d.previousBalance</td>
-                                                <td style="width: 10%">@d.balanceBroughtForward</td>
-                                                <td style="width: 10%">@d.feeType</td>
-                                                <td style="width: 10%">@d.transactionType</td>
+                                                <td style="width: 50%">@d.CreatedDate</td>
+                                                <td style="width: 10%">@d.Debit</td>
+                                                <td style="width: 10%">@d.Credit</td>
+                                                <td style="width: 10%">@d.PreviousBalance</td>
+                                                <td style="width: 10%">@d.Balance</td>
+                                                <td style="width: 10%">@d.Operation</td>
                                             </tr>
                                         }
                                     </tbody>

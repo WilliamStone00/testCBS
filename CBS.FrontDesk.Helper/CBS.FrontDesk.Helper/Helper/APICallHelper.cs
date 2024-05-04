@@ -20,7 +20,9 @@
         public static string GetAllMemberAccountActivationPolicy = "/api/v1/MemberAccountActivationPolicy";
         public static string GetMemberAccountActivationPolicyByCustomerID = "/api/v1/MemberAccountActivationPolicy/GetCustomerMemberAccountActivationPolicy/{0}";
 
-
+        public static string Get_Update_Delete_CustomerCategory = "/api/v1/CustomerCategory/{0}";
+        public static string GetAllCustomerCategory = "/api/v1/CustomerCategory";
+        public static string CreateCustomerCategory = "/api/v1/CustomerCategory";
 
         //User
         public static string GetUserByID = "/api/User/{0}";
@@ -55,7 +57,7 @@
         public static string GetRolePermissions = "/api/RolePermission/Role/{0}";
         public static string DeleteRolePermisions = "/api/RolePermission/Delete";
 
-
+        
         //MenuMaster
         public static string Get_Update_Delete_MenuMaster = "/api/MenuMaster/{0}";
         public static string GetAllMenuMaster = "/api/MenuMasters";

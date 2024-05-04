@@ -98,6 +98,7 @@
 
             @using (Html.BeginForm("Login", "Authentication", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left" }))
             {
+                @Html.AntiForgeryToken()
                 <!-- Username Input -->
                 <div class="form-floating form-floating-outline mb-3">
                     @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "User name" })

@@ -31,7 +31,7 @@ namespace CBS.BusinessService.Accounts
                 {
 
                     GetExecutionMessages(inResponse, true, $"ManagementFeeParameter", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.ApiResponseData.Status);
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }

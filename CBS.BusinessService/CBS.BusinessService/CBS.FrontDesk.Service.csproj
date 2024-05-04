@@ -98,6 +98,8 @@
     <Compile Include="Accounts\AccountServices.cs" />
     <Compile Include="Accounts\BankingOperationServices.cs" />
     <Compile Include="Accounts\CloseFeeParameterServices.cs" />
+    <Compile Include="Config\EconomicActivityServices.cs" />
+    <Compile Include="Config\CustomerCategoryServices.cs" />
     <Compile Include="MembersAccountSettings\MemberAccountActivation.cs" />
     <Compile Include="Accounts\DepositLimitServices.cs" />
     <Compile Include="Accounts\ManagementFeeParameterServices.cs" />

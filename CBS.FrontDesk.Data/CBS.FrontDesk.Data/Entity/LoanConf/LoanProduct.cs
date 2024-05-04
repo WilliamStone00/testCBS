@@ -91,6 +91,18 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal DefaultInspectionFeeRate { get; set; }
         public double MinimumCollateralPercentage { get; set; }
 
+        public bool IsInterestWaiverApplied { get; set; }
+        public decimal MinimumInterestWaiver { get; set; }
+        public decimal MaximumInterestWaiver { get; set; }
+        public bool IsChargesApplied { get; set; }
+        public decimal MinimumChargesToAppliedInPercentage { get; set; }
+        public decimal MaximumChargesToAppliedPercentage { get; set; }
+        public string ChargesAreAppliedToInterestOrBalance { get; set; }//Interest Or Balance
+        public int ChargesStopAfterHowManyDaysFromStart { get; set; }//In days
+        public decimal DefaultChargeToAppliedPercentage { get; set; }
+        public decimal MinimumChargesStartDayAfterLoanDueDate { get; set; }
+        public decimal MaximumChargesStartDayAfterLoanDueDate { get; set; }
+        public decimal DefaulChargesStartDayAfterLoanDueDate { get; set; } = 60;
         public double MaximumCollateralPercentage { get; set; }
 
         public double DefaultCollateralPercentage { get; set; }

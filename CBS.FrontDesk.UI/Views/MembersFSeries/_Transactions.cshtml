@@ -40,7 +40,6 @@
                                                     <tr>
                                                         <th>Date</th>
                                                         <th>Account number</th>
-                                                        <th>Amount</th>
                                                         <th>Fee</th>
                                                         <th>Credit</th>
                                                         <th>Debit</th>
@@ -60,14 +59,13 @@
                                                         <tr>
                                                             <td>@transaction.CreatedDate.ToString("dd-MM-yyyy, hh:mm:ss")</td>
                                                             <td>@transaction.AccountNumber</td>
-                                                            <td>@transaction.OriginalDepositAmount.ToString("#,##0.0")</td>
                                                             <td>@transaction.Fee.ToString("#,##0.0")</td>
                                                             <td>@transaction.Credit.ToString("#,##0.0")</td>
                                                             <td>@transaction.Debit.ToString("#,##0.0")</td>
-                                                            <td>@balance.ToString("#,##0.0")</td>
+                                                            <td>@totalClosingBalance.ToString("#,##0.0")</td>
                                                             <td>@transaction.Account.AccountType</td>
                                                             <td>
-                                                                <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('MembersFSeries', '@transaction.Id','receipts','ReportParameterLess')" data-bs-toggle="tooltip" title="Print receipt with reference @transaction.TransactionRef">
+                                                                <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('MembersFSeries', '@transaction.Id','receipts','ReportParameterLess')" data-bs-toggle="tooltip" title="Print receipt with reference @transaction.TransactionReference">
                                                                     <span class="tf-icons mdi mdi-printer mdi-18px"></span>
                                                                 </a>
                                                             </td>
@@ -76,7 +74,7 @@
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <td colspan="6" style="text-align:right;"><strong>Total Closing Balance:</strong></td>
+                                                        <td colspan="5" style="text-align:right;"><strong>Total Closing Balance:</strong></td>
                                                         <td>@totalClosingBalance.ToString("#,##0.0")</td>
                                                         <td></td>
                                                         <td></td>
