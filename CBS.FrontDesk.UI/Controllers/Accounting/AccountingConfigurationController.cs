@@ -18,6 +18,13 @@ using System.Web.WebPages.Html;
 using Microsoft.Ajax.Utilities;
 using CBS.FrontDesk.Data.Entity;
 using DocumentFormat.OpenXml.Office2010.Word;
+using System.Data;
+using System.IO;
+using CBS.FrontDesk.UI.Models;
+using System.Web.UI.WebControls;
+using OfficeOpenXml;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -31,12 +38,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly AccountingEntryRuleService _accountingEntryRuleService;
         private readonly OperationEventServices _OperationEventService;
         private readonly AccountingServices _AccountServices;
+        private readonly AccountingRuleService _AccountingRuleServices;
         private readonly AccountTypeServices _AccountTypeServices;
+        private readonly ChartOfAccountManagementPositionService _ChartOfAccountManagementPositionServicesServices;
         private readonly AccountCategoryServices _AccountCategoryServices;
         private readonly StatementModelServices _statementModelServices;
         private readonly TrialBalanceReferenceServices _trialBalanceReferenceServices;
         public AccountingConfigurationController()
         {
+            _AccountingRuleServices = new AccountingRuleService();
             _Service = new AccountingEntryRuleService();
             _OperationEventAttributeService = new OperationEventAttributeServices();
             _chartOfAccountServices = new ChartOfAccountServices();
@@ -47,6 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _AccountCategoryServices = new AccountCategoryServices();
             _trialBalanceReferenceServices = new TrialBalanceReferenceServices();
             _statementModelServices = new StatementModelServices();
+            _ChartOfAccountManagementPositionServicesServices = new ChartOfAccountManagementPositionService();
         }
         // GET: AccountingConfiguration
 
@@ -64,8 +75,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             var CreditAccounts = BuildMenuViewBag(DebitAccounts);
             ViewBag.Accounts = CreditAccounts;
             var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
-            ViewBag.ChartOfAccounts = BuildMenuAccountViewBag(listAccounts.ToList());
             ViewBag.OperationEvent = await _OperationEventService.GetOperationEvents();
+            ViewBag.ChartOfAccountManagementPositions = BuildMenuAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), listAccounts.ToList());
+
+            ViewBag.ChartOfAccounts = BuildMenuAccountViewBag(listAccounts.ToList());
+            ViewBag.AccountingRuleEntries = BuildAccountingRuleEntryViewBag((await _accountingEntryRuleService.GetAccountingRuleEntries()).ToList());
             ViewBag.BookingDirections = await this.GetBookingDirections();
             ViewBag.OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
             ViewBag.CreditAccounts = ViewBag.ChartOfAccounts;
@@ -132,6 +146,27 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             };
             return selectListItems;
         }
+        private dynamic BuildMenuAccountViewBag(List<ChartofAccountManagementPosition> ChartofAccountManagementPositions, List<ChartOfAccount> ListchartOfAccounts)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            string code = "[BranchCode]";
+            var listOfItems = (from item in ChartofAccountManagementPositions
+                               join element in ListchartOfAccounts on item.ChartOfAccountId equals element.Id
+                               select new ManagementSelectionOption
+                               {
+                                   Id = item.Id,
+                                   AccountNumber = element.AccountNumber.PadRight(6, '0'),
+                                   PositionNumber = item.PositionNumber.PadRight(3, '0'),
+                                   Description = item.Description,
+                                   GeneralRepresentation = element.AccountNumber.PadRight(6, '0') + code + item.PositionNumber.PadRight(3, '0')
+
+                               }).ToList();
+            foreach (var item in listOfItems)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.Description} - {item.AccountNumber}[BCD]{item.PositionNumber}" });
+            }
+            return selectListItems;
+        }
 
         private dynamic BuildMenuAccountViewBag(List<ChartOfAccount> ListchartOfAccounts)
         {
@@ -143,7 +178,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             return selectListItems;
         }
+        private dynamic BuildAccountingRuleEntryViewBag(List<Data.Entity.Accounting.AccountingRuleEntryx> ListchartOfAccounts)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
 
+            foreach (var item in ListchartOfAccounts)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.AccountingRuleEntryName}" });
+            }
+            return selectListItems;
+        }
         private List<StringValues> BuildStringValuesViewBag(List<ChartOfAccount> ListchartOfAccounts)
         {
             List<StringValues> selectListItems = new List<StringValues>();
@@ -167,7 +211,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         private Task<List<System.Web.WebPages.Html.SelectListItem>> GetBookingDirections()
         {
-            var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" } }.ToList();
+            var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "NOT DEFINE", Value = "NOT DEFINE" } }.ToList();
             return Task.FromResult(bookingDirections);
         }
         private dynamic BuildMenuViewBag(IEnumerable<Data.Account> debitAccounts)
@@ -259,6 +303,130 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult> AddOrUpdateRole(AccountingConfiguration model)
+        {
+            ExecutionMessages data = new ExecutionMessages();
+            List<AccountingRule> list = new List<AccountingRule>();
+            try
+            {
+                if (this.HttpContext.Session["items" + this.HttpContext.Session.SessionID] != null)
+                {
+                    list = (List<AccountingRule>)this.HttpContext.Session["items" + this.HttpContext.Session.SessionID];
+                    model.AccountingRule.Id = list.Count().ToString();
+                    list.Add(model.AccountingRule);
+                    this.HttpContext.Session["items" + this.HttpContext.Session.SessionID] = list;
+                }
+                else
+                {
+                    model.AccountingRule.Id = "0";
+                    list.Add(model.AccountingRule);
+                    this.HttpContext.Session["items" + this.HttpContext.Session.SessionID] = list;
+                }
+
+
+                return Json(new { success = true, status = "true", message = "Creation was successfull" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> AddAccountingRole(AccountingConfiguration model)
+        {
+            ExecutionMessages data = new ExecutionMessages();
+            List<AccountingRule> list = new List<AccountingRule>();
+            try
+            {
+                if (this.HttpContext.Session["items" + this.HttpContext.Session.SessionID] != null)
+                {
+                    list = (List<AccountingRule>)this.HttpContext.Session["items" + this.HttpContext.Session.SessionID];
+            
+                    var modelAcc= new AccountingRuleXRoot();
+                    foreach (var item in list) 
+                    {
+                        modelAcc.accountingRules.Add(new AccountingRuleX
+                        {
+                            accountingEntryRuleId = item.AccountingEntryRuleId,
+                            bookingDirection = item.BookingDirection,
+                            ruleName = item.RuleName
+                        });
+                    }
+                    _AccountingRuleServices.Create(modelAcc);
+                }
+                else
+                {
+                    model.AccountingRule.Id = "0";
+                    list.Add(model.AccountingRule);
+                    this.HttpContext.Session["items" + this.HttpContext.Session.SessionID] = list;
+                }
+
+
+                return Json(new { success = true, status = "true", message = "Creation was successfull" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> DeleteAccountingRole(string  Id)
+        {
+            ExecutionMessages data = new ExecutionMessages();
+            List<AccountingRule> list = new List<AccountingRule>();
+            List<AccountingRuleDtos> AccountingRuleDtos = new List<AccountingRuleDtos>();
+            try
+            {
+                if (this.HttpContext.Session["items" + this.HttpContext.Session.SessionID] != null)
+                {
+                    list = (List<AccountingRule>)this.HttpContext.Session["items" + this.HttpContext.Session.SessionID];
+                    var objectmodel = list.Find(c=>c.Id== Id);
+                    list.Remove(objectmodel);
+                    this.HttpContext.Session["items" + this.HttpContext.Session.SessionID] = list;
+                    var dataList = await _Service.GetAccountingEntryRules();
+                    var ChartofAccountManagementPositions = (await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList();
+
+                    var listOfItems = (from d in list
+                                       join e in dataList on d.AccountingEntryRuleId equals e.Id
+                                       join f in ChartofAccountManagementPositions on e.DeterminationAccountId equals f.Id
+                                       join h in ChartofAccountManagementPositions on e.BalancingAccountId equals h.Id
+
+                                       select new AccountingRuleDtos
+                                       {
+                                           Id = d.Id,
+                                           RuleName = d.RuleName,
+                                           BookingDirection = d.BookingDirection,
+                                           DeterminantAccount = f.Id + "@" + f.ChartOfAccountId,
+                                           BalancingAccount = h.Id + "@" + h.ChartOfAccountId,
+                                       }).ToList();
+
+                    foreach (var item in listOfItems)
+                    {
+                        item.DeterminantAccount = await GetAccountNumberWithMangementPositon(item.DeterminantAccount.Split('@')[0], item.DeterminantAccount.Split('@')[1]);
+                        item.BalancingAccount = await GetAccountNumberWithMangementPositon(item.BalancingAccount.Split('@')[0], item.BalancingAccount.Split('@')[1]);
+                        AccountingRuleDtos.Add(item);
+                    }
+
+                    return Json(AccountingRuleDtos, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new AccountingRole(), JsonRequestBehavior.AllowGet);
+                }
+
+
+          
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(AccountingConfiguration model)
         {
@@ -327,6 +495,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
                 }
             }
+            else if (model.ServiceOption == "accountingRule")
+            {
+
+            }
             else if (model.ServiceOption == "chartOfAccount")
             {
                 if (model.ChartOfAccount.IsForUpdate)
@@ -367,6 +539,18 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                     serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
                 }
+            }
+            else if (model.ServiceOption == "chartOfAccountManagementPosition")
+            {
+                if (model.Action == "insert")
+                {
+                    serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+                }
+                else
+                {
+
+                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                }
 
 
             }
@@ -387,6 +571,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
         private async Task<Func<Task<ExecutionMessages>>> GetInsertServiceActionAsync(string serviceOption, AccountingConfiguration model)
         {
+            //
             if (serviceOption == "account")
             {
                 var chartOfAccount = await _chartOfAccountServices.GetChartOfAccountByAccountNumber(model.Account.AccountNumber.Substring(0, model.Account.AccountNumber.Length - 1));
@@ -399,6 +584,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     model.Account.AccountCategoryId = chartOfAccount.AccountCartegoryId;
                 }
                 return () => _AccountServices.Create(model.Account);
+            }
+            else if (serviceOption == "chartOfAccountManagementPosition")
+            {
+                return () => _ChartOfAccountManagementPositionServicesServices.Create(model.ChartofAccountManagementPosition);
+            }
+            else if (serviceOption == "accountingRule")
+            {
+                return () => _AccountingRuleServices.Create(model.AccountingRule);
             }
             else if (serviceOption == "accountType")
             {
@@ -491,6 +684,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 return () => _accountingEntryRuleService.Update(model.AccountingRuleEntry);
             }
+            else if (serviceOption == "chartOfAccountManagementPosition")
+            {
+                return () => _ChartOfAccountManagementPositionServicesServices.Update(model.ChartofAccountManagementPosition);
+            }
             else if (serviceOption == "chartOfAccount")
             {
 
@@ -568,7 +765,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     return PartialView(partialView, new AccountingConfiguration { Account = data });
 
                 }
+                else if (path == "upload")
+                {
 
+                    return PartialView(partialView, new AccountingConfiguration { Accounts = new List<Data.Account>() });
+
+                }
                 else
                 {
                     var data = await _AccountServices.GetAccount(key);
@@ -666,7 +868,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     var data = await _accountingEntryRuleService.GetAccountingEntryRules();
                     var OperationEventList = await _OperationEventService.GetOperationEvents();
                     var OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
-                    var DebitAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+                    var DebitAccounts = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
                     var dataList = await _Service.GetAccountingEntryRules();
                     var dataModel = await _Service.GetAccountingEntryRulesDto(dataList, OperationEventList, OperationEventAttributes, DebitAccounts);
 
@@ -780,8 +982,112 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
 
             }
+            else if (serviceOption == "chartOfAccountManagementPosition")
+            {
+                if (path == "list")
+                {
+                    string code = "[BranchCode]";
+                    var dataChart = await _chartOfAccountServices.GetAllChartOfAccounts();
+                    var ChartofAccountManagementPositions = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
+                    var listOfItems = (from item in ChartofAccountManagementPositions
+                                       join element in dataChart on item.ChartOfAccountId equals element.Id
+                                       select new ManagementSelectionOption
+                                       {
+                                           Id = item.Id,
+                                           AccountNumber = element.AccountNumber.PadRight(6, '0'),
+                                           PositionNumber = item.PositionNumber.PadRight(3, '0'),
+                                           Description = item.Description,
+                                           GeneralRepresentation = element.AccountNumber.PadRight(6, '0') + code + item.PositionNumber.PadRight(3, '0')
+
+                                       }).ToList();
+                    var sysData = new AccountingConfiguration { ChartofAccountManagementPositionDtos = listOfItems.ToList() };
+                    return PartialView(partialView, sysData);
+
+                }
+                else if (path == "new")
+                {
+                    return PartialView(partialView, new AccountingConfiguration { });
+                }
+
+                else
+                {
+                    var data = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPosition(key);
+
+                    //data.OperationSide= 
+
+                    return PartialView(partialView, new AccountingConfiguration { ChartofAccountManagementPosition = data });
+                }
+
+            }
+            else if (serviceOption == "accountingRule")
+            {
+                if (path == "list")
+                {
+                    List<AccountingRule> list = new List<AccountingRule>();
+                    List<AccountingRuleDtos> AccountingRuleDtos = new List<AccountingRuleDtos>();
+                    if (this.HttpContext.Session["items" + this.HttpContext.Session.SessionID] != null)
+                    {
+                        list = (List<AccountingRule>)this.HttpContext.Session["items" + this.HttpContext.Session.SessionID];
+
+                    }
+                    var dataList = await _Service.GetAccountingEntryRules();
+                    var ChartofAccountManagementPositions = (await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList();
+
+                    var listOfItems = (from d in list
+                                       join e in dataList on d.AccountingEntryRuleId equals e.Id
+                                       join f in ChartofAccountManagementPositions on e.DeterminationAccountId equals f.Id
+                                       join h in ChartofAccountManagementPositions on e.BalancingAccountId equals h.Id
+
+                                       select new AccountingRuleDtos
+                                       {
+                                           Id = d.Id,
+                                           RuleName= d.RuleName,
+                                           BookingDirection = d.BookingDirection,
+                                           DeterminantAccount =   f.Id+"@"+f.ChartOfAccountId,
+                                           BalancingAccount = h.Id + "@" + h.ChartOfAccountId,
+                                       }).ToList();
+
+                    foreach (var item in listOfItems)
+                    {
+                        item.DeterminantAccount = await GetAccountNumberWithMangementPositon(item.DeterminantAccount.Split('@')[0], item.DeterminantAccount.Split('@')[1]);
+                        item.BalancingAccount = await GetAccountNumberWithMangementPositon(item.BalancingAccount.Split('@')[0], item.BalancingAccount.Split('@')[1]);
+                        AccountingRuleDtos.Add(item);
+                    }
+
+                    var sysData = new AccountingConfiguration { AccountingRules = AccountingRuleDtos };
+                    return PartialView(partialView, sysData);
+
+                }
+                else if (path == "new")
+                {
+                    return PartialView(partialView, new AccountingConfiguration { });
+                }
+                else
+                {
+                  
+
+
+                    return PartialView(partialView, new AccountingConfiguration { ChartofAccountManagementPosition = new ChartofAccountManagementPosition() });
+                }
+
+            }
             return null;
         }
+
+        private async Task<string > GetAccountNumberWithMangementPositon(string ChartOfAccountId, string chartOfAccountPositionId)
+        {
+            string accountNumber = string.Empty;
+            string branchCode = "[BC]";
+            var f = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPosition(ChartOfAccountId);
+            if (f == null)
+            {
+                return "Empty";
+            }
+            var chartofAccount = await  _chartOfAccountServices.GetChartOfAccountById(chartOfAccountPositionId);
+            accountNumber = $"{chartofAccount.AccountNumber.PadRight(6, '0')}[BC]{f.PositionNumber.PadRight(3, '0')}";
+            return accountNumber;
+        }
+
         public List<OperationEventAttributeDto> ConvertToOperationEventAttributeDtos(List<OperationEventAttribute> attributes, List<OperationEvent> events)
         {
             return (from a in attributes
@@ -856,6 +1162,88 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
 
         }
+
+
+        public ActionResult UploadAccountModel(AccountUploadModel model)
+        {
+            List<AccountModel> models = new List<AccountModel>();
+
+            if (ModelState.IsValid)
+            {
+                if (model.ExcelFile.ContentType == "application/vnd.ms-excel" || model.ExcelFile.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                {
+                    string filePath = Path.GetTempFileName();
+
+                    // Save the uploaded file to the file system
+                    model.ExcelFile.SaveAs(filePath);
+
+                    // Read data from the Excel file
+                    DataTable dt = ReadExcelFile(filePath);
+
+                    // Process the data from the DataTable
+                    models = ProcessExcelData(dt);
+
+                    // Delete the temporary file
+                    System.IO.File.Delete(filePath);
+                }
+                else
+                {
+                    ModelState.AddModelError("ExcelFile", "Please upload an Excel file.");
+                }
+            }
+            else
+            {
+                return Json("Please upload an Excel file.", JsonRequestBehavior.AllowGet);
+            }
+            // Check if the uploaded file is an Excel file
+
+            return Json(models, JsonRequestBehavior.AllowGet);
+
+        }
+
+        private DataTable ReadExcelFile(string filePath)
+        {
+            DataTable dt = new DataTable();
+            // Set the license context
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (var package = new OfficeOpenXml.ExcelPackage(filePath))
+            {
+                // Get the first worksheet
+                var worksheet = package.Workbook.Worksheets.First();
+
+                // Add columns to the DataTable
+                for (int col = 1; col <= worksheet.Dimension.Columns; col++)
+                {
+                    dt.Columns.Add(new DataColumn(worksheet.Cells[1, col].Value.ToString()));
+                }
+
+                // Populate the DataTable with data from the worksheet
+                for (int row = 2; row <= worksheet.Dimension.Rows; row++)
+                {
+                    DataRow dr = dt.NewRow();
+                    for (int col = 1; col <= worksheet.Dimension.Columns; col++)
+                    {
+                        dr[col - 1] = worksheet.Cells[row, col].Value;
+                    }
+                    dt.Rows.Add(dr);
+                }
+            }
+
+            return dt;
+        }
+
+        private List<AccountModel> ProcessExcelData(DataTable dt)
+        {
+            List<AccountModel> models = new List<AccountModel>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                models.Add(new AccountModel(row["Account Number"].ToString(), row["Account Name"].ToString(), row["CHarOfAccount"].ToString(), row["Created date"].ToString(), Convert.ToDecimal(row["Beginning Balance"]), Convert.ToDecimal(row["Current Balance"]), row["Branc code"].ToString()));
+            }
+            return models;
+        }
+
     }
 
 }

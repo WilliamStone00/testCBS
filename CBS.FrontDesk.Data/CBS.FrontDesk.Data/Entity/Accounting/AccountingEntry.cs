@@ -23,8 +23,19 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public SystemQuery SystemQuery { get; set; }
 
     }
+
+    public class AccountEntry
+    {
+        public string Reference { get; set; }
+        public string AccountNumber { get; set; }
+        public string Description { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+    }
     public class AccountingEntry 
     {
+   
+
         // Unique ID number for the entry=
         public string Id { get; set; }
 
@@ -53,11 +64,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public decimal DrAmount { get; set; }
         public decimal CrAmount { get; set; }
         public decimal CurrentBalance { get; set; }
-
+        public string AccountId { get; set; }
         public string OperationType { get; set; }
         public string CrCurrentBalance { get; set; }
         public string DrCurrentBalance { get; set; }
-
+        public string AccountNumber { get; set; }
         public void TagedAsReversed(List<AccountingEntry> entries, string userId)
         {
             foreach (var entry in entries)
@@ -96,7 +107,21 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string AccountId { get; set; }
         public string BranchId { get; set; }
     }
- 
+
+
+    public class GLQuery
+    {
+
+        public string FileType { get; set; }
+        public string BranchId { get; set; }
+    }
+    public class JEQuery
+    {
+        public DateTime ToDate { get; set; }
+        public DateTime FromDate { get; set; }
+        public string FileType { get; set; }
+        public string BranchId { get; set; }
+    }
     public class TrialBalance4Column
     {
         public DateTime ToDate { get; set; }

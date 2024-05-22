@@ -35,8 +35,21 @@
     <link href="~/CBSTemp/ui/assets/vendor/css/rtl/theme-default.css" rel="stylesheet" type="text/css" />
     <link href="~/CBSTemp/ui/assets/css/demo.css" rel="stylesheet" type="text/css" />
     <link href="~/CBSTemp/ui/assets/alertifyjs/css/alertify.min.css" rel="stylesheet" />
-   
+
     <style>
+        #superposedModal {
+            z-index: 1200; /* Make sure it has a higher z-index than other modals */
+            pointer-events: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 135%; /* Increase width by 35% */
+            height: auto; /* Let the height adjust automatically */
+        }
+
+            #superposedModal .modal-dialog {
+            }
 
         .card-header {
             color: black;
@@ -657,7 +670,7 @@
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/jstree/jstree.css" />
 
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/tagify/tagify.css" />
-
+    <link href="~/CBSTemp/ui/assets/vendor/libs/dropzone/dropzone.css" rel="stylesheet" />
 
 
     <!-- Page CSS -->
@@ -672,7 +685,7 @@
     <script src="~/CBSTemp/ui/assets/vendor/js/template-customizer.js"></script>
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="~/CBSTemp/ui/assets/js/config.js"></script>
-
+   
 </head>
 
 <body style="position: relative;">
@@ -765,6 +778,7 @@
     <script src="~/CBSTemp/ui/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js"></script>
     <script src="~/CBSTemp/ui/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js"></script>
     <script src="~/CBSTemp/ui/assets/vendor/libs/pickr/pickr.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/dropzone/dropzone.js"></script>
     <!-- Main JS -->
     <script src="~/CBSTemp/ui/assets/js/main.js"></script>
 
@@ -775,6 +789,8 @@
     <script src="~/Scripts/Js/main.js/App.js"></script>
     <script src="~/CBSTemp/ui/assets/js/ui-toasts.js"></script>
     <script src="~/CBSTemp/ui/assets/js/app-logistics-dashboard.js"></script>
+    <!-- Page JS -->
+    <script src="../../assets/js/forms-file-upload.js"></script>
     <script>
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -787,15 +803,15 @@
             });
         </script>*@
     @*<script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const menuToggle = document.querySelector(".layout-menu-toggle");
-            const userProfile = document.querySelector(".user-profile");
+            document.addEventListener("DOMContentLoaded", function () {
+                const menuToggle = document.querySelector(".layout-menu-toggle");
+                const userProfile = document.querySelector(".user-profile");
 
-            menuToggle.addEventListener("click", function () {
-                userProfile.classList.toggle("hidden");
+                menuToggle.addEventListener("click", function () {
+                    userProfile.classList.toggle("hidden");
+                });
             });
-        });
-    </script>*@
+        </script>*@
 
     @RenderSection("scripts", required: false)
 </body>

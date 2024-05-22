@@ -1,0 +1,50 @@
+﻿
+<div class="table-responsive">
+    <div class="modal fade" id="largeModal" tabindex="0" aria-hidden="false">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="journalEntryLabel">Loading ***</h4>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    <input type="hidden" id="selectedForJEBranchId" value="" />
+                    <input type="hidden" id="selectedForJEBranchName" value="" />
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                      
+                            <div class="row justify-content-center">
+                                <div class="col-6">
+                                    <div class="form-floating form-floating-outline">
+                                        <input class="form-control date-picker" id="FromDate" name="FromDate" placeholder="From Date" type="text" value="" />
+                                        <span class="text-danger field-validation-valid" data-valmsg-for="FromDate" data-valmsg-replace="true"></span>
+                                        <label for="FromDate">From Date</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-floating form-floating-outline">
+                                        <input class="form-control date-picker" id="ToDate" name="ToDate" placeholder="To Date" type="text" value="" />
+                                        <span class="text-danger field-validation-valid" data-valmsg-for="ToDate" data-valmsg-replace="true"></span>
+                                        <label for="ToDate">To Date</label>
+                                    </div>
+                                </div>
+                            </div>
+                   
+                            <br />
+                            <div class="row justify-content-center mt-12">
+                                <div class="shift-right">
+                                    <button type="button" onclick ="LoadJournalEntryByBranchID()" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#superposedModal">Search</button>
+                                </div>
+                            </div>
+                   
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

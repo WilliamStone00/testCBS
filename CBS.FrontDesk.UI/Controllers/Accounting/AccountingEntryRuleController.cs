@@ -25,6 +25,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly ChartOfAccountServices _chartOfAccountServices;
         private readonly AccountingRuleService _ServiceRule;
         private readonly OperationEventServices _OperationEventService;
+        private readonly ChartOfAccountManagementPositionService _ChartOfAccountManagementPositionServicesServices;
         public AccountingEntryRuleController(AccountingServices accountService, OperationEventServices eventServices, AccountingRuleService servicesRule,ChartOfAccountServices chartOfAccountServices,AccountingEntryRuleService services, OperationEventAttributeServices OperationEventAttributeService)
         {
             _accountService = accountService;
@@ -33,6 +34,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _OperationEventService = eventServices;
             _OperationEventAttributeService = OperationEventAttributeService;
             _chartOfAccountServices = chartOfAccountServices;
+            _ChartOfAccountManagementPositionServicesServices = new ChartOfAccountManagementPositionService();
         }
         // GET: AccountingEntryRule
         public async Task<ActionResult> Index()
@@ -90,7 +92,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             
                 var  OperationEventList = await _OperationEventService.GetOperationEvents();
                 var OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
-                var DebitAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+                var DebitAccounts = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
                 var dataList = await _Service.GetAccountingEntryRules();
                 var data = await _Service.GetAccountingEntryRulesDto(dataList, OperationEventList, OperationEventAttributes, DebitAccounts);
                 return PartialView(partialView, data);

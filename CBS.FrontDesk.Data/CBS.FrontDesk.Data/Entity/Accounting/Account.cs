@@ -29,6 +29,41 @@ namespace CBS.FrontDesk.Data
 
     }
 
+
+    public class AccountModel
+    {
+        public string AccountNumberNetwork { get; set; } = "";
+
+        public string AccountNumberCU { get; set; } = "";
+        public string ChartofAccount { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public string BranchCode { get; set; }
+
+        public decimal BeginningBalance { get; set; }
+     
+        public decimal CurrentBalance { get; set; }
+  
+        public string CreatedDate { get;  set; }
+
+        public AccountModel()
+        {
+                
+        }
+        public AccountModel(string AccNumber, string AccName, string chartofaccount, string DateCreated, decimal beginningBalance , decimal currentBalance, string branchCode)
+        {
+           
+            AccountNumber = AccNumber;  
+            AccountName = AccName;
+            BeginningBalance= beginningBalance;
+            CurrentBalance = currentBalance;
+  CreatedDate= DateCreated;
+            ChartofAccount = chartofaccount;
+            BranchCode= branchCode;
+        }
+
+    }
+
     public class AccountHoDto
     {
         public string Id { get; set; }

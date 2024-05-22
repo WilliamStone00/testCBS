@@ -19,7 +19,7 @@ namespace CBS.BusinessService.Accounting
     public class AccountingEntryRuleService : BaseApiServices
     {
         private readonly ApiCallerHelper _loanConfigApiHelper;
-
+        public ChartOfAccountManagementPositionService _services { get; private set; }
         public string BranchId { get; private set; }
         public string BankId { get; private set; }
         public string OrganizationId { get; private set; }
@@ -30,6 +30,7 @@ namespace CBS.BusinessService.Accounting
             this.BranchId = GetBranchID();
             this.BankId = GetBankID();
             this.OrganizationId = GetOrganizationID();
+            _services = new ChartOfAccountManagementPositionService();
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -60,6 +61,7 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
+
         public async Task<IEnumerable<AccountingRuleEntry>> GetAccountingEntryRules()
         {
             try
@@ -69,7 +71,25 @@ namespace CBS.BusinessService.Accounting
                 {
                     return couApiResponse.ApiResponseData.Data;
                 }
-                return new List<    AccountingRuleEntry>();
+                return new List<AccountingRuleEntry>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<AccountingRuleEntryx>> GetAccountingRuleEntries()
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<AccountingRuleEntryx>>>(APICallHelper.GetAccountingRuleEntries);
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<AccountingRuleEntryx>();
             }
             catch (Exception ex)
             {
@@ -102,8 +122,12 @@ namespace CBS.BusinessService.Accounting
                 // Make an API call to create an individual profile
 
                 model.BankId = this.BankId;
-              
-                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<AccountingRuleEntry>>(APICallHelper.CreateAccountingRuleEntry, model);
+                if (model.HasManagementAccount)
+                {
+                 model.DeterminationAccountId=( await _services.GetChartOfAccountManagementPosition(model.DeterminationManagementAccountId)).ChartOfAccountId;
+                }
+             
+                  var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<AccountingRuleEntry>>(APICallHelper.CreateAccountingRuleEntry, model);
 
                 if (response.IsSuccess)
                 {
@@ -171,7 +195,7 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
-        public Task<List<FrontDesk.Data.Entity.Accounting.AccountingRuleEntryDto>> GetAccountingEntryRulesDto(IEnumerable<FrontDesk.Data.Entity.Accounting.AccountingRuleEntry> accountingRuleEntries, IEnumerable<FrontDesk.Data.Entity.Accounting.OperationEvent> operationEvents, IEnumerable<OperationEventAttribute> operationEventAttributes, IEnumerable<ChartOfAccount> chartOfAccounts)
+        public Task<List<FrontDesk.Data.Entity.Accounting.AccountingRuleEntryDto>> GetAccountingEntryRulesDto(IEnumerable<AccountingRuleEntry> accountingRuleEntries, IEnumerable<OperationEvent> operationEvents, IEnumerable<OperationEventAttribute> operationEventAttributes, IEnumerable<ChartofAccountManagementPosition> chartOfAccounts)
         {
             var query = from accountingRuleEntry in accountingRuleEntries
                         join debitAccount in chartOfAccounts on accountingRuleEntry.DeterminationAccountId equals debitAccount.Id
@@ -185,8 +209,8 @@ namespace CBS.BusinessService.Accounting
                             BookingDirection = accountingRuleEntry.BookingDirection, // Add your logic for BookingDirection
                             OperationEventAttributeName = operationEventAttribute.Name,
                             OperationEventName = operationEventAttribute.Name,
-                            DebitAccountLabel = debitAccount.LabelEn,
-                            CreditAccountLabel = creditAccount.LabelEn
+                            DebitAccountLabel = debitAccount.Description,
+                            CreditAccountLabel = creditAccount.Description
                         };
 
             List<AccountingRuleEntryDto> result = query.ToList();
@@ -194,7 +218,7 @@ namespace CBS.BusinessService.Accounting
             return Task.FromResult(result);
         }
 
-        public async Task<List<AccountingRuleEntry>> GetaccountingEntryRuleService()
+        public async Task<dynamic> GetAccountingRuleEntryByIdAsync(string v)
         {
             throw new NotImplementedException();
         }

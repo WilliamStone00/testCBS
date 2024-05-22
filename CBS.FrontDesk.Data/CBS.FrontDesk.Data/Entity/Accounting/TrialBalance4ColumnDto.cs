@@ -43,4 +43,52 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public object totalCreditBalance { get; set; }
         public object totalEndingBalance { get; set; }
     }
+
+
+    public class AccountLedgerDto
+    {
+  
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+        public string BranchName { get; set; }
+        public string BranchLocation { get; set; }
+
+        public string Capital { get; set; }
+        public string ImmatriculationNumber { get; set; }
+        public string WebSite { get; set; }
+        public string BranchTelephone { get; set; }
+        public string HeadOfficeTelePhone { get; set; }
+        public string Name { get; set; }
+        public string Location { get; set; }
+        public string Address { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public string CurrentBalnce { get; set; }
+ 
+    }
+
+    public class JournalEntryDto
+    {
+
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+        public string BranchName { get; set; }
+        public string BranchLocation { get; set; }
+
+        public string Capital { get; set; }
+        public string ImmatriculationNumber { get; set; }
+        public string WebSite { get; set; }
+        public string BranchTelephone { get; set; }
+        public string HeadOfficeTelePhone { get; set; }
+        public string Name { get; set; }
+        public string Location { get; set; }
+        public string Address { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public string DebitAmount { get; set; }
+        public string CreditAmount { get; set; }
+        public string Description { get; set; }
+        public string Reference { get; set; }
+        public string EntryDatetime { get; set; }
+    }
 }

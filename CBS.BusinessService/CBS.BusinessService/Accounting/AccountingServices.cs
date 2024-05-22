@@ -162,6 +162,28 @@ namespace CBS.BusinessService.Accounting
                 throw(ex);
             }
         }
+
+        public async Task<List<Account>> GetAllAccountForABranch(string branchId)
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<Account>>>(string.Format(APICallHelper.GetAllAccountByBranch,branchId));
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData != null)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<Account>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
         public async Task<IEnumerable<AccountingRole>> GetAccountingRoles()
         {
             try

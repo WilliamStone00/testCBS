@@ -1,6 +1,8 @@
 ﻿using BusinessServices;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Config;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +16,12 @@ namespace CBS.BusinessService.Accounting
     {
         private readonly AccountingEntryServices _Service;
         private readonly AccountingServices _AccountServices;
+        private readonly BranchServices _BranchServices;
         public AccountingStatementService()
         {
                 _Service = new AccountingEntryServices();
             _AccountServices = new AccountingServices();
+            _BranchServices= new BranchServices();
         }
 
         public async Task<List<AccountingEntryDto>> GenerateAccountingLedger(SystemQuery systemQuery)
@@ -69,15 +73,12 @@ namespace CBS.BusinessService.Accounting
                 var accountingEntries = await _Service.RetrieveAccountingEntries(model);
                 var accounts = await _AccountServices.GetAllAccounting();
                 var query = from entry in accountingEntries
-                            join drAccount in accounts on entry.DrAccountId equals drAccount.Id into drJoined
-                            from drAccountData in drJoined.DefaultIfEmpty()
-                            join crAccount in accounts on entry.CrAccountId equals crAccount.Id into crJoined
-                            from crAccountData in crJoined.DefaultIfEmpty()
+                            join drAccount in accounts on entry.AccountId equals drAccount.Id                   
                             select new AccountingEntryDto
                             {
                                 EntryDate = entry.EntryDate.Date.ToShortDateString(),
-                                AccountNumber = entry.EntryType == "DEBIT" ? drAccountData?.AccountNumber : crAccountData?.AccountNumber,
-                                AccountName = entry.EntryType == "DEBIT" ? drAccountData?.AccountName : crAccountData?.AccountName,
+                                AccountNumber =  entry.AccountNumber,
+                                AccountName = drAccount.AccountName,
                                 Description = entry.Description,
                                 TransactionReference = entry.ReferenceID,
                                 DebitAmount = entry.EntryType == "DEBIT" ? entry.DrAmount.ToString() : "0",
@@ -86,7 +87,7 @@ namespace CBS.BusinessService.Accounting
                                 //CreditAccountBalance = entry.DrCurrentBalance.ToString()
                             };
 
-                return query.OrderByDescending(n=>n.EntryDateTime).ToList();
+                return query.OrderBy(n=>n.TransactionReference).ToList();
             }
             catch (Exception ex)
             {
@@ -97,12 +98,13 @@ namespace CBS.BusinessService.Accounting
 
         }
 
-        public async Task<List<Account>> GenerateAccountLedger(SystemQuery model)
+        public async Task<List<AccountLedgerDto>> GenerateAccountLedger(GLQuery model)
         {
             try
             {
+                List<AccountLedgerDto> AccountLedgerDtoList = new List<AccountLedgerDto>();
                 List<Account> query = new List<Account>();
-                //var accountingEntries = await _Service.RetrieveAccountingEntries(model);
+                var letterHead = await _BranchServices.GetBranch(model.BranchId);
                 var accounts = await _AccountServices.GetAllAccounting();
                 if (_AccountServices.IsHeadOffice() && model.BranchId == "XXXXXX")
                 {
@@ -110,14 +112,17 @@ namespace CBS.BusinessService.Accounting
 
                 }
                 else
-                { 
-                
-                
+                {
+
+                    query = accounts.ToList();
                 }
-              
 
+                foreach (var account in query) 
+                {
+                    AccountLedgerDtoList.Add(BuildLedgerAccount(account, letterHead));
+                }
 
-                return query.OrderByDescending(n => n.AccountNumber).ToList();
+                return AccountLedgerDtoList.OrderBy(n => n.AccountNumber).ToList();
             }
             catch (Exception ex)
             {
@@ -128,6 +133,74 @@ namespace CBS.BusinessService.Accounting
 
         }
 
+
+        public async Task<List<JournalEntryDto>> GenerateJournalEntry(JEQuery model)
+        {
+            try
+            {
+                List<JournalEntryDto> AccountLedgerDtoList = new List<JournalEntryDto>();
+                List<AccountingEntryDto> query = new List<AccountingEntryDto>();
+                var letterHead = await _BranchServices.GetBranch(model.BranchId);
+                var accountingEntries = await _Service.RetrieveAccountingEntries(model);
+             
+
+                foreach (var account in accountingEntries)
+                {
+                    AccountLedgerDtoList.Add(BuildJournalEntry(account, letterHead, model));
+                }
+
+                return AccountLedgerDtoList.OrderBy(n => n.AccountNumber).ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+
+        }
+
+        private AccountLedgerDto BuildLedgerAccount(Account account, Branch model)
+        {
+            AccountLedgerDto dto = new AccountLedgerDto();
+            dto.AccountNumber=account.AccountNumber.PadRight(6,'0');
+            dto.AccountName=account.AccountName;
+            dto.CurrentBalnce = account.CurrentBalance;
+            dto.Address = model.Address;
+            dto.BranchLocation=model.Location;
+            dto.Location=model.Location;
+            dto.Capital=model.Capital;
+            dto.WebSite=model.WebSite;
+            dto.BranchTelephone=model.Telephone;
+            dto.ImmatriculationNumber=model.ImmatriculationNumber;
+            dto.Name=model.Bank.Name;
+            dto.BranchName=model.Name;
+            dto.FromDate = DateTime.Now.ToString("yyyy-MM-dd");
+            dto.ToDate = DateTime.Now.ToString("yyyy-MM-dd");
+            return dto;
+        }
+        private JournalEntryDto BuildJournalEntry(AccountingEntry account, Branch model, JEQuery query)
+        {
+            JournalEntryDto dto = new JournalEntryDto();
+            dto.AccountNumber = account.AccountNumber.PadRight(6, '0');
+            dto.Description = account.Description;
+            dto.DebitAmount = account.DrAmount.ToString();
+            dto.CreditAmount = account.CrAmount.ToString();
+            dto.Reference = account.ReferenceID.ToString();
+            dto.EntryDatetime=account.EntryDate.ToString();
+            dto.Address = model.Address;
+            dto.BranchLocation = model.Location;
+            dto.Location = model.Location;
+            dto.Capital = model.Capital;
+            dto.WebSite = model.WebSite;
+            dto.BranchTelephone = model.Telephone;
+            dto.ImmatriculationNumber = model.ImmatriculationNumber;
+            dto.Name = model.Bank.Name;
+            dto.BranchName = model.Name;
+            dto.FromDate = query.FromDate.ToString("yyyy-MM-dd");
+            dto.ToDate = query.ToDate.ToString("yyyy-MM-dd");
+            return dto;
+        }
         public async Task<List<TrialBalance4ColumnDto>> GenerateTrialBalance_4column(SystemQuery model)
         {
             List<AccountingEntry> filteredEntries = new List<AccountingEntry>();

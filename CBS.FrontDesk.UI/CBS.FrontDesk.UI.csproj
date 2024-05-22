@@ -354,7 +354,10 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
+    <Compile Include="Controllers\Accounting\AccountEntry.cs" />
     <Compile Include="Controllers\Accounting\AccountingChartController.cs" />
+    <Compile Include="Controllers\Accounting\BranchAccountJournalEntriesQueryObject.cs" />
+    <Compile Include="Controllers\Accounting\ManagementSelectionOption.cs" />
     <Compile Include="Controllers\Accounting\ManuallyJournalEntryController.cs" />
     <Compile Include="Controllers\Accounting\AccountingConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\AccountingEntryRuleController.cs" />
@@ -428,6 +431,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Code\Helper\SessionTimeoutFilterAttribute.cs" />
+    <Compile Include="Models\AccountUploadModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -2673,6 +2677,17 @@
     <Content Include="Views\AccountingConfiguration\_statementModelData.cshtml" />
     <Content Include="Views\AccountingConfiguration\_statementModelDetails.cshtml" />
     <Content Include="Views\AccountingConfiguration\_UpdateStatementModel.cshtml" />
+    <Content Include="Views\AccountingStatements\GeneralLedger.cshtml" />
+    <Content Include="Views\AccountingStatements\_JournalEntries.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\PendingAccountingEntries.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_ReferenceDataEntries.cshtml" />
+    <Content Include="Views\AccountingStatements\JournalEntries.cshtml" />
+    <Content Include="Views\AccountingStatements\_DateRange.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateChartOfaccountManagementPosition.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_ChartofAccountManagementPositionData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateAccountingRule.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_AddRuleEntry.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_EntryRuleData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

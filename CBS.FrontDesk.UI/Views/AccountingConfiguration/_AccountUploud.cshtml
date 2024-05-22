@@ -1,41 +1,43 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+<!-- Basic  -->
 <div class="col-12">
     <div class="card mb-4">
-        <h5 class="card-title">Upload Accounts Details</h5>
+        <h5 class="card-header">Basic</h5>
         <div class="card-body">
-            <form action="/upload" class="dropzone needsclick dz-clickable" id="dropzone-basic">
+         <form action="" class="dropzone needsclick dz-clickable" id="dropzone-basic">
+                <div class="dz-message needsclick">
+                    Account Upload
+                    <span class="note needsclick">
+                        The format of this file should be .XLSX and should have the following column.
+                        <span class="fw-medium">Respect</span>Column as mention below
+                    </span>
+                    (This view is only visible for migration)
+                    <table class="table table-hover" id="myDataTable_AccountUploadData">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Account Number</th>
+                                <th>Account Name</th>
+                                <th>ChartOfAccount</th>
+                                <th>CreatedDate</th>
+                                <th>Current Balance</th>
+                                <th>Beginning Balance</th>
 
+                                <th>Branch Code</th>
 
-                @using (Html.BeginForm("UploadAccounts", "BankAccount", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
-                    <div class="form-group">
-
-                        <input type="file" name="file" id="file" class="btn btn-primary" required>
-                    </div>
-
-                }
-
-                <div>
-                    @ViewBag.Message
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
-                <table class="table table-hover" id="myDataTable_AccountData">
-                    <thead class="table-light">
-                        <tr>
-                            <th>ChartOfAccountNumber</th>
-                            <th>Account Number</th>
-                            <th>Account Label</th>
-                            <th>BeginningBalance</th>
-                            <th>DebitBalance</th>
-                            <th>CreditBalance</th>
-                            <th>CurrentBalance</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                <div class="fallback">
+                    <input name="file" type="file" class="btn btn-primary" id="uploadedFile" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button onclick="ReadExcelFile()" Id="ReadUploadedFile"class="btn btn-primary me-2">Read file</button>
+                </div>-->
+                
             </form>
         </div>
     </div>
 </div>
-
+<!-- /Basic  -->
