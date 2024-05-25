@@ -37,10 +37,10 @@ namespace CBS.FrontDesk.UI
             container.RegisterType<TownServices, TownServices>();
             container.RegisterType<OrganizationServices, OrganizationServices>();
             container.RegisterType<BankServices, BankServices>();
-            //container.RegisterType<ApiCallerHelper, ApiCallerHelper>();
-            //container.RegisterType<APICallHelper, APICallHelper>();
-            // Register ApiCallerHelper for TransactionBaseUrl
-            container.RegisterType<ApiCallerHelper>("TransactionApiCallerHelper",
+            container.RegisterType<ApiCallerHelper, ApiCallerHelper>();
+            container.RegisterType<APICallHelper, APICallHelper>();
+
+           container.RegisterType<ApiCallerHelper>("TransactionApiCallerHelper",
                 new InjectionConstructor(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString()));
 
             // Register ApiCallerHelper for BankConfigurationBaseUrl
