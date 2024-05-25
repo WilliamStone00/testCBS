@@ -136,7 +136,21 @@ function ReadExcelFile() {
     });
 }
 
-
+function ExecuteExcelFile(branchId) {
+    console.log(branchId);
+    $.ajax({
+        url: '/AccountingConfiguration/AddTransferAccountModelForProcessing',
+        type: 'Post',
+        dataType: 'json',
+        data: { branchId: ""},
+        success: function (data) {
+            
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
 function RegisterEntryRule() {
 
  

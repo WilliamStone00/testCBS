@@ -399,7 +399,8 @@
         public static string GetAllAccountingRule = "/api/v1/AccountingRules";
         // POST  Create a AccountingRule
         public static string CreateAccountingRule = "/api/v1/AccountingRule";
-
+        // POST  Create a AccountingRule
+        public static string CreateAccounOnUploadie = "/api/v1/Account/UploadAccountCommand";
         //AccountingRuleEntry
         //Get,Update,Delete AccountingRuleEntry By Id
         public static string Get_Update_Delete_AccountingRuleEntry = "/api/v1/AccountingRuleEntry/{0}";

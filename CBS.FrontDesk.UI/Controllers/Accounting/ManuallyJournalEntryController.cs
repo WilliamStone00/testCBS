@@ -18,6 +18,7 @@ using System.Web.WebPages.Html;
 using Microsoft.Ajax.Utilities;
 using CBS.BusinessService.UserManagement;
 using CBS.BusinessService.Config;
+using Newtonsoft.Json;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -46,6 +47,7 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         public async Task<ActionResult> PendingAccountingEntries()
         {
+            List<PostedEntry> postedCollectionEntries = new List<PostedEntry>();
             await GetList();
             var PostedEntries = await _Service.GetManualEntriesAsync();
             var users = await _userService.GetUsers();
@@ -54,21 +56,29 @@ namespace CBS.FrontDesk.UI.Controllers
             var results = (from p in PostedEntries
                            join u in users on p.CreatedBy equals u.id.ToString()
                            join b in branch on u.BranchID equals b.Id.ToString()
-                           select new PostedEntry
+                           select new PostedEntryX
                            {
                                Amount = Convert.ToDecimal(p.Amount.ToString("N")),
                                BranchCode = b.BranchCode,
                                CreatedBy = u.firstName + " " + u.lastName,
+                               IssuedBy = u.id.ToString(),
                                Description = p.Description,
                                CreatedDate = p.CreatedDate,
+                               
                                Status = p.Status,
-                               Id = p.Id
+                               Id = p.Id,
+                               EntryDetail = p.EntryDetail
 
 
                            }).ToList();
+            this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()]= results;
 
-
-            return View(new ManuallyJournalEntryDataSet { PostedEntries = results });
+            foreach (var item in results)
+            {
+                postedCollectionEntries.Add(item.ConvertToPostedEntry(item));
+            }
+            
+            return View(new ManuallyJournalEntryDataSet { PostedEntries = postedCollectionEntries });
         }
 
         private async Task GetList()
@@ -148,13 +158,16 @@ namespace CBS.FrontDesk.UI.Controllers
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
+        //ok
         public async Task<ActionResult> GetAllEntriesForJournalEntryReference(string Id)
         {
 
 
             try
             {
-                var data = await _Service.GetAllEntriesForJournalEntryReference(Id);
+               var  results= (List<PostedEntryX>) this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()] ;
+
+                var data = results.Find(x => x.Id.Equals(Id)); //<<<await _Service.GetPostedEntryReference(Id);
 
                 return Json(data, JsonRequestBehavior.AllowGet);
             }

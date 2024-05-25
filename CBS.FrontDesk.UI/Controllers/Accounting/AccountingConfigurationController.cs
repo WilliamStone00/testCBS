@@ -66,6 +66,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             await GetList();
             return View(new AccountingConfiguration());
         }
+        public async Task<ActionResult> AccountUpload()
+        {
+           
+            return View(new AccountingConfiguration());
+        }
+
 
         private async Task GetList()
         {
@@ -1201,6 +1207,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         }
 
+
+      
+
         private DataTable ReadExcelFile(string filePath)
         {
             DataTable dt = new DataTable();
@@ -1236,11 +1245,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private List<AccountModel> ProcessExcelData(DataTable dt)
         {
             List<AccountModel> models = new List<AccountModel>();
-
+            var model = new UploadAccountCommand();
             foreach (DataRow row in dt.Rows)
             {
                 models.Add(new AccountModel(row["Account Number"].ToString(), row["Account Name"].ToString(), row["CHarOfAccount"].ToString(), row["Created date"].ToString(), Convert.ToDecimal(row["Beginning Balance"]), Convert.ToDecimal(row["Current Balance"]), row["Branc code"].ToString()));
             }
+
+            model.AccountModelList = models;
+            _AccountServices.Create(model);
             return models;
         }
 

@@ -1,6 +1,6 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.Accounting.AccountingStatementDto
 
-@if (Convert.ToBoolean(Session["IsHeadOffice"]) == false)
+@if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
 {
     <div class="row">
 
@@ -47,7 +47,7 @@
                                                         <td style="width:50%" id="@d.Id-Name">@d.Name</td>
                                                         <td style="width:25%" id="@d.Id-Location">@d.Location</td>
                                                         <td style="width:15%">
-                                                            <a href="#" onclick="loadBranchGeneralLedgerByBranchId(@d.Id)" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="Select @d.Name to View General Ledger">View</a>
+                                                            <a href="#" onclick="loadBranchGeneralLedgerByBranchId(@d.Id)" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="Select @d.Name to View General Ledger">View</a>
 
                                                         </td>
                                                     </tr>

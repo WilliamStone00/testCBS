@@ -29,7 +29,13 @@ namespace CBS.FrontDesk.Data
 
     }
 
+    public class UploadAccountCommand  
+    {
+        public List<AccountModel> AccountModelList { get; set; }
 
+
+
+    }
     public class AccountModel
     {
         public string AccountNumberNetwork { get; set; } = "";

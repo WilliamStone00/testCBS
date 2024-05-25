@@ -265,6 +265,37 @@ namespace CBS.BusinessService.Accounting
             }
             return null;
         }
+        public async Task<ExecutionMessages> Create(UploadAccountCommand list)
+        {
+            try
+            {
 
+                // Make an API call to create an individual profile
+
+
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<List<AccountModel>>>(APICallHelper.CreateAccounOnUploadie, list);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{list.AccountModelList[0].AccountNumber}", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(response, true, $"{list.AccountModelList[0].AccountNumber}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+     
     }
 }

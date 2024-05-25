@@ -196,6 +196,23 @@ namespace CBS.BusinessService.Accounting
                 throw;
             }
         }
+        public async Task<PostedEntry> GetPostedEntryReference(string Id)
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<PostedEntry>>(string.Format(APICallHelper.Url_Get_RefereceId, Id));
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new PostedEntry();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<EntryTempData> GetAccountrJournalEntry(string id)
         {
             try

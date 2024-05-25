@@ -2688,6 +2688,7 @@
     <Content Include="Views\AccountingConfiguration\_CreateAccountingRule.cshtml" />
     <Content Include="Views\AccountingConfiguration\_AddRuleEntry.cshtml" />
     <Content Include="Views\AccountingConfiguration\_EntryRuleData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\AccountUpload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

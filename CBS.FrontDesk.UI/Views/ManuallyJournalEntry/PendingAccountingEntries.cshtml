@@ -23,64 +23,66 @@
              data-bs-parent="#accordionPopoutIcon">
             <div class="accordion-body">
                 <div id="mainviewChange">
-                    <div class="change-group">
+                    <div class="table-responsive mb-3">
+                        <div class="change-group">
 
-                        <table class="table table-hover" id="PostedEntriesDataTable">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Code</th>
-                                    <th>Date</th>
-                                    <th>IssuedBy</th>
-
-                                    <th>Description</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-
-
-                                @foreach (var item in Model.PostedEntries)
-                                {
+                            <table class="table table-hover" id="PostedEntriesDataTable">
+                                <thead class="table-light">
                                     <tr>
-                                        <td style="width:5%" id="@item.Id-BranchCode">@item.BranchCode</td>
-                                        <td style="width:20%" id="@item.Id-CreatedDate">@item.CreatedDate</td>
-                                        <td style="width:15%" id="@item.Id-CreatedBy">@item.CreatedBy</td>
-                                        <td style="width:25%" id="@item.Id-Description">@item.Description</td>
-                                        <td style="width:15%" id="@item.Id-Amount">XAF @item.Amount.ToString("N") </td>
-                                        <td style="width:10%" id="@item.Id-Status">@item.Status</td>
+                                        <th>Code</th>
+                                        <th>Date</th>
+                                        <th>IssuedBy</th>
 
-                                        @if (@item.Status.ToLower() == "under review")
-                                        {
-                                            <td style="width:10%">
-                                                <a href="#" type="button" onclick="loadAccountingEntries('@item.Id')" class="btn-outline-primary waves-effect" data-bs-toggle="modal" data-bs-target="#largeModal">
-                                                    Approve/Reject
-                                                </a>
-
-                                            </td>
-                                        }
-                                        else
-                                        {
-
-                                            <td style="width:10%">
-                                                <a href="#" type="button" onclick="loadAccountingEntries(@item.Id)" class="btn-outline-primary waves-effect" data-bs-toggle="modal" data-bs-target="#largeModal">
-                                                    View
-                                                </a>
-                                            </td>
-                                        }
-
-
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
 
-                        @Html.Partial("_ReferenceDataEntries")
+
+
+                                    @foreach (var item in Model.PostedEntries)
+                                    {
+                                        <tr>
+                                            <td style="width:5%" id="@item.Id-BranchCode">@item.BranchCode</td>
+                                            <td style="width:20%" id="@item.Id-CreatedDate">@item.CreatedDate</td>
+                                            <td style="width:15%" id="@item.Id-CreatedBy">@item.CreatedBy</td>
+                                            <td style="width:25%" id="@item.Id-Description">@item.Description</td>
+                                            <td style="width:15%" id="@item.Id-Amount">XAF @item.Amount.ToString("N") </td>
+                                            <td style="width:10%" id="@item.Id-Status">@item.Status</td>
+
+                                            @if (@item.Status.ToLower() == "under review")
+                                            {
+                                                <td style="width:10%">
+                                                    <a href="#" type="button" onclick="loadAccountingEntries('@item.Id')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#largeModal">
+                                                        Approve/Reject
+                                                    </a>
+
+                                                </td>
+                                            }
+                                            else
+                                            {
+
+                                                <td style="width:10%">
+                                                    <a href="#" type="button" onclick="loadAccountingEntries('@item.Id')" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#largeModal">
+                                                        View
+                                                    </a>
+                                                </td>
+                                            }
+
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                            @Html.Partial("_ReferenceDataEntries")
+                        </div>
                     </div>
                 </div>
-            </div>
+                </div>
         </div>
 
 
