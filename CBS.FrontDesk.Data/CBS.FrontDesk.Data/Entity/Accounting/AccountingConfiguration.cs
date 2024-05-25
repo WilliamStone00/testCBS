@@ -10,9 +10,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
     public class AccountingConfiguration
     {
+        //
         public AccountTreeNode AccountTreeNode { get; set; }
-
         public AccountType AccountType { get; set; } = new AccountType();
+        public ChartofAccountManagementPosition ChartofAccountManagementPosition { get; set; } = new ChartofAccountManagementPosition();
         public OperationEvent OperationEvent { get; set; } = new OperationEvent();
         public OperationEventAttribute OperationEventAttribute { get; set; } = new OperationEventAttribute();
         public List<OperationEventAttributeDto> OperationEventAttributeDtos { get; set; } = new List<OperationEventAttributeDto>();
@@ -21,6 +22,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public ChartOfAccount ChartOfAccount { get; set; } = new ChartOfAccount();
         public ChartOfAccountDto ChartOfAccountDto { get; set; } = new ChartOfAccountDto();
         public List<ChartOfAccountDto> ChartOfAccountDtos { get; set; } = new List<ChartOfAccountDto>();
+        public List<ManagementSelectionOption> ChartofAccountManagementPositionDtos { get; set; } = new List<ManagementSelectionOption>();
         public Account Account { get; set; } = new Account();
         public List<Account> Accounts { get; set; } = new List<Account>();
         public List<ChartOfAccount> ChartOfAccounts { get; set; } = new List<ChartOfAccount>();
@@ -35,6 +37,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<OperationEventAttribute> OperationEventAttributes { get; set; } = new List<OperationEventAttribute>();
         public List<AccountingRuleEntry> AccountingRuleEntries { get; set; } = new List<AccountingRuleEntry>();
         public List<AccountingRuleEntryDto> AccountingRuleEntriesDTOS { get; set; } = new List<AccountingRuleEntryDto>();
+        public AccountingRule  AccountingRule{ get; set; } = new AccountingRule();
+ 
+        public List<AccountingRuleDtos> AccountingRules { get; set; } = new List<AccountingRuleDtos>();
 
         public string ManualOperationCode { get; set; }
         public string ManualOperationName { get; set; }

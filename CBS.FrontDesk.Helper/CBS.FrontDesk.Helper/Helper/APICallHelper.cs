@@ -441,7 +441,8 @@
         public static string GetAllAccountingRule = "/api/v1/AccountingRules";
         // POST  Create a AccountingRule
         public static string CreateAccountingRule = "/api/v1/AccountingRule";
-
+        // POST  Create a AccountingRule
+        public static string CreateAccounOnUploadie = "/api/v1/Account/UploadAccountCommand";
         //AccountingRuleEntry
         //Get,Update,Delete AccountingRuleEntry By Id
         public static string Get_Update_Delete_AccountingRuleEntry = "/api/v1/AccountingRuleEntry/{0}";
@@ -449,7 +450,8 @@
         public static string GetAllAccountingRuleEntry = "/api/v1/AccountingRuleEntry";
         // POST  Create a OperationEventAttribute
         public static string CreateAccountingRuleEntry = "/api/v1/AccountingRuleEntry";
-
+        //Get All OperationEventAttribute
+        public static string GetAccountingRuleEntries = "/api/v1/AccountingEntry/LoadAccountingRuleEntryQuery";
         //AccountClass
         //Get,Update,Delete AccountClass By Id
         public static string Get_Update_Delete_AccountClass = "/api/v1/AccountClass/{0}";
@@ -467,7 +469,15 @@
         public static string GetAllAccountCategory = "/api/v1/AccountClassCartegories/{0}";
         // POST  Create a AccountClass
         public static string CreateAccountCategory = "/api/v1/AccountCartegory";
+        //AccountCategory
+        //Get,Update,Delete AccountCategory By Id
+        public static string Get_Update_Delete_ChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition/{0}";
 
+        public static string Get_ChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition/{0}";
+        //Get All AccountCategory
+        public static string GetAllChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPositions";
+        // POST  Create a AccountClass
+        public static string CreateChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition";
         //Statementmodel
         //Get,Update,Delete AccountCategory By Id api/v1/StatementModel/
         public static string Get_Update_Delete_Statementmodel = "api/v1/StatementModel/{0}";
@@ -538,6 +548,7 @@
         public static string AccountingEntry_Get_Update_delete = "/api/v1/AccountingEntry/{0}";
         public static string AccountingEntry_Get_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdQuery/{0}";
         public static string AccountingEntry_ReverseEntry = "/api/v1/AccountingEntry/ReverseAccountingEntry";
+        public static string AccountingEntry_Entries_branchId_accountId = "/api/v1/AccountingEntries/{0}/{1}";
         public static string AccountingEntry_Entries = "/api/v1/AccountingEntries";
         public static string AccountingEntry_Posting_Entries = "/api/v1/AccountingEntries/RetrieveEntries";
         public static string Trialbalance4Column_Entries = "/api/v1/AccountingEntries/Trialbalance4Column";

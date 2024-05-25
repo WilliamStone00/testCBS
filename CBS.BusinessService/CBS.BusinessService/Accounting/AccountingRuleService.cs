@@ -14,10 +14,11 @@ using CBS.FrontDesk.Service;
 using System.Web.Mvc;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using System.Reflection;
 
 namespace CBS.BusinessService.Accounting
 {
-    public class AccountingRuleService : BaseApiServices
+    public class AccountingRuleService : BaseService
     {
         private readonly ApiCallerHelper _loanConfigApiHelper;
 
@@ -169,9 +170,36 @@ namespace CBS.BusinessService.Accounting
             return Task.FromResult(bookingDirections);
         }
 
-        public Task<ExecutionMessages> Create(AccountingRuleEntry accountingRuleEntry)
+        public async Task<ExecutionMessages> Create(AccountingRuleXRoot model)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<AccountingRuleXRoot>>(APICallHelper.CreateAccountingRule, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{model.accountingRules[0].ruleName}", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, (string)model.accountingRules[0].ruleName, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
         }
     }
 

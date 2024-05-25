@@ -5,7 +5,7 @@
     <div class="card mb-4">
         <h5 class="card-header">Basic</h5>
         <div class="card-body">
-         <form action="" class="dropzone needsclick dz-clickable" id="dropzone-basic">
+            <form action="" class="dropzone needsclick dz-clickable" id="dropzone-basic">
                 <div class="dz-message needsclick">
                     Account Upload
                     <span class="note needsclick">
@@ -33,11 +33,21 @@
                 </div>
                 <div class="fallback">
                     <input name="file" type="file" class="btn btn-primary" id="uploadedFile" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button onclick="ReadExcelFile()" Id="ReadUploadedFile"class="btn btn-primary me-2">Read file</button>
-                </div>-->
-                
+                    <button onclick="ReadExcelFile()" Id="ReadUploadedFile" class="btn btn-primary me-2">Read file</button>
+                    @*<button onclick="ExecuteExcelFile(12320)" class="btn btn-primary me-2">Execute File</button>*@
+                </div>
+
             </form>
         </div>
     </div>
 </div>
 <!-- /Basic  -->
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/Js/main.js/Account.js"></script>
+
+}
+

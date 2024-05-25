@@ -27,42 +27,42 @@
                 <label for="Reference">Reference</label>
             </div>
         </div>
-        <div class="col-md-6" id="itemsToShow1">
+        <div class="col-md-12" id="itemsToShow1">
             <div class="form-floating form-floating-outline">
                 @Html.ListBoxFor(m => m.IncomeStatement.AccountIds, new SelectList(ViewBag.ChartOfAccountReport == null ? new List<SelectListItem>() : ViewBag.ChartOfAccountReport, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple" ,@id= "incomeOrExpense" })
                 @Html.ValidationMessageFor(model => model.IncomeStatement.AccountIds, "", new { @class = "text-danger" })
                 <label for="AccountIds">Select account numbers from chart of account to be used for income and expense statement</label>
             </div>
         </div>
-        <div class="col-md-6" id="itemsToShow2">
+        <div class="col-md-12" id="itemsToShow2">
             <div class="form-floating form-floating-outline">
                 @Html.DropDownListFor(m => m.IncomeStatement.OperationSide, new SelectList(ViewBag.OperationSide == null ? "" : ViewBag.OperationSide, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(model => model.IncomeStatement.OperationSide, "", new { @class = "text-danger" })
                 <label for="Document">Select booking direction to consider</label>
             </div>
         </div>
-        <div class="col-md-6" id="itemsToHide1">
+        <div class="col-md-12" id="itemsToHide1">
             <div class="form-floating form-floating-outline">
                 @Html.ListBoxFor(m => m.IncomeStatement.GrossChartOfAccountId, new SelectList(ViewBag.ChartOfAccountReport == null ? new List<SelectListItem>() : ViewBag.ChartOfAccountReport, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple", @id = "GrossChartOfAccountId" })
                 @Html.ValidationMessageFor(model => model.IncomeStatement.GrossChartOfAccountId, "", new { @class = "text-danger" })
                 <label for="AccountIds">Select account numbers from chart of account to be used as Gross account</label>
             </div>
         </div>
-        <div class="col-md-6" id="itemsToHide2">
+        <div class="col-md-12" id="itemsToHide2">
             <div class="form-floating form-floating-outline">
                 @Html.DropDownListFor(m => m.IncomeStatement.OperationSideGross, new SelectList(ViewBag.OperationSide == null ? "" : ViewBag.OperationSide, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true", @id = "OperationSideGross" })
                 @Html.ValidationMessageFor(model => model.IncomeStatement.OperationSideGross, "", new { @class = "text-danger" })
                 <label for="Document">Select gross account booking direction</label>
             </div>
         </div>
-        <div class="col-md-6" id="itemsToHide3">
+        <div class="col-md-12" id="itemsToHide3">
             <div class="form-floating form-floating-outline">
                 @Html.ListBoxFor(m => m.IncomeStatement.AmortizationChartOfAccountId, new SelectList(ViewBag.ChartOfAccountReport == null ? new List<SelectListItem>() : ViewBag.ChartOfAccountReport, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple", @id = "AmortizationChartOfAccountId" })
                 @Html.ValidationMessageFor(model => model.IncomeStatement.AmortizationChartOfAccountId, "", new { @class = "text-danger" })
                 <label for="AccountIds">Select account numbers from chart of account to be used as amortization account</label>
             </div>
         </div>
-        <div class="col-md-6" id="itemsToHide4">
+        <div class="col-md-12" id="itemsToHide4">
             <div class="form-floating form-floating-outline">
                 @Html.DropDownListFor(m => m.IncomeStatement.OperationSideAmortization, new SelectList(ViewBag.OperationSide == null ? "" : ViewBag.OperationSide, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true", @id = "OperationSideAmortization" })
                 @Html.ValidationMessageFor(model => model.IncomeStatement.OperationSideAmortization, "", new { @class = "text-danger" })

@@ -1,0 +1,76 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+
+@if (true)
+{
+    <table class="table table-hover" id="myDataTable_AccountingRuleData">
+        <thead class="table-light">
+            <tr>
+                <th>Rule Name</th>
+                <th>Determinant Account</th>
+                <th>Booking Direction</th>
+                <th>Balancing Account</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.AccountingRules)
+            {
+                <tr>
+                    <td style="width:20%" id="RuleName-@d.Id">@d.RuleName</td>
+                    <td style="width:25%" id="DeterminantAccount-@d.Id">@d.DeterminantAccount</td>
+                    <td style="width:20%" id="BookingDirection-@d.Id">@d.BookingDirection</td>
+                    <td style="width:25%" id="BalancingAccount-@d.Id">@d.BalancingAccount</td>
+                    <td style="width:10%">
+
+                        <a href="#" onclick="DeleteAccountingRole('@d.Id','AccountingConfiguration','DeleteAccountingRole')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.RuleName to edit">Delete</a>
+                      
+                    </td>
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+    <table class="table table-hover" id="myDataTable_XXX">
+        <thead class="table-light">
+            <tr>
+                <th colspan="5" class="shift-right"> <a href="#" onclick="RegisterEntryRule()" class="btn btn-primary">Register Rule</a></th>
+                
+            </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+    </table>
+}
+else
+{
+    <tr>
+       
+
+    </tr>
+    <table class="table table-hover" id="myDataTable_AccountingRuleData">
+        <thead class="table-light">
+            <tr>
+                <th>Rule Name</th>
+                <th>Determinant Account</th>
+                <th>Booking Direction</th>
+                <th>Balancing Account</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.AccountingRules)
+            {
+                <tr>
+                    <td style="width:30%">@d.RuleName</td>
+                    <td style="width:20%">@d.DeterminantAccount</td>
+                    <td style="width:25%">@d.BookingDirection</td>
+                    <td style="width:25%">@d.BalancingAccount</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

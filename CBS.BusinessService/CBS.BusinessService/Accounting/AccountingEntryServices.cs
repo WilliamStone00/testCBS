@@ -194,6 +194,27 @@ namespace CBS.BusinessService
             }
             
         }
+
+        public async Task<List<AccountingEntry>> RetrieveAccountingEntries(JEQuery model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+
+                return await _accountingApiCallerHelper.PostAccountingAsync(APICallHelper.AccountingEntry_Posting_Entries, model);
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+                throw (ex);
+            }
+
+        }
         public async Task<List<AccountingEntry>> GetAllAccountingEntries()
         {
             try
@@ -219,6 +240,34 @@ namespace CBS.BusinessService
                 throw(ex);
             }
         }
+
+        public async Task<List<AccountingEntry>> GetAllAccountingEntriesForAnAccountPerBranch(string branchId, string accountId)
+        {
+            try
+            {
+                string url = string.Format(APICallHelper.AccountingEntry_Entries_branchId_accountId, branchId, accountId);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<AccountingEntry>>>(url);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData == null)
+                    {
+                        return new List<AccountingEntry>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<AccountingEntry>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+
 
         public async Task<List<AccountingEntry>> GetTrialBalance4ColumnEntries(TrialBalance4Column trialBalance)
         {

@@ -63,8 +63,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var AccountingRules = await _Services.GetAccountingRules();
 
                 var events = await _operationEventServices.GetOperationEvents();
-                var data = ConvertToDtos(AccountingRules.ToList(), events.ToList());
-                return PartialView(partialView, data);
+                //var data = ConvertToDtos(AccountingRules.ToList(), events.ToList());
+                return PartialView(partialView, AccountingRules);
             }
             //else if (path == "LoadAccountingRules")
             //{
@@ -89,17 +89,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
 
-        public List<AccountingRuleDto> ConvertToDtos(List<AccountingRule> attributes, List<OperationEvent> events)
-        {
-            return (from a in attributes
-                join e in events on a.OperationEventId equals e.Id
-                select new AccountingRuleDto
-                {
-                    Id = a.Id,
-                    RuleName = a.RuleName,
-                    OperationName = e.OperationEventName
-                }).ToList();
-        }
+   
         public async Task GetList()
         {
            

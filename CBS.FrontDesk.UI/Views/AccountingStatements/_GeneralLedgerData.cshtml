@@ -1,77 +1,67 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingEntryQuery
+﻿<div class="table-responsive">
+    <div class="modal fade" id="exLargeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel3"> Loading ...</h4>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
 
-@if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
-{
-    <div class="table-responsive mb-3">
-        <table class="table table-hover" id="myDataTable_Branch">
-            <thead class="table-light">
-                <tr>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover" id="BranchAccountDataTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>AccountNumber</th>
+                                <th>Description</th>
+                                <th>Current Balance</th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <input type="hidden" id="selectedForJEBranchId" value="" />
+                    <input type="hidden" id="selectedForJEBranchName" value="" />
+                </div>
+                <div id="under_review">
+                    <div class="card-header shift-right">
 
-                    <th>Code</th>
-                    <th>Name</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
 
-
-                    foreach (var transaction in Model.Branchs)
-                    {
-                        <tr>
-
-                            <td>@transaction.BranchCode</td>
-                            <td>@transaction.Name</td>
+                       
+                        <div class="col-lg-3 col-sm-6 col-12">
                            
-                        </tr>
-                    }
-                }
+                            <div class="demo-inline-spacing">
+                                <div class="btn-group" id="dropdown-icon-demo">
+                                    <button type="button"
+                                            class="btn btn-primary dropdown-toggle"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <i class="mdi mdi-cloud-download-outline me-1"></i>  Download General Ledger
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="javascript:void(0);" onclick="DownLoadGL('EXCEL')"  class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>In Excel Format</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);"  onclick="DownLoadGL('PDF')"  class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>In PDF Format</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            </tbody>
-        </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-}
-else
-{
-    <div class="table-responsive mb-3">
-        <table class="table table-hover" id="myDataTable">
-            <thead class="table-light">
-                <tr>
-                    <th>Date</th>
-                    <th>Reference</th>
-                    <th>AccountNumber</th>
-                    <th>AccountName</th>
-                    <th>Description</th>
-                    <th>Debit</th>
-                    <th>Credit</th>
-                    <th>Debit Balance</th>
-                    <th>Credit Balance</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-
-
-                    @*foreach (var transaction in Model)
-                    {
-                        <tr>
-
-                            <td>@transaction.EntryDate</td>
-                            <td>@transaction.TransactionReference</td>
-                            <td>@transaction.AccountNumber</td>
-                            <td>@transaction.AccountName</td>
-                            <td>@transaction.Description</td>
-                            <td>@transaction.DebitAmount</td>
-                            <td>@transaction.CreditAmount</td>
-                            <td>@transaction.DebitAccountBalance</td>
-                            <td>@transaction.CreditAccountBalance</td>
-                        </tr>
-                    }*@
-                }
-
-            </tbody>
-        </table>
-    </div>
-}
-
+</div>
 

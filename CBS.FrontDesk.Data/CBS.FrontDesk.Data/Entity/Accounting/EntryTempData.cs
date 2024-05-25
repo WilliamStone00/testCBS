@@ -52,13 +52,16 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     }
     public class ManuallyJournalEntryDataSet
     {
-        public EntryTempData EntryTempData { get; set; }
-        public Data.Account Account { get; set; }
-        public EntryDescription EntryDescription { get; set; }
-        public List<EntryTempData> EntryTempDatas { get; set; }
-        public List<PostedEntry> PostedEntries { get; set; }
-        public List<EntryTempDataResult> EntryTempDataResult { get; set; }
-        public List<Account> Accounts { get; set; }
+        public EntryTempData EntryTempData { get; set; } = new EntryTempData();
+        public Data.Account Account { get; set; }= new Account();
+        public EntryDescription EntryDescription { get; set; } = new EntryDescription();
+        public List<EntryTempData> EntryTempDatas { get; set; }= new List<EntryTempData>(){ };
+
+        public List<PostedEntry> PostedEntries { get; set; }= new List<PostedEntry>();
+        public List<EntryTempDataResult> EntryTempDataResult { get; set; } = new List<EntryTempDataResult> { 
+    
+        };   
+        public List<Account> Accounts { get; set; }= new List<Account>();
         public string ServiceOption { get; set; }
         public string Action { get; set; }
         public string Key { get; set; }

@@ -1,0 +1,154 @@
+﻿@model  CBS.FrontDesk.Data.Entity.Accounting.AccountingStatementDto
+
+@if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+{
+    <div class="row">
+
+        <div class="col-xl-12 col-lg-12 col-md-12 order-12 order-md-12">
+            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+                <div class="accordion-item active">
+                    <h2 class="accordion-header text-body d-flex justify-content-between"
+                        id="accordionPopoutIconThree">
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionPopoutIcon-3"
+                                aria-expanded="true"
+                                aria-controls="accordionPopoutIcon-3">
+                            <i class="mdi mdi-file-document-outline me-2"></i>
+                           JOURNAL ENTRY PER BRANCH
+                        </button>
+                    </h2>
+                    <div id="accordionPopoutIcon-3"
+                         class="accordion-collapse collapse show"
+                         data-bs-parent="#accordionPopoutIcon">
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+                                <div class="change-group">
+
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="BranchDataTable">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Code</th>
+                                                    <th>BranchName</th>
+                                                    <th>Location</th>
+                                                    <th>Action</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (var d in Model.Branches)
+                                                {
+                                                    <tr>
+                                                        <td style="width:10%" id="@d.Id-BranchCode">@d.BranchCode</td>
+                                                        <td style="width:50%" id="@d.Id-Name">@d.Name</td>
+                                                        <td style="width:25%" id="@d.Id-Location">@d.Location</td>
+                                                        <td style="width:15%">
+                                                            <a href="#" onclick="ShareBranchID(@d.Id)" class="mr-2 btn btn-primary" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#largeModal" title="Select @d.Name to view journal entry">View</a>
+
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @Html.Partial("_DateRange")
+
+
+                                </div>
+                            </div>
+                   
+                        </div>
+                    </div>
+
+                </div>
+
+                @Html.Partial("_JournalEntries")
+            </div>
+
+        </div>
+
+    </div>
+
+}
+else
+{
+    <div class="row">
+
+        <div class="col-xl-9 col-lg-9 col-md-9 order-0 order-md-1">
+            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+                <div class="accordion-item active">
+                    <h2 class="accordion-header text-body d-flex justify-content-between"
+                        id="accordionPopoutIconThree">
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionPopoutIcon-3"
+                                aria-expanded="true"
+                                aria-controls="accordionPopoutIcon-3">
+                            <i class="mdi mdi-file-document-outline me-2"></i>
+                            GENERAL LEDGER OF  @Session["BranchName"]
+                        </button>
+                    </h2>
+                    <div id="accordionPopoutIcon-3"
+                         class="accordion-collapse collapse show"
+                         data-bs-parent="#accordionPopoutIcon">
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+                                <div class="change-group">
+
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="AccountDataTable">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>AccountNumber</th>
+                                                    <th>Description</th>
+                                                    <th>Debit Balance</th>
+                                                    <th>Credit Balance</th>
+                                                    <th>Current Balance</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (var d in Model.Accounts)
+                                                {
+                                                    <tr>
+                                                        <td style="width:15%">@d.AccountNumber</td>
+                                                        <td style="width:25%">@d.AccountName</td>
+                                                        <td style="width:25%">@d.DebitBalance</td>
+                                                        <td style="width:25%">@d.CreditBalance</td>
+                                                        <td style="width:25%">@d.CurrentBalance</td>
+                                                        <td style="width:10%">
+                                                            <a href="#" onclick="loadAccountingEntriesByAccountId('@d.Id')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#largeModal" title="Select @d.AccountName to journal entry">View Journal Entry</a>
+
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                      @Html.Partial("_JournalEntries")
+                                </div>
+                            </div>
+                        </div>
+
+                    
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+}
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/Js/main.js/AccountingStatements.js"></script>
+}

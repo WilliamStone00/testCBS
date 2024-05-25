@@ -1,6 +1,9 @@
 ﻿$(document).ready(function () {
+
+   
     LoadDataEntryDT('PostedEntriesDataTable');
     //
+
     $(document).on('change', '#EntryTempData_AccountId', function () {
         var EventId = $(this).val();
 
@@ -8,6 +11,19 @@
 
 
     });
+    $(document).on('click', '#post-entries', function () {
+        $("#JournalEntryDataTable").hide(1000);
+        $("#datalistingview_AddEntryPurpose").hide(1000);
+    });
+    $(document).on('click', '#Approve', function () {
+        $("#largeModal").hide(1000);
+        window.location.reload(true);
+    });
+    $(document).on('click', '#Reject', function () {
+        $("#largeModal").hide(1000);
+        window.location.reload(true);
+    });
+
     $(document).on('change', '#EntryTempData_BookingDirection', function () {
         var EventId = $(this).val();
 
@@ -62,6 +78,7 @@ function loadDescriptionByOperationDirection(operation) {
 }
 function loadAccountingEntries(reference)
 {
+
     alert(reference);
     $('#exampleModalLabel3').val("Loading ***");
 
@@ -97,7 +114,7 @@ function loadAccountingEntries(reference)
 
                 tableBody.append(row);
             });
-
+            $("#datalistingview_AddEntryPurpose").show();
             // Append text to the modal title
             $('#selectedId').val(id);
         },
@@ -112,7 +129,7 @@ function LoadJournalEntryData(controller, action, divLoader, tableID, serviceopt
         type: "GET",
         url: '/' + controller + '/' + action + '?serviceoption=' + serviceoption + '&KEY=' + KEY + '&partialView=' + partialView + '&path=' + path,
         success: function (dataResponse) {
-            console.log(dataResponse);
+  
             $('#' + divLoader).html(dataResponse);
             LoadDT(tableID, order);
 
@@ -204,6 +221,39 @@ function AjaxPostAndUpdateJournalEntry(form) {
 
 }
 
+function postingValidationOfTransactions(title, message, ajaxUrl, data) {
+    alertify.confirm(title, message,
+        function () {
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        LoadJournalEntryData("ManuallyJournalEntry", "InitializeData", "datalistingview_JournalEntries", "JournalEntryDataTable", "EntryTempData", "", "_JournalEntries", "list", "desc");
+                        $("#JournalEntryDataTable").hide(1000);
+                        $("#datalistingview_AddEntryPurpose").hide(1000);
+                                 }
+                    else {
+                        appalert(response.message, 3, 4);
+
+                        LoadJournalEntryData("ManuallyJournalEntry", "InitializeData", "datalistingview_JournalEntries", "JournalEntryDataTable", "EntryTempData", "", "_JournalEntries", "list", "desc");
+
+                    }
+                },
+                error: function () {
+                    appalert(error, 0, 3);
+                }
+            });
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
+        }
+    );
+}
+
 function postingconfirmTransactions(title, message, ajaxUrl, data) {
     alertify.confirm(title, message,
         function () {
@@ -283,8 +333,10 @@ function DoPosting() {
     }
     var message = "WARNING!!!\n";
     message += "Are you sure you want to confirm this various account adjustment?\n";
-    postingconfirmTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/AddOrUpdate', entry);
+    postingValidationOfTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/AddOrUpdate', entry);
+ 
 }
+ 
 function PostEntries() {
 
 
@@ -296,6 +348,7 @@ function PostEntries() {
     var message = "WARNING!!!\n";
     message += "Are you sure you want to add a " + entry.EntryTempData.BookingDirection + " manual entry of XAF" + entry.EntryTempData.Amount + " into " + entry.EntryTempData.AccountNumber + "-" + entry.EntryTempData.AccountName + "?\n";
     postingconfirmTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/AddOrUpdate', entry);
+  
 }
 function loadPartialView2(nodeId, view, path, serviceOption, divToLoadContent) {
     // Use AJAX to load the partial view based on the nodeId
@@ -387,7 +440,7 @@ function loadAccountingEntries(reference) {
             var tableBody = $('#ReferenceEntriesDataTable tbody');
             tableBody.empty(); // Clear existing rows
 
-            $.each(data, function (index, item) {
+            $.each(data.EntryDetail, function (index, item) {
                 var row = $('<tr>');
                 row.append($('<td>').text(item.AccountName));
                 row.append($('<td>').text(item.AccountNumber));
@@ -402,7 +455,7 @@ function loadAccountingEntries(reference) {
 
                 tableBody.append(row);
             });
-
+          
             // Append text to the modal title
             $('#selectedId').val(reference);
             console.log(statusCell);
@@ -501,4 +554,5 @@ function LoadDataEntryDT(tableID) {
         pageLength: 10
 
     });
+  
 }

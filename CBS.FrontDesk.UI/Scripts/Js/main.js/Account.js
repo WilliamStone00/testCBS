@@ -1,25 +1,16 @@
 ﻿$(document).ready(function () {
-    //$(document).on('change', '#Document_typeBS', function () {
-    //    var selectedValue = $(this).val();
-    //    console.log(selectedValue);
-    //    $.ajax({
-    //        url: '/AccountingConfiguration/BuildMenuViewBag',
-    //        type: 'GET',
-    //        dataType: 'json',
-    //        data: { DocumentId: selectedValue },
-    //        success: function (data) {
-    //            // Clear existing options in the OperationEventAttributeId combo
-    //            $('#Document_Sub_type').empty();
-    //            // Add new options based on the fetched data
-    //            $.each(data, function (index, item) {
-    //                $('#Document_Sub_type').append($('<option>').text(item.Name).attr('value', item.Id));
-    //            });
-    //        },
-    //        error: function (xhr, status, error) {
-    //            console.error(xhr.responseText);
-    //        }
-    //    });
-    //});
+    $('#DeterminationManagementAccountId').hide();
+    $('#HasManagementAccount').change(function () {
+      
+        if ($(this).is(':checked')) {
+            alert("ok");
+            $('#DeterminationAccountId').hide();
+            $('#DeterminationManagementAccountId').show();
+        } else {
+            $('#DeterminationAccountId').show();
+            $('#DeterminationManagementAccountId').hide();
+        }
+    });
 
     $('#document_type').change(function () {
         var selectedValue = $(this).val();
@@ -121,7 +112,265 @@
 
 });
 
+function ReadExcelFile() {
+    var formData = new FormData();
+    var file = $("#uploadedFile")[0].files[0];
+    console.log(file);
+    formData.append("ExcelFile", file);
+    console.log(formData.get("ExcelFile"));
+    event.preventDefault();
+    $.ajax({
+        url: "/AccountingConfiguration/UploadAccountModel",
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            console.log("File uploaded successfully.");
+            initializeDataTableForAccountUpload(response)
+        },
+        error: function (xhr, status, error) {
+            console.log("Error uploading file: " + error);
+            // Handle error response
+        }
+    });
+}
 
+function ExecuteExcelFile(branchId) {
+    console.log(branchId);
+    $.ajax({
+        url: '/AccountingConfiguration/AddTransferAccountModelForProcessing',
+        type: 'Post',
+        dataType: 'json',
+        data: { branchId: ""},
+        success: function (data) {
+            
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+function RegisterEntryRule() {
+
+ 
+
+    var message = "WARNING!!!\n";
+    message += "Are you sure you want to add this multiple accounting event rule?\n";
+    SavingAccountingRuleToDB('Confirm accounting event code ', message, '/AccountingConfiguration/AddAccountingRole', null);
+}
+
+
+
+
+function AddEntryRule() {
+
+    var entry = EntryRule();
+    if (entry.AccountingRule.RuleName === null || entry.AccountingRule.RuleName === "") {
+        appalert("Please kindly enter the Accounting RuleName", 2, 1);
+        return;
+    }
+    var message = "WARNING!!!\n";
+    message += "Are you sure you want to add accounting event code with " + entry.AccountingRule.RuleName + " into " + entry.AccountingRule.BookingDirection + "?\n";
+    SavingAccountingRule('Confirm accounting event code ', message, '/AccountingConfiguration/AddOrUpdateRole', entry);
+}
+
+
+
+
+function LoadAccountingRuleData(controller, action, divLoader, tableID, serviceoption, KEY, partialView, path, order) {
+    KEY = $('#EntryTempData_Reference').val();
+    $.ajax({
+        type: "GET",
+        url: '/' + controller + '/' + action + '?serviceoption=' + serviceoption + '&KEY=' + KEY + '&partialView=' + partialView + '&path=' + path,
+        success: function (dataResponse) {
+            console.log(dataResponse);
+            $('#' + divLoader).html(dataResponse);
+            LoadDT(tableID, order);
+
+        }, error: function (err) {
+
+            appalert(err.statusText, 1, 3);
+        }
+    });
+
+
+}
+
+function DeleteAccountingRole(key, controller, action) {
+
+    var entry = EntryRule();
+    if (entry.AccountingRule.RuleName === null || entry.AccountingRule.RuleName === "") {
+        appalert("Please kindly enter the Accounting RuleName", 2, 1);
+        return;
+    }
+    var message = "WARNING!!!\n";
+    message += "Are you sure you want to add accounting event code with " + entry.AccountingRule.RuleName + " into " + entry.AccountingRule.BookingDirection + "?\n";
+    DeleteAccountingRoleFromDB('Confirm accounting event code ', message, '/' + controller + '/' + action , key);
+}
+
+function DeleteAccountingRoleFromDB(title, message, ajaxUrl, key)
+{
+    $.ajax({
+        type: "GET",
+        url: ajaxUrl + '?Id=' + key ,
+        success: function (dataResponse) {
+            console.log(dataResponse);
+            var table;
+            initializeDataTableAccountingRuleData(dataResponse)
+        }, error: function (err) {
+
+            appalert(err.statusText, 1, 3);
+        }
+    });
+
+}
+function ReadEntryRule(dataResponse) {
+    $("#ServiceOptionn").val(dataResponse.ServiceOption);
+ 
+    $("#AccountingRule_RuleName").val(dataResponse.RuleName);
+    $("#AccountingRule_AccountingEntryRuleId").val(dataResponse.AccountingEntryRuleId);
+    $("#AccountingRule_BookingDirection").val(dataResponse.BookingDirection);
+ 
+}
+
+function SavingAccountingRuleToDB(title, message, ajaxUrl, data) {
+    alertify.confirm(title, message,
+        function () {
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response.success) {
+                        appalert(response.message, 3, 1);
+                                   }
+                    else {
+                        appalert(response.message, 1, 3);
+
+                            }
+                },
+                error: function () {
+                    appalert(error, 0, 3);
+                }
+            });
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
+        }
+    );
+}
+function SavingAccountingRule(title, message, ajaxUrl, data) {
+    alertify.confirm(title, message,
+        function () {
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response.success) {
+                        appalert(response.message, 3, 1);
+                        LoadAccountingRuleData("AccountingConfiguration", "InitializeData", "datalistingview_RuleEntry", "myDataTable_AccountingRuleData", "accountingRule", "", "_EntryRuleData", "list", "desc");
+
+                    }
+                    else {
+                        appalert(response.message,1, 3);
+
+                        LoadAccountingRuleData("AccountingConfiguration", "InitializeData", "datalistingview_RuleEntry", "myDataTable_AccountingRuleData", "accountingRule", "", "_EntryRuleData", "list", "desc");
+
+                    }
+                },
+                error: function () {
+                    appalert(error, 0, 3);
+                }
+            });
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
+        }
+    );
+}
+function EntryRule() {
+    const formData = {
+        ServiceOption: $("#ServiceOptionn").val() ,
+        AccountingRule: {
+            RuleName: $("#AccountingRule_RuleName").val(),
+            AccountingEntryRuleId: $("#AccountingRule_AccountingEntryRuleId").val(),
+            BookingDirection: $("#AccountingRule_BookingDirection").val(),
+        },
+        Action: $("#Action").val()
+
+    };
+    return formData;
+}
+function initializeDataTableForAccountUpload(data) {
+    if ($.fn.DataTable.isDataTable('#myDataTable_AccountUploadData')) {
+        // If the DataTable instance already exists, destroy it
+        table.destroy();
+    }
+    console.log(data);
+    if (data && data.length > 0) {
+        // Create a new DataTable instance with the provided data
+        table = $('#myDataTable_AccountUploadData').DataTable({
+            data: data,
+            columns: [
+                { data: 'AccountNumber' },
+                { data: 'AccountName' },
+                { data: 'ChartofAccount' },
+                { data: 'CreatedDate' },
+                { data: 'CurrentBalance' },
+                { data: 'BeginningBalance' },
+                { data: 'BranchCode' },
+
+            ]
+        });
+    } else {
+        // Create an empty DataTable instance
+        table = $('#myDataTable_AccountUploadData').DataTable();
+        table.clear().draw();
+    }
+}
+
+function initializeDataTableAccountingRuleData(data) {
+    // Get the table element
+    var tableElement = $('#myDataTable_AccountingRuleData');
+
+    // Check if a DataTable instance already exists
+    if ($.fn.DataTable.isDataTable(tableElement)) {
+        // If it exists, destroy it
+        tableElement.DataTable().destroy();
+    }
+
+    console.log(data);
+
+    if (data && data.length > 0) {
+        // Initialize a new DataTable instance with data
+        table = tableElement.DataTable({
+            data: data,
+            columns: [
+                { data: 'RuleName' },
+                { data: 'DeterminantAccount' },
+                { data: 'BookingDirection' },
+                { data: 'BalancingAccount' },
+                {
+                    "data": "Id",
+                    "orderable": "false",
+                    "render": function (data) {
+                        return "<a href='/AccountingConfiguration/DeleteAccountingRole?Id=" + data + " class='mr-2' data-toggle='tooltip' data-placement='top' title='View " + data + " detail'> Delete</a>";
+                    }
+                }
+            ]
+        });
+    } else {
+        // Initialize an empty DataTable instance
+        table = tableElement.DataTable();
+        table.clear().draw();
+    }
+}
+ 
+ 
 function loadAccountCartegoryByChartNumber(number) {
     console.log(number);
 

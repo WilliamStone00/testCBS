@@ -59,14 +59,14 @@
                             @Html.ValidationMessageFor(model => model.AccountCartegoryId, "", new { @class = "text-danger" })
                             <label>AccountCartegory</label>
                         </div>
-                        <div class="form-check mb-4">
+                        @*<div class="form-check mb-4">
                             @Html.CheckBoxFor(model => model.CanBeNegative, new { @class = "form-check-input" })
                             @Html.LabelFor(model => model.CanBeNegative, new { @class = "form-check-label" })
                         </div>
                         <div class="form-check mb-4">
                             @Html.CheckBoxFor(model => model.IsBalanceSheetAccount, new { @class = "form-check-input" })
                             @Html.LabelFor(model => model.IsBalanceSheetAccount, new { @class = "form-check-label" })
-                        </div>
+                        </div>*@
                         <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">Save</button>
 
                     }
