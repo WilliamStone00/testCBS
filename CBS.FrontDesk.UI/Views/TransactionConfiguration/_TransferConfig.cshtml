@@ -14,21 +14,21 @@
                     <label>Select transfer limit type</label>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.TransferLimit.minAmount, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.TransferLimit.minAmount, "", new { @class = "text-danger" })
-                    <label>Minimum transfer amount which can be transfered from @Model.SavingProduct.name at once</label>
+                    <label>Minimum transfer amount which can be transfered from @Model.SavingProduct.Name at once</label>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.TransferLimit.maxAmount, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.TransferLimit.maxAmount, "", new { @class = "text-danger" })
-                    <label>Maximum transfer amount which can be transfered from @Model.SavingProduct.name at once</label>
+                    <label>Maximum transfer amount which can be transfered from @Model.SavingProduct.Name at once</label>
                 </div>
             </div>
-            <div class="col-md-6">
+            @*<div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.TransferLimit.transferFeeFlat, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.TransferLimit.transferFeeFlat, "", new { @class = "text-danger" })
@@ -41,7 +41,7 @@
                     @Html.ValidationMessageFor(m => m.TransferLimit.transferFeeRate, "", new { @class = "text-danger" })
                     <label>Fee rate</label>
                 </div>
-            </div>
+            </div>*@
         </div>
     </fieldset>
     <fieldset class="fieldset-custom">

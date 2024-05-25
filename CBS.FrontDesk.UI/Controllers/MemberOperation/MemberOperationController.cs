@@ -172,8 +172,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         ViewBag.KEY = null;
                         var loanApplication = await _loanApplicationServices.GetLoanApplication(KEY);
                         var customer = await InitializeCustomerData(loanApplication.CustomerId);
-                        var guarantor = new LoanGuarantor { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.customerId };
-                        var collateral = new LoanApplicationCollateral { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.customerId };
+                        var guarantor = new LoanGuarantor { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.CustomerId };
+                        var collateral = new LoanApplicationCollateral { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.CustomerId };
                         ViewBag.LoanProductCollaterals = await _loanProductCollateralServices.GetLoanProductCollaterals(loanApplication.LoanProduct.Id);
                         ViewBag.DocumentTypes = await _documentServices.GetDocumentDropDown();
                         var documentAttachedToLoans = loanApplication.DocumentAttachedToLoans;
@@ -211,7 +211,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         var guarantor = await _loanGuarantorServices.GetLoanGuarantor(KEY);
                         var loanApplication = await _loanApplicationServices.GetLoanApplication(guarantor.LoanApplicationId);
                         var customer = await InitializeCustomerData(loanApplication.CustomerId);
-                        var collateral = new LoanApplicationCollateral { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.customerId };
+                        var collateral = new LoanApplicationCollateral { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.CustomerId };
                         ViewBag.LoanProductCollaterals = await _loanProductCollateralServices.GetLoanProductCollaterals(loanApplication.LoanProduct.Id);
                         return PartialView(partialView, new MemberOperationPanel { LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
                     }
@@ -220,8 +220,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         ViewBag.KEY = null;
                         var loanApplication = await _loanApplicationServices.GetLoanApplication(KEY);
                         var customer = await InitializeCustomerData(loanApplication.CustomerId);
-                        var guarantor = new LoanGuarantor { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.customerId };
-                        var collateral = new LoanApplicationCollateral { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.customerId };
+                        var guarantor = new LoanGuarantor { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.CustomerId };
+                        var collateral = new LoanApplicationCollateral { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.CustomerId };
                         ViewBag.LoanProductCollaterals = await _loanProductCollateralServices.GetLoanProductCollaterals(loanApplication.Id);
                         return PartialView(partialView, new MemberOperationPanel { LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
                     }
@@ -272,8 +272,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
 
                         ViewBag.KEY = null;
                         var customer = await InitializeCustomerData(loanApplication.CustomerId);
-                        var guarantor = new LoanGuarantor { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.customerId };
-                        var collateral = new LoanApplicationCollateral { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.customerId };
+                        var guarantor = new LoanGuarantor { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.CustomerId };
+                        var collateral = new LoanApplicationCollateral { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.CustomerId };
                         ViewBag.LoanProductCollaterals = await _loanProductCollateralServices.GetLoanProductCollaterals(loanApplication.LoanProduct.Id);
                         ViewBag.DocumentTypes = await _documentServices.GetDocumentDropDown();
                         var documentAttachedToLoans = loanApplication.DocumentAttachedToLoans;
@@ -395,7 +395,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             }
             else
             {
-                model.LoanApplication.CustomerId = model.Customer.customerId;
+                model.LoanApplication.CustomerId = model.Customer.CustomerId;
                 var data = await _loanApplicationServices.Create(model.LoanApplication);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 

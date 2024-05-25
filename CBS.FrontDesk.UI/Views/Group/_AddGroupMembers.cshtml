@@ -1,0 +1,29 @@
+﻿@model CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping.GroupManagement
+<fieldset class="fieldset-custom">
+    @using (Html.BeginForm("Update", "Group", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        <div class="row g-4">
+
+            <div class="row mt-4">
+                @Html.HiddenFor(model => model.AddGroupCustomerCommand.GroupId)
+                <input type="hidden" name="Option" value="addmembers" id="Option" />
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.AddGroupCustomerCommand.CustomerIds, new MultiSelectList(ViewBag.Members, "Value", "Text"), "---Select Members---", new { @class = "form-control select2", @search = "true", @multiple = "multiple" })
+                        @Html.ValidationMessageFor(m => m.AddGroupCustomerCommand.CustomerIds, "", new { @class = "text-danger " })
+                        <label for="formValidationDob">Select members and add to @Model.Group.GroupName @Model.Group.GroupType.GroupTypeName</label>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Add selected members</button>
+                @Html.HiddenFor(m => m.Group.GroupId)
+                <input type="hidden" name="Action" value="update" id="Action" />
+            </div>
+
+        </div>
+
+    }
+
+    @Html.Partial("_GroupMemberData")
+</fieldset>

@@ -62,7 +62,7 @@ namespace CBS.BusinessService
                                       select new StringValues
                                       {
                                           Value = a.Id.ToString(),
-                                          Text = $"{a.Name}-{a.IsTeller}"
+                                          Text = $"{a.Name}-{a.Description}"
                                       };
 
                     return menuMasters;

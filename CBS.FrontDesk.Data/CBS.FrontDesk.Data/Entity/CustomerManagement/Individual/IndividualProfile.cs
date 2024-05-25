@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,84 +11,79 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
 
     public class IndividualProfile
     {
-        public string bankName { get; set; }
-        [Required]
-        public string firstName { get; set; }
-        [Required]
-        public string lastName { get; set; }
-        public DateTime dateOfBirth { get; set; }
-        [Required]
-        public string gender { get; set; }
-        [Required]
-        public string email { get; set; }
-        [Required]
+        public string CustomerId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public bool IsMemberOfACompany { get; set; }
+        public bool IsMemberOfAGroup { get; set; }
+        public string LegalForm { get; set; }
+        public string FormalOrInformalSector { get; set; }
+        public string BankingRelationship { get; set; } //This is an enum//  1.  CB-Customer  2. NCB-Non-customer
+        public DateTime DateOfBirth { get; set; }
+        public string PlaceOfBirth { get; set; }
+        public string Occupation { get; set; }
         public string VillageOfOrigin { get; set; }
-        [Required]
-        public string phone { get; set; }
-        [Required]
-        public string idNumber { get; set; }
-        [Required]
-        public string countryId { get; set; }
-        [Required]
-        public string regionId { get; set; }
-        [Required]
-        public string townId { get; set; }
-        [Required]
-        public string address { get; set; }
-        public bool isUseOnLineMobileBanking { get; set; }
-        public string packageId { get; set; }
-        [Required]
-        public string divisionId { get; set; }
- 
-        public string branchId { get; set; }
-        [Required]
-        public string economicActivitiesId { get; set; }
-
-        public string bankId { get; set; }
-  
-        public string organizationId { get; set; }
-        [Required]
-        public string subDivisionId { get; set; }
-        public string taxIdentificationNumber { get; set; }
-        public string customerId { get; set; }
-        public string customerCode { get; set; }
-        public bool isMemberOfACompany { get; set; }
-        public bool isMemberOfAGroup { get; set; }
-        [Required]
-        public string legalForm { get; set; }
-        [Required]
-        public string formalOrInformalSector { get; set; }
-        public string bankingRelationship { get; set; }
-        [Required]
-        public string placeOfBirth { get; set; }
-        [Required]
-        public string occupation { get; set; }
-        public string idNumberIssueDate { get; set; }
-        public string idNumberIssueAt { get; set; }
-        [Required]
-        public string membershipApprovalStatus { get; set; }
-        public string poBox { get; set; }
-        public string fax { get; set; }
-        public string customerPackageId { get; set; }
-        [Required]
-        public string language { get; set; }
-        public bool active { get; set; }
-        public string secretQuestion { get; set; }
-        public string secretAnswer { get; set; }
-        public string employerName { get; set; }
-        public string employerTelephone { get; set; }
-        public string employerAddress { get; set; }
-        public string maritalStatus { get; set; }
-        public string spouseName { get; set; }
-        public string spouseAddress { get; set; }
-        public int numberOfKids { get; set; }
-        public string spouseOccupation { get; set; }
-        public string spouseContactNumber { get; set; }
-        public double income { get; set; }
-        [Required]
-        public string customerCategoryId { get; set; }
-        public string workingStatus { get; set; }
-        public string activeStatus { get; set; }
+        public string Address { get; set; }
+        public string IDNumber { get; set; }
+        public string IDNumberIssueDate { get; set; }
+        public string IDNumberIssueAt { get; set; }
+        public string BankName { get; set; }
+        public string MembershipApplicantDate { get; set; }
+        public string MembershipApplicantProposedByReferral1 { get; set; }
+        public string MembershipApplicantProposedByReferral2 { get; set; }
+        public string MembershipApprovalBy { get; set; }
+        public string MembershipApprovalStatus { get; set; }
+        public string MembershipApprovedDate { get; set; }
+        public string MembershipApprovedSignatureUrl { get; set; }
+        public string MembershipAllocatedNumber { get; set; }
+        public string POBox { get; set; }
+        public string Fax { get; set; }
+        public string Gender { get; set; } = "Male";
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string CountryId { get; set; }
+        public string RegionId { get; set; }
+        public string CustomerCode { get; set; }
+        public string ProfileType { get; set; }
+        public string TownId { get; set; }
+        public int MobileOrOnLineBankingLoginFailedAttempts { get; set; }
+        public int NumberOfAttemptsOfMobileOrOnLineBankingLogin { get; set; }
+        public bool IsUseOnLineMobileBanking { get; set; }
+        public string CustomerPackageId { get; set; }
+        public string DivisionId { get; set; }
+        public string BranchId { get; set; }
+        public string EconomicActivitiesId { get; set; }
+        public string BankId { get; set; }
+        public string OrganizationId { get; set; }
+        public string Language { get; set; }
+        public string SubDivisionId { get; set; }
+        public string TaxIdentificationNumber { get; set; }
+        public bool IsBelongToGroup { get; set; }
+        public bool Active { get; set; }
+        public string SecretQuestion { get; set; }
+        public string SecretAnswer { get; set; }
+        public string EmployerName { get; set; }
+        public string EmployerTelephone { get; set; }
+        public string EmployerAddress { get; set; }
+        public string MaritalStatus { get; set; }
+        public string SpouseName { get; set; }
+        public string SpouseAddress { get; set; }
+        public int NumberOfKids { get; set; }
+        public string SpouseOccupation { get; set; }
+        public string SpouseContactNumber { get; set; }
+        public double Income { get; set; }
+        public string CustomerCategoryId { get; set; }
+        public string WorkingStatus { get; set; }
+        public string ActiveStatus { get; set; }
+        public string RegistrationNumber { get; set; }
+        public DateTime CompanyCreationDate { get; set; }
+        public string PlaceOfCreation { get; set; }
+        public string ConditionForWithdrawal { get; set; }
+        public List<CustomerDocument> CustomerDocuments { get; set; } = new List<CustomerDocument>();
+        public List<MembershipNextOfKing> MembershipNextOfKings { get; set; } = new List<MembershipNextOfKing>();
+        public List<CardSignatureSpecimen> CardSignatureSpecimens { get; set; } = new List<CardSignatureSpecimen>();
+        public CustomerCategory CustomerCategory { get; set; } = new CustomerCategory();
+        public List<GroupCustomer> GroupCustomers { get; set; } = new List<GroupCustomer>();
         public string ImageVirtualPath { get; set; }
         public string ImageNoVirtualPath { get; set; }
         public string ImageVirtualSignaturePath { get; set; }
@@ -96,27 +92,11 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public object pin { get; set; }
         public string name { get; set; }
         public string town { get; set; }
-
         public string branchCode { get; set; }
         public string bankCode { get; set; }
-        public string membershipApplicantDate { get; set; }
-        public string membershipApplicantProposedByReferral1 { get; set; }
-        public string membershipApplicantProposedByReferral2 { get; set; }
-        public string membershipApprovalBy { get; set; }
-        public string membershipApprovedDate { get; set; }
-        public string membershipApprovedSignatureUrl { get; set; }
-        public string membershipAllocatedNumber { get; set; }
-
         public string photoUrl { get; set; }
-
         public string mobileOrOnLineBankingLoginState { get; set; }
-
         public string signatureUrl { get; set; }
-        public List<CustomerDocument> customerDocuments { get; set; }=new List<CustomerDocument>();
-        public List<MembershipNextOfKingsMember> membershipNextOfKings { get; set; }=new List<MembershipNextOfKingsMember>();
-        public List<CardSignatureSpecimen> cardSignatureSpecimens { get; set; } = new List<CardSignatureSpecimen>();
-        public List<CardSignatureSpecimenDetail> cardSignatureSpecimenDetails { get; set; } = new List<CardSignatureSpecimenDetail>();
-        public CustomerCategory customerCategory { get; set; }=new CustomerCategory();
         public IndividualProfile()
         {
             ImageVirtualPath= "~/AppFiles/Images/p.jpg";

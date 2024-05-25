@@ -1,0 +1,66 @@
+﻿@model CBS.FrontDesk.Data.Entity.Config.System.SysConfiguration
+
+
+
+
+
+
+<div class="col">
+
+    <div class="row my-4">
+        <div class="accordion" id="collapsibleSection">
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingDeliveryAddress">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDeliveryAddress"
+                            aria-expanded="true"
+                            aria-controls="collapseDeliveryAddress">
+                        NEW CONFIGURATION YEAR
+                    </button>
+                </h2>
+                <div id="collapseDeliveryAddress"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        @using (Html.BeginForm("AddOrUpdate", "SysConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        {
+                            <fieldset class="fieldset-custom">
+                                <legend>SET UP NEW RUNNING YEAR</legend>
+                                <div class="row g-4">
+                                    <div class="col-md-9">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control"})
+                                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                            <label>Name (e.g Running year 2024)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.Value, new { @class = "form-control"})
+                                            @Html.ValidationMessageFor(m => m.Value, "", new { @class = "text-danger" })
+                                            <label>Year (e.g 2025)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 75px;"})
+                                            @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                                            <label>Description</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary me-2">Add</button>
+                                    @Html.HiddenFor(m => m.Id)
+                                    <input type="hidden" name="Action" value="insert" id="Action" />
+                                </div>
+                            </fieldset>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

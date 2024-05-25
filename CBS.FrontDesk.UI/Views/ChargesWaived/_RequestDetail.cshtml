@@ -1,0 +1,79 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.WithdrawalNotificationForm
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th colspan="2" class="separation-text"><h5 class="card-title">Members Informations</h5></th>
+        </tr>
+    </thead>
+    <tbody>
+       
+        <tr>
+            <td><strong>Member refernce:</strong></td>
+            <td><span id="notes10000Required">@Model.Customer.CustomerId</span></td>
+        </tr>
+        <tr>
+            <td><strong>Member:</strong></td>
+            <td><span id="notes10000Required">@Model.Customer.name</span></td>
+        </tr>
+        <tr>
+            <td><strong>Photo:</strong></td>
+            <td>
+                <img id="customerPhoto" src="@Model.Customer.photoUrl" alt="Customer Photo" style="max-width: 100px; height: auto;">
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Telephone:</strong></td>
+            <td><span id="notes2000Required">@Model.Customer.Phone</span></td>
+        </tr>
+
+
+
+    </tbody>
+    <thead>
+        <tr>
+            <th colspan="2" class="separation-text"><h5 class="card-title">REQUEST INFO</h5></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Request Code:</strong></td>
+            <td><span id="calculatedBalance">@Model.ChargesWaived.TransactionReference</span></td>
+        </tr>
+        <tr>
+            <td><strong>Request date:</strong></td>
+            <td><span id="notes5000Required">@Model.ChargesWaived.DateOfWaiverRequest</span></td>
+        </tr>
+        <tr>
+            <td><strong>Waived amount:</strong></td>
+            <td><span id="notes5000Required">@Model.ChargesWaived.CustomCharge.ToString("#,##0.0 XAF")</span></td>
+        </tr>
+        <tr>
+            <td><strong>Normal Charge:</strong></td>
+            <td><span id="notes5000Required">@Model.ChargesWaived.NormalCharge.ToString("#,##0.0 XAF")</span></td>
+        </tr>
+        <tr>
+            <td><strong>Initiator:</strong></td>
+            <td><span id="coins50Required">@Model.ChargesWaived.WaiverInitiator</span></td>
+        </tr>
+        <tr>
+            <td><strong>Comment:</strong></td>
+            <td><span id="notes5000Required">@Model.ChargesWaived.Comment</span></td>
+        </tr>
+
+
+        <tr>
+            <td><strong>Date waived:</strong></td>
+            <td><span id="notes5000Required">@Model.ChargesWaived.DateOfWaived</span></td>
+        </tr>
+        <tr>
+            <td><strong>Is withdrawal done:</strong></td>
+            <td><span id="notes5000Required">@Model.ChargesWaived.IsWaiverDone, Date: @Model.ChargesWaived.DateOfWaived</span></td>
+        </tr>
+        <tr>
+            <td><strong>Cashier:</strong></td>
+            <td><span id="notes5000Required">@Model.ChargesWaived.TellerCaise, @Model.ChargesWaived.TellerName </span></td>
+        </tr>
+    </tbody>
+</table>

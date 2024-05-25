@@ -30,7 +30,7 @@ namespace CBS.BusinessService.Accounts
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"{objSavingProduct.name}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{objSavingProduct.Name}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
@@ -38,7 +38,7 @@ namespace CBS.BusinessService.Accounts
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objSavingProduct, false, $"{objSavingProduct.name}", MessagesResults.Failed,
+                    GetExecutionMessages(objSavingProduct, false, $"{objSavingProduct.Name}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -106,19 +106,19 @@ namespace CBS.BusinessService.Accounts
             {
                 //model.bankId = GetBankID();
                 // Make an API call to create an individual profile
-      
+
                 var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<SavingProduct>>(APICallHelper.CreateSavingProduct, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.name}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -134,35 +134,41 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var SavingProduct = await GetSavingProduct(model.id);
+                var SavingProduct = await GetSavingProduct(model.Id);
                 if (SavingProduct != null)
                 {
-                    SavingProduct.name = model.name;
-                    SavingProduct.code = model.code;
-                    SavingProduct.interestAccrualFrequency = model.interestAccrualFrequency;
-                    SavingProduct.isCapitalizeInterest = model.isCapitalizeInterest;
-                    SavingProduct.postingFrequency = model.postingFrequency;
-                    SavingProduct.currencyId = model.currencyId;
-                    SavingProduct.maxAmount = model.maxAmount;
-                    SavingProduct.minAmount = model.minAmount;
-                    SavingProduct.activeStatus = model.activeStatus;
-                    SavingProduct.isTermProduct = model.isTermProduct;
-                    SavingProduct.isUsedForTellerProvisioning = model.isUsedForTellerProvisioning;
-                    SavingProduct.description = model.description;
+                    SavingProduct.Name = model.Name;
+                    SavingProduct.Code = model.Code;
+                    SavingProduct.InterestAccrualFrequency = model.InterestAccrualFrequency;
+                    SavingProduct.IsCapitalizeInterest = model.IsCapitalizeInterest;
+                    SavingProduct.PostingFrequency = model.PostingFrequency;
+                    SavingProduct.CurrencyId = model.CurrencyId;
+                    SavingProduct.MaxAmount = model.MaxAmount;
+                    SavingProduct.MinAmount = model.MinAmount;
+                    SavingProduct.ActiveStatus = model.ActiveStatus;
+                    SavingProduct.IsTermProduct = model.IsTermProduct;
+                    SavingProduct.IsUsedForTellerProvisioning = model.IsUsedForTellerProvisioning;
+                    SavingProduct.Description = model.Description;
                     SavingProduct.AccountType = model.AccountType;
+                    SavingProduct.AllowShareing = model.AllowShareing;
+                    SavingProduct.AllowInterbranchWithdrawal = model.AllowInterbranchWithdrawal;
+                    SavingProduct.IsDepositAllowedDirectlyTothisAccount = model.IsDepositAllowedDirectlyTothisAccount;
+                    SavingProduct.IsWithdrawalAllowedDirectlyFromthisAccount = model.IsWithdrawalAllowedDirectlyFromthisAccount;
                     SavingProduct.UpdateOption = "N/A";
-                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.id), SavingProduct);
+                    SavingProduct.AllowInterbranchDeposit = model.AllowInterbranchDeposit;
+                    SavingProduct.AllowInterbranchTransfter = model.AllowInterbranchTransfter;
+                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{model.name}", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
+                        GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }
@@ -180,7 +186,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var SavingProduct = await GetSavingProduct(model.id);
+                var SavingProduct = await GetSavingProduct(model.Id);
                 if (SavingProduct != null)
                 {
                     SavingProduct.UpdateOption = "assign_account_chart";
@@ -192,18 +198,54 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.ChartOfAccountIdTransferFee = model.ChartOfAccountIdTransferFee;
                     SavingProduct.ChartOfAccountIdCommissionAccount = model.ChartOfAccountIdCommissionAccount;
                     SavingProduct.ChartOfAccountIdLiassonAccount = model.ChartOfAccountIdLiassonAccount;
-                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.id), SavingProduct);
+                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{model.name}", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
+                        GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> UpdateProductEventMapping(SavingProduct model)
+        {
+            try
+            {
+                var SavingProduct = await GetSavingProduct(model.Id);
+                if (SavingProduct != null)
+                {
+                    SavingProduct.UpdateOption = "N/A";
+                    SavingProduct.EventCodeAdvanceOfSalaryFormFee = model.EventCodeAdvanceOfSalaryFormFee;
+                    SavingProduct.EventCodeMoralPersonWithdrawalFormFee = model.EventCodeMoralPersonWithdrawalFormFee;
+                    SavingProduct.EventCodePhysicalPersonWithdrawalFormFee = model.EventCodePhysicalPersonWithdrawalFormFee;
+                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);
+                    if (response.IsSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
+                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }

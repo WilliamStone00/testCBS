@@ -70,7 +70,11 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string OperationType { get; set; }
     }
 
-
+    public class BalanceOfLoanAndSaving
+    {
+        public decimal SavingAccountBalance { get; set; }
+        public decimal LoanBalance { get; set; }
+    }
     public class AccountBalance
     {
         public List<Account> accounts { get; set; }

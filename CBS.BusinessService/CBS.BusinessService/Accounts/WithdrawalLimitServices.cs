@@ -88,7 +88,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
 
-                model.bankId=GetBankID();
+                model.BankId=GetBankID();
                 var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<WithdrawalLimit>>(APICallHelper.CreateWithdrawalLimits, model);
                 if (response.IsSuccess)
                 {
@@ -117,30 +117,32 @@ namespace CBS.BusinessService.Accounts
             try
             {
 
-                var WithdrawalLimit = await GetWithdrawalLimit(model.id);
+                var WithdrawalLimit = await GetWithdrawalLimit(model.Id);
                 if (WithdrawalLimit != null)
                 {
-                    WithdrawalLimit.withdrawalType = model.withdrawalType;
-                    WithdrawalLimit.minAmount = model.minAmount;
-                    WithdrawalLimit.maxAmount = model.maxAmount;
-                    WithdrawalLimit.withdrawalFeeRate = model.withdrawalFeeRate;
-                    WithdrawalLimit.productId = model.productId;
-                    WithdrawalLimit.withdrawalFeeFlat = model.withdrawalFeeFlat;
+                    WithdrawalLimit.WithdrawalType = model.WithdrawalType;
+                    WithdrawalLimit.MinAmount = model.MinAmount;
+                    WithdrawalLimit.MaxAmount = model.MaxAmount;
                     WithdrawalLimit.SourceBrachOfficeShare = model.SourceBrachOfficeShare;
                     WithdrawalLimit.DestinationBranchOfficeShare = model.DestinationBranchOfficeShare;
                     WithdrawalLimit.HeadOfficeShare = model.HeadOfficeShare;
-                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<WithdrawalLimit>>(string.Format(APICallHelper.Get_Update_Delete_WithdrawalLimits, model.id), WithdrawalLimit);
+                    WithdrawalLimit.PhysicalPersonWithdrawalFormFee = model.PhysicalPersonWithdrawalFormFee;
+                    WithdrawalLimit.NotificationPeriodInMonths = model.NotificationPeriodInMonths;
+                    WithdrawalLimit.MustNotifyOnWithdrawal = model.MustNotifyOnWithdrawal;
+                    WithdrawalLimit.MoralPersonWithdrawalFormFee = model.MoralPersonWithdrawalFormFee;
+                    //WithdrawalLimit.Product = null;
+                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<WithdrawalLimit>>(string.Format(APICallHelper.Get_Update_Delete_WithdrawalLimits, model.Id), WithdrawalLimit);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"TransferLimit", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"Withdrawal policy for {WithdrawalLimit.Product.Name} ", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, "TransferLimit", MessagesResults.Failed,
+                        GetExecutionMessages(model, false, "Withdrawal policy", MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }

@@ -18,6 +18,7 @@ using CBS.FrontDesk.Data.Entity.LoanConf;
 using System.Net.Http.Headers;
 using System.Web.UI.WebControls;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using System.Net.Sockets;
 
 namespace CBS.API.Helper
 {
@@ -330,15 +331,92 @@ namespace CBS.API.Helper
             HttpResponseMessage response = _httpClient.PostAsync(apiUrl, content).GetAwaiter().GetResult();
             return HandleResponse<T>(response).GetAwaiter().GetResult();
         }
-
         public async Task<ApiResponse<T>> PutAsync<T>(string apiUrl, object data)
         {
             string jsonData = JsonConvert.SerializeObject(data);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             AddAuthorizationHeader(_httpClient);
-            HttpResponseMessage response = await _httpClient.PutAsync(apiUrl, content);
-            return await HandleResponse<T>(response);
+
+            HttpResponseMessage response = null;
+
+            try
+            {
+                // Log the request
+                Console.WriteLine($"Sending PUT request to {apiUrl} with data: {jsonData}");
+
+                // Execute the PUT request
+                response = await _httpClient.PutAsync(apiUrl, content);
+
+                // Log the response status
+                Console.WriteLine($"Response status code: {response.StatusCode}");
+
+                // Handle the response
+                return await HandleResponse<T>(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                // Log the detailed error message
+                Console.WriteLine($"HttpRequestException: {ex.Message}");
+                // Re-throw or handle accordingly
+                throw;
+            }
+            catch (IOException ex)
+            {
+                // Log the detailed error message
+                Console.WriteLine($"IOException: {ex.Message}");
+                // Re-throw or handle accordingly
+                throw;
+            }
+            catch (SocketException ex)
+            {
+                // Log the detailed error message
+                Console.WriteLine($"SocketException: {ex.Message}");
+                // Re-throw or handle accordingly
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Log the detailed error message for any other exceptions
+                Console.WriteLine($"Exception: {ex.Message}");
+                // Re-throw or handle accordingly
+                throw;
+            }
+            finally
+            {
+                // Dispose the response to free up resources
+                response?.Dispose();
+            }
         }
+
+       
+
+        //private async Task<ApiResponse<T>> HandleResponse<T>(HttpResponseMessage response)
+        //{
+        //    var apiResponse = new ApiResponse<T>();
+
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        string responseData = await response.Content.ReadAsStringAsync();
+        //        apiResponse.Data = JsonConvert.DeserializeObject<T>(responseData);
+        //        apiResponse.IsSuccess = true;
+        //    }
+        //    else
+        //    {
+        //        apiResponse.IsSuccess = false;
+        //        apiResponse.ErrorMessage = response.ReasonPhrase;
+        //    }
+
+        //    return apiResponse;
+        //}
+
+        //public async Task<ApiResponse<T>> PutAsync<T>(string apiUrl, object data)
+        //{
+        //    string jsonData = JsonConvert.SerializeObject(data);
+        //    StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+        //    AddAuthorizationHeader(_httpClient);
+        //    HttpResponseMessage response = await _httpClient.PutAsync(apiUrl, content);
+        //    return await HandleResponse<T>(response);
+        //}
 
         public async Task<ApiResponse<T>> DeleteAsync<T>(string apiUrl)
         {

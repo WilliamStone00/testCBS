@@ -11,6 +11,13 @@
                 <label>Name</label>
             </div>
         </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextAreaFor(m => m.Role.Description, new { @class = "form-control", @style = "height: 200px;" })
+                @Html.ValidationMessageFor(m => m.Role.Description, "", new { @class = "text-danger" })
+                <label>Description</label>
+            </div>
+        </div>
         <div class="col-12">
             <div class="form-check">
                 @Html.CheckBoxFor(m => m.Role.IsTeller, new { @class = "form-check-input" })

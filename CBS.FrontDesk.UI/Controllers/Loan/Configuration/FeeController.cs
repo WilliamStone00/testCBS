@@ -13,7 +13,6 @@ using CBS.BusinessService.Config;
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
     [CheckSessionTimeOutAttribute]
-
     public class FeeController : BaseController
     {
         // GET: Fee
@@ -27,34 +26,43 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
         public async Task<ActionResult> Index()
         {
-            await GetList();
-            return View();
+            try
+            {
+                ViewBag.Key = null;
+                await GetList();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("InternalServer", "Error");
+            }
+         
         }
         [HttpPost]
         public async Task<ActionResult> Create(Fee model)
         {
-            if (ModelState.IsValid)
+            if (model.Id == null)
             {
                 var data = await _FeeServices.Create(model);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-            }
 
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
+            }
+            else
+            {
+                return await Update(model);
+            }
         }
         [HttpPost]
         public async Task<ActionResult> Update(Fee model)
         {
-            if (ModelState.IsValid)
-            {
-                var data = await _FeeServices.Update(model);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-            }
+            var data = await _FeeServices.Update(model);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
         }
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
+   
             await GetList();
             if (path == "list")
             {
@@ -64,10 +72,12 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
             else if (path == "new")
             {
+                ViewBag.Key = null;
                 return PartialView(partialView, new Fee());
             }
             else
             {
+                ViewBag.Key = KEY;
                 var Fee = await _FeeServices.GetFee(KEY);
                 return PartialView(partialView, Fee);
 

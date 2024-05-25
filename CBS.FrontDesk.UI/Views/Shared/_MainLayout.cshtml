@@ -37,6 +37,23 @@
     <link href="~/CBSTemp/ui/assets/alertifyjs/css/alertify.min.css" rel="stylesheet" />
    
     <style>
+        .text-green {
+            color: green;
+        }
+        .withdrawal-notification {
+            display: flex;
+            align-items: center;
+            font-size: 1.5em;
+        }
+
+            .withdrawal-notification i {
+                margin-right: 8px;
+                color: #28a745;
+            }
+        .form-greyed-out {
+            opacity: 0.5; /* Reduce opacity to grey out */
+            pointer-events: none; /* Disable pointer events */
+        }
 
         .card-header {
             color: black;
@@ -615,7 +632,21 @@
             background-color: #fff; /* White background color for cards */
             color: #333; /* Dark text color */
         }
+        .status-label {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
 
+        .running {
+            color: green;
+            background-color: lightgreen;
+        }
+
+        .closed {
+            color: red;
+            background-color: pink;
+        }
         /* Add any other styling improvements as needed */
     </style>
 
@@ -672,7 +703,7 @@
     <script src="~/CBSTemp/ui/assets/vendor/js/template-customizer.js"></script>
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="~/CBSTemp/ui/assets/js/config.js"></script>
-
+   
 </head>
 
 <body style="position: relative;">
@@ -781,21 +812,7 @@
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     </script>
-    @*<script>
-            $(document).ready(function () {
-                startSessionWarning();
-            });
-        </script>*@
-    @*<script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const menuToggle = document.querySelector(".layout-menu-toggle");
-            const userProfile = document.querySelector(".user-profile");
-
-            menuToggle.addEventListener("click", function () {
-                userProfile.classList.toggle("hidden");
-            });
-        });
-    </script>*@
+   
 
     @RenderSection("scripts", required: false)
 </body>

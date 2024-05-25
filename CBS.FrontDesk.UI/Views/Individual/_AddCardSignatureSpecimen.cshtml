@@ -6,61 +6,60 @@
     @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
     {
         <!-- Account Details -->
-        @Html.HiddenFor(model => model.CardSignatureSpecimen.customerId)
+        @Html.HiddenFor(model => model.CardSignatureSpecimen.CustomerId)
         <input type="hidden" name="option" value="cardsignaturespecement" id="option" />
-        <div class="col-md-12">
+        <div class="col-md-9">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CardSignatureSpecimen.accountNumber, new SelectList(ViewBag.MemberAccounts, "Value", "Text"), "---Select account---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.accountNumber, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Select account</label>
-            </div>
-        </div>
-
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.name, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.name, "", new { @class = "text-danger " })
-                <label>Member card signature name</label>
+                @Html.TextBoxFor(m => m.CardSignatureSpecimen.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.Name, "", new { @class = "text-danger " })
+                <label>Name</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.identityCardNumber, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.identityCardNumber, "", new { @class = "text-danger " })
-                <label>Member card number</label>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.issuedOn, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.issuedOn, "", new { @class = "text-danger " })
-                <label>Issued on</label>
+                @Html.TextBoxFor(m => m.CardSignatureSpecimen.IdentityCardNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.IdentityCardNumber, "", new { @class = "text-danger " })
+                <label>Identity card number</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.issuedAt, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.issuedAt, "", new { @class = "text-danger " })
-                <label>Place of issued</label>
+                @Html.TextBoxFor(m => m.CardSignatureSpecimen.IssuedOn, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.IssuedOn, "", new { @class = "text-danger " })
+                <label>Issued on (yyyy-mm-dd: 2023-01-28)</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CardSignatureSpecimen.IssuedAt, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.IssuedAt, "", new { @class = "text-danger " })
+                <label>Issued at (yyyy-mm-dd: 2029-01-28)</label>
             </div>
         </div>
 
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.TextAreaFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.instruction, new { @class = "form-control", @style = "height: 75px;" })
-                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.cardSignatureSpecimenDetail.instruction, "", new { @class = "text-danger " })
-                <label>Provide @Model.CustomerList.name specific instructions</label>
+                @Html.TextAreaFor(m => m.CardSignatureSpecimen.Instruction, new { @class = "form-control", @style = "height: 75px;" })
+                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.Instruction, "", new { @class = "text-danger " })
+                <label>Instructions</label>
+            </div>
+        </div>
+        @*<div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextAreaFor(m => m.CardSignatureSpecimen.IHereByTestifyforAllTheSignatures, new { @class = "form-control", @style = "height: 75px;" })
+                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.IHereByTestifyforAllTheSignatures, "", new { @class = "text-danger " })
+                <label>Words of afirmation</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.TextAreaFor(m => m.CardSignatureSpecimen.iHererByTestifyforAllTheSignatures, new { @class = "form-control", @style = "height: 75px;" })
-                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.iHererByTestifyforAllTheSignatures, "", new { @class = "text-danger " })
-                <label>Words of afirmation</label>
+                @Html.TextAreaFor(m => m.CardSignatureSpecimen.SpecialInstruction, new { @class = "form-control", @style = "height: 75px;" })
+                @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.SpecialInstruction, "", new { @class = "text-danger " })
+                <label>Special instructions</label>
             </div>
-        </div>
+        </div>*@
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">Add card signature speciment</button>
+            <button type="submit" class="btn btn-primary">Add signatory</button>
         </div>
     }
 </div>

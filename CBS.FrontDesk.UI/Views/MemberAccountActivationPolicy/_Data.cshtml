@@ -1,13 +1,14 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.MemberAccountActivationPolicy>
+﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.MemberRegistrationFeePolicy>
 @if (Model != null)
 {<div class="table-responsive mb-3">
         <table class="table table-hover" id="myDataTable">
             <thead class="table-light">
                 <tr>
                     <th>Policy</th>
-                    <th>Reg</th>
-                    <th>Clossing fee</th>
-                    <th>Reopening Fee</th>
+                    <th>Entrace fee</th>
+                    <th>Bye laws fee</th>
+                    <th>Loan P Fee</th>
+                    <th>Buildin C Fee</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -16,11 +17,11 @@
                 @foreach (var d in Model)
                 {
                     <tr>
-                        
-                        <td style="width:20%">@d.PolicyName</td>
-                        <td style="width:20%">@d.MinimumRegistrationFee.ToString("0.0") - @d.MaximumRegistrationFee.ToString("0.0")</td>
-                        <td style="width:20%">@d.MinimumAccountClossingFee.ToString("0.0") - @d.MaximumAccountClossingFee.ToString("0.0")</td>
-                        <td style="width:20%">@d.MinimumReopeningFee.ToString("0.0") - @d.MaximumReopeningFee.ToString("0.0")</td>
+                        <td style="width:18%">@d.PolicyName</td>
+                        <td style="width:15%">@d.MinimumEntranceFee.ToString("#,##0.0") - @d.MaximumEntrancenFee.ToString("#,##0.0")</td>
+                        <td style="width:15%">@d.MinimumByeLawsFee.ToString("#,##0.0") - @d.MinimumByeLawsFee.ToString("#,##0.0")</td>
+                        <td style="width:15%">@d.MinimumLoanPolicyFee.ToString("#,##0.0") - @d.MaximumLoanPolicyFee.ToString("#,##0.0")</td>
+                        <td style="width:15%">@d.MinimumBuildingContributionFee.ToString("#,##0.0") - @d.MaximumBuildingContribution.ToString("#,##0.0")</td>
                         <td style="width:10%">
 
                             @if (d.IsActive)
@@ -32,8 +33,8 @@
                                 <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Blocked</span></label>
                             }
                         </td>
-                        <td style="width:10%">
-                            <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview','_Create','update','MemberAccountActivationPolicy')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.PolicyName to edit">Edit</a> |
+                        <td style="width:12%">
+                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','MemberAccountActivationPolicy')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.PolicyName to edit">Edit</a> |
                             <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.PolicyName" onclick="DeleteRecordDataTable('MemberAccountActivationPolicy','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
                         </td>
                     </tr>

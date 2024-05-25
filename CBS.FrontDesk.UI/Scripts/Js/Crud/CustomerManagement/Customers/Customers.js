@@ -1,9 +1,8 @@
 ﻿
 $(document).ready(function () {
-
-    LoadDataGen('Individual', 'myDataTable', '_IndividualData', 0, 'datalistingview', null, 'all')
+    LoadUsers();
+    /*LoadDataGen('Individual', 'myDataTable', '_IndividualData', 0, 'datalistingview', null, 'all')*/
 });
-
 
 
 function showConfirmMessage(KEY, ServiceOption, tableID) {
@@ -26,52 +25,55 @@ function showConfirmMessage(KEY, ServiceOption, tableID) {
 }
 function EditReset(KEY, ServiceOption) {
     EditResetMain(KEY, ServiceOption, "mainview", "Transactions", "InitializeData");
-}function LoadUsers() {
-    LoadDataGen('Individual', 'myDataTable', '_IndividualData', 0, 'datalistingview', "KEY")
-    //$("#myDataTable").DataTable({
-    //    "destroy": true,
-    //    "processing": true,
-    //    "serverSide": true,
-    //    "info": true,
-    //    "stateSave": true,
-    //    "lengthMenu": [[10, 20, 100, 500, 1000, 2000, 5000, 10000], [10, 20, 100, 500, 1000, 2000, 5000, 10000]],
-    //    "filter": true,
-    //    "ajax": {
-    //        "url": "/Individual/LoadData",
-    //        "type": "POST",
-    //        "datatype": "json"
-    //    },
-
-    //    "columns": [
-    //        { "data": "name", "name": "userName", "autoWidth": true },
-    //        { "data": "phone", "name": "email", "autoWidth": true },
-    //        { "data": "address", "name": "name", "autoWidth": true },
-    //        { "data": "idNumber", "name": "phoneNumber", "autoWidth": true },
-    //        { "data": "town", "name": "address", "autoWidth": true },
-    //        { "data": "branch", "name": "strlastLoginDate", "autoWidth": true },
-    //        { "data": "status", "name": "status", "autoWidth": true },
-    //        {
-    //            "data": "customerId", "orderable": "false", "render": function (data) {
-    //                return "<a href='/Individual/CustomerProfile?KEY=" + data + "'target='_blanck' class='mr-2' data-toggle='tooltip' data-placement='top' title='View " + data + " detail'> Profile</a>";
-    //            }
-    //        }
-    //    ],
-    //    "columnDefs": [
-    //        { "targets": 0, "searchable": true, "orderable": true, "width": "25%" },
-    //        { "targets": 1, "searchable": true, "orderable": true, "width": "10%" },
-    //        { "targets": 2, "searchable": true, "orderable": true, "width": "15%" },
-    //        { "targets": 3, "searchable": true, "orderable": true, "width": "10%" },
-    //        { "targets": 4, "searchable": true, "orderable": true, "width": "10%" },
-    //        { "targets": 5, "searchable": true, "orderable": true, "width": "15%" },
-    //        { "targets": 6, "searchable": true, "orderable": true, "width": "5%" },
-    //        { "targets": 7, "searchable": true, "orderable": true, "width": "10%" },
-
-    //    ],
-    //    "order": [[0, "asc"]]
-    //});
+}
 
 
 
+function LoadUsers() {
+    $("#myDataTable").DataTable({
+        "destroy": true,
+        "serverSide": true,
+        "info": true,
+        "stateSave": true,
+        "lengthMenu": [[10, 20, 100, 500], [10, 20, 100, 500]],
+        "searching": false, // Hide the search bar
+        "ajax": {
+            "url": "/Individual/LoadData",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+            { "data": "name", "name": "userName", "autoWidth": true },
+            { "data": "CustomerId", "name": "email", "autoWidth": true },
+            { "data": "Phone", "name": "name", "autoWidth": true },
+            { "data": "branch", "name": "phoneNumber", "autoWidth": true },
+            { "data": "LegalForm", "name": "address", "autoWidth": true },
+            { "data": "MembershipApprovalStatus", "name": "MembershipApprovalStatus", "autoWidth": true },
+            {
+                "data": "CustomerId", "orderable": false, "render": function (data) {
+                    return "<a href='/Individual/CustomerProfile?KEY=" + data + "' target='_blank' class='mr-2' data-toggle='tooltip' data-placement='top' title='View " + data + " detail'>Profile</a>";
+                }
+            }
+        ],
+        "columnDefs": [
+            { "targets": 0, "searchable": true, "orderable": true, "width": "30%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "8%" },
+            { "targets": 2, "searchable": true, "orderable": true, "width": "8%" },
+            { "targets": 3, "searchable": true, "orderable": true, "width": "29%" },
+            { "targets": 4, "searchable": true, "orderable": true, "width": "8%" },
+            { "targets": 5, "searchable": true, "orderable": true, "width": "10%" },
+            { "targets": 6, "searchable": true, "orderable": true, "width": "7%" },
+        ],
+        "order": [[0, "asc"]],
+        "orderFixed": [[0, "asc"]],
+        "createdRow": function (row, data, dataIndex) {
+            // Add a badge based on the membership approval status
+            var approvalStatus = data.MembershipApprovalStatus;
+            var badgeClass = approvalStatus === "Approved" ? "badge-success" : "badge-secondary";
+            var badgeText = approvalStatus === "Approved" ? "Approved" : "Awaits Validation";
+            $('td:eq(5)', row).html('<label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge ' + badgeClass + ' bg-label-primary fs-tiny py-1">' + badgeText + '</span></label>');
+        }
+    });
 }
 
 

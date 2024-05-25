@@ -20,7 +20,13 @@
                     <td style="width:37%">@d.LoanProduct.ProductName</td>
                     <td style="width:10%">@d.Amount.ToString("#,0.00")</td>
                     <td style="width:5%">@d.InterestRate %</td>
-                    <td style="width:8%">@d.LoanProduct.LoanProductRepaymentCycles.FirstOrDefault(x => x.Id == d.RepaymentCircle).RepaymentCycle</td>
+                    <td style="width:8%">
+                        @{
+                            var repaymentCycle = d.LoanProduct?.LoanProductRepaymentCycles?.FirstOrDefault(x => x.Id == d.RepaymentCircle)?.RepaymentCycle ?? "N/A";
+                        }
+                        @repaymentCycle
+                    </td>
+
                     <td style="width:10%">
                         @if (d.IsApproved)
                         {
@@ -32,7 +38,7 @@
                         }
                     </td>
                     <td style="width:10%">
-                        <a href="#"onclick="AddORUpdateGen('@d.Id','datalistingview','_MemberLoanApplicationDetail','application_detail','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.LoanType for detail">
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_MemberLoanApplicationDetail','application_detail','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.LoanType for detail">
                             Detail
                         </a>
                     </td>

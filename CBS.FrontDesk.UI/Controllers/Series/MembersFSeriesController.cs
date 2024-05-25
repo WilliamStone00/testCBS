@@ -142,7 +142,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                     case "receipts":
                         var receiptTransaction = await _accountServices.GetTransactionsAsync(KEY);
                         var receiptCustomer = receiptTransaction != null ? await _individualProfileServices.GetSingleCustomer(receiptTransaction.CustomerId) : null;
-                        var receiptBranch = receiptCustomer != null ? await _branchServices.GetBranch(receiptCustomer.branchId) : null;
+                        var receiptBranch = receiptCustomer != null ? await _branchServices.GetBranch(receiptCustomer.BranchId) : null;
                         var receiptUser = receiptTransaction != null ? await _cashDeskService.RetrieveUserFromSession(receiptTransaction.Teller.inUsedByUserId) : null;
 
                         if (receiptTransaction == null)
@@ -165,7 +165,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                             return Json(new { success = false, status = false, message = "No transactions are found." }, JsonRequestBehavior.AllowGet);
 
                         var accountCustomer = await _individualProfileServices.GetSingleCustomer(accountTransactionHistories.FirstOrDefault().Account.CustomerId);
-                        var accountBranch = await _branchServices.GetBranch(accountCustomer.branchId);
+                        var accountBranch = await _branchServices.GetBranch(accountCustomer.BranchId);
                         var accountNumber = accountTransactionHistories.Any() ? accountTransactionHistories.FirstOrDefault().AccountNumber : null;
                         var accountRpt = _accountServices.MaprptSource(accountTransactionHistories, accountBranch, accountCustomer);
 
@@ -187,7 +187,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                         if (dateCustomer == null)
                             return Json(new { success = false, status = false, message = "Failed getting customer" }, JsonRequestBehavior.AllowGet);
 
-                        var dateBranch = await _branchServices.GetBranch(dateCustomer.branchId);
+                        var dateBranch = await _branchServices.GetBranch(dateCustomer.BranchId);
                         var dateRpt = _accountServices.MaprptSource(dateTransactionHistories, dateBranch, dateCustomer);
 
                         SetSessionVariables(dateRpt, "IAccountStatementGroupByAccounts.rpt", "~/AppFiles/Reporting/Transactions/Statement/IAccountStatementGroupByAccounts.rpt", $"{dateCustomer.name}_Statement");

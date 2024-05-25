@@ -49,6 +49,7 @@ namespace CBS.FrontDesk.Data.Entity
         public DateTime dateOfLastOperation { get; set; }
         public DateTime lastInterestCalculatedDate { get; set; }
         public SavingProduct product { get; set; }
+        public List<WithdrawalNotification> WithdrawalNotifications { get; set; }
         public List<TransactionHistory> transactions { get; set; }
     }
     public class CustomerAccountDto

@@ -31,7 +31,7 @@ namespace CBS.BusinessService.Accounts
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"Depositlimit", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"Deposit limit", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
@@ -39,7 +39,7 @@ namespace CBS.BusinessService.Accounts
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objDepositLimit, false, $"Depositlimit", MessagesResults.Failed,
+                    GetExecutionMessages(objDepositLimit, false, $"Deposit limit", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -90,19 +90,19 @@ namespace CBS.BusinessService.Accounts
             {
 
                 // Make an API call to create an individual profile
-                model.bankId = GetBankID();
+                model.BankId = GetBankID();
                 var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<DepositLimit>>(APICallHelper.CreateDepositLimit, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"Depositlimit", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"Deposit limit", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, "Depositlimit", MessagesResults.Failed,
+                    GetExecutionMessages(model, false, "Deposit limit", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -119,31 +119,31 @@ namespace CBS.BusinessService.Accounts
             try
             {
 
-                var DepositLimit = await GetDepositLimit(model.id);
+                var DepositLimit = await GetDepositLimit(model.Id);
                 if (DepositLimit != null)
                 {
-                    DepositLimit.depositType = model.depositType;
-                    DepositLimit.minAmount = model.minAmount;
-                    DepositLimit.maxAmount = model.maxAmount;
-                    DepositLimit.depositFeeFlat = model.depositFeeFlat;
-                    DepositLimit.depositFeeRate = model.depositFeeRate;
-                    DepositLimit.productId = model.productId;
+                    DepositLimit.DepositType = model.DepositType;
+                    DepositLimit.MinAmount = model.MinAmount;
+                    DepositLimit.MaxAmount = model.MaxAmount;
+                    DepositLimit.ProductId = model.ProductId;
                     DepositLimit.SourceBrachOfficeShare = model.SourceBrachOfficeShare;
                     DepositLimit.DestinationBranchOfficeShare = model.DestinationBranchOfficeShare;
                     DepositLimit.HeadOfficeShare = model.HeadOfficeShare;
 
-                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<DepositLimit>>(string.Format(APICallHelper.Get_Update_Delete_DepositLimit, model.id), DepositLimit);
+
+
+                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<DepositLimit>>(string.Format(APICallHelper.Get_Update_Delete_DepositLimit, model.Id), DepositLimit);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"Depositlimit", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"Cashin policy for {DepositLimit.Product.Name}", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, "Depositlimit", MessagesResults.Failed,
+                        GetExecutionMessages(model, false, "Cashin policy", MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }

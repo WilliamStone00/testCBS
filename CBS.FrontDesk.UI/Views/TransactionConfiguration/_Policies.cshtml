@@ -13,7 +13,7 @@
                             data-bs-target="#collapseDeliveryAddress"
                             aria-expanded="true"
                             aria-controls="collapseDeliveryAddress">
-                        Deposit
+                        CASH IN
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
@@ -22,10 +22,10 @@
                     <div class="accordion-body">
                         <!-- Deposit Content -->
                         <div class="demo-inline-spacing text-end">
-                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit',@Model.SavingProduct.id,'depositlimit','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit','@Model.SavingProduct.Id','depositlimit','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                             </a>
-                            <a type="button" onclick="AddORUpdateGen('@Model.SavingProduct.id','datalistingview_Deposit','_DepositConfig','new','TransactionConfiguration','depositlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                            <a type="button" onclick="AddORUpdateGen('@Model.SavingProduct.Id','datalistingview_Deposit','_DepositConfig','new','TransactionConfiguration','depositlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
                                 <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                             </a>
                         </div>
@@ -47,7 +47,7 @@
                             data-bs-target="#collapsePaymentMethod3"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod3">
-                       Withdrawal
+                       WITHDRAWAL
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod3"
@@ -57,10 +57,10 @@
                     <div class="accordion-body">
                         <!-- Withdrawal Content -->
                         <div class="demo-inline-spacing text-end">
-                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Withdrawal','_WithdrawalData',0,'datalistingview_Withdrawal','@Model.SavingProduct.id','withdrawallimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Withdrawal','_WithdrawalData',0,'datalistingview_Withdrawal','@Model.SavingProduct.Id','withdrawallimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                             </a>
-                            <a type="button" onclick="AddORUpdateGen('@Model.SavingProduct.id','datalistingview_Withdrawal','_WithdrawalConfig','new','TransactionConfiguration','withdrawallimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                            <a type="button" onclick="AddORUpdateGen('@Model.SavingProduct.Id','datalistingview_Withdrawal','_WithdrawalConfig','new','TransactionConfiguration','withdrawallimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
                                 <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                             </a>
                         </div>
@@ -82,7 +82,7 @@
                             data-bs-target="#collapsePaymentMethod4"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod4">
-                        Transfer
+                        TRANSFER
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod4"
@@ -92,10 +92,10 @@
                     <div class="accordion-body">
                         <!-- Transfer Content -->
                         <div class="demo-inline-spacing text-end">
-                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Transfer','_TransferData',0,'datalistingview_Transfer','@Model.SavingProduct.id','transferlimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Transfer','_TransferData',0,'datalistingview_Transfer','@Model.SavingProduct.Id','transferlimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                             </a>
-                            <a type="button" onclick="AddORUpdateGen('@Model.SavingProduct.id','datalistingview_Transfer','_TransferConfig','new','TransactionConfiguration','transferlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                            <a type="button" onclick="AddORUpdateGen('@Model.SavingProduct.Id','datalistingview_Transfer','_TransferConfig','new','TransactionConfiguration','transferlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
                                 <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                             </a>
                         </div>

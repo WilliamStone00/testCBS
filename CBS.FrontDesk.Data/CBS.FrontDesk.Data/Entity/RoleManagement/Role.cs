@@ -133,7 +133,10 @@ namespace CBS.FrontDesk.Data.Entity
     public class Role
     {
         public Guid Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
+        public string Description { get; set; }
         public bool IsTeller { get; set; }
         public List<Permission> Permissions { get; set; } = new List<Permission>();
     }

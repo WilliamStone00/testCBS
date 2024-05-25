@@ -1,83 +1,111 @@
 ﻿<!DOCTYPE html>
-
-<html lang="en"
-      class="light-style layout-wide customizer-hide"
-      dir="ltr"
-      data-theme="theme-default"
-      data-assets-path="~/CBSTemp/ui/assets/"
-      data-template="vertical-menu-template">
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <meta name="description" content="" />
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="~/CBSTemp/ui/assets/img/favicon/favicon.ico" />
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px;
+            text-align: center;
+        }
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap"
-          rel="stylesheet" />
+        .header, .footer {
+            background-color: #3a6989;
+            color: #fff;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            text-align: center; /* Center horizontally */
+        }
 
-    <!-- Icons -->
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/fonts/materialdesignicons.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/fonts/flag-icons.css" />
+        .footer {
+            margin-top: 20px;
+        }
 
-    <!-- Menu waves for no-customizer fix -->
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/node-waves/node-waves.css" />
+        .content {
+            background-color: #f8f9fa;
+            border: 2px solid #dc3545;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: #98cb44;
+        }
 
-    <!-- Core CSS -->
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/css/demo.css" />
+        h2 {
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
 
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.css" />
+        p {
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+        .p {
+            font-size: 1.2rem;
+            color: #f8f9fa;
+            margin-bottom: 20px;
+        }
 
-    <!-- Page CSS -->
-    <!-- Page -->
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/pages/page-misc.css" />
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3a6989;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
 
-    <!-- Helpers -->
-    <script src="~/CBSTemp/ui/assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-    <script src="~/CBSTemp/ui/assets/vendor/js/template-customizer.js"></script>
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="~/CBSTemp/ui/assets/js/config.js"></script>
+            .btn:hover {
+                background-color: #4f7bf6;
+            }
+    </style>
 </head>
-
 <body>
-    <!-- Content -->
-    <!-- Server Error -->
-    <div class="misc-wrapper">
-        @RenderBody();   
+    @{
+        string bankName = Session["BankName"]?.ToString(); // Check if Session["BankName"] is null
+    }
+    <div class="header">
+        <!-- Header Content Goes Here -->
+        <h1>T R U S T B A N K S O F T - ERROR PAGE</h1>
     </div>
-    <!-- /Server Error -->
-    <!-- / Content -->
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    <script src="~/CBSTemp/ui/assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="~/CBSTemp/ui/assets/vendor/libs/popper/popper.js"></script>
-    <script src="~/CBSTemp/ui/assets/vendor/js/bootstrap.js"></script>
-    <script src="~/CBSTemp/ui/assets/vendor/libs/node-waves/node-waves.js"></script>
-    <script src="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="~/CBSTemp/ui/assets/vendor/libs/hammer/hammer.js"></script>
-    <script src="~/CBSTemp/ui/assets/vendor/libs/i18n/i18n.js"></script>
-    <script src="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.js"></script>
-    <script src="~/CBSTemp/ui/assets/vendor/js/menu.js"></script>
 
-    <!-- endbuild -->
-    <!-- Vendors JS -->
-    <!-- Main JS -->
-    <script src="~/CBSTemp/ui/assets/js/main.js"></script>
-
-    <!-- Page JS -->
+    <div class="container">
+        <div class="content">
+            @RenderBody()
+        </div>
+    </div>
+    <footer class="content-footer footer bg-white">
+        <div class="container-xxl">
+            <div class="footer-container d-flex align-items-center justify-content-between py-3 flex-md-row flex-column">
+                <div class="mb-2 mb-md-0">
+                    Copy right ©
+                    <script>
+                        document.write(new Date().getFullYear() - 1)
+                    </script>
+                    <span class="text-danger"></span> by
+                    F L U X Cameroon, <b>@(string.IsNullOrEmpty(bankName) ? "Default Bank Name" : bankName)</b>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--<div class="footer">-->
+    <!-- Footer Content Goes Here -->
+    <!--<p class="p">&copy; 2024 Your Website. All rights reserved.</p>
+    </div>-->
 </body>
 </html>

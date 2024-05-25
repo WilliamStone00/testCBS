@@ -158,6 +158,26 @@ namespace CBS.FrontDesk.UI.Controllers
             Response.Cookies.Add(cookie);
             Session.Abandon();
             Session.Clear();
+            Session.RemoveAll();
+            //Removing ASP.NET_SessionId Cookie
+            if (Request.Cookies["ASP.NET_SessionId"] != null)
+            {
+                Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-10);
+            }
+
+            if (Request.Cookies["Token"] != null)
+            {
+                Response.Cookies["Token"].Value = string.Empty;
+                Response.Cookies["Token"].Expires = DateTime.Now.AddMonths(-10);
+            }
+            if (Request.Cookies["CBS4U"] != null)
+            {
+                Response.Cookies["CBS4U"].Value = string.Empty;
+                Response.Cookies["CBS4U"].Expires = DateTime.Now.AddMonths(-10);
+            }
+            
+
             return RedirectToAction("Login");
         }
     }

@@ -7,7 +7,7 @@
             <div class="form-floating form-floating-outline">
                 @Html.DropDownListFor(m => m.roleID, new SelectList(ViewBag.Roles, "Value", "Text"), "---Select role---", new { @class = "form-control select2", @search = "true", @id = "roleID" })
                 @Html.ValidationMessageFor(m => m.roleID, "", new { @class = "text-danger" })
-                <label>Select role</label>
+                <label>Select Role/Rights</label>
             </div>
         </div>
         <h4 class="mb-2">

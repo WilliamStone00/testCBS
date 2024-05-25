@@ -50,16 +50,16 @@ namespace CBS.BusinessService.MembersAccountSettings.policy
             return ExecutionMessage;
         }
 
-        public async Task<IEnumerable<MemberAccountActivationPolicy>> GetMemberAccountActivationPolicys()
+        public async Task<IEnumerable<MemberRegistrationFeePolicy>> GetMemberAccountActivationPolicys()
         {
             try
             {
-                var couApiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<MemberAccountActivationPolicy>>>(APICallHelper.GetAllMemberAccountActivationPolicy);
+                var couApiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<MemberRegistrationFeePolicy>>>(APICallHelper.GetAllMemberAccountActivationPolicy);
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
                 }
-                return new List<MemberAccountActivationPolicy>();
+                return new List<MemberRegistrationFeePolicy>();
             }
             catch (Exception ex)
             {
@@ -67,11 +67,11 @@ namespace CBS.BusinessService.MembersAccountSettings.policy
                 throw;
             }
         }
-        public async Task<MemberAccountActivationPolicy> GetMemberAccountActivationPolicy(string id)
+        public async Task<MemberRegistrationFeePolicy> GetMemberAccountActivationPolicy(string id)
         {
             try
             {
-                var cusResponseObject = await _savingConfigApiHelper.GetAsync<ResponseObject<MemberAccountActivationPolicy>>(string.Format(APICallHelper.Get_Update_Delete_MemberAccountActivationPolicy, id));
+                var cusResponseObject = await _savingConfigApiHelper.GetAsync<ResponseObject<MemberRegistrationFeePolicy>>(string.Format(APICallHelper.Get_Update_Delete_MemberAccountActivationPolicy, id));
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;
@@ -84,14 +84,14 @@ namespace CBS.BusinessService.MembersAccountSettings.policy
                 throw ex;
             }
         }
-        public async Task<ExecutionMessages> Create(MemberAccountActivationPolicy model)
+        public async Task<ExecutionMessages> Create(MemberRegistrationFeePolicy model)
         {
             try
             {
 
                 // Make an API call to create an individual profile
                 model.BankId = GetBankID();
-                var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<MemberAccountActivationPolicy>>(APICallHelper.CreateMemberAccountActivationPolicy, model);
+                var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<MemberRegistrationFeePolicy>>(APICallHelper.CreateMemberAccountActivationPolicy, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
@@ -114,7 +114,7 @@ namespace CBS.BusinessService.MembersAccountSettings.policy
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> Update(MemberAccountActivationPolicy model)
+        public async Task<ExecutionMessages> Update(MemberRegistrationFeePolicy model)
         {
             try
             {
@@ -123,14 +123,22 @@ namespace CBS.BusinessService.MembersAccountSettings.policy
                 if (MemberAccountActivationPolicy != null)
                 {
                     MemberAccountActivationPolicy.PolicyName = model.PolicyName;
-                    MemberAccountActivationPolicy.MaximumAccountClossingFee = model.MaximumAccountClossingFee;
-                    MemberAccountActivationPolicy.MinimumAccountClossingFee = model.MinimumAccountClossingFee;
-                    MemberAccountActivationPolicy.MaximumReopeningFee = model.MaximumReopeningFee;
-                    MemberAccountActivationPolicy.MinimumReopeningFee = model.MinimumReopeningFee;
-                    MemberAccountActivationPolicy.MaximumRegistrationFee = model.MaximumRegistrationFee;
+                    MemberAccountActivationPolicy.MaximumBuildingContribution = model.MaximumBuildingContribution;
+                    MemberAccountActivationPolicy.MinimumBuildingContributionFee = model.MinimumBuildingContributionFee;
+                    MemberAccountActivationPolicy.MaximumEntrancenFee = model.MaximumEntrancenFee;
+                    MemberAccountActivationPolicy.MinimumEntranceFee = model.MinimumEntranceFee;
+                    MemberAccountActivationPolicy.MaximumByeLawsFee = model.MaximumByeLawsFee;
+                    MemberAccountActivationPolicy.MaximumLoanPolicyFee = model.MaximumLoanPolicyFee;
+                    MemberAccountActivationPolicy.MinimumLoanPolicyFee = model.MinimumLoanPolicyFee;
+                    MemberAccountActivationPolicy.EventCodeBuildingContributionFee = model.EventCodeBuildingContributionFee;
+                    MemberAccountActivationPolicy.EventCodeByeLawsFee = model.EventCodeByeLawsFee;
+                    MemberAccountActivationPolicy.EventCodeEntranceFee = model.EventCodeEntranceFee;
+                    MemberAccountActivationPolicy.EventCodeLoanPolicyFee = model.EventCodeLoanPolicyFee;
                     MemberAccountActivationPolicy.IsActive = model.IsActive;
-                    MemberAccountActivationPolicy.MinimumRegistrationFee = model.MinimumRegistrationFee;
-                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<MemberAccountActivationPolicy>>(string.Format(APICallHelper.Get_Update_Delete_MemberAccountActivationPolicy, model.Id), MemberAccountActivationPolicy);
+                    MemberAccountActivationPolicy.YearBuildingContributionFee = model.YearBuildingContributionFee;
+                    MemberAccountActivationPolicy.LegalForm = model.LegalForm;
+
+                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<MemberRegistrationFeePolicy>>(string.Format(APICallHelper.Get_Update_Delete_MemberAccountActivationPolicy, model.Id), MemberAccountActivationPolicy);
                     if (response.IsSuccess)
                     {
                         // Successful creation

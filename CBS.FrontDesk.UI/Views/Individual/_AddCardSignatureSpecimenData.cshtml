@@ -4,31 +4,18 @@
         <thead class="table-light">
             <tr>
                 <th>Name</th>
-                <th>Date issued</th>
-                <th>Place</th>
+                <th>CNI</th>
                 <th>Instruction</th>
-                <th>Signature 1</th>
-                <th>Signature 2</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var d in Model.CustomerList.cardSignatureSpecimens)
+            @foreach (var d in Model.CustomerList.CardSignatureSpecimens)
             {
-                @*<tr>
-                    <td style="width:15%">@d.name</td>
-                    <td style="width:10%">@d.issuedOn</td>
-                    <td style="width:10%">@d.issuedAt</td>
-                    <td style="width:35%">@d.instruction</td>
-                    <td style="width:10%">@d.signatureUrl1</td>
-                    <td style="width:10%">@d.signatureUrl2</td>
-                    <td style="width:10%">
-                        <a href="#" target="_blank" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">
-                            <i class="mdi mdi-folder mr-1"></i>
-                            Edit
-                        </a>
-                    </td>
-                </tr>*@
+                <tr>
+                    <td style="width:25%">@d.Name</td>
+                    <td style="width:10%">@d.IdentityCardNumber</td>
+                    <td style="width:65%">@d.Instruction</td>
+                </tr>
             }
         </tbody>
     </table>

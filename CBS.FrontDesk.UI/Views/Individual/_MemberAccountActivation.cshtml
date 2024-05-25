@@ -3,37 +3,79 @@
 <div class="card-header">
     <h5 class="card-title">Member Fee Set-Up</h5>
 </div>
+@if (Model.MemberAccountActivation.Balance != 0)
+{
+    <div class="card-body">
+        @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+        {
+            <!-- Account Details -->
+            @Html.HiddenFor(model => model.MemberAccountActivation.CustomerId)
+            @Html.HiddenFor(model => model.MemberAccountActivation.MemberRegistrationFeePolicyId)
+            @Html.HiddenFor(model => model.option)
+            <input type="hidden" name="option" value="membershipstatus" />
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.MemberAccountActivation.EntranceFee, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.MemberAccountActivation.EntranceFee, "", new { @class = "text-danger" })
+                    <label>Entrance fee</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.MemberAccountActivation.ByeLawFee, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.MemberAccountActivation.ByeLawFee, "", new { @class = "text-danger" })
+                    <label>Bye laws fee</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.MemberAccountActivation.LoanPolicyFee, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.MemberAccountActivation.LoanPolicyFee, "", new { @class = "text-danger" })
+                    <label>Loan policy fee</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.MemberAccountActivation.BuildingContribution, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.MemberAccountActivation.BuildingContribution, "", new { @class = "text-danger" })
+                    <label>Building contribution fee</label>
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Set fees</button>
+            </div>
+        }
+    </div>
+
+}
+else
+{
 <div class="card-body">
     @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
     {
-        <!-- Account Details -->
-        @Html.HiddenFor(model => model.MemberAccountActivation.CustomerId)
-        @Html.HiddenFor(model => model.MemberAccountActivation.MemberAccountActivationPolicyId)
-        @Html.HiddenFor(model => model.option)
-        <input type="hidden" name="option" value="membershipstatus" />
         <div class="col-md-4">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.MemberAccountActivation.RegistrationFee, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.MemberAccountActivation.RegistrationFee, "", new { @class = "text-danger" })
-                <label>Registration fee</label>
+                @Html.TextBoxFor(m => m.MemberAccountActivation.Balance, new { @class = "form-control", @readonly = true })
+                @Html.ValidationMessageFor(m => m.MemberAccountActivation.Balance, "", new { @class = "text-danger" })
+                <label>Balance</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.MemberAccountActivation.ClossingFee, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.MemberAccountActivation.ClossingFee, "", new { @class = "text-danger" })
-                <label>Clossing fee</label>
+                @Html.TextBoxFor(m => m.MemberAccountActivation.AmountPaid, new { @class = "form-control", @readonly = true })
+                @Html.ValidationMessageFor(m => m.MemberAccountActivation.AmountPaid, "", new { @class = "text-danger"})
+                <label>Paid</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.MemberAccountActivation.ReopeningFee, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.MemberAccountActivation.ReopeningFee, "", new { @class = "text-danger" })
-                <label>Reopening fee</label>
+                @Html.TextBoxFor(m => m.MemberAccountActivation.DatePaid, new { @class = "form-control", @readonly = true })
+                @Html.ValidationMessageFor(m => m.MemberAccountActivation.DatePaid, "", new { @class = "text-danger"})
+                <label>Date paid</label>
             </div>
-        </div>
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary">Set fees</button>
         </div>
     }
 </div>
+
+   
+}

@@ -1,0 +1,58 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.WithdrawalNotificationForm
+
+
+    @if (Model.ChargesWaiveds.Any())
+    {<div class="table-responsive mb-3">
+            <table class="table table-hover" id="myDataTablex">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Waived Amount</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.ChargesWaiveds.OrderByDescending(d => d.DateOfWaiverRequest))
+                    {
+                        <tr>
+                            <td style="width:60%">@d.DateOfWaiverRequest</td>
+                            <td style="width:10%">@d.CustomCharge.ToString("#,##0.0")</td>
+                            <td style="width:10%">
+                                @if (d.IsWaiverDone)
+                                {
+                                    <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Already used</span>
+                                }
+                                else
+                                {
+                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Pending...</span>
+                                }
+                            </td>
+                            <td style="width:20%">
+                                @if (DateTime.Now.Date > d.DateOfWaiverRequest.Date)
+                                {
+                                    <span class="badge rounded-pill rounded-2 badge-danger bg-label-danger fs-tiny py-1">Expired</span>
+                                }
+                                else
+                                {
+                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_OperationDesk','update','ChargesWaived')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.TransactionReference to edit">Edit</a>
+                                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.TransactionReference" onclick="DeleteRecordDataTable('ChargesWaived','@d.Id','myDataTable','_MemberRequestData',0,'dataloader')">Delete</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center my-3">
+            <p> No Data was found at the moment..</p>
+        </div>
+    }
+
+
+
+

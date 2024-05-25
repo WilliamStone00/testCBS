@@ -1,64 +1,163 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.MemberAccountActivationPolicy
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.MemberRegistrationFeePolicy
 <div class="card-body">
     @using (Html.BeginForm("AddOrUpdate", "MemberAccountActivationPolicy", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-    {
-        <div class="row mt-2 gy-4">
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.PolicyName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.PolicyName, "", new { @class = "text-danger" })
-                    <label>Policy name</label>
+    {<fieldset class="fieldset-custom">
+            <legend>Activation Policy</legend>
+            <br />
+
+            <div class="row mt-2 gy-4">
+                <div class="col-12">
+                    <div class="form-check form-check-inline" id="accountType">
+                        @Html.RadioButtonFor(m => m.LegalForm, "Moral_Person", new { @class = "form-check-input", id = "moralPersonOption" })
+                        <label class="form-check-label" for="moralPersonOption">Moral Person</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(m => m.LegalForm, "Physical_Person", new { @class = "form-check-input", id = "physicalPersonOption" })
+                        <label class="form-check-label" for="physicalPersonOption">Physical Person</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.PolicyName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PolicyName, "", new { @class = "text-danger" })
+                        <label>Policy name</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.MinimumEntranceFee, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MinimumEntranceFee, "", new { @class = "text-danger" })
+                        <label>Minimum entrance fee</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.MaximumEntrancenFee, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MaximumEntrancenFee, "", new { @class = "text-danger" })
+                        <label>Maximum entrance fee</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.MinimumByeLawsFee, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MinimumByeLawsFee, "", new { @class = "text-danger" })
+                        <label>Minimum byelaws fee</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.MaximumByeLawsFee, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MaximumByeLawsFee, "", new { @class = "text-danger" })
+                        <label>Maximum byelaws fee</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.MinimumLoanPolicyFee, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MinimumLoanPolicyFee, "", new { @class = "text-danger" })
+                        <label>Minimum loan policy fee</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.MaximumLoanPolicyFee, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MaximumLoanPolicyFee, "", new { @class = "text-danger" })
+                        <label>Maximum loan policy fee</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.MinimumBuildingContributionFee, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MinimumBuildingContributionFee, "", new { @class = "text-danger" })
+                        <label>Minimum building contribution fee</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.MaximumBuildingContribution, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MaximumBuildingContribution, "", new { @class = "text-danger" })
+                        <label>Maximum building contribution fee</label>
+                    </div>
+                </div>
+                <div class="col-12 mb-3">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+                        <label class="form-check-label" for="isActive">Check to keep this policy active</label>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.MinimumRegistrationFee, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.MinimumRegistrationFee, "", new { @class = "text-danger" })
-                    <label>Minimum registration fee</label>
+        </fieldset>
+        <fieldset class="fieldset-custom">
+            <legend>Annual behaviour</legend>
+            <br />
+            <br />
+
+            <div class="row">
+               
+                <div class="col-md-12 mb-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.YearBuildingContributionFee, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.YearBuildingContributionFee, "", new { @class = "text-danger" })
+                        <label>Annual building contribution fee</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="mb-3">
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.AccountTypeForYearyDeductionOfBuildingContribution, "Saving", new { @class = "form-check-input", id = "savingOption" })
+                            <label class="form-check-label" for="savingOption">Debit Saving Annually</label>
+                        </div>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.AccountTypeForYearyDeductionOfBuildingContribution, "Share", new { @class = "form-check-input", id = "shareOption" })
+                            <label class="form-check-label" for="shareOption">Debit Share Annually</label>
+                        </div>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.AccountTypeForYearyDeductionOfBuildingContribution, "Deposit", new { @class = "form-check-input", id = "depositOption" })
+                            <label class="form-check-label" for="depositOption">Debit Deposit Annually</label>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.MaximumRegistrationFee, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.MaximumRegistrationFee, "", new { @class = "text-danger" })
-                    <label>Maximum registration fee</label>
+        </fieldset>
+
+        <fieldset class="fieldset-custom">
+            <legend>Account Mapping</legend>
+            <br />
+            <br />
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.EventCodeEntranceFee, new SelectList(ViewBag.EventCodes, "Text", "Value"), "---Select event name---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.EventCodeEntranceFee, "", new { @class = "text-danger" })
+                        <label>Select entering fee event name</label>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.EventCodeByeLawsFee, new SelectList(ViewBag.EventCodes, "Text", "Value"), "---Select event name---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.EventCodeByeLawsFee, "", new { @class = "text-danger" })
+                        <label>Select bye law fee event name</label>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.EventCodeLoanPolicyFee, new SelectList(ViewBag.EventCodes, "Text", "Value"), "---Select event name---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.EventCodeLoanPolicyFee, "", new { @class = "text-danger" })
+                        <label>Select loan policy fee event name</label>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.EventCodeBuildingContributionFee, new SelectList(ViewBag.EventCodes, "Text", "Value"), "---Select event name---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.EventCodeBuildingContributionFee, "", new { @class = "text-danger" })
+                        <label>Select building contribution fee event name</label>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.MinimumAccountClossingFee, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.MinimumAccountClossingFee, "", new { @class = "text-danger" })
-                    <label>Minimum clossing fee</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.MaximumAccountClossingFee, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.MaximumAccountClossingFee, "", new { @class = "text-danger" })
-                    <label>Maximum clossing fee</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.MinimumReopeningFee, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.MinimumReopeningFee, "", new { @class = "text-danger" })
-                    <label>Minimum reopening fee</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.MaximumReopeningFee, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.MaximumReopeningFee, "", new { @class = "text-danger" })
-                    <label>Maximum reopening fee</label>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="isActive">Check to keep this policy active</label>
-                </div>
-            </div>
-        </div>
+        </fieldset>
+
+
+
         <div class="mt-4">
             @if (Model.Id == null)
             {

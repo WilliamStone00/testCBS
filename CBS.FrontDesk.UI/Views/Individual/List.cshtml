@@ -16,8 +16,8 @@
                             data-bs-target="#accordionPopoutIcon-3"
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-account me-2"></i>
-                       ALL MEMBERS
+                        <i class="mdi mdi-account-group"></i>&nbsp; Members
+
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
@@ -29,13 +29,30 @@
                                 <div class="card mb-4">
                                     <div class="card-body d-sm-flex d-block">
                                         <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="LoadDataGen('Individual', 'myDataTable', '_IndividualData', 0, 'datalistingview',null,'all')" data-bs-toggle="tooltip" title="Load members from database">
-                                                <i class="mdi mdi-format-list-numbered me-2"></i>                                            </a>
+                                            <a type="button" onclick="LoadUsers()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Manual Search Bar -->
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-8 d-flex align-items-center">
+                                                <label for="manualSearchInput" class="search-label">Search by account number or member's name or telephone number...</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Enter search criteria...">
+                                                    <button class="btn btn-primary" onclick="manualSearch()">Search</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div id="datalistingview">
-
+                                    @Html.Partial("_IndividualData")
                                 </div>
                             </div>
                         </div>
@@ -47,7 +64,6 @@
 
     </div>
 </div>
-
 
 
 

@@ -166,6 +166,7 @@ namespace CBS.BusinessService
                 if (Role != null)
                 {
                     Role.Name = model.Name;
+                    Role.Description = model.Description;
                     Role.IsTeller = model.IsTeller;
                     var response = await _identityConfigApiHelper.PutAsync<ResponseObject<Role>>(string.Format(APICallHelper.Get_Update_Delete_Role, model.Id), Role);
                     if (response.IsSuccess)

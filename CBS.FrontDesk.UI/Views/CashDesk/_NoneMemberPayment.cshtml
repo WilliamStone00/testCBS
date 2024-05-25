@@ -1,0 +1,52 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+<div class="table-responsive" id="cash_collected" style="width: 100%;">
+    <table class="table table-hover" id="myDataTableT">
+        <thead class="table-light">
+            <tr>
+                <th style="display:none;">ProductID</th>
+                <th style="display:none;">Ordinary accounts</th>
+                <th>Amount</th>
+                <th style="display:none;">Fee</th>
+                <th>Total</th>
+                <th>confirm</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.BulkDeposits.Where(x => x.AccountType.ToLower() != "loan").OrderBy(t => t.AccountType))
+            {
+                <tr>
+                    <td style="display:none;">@d.AccountNumber</td>
+                    <td style="display:none;">@d.AccountType</td>
+                    <td>
+                        <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
+                    </td>
+                    <td style="display:none;">
+                        <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
+                    </td>
+                    <td>
+                        <span class="total-span">@d.Total</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" class="form-check-input">
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td style="display:none;"></td>
+                <td style="display:none;"></td>
+                <td colspan="1" style="text-align: right;"><strong>Total:</strong></td>
+                <td id="tableTotal">0</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="display:none;"></td>
+                <td style="display:none;"></td>
+                <td colspan="2" style="text-align: right;"><strong>Balance:</strong></td>
+                <td id="tableBalance">0</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+

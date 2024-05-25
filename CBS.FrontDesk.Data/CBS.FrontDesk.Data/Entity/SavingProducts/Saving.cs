@@ -1,13 +1,18 @@
 ﻿using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace CBS.FrontDesk.Data.Entity.SavingProducts
 {
@@ -23,21 +28,24 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<ReopenFeeParameter> ReopenFeeParameters { get; set; } = new List<ReopenFeeParameter>();
         public List<ManagementFeeParameter> ManagementFeeParameters { get; set; } = new List<ManagementFeeParameter>();
         public List<EntryFeeParameter> EntryFeeParameters { get; set; } = new List<EntryFeeParameter>();
-        public DepositLimit DepositLimit { get; set; }=new DepositLimit();
+        public DepositLimit DepositLimit { get; set; } = new DepositLimit();
         public TransferLimit TransferLimit { get; set; } = new TransferLimit();
         public SavingProduct SavingProduct { get; set; } = new SavingProduct();
-        public WithdrawalLimit WithdrawalLimit { get; set; }=new WithdrawalLimit();
+        public WithdrawalLimit WithdrawalLimit { get; set; } = new WithdrawalLimit();
         public Teller Teller { get; set; } = new Teller();
-        public SystemConfigForSaving SystemConfigForSaving { get; set; }=new SystemConfigForSaving();
+        public SystemConfigForSaving SystemConfigForSaving { get; set; } = new SystemConfigForSaving();
         public List<DepositLimit> DepositLimits { get; set; } = new List<DepositLimit>();
         public List<TransferLimit> TransferLimits { get; set; } = new List<TransferLimit>();
         public List<SavingProduct> SavingProducts { get; set; } = new List<SavingProduct>();
         public List<WithdrawalLimit> WithdrawalLimits { get; set; } = new List<WithdrawalLimit>();
         public List<Teller> Tellers { get; set; } = new List<Teller>();
         public List<SystemConfigForSaving> SystemConfigForSavings { get; set; } = new List<SystemConfigForSaving>();
+        public List<SavingProductFee> SavingProductFees { get; set; } = new List<SavingProductFee>();
+        public SavingProductFee SavingProductFee { get; set; } = new SavingProductFee();
+
         public string ServiceOption { get; set; }
         public string Action { get; set; }
-        public string KEY { get; set; }= "KEY";
+        public string KEY { get; set; } = "KEY";
     }
     public class Sharing
     {
@@ -46,27 +54,23 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal SourceBrachOfficeShare { get; set; }
         public decimal DestinationBranchOfficeShare { get; set; }
     }
-    public class DepositLimit: Sharing
+    public class DepositLimit : Sharing
     {
-        public string id { get; set; }
-        [Required]
-        public string productId { get; set; }
-        [Required]
-        public string depositType { get; set; }
-        [Required]
-
-        public decimal minAmount { get; set; }
-        [Required]
-
-        public decimal maxAmount { get; set; }
-        [Required]
-
-        public decimal depositFeeRate { get; set; }
-        [Required]
-
-        public decimal depositFeeFlat { get; set; }
-        public string bankId { get; set; }
-        public SavingProduct product { get; set; }
+        public string Id { get; set; }
+        public string ProductId { get; set; }
+        public string DepositType { get; set; }
+        public string InterDepositOperationType { get; set; }
+        public bool IsConfiguredForShareing { get; set; }
+        public decimal MinAmount { get; set; }
+        public decimal MaxAmount { get; set; }
+        public string BankId { get; set; }
+        public decimal HeadOfficeShare { get; set; }
+        public decimal PartnerShare { get; set; }
+        public decimal SourceBrachOfficeShare { get; set; }
+        public decimal DestinationBranchOfficeShare { get; set; }
+        public string EventAttributForDepositFormFee { get; set; }
+        public string EventAttributForDepositFee { get; set; }
+        public SavingProduct Product { get; set; }
     }
     public class TransferLimit : Sharing
     {
@@ -132,6 +136,74 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public SavingProduct product { get; set; }
 
     }
+    public class OperationFee
+    {
+        public string Id { get; set; }
+        [Required]
+        public string Name { get; set; }
+        public string Description { get; set; }
+        [Required]
+        public string FeeType { get; set; }//Percentage Or Range Or Flat
+        public bool IsAppliesOnHoliday { get; set; }
+        public decimal MaximumRateAboveMaximumRange { get; set; }
+        public decimal MaximumExtraCharge { get; set; }
+
+        public virtual ICollection<FeePolicy> FeePolicies { get; set; }
+
+    }
+    public class FeePolicy
+    {
+        public string Id { get; set; }
+        [Required]
+        public string FeeId { get; set; }
+        [Required]
+        public decimal AmountFrom { get; set; }
+        [Required]
+        public decimal AmountTo { get; set; }
+        public decimal Value { get; set; }
+        public decimal Charge { get; set; }
+        public virtual OperationFee Fee { get; set; }
+    }
+    public class SavingProductFee
+    {
+        public string Id { get; set; }
+        [Required]
+        public string FeeId { get; set; }
+        [Required]
+        public string SavingProductId { get; set; }
+        [Required]
+        public string FeeType { get; set; }//Withdrawal, Tranfer Or Cash-in
+        [Required]
+        public string FeePolicyType { get; set; }//Local Or Inter_Branch
+        public virtual OperationFee Fee { get; set; }
+        public virtual SavingProduct SavingProduct { get; set; }
+        public static List<SelectListItem> GetFeeTypeList()
+        {
+            var feeTypes = Enum.GetValues(typeof(FeeType)).Cast<FeeType>();
+
+            var feeTypeList = new List<SelectListItem>();
+
+            foreach (var feeType in feeTypes)
+            {
+                feeTypeList.Add(new SelectListItem
+                {
+                    Text = feeType.ToString(),
+                    Value = feeType.ToString()
+                });
+            }
+
+            return feeTypeList;
+        }
+
+    }
+    // Define an enum for FeeType
+    public enum FeeType
+    {
+        Withdrawal,
+        Transfer,
+        Deposit,
+        Saving,
+    }
     public class CloseFeeParameter : Sharing
     {
         public string id { get; set; }
@@ -150,87 +222,98 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     {
         public string Id { get; set; }
         public string CustomerId { get; set; }
-        public decimal RegistrationFee { get; set; } = 0m;
-        public decimal ClossingFee { get; set; } = 0m;
-        public decimal ReopeningFee { get; set; } = 0m;
+        public decimal EntranceFee { get; set; }
+        public decimal ByeLawFee { get; set; }
+        public decimal LoanPolicyFee { get; set; }
+        public decimal BuildingContribution { get; set; }
+        public decimal AmountPaid { get; set; }
+        public decimal Balance { get; set; }
+        public DateTime DatePaid { get; set; } = DateTime.MaxValue;
+        public decimal TotalFee { get; set; }
         public string BankId { get; set; }
         public string BranchId { get; set; }
-        [Required]
-        public string MemberAccountActivationPolicyId { get; set; }
-        public bool NotifyBeforeWithdrawal { get; set; }
-        public string AccountNumberToPeformWithdrawal { get; set; }
-        public DateTime? NotificationEndDate { get; set; } = DateTime.MinValue;
-        public DateTime? NotificationDate { get; set; } = DateTime.MinValue;
-        public string CustomerNotification { get; set; }
-        public MemberAccountActivationPolicy MemberAccountActivationPolicy { get; set; }
+        public string MemberRegistrationFeePolicyId { get; set; }
+        public virtual MemberRegistrationFeePolicy MemberRegistrationFeePolicy { get; set; }
 
         // Constructor
         public MemberAccountActivation()
         {
-            RegistrationFee = 0m;
-            ClossingFee = 0m;
-            ReopeningFee = 0m;
-            MemberAccountActivationPolicy = new MemberAccountActivationPolicy();
+            MemberRegistrationFeePolicy = new MemberRegistrationFeePolicy();
         }
     }
     public class ResetPinCode
     {
         public string Phone { get; set; }
     }
-    public class MemberAccountActivationPolicy
+    public class MemberRegistrationFeePolicy
     {
         public string Id { get; set; }
         [Required]
         public string PolicyName { get; set; }
-        public decimal MinimumRegistrationFee { get; set; } = 0m;
-        public decimal MaximumRegistrationFee { get; set; } = 0m;
+        public decimal MinimumEntranceFee { get; set; }
+        public decimal MaximumEntrancenFee { get; set; }
+        [Required]
         public bool IsActive { get; set; }
-        public decimal MinimumAccountClossingFee { get; set; } = 0m;
-        public decimal MaximumAccountClossingFee { get; set; } = 0m;
-        public decimal MinimumReopeningFee { get; set; } = 0m;
-        public decimal MaximumReopeningFee { get; set; } = 0m;
+        public decimal MinimumByeLawsFee { get; set; }
+        public decimal MaximumByeLawsFee { get; set; }
+        public decimal MinimumLoanPolicyFee { get; set; }
+        public decimal MaximumLoanPolicyFee { get; set; }
+        public decimal MinimumBuildingContributionFee { get; set; }
+        public decimal MaximumBuildingContribution { get; set; }
+        public decimal YearBuildingContributionFee { get; set; }
+        [Required]
+
+        public string LegalForm { get; set; }//Physical_Person Or Moral_Person
+        public string AccountTypeForYearyDeductionOfBuildingContribution { get; set; }//Saving, Share, Deposit
+        public string EventCodeEntranceFee { get; set; }
+        public string EventCodeByeLawsFee { get; set; }
+        public string EventCodeLoanPolicyFee { get; set; }
+        public string EventCodeBuildingContributionFee { get; set; }
         public string BankId { get; set; }
         public string Action { get; set; }
         public string ServiceOption { get; set; }
         public ICollection<MemberAccountActivation> MemberAccountActivations { get; set; }
 
         // Constructor
-        public MemberAccountActivationPolicy()
+        public MemberRegistrationFeePolicy()
         {
-            MinimumRegistrationFee = 0m;
-            MaximumRegistrationFee = 0m;
-            MinimumAccountClossingFee = 0m;
-            MaximumAccountClossingFee = 0m;
-            MinimumReopeningFee = 0m;
-            MaximumReopeningFee = 0m;
-            MemberAccountActivations=new List<MemberAccountActivation>();
+            IsActive = true;
+            MemberAccountActivations = new List<MemberAccountActivation>();
         }
     }
 
     public class SavingProduct
     {
-        public string id { get; set; }
+        public string Id { get; set; }
         [Required]
-        public string name { get; set; }
+        public string Name { get; set; }
         [Required]
-        public string code { get; set; }
+        public string Code { get; set; }
         [Required]
-        public decimal minAmount { get; set; }
+        public decimal MinAmount { get; set; }
         [Required]
-        public decimal maxAmount { get; set; }
+        public decimal MaxAmount { get; set; }
         [Required]
-        public string interestAccrualFrequency { get; set; }
+        public string InterestAccrualFrequency { get; set; }
         [Required]
-        public string postingFrequency { get; set; }
-        public bool isUsedForTellerProvisioning { get; set; }
-        
-        public bool isCapitalizeInterest { get; set; }
+        public string PostingFrequency { get; set; }
+        public bool IsUsedForTellerProvisioning { get; set; }
+        public bool IsWithdrawalAllowedDirectlyFromthisAccount { get; set; } = false;
+        public bool IsDepositAllowedDirectlyTothisAccount { get; set; } = false;
+        public decimal MinimumAccountBalancePhysicalPerson { get; set; } = 0;
+        public decimal MinimumAccountBalanceMoralPerson { get; set; } = 0;
+
+        public bool AllowInterbranchWithdrawal { get; set; } = false;
+        public bool AllowShareing { get; set; } = false;
+        public bool AllowInterbranchDeposit { get; set; } = false;
+        public bool AllowInterbranchTransfter { get; set; } = false;
+        public bool IsCapitalizeInterest { get; set; }
         [Required]
-        public string currencyId { get; set; }
-        public bool activeStatus { get; set; }
-        public bool isTermProduct { get; set; }
+        public string CurrencyId { get; set; }
+        public bool ActiveStatus { get; set; }
+        public bool IsTermProduct { get; set; }
         [Required]
-        public string description { get; set; }
+        public string Description { get; set; }
         [Required]
         public string ChartOfAccountIdPricipalAccount { get; set; }
         [Required]
@@ -248,6 +331,13 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string ChartOfAccountIdTransferFee { get; set; }
         [Required]
+        public string EventCodePhysicalPersonWithdrawalFormFee { get; set; }
+        [Required]
+        public string EventCodeMoralPersonWithdrawalFormFee { get; set; }
+        [Required]
+        public string EventCodeAdvanceOfSalaryFormFee { get; set; }
+
+        [Required]
         public string AccountType { get; set; }
         [Required]
         public List<CloseFeeParameter> CloseFeeParameters { get; set; }
@@ -258,28 +348,33 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<WithdrawalLimit> WithdrawalParameters { get; set; }
         public List<TransferLimit> TransferParameters { get; set; }
         public string UpdateOption { get; set; }
+        public SavingProduct()
+        {
+            AllowInterbranchTransfter = true;
+            AllowInterbranchWithdrawal = true;
+            AllowShareing = false;
+            IsDepositAllowedDirectlyTothisAccount = true;
+            IsWithdrawalAllowedDirectlyFromthisAccount = true;
+            AllowInterbranchDeposit = true;
+        }
     }
     public class WithdrawalLimit : Sharing
     {
-        public string id { get; set; }
-        [Required]
-        public string productId { get; set; }
-        [Required]
-
-        public decimal minAmount { get; set; }
-        [Required]
-
-        public decimal maxAmount { get; set; }
-        [Required]
-        public string withdrawalType { get; set; }
-        [Required]
-
-        public decimal withdrawalFeeRate { get; set; }
-        [Required]
-
-        public decimal withdrawalFeeFlat { get; set; }
-        public string bankId { get; set; }
-        public SavingProduct product { get; set; }
+        public string Id { get; set; }
+        public string ProductId { get; set; }
+        public decimal MinAmount { get; set; }
+        public decimal MaxAmount { get; set; }
+        public decimal PhysicalPersonWithdrawalFormFee { get; set; } = 0;
+        public decimal MoralPersonWithdrawalFormFee { get; set; } = 0;
+        public int NotificationPeriodInMonths { get; set; }
+        public string WithdrawalType { get; set; }
+        public decimal HeadOfficeShare { get; set; }
+        public decimal PartnerShare { get; set; }
+        public decimal SourceBrachOfficeShare { get; set; }
+        public decimal DestinationBranchOfficeShare { get; set; }
+        public bool MustNotifyOnWithdrawal { get; set; }
+        public string BankId { get; set; }
+        public SavingProduct Product { get; set; }
     }
     public class Teller
     {
@@ -323,7 +418,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     public class OpeningOfTheDay
     {
         public SubTellerProvissioning SubTellerProvissioning { get; set; } = new SubTellerProvissioning();
-        public PrimaryTellerProvissioning PrimaryTellerProvissioning { get; set; }=new PrimaryTellerProvissioning();
+        public PrimaryTellerProvissioning PrimaryTellerProvissioning { get; set; } = new PrimaryTellerProvissioning();
     }
     public class OpeningOfTheDayResponse
     {
@@ -358,7 +453,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string bankId { get; set; }
         public string branchId { get; set; }
-        public CurrencyNotes currencyNotes { get; set; }=new CurrencyNotes();
+        public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
     }
     public class PrimaryTellerProvissioning
     {
@@ -369,9 +464,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string userId { get; set; }
         public string branchId { get; set; }
         public string bankId { get; set; }
-        public CurrencyNotes currencyNotes { get; set; }=new CurrencyNotes();
+        public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
     }
-   
+
     public class SystemConfigForSaving
     {
         public string id { get; set; }
@@ -381,7 +476,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     }
     public class SavingConfigurationAggregates
     {
-        public List<StringValues> interestCalculationFrequencies { get; set; }=new List<StringValues>();
+        public List<StringValues> interestCalculationFrequencies { get; set; } = new List<StringValues>();
         public List<StringValues> postingFrequencies { get; set; } = new List<StringValues>();
         public List<StringValues> managementFeeFrequencies { get; set; } = new List<StringValues>();
         public List<StringValues> depositTypes { get; set; } = new List<StringValues>();
@@ -406,9 +501,151 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string productId { get; set; }
         [Required]
         public string customerId { get; set; }
-       
+
         public string bankId { get; set; }
-       
+
         public string branchId { get; set; }
+    }
+    public class WithdrawalNotification
+    {
+        public string Id { get; set; }
+        public string CustomerId { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountId { get; set; }
+        public DateTime NotificationDate { get; set; } = DateTime.MinValue;
+        public DateTime DateOfIntendedWithdrawal { get; set; } = DateTime.MinValue;
+        public DateTime GracePeriodDate { get; set; } = DateTime.MinValue;
+        [Required]
+        public decimal AmountRequired { get; set; }
+        [Required]
+        public string ReasonForWithdrawal { get; set; }//LoanRepayment Or Consumption, Others
+        public decimal AccountBalance { get; set; }
+        public decimal LoanBalance { get; set; }
+        [Required]
+        public string Purpose { get; set; }
+        public bool IsNotificationPaid { get; set; }
+        public bool IsExpired { get; set; }
+        public decimal FormNotificationCharge { get; set; }
+        public bool IsWithdrawalDone { get; set; }
+        [Required]
+        public string ApprovalStatus { get; set; }
+        public DateTime ApprovalDate { get; set; } = DateTime.MinValue;
+        public string ApprovedByName { get; set; }
+        [Required]
+        public string ApprovalComment { get; set; }
+        public string TransactionReference { get; set; }
+        public DateTime DateWithdrawalWasDone { get; set; } = DateTime.MinValue;
+        public DateTime DateFormFeeWasPaid { get; set; } = DateTime.MinValue;
+        public string TellerId { get; set; }
+        public decimal Total { get; set; }
+        public string TellerName { get; set; }
+        public string TellerCaise { get; set; }
+        public string TellerId_fee { get; set; }
+        public string TellerName_fee { get; set; }
+        public string TellerCaise_fee { get; set; }
+        public string ServiceClearName { get; set; }
+        public string InitiatingBranchId { get; set; }
+        public string MemberBranchId { get; set; }
+        [Required]
+        public int DateOfIntendedWithdrawalYear { get; set; }
+        [Required]
+        public int DateOfIntendedWithdrawalMonth { get; set; }
+        [Required]
+        public int DateOfIntendedWithdrawalDay { get; set; }
+        [Required]
+        public int GracePeriodDateYear { get; set; }
+        [Required]
+        public int GracePeriodDateMonth { get; set; }
+        [Required]
+        public int GracePeriodDateDay { get; set; }
+        public Account Account { get; set; }
+        public CustomerAccount CustomerAccount { get; set; }
+        public IndividualProfile Customer { get; set; }
+    }
+    public class WithdrawalNotificationForm
+    {
+        public WithdrawalNotification WithdrawalNotification { get; set; }
+        public List<WithdrawalNotification> WithdrawalNotifications { get; set; }
+        public Account Account { get; set; }
+        public string Option { get; set; }
+        public IndividualProfile Customer { get; set; }
+        public ChargesWaived ChargesWaived { get; set; }
+        public List<ChargesWaived> ChargesWaiveds { get; set; }
+
+    }
+    public class CashDeskWithdrawalNotificationCommand
+    {
+        public string Id { get; set; }
+    }
+    public class ChargesWaived
+    {
+        public string Id { get; set; }
+        public string CustomerId { get; set; }
+        public decimal NormalCharge { get; set; }
+        [Required]
+        public decimal CustomCharge { get; set; }
+        public DateTime DateOfWaiverRequest { get; set; }
+        public DateTime DateOfWaived { get; set; }
+        public bool IsWaiverDone { get; set; }
+        public string TellerId { get; set; }
+        public string TellerCaise { get; set; }
+        public string TellerName { get; set; }
+        public string WaiverInitiator { get; set; }
+        public string TransactionReference { get; set; }
+        [Required]
+        public string Comment { get; set; }
+
+    }
+    public class AccountMigrationCommand
+    {
+        public string ProductId { get; set; }
+        public string BankId { get; set; }
+        public string BranchId { get; set; }
+        public string BranchCode { get; set; }
+        public List<Data> Accounts { get; set; }
+    }
+    public class Data
+    {
+        public string CustomerId { get; set; }
+        public decimal OpeningBalance { get; set; }
+    }
+
+    public class MemberAccountUpload
+    {
+        [Required]
+        public string BranchId { get; set; }
+
+        [Required]
+        public string ProductId { get; set; }
+
+
+        [Required]
+        public HttpPostedFileBase File { get; set; }
+    }
+    public class OtherTransaction
+    {
+        public string Id { get; set; }
+        public string TransactionReference { get; set; }
+        public string EnventName { get; set; }
+        [Required]
+        public string EventCode { get; set; }
+        public string Description { get; set; }
+        public string TellerId { get; set; }
+        [Required]
+        public decimal Amount { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+        public string Direction { get; set; }
+        [Required]
+        public string TransactionType { get; set; }//Income Or Expenses
+        [Required]
+        public string SourceType { get; set; }//Cash_Collection Or Member_Account
+        public string Naration { get; set; }
+        public string CustomerId { get; set; }
+        public string AccountNumber { get; set; } = "N/A";
+        public string BranchId { get; set; }
+        public Branch Branch { get; set; }
+        public string BankId { get; set; }
+        public Teller Teller { get; set; }
     }
 }

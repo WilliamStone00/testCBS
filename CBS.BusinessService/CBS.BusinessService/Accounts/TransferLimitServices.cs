@@ -30,7 +30,7 @@ namespace CBS.BusinessService.Accounts
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"TransferLimit", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"Transfer Limit", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
@@ -38,7 +38,7 @@ namespace CBS.BusinessService.Accounts
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objTransferLimit, false, $"TransferLimit", MessagesResults.Failed,
+                    GetExecutionMessages(objTransferLimit, false, $"Transfer Limit", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -94,14 +94,14 @@ namespace CBS.BusinessService.Accounts
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"TransferLimit", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"Transfer Limit", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, "TransferLimit", MessagesResults.Failed,
+                    GetExecutionMessages(model, false, "Transfer Limit", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -134,14 +134,14 @@ namespace CBS.BusinessService.Accounts
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"TransferLimit", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"Transfer Limit", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, "TransferLimit", MessagesResults.Failed,
+                        GetExecutionMessages(model, false, "Transfer Limit", MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }

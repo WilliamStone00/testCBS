@@ -3,7 +3,7 @@
 <div class="card-body">
     @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
     {
-        @Html.HiddenFor(model => model.CustomerList.customerId)
+        @Html.HiddenFor(model => model.CustomerList.CustomerId)
         <input type="hidden" name="option" value="upload" />
         <input type="hidden" name="CustomerDocumentRequest.DocumentType" value="CustomerPhoto" />
         <div class="form-group">

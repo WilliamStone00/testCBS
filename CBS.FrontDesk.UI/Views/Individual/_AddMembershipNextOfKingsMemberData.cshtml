@@ -4,30 +4,19 @@
         <thead class="table-light">
             <tr>
                 <th>Name</th>
-                <th>Account number</th>
                 <th>Ration</th>
                 <th>Relationship</th>
                 <th>Branch</th>
-                <th>Signature</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var d in Model.CustomerList.membershipNextOfKings)
+            @foreach (var d in Model.CustomerList.MembershipNextOfKings)
             {
                 <tr>
-                    <td style="width:15%">@d.name</td>
-                    <td style="width:10%">@d.accountNumber</td>
-                    <td style="width:10%">@d.ratio</td>
-                    <td style="width:35%">@d.relation</td>
-                    <td style="width:10%">@d.branchId</td>
-                    <td style="width:10%">@d.signatureFile</td>
-                    <td style="width:10%">
-                        <a href="#" target="_blank" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">
-                            <i class="mdi mdi-folder mr-1"></i>
-                            Edit
-                        </a>
-                    </td>
+                    <td style="width:45%">@d.Name</td>
+                    <td style="width:10%">@d.Ratio</td>
+                    <td style="width:35%">@d.Relation</td>
+                    <td style="width:10%">@d.BranchId</td>
                 </tr>
             }
         </tbody>

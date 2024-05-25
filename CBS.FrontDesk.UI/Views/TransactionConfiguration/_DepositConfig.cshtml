@@ -2,48 +2,35 @@
 @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
     <fieldset class="fieldset-custom">
-        <legend>Set up deposit policies</legend>
-        @Html.HiddenFor(m => m.DepositLimit.productId)
+        <legend>@Model.SavingProduct.Name policies for Cashin</legend>
+        @Html.HiddenFor(m => m.DepositLimit.ProductId)
         <input type="hidden" name="ServiceOption" value="depositlimit" id="ServiceOption" />
         <div class="row mt-2 gy-4">
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.DepositLimit.depositType, new SelectList(ViewBag.DepositLimitTypes, "Text", "Value"), "---Select deposit type---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.DepositLimit.depositType, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(m => m.DepositLimit.DepositType, new SelectList(ViewBag.DepositLimitTypes, "Text", "Value"), "---Select deposit type---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.DepositLimit.DepositType, "", new { @class = "text-danger" })
                     <label>Select deposit limit type</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.DepositLimit.minAmount, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.DepositLimit.minAmount, "", new { @class = "text-danger" })
-                    <label>Minimum deposit amount @Model.SavingProduct.name can hold</label>
+                    @Html.TextBoxFor(m => m.DepositLimit.MinAmount, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.DepositLimit.MinAmount, "", new { @class = "text-danger" })
+                    <label>Minimum deposit</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.DepositLimit.maxAmount, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.DepositLimit.maxAmount, "", new { @class = "text-danger" })
-                    <label>Maximum deposit amount @Model.SavingProduct.name can hold</label>
+                    @Html.TextBoxFor(m => m.DepositLimit.MaxAmount, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.DepositLimit.MaxAmount, "", new { @class = "text-danger" })
+                    <label>Maximum deposit</label>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.DepositLimit.depositFeeFlat, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.DepositLimit.depositFeeFlat, "", new { @class = "text-danger" })
-                    <label>Flat fee</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.DepositLimit.depositFeeRate, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.DepositLimit.depositFeeRate, "", new { @class = "text-danger" })
-                    <label>Fee rate</label>
-                </div>
-
-
-            </div>
+            
         </div>
+
+
     </fieldset>
     <fieldset class="fieldset-custom">
         <legend>Sharing</legend>
@@ -64,19 +51,17 @@
             </div>
         </div>
     </fieldset>
-
-
-
     <div class="mt-4">
-        @if (Model.DepositLimit.id == null)
+        @if (Model.DepositLimit.Id == null)
         {
             <button type="submit" class="btn btn-primary me-2">Save</button>
             <input type="hidden" name="Action" value="insert" id="Action" />
         }
         else
         { <button type="submit" class="btn btn-primary me-2">Update</button>
-            @Html.HiddenFor(m => m.DepositLimit.id)
+            @Html.HiddenFor(m => m.DepositLimit.Id)
             <input type="hidden" name="Action" value="update" id="Action" />
         }
     </div>
+
 }

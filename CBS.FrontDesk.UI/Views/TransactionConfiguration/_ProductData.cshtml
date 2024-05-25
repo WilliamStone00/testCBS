@@ -9,52 +9,56 @@
     </div>
 }
 else
-{ <div class="table-responsive mb-3">
-        <table class="table table-hover" id="myDataTable_product">
-            <thead class="table-light">
-                <tr>
-                    <th>Code</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Range</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var d in Model.SavingProducts)
-                {
+{
+    <fieldset class="fieldset-custom">
+        <legend>Ordinary account listings</legend>
+        <div class="table-responsive mb-3">
+            <table class="table table-hover" id="myDataTable_product">
+                <thead class="table-light">
                     <tr>
-                        <td style="width:10%">@d.code</td>
-                        <td style="width:35%">@d.name</td>
-                        <td style="width:13%">@d.AccountType</td>
-                        <td style="width:20%">@d.minAmount.ToString("#,##0.0")-@d.maxAmount.ToString("#,##0.0")</td>
-                        <td style="width:7%">
-                            @if (d.activeStatus)
-                            {
-                                <span class="badge bg-info">Active</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-warning">Inactive</span>
-                            }
-                        </td>
-                        <td style="width:15%">
-                            @if (!d.isUsedForTellerProvisioning)
-                            {
-                                <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview','_ProductConfig','get','TransactionConfiguration','savingproduct')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit |</a>
-                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable_product','_ProductData',0,'datalistingview_product')">Delete</a>
-                            }
-                            else
-                            {
-                                <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview','_ProductConfig','get','TransactionConfiguration','savingproduct')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit</a>
-
-                            }
-                        </td>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Range</th>
+                        <th>Status</th>
+                        <th>Action</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.SavingProducts)
+                    {
+                        <tr>
+                            <td style="width:10%">@d.Code</td>
+                            <td style="width:35%">@d.Name</td>
+                            <td style="width:13%">@d.AccountType</td>
+                            <td style="width:20%">@d.MinAmount.ToString("#,##0.0")-@d.MaxAmount.ToString("#,##0.0")</td>
+                            <td style="width:7%">
+                                @if (d.ActiveStatus)
+                                {
+                                    <span class="badge bg-info">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning">Inactive</span>
+                                }
+                            </td>
+                            <td style="width:15%">
+                                @if (!d.IsUsedForTellerProvisioning)
+                                {
+                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_ProductConfig','get','TransactionConfiguration','savingproduct')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit |</a>
+                                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','myDataTable_product','_ProductData',0,'datalistingview_product')">Delete</a>
+                                }
+                                else
+                                {
+                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_ProductConfig','get','TransactionConfiguration','savingproduct')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a>
+
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
 }
 

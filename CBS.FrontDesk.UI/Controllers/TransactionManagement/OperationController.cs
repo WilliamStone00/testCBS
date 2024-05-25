@@ -263,7 +263,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     return Json(new { success = true, status = false, message = "Failed getting customer" }, JsonRequestBehavior.AllowGet);
 
                 }
-                var branch = await _branchServices.GetBranch(customer.branchId);
+                var branch = await _branchServices.GetBranch(customer.CustomerId);
                 var rpt = _acountServices.MaprptSource(transactionHistories, branch, customer);
              
                 string accountnumber = null;

@@ -13,10 +13,6 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 
 using CBS.FrontDesk.Data.Entity;
-using CBS.FrontDesk.Data.Entity.LoanConf;
-using static CBS.FrontDesk.Data.Entity.CustomerManagement.IndividualProfile;
-using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
-using System.Reflection;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.MembersAccountSettings;
 using CBS.BusinessService.MembersAccountSettings.policy;
@@ -96,7 +92,7 @@ namespace CBS.BusinessService.CustomerManagement
                 {
 
                     // Handle success scenario
-                    GetExecutionMessages(inResponse, true, $"{customer.firstName} {customer.lastName}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{customer.FirstName} {customer.LastName}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
 
@@ -104,7 +100,7 @@ namespace CBS.BusinessService.CustomerManagement
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(customer, false, $"{customer.firstName} {customer.lastName}", MessagesResults.Failed,
+                    GetExecutionMessages(customer, false, $"{customer.FirstName} {customer.LastName}", MessagesResults.Failed,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null, null);
                 }
             }
@@ -132,11 +128,28 @@ namespace CBS.BusinessService.CustomerManagement
                 var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.GetAllIndividualProfile);
                 var aggregates = await GetAggregates();
                 var data = (from a in individualProfiles.ApiResponseData.Data
-                            join b in aggregates.Branches on a.branchId equals b.Id
-                            join t in aggregates.Towns on a.townId equals t.Id
+                            join b in aggregates.Branches on a.BranchId equals b.Id
+                            join t in aggregates.Towns on a.TownId equals t.Id into townJoin
+                            from t in townJoin.DefaultIfEmpty() // Left join operation
                             select TransformToCustomerList(a, b, t)).ToList();
 
                 return data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<StringValues>> GetMembers(List<IndividualProfile> individuals)
+        {
+            try
+            {
+                var stringValuesList = individuals
+                         .Select(x => new StringValues($"{x.name}-[{x.branch}]", x.CustomerId))
+                         .ToList();
+                return stringValuesList;
             }
             catch (Exception ex)
             {
@@ -153,8 +166,9 @@ namespace CBS.BusinessService.CustomerManagement
                 var aggregates = await GetAggregates();
 
                 var data = (from a in individualProfiles.ApiResponseData.Data
-                            join b in aggregates.Branches on a.branchId equals b.Id
-                            join t in aggregates.Towns on a.townId equals t.Id
+                            join b in aggregates.Branches on a.BranchId equals b.Id
+                            join t in aggregates.Towns on a.TownId equals t.Id into townJoin
+                            from t in townJoin.DefaultIfEmpty() // Left join operation
                             select TransformToCustomerList(a, b, t)).ToList();
 
                 return data;
@@ -166,11 +180,48 @@ namespace CBS.BusinessService.CustomerManagement
             }
         }
 
-        private async Task<AccountBalance> GetCustomerBalance(string customerID)
+        public async Task<IEnumerable<IndividualProfile>> GetAllIndividualProfileByBranchLight()
         {
             try
             {
-                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<AccountBalance>>(string.Format(APICallHelper.GetCustomerBalance, customerID));
+                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(string.Format(APICallHelper.GetCustomersByBranchID, GetBranchID()));
+                var aggregates = await GetAggregates();
+
+                var data = (from a in individualProfiles.ApiResponseData.Data
+                            select TransformToCustomerList(a, null, null)).ToList();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public async Task<IEnumerable<IndividualProfile>> GetAllIndividualProfileLight()
+        {
+            try
+            {
+                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.GetAllIndividualProfile);
+                //var aggregates = await GetAggregates();
+
+                var data = (from a in individualProfiles.ApiResponseData.Data
+                            select TransformToCustomerList(a, null, null)).ToList();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+        private async Task<AccountBalance> GetCustomerBalance(string CustomerId)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<AccountBalance>>(string.Format(APICallHelper.GetCustomerBalance, CustomerId));
                 return cusResponseObject.ApiResponseData.Data;
             }
             catch (Exception ex)
@@ -179,11 +230,11 @@ namespace CBS.BusinessService.CustomerManagement
                 throw ex;
             }
         }
-        public async Task<List<CustomerAccount>> GetCustomerAccounts(string customerID)
+        public async Task<List<CustomerAccount>> GetCustomerAccounts(string CustomerId)
         {
             try
             {
-                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(string.Format(APICallHelper.GetCustomerAccounts, customerID));
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(string.Format(APICallHelper.GetCustomerAccounts, CustomerId));
                 return cusResponseObject.ApiResponseData.Data;
             }
             catch (Exception ex)
@@ -194,90 +245,88 @@ namespace CBS.BusinessService.CustomerManagement
         }
         private IndividualProfile TransformToCustomerList(IndividualProfile a, Branch b, Town t)
         {
-            return new IndividualProfile
+            var customer = new IndividualProfile
             {
-                name = $"{a.firstName} {a.lastName}",
-                phone = a.phone,
-                firstName = a.firstName,
-                lastName = a.lastName,
-                email = a.email,
-                townId = a.townId,
+                name = $"{a.FirstName} {a.LastName}",
+                Phone = a.Phone,
+                FirstName = a.FirstName,
+                LastName = a.LastName,
+                Email = a.Email,
+                TownId = a.TownId,
                 town = t == null ? "N/A" : t.Name,
-                branch = b.Name,
-                branchId = a.branchId,
-                active = a.active,
-                activeStatus = a.active ? "Active" : "In-Active",
-                address = a.address,
-                bankId = a.bankId,
-                countryId = a.countryId,
-                customerId = a.customerId,
-                dateOfBirth = a.dateOfBirth,
-                divisionId = a.divisionId,
-                economicActivitiesId = a.economicActivitiesId,
-                gender = a.gender,
-                idNumber = a.idNumber,
-                isUseOnLineMobileBanking = a.isUseOnLineMobileBanking,
-                organizationId = a.organizationId,
-                packageId = a.packageId,
-                fax = a.fax,
+                branch =b == null ? "N/A" : b.Name,
+                BranchId = a.BranchId,
+                Active = a.Active,
+                ActiveStatus = a.Active ? "Active" : "In-Active",
+                Address = a.Address,
+                BankId = a.BankId,
+                CountryId = a.CountryId,
+                CustomerId = a.CustomerId,
+                DateOfBirth = a.DateOfBirth,
+                DivisionId = a.DivisionId,
+                EconomicActivitiesId = a.EconomicActivitiesId,
+                Gender = a.Gender,
+                IDNumber = a.IDNumber,
+                IsUseOnLineMobileBanking = a.IsUseOnLineMobileBanking,
+                OrganizationId = a.OrganizationId,
+                CustomerPackageId = a.CustomerPackageId,
+                Fax = a.Fax,
                 photoUrl = a.photoUrl,
                 signatureUrl = a.signatureUrl,
-                bankingRelationship = a.bankingRelationship,
-                cardSignatureSpecimens = a.cardSignatureSpecimens,
-                customerDocuments = a.customerDocuments,
+                BankingRelationship = a.BankingRelationship,
+                CardSignatureSpecimens = a.CardSignatureSpecimens,
+                CustomerDocuments = a.CustomerDocuments,
                 pin = a.pin,
-                regionId = a.regionId,
-                subDivisionId = a.subDivisionId,
-                taxIdentificationNumber = a.taxIdentificationNumber,
+                RegionId = a.RegionId,
+                SubDivisionId = a.SubDivisionId,
+                TaxIdentificationNumber = a.TaxIdentificationNumber,
                 bankCode = a.bankCode,
-                formalOrInformalSector = a.formalOrInformalSector,
-                isMemberOfACompany = a.isMemberOfACompany,
-                legalForm = a.legalForm,
-                membershipApprovalStatus = a.membershipApprovalStatus,
+                FormalOrInformalSector = a.FormalOrInformalSector,
+                IsMemberOfACompany = a.IsMemberOfACompany,
+                LegalForm = a.LegalForm,
+                MembershipApprovalStatus = a.MembershipApprovalStatus,
                 branchCode = a.branchCode,
-                customerCategory = a.customerCategory,
-                customerCategoryId = a.customerCategoryId,
-                customerPackageId = a.packageId,
-                employerAddress = a.employerAddress,
-                employerName = a.employerName,
-                employerTelephone = a.employerTelephone,
-                income = a.income,
-                workingStatus = a.workingStatus,
-                idNumberIssueAt = a.idNumberIssueAt,
-                idNumberIssueDate = a.idNumberIssueDate,
+                CustomerCategory = a.CustomerCategory,
+                CustomerCategoryId = a.CustomerCategoryId,
+                EmployerAddress = a.EmployerAddress,
+                EmployerName = a.EmployerName,
+                EmployerTelephone = a.EmployerTelephone,
+                Income = a.Income,
+                WorkingStatus = a.WorkingStatus,
+                IDNumberIssueAt = a.IDNumberIssueAt,
+                IDNumberIssueDate = a.IDNumberIssueDate,
                 ImageNoVirtualPath = a.ImageNoVirtualPath,
                 ImageVirtualNoSignaturePath = a.ImageVirtualNoSignaturePath,
                 ImageVirtualPath = a.ImageVirtualPath,
                 ImageVirtualSignaturePath = a.ImageVirtualSignaturePath,
-                isMemberOfAGroup = a.isMemberOfAGroup,
-                language = a.language,
-                maritalStatus = a.maritalStatus,
-                occupation = a.occupation,
-                poBox = a.poBox,
-                membershipAllocatedNumber = a.membershipAllocatedNumber,
-                membershipApplicantDate = a.membershipApplicantDate,
-                membershipApplicantProposedByReferral1 = a.membershipApplicantProposedByReferral1,
-                membershipApplicantProposedByReferral2 = a.membershipApplicantProposedByReferral2,
-                membershipApprovalBy = a.membershipApprovalBy,
-                membershipApprovedDate = a.membershipApprovedDate,
-                membershipApprovedSignatureUrl = a.membershipApprovedSignatureUrl,
-                membershipNextOfKings = a.membershipNextOfKings,
+                IsMemberOfAGroup = a.IsMemberOfAGroup,
+                Language = a.Language,
+                MaritalStatus = a.MaritalStatus,
+                Occupation = a.Occupation,
+                POBox = a.POBox,
+                MembershipAllocatedNumber = a.MembershipAllocatedNumber,
+                MembershipApplicantDate = a.MembershipApplicantDate,
+                MembershipApplicantProposedByReferral1 = a.MembershipApplicantProposedByReferral1,
+                MembershipApplicantProposedByReferral2 = a.MembershipApplicantProposedByReferral2,
+                MembershipApprovalBy = a.MembershipApprovalBy,
+                MembershipApprovedDate = a.MembershipApprovedDate,
+                MembershipApprovedSignatureUrl = a.MembershipApprovedSignatureUrl,
+                MembershipNextOfKings = a.MembershipNextOfKings,
                 mobileOrOnLineBankingLoginState = a.mobileOrOnLineBankingLoginState,
-                numberOfKids = a.numberOfKids,
-                placeOfBirth = a.placeOfBirth,
-                secretAnswer = a.secretAnswer,
-                secretQuestion = a.secretQuestion,
-                spouseAddress = a.spouseAddress,
-                spouseContactNumber = a.spouseContactNumber,
-                spouseName = a.spouseName,
-                spouseOccupation = a.spouseOccupation,
-                bankName = b.Bank.Name,
-                customerCode = a.customerCode,
+                NumberOfKids = a.NumberOfKids,
+                PlaceOfBirth = a.PlaceOfBirth,
+                SecretAnswer = a.SecretAnswer,
+                SecretQuestion = a.SecretQuestion,
+                SpouseAddress = a.SpouseAddress,
+                SpouseContactNumber = a.SpouseContactNumber,
+                SpouseName = a.SpouseName,
+                SpouseOccupation = a.SpouseOccupation,
+                BankName = b == null ? "N/A" : b.Bank.Name,
+                CustomerCode = a.CustomerCode,
                 VillageOfOrigin = a.VillageOfOrigin,
-                cardSignatureSpecimenDetails = a.cardSignatureSpecimenDetails
-
-
             };
+
+            return customer;
         }
         public async Task<IndividualCustomerProfile> GetCustomer(string id, Aggregrate aggregrates)
         {
@@ -290,29 +339,34 @@ namespace CBS.BusinessService.CustomerManagement
                 var policies = await _memberAccountActivationPolicyServices.GetMemberAccountActivationPolicys();
                 var memberAccountActivation = await _memberAccountActivationServices.GetMemberAccountActivationByMemberId(id);
                 var data = (from a in new List<IndividualProfile> { cusResponseObject }
-                            join b in aggregrates.Branches on a.branchId equals b.Id
-                            join t in aggregrates.Towns on a.townId equals t.Id
+                            join b in aggregrates.Branches on a.BranchId equals b.Id
+                            join t in aggregrates.Towns on a.TownId equals t.Id into townJoin
+                            from t in townJoin.DefaultIfEmpty() // Left join operation
                             select TransformToCustomerList(a, b, t)).ToList();
                 var addaccount = new AddCustomerAccount { customerId = id };
-                var nextOfKingsMember = new MembershipNextOfKingsMember { customerId = id };
-                var cardSignatureSpecimen = new CardSignatureSpecimen { customerId = id };
+                var nextOfKingsMember = new MembershipNextOfKing { CustomerId = id };
+                var cardSignatureSpecimen = new CardSignatureSpecimen { CustomerId = id };
                 var result = new IndividualCustomerProfile(data.First(), aggregrates, accountBalance, accounts, addaccount, nextOfKingsMember, cardSignatureSpecimen);
                 result.SavingProducts = aggregrates.Savings;
-                var policy = new MemberAccountActivationPolicy();
+                var policy = new MemberRegistrationFeePolicy();
                 if (policies.Any())
                 {
-                    policy = policies.FirstOrDefault();
+                    policy = policies.Where(x=>x.LegalForm== cusResponseObject.LegalForm).FirstOrDefault();
+                }
+                if (policy==null)
+                {
+                    policy = new MemberRegistrationFeePolicy();
                 }
                 if (memberAccountActivation == null)
                 {
                     result.MemberAccountActivation = new MemberAccountActivation
                     {
                         CustomerId = id,
-                        RegistrationFee = policy.MaximumRegistrationFee
-                    ,
-                        ReopeningFee = policy.MaximumReopeningFee,
-                        ClossingFee = policy.MaximumAccountClossingFee,
-                        MemberAccountActivationPolicyId = policy.Id
+                        EntranceFee = policy.MaximumEntrancenFee,
+                        ByeLawFee = policy.MaximumByeLawsFee,
+                        LoanPolicyFee = policy.MaximumLoanPolicyFee,
+                        MemberRegistrationFeePolicyId = policy.Id,
+                        BuildingContribution = policy.MaximumBuildingContribution
                     };
                     result.option = "AddMemberAccount";
                 }
@@ -336,7 +390,7 @@ namespace CBS.BusinessService.CustomerManagement
             {
 
                 var cusResponseObject = await GetSingleCustomer(id);
-                var Branch = await _branchServices.GetBranch(cusResponseObject.branchId);
+                var Branch = await _branchServices.GetBranch(cusResponseObject.BranchId);
                 var data = TransformToCustomerList(cusResponseObject, Branch, null);
                 var result = new IndividualCustomerProfile(data);
                 return result;
@@ -399,7 +453,7 @@ namespace CBS.BusinessService.CustomerManagement
                 {
                     var aggregates = subscriptionAggregatesResponse?.ApiResponseData.Data ?? new Aggregrate();
                     var savingsResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<SavingProduct>>>(APICallHelper.GetSavingProducts);
-                    aggregates.Savings = savingsResponse?.ApiResponseData == null ? new List<SavingProduct>() : savingsResponse.ApiResponseData.Data.Where(x => !x.isUsedForTellerProvisioning).ToList();
+                    aggregates.Savings = savingsResponse?.ApiResponseData == null ? new List<SavingProduct>() : savingsResponse.ApiResponseData.Data.Where(x => !x.IsUsedForTellerProvisioning).ToList();
                     var customerDefaultEnum = await _customerApiHelper.GetAsync<ResponseObject<CustomerDefaultEnum>>(APICallHelper.GetCustomerDefaultEnums);
                     aggregates.CustomerDefaultEnum = customerDefaultEnum?.ApiResponseData == null ? new CustomerDefaultEnum() : customerDefaultEnum.ApiResponseData.Data;
                     return aggregates;
@@ -422,7 +476,7 @@ namespace CBS.BusinessService.CustomerManagement
                 {
                     return cusResponseObject.ApiResponseData.Data;
                 }
-                return new IndividualProfile();
+                return null;
 
             }
             catch (Exception ex)
@@ -459,7 +513,7 @@ namespace CBS.BusinessService.CustomerManagement
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario
-                    GetExecutionMessages(inResponse, true, $"{inResponse.ApiResponseData.Data.product.name} Account.", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{inResponse.ApiResponseData.Data.product.Name} Account.", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
 
@@ -483,36 +537,36 @@ namespace CBS.BusinessService.CustomerManagement
             try
             {
 
-                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.customerId);
-                customer.divisionId = objCustomerProfile.CustomerList.divisionId;
-                customer.subDivisionId = objCustomerProfile.CustomerList.subDivisionId;
-                customer.regionId = objCustomerProfile.CustomerList.regionId;
-                customer.townId = objCustomerProfile.CustomerList.townId;
-                customer.countryId = objCustomerProfile.CustomerList.countryId;
-                customer.dateOfBirth = objCustomerProfile.CustomerList.dateOfBirth;
-                customer.firstName = objCustomerProfile.CustomerList.firstName;
-                customer.lastName = objCustomerProfile.CustomerList.lastName;
-                customer.idNumberIssueAt = objCustomerProfile.CustomerList.idNumberIssueAt;
-                customer.idNumberIssueDate = objCustomerProfile.CustomerList.idNumberIssueDate;
-                customer.idNumber = objCustomerProfile.CustomerList.idNumber;
-                customer.email = objCustomerProfile.CustomerList.email;
-                customer.address = objCustomerProfile.CustomerList.address;
-                customer.bankName = GetBranchName();
-                customer.language = objCustomerProfile.CustomerList.language;
+                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.CustomerId);
+                customer.DivisionId = objCustomerProfile.CustomerList.DivisionId;
+                customer.SubDivisionId = objCustomerProfile.CustomerList.SubDivisionId;
+                customer.RegionId = objCustomerProfile.CustomerList.RegionId;
+                customer.TownId = objCustomerProfile.CustomerList.TownId;
+                customer.CountryId = objCustomerProfile.CustomerList.CountryId;
+                customer.DateOfBirth = objCustomerProfile.CustomerList.DateOfBirth;
+                customer.FirstName = objCustomerProfile.CustomerList.FirstName;
+                customer.LastName = objCustomerProfile.CustomerList.LastName;
+                customer.IDNumberIssueAt = objCustomerProfile.CustomerList.IDNumberIssueAt;
+                customer.IDNumberIssueDate = objCustomerProfile.CustomerList.IDNumberIssueDate;
+                customer.IDNumber = objCustomerProfile.CustomerList.IDNumber;
+                customer.Email = objCustomerProfile.CustomerList.Email;
+                customer.Address = objCustomerProfile.CustomerList.Address;
+                customer.BankName = GetBranchName();
+                customer.Language = objCustomerProfile.CustomerList.Language;
                 customer.VillageOfOrigin = objCustomerProfile.CustomerList.VillageOfOrigin;
-                customer.gender = objCustomerProfile.CustomerList.gender;
-                customer.phone = objCustomerProfile.CustomerList.phone;
-                customer.taxIdentificationNumber = objCustomerProfile.CustomerList.taxIdentificationNumber;
-                customer.economicActivitiesId = objCustomerProfile.CustomerList.economicActivitiesId;
-                customer.occupation = objCustomerProfile.CustomerList.occupation;
-                customer.customerCategoryId = objCustomerProfile.CustomerList.customerCategoryId;
-                customer.fax = objCustomerProfile.CustomerList.fax;
-                customer.poBox = objCustomerProfile.CustomerList.poBox;
-                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.customerId), customer);
+                customer.Gender = objCustomerProfile.CustomerList.Gender;
+                customer.Phone = objCustomerProfile.CustomerList.Phone;
+                customer.TaxIdentificationNumber = objCustomerProfile.CustomerList.TaxIdentificationNumber;
+                customer.EconomicActivitiesId = objCustomerProfile.CustomerList.EconomicActivitiesId;
+                customer.Occupation = objCustomerProfile.CustomerList.Occupation;
+                customer.CustomerCategoryId = objCustomerProfile.CustomerList.CustomerCategoryId;
+                customer.Fax = objCustomerProfile.CustomerList.Fax;
+                customer.POBox = objCustomerProfile.CustomerList.POBox;
+                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.CustomerId), customer);
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario
-                    GetExecutionMessages(inResponse, true, $"{customer.firstName} {customer.lastName}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{customer.FirstName} {customer.LastName}", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
 
@@ -520,7 +574,7 @@ namespace CBS.BusinessService.CustomerManagement
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(customer, false, customer.firstName, MessagesResults.Failed,
+                    GetExecutionMessages(customer, false, customer.FirstName, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, null);
 
                 }
@@ -535,19 +589,19 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {
-                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.customerId);
-                customer.organizationId = objCustomerProfile.CustomerList.organizationId;
-                customer.branchId = objCustomerProfile.CustomerList.branchId;
-                customer.bankId = objCustomerProfile.CustomerList.bankId;
-                customer.membershipApprovalStatus = objCustomerProfile.CustomerList.membershipApprovalStatus;
-                customer.legalForm = objCustomerProfile.CustomerList.legalForm;
-                customer.formalOrInformalSector = objCustomerProfile.CustomerList.formalOrInformalSector;
-                customer.bankingRelationship = objCustomerProfile.CustomerList.bankingRelationship;
-                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.customerId), customer);
+                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.CustomerId);
+                customer.OrganizationId = objCustomerProfile.CustomerList.OrganizationId;
+                customer.BranchId = objCustomerProfile.CustomerList.BranchId;
+                customer.BankId = objCustomerProfile.CustomerList.BankId;
+                customer.MembershipApprovalStatus = objCustomerProfile.CustomerList.MembershipApprovalStatus;
+                customer.LegalForm = objCustomerProfile.CustomerList.LegalForm;
+                customer.FormalOrInformalSector = objCustomerProfile.CustomerList.FormalOrInformalSector;
+                customer.BankingRelationship = objCustomerProfile.CustomerList.BankingRelationship;
+                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.CustomerId), customer);
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario
-                    GetExecutionMessages(inResponse, true, $"{customer.firstName} {customer.lastName}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{customer.FirstName} {customer.LastName}", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
 
@@ -555,7 +609,7 @@ namespace CBS.BusinessService.CustomerManagement
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(customer, false, customer.firstName, MessagesResults.Failed,
+                    GetExecutionMessages(customer, false, customer.FirstName, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
 
                 }
@@ -570,19 +624,19 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {
-                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.customerId);
-                customer.membershipApprovalStatus = objCustomerProfile.CustomerList.membershipApprovalStatus;
-                customer.membershipApprovalBy = GetUserFullName();
-                customer.membershipApprovedDate = DateTime.Now.ToString();
+                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.CustomerId);
+                customer.MembershipApprovalStatus = objCustomerProfile.CustomerList.MembershipApprovalStatus;
+                customer.MembershipApprovalBy = GetUserFullName();
+                customer.MembershipApprovedDate = DateTime.Now.ToString();
                 if (customer.VillageOfOrigin == null)
                 {
                     customer.VillageOfOrigin = "N/A";
                 }
-                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.customerId), customer);
+                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.CustomerId), customer);
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario
-                    GetExecutionMessages(inResponse, true, $"{customer.firstName} {customer.lastName}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{customer.FirstName} {customer.LastName}", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
 
@@ -590,7 +644,7 @@ namespace CBS.BusinessService.CustomerManagement
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(customer, false, customer.firstName, MessagesResults.Failed,
+                    GetExecutionMessages(customer, false, customer.FirstName, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
 
                 }
@@ -605,15 +659,15 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {
-                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.customerId);
-                customer.legalForm = objCustomerProfile.CustomerList.legalForm;
-                customer.formalOrInformalSector = objCustomerProfile.CustomerList.formalOrInformalSector;
-                customer.bankingRelationship = objCustomerProfile.CustomerList.bankingRelationship;
-                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.customerId), customer);
+                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.CustomerId);
+                customer.LegalForm = objCustomerProfile.CustomerList.LegalForm;
+                customer.FormalOrInformalSector = objCustomerProfile.CustomerList.FormalOrInformalSector;
+                customer.BankingRelationship = objCustomerProfile.CustomerList.BankingRelationship;
+                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.CustomerId), customer);
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario
-                    GetExecutionMessages(inResponse, true, $"{customer.firstName} {customer.lastName}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{customer.FirstName} {customer.LastName}", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
 
@@ -621,7 +675,7 @@ namespace CBS.BusinessService.CustomerManagement
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(customer, false, customer.firstName, MessagesResults.Failed,
+                    GetExecutionMessages(customer, false, customer.FirstName, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
 
                 }
@@ -637,13 +691,13 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {//10005110050004
-                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.customerId);
-                var activation = new CustomerActivation { activate = objCustomerProfile.CustomerList.active, customerId = objCustomerProfile.CustomerList.customerId };
+                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.CustomerId);
+                var activation = new CustomerActivation { activate = objCustomerProfile.CustomerList.Active, customerId = objCustomerProfile.CustomerList.CustomerId };
                 var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<bool>>(APICallHelper.ActivateOrDiactivateCustomer, activation);
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario
-                    GetExecutionMessages(inResponse, true, $"{customer.firstName} {customer.lastName}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{customer.FirstName} {customer.LastName}", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
 
@@ -651,7 +705,7 @@ namespace CBS.BusinessService.CustomerManagement
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(customer, false, customer.firstName, MessagesResults.Failed,
+                    GetExecutionMessages(customer, false, customer.FirstName, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
 
                 }
@@ -667,28 +721,28 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {
-                var tel = CleanTelephoneNumber(model.phone);
-                model.bankCode = GetBankCode();
+                var tel = CleanTelephoneNumber(model.Phone);
+                model.branchCode = GetBankCode();
                 model.branchCode = GetBranchCode();
-                model.branchId = GetBranchID();
-                model.bankId = GetBankID();
-                model.employerTelephone = tel;
-                model.membershipApprovalStatus = "Awaits_Validation";
-                model.bankName = GetBranchName();
-                model.email = model.email ?? "cbs@cbs.com";
-                model.membershipApplicantDate = DateTime.Now.ToString();
+                model.BranchId = GetBranchID();
+                model.BankId = GetBankID();
+                model.EmployerTelephone = tel;
+                model.MembershipApprovalStatus = "Awaits_Validation";
+                model.BankName = GetBranchName();
+                model.Email = model.Email ?? "cbs@cbs.com";
+                model.MembershipApplicantDate = DateTime.Now.ToString();
                 var response = await _customerApiHelper.PostAsync<ServiceResponse<IndividualProfile>>(APICallHelper.CreateIndividualProfile, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.firstName} {model.lastName}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.FirstName} {model.LastName}", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.firstName, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.FirstName, MessagesResults.Failed,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -701,24 +755,24 @@ namespace CBS.BusinessService.CustomerManagement
             return ExecutionMessage;
         }
 
-        public async Task<ExecutionMessages> CreateMembershipNextOfKingsMember(MembershipNextOfKingsMember model)
+        public async Task<ExecutionMessages> CreateMembershipNextOfKingsMember(MembershipNextOfKing model)
         {
             try
             {
 
-                model.branchId = GetBranchID();
-                var response = await _customerApiHelper.PostAsync<ServiceResponse<MembershipNextOfKingsMember>>(APICallHelper.CreateMembershipNextOfKing, model);
+                model.BranchId = GetBranchID();
+                var response = await _customerApiHelper.PostAsync<ServiceResponse<MembershipNextOfKing>>(APICallHelper.CreateMembershipNextOfKing, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.name}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -734,22 +788,18 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {
-                var apiResponse = await _transactionApiHelper.GetAsync<ResponseObject<Account>>(string.Format(APICallHelper.GetAccountByAccountNumber, model.accountNumber));
-                model.branchMangerId = apiResponse.ApiResponseData.Data.CreatedBy;
-                model.cardSignatureSpecimenDetails.Add(model.cardSignatureSpecimenDetail);
-                model.branchId = GetBranchID();
-                var response = await _customerApiHelper.PostAsync<ServiceResponse<CardSignatureSpecimen>>(APICallHelper.CreateCardSignatureSpecimenDetails, model);
+                var response = await _customerApiHelper.PostAsync<ServiceResponse<CardSignatureSpecimen>>(APICallHelper.CreateCardSignatureSpecimen, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.cardSignatureSpecimenDetail.name}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.cardSignatureSpecimenDetail.name, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -769,12 +819,12 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {
-                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.customerId);
-                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.ResetPin, customer.phone), new ResetPinCode { Phone = customer.phone });
+                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.CustomerId);
+                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.ResetPin, customer.Phone), new ResetPinCode { Phone = customer.Phone });
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario
-                    GetExecutionMessages(inResponse, true, $"{customer.firstName} {customer.lastName}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{customer.FirstName} {customer.LastName}", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
 
@@ -782,7 +832,7 @@ namespace CBS.BusinessService.CustomerManagement
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(customer, false, customer.firstName, MessagesResults.Failed,
+                    GetExecutionMessages(customer, false, customer.FirstName, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
 
                 }
@@ -799,18 +849,18 @@ namespace CBS.BusinessService.CustomerManagement
             try
             {
 
-                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.customerId);
-                customer.maritalStatus = objCustomerProfile.CustomerList.maritalStatus;
-                customer.spouseName = objCustomerProfile.CustomerList.spouseName;
-                customer.spouseAddress = objCustomerProfile.CustomerList.spouseAddress;
-                customer.spouseContactNumber = objCustomerProfile.CustomerList.spouseContactNumber;
-                customer.spouseOccupation = objCustomerProfile.CustomerList.spouseOccupation;
-                customer.numberOfKids = objCustomerProfile.CustomerList.numberOfKids;
-                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.customerId), customer);
+                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.CustomerId);
+                customer.MaritalStatus = objCustomerProfile.CustomerList.MaritalStatus;
+                customer.SpouseName = objCustomerProfile.CustomerList.SpouseName;
+                customer.SpouseAddress = objCustomerProfile.CustomerList.SpouseAddress;
+                customer.SpouseContactNumber = objCustomerProfile.CustomerList.SpouseContactNumber;
+                customer.SpouseOccupation = objCustomerProfile.CustomerList.SpouseOccupation;
+                customer.NumberOfKids = objCustomerProfile.CustomerList.NumberOfKids;
+                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.CustomerId), customer);
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario
-                    GetExecutionMessages(inResponse, true, $"{customer.firstName} {customer.lastName}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{customer.FirstName} {customer.LastName}", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
 
@@ -818,7 +868,7 @@ namespace CBS.BusinessService.CustomerManagement
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(customer, false, customer.firstName, MessagesResults.Failed,
+                    GetExecutionMessages(customer, false, customer.FirstName, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, null);
 
                 }
@@ -834,17 +884,17 @@ namespace CBS.BusinessService.CustomerManagement
             try
             {
 
-                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.customerId);
-                customer.workingStatus = objCustomerProfile.CustomerList.workingStatus;
-                customer.employerName = objCustomerProfile.CustomerList.employerName;
-                customer.employerTelephone = objCustomerProfile.CustomerList.employerTelephone;
-                customer.employerAddress = objCustomerProfile.CustomerList.employerAddress;
-                customer.income = objCustomerProfile.CustomerList.income;
-                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.customerId), customer);
+                var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.CustomerId);
+                customer.WorkingStatus = objCustomerProfile.CustomerList.WorkingStatus;
+                customer.EmployerName = objCustomerProfile.CustomerList.EmployerName;
+                customer.EmployerTelephone = objCustomerProfile.CustomerList.EmployerTelephone;
+                customer.EmployerAddress = objCustomerProfile.CustomerList.EmployerAddress;
+                customer.Income = objCustomerProfile.CustomerList.Income;
+                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.CustomerId), customer);
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario
-                    GetExecutionMessages(inResponse, true, $"{customer.firstName} {customer.lastName}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{customer.FirstName} {customer.LastName}", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
 
@@ -852,7 +902,7 @@ namespace CBS.BusinessService.CustomerManagement
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(customer, false, customer.firstName, MessagesResults.Failed,
+                    GetExecutionMessages(customer, false, customer.FirstName, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, null);
 
                 }

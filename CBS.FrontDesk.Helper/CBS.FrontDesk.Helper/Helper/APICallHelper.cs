@@ -77,11 +77,25 @@
         public static string Get_Update_Delete_ManagementFeeParameter = "/api/v1/ManagementFeeParameter/{0}";
         public static string GetAllManagementFeeParameter = "/api/v1/ManagementFeeParameter";
         public static string CreateManagementFeeParameter = "/api/v1/ManagementFeeParameter";
+        //Get_Update_Delete_WithdrawalNotification
+        public static string Get_Update_Delete_WithdrawalNotification = "/api/v1/WithdrawalNotification/{0}";
+        public static string GetAllWithdrawalNotification = "/api/v1/WithdrawalNotification";
+        public static string CreateWithdrawalNotification = "/api/v1/WithdrawalNotification";
+        public static string GetAllWithdrawalNotificationByCustomerId = "/api/v1/WithdrawalNotification/GetAllWithdrawalNotificationByCustomerId/{0}";
+        public static string WithdrawalNotificationValidateNotification = "/api/v1/WithdrawalNotification/ValidateNotification/{0}";
+        public static string PayinSavingWithdrawalNotification = "/api/v1/WithdrawalNotification/CashDeskWithdrawalNotificationCommand/{0}";
         //ReopenFeeParameter
         public static string Get_Update_Delete_ReopenFeeParameter = "/api/v1/ReopenFeeParameter/{0}";
         public static string GetAllReopenFeeParameter = "/api/v1/ReopenFeeParameter";
         public static string CreateReopenFeeParameter = "/api/v1/ReopenFeeParameter";
-
+        //ChargesWaived
+        public static string Get_Update_Delete_ChargesWaived = "/api/v1/ChargesWaived/{0}";
+        public static string GetAllChargesWaived = "/api/v1/ChargesWaived";
+        public static string CreateChargesWaived = "/api/v1/ChargesWaived";
+        //SysConfiguration
+        public static string Get_Update_Delete_SysConfiguration = "/api/v1/Config/{0}";
+        public static string CreateSysConfiguration = "/api/v1/Config";
+        public static string GetAllSysConfiguration = "/api/v1/Configs";
         //Customer
         ///api/v1/Customers/{BranchId}
         public static string CreateIndividualProfile = "/api/v1/Customer";
@@ -93,7 +107,7 @@
         public static string UploadCustomerDocument = "/api/v1/uploadCustomerDocuments";
         public static string GetCustomerDefaultEnums = "/api/v1/SubscriptionAggregates/GetAll";
         public static string CreateMembershipNextOfKing = "/api/v1/MembershipNextOfKings";
-        public static string CreateCardSignatureSpecimenDetails = "/api/v1/CardSignatureSpecimenDetails";
+        public static string CreateCardSignatureSpecimen = "/api/v1/CardSignatureSpecimen";
 
         public static string ResetPin = "/api/v1/Customer/Pin/Reset/{0}";
 
@@ -101,12 +115,28 @@
         public static string CreateQuestion = "/api/v1/CreateQuestion";
         public static string GetAllQuestions = "/api/v1/Questions";
 
+        //GroupType
+        public static string Get_Update_Delete_GroupType = "/api/v1/GroupType/{0}";
+        public static string CreateGroupType = "/api/v1/AddGroupType";
+        public static string GetAllGroupTypes = "/api/v1/GroupTypes";
+
+        //Group
+        public static string Get_Update_Delete_Group = "/api/v1/Group/{0}";
+        public static string CreateGroup = "/api/v1/Group/Add";
+        public static string GetAllGroups = "/api/v1/Groups";
+
+        //GroupMembers
+        public static string RemoveMemberFromGroup = "/api/v1/GroupCustomer/{0}";
+        public static string AddMemberToGroup = "/api/v1/GroupCustomer/Add";
+        public static string GetAllGroupMembers = "/api/v1/GetGroupCustomersByGroupId/{0}";
+
         //Saving
         public static string GetSavingProducts = "/api/v1/SavingProduct";
         public static string GetCustomerBalance = "/api/v1/Account/Balance/Customer/{0}";
         public static string UpdateIndividualProfile = "/api/v1/Customer/{0}";
         public static string ActivateOrDiactivateCustomer = "/api/v1/Customer/ActivateOrDis-activate";
-        
+        public static string GetAccountBalanceByAccountNumber = "/api/v1/Account/AccountNumber/{0}";
+
         public static string GetCustomerAccounts = "/api/v1/Account/Customer/{0}";
         public static string InitialDeposit = "/api/v1/Transaction/Initiate/{0}";
         public static string GetAllAccountsByBranchIdQuery = "/api/v1/Account/GetAllAccountsByBranchIdQuery/{0}";
@@ -127,7 +157,8 @@
         public static string GetTransactionHistoryByAccountNumber = "/api/v1/Transaction/AccountNumber/{0}";
         public static string GetTransactionHistoryByCustomerNumber = "/api/v1/Transaction/Customer/{0}";
         public static string GetAllTransactionsByDatesAndCustomerIDQuery = "/api/v1/Transaction/GetAllTransactionsByDatesAndCustomerIDQuery";
-        //
+        public static string AccountMigration = "/api/v1/Account/AccountMigration";
+        
         public static string GetAllTransactions = "/api/v1/Transaction";
         public static string GetTransaction = "/api/v1/Transaction/{0}";
         //Teller
@@ -163,7 +194,10 @@
         public static string Get_Update_Delete_Teller = "/api/v1/Teller/{0}";
         public static string GetAllTeller = "/api/v1/Teller";
         public static string CreateTeller = "/api/v1/Teller";
-
+        //OtherTransaction
+        public static string Get_Update_Delete_OtherTransaction = "/api/v1/OtherTransaction/{0}";
+        public static string GetAllOtherTransaction = "/api/v1/OtherTransaction";
+        public static string CreateOtherTransaction = "/api/v1/OtherTransaction";
         //SavingProduct
         public static string Get_Update_Delete_SavingProduct = "/api/v1/SavingProduct/{0}";
         public static string GetAllSavingProducts = "/api/v1/SavingProduct";
@@ -294,9 +328,9 @@
         public static string GetAllTax = "/api/v1/Taxs";
         public static string CreateTax = "/api/v1/Tax";
         //LoanOtherFee
-        public static string Get_Update_Delete_LoanOtherFee = "/api/v1/LoanOtherFee/{0}";
-        public static string GetAllLoanOtherFee = "/api/v1/LoanOtherFees";
-        public static string CreateLoanOtherFee = "/api/v1/LoanOtherFee";
+        public static string Get_Update_Delete_FeeRange = "/api/v1/FeeRange/{0}";
+        public static string GetAllFeeRange = "/api/v1/FeeRanges";
+        public static string CreateFeeRange = "/api/v1/FeeRange";
         //Collateral
         public static string Get_Update_Delete_Collateral = "/api/v1/Collateral/{0}";
         public static string GetAllCollateral = "/api/v1/Collaterals";
@@ -361,6 +395,14 @@
         public static string Get_Update_Delete_Fee = "/api/v1/Fee/{0}";
         public static string GetAllFee = "/api/v1/Fees";
         public static string CreateFee = "/api/v1/Fee";
+        //FeePolicy
+        public static string Get_Update_Delete_FeePolicy = "/api/v1/FeePolicy/{0}";
+        public static string GetAllFeePolicy = "/api/v1/FeePolicys";
+        public static string CreateFeePolicy = "/api/v1/FeePolicy";
+        //SavingProductFee
+        public static string Get_Update_Delete_SavingProductFee = "/api/v1/SavingProductFee/{0}";
+        public static string GetAllSavingProductFee = "/api/v1/SavingProductFees";
+        public static string CreateSavingProductFee = "/api/v1/SavingProductFee";
         //CustomerLoanAccount
         public static string Get_Update_Delete_CustomerLoanAccount = "/api/v1/CustomerLoanAccount/{0}";
         public static string GetAllCustomerLoanAccount = "/api/v1/CustomerLoanAccounts";
@@ -371,9 +413,9 @@
         public static string CreateAlertProfile = "/api/v1/AlertProfile";
 
 
-
-        //Accounting Roles
+        //Accounting Roles and Event
         public static string GetAllAccountingRules = "/api/v1/AccountingRules";
+        public static string GetAllOperationServicesAccountingRuleEntryQuery = "/api/v1/AccountingEntry/OperationServicesAccountingRuleEntryQuery/{0}";
         //
         //OperationEvent
         //Get,Update,Delete OperationEvent By Id
@@ -449,7 +491,7 @@
         public static string Get_Update_Delete_ChartOfAccount = "/api/v1/ChartOfAccount/{0}";
         public static string Get_ChartOfAccount_By_AccountNumber = "/api/v1/ChartOfAccount/GetChartOfAccountByAccountNumber/{0}";
         //Get All ChartOfAccount
-        public static string GetAllChartOfAccount = "/api/v1/ChartOfAccounts";
+        public static string GetAllChartOfAccount = "/api/v1/ChartOfAccountManagementPosition/GetAllChartOfAccounts";
         public static string GetOperationEventAttributes = "/api/v1/AccountType/GetOperationEventAttributes/{0}";
         public static string GetAllOperationEventAttributes = "/api/v1/OperationEventAttributes";
         ///api/v1/OperationEventAttributes

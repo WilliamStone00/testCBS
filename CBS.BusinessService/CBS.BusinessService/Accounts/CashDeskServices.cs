@@ -20,6 +20,7 @@ using System.Web;
 using CBS.BusinessService.UserManagement;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -42,7 +43,7 @@ namespace CBS.BusinessService.Accounts
             _loanServices = loanServices;
         }
 
- 
+
 
 
 
@@ -80,17 +81,17 @@ namespace CBS.BusinessService.Accounts
         {
             return new CustomerAccountDto
             {
-                customerName = $"{a.firstName} {a.lastName}",
+                customerName = $"{a.FirstName} {a.LastName}",
                 status = caAccount.status,
-                phone = a.phone,
-                customerId = a.customerId,
+                phone = a.Phone,
+                customerId = a.CustomerId,
                 accountNumber = caAccount.accountNumber,
                 accountId = caAccount.id,
                 productId = caAccount.productId,
-                productName = caAccount.product.name,
+                productName = caAccount.product.Name,
                 BranchId = caAccount.branchId,
                 BranchName = b.Name,
-                customerCode = a.customerCode,
+                customerCode = a.CustomerCode,
                 createdDate = caAccount.createdDate.ToString(),
             };
         }
@@ -124,8 +125,8 @@ namespace CBS.BusinessService.Accounts
                     AccountNumber = t.AccountNumber,
                     AccountType = t.Account.AccountType,
                     Amount = t.OriginalDepositAmount,
-                    Telephone = c.phone,
-                    Address = c.address,
+                    Telephone = c.Phone,
+                    Address = c.Address,
                     Charges = t.Fee,
                     TransactionDate = t.CreatedDate,
                     Note500 = t.currencyNote.note500,
@@ -156,8 +157,8 @@ namespace CBS.BusinessService.Accounts
                     Credit = t.Credit,
                     Debit = t.Debit,
                     Balance = t.Balance,
-                    CustomerName = c.firstName + " " + c.lastName,
-                    Fee = t.OriginalDepositAmount-t.Amount,
+                    CustomerName = c.FirstName + " " + c.LastName,
+                    Fee = t.OriginalDepositAmount - t.Amount,
                     Note = t.Note,
                     OperationType = t.OperationType,
                     PreviousBalance = t.PreviousBalance,
@@ -181,16 +182,16 @@ namespace CBS.BusinessService.Accounts
                     InterBrachOperation = t.IsInterBrachOperation ? "YES" : "NO",
                     Logo = b.Bank.LogoUrl,
                     Operation = t.Operation,
-                    ProductName = t.Account.Product.name,
+                    ProductName = t.Account.Product.Name,
                     RecieverName = "",
                     SenderName = "",
                     RecievingBranch = "",
                     SendingBranch = "",
                     SourceBranchCommission = t.SourceBranchCommission,
                     SourceType = t.SourceType,
-                    Status = t.Status, 
-                    ReceiptTitle=t.ReceiptTitle,
-                    BarCode = BarCodeHelper.GenerateBarcodeImage($"{c.customerId}-{t.TransactionReference}-{t.OriginalDepositAmount}"),
+                    Status = t.Status,
+                    ReceiptTitle = t.ReceiptTitle,
+                    BarCode = BarCodeHelper.GenerateBarcodeImage($"{c.CustomerId}-{t.TransactionReference}-{t.OriginalDepositAmount}"),
 
                 };
                 return rpt;
@@ -232,11 +233,16 @@ namespace CBS.BusinessService.Accounts
             }
             return null;
         }
-
-        public async Task<ExecutionMessages> BulkDeposi(List<BulkDeposit> bulkDeposits)
+        public static List<BulkDeposit> FilterByAmountGreaterThanZero(List<BulkDeposit> deposits)
+        {
+            return deposits.Where(deposit => deposit.Amount > 0 || deposit.Fee > 0).ToList();
+        }
+        public async Task<ExecutionMessages> BulkDeposi(List<BulkDeposit> bulkDeposits1)
         {
             try
             {
+                var bulkDeposits = FilterByAmountGreaterThanZero(bulkDeposits1);
+
                 if (bulkDeposits.FirstOrDefault().OperationType == "Withdrawal")
                 {
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits };
@@ -262,9 +268,35 @@ namespace CBS.BusinessService.Accounts
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }
+                //SavingWithdrawalFormFee
                 else if (bulkDeposits.FirstOrDefault().OperationType == "Loan")
                 {
 
+                }
+                else if (bulkDeposits.FirstOrDefault().OperationType == "SavingWithdrawalFormFee")
+                {
+                    var cash = new CashDeskWithdrawalNotificationCommand { Id = bulkDeposits.FirstOrDefault().AccountNumber };
+                    var response = await _transactionApiHelper.PutAsync<ServiceResponse<TransactionHistory>>(string.Format(APICallHelper.PayinSavingWithdrawalNotification, cash.Id), cash);
+                    if (response.ApiResponseData != null)
+                    {
+                        var transaction = response.ApiResponseData.Data;
+                        Branch branch = RetrieveBranchFromSession();
+                        IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
+                        User user = await RetrieveUserFromSession(transaction.Teller.inUsedByUserId);
+                        var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
+                        var rptSource = new List<TransactionReportDS>();
+                        rptSource.Add(rpt);
+                        HttpContext.Current.Session["rptSource"] = rptSource;
+                        GetExecutionMessages(response, true, $"Deposit", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(null, false, $"Bulk deposit", MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "CashIn")
                 {
@@ -308,6 +340,51 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
+        public async Task<CashDesk> GetOtherCashDeskTransactions()
+        {
+            try
+            {
+
+                var Accounts = new List<CustomerAccount> { };
+                var customer = new IndividualProfile { CustomerId = "N/A", name = "None Member" };
+                var branch = await _branchServices.GetBranch(GetBranchID());
+                var branchMembers = await _individualProfileServices.GetAllIndividualProfileLight();
+                decimal amountRequested = 0;
+                var cashDesk = new CashDesk { Branch = branch, Customers = branchMembers.ToList(), Accounts = Accounts, BulkDeposit = new BulkDeposit { Amount = amountRequested }, BulkDeposits = BuidObject(Accounts), OtherTransaction = new OtherTransaction(), Customer = customer, LoanId = null, CustomerId = customer.CustomerId };
+                return cashDesk;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<CashDesk> GetAccountByAccountNumberSearch(string customerId)
+        {
+            try
+            {
+
+                var cusResponseObject = await GetCustomerAccounts(customerId);
+                if (cusResponseObject.Any())
+                {
+                    var Accounts = cusResponseObject;
+                    var customer = await GetCustomer(customerId);
+                    var branch = await _branchServices.GetBranch(customer.BranchId);
+                    decimal amountRequested = 0;
+                    customer.name = $"{customer.FirstName} {customer.LastName}";
+                    var cashDesk = new CashDesk { Branch = branch, Accounts = Accounts, BulkDeposit = new BulkDeposit { Amount = amountRequested }, BulkDeposits = BuidObject(Accounts), Customer = customer, LoanId = null, CustomerId = customerId };
+                    return cashDesk;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+
 
         public async Task<CashDesk> GetAccountByAccountNumberSearch(string customerId, string path)
         {
@@ -319,15 +396,26 @@ namespace CBS.BusinessService.Accounts
                 {
                     var Accounts = cusResponseObject;
                     var customer = await GetCustomer(customerId);
-                    var branch = await _branchServices.GetBranch(customer.branchId);
-                    var loans=new List<Loan>();
-                    if (path== "repayment" || path == "F5")
+                    var branch = await _branchServices.GetBranch(customer.BranchId);
+                    var loans = new List<Loan>();
+                    var WithdrawalNotifications = new List<WithdrawalNotification>();
+                    decimal amountRequested = 0;
+                    if (path == "repayment" || path == "F5")
                     {
-                        loans = (from a in await _loanServices.GetLoanByCustomerID(customer.customerId) select a).ToList();
-                        
+                        loans = (from a in await _loanServices.GetLoanByCustomerID(customer.CustomerId) select a).ToList();
+
                     }
-                    customer.name = $"{customer.firstName} {customer.lastName}";
-                    var cashDesk = new CashDesk { Branch = branch, Accounts = Accounts, BulkDeposit = new BulkDeposit(), BulkDeposits = BuidObject(Accounts), Customer = customer, LoanId = null, CustomerId = customerId, Loans = loans.ToList() };
+                    else if (path == "withdrawalnotification")
+                    {
+                        WithdrawalNotifications = Accounts.Where(x => x.accountType == "Saving").FirstOrDefault().WithdrawalNotifications.Where(x => x.IsNotificationPaid == false).ToList();
+                    }
+                    else if (path == "cashout")
+                    {
+                        amountRequested = Accounts.Where(x => x.accountType == "Saving").FirstOrDefault().WithdrawalNotifications.Where(x => x.IsNotificationPaid).FirstOrDefault().AmountRequired;
+
+                    }
+                    customer.name = $"{customer.FirstName} {customer.LastName}";
+                    var cashDesk = new CashDesk { Branch = branch, Accounts = Accounts, BulkDeposit = new BulkDeposit { Amount = amountRequested }, BulkDeposits = BuidObject(Accounts), Customer = customer, LoanId = null, CustomerId = customerId, Loans = loans.ToList(), WithdrawalNotifications = WithdrawalNotifications };
                     return cashDesk;
                 }
 
@@ -349,8 +437,8 @@ namespace CBS.BusinessService.Accounts
                 if (cusResponseObject != null)
                 {
                     var customer = cusResponseObject;
-                    var branch = await _branchServices.GetBranch(customer.branchId);
-                    customer.name = $"{customer.firstName} {customer.lastName}";
+                    var branch = await _branchServices.GetBranch(customer.BranchId);
+                    customer.name = $"{customer.FirstName} {customer.LastName}";
                     var cashDesk = new CashDesk { Branch = branch, Accounts = null, BulkDeposit = new BulkDeposit(), BulkDeposits = new List<BulkDeposit>(), Customer = customer, LoanId = null, CustomerId = customerId };
                     return cashDesk;
                 }
@@ -387,22 +475,48 @@ namespace CBS.BusinessService.Accounts
 
         public List<BulkDeposit> BuidObject(List<CustomerAccount> accounts)
         {
-            return accounts.Select(a => new BulkDeposit
+            if (accounts.Any())
             {
-                AccountNumber = a.accountNumber,
-                AccountType = a.product.name,
-                Amount = 0,
-                Balance = a.balance,
-                currencyNotes = new CurrencyNotes(),
-                CustomerId = a.customerId,
-                Fee = 0,
-                Interest = 0,
-                LoanId = null,
-                Penalty = 0,
-                Total = 0
-            }).ToList();
-        }
+                var selected = accounts.Select(a => new BulkDeposit
+                {
+                    AccountNumber = a.accountNumber,
+                    AccountType = a == null ? "N/A" : a.product.Name,
+                    Amount = 0,
+                    Balance = a == null ? 0 : a.balance,
+                    currencyNotes = new CurrencyNotes(),
+                    CustomerId = a.customerId,
+                    Fee = 0,
+                    Interest = 0,
+                    LoanId = null,
+                    Penalty = 0,
+                    Total = 0
+                }).ToList();
+                return selected;
+            }
+            else
+            {
+                // Create a default BulkDeposit object
+                var defaultBulkDeposit = new BulkDeposit
+                {
+                    AccountNumber = "N/A",
+                    AccountType = "N/A",
+                    Amount = 0,
+                    Balance = 0,
+                    currencyNotes = new CurrencyNotes(),
+                    CustomerId = "N/A",
+                    Fee = 0,
+                    Interest = 0,
+                    LoanId = null,
+                    Penalty = 0,
+                    Total = 0
+                };
 
+                // Return a list containing the default BulkDeposit object
+                return new List<BulkDeposit> { defaultBulkDeposit };
+
+            }
+
+        }
     }
 
 }

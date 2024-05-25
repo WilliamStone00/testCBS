@@ -1,5 +1,6 @@
 ﻿using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Service;
+using CBS.FrontDesk.UI.Filters;
 using Newtonsoft.Json;
 using System;
 using System.Web;
@@ -21,6 +22,27 @@ namespace CBS.FrontDesk.UI
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             GlobalFilters.Filters.Add(new AuthorizeAttribute());
             UnityConfig.RegisterComponents();
+            MvcHandler.DisableMvcResponseHeader = true;
+            GlobalFilters.Filters.Add(new UserAuditFilter()); // Register UserAuditFilter
+
+            //// Build Autofac container
+            //var builder = new ContainerBuilder();
+
+            //// Register your services
+            //builder.RegisterType<MemberAccountJob>().AsSelf();
+            //builder.RegisterType<SavingProductServices>().AsSelf();
+            //builder.RegisterType<BranchServices>().AsSelf();
+            //builder.RegisterType<ApiCallerHelper>().AsSelf();
+
+            //// Register controllers in the MVC application
+            //builder.RegisterControllers(Assembly.GetExecutingAssembly());
+
+            //// Set the dependency resolver for MVC
+            //var container = builder.Build();
+            //DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+
+            //// Set up Hangfire to use AutofacJobActivator
+            //GlobalConfiguration.Configuration.UseAutofacActivator(container);
         }
 
         protected void Application_EndRequest()
@@ -30,6 +52,17 @@ namespace CBS.FrontDesk.UI
                 Context.Response.StatusCode = 401;
                 Context.Response.End();
             }
+        }
+        protected void Application_PreSendRequestHeaders()
+        {
+            Response.Headers.Remove("Server");
+            Response.Headers.Remove("X-AspNet-Version");
+            Response.Headers.Add("X-Content-Type-Options", "nosniff");
+            Response.Headers.Add("X-Frame-Options", "DENY");
+            Response.Headers.Add("X-XSS-Protection", "1; mode=block");
+            //Response.Headers.Add("Content-Security-Policy", "default-src 'self'; script-src 'self';");
+            Response.Headers.Add("Referrer-Policy", "no-referrer");
+
         }
         protected void Application_Error(object sender, EventArgs e)
         {
@@ -47,39 +80,35 @@ namespace CBS.FrontDesk.UI
                 switch (errorCode)
                 {
                     case 400:
-                        Response.Redirect("~/Error/BadRequest");
+                        Response.Redirect("~/Error/BadRequest?message=" + httpException.Message);
                         break;
                     case 401:
-                        Response.Redirect("~/Error/Unauthorized");
+                        Response.Redirect("~/Error/Unauthorized?message=" + httpException.Message);
                         break;
                     case 403:
-                        Response.Redirect("~/Error/Forbidden");
+                        Response.Redirect("~/Error/Forbidden?message=" + httpException.Message);
                         break;
                     case 404:
-                        Response.Redirect("~/Error/NotFound");
+                        Response.Redirect("~/Error/NotFound?message=" + httpException.Message);
                         break;
                     case 500:
-                        Response.Redirect("~/Error/InternalServer");
+                        Response.Redirect("~/Error/InternalServer?message=" + httpException.Message);
                         break;
                     case 503:
-                        Response.Redirect("~/Error/ServiceUnavailable");
-                        break;
-                    case 322:
-                        Response.Redirect("~/Error/TemporalRedirect");
+                        Response.Redirect("~/Error/ServiceUnavailable?message=" + httpException.Message);
                         break;
                     // Add more cases for other error codes if needed
                     default:
-                        Response.Redirect("~/Error");
+                        Response.Redirect("~/Error?message=" + httpException.Message);
                         break;
                 }
             }
             else
             {
                 // Redirect to a generic error page for other types of exceptions
-                Response.Redirect("~/Error");
+                Response.Redirect("~/Error?message=" + exception.Message);
             }
         }
-
 
 
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)

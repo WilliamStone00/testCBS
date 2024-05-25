@@ -25,6 +25,9 @@ using System.Web.Mvc;
 using System.Web;
 using CBS.BusinessService.UserManagement;
 using CBS.BusinessService.Config;
+using System.IO;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.EMMA;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -47,6 +50,7 @@ namespace CBS.BusinessService.Accounts
             _branchServices = branchServices;
             _BranchConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
         }
+        
         public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string path)
         {
             Func<Task<List<CustomerAccountDto>>> getDataFunc = async () => (await GetCustomersAccounts(path)).ToList();
@@ -72,8 +76,8 @@ namespace CBS.BusinessService.Accounts
                 var branches = branchesx.ApiResponseData.Data;
                 // Join individual profiles with accounts and map to DTOs
                 var data = (from a in individualProfiles.ApiResponseData.Data
-                            join ca in accounts.ApiResponseData.Data on a.customerId equals ca.customerId
-                            join b in branches on a.branchId equals b.Id
+                            join ca in accounts.ApiResponseData.Data on a.CustomerId equals ca.customerId
+                            join b in branches on a.BranchId equals b.Id
                             select MapCustomersToAccounts(a, ca, b)).ToList();
 
                 // Filter data based on the 'path' parameter
@@ -87,7 +91,164 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
+        public async Task<ExecutionMessages> MakeInitialDeposit(AccountDepositRequest model)
+        {
+            try
+            {
+                model.bankId = GetBankID();
+                model.branchId = GetBranchID();
+                model.depositType = "CASH_INITIAL_DEPOSIT";
+                model.amount = ComputeDenomination(model.currencyNotes);
+                if (model.amount <= 0)
+                {
+                    GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered be greater than 0");
+                    return ExecutionMessage;
+                }
+                var response = await _transactionApiHelper.PutAsync<ServiceResponse<TransactionHistory>>(string.Format(APICallHelper.InitialDeposit, model.accountNumber), model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{model.amount}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
 
+                // Make an API call to create an individual profile
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task UploadMembersAccount(AccountMigrationCommand accountMigrationCommand)
+        {
+            var branch = await _branchServices.GetBranch(accountMigrationCommand.BranchId);
+
+            var cusResponseObject = await _transactionApiHelper.PostAsync<ResponseObject<bool>>(APICallHelper.AccountMigration, accountMigrationCommand);
+            if (cusResponseObject.ApiResponseData != null && cusResponseObject.IsSuccess)
+            {
+                GetExecutionMessages(cusResponseObject.ApiResponseData.Data, true, $"{branch.Name} Members account migration", MessagesResults.Success,
+                    ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, cusResponseObject.Message);
+            }
+            else
+            {
+                GetExecutionMessages(accountMigrationCommand, false, $"{branch.Name} Members account migration", MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, cusResponseObject.Message);
+            }
+
+
+        }
+
+
+        public async Task<AccountMigrationCommand> ExtractFile(MemberAccountUpload model)
+        {
+            if (model.File != null && model.File.ContentLength > 0)
+            {
+                // Check if the file is an Excel file
+                if (Path.GetExtension(model.File.FileName).Equals(".xls") || Path.GetExtension(model.File.FileName).Equals(".xlsx"))
+                {
+                    try
+                    {
+                        using (var stream = model.File.InputStream)
+                        {
+                            // Call the method to read the Excel file and convert it to a list of Data objects
+                            var dataList = ReadExcelFile(stream);
+                            var branch = await _branchServices.GetBranch(model.BranchId);
+                            var accountMigration = new AccountMigrationCommand { BranchId = branch.Id, BranchCode = branch.BranchCode, BankId = branch.Bank.Id, Accounts = dataList, ProductId = model.ProductId };
+                            return accountMigration;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the exception
+                        // Handle the error gracefully
+                        throw new InvalidOperationException("An error occurred while extracting data from the file.", ex);
+                    }
+                }
+                else
+                {
+                    throw new InvalidOperationException("Please upload a valid Excel file.");
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException("No file was uploaded.");
+            }
+        }
+
+
+        //public async Task<ExecutionMessages> UploadMembersAccount(MemberAccountUpload model)
+        //{
+        //    if (model.File != null && model.File.ContentLength > 0)
+        //    {
+        //        // Check if the file is an Excel file
+        //        if (Path.GetExtension(model.File.FileName).Equals(".xls") || Path.GetExtension(model.File.FileName).Equals(".xlsx"))
+        //        {
+        //            using (var stream = model.File.InputStream)
+        //            {
+        //                // Call the method to read the Excel file and convert it to a list of Data objects
+        //                var dataList = ReadExcelFile(stream);
+        //                var branch = await _branchServices.GetBranch(model.BranchId);
+        //                var accountMigration = new AccountMigrationCommand { BranchId = branch.Id, BranchCode = branch.BranchCode, BankId = branch.Bank.Id, Accounts = dataList, ProductId = model.ProductId };
+        //                var cusResponseObject = await _transactionApiHelper.PostAsync<ResponseObject<bool>>(APICallHelper.AccountMigration, accountMigration);
+        //                if (cusResponseObject.ApiResponseData != null && cusResponseObject.IsSuccess)
+        //                {
+        //                    GetExecutionMessages(cusResponseObject.ApiResponseData.Data, true, $"{branch.Name} Members account migration", MessagesResults.Success,
+        //                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, cusResponseObject.Message);
+        //                    return ExecutionMessage;
+        //                }
+        //                // Failed creation
+        //                return GetExecutionMessages(model, false, $"{branch.Name} Members account migration", MessagesResults.Failed,
+        //                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, cusResponseObject.Message);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return GetExecutionMessages(model, false, "Members account migration", MessagesResults.Failed, ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"Please upload a valid Excel file.");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return GetExecutionMessages(model, false, "Members account migration", MessagesResults.Failed, ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "No file was uploaded.");
+
+        //    }
+        //}
+
+        private List<Data> ReadExcelFile(Stream stream)
+        {
+            var dataList = new List<Data>();
+
+            using (var workbook = new XLWorkbook(stream))
+            {
+                var worksheet = workbook.Worksheets.First();
+                var rows = worksheet.RowsUsed().Skip(1); // Skip header row
+
+                foreach (var row in rows)
+                {
+                    var data = new Data
+                    {
+                        CustomerId = row.Cell(1).GetString(),
+                        OpeningBalance = row.Cell(2).GetValue<decimal>()
+                    };
+
+                    dataList.Add(data);
+                }
+            }
+
+            return dataList;
+        }
         public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccounts(string path = null)
         {
             try
@@ -97,12 +258,12 @@ namespace CBS.BusinessService.Accounts
                     // Fetch individual profiles and accounts for head office
                     var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.GetAllIndividualProfile);
                     var accounts = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(APICallHelper.GetAllAccounts);
-                    var branchesx =  await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
-                   var branches = branchesx.ApiResponseData.Data; 
+                    var branchesx = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
+                    var branches = branchesx.ApiResponseData.Data;
                     // Join individual profiles with accounts and map to DTOs
                     var data = (from a in individualProfiles.ApiResponseData.Data
-                                join ca in accounts.ApiResponseData.Data on a.customerId equals ca.customerId
-                                join b in branches on a.branchId equals b.Id
+                                join ca in accounts.ApiResponseData.Data on a.CustomerId equals ca.customerId
+                                join b in branches on a.BranchId equals b.Id
                                 select MapCustomersToAccounts(a, ca, b)).ToList();
 
                     // Filter data based on the 'path' parameter
@@ -117,7 +278,7 @@ namespace CBS.BusinessService.Accounts
 
                     // Join individual profiles with accounts and map to DTOs
                     var data = (from a in individualProfiles.ApiResponseData.Data
-                                join ca in accounts.ApiResponseData.Data on a.customerId equals ca.customerId
+                                join ca in accounts.ApiResponseData.Data on a.CustomerId equals ca.customerId
                                 select MapCustomersToAccounts(a, ca, RetrieveBranchFromSession())).ToList();
 
                     // Filter data based on the 'path' parameter
@@ -254,7 +415,7 @@ namespace CBS.BusinessService.Accounts
                     teller = transaction.Teller?.name ?? "-", // Use null coalescing operator
                     customerReferenceNumber = transaction.Account?.CustomerId ?? "-", // Use null coalescing operator
                     newAmount = transaction.Amount,
-                    productName = transaction.Account?.Product.name ?? "-",
+                    productName = transaction.Account?.Product.Name ?? "-",
                     DestinationBranch = transaction.DestinationBrachId,
                     DestinationShare = transaction.DestinationBranchCommission,
                     SourceShare = transaction.SourceBranchCommission,
@@ -274,7 +435,7 @@ namespace CBS.BusinessService.Accounts
                 var accounts = from a in await GetCustomersAccountsForTransfter()
                                select new StringValues
                                {
-                                   Text = $"{a.accountNumber}-{a.productName}-{a.customerName}",
+                                   Text = $"{a.accountNumber}-{a.productName}-{a.customerName} [{a.BranchName}]",
                                    Value = a.accountNumber,
                                };
                 return accounts;
@@ -285,6 +446,7 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
+        
         public async Task<SavingConfigurationAggregates> GetSavingConfigurationAggregates()
         {
             try
@@ -307,6 +469,19 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<AccountBalance>>(string.Format(APICallHelper.GetCustomerBalance, customerID));
+                return cusResponseObject.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<AccountBalance> GetAccountBalanceByAccountNumber(string accountNumber)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<AccountBalance>>(string.Format(APICallHelper.GetAccountBalanceByAccountNumber, accountNumber));
                 return cusResponseObject.ApiResponseData.Data;
             }
             catch (Exception ex)
@@ -346,7 +521,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var cusResponseObject = await _transactionApiHelper.PostAsync<ResponseObject<List<TransactionHistory>>>(APICallHelper.GetAllTransactionsByDatesAndCustomerIDQuery, printDate);
-                if (cusResponseObject.ApiResponseData!=null)
+                if (cusResponseObject.ApiResponseData != null)
                 {
                     return cusResponseObject.ApiResponseData.Data;
                 }
@@ -388,16 +563,17 @@ namespace CBS.BusinessService.Accounts
         {
             return new CustomerAccountDto
             {
-                customerName = $"{a.firstName} {a.lastName}",
+                customerName = $"{a.FirstName} {a.LastName}",
                 status = caAccount.status,
-                phone = a.phone,
-                customerId = a.customerId,
+                phone = a.Phone,
+                customerId = a.CustomerId,
                 accountNumber = caAccount.accountNumber,
                 accountId = caAccount.id,
                 productId = caAccount.productId,
-                productName = caAccount.product.name,
+                productName = caAccount.product.Name,
                 BranchId = caAccount.branchId,
-                BranchName = b.Name, customerCode=a.customerCode,
+                BranchName = b.Name,
+                customerCode = a.CustomerCode,
                 createdDate = caAccount.createdDate.ToString(),
             };
         }
@@ -454,7 +630,7 @@ namespace CBS.BusinessService.Accounts
                     Credit = t.Credit,
                     Debit = t.Debit,
                     Balance = t.Balance,
-                    CustomerName = c.firstName + " " + c.lastName,
+                    CustomerName = c.FirstName + " " + c.LastName,
                     Fee = t.Fee,
                     Note = t.Note,
                     OperationType = t.OperationType,
@@ -479,7 +655,7 @@ namespace CBS.BusinessService.Accounts
                     InterBrachOperation = t.IsInterBrachOperation ? "YES" : "NO",
                     Logo = b.Bank.LogoUrl,
                     Operation = t.Operation,
-                    ProductName = t.Account.Product?.name ?? "N/A",
+                    ProductName = t.Account.Product?.Name ?? "N/A",
                     RecieverName = "",
                     SenderName = "",
                     RecievingBranch = "",
@@ -509,7 +685,7 @@ namespace CBS.BusinessService.Accounts
 
                 foreach (TransactionHistory t in transactions)
                 {
-                    if (t.currencyNotes==null)
+                    if (t.currencyNotes == null)
                     {
                         t.currencyNote = new CurrencyNotes();
                     }
@@ -550,10 +726,11 @@ namespace CBS.BusinessService.Accounts
                         Coin10 = t.currencyNote.coin10,
                         Coin25 = t.currencyNote.coin25,
                         Coin50 = t.currencyNote.coin50,
-                        Credit = t.Credit, Charges=t.Fee,
+                        Credit = t.Credit,
+                        Charges = t.Fee,
                         Debit = t.Debit,
                         Balance = t.Balance,
-                        CustomerName = c.firstName + " " + c.lastName,
+                        CustomerName = c.FirstName + " " + c.LastName,
                         Fee = t.Fee,
                         Note = t.Note,
                         OperationType = t.OperationType,
@@ -578,7 +755,7 @@ namespace CBS.BusinessService.Accounts
                         InterBrachOperation = t.IsInterBrachOperation ? "YES" : "NO",
                         Logo = b.Bank.LogoUrl,
                         Operation = t.Operation,
-                        ProductName = t.Account.Product.name,
+                        ProductName = t.Account.Product.Name,
                         RecieverName = "",
                         SenderName = "",
                         RecievingBranch = "",
@@ -592,7 +769,7 @@ namespace CBS.BusinessService.Accounts
 
                     reports.Add(rpt);
                 }
-                results=reports.OrderBy(t => t.TransactionDate).ToList();
+                results = reports.OrderBy(t => t.TransactionDate).ToList();
                 return results;
             }
             catch (Exception ex)
@@ -601,46 +778,6 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
-        public async Task<ExecutionMessages> MakeInitialDeposit(AccountDepositRequest model)
-        {
-            try
-            {
-                model.bankId = GetBankID();
-                model.branchId = GetBranchID();
-                model.depositType = "CASH_INITIAL_DEPOSIT";
-                model.amount = ComputeDenomination(model.currencyNotes);
-                if (model.amount <= 0)
-                {
-                    GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered be greater than 0");
-                    return ExecutionMessage;
-                }
-                var response = await _transactionApiHelper.PutAsync<ServiceResponse<TransactionHistory>>(string.Format(APICallHelper.InitialDeposit, model.accountNumber), model);
-                if (response.IsSuccess)
-                {
-                    // Successful creation
-                    GetExecutionMessages(response, true, $"{model.amount}", MessagesResults.Success,
-                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
-                    return ExecutionMessage;
-                }
-                else
-                {
-                    // Failed creation
-                    GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
-                }
-
-                // Make an API call to create an individual profile
-
-            }
-            catch (Exception ex)
-            {
-                // Log and handle exception
-                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
-                    SystemMessageStatus.Failed.ToString(), ex);
-            }
-            return ExecutionMessage;
-        }
 
         public Branch RetrieveBranchFromSession()
         {
@@ -961,7 +1098,7 @@ namespace CBS.BusinessService.Accounts
 
                         var customer = await GetCustomer(cusResponseObject.ApiResponseData.Data.CustomerId);
                         cusResponseObject.ApiResponseData.Data.Customer = customer;
-                        customer.name = $"{customer.firstName} {customer.lastName}";
+                        customer.name = $"{customer.FirstName} {customer.LastName}";
                         var balance = await GetCustomerBalance(cusResponseObject.ApiResponseData.Data.CustomerId);
                         var Accounts = await GetCustomerAccounts(cusResponseObject.ApiResponseData.Data.CustomerId);
                         var transactionHistories = await GetCustomerTransactionsByAccountNumber(cusResponseObject.ApiResponseData.Data.AccountNumber);
@@ -1007,6 +1144,109 @@ namespace CBS.BusinessService.Accounts
                 // Log and handle exception
                 throw ex;
             }
+        }
+
+
+    }
+
+
+    public class MemberAccountJob : BaseService, IMemberAccountJob
+    {
+        private readonly ApiCallerHelper _transactionApiHelper;
+        private readonly ApiCallerHelper _BranchConfigApiHelper;
+        private readonly BranchServices _branchServices;
+        // Parameterless constructor required by Hangfire
+        public MemberAccountJob()
+        {
+            //_transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
+            //_branchServices = new BranchServices();
+            //_BranchConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
+
+
+            _transactionApiHelper = new ApiCallerHelper("https://localhost:7113/");
+            _branchServices = new BranchServices();
+
+        }
+
+        public async Task<AccountMigrationCommand> ExtractFile(MemberAccountUpload model)
+        {
+            if (model.File != null && model.File.ContentLength > 0)
+            {
+                // Check if the file is an Excel file
+                if (Path.GetExtension(model.File.FileName).Equals(".xls") || Path.GetExtension(model.File.FileName).Equals(".xlsx"))
+                {
+                    try
+                    {
+                        using (var stream = model.File.InputStream)
+                        {
+                            // Call the method to read the Excel file and convert it to a list of Data objects
+                            var dataList = ReadExcelFile(stream);
+                            var branch = await _branchServices.GetBranch(model.BranchId);
+                            var accountMigration = new AccountMigrationCommand { BranchId = branch.Id, BranchCode = branch.BranchCode, BankId = branch.Bank.Id, Accounts = dataList, ProductId = model.ProductId };
+                            return accountMigration;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the exception
+                        // Handle the error gracefully
+                        throw new InvalidOperationException("An error occurred while extracting data from the file.", ex);
+                    }
+                }
+                else
+                {
+                    throw new InvalidOperationException("Please upload a valid Excel file.");
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException("No file was uploaded.");
+            }
+        }
+
+        public async Task UploadMembersAccount(AccountMigrationCommand accountMigrationCommand)
+        {
+            var branch = await _branchServices.GetBranch(accountMigrationCommand.BranchId);
+
+            var cusResponseObject = await _transactionApiHelper.PostAsync<ResponseObject<bool>>(APICallHelper.AccountMigration, accountMigrationCommand);
+            if (cusResponseObject.ApiResponseData != null && cusResponseObject.IsSuccess)
+            {
+                GetExecutionMessages(cusResponseObject.ApiResponseData.Data, true, $"{branch.Name} Members account migration", MessagesResults.Success,
+                    ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, cusResponseObject.Message);
+            }
+            else
+            {
+                GetExecutionMessages(accountMigrationCommand, false, $"{branch.Name} Members account migration", MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, cusResponseObject.Message);
+            }
+
+
+        }
+
+
+
+        private List<Data> ReadExcelFile(Stream stream)
+        {
+            var dataList = new List<Data>();
+
+            using (var workbook = new XLWorkbook(stream))
+            {
+                var worksheet = workbook.Worksheets.First();
+                var rows = worksheet.RowsUsed().Skip(1); // Skip header row
+
+                foreach (var row in rows)
+                {
+                    var data = new Data
+                    {
+                        CustomerId = row.Cell(1).GetString(),
+                        OpeningBalance = row.Cell(2).GetValue<decimal>()
+                    };
+
+                    dataList.Add(data);
+                }
+            }
+
+            return dataList;
         }
 
 

@@ -23,32 +23,43 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
 
             if (!string.IsNullOrEmpty(searchValue))
             {
-                data = data.Where(m => m.GetType().GetProperties().Any(prop =>prop.GetValue(m).ToString().ToLower().Contains(searchValue) == true)).ToList();
+                data = data.Where(m => m.GetType().GetProperties()
+                    .Any(prop => prop.PropertyType == typeof(string) &&
+                                  prop.GetValue(m).ToString().ToLower().Contains(searchValue.ToLower())))
+                    .ToList();
             }
 
             dataTableOptions.recordsTotal = data.Count;
 
             // Sorting
-            if (!string.IsNullOrEmpty(dataTableOptions.sortColumnName))
+            if (dataTableOptions.sortColumnName.HasValue)
             {
-                var property = typeof(T).GetProperty(dataTableOptions.sortColumnName);
-                if (property != null)
+                if (dataTableOptions.sortDirection == "asc")
                 {
-                    if (dataTableOptions.sortDirection == "asc")
-                    {
-                        data = data.OrderBy(x => property.GetValue(x, null)).ToList();
-                    }
-                    else
-                    {
-                        data = data.OrderByDescending(x => property.GetValue(x, null)).ToList();
-                    }
+                    data = data.OrderBy(x => GetPropertyValue(x, dataTableOptions.sortColumnName.Value)).ToList();
+                }
+                else
+                {
+                    data = data.OrderByDescending(x => GetPropertyValue(x, dataTableOptions.sortColumnName.Value)).ToList();
                 }
             }
 
             var dataList = data.Skip(dataTableOptions.skip).Take(dataTableOptions.pageSize).ToList();
             return dataList;
         }
+
+        private static object GetPropertyValue<T>(T obj, int index)
+        {
+            var properties = typeof(T).GetProperties();
+            if (index >= 0 && index < properties.Length)
+            {
+                return properties[index].GetValue(obj);
+            }
+            return null;
+        }
+
     }
+
 
 
 }

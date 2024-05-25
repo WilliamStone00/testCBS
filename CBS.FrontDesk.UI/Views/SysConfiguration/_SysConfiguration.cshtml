@@ -1,0 +1,293 @@
+﻿@model CBS.FrontDesk.Data.Entity.Config.System.SysConfiguration
+
+
+
+
+
+
+<div class="col">
+
+    <div class="row my-4">
+        <div class="accordion" id="collapsibleSection">
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingDeliveryAddress">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDeliveryAddress"
+                            aria-expanded="true"
+                            aria-controls="collapseDeliveryAddress">
+                        Runing Year Profile
+                    </button>
+                </h2>
+                <div id="collapseDeliveryAddress"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        @using (Html.BeginForm("AddOrUpdate", "SysConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        {
+                            <fieldset class="fieldset-custom">
+                                <legend>System Profile</legend>
+                                <div class="row g-4">
+                                    <div class="col-md-9">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                            <label>Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.Value, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Value, "", new { @class = "text-danger" })
+                                            <label>Value</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 75px;" })
+                                            @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                                            <label>Description</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary me-2">update</button>
+                                    @Html.HiddenFor(m => m.Id)
+                                    <input type="hidden" name="ServiceOption" value="profile" id="ServiceOption" />
+                                </div>
+                            </fieldset>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingPaymentMethod3">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePaymentMethod3"
+                            aria-expanded="false"
+                            aria-controls="collapsePaymentMethod3">
+                        Open Or close of system year
+                    </button>
+                </h2>
+                <div id="collapsePaymentMethod3"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingPaymentMethod3"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        @using (Html.BeginForm("AddOrUpdate", "SysConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        {
+                            <fieldset class="fieldset-custom">
+                                <legend>System Year Status</legend>
+                                <div class="row g-4">
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.IsYearOpen, new { @class = "form-check-input" })
+                                            @*@if (Model.IsYearOpen)
+                                            {
+                                                <label class="form-check-label" for="isActive">
+                                                    Year is currently opened. Uncheck to stop the running of the year
+                                                </label>
+                                            }
+                                            else
+                                            {
+                                                <label class="form-check-label" for="isActive">
+                                                    Year is not opened. Check to keep the year open and running.
+                                                </label>
+                                            }*@
+                                            @if (Model.IsYearOpen)
+                                            {
+                                                <span class="status-label running">Running</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="status-label closed">Closed</span>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    @Html.HiddenFor(m => m.Id)
+                                    <input type="hidden" name="ServiceOption" value="close_open_year" id="ServiceOption" />
+                                    @if (Model.IsYearOpen)
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Uncheck to Close the year.</button>
+
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Check to open the year.</button>
+
+                                    }
+                                </div>
+                            </fieldset>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingPaymentMethod5">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePaymentMethod5"
+                            aria-expanded="false"
+                            aria-controls="collapsePaymentMethod5">
+                        Open Or Close Of System Daily Operations
+
+                    </button>
+                </h2>
+                <div id="collapsePaymentMethod5"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingPaymentMethod5"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        @using (Html.BeginForm("AddOrUpdate", "SysConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        {
+                            <fieldset class="fieldset-custom">
+                                <legend>System Daily Status</legend>
+                                <div class="row g-4">
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.IsDayOpen, new { @class = "form-check-input" })
+                                            @*@if (Model.IsDayOpen)
+                                            {
+                                                <label class="form-check-label" for="isActive">
+                                                    Day is currently opened. Uncheck to stop the running of the day
+                                                </label>
+                                            }
+                                            else
+                                            {
+                                                <label class="form-check-label" for="isActive">
+                                                    Day is not opened. Check to keep the day open and running.set_off_days
+                                                </label>
+                                            }*@
+
+                                            @if (Model.IsDayOpen)
+                                            {
+                                                <span class="status-label running">Running</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="status-label closed">Closed</span>
+                                            }
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    @if (Model.IsDayOpen)
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Uncheck to Close the day.</button>
+
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Check to open the day.</button>
+
+                                    }                                   @Html.HiddenFor(m => m.Id)
+
+                                    <input type="hidden" name="ServiceOption" value="close_open_day" id="ServiceOption" />
+                                </div>
+                            </fieldset>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingDeliveryOptions">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDeliveryOptions"
+                            aria-expanded="false"
+                            aria-controls="collapseDeliveryOptions">
+                        Set System Days Off
+
+                    </button>
+                </h2>
+                <div id="collapseDeliveryOptions"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingDeliveryOptions"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        @using (Html.BeginForm("AddOrUpdate", "SysConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        {
+                            <fieldset class="fieldset-custom">
+                                <legend>Set Off Days</legend>
+                                <div class="row g-4">
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.MondayIsHoliday, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">
+                                                Monday
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.TuesDayIsHoliday, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">
+                                                Tuesday
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.MWednessdayIsHoliday, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">
+                                                Wednesday
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.ThursdayIsHoliday, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">
+                                                Thursday
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.FridayIsHoliday, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">
+                                                Friday
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.SaturdayIsHoliday, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">
+                                                Saturday
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.SundayIsHoliday, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">
+                                                Sunday
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary me-2">update</button>
+                                    @Html.HiddenFor(m => m.Id)
+                                    <input type="hidden" name="ServiceOption" value="set_off_days" id="ServiceOption" />
+                                </div>
+                            </fieldset>}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

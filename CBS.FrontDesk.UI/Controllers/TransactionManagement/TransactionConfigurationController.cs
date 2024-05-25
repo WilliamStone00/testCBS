@@ -29,7 +29,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private readonly ReopenFeeParameterServices _reopenFeeParameterServices;
         private readonly CloseFeeParameterServices _closeFeeParameterServices;
         private readonly EntryFeeParameterServices _entryFeeParameterServices;
-        public TransactionConfigurationController(SavingProductServices savingProductServices, ChartOfAccountServicesAnnex accountingServices, TellerServices tellerServices, DepositLimitServices depositLimitServices, TransferLimitServices transferLimitServices, WithdrawalLimitServices withdrawalLimitServices, ManagementFeeParameterServices managementFeeParameterServices = null, ReopenFeeParameterServices reopenFeeParameterServices = null, CloseFeeParameterServices closeFeeParameterServices = null, EntryFeeParameterServices entryFeeParameterServices = null)
+        private readonly OperationFeeServices _operationFeeServices;
+        private readonly SavingProductFeeServices _savingProductFeeServices;
+        public TransactionConfigurationController(SavingProductServices savingProductServices, ChartOfAccountServicesAnnex accountingServices, TellerServices tellerServices, DepositLimitServices depositLimitServices, TransferLimitServices transferLimitServices, WithdrawalLimitServices withdrawalLimitServices, ManagementFeeParameterServices managementFeeParameterServices = null, ReopenFeeParameterServices reopenFeeParameterServices = null, CloseFeeParameterServices closeFeeParameterServices = null, EntryFeeParameterServices entryFeeParameterServices = null, OperationFeeServices operationFeeServices = null, SavingProductFeeServices savingProductFeeServices = null)
         {
             _savingProductServices = savingProductServices;
             _accountingServices = accountingServices;
@@ -41,6 +43,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             _reopenFeeParameterServices = reopenFeeParameterServices;
             _closeFeeParameterServices = closeFeeParameterServices;
             _entryFeeParameterServices = entryFeeParameterServices;
+            _operationFeeServices = operationFeeServices;
+            _savingProductFeeServices = savingProductFeeServices;
         }
 
         public async Task<ActionResult> Index()
@@ -51,23 +55,27 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         public async Task<ActionResult> OrdinaryAccounts()
         {
             var savingProduct = await _savingProductServices.GetSavingProducts();
-            return View(new SavingConfiguration { SavingProducts=savingProduct.ToList()});
+            return View(new SavingConfiguration { SavingProducts = savingProduct.ToList() });
         }
         //
         public async Task<ActionResult> PolicyandSharing(string Key, string serviceOption = null)
         {
             await GetListPolicies();
             var savingProduct = await _savingProductServices.GetSavingProduct(Key);
-            var deposit=new DepositLimit { productId = savingProduct.id };
-            var transfer = new TransferLimit { productId = savingProduct.id };
-            var withdrawal = new WithdrawalLimit { productId = savingProduct.id };
-            return View(new SavingConfiguration { SavingProduct = savingProduct, DepositLimit= deposit, TransferLimit = transfer, WithdrawalLimit = withdrawal });
+            var deposit = new DepositLimit { ProductId = savingProduct.Id };
+            var transfer = new TransferLimit { productId = savingProduct.Id };
+            var withdrawal = new WithdrawalLimit { ProductId = savingProduct.Id };
+            return View(new SavingConfiguration { SavingProduct = savingProduct, DepositLimit = deposit, TransferLimit = transfer, WithdrawalLimit = withdrawal });
         }
         public async Task<ActionResult> AccountMapping(string Key, string serviceOption = null)
         {
             await GetChartOfAccounts();
             var savingProduct = await _savingProductServices.GetSavingProduct(Key);
-            return View(new SavingConfiguration { SavingProduct = savingProduct});
+            ViewBag.Fees = await _operationFeeServices.GetFees();
+            await GetEventNames();
+            ViewBag.FeeType = SavingProductFee.GetFeeTypeList();
+            var savingProductFees = await _savingProductFeeServices.GetSavingProductFees(Key);
+            return View(new SavingConfiguration { SavingProduct = savingProduct, SavingProductFee = new SavingProductFee { SavingProductId = savingProduct.Id }, SavingProductFees= savingProductFees.ToList() });
         }
         //
         [HttpPost]
@@ -163,6 +171,11 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 return () => _savingProductServices.UpdateProductAccountMapping(model.SavingProduct);
             }
+            else if (serviceOption == "mapformeventcharges")
+            {
+                return () => _savingProductServices.UpdateProductEventMapping(model.SavingProduct);
+            }
+            //
             else if (serviceOption == "transferlimit")
             {
                 return () => _transferLimitServices.Update(model.TransferLimit);
@@ -201,7 +214,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
 
         {
-            await GetList();
+
             Func<Task<PartialViewResult>> serviceAction = GetServiceAction(path, partialView, KEY, serviceOption);
 
             if (serviceAction != null)
@@ -214,6 +227,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 }
             }
 
+
             return HttpNotFound(); // Or return a default view for handling unknown paths
         }
 
@@ -225,7 +239,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 if (path == "list")
                 {
-                   
+                    //
                     return async () =>
                     {
                         var data = await _savingProductServices.GetSavingProducts();
@@ -233,25 +247,48 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                         return PartialView(partialView, sysData);
                     };
                 }
+                else if (path == "feemapping")
+                {
+
+                    return async () =>
+                    {
+                        await GetEventNames();
+                        var savingProductFees = await _savingProductFeeServices.GetSavingProductFees(key);
+                        return PartialView(partialView, new SavingConfiguration { SavingProductFees = savingProductFees.ToList() });
+
+                    };
+                }
                 else if (path == "new")
                 {
-                    return async () => PartialView(partialView, new SavingConfiguration { SavingProduct = new SavingProduct() });
+
+                    return async () =>
+                    {
+                        await GetList();
+                        return PartialView(partialView, new SavingConfiguration { SavingProduct = new SavingProduct() });
+
+                    };
                 }
                 else
                 {
-                    return async () => PartialView(partialView, new SavingConfiguration { SavingProduct = await _savingProductServices.GetSavingProduct(key) });
+                    return async () =>
+                    {
+                        await GetList();
+                        return PartialView(partialView, new SavingConfiguration { SavingProduct = await _savingProductServices.GetSavingProduct(key) });
+
+                    };
                 }
             }
             else if (serviceOption == "depositlimit")
             {
                 if (path == "list")
                 {
-                    if (key!=null)
+                    if (key != null)
                     {
                         return async () =>
                         {
                             var data = await _depositLimitServices.GetDepositLimits();
-                            var sysData = new SavingConfiguration { DepositLimits = data.Where(x=>x.productId==key).ToList() };
+                            var datas = data.Where(x => x.ProductId == key).ToList();
+                            var sysData = new SavingConfiguration { DepositLimits = datas };
                             return PartialView(partialView, sysData);
                         };
                     }
@@ -264,11 +301,22 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 }
                 else if (path == "new")
                 {
-                    return async () => PartialView(partialView, new SavingConfiguration { DepositLimit = new DepositLimit { productId=key} });
+                    return async () =>
+                    {
+                        await GetList();
+                        var savingProduct = await _savingProductServices.GetSavingProduct(key);
+                        return PartialView(partialView, new SavingConfiguration { DepositLimit = new DepositLimit { ProductId = key }, SavingProduct = savingProduct });
+                    };
                 }
                 else
                 {
-                    return async () => PartialView(partialView, new SavingConfiguration { DepositLimit = await _depositLimitServices.GetDepositLimit(key) });
+                    return async () =>
+                    {
+                        await GetList();
+                        var data = await _depositLimitServices.GetDepositLimit(key);
+                        var savingProduct = await _savingProductServices.GetSavingProduct(data.ProductId);
+                        return PartialView(partialView, new SavingConfiguration { DepositLimit = data, SavingProduct = savingProduct });
+                    };
                 }
 
             }
@@ -294,11 +342,22 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 }
                 else if (path == "new")
                 {
-                    return async () => PartialView(partialView, new SavingConfiguration { TransferLimit = new TransferLimit { productId = key } });
+                    return async () =>
+                    {
+                        await GetList();
+                        var savingProduct = await _savingProductServices.GetSavingProduct(key);
+                        return PartialView(partialView, new SavingConfiguration { TransferLimit = new TransferLimit { productId = key }, SavingProduct = savingProduct });
+                    };
                 }
                 else
                 {
-                    return async () => PartialView(partialView, new SavingConfiguration { TransferLimit = await _transferLimitServices.GetTransferLimit(key) });
+                    return async () =>
+                    {
+                        await GetList();
+                        var data = await _transferLimitServices.GetTransferLimit(key);
+                        var savingProduct = await _savingProductServices.GetSavingProduct(data.productId);
+                        return PartialView(partialView, new SavingConfiguration { TransferLimit = data, SavingProduct = savingProduct });
+                    };
                 }
 
             }
@@ -311,7 +370,11 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                         return async () =>
                         {
                             var data = await _withdrawalLimitServices.GetWithdrawalLimits();
-                            var sysData = new SavingConfiguration { WithdrawalLimits = data.Where(x => x.productId == key).ToList() };
+                            var withdrawals = data.Where(x => x.ProductId == key).ToList();
+
+                            //090491483100383
+                            //090491483100383
+                            var sysData = new SavingConfiguration { WithdrawalLimits = withdrawals };
                             return PartialView(partialView, sysData);
                         };
                     }
@@ -324,120 +387,33 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 }
                 else if (path == "new")
                 {
-                    return async () => PartialView(partialView, new SavingConfiguration { WithdrawalLimit = new WithdrawalLimit { productId = key } });
+                    return async () =>
+                    {
+                        await GetList();
+                        var savingProduct = await _savingProductServices.GetSavingProduct(key);
+                        return PartialView(partialView, new SavingConfiguration { WithdrawalLimit = new WithdrawalLimit { ProductId = key }, SavingProduct=savingProduct });
+                    };
                 }
                 else
-                {
-                    return async () => PartialView(partialView, new SavingConfiguration { WithdrawalLimit = await _withdrawalLimitServices.GetWithdrawalLimit(key) });
-                }
-
-            }
-            else if (serviceOption == "CloseFeeParameter")
-            {
-                if (path == "list")
                 {
                     return async () =>
                     {
-                        var data = await _closeFeeParameterServices.GetCloseFeeParameters();
-                        var sysData = new SavingConfiguration { CloseFeeParameters = data.ToList() };
-                        return PartialView(partialView, sysData);
+                        await GetList();
+                        var data = await _withdrawalLimitServices.GetWithdrawalLimit(key);
+                        var savingProduct = await _savingProductServices.GetSavingProduct(data.ProductId);
+                        return PartialView(partialView, new SavingConfiguration { WithdrawalLimit = data, SavingProduct = savingProduct });
                     };
-                }
-                else if (path == "new")
-                {
-                    return async () => PartialView(partialView, new SavingConfiguration { CloseFeeParameter = new CloseFeeParameter() });
-                }
-                else
-                {
-                    return async () => PartialView(partialView, new SavingConfiguration { CloseFeeParameter = await _closeFeeParameterServices.GetCloseFeeParameter(key) });
                 }
 
             }
-            else if (serviceOption == "ReopenFeeParameter")
-            {
-                if (path == "list")
-                {
-                    return async () =>
-                    {
-                        var data = await _reopenFeeParameterServices.GetReopenFeeParameters();
-                        var sysData = new SavingConfiguration { ReopenFeeParameters = data.ToList() };
-                        return PartialView(partialView, sysData);
-                    };
-                }
-                else if (path == "new")
-                {
-                    return async () => PartialView(partialView, new SavingConfiguration { ReopenFeeParameter = new ReopenFeeParameter() });
-                }
-                else
-                {
-                    return async () => PartialView(partialView, new SavingConfiguration { ReopenFeeParameter = await _reopenFeeParameterServices.GetReopenFeeParameter(key) });
-                }
-
-            }
-            else if (serviceOption == "ManagementFeeParameter")
-            {
-                if (path == "list")
-                {
-                    return async () =>
-                    {
-                        var data = await _managementFeeParameterServices.GetManagementFeeParameters();
-                        var sysData = new SavingConfiguration { ManagementFeeParameters = data.ToList() };
-                        return PartialView(partialView, sysData);
-                    };
-                }
-                else if (path == "new")
-                {
-                    return async () => PartialView(partialView, new SavingConfiguration { ManagementFeeParameter = new ManagementFeeParameter() });
-                }
-                else
-                {
-                    return async () => PartialView(partialView, new SavingConfiguration { ManagementFeeParameter = await _managementFeeParameterServices.GetManagementFeeParameter(key) });
-                }
-
-            }
-            else if (serviceOption == "EntryFeeParameter")
-            {
-                if (path == "list")
-                {
-                    return async () =>
-                    {
-                        var data = await _entryFeeParameterServices.GetEntryFeeParameters();
-                        var sysData = new SavingConfiguration { EntryFeeParameters = data.ToList() };
-                        return PartialView(partialView, sysData);
-                    };
-                }
-                else if (path == "new")
-                {
-                    return async () => PartialView(partialView, new SavingConfiguration { EntryFeeParameter = new EntryFeeParameter() });
-                }
-                else
-                {
-                    return async () => PartialView(partialView, new SavingConfiguration { EntryFeeParameter = await _entryFeeParameterServices.GetEntryFeeParameter(key) });
-                }
-
-            }
-            else if (serviceOption == "teller")
-            {
-                if (path == "list")
-                {
-                    return async () =>
-                    {
-                        var data = await _tellerServices.GetTellers();
-                        var sysData = new SavingConfiguration { Tellers = data.ToList() };
-                        return PartialView(partialView, sysData);
-                    };
-                }
-                else if (path == "new")
-                {
-                    return async () => PartialView(partialView, new SavingConfiguration { Teller = new Teller() });
-                }
-                else
-                {
-                    return async () => PartialView(partialView, new SavingConfiguration { Teller = await _tellerServices.GetTeller(key) });
-                }
-
-            }
+      
             return null;
+        }
+
+        private async Task GetEventNames()
+        {
+            ViewBag.EventCodes = await _accountingServices.GetEventNames("FEE");
+
         }
 
         public async Task<bool> GetList()

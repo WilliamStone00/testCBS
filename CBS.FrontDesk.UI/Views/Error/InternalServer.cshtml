@@ -1,30 +1,11 @@
 ﻿
 @{
-    ViewBag.Title = "InternalServer";
+    ViewBag.Title = "500-Internal Server Error";
     Layout = "~/Views/Shared/_ErrorLayout.cshtml";
 }
 
-<h1 class="mb-2 mx-2" style="font-size: 6rem">500</h1>
-<h4 class="mb-2">Internal server error 🔐</h4>
-<p class="mb-2 mx-2">Oops somthing went wrong.</p>
-<div class="d-flex justify-content-center mt-5">
-    <img src="~/CBSTemp/ui/assets/img/illustrations/misc-error-object.png"
-         alt="misc-server-error"
-         class="img-fluid misc-object d-none d-lg-inline-block"
-         width="160" />
-    <img src="~/CBSTemp/ui/assets/img/illustrations/misc-bg-light.png"
-         alt="misc-server-error"
-         class="misc-bg d-none d-lg-inline-block"
-         data-app-light-img="illustrations/misc-bg-light.png"
-         data-app-dark-img="illustrations/misc-bg-dark.png" />
-    <div class="d-flex flex-column align-items-center">
-        <img src="~/CBSTemp/ui/assets/img/illustrations/misc-server-error-illustration.png"
-             alt="misc-server-error"
-             class="img-fluid z-1"
-             width="230" />
-        <div>
-            <a href="/" class="btn btn-primary text-center my-5">Back to home</a>
-        </div>
-    </div>
-</div>
-
+<h2 class="mb-4">500 - Internal Server Error</h2>
+<p class="lead mb-4">Oops! Something went wrong on our end.</p>
+<p>Please try again later or contact the administrator for assistance.</p>
+<p>ERROR:<br />@ViewBag.ErrorMessage</p>
+<a href="/" class="btn">Go Back to Home</a>

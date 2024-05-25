@@ -1,0 +1,42 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+
+
+
+
+@if (!Model.SavingProductFees.Any())
+{
+    <div class="text-center my-3">
+        <p>No saving product is mapped.</p>
+    </div>
+}
+else
+{
+    <div class="table-responsive mb-3">
+
+        <table class="table table-hover" id="myDataTable_savingProductFee">
+            <thead class="table-light">
+                <tr>
+                    <th>Charges type</th>
+                    <th>Account type</th>
+                    <th>Fee type</th>
+                    <th>FeePolicy type</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model.SavingProductFees)
+                {
+                    <tr>
+                        <td style="width:55%">@d.Fee.Name</td>
+                        <td style="width:25%">@d.SavingProduct.Name</td>
+                        <td style="width:10%">@d.FeeType</td>
+                        <td style="width:5%">@d.FeePolicyType</td>
+                        <td style="width:5%">
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Fee.Name" onclick="DeleteRecordDataTable('SavingProductFee','@d.Id','myDataTable_savingProductFee','_SavingProductFeeMapperData',0,'datalistingview_feeMapping','@d.SavingProduct.Id')">Remove</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -648,6 +648,45 @@ namespace BusinessServices
             datee = $"{Year}{Month}{Day}";
             return datee;
         }
+        public DateTime ConvertToDate(int year, int month, int day)
+        {
+            try
+            {
+                // Check if the year, month, and day values are valid
+                if (year < 1 || month < 1 || month > 12 || day < 1 || day > DateTime.DaysInMonth(year, month))
+                {
+                    throw new ArgumentException("Invalid date components.");
+                }
+
+                // Create a DateTime object using the provided year, month, and day
+                DateTime date = new DateTime(year, month, day);
+                return date;
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions (e.g., invalid date components)
+                Console.WriteLine($"Error converting date: {ex.Message}");
+                throw;
+            }
+        }
+        public (int year, int month, int day) ConvertToYearMonthDay(DateTime date)
+        {
+            try
+            {
+                // Extract year, month, and day components from the DateTime object
+                int year = date.Year;
+                int month = date.Month;
+                int day = date.Day;
+
+                return (year, month, day);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error converting date: {ex.Message}");
+                throw;
+            }
+        }
         public string GetDateStringToYYYMMDDPROD(string str)
         {
             string[] Date = str.Split(new Char[] { '-', '/', ' ' });

@@ -48,6 +48,10 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public decimal Balance { get; set; }
         public string ProductId { get; set; }
         public decimal Fee { get; set; }
+        public decimal WithrawalFormCharge { get; set; }
+        public decimal OperationCharge { get; set; }
+        public decimal WithdrawalChargeWithoutNotification { get; set; }
+        public decimal CloseOfAccountCharge { get; set; }
         public string FeeType { get; set; }
         public string SourceType { get; set; }
         public string BankId { get; set; }

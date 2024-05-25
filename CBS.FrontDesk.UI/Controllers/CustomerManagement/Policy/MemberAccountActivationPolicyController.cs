@@ -1,6 +1,7 @@
 ﻿using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.MembersAccountSettings.policy;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using System;
@@ -14,21 +15,26 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement.Policy
 {
     public class MemberAccountActivationPolicyController : BaseController
     {
+        private readonly AccountingServices _accountingServices;
+
         // GET: TellerManagement
         private readonly MemberAccountActivationPolicyServices _tellerServices;
-        public MemberAccountActivationPolicyController(MemberAccountActivationPolicyServices tellerServices)
+        private string operationType;
+        public MemberAccountActivationPolicyController(MemberAccountActivationPolicyServices tellerServices, AccountingServices accountingServices = null)
         {
             _tellerServices = tellerServices;
-           
+            _accountingServices = accountingServices;
+            operationType = "FEE";
         }
 
         public async Task<ActionResult> Index()
         {
-            return View(new MemberAccountActivationPolicy());
+            await GetEventNames(operationType);
+            return View(new MemberRegistrationFeePolicy());
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddOrUpdate(MemberAccountActivationPolicy model)
+        public async Task<ActionResult> AddOrUpdate(MemberRegistrationFeePolicy model)
         {
             Func<Task<ExecutionMessages>> serviceAction = null;
 
@@ -57,13 +63,13 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement.Policy
             return Json(new { success = false, status = false, message = "Invalid option selected." });
         }
 
-        private Func<Task<ExecutionMessages>> GetInsertServiceAction(string serviceOption, MemberAccountActivationPolicy model)
+        private Func<Task<ExecutionMessages>> GetInsertServiceAction(string serviceOption, MemberRegistrationFeePolicy model)
         {
-          
+
             return () => _tellerServices.Create(model);
         }
 
-        private Func<Task<ExecutionMessages>> GetUpdateServiceAction(string serviceOption, MemberAccountActivationPolicy model)
+        private Func<Task<ExecutionMessages>> GetUpdateServiceAction(string serviceOption, MemberRegistrationFeePolicy model)
         {
             return () => _tellerServices.Update(model);
         }
@@ -91,6 +97,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement.Policy
             {
                 return async () =>
                 {
+
                     var data = await _tellerServices.GetMemberAccountActivationPolicys();
                     var sysData = data;
                     return PartialView(partialView, sysData);
@@ -99,15 +106,32 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement.Policy
             }
             else if (path == "new")
             {
-                return async () => PartialView(partialView, new MemberAccountActivationPolicy());
+                return async () =>
+                {
+                    await GetEventNames(operationType);
+                    return PartialView(partialView, new MemberRegistrationFeePolicy());
+                };
             }
             else
             {
-                return async () => PartialView(partialView, await _tellerServices.GetMemberAccountActivationPolicy(key));
+
+                return async () =>
+                {
+                    await GetEventNames(operationType);
+                    return PartialView(partialView, await _tellerServices.GetMemberAccountActivationPolicy(key));
+                };
             }
         }
 
-       
+        private async Task GetEventNames(string operationType)
+        {
+            ViewBag.EventCodes = await _accountingServices.GetEventNames(operationType);
+
+        }
+
+      
+
+
         public async Task<ActionResult> Ajaxloader(string Key)
         {
             var listing = await _tellerServices.GetMemberAccountActivationPolicy(Key);

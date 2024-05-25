@@ -1,0 +1,36 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.MemberAccountUpload
+<fieldset class="fieldset-custom">
+    <legend id="select_base">Accounts Upload Param</legend>
+    <div class="card-body">
+        @using (Html.BeginForm("MembersAccount", "Migration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            <div class="row mt-2 gy-4">
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.ProductId, new SelectList(ViewBag.Products, "Id", "AccountType"), "---Select Account Type---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.ProductId, "", new { @class = "text-danger " })
+                        <label>Select account type</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select Branch---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger " })
+                        <label>Select branch</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        <input type="file" id="file" name="file" class="form-control" required />
+                        @Html.ValidationMessageFor(m => m.File, "", new { @class = "text-danger " })
+                        <label>Select members individual account balance file (Formated: AccountNumber, OpeningBalance)</label>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary me-2">Save</button>
+                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+            </div>
+        }
+    </div>
+</fieldset>

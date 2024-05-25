@@ -35,13 +35,17 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public PrintDate PrintDate { get; set; } = new PrintDate();
         public Branch Branch { get; set; } = new Branch();
         public List<BulkDeposit> BulkDeposits { get; set; } = new List<BulkDeposit>();
+        public List<WithdrawalNotification> WithdrawalNotifications { get; set; } = new List<WithdrawalNotification>();
         public IndividualProfile Customer { get; set; } = new IndividualProfile();
         public List<CustomerAccount> Accounts { get; set; } = new List<CustomerAccount>();
         public List<Loan> Loans { get; set; } = new List<Loan>();
         public List<Refund> Refunds { get; set; } = new List<Refund>();
         public List<IndividualProfile> Customers { get; set; } = new List<IndividualProfile>();
         public List<TransactionHistory> Transactions { get; set; } = new List<TransactionHistory>();
-
+        public OtherTransaction OtherTransaction { get; set; }
+        public List<OtherTransaction> OtherTransactions { get; set; } = new List<OtherTransaction>();
+        public string Action { get; set; }
+        public string ServiceOption { get; set; }
     }
     public class PrintDate
     {
@@ -72,7 +76,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public bool isDepositDoneByAccountOwner { get; set; }
         public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
         public Depositer Depositer { get; set; } = new Depositer();
-
+        public OtherTransaction OtherTransaction { get; set; } = new OtherTransaction();
         public BulkDeposit()
         {
             Fee = 0;

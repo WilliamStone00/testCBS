@@ -18,6 +18,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cog me-2"></i>
+                            Ordinary account management
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -29,22 +30,20 @@
                                     <div class="card mb-4">
                                         <div class="card-body d-sm-flex d-block">
                                             <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                                Ordinary account management
+                                                <div class="row justify-content-end">
+                                                    <div class="demo-inline-spacing text-end">
+                                                        <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_product','_ProductData',0,'datalistingview',null,'savingproduct','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                                            <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                                        </a>
+                                                        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_ProductConfig','new','TransactionConfiguration','savingproduct')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                                            <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
                                     </div>
-                                    <div class="row justify-content-end">
-                                        <div class="demo-inline-spacing text-end">
-                                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_product','_ProductData',0,'datalistingview',null,'savingproduct','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                            </a>
-                                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_ProductConfig','new','TransactionConfiguration','savingproduct')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <hr />
                                     <div id="datalistingview">
                                         @Html.Partial("_ProductData")
                                     </div>

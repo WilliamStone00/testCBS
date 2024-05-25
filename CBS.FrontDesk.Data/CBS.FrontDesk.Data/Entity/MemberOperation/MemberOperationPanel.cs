@@ -13,6 +13,8 @@ namespace CBS.FrontDesk.Data.Entity.MemberOperation
     {
         public AddLoanDisbumentCommand AddLoanDisbumentCommand { get; set; }
         public LoanApplication LoanApplication { get; set; }
+        public List<LoanApplicationFee> LoanApplicationFees { get; set; }
+        public LoanApplicationFee LoanApplicationFee { get; set; }
         public LoanGuarantor LoanGuarantor { get; set; }
         public List<LoanGuarantor> LoanGuarantors { get; set; }
         public LoanCommentry LoanCommentry { get; set; }

@@ -15,6 +15,7 @@ using System.Linq;
 using CBS.FrontDesk.Helper;
 using CBS.API.Helper;
 using System.IdentityModel.Tokens.Jwt;
+using CBS.FrontDesk.Data.Entity.Accounting;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -160,6 +161,8 @@ namespace CBS.FrontDesk.UI.Controllers
             authTicket.IssueDate.AddSeconds(0);
             string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
             HttpCookie faCookie = new HttpCookie(cookieName, encryptedTicket);
+            faCookie.HttpOnly = true;
+            faCookie.Secure = true;
             Session.Timeout = 30;
             HttpContext.Session["Token"] = reqDto.bearerToken;
             if (reqDto.Permissions == null)
@@ -250,8 +253,8 @@ namespace CBS.FrontDesk.UI.Controllers
             dataTableOptions.start = Convert.ToInt32(Request.Form.GetValues("start")[0]);
             // Paging Length 10,20
             dataTableOptions.length = Convert.ToInt32(Request.Form.GetValues("length")[0]);
-            // Sort Column Name
-            dataTableOptions.sortColumnName = Request.Form.GetValues("order[0][column]")[0];
+            // Sort Column Index (changed from name to index)
+            dataTableOptions.sortColumnName = Convert.ToInt32(Request.Form.GetValues("order[0][column]")[0]);
             // Sort Column Direction ( asc ,desc)
             dataTableOptions.sortColumnDirection = Request.Form.GetValues("order[0][dir]")[0];
             // Search Value from (Search box)
@@ -261,6 +264,27 @@ namespace CBS.FrontDesk.UI.Controllers
             dataTableOptions.recordsTotal = 0;
             return dataTableOptions;
         }
+
+        public DataTableOptions GetDataTableOptions(HttpRequest request)
+        {
+            DataTableOptions dataTableOptions = new DataTableOptions();
+            dataTableOptions.draw = request.Form.GetValues("draw")[0];
+            // Skiping number of Rows count
+            dataTableOptions.start = Convert.ToInt32(request.Form.GetValues("start")[0]);
+            // Paging Length 10,20
+            dataTableOptions.length = Convert.ToInt32(request.Form.GetValues("length")[0]);
+            // Sort Column Index (changed from name to index)
+            dataTableOptions.sortColumnName = Convert.ToInt32(request.Form.GetValues("order[0][column]")[0]);
+            // Sort Column Direction ( asc ,desc)
+            dataTableOptions.sortColumnDirection = request.Form.GetValues("order[0][dir]")[0];
+            // Search Value from (Search box)
+            dataTableOptions.searchValue = request.Params["search[value]"];
+            dataTableOptions.pageSize = dataTableOptions.length != 0 ? Convert.ToInt32(dataTableOptions.length) : 0;
+            dataTableOptions.skip = dataTableOptions.start != 0 ? Convert.ToInt32(dataTableOptions.start) : 0;
+            dataTableOptions.recordsTotal = 0;
+            return dataTableOptions;
+        }
+
         public void BuildLocalSession(UserDto userSession)
         {
             var roles = userSession.Roles.Select(role => role.RoleName).ToArray();
@@ -282,6 +306,14 @@ namespace CBS.FrontDesk.UI.Controllers
             else
             {
                 Session["Photo"] = userSession.profilePhoto;
+            }
+            if (userSession.Branch.Bank.LogoUrl == null)
+            {
+                Session["LogoUrl"] = userSession.Branch.ImageVirtualPath;
+            }
+            else
+            {
+                Session["LogoUrl"] = userSession.Branch.Bank.LogoUrl;
             }
             Session["BranchID"] = userSession.BranchID;
             Session["OrganizationID"] = userSession.Bank.OrganizationId;

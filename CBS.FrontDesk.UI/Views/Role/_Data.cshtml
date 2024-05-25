@@ -3,6 +3,7 @@
     <thead class="table-light">
         <tr>
             <th>Name</th>
+            <th>Description</th>
             <th>Teller?</th>
             <th>Action</th>
         </tr>
@@ -11,7 +12,8 @@
         @foreach (var d in Model.Roles)
         {
             <tr>
-                <td style="width:65%">@d.Name</td>
+                <td style="width:15%">@d.Name</td>
+                <td style="width:50%">@d.Description</td>
                 <td style="width:10%">
                     @if (@d.IsTeller)
                     {

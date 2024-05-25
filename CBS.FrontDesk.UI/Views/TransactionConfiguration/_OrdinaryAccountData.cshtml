@@ -9,47 +9,50 @@
     </div>
 }
 else
-{ <div class="table-responsive mb-3">
-        <table class="table table-hover" id="myDataTable_product">
-            <thead class="table-light">
-                <tr>
-                    <th>Code</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Range</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var d in Model.SavingProducts)
-                {
+{ <fieldset class="fieldset-custom">
+        <legend>Ordinary account listings for mapping and policies</legend>
+        <div class="table-responsive mb-3">
+            <table class="table table-hover" id="myDataTable_product">
+                <thead class="table-light">
                     <tr>
-                        <td style="width:10%">@d.code</td>
-                        <td style="width:30%">@d.name</td>
-                        <td style="width:13%">@d.AccountType</td>
-                        <td style="width:20%">@d.minAmount.ToString("#,##0.0")-@d.maxAmount.ToString("#,##0.0")</td>
-                        <td style="width:7%">
-                            @if (d.activeStatus)
-                            {
-                                <span class="badge bg-info">Active</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-warning">Inactive</span>
-                            }
-                        </td>
-                        <td style="width:20%">
-                            @if (!d.isUsedForTellerProvisioning)
-                            {
-                                <a href="/TransactionConfiguration/PolicyandSharing?Key=@d.id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="Configure @d.name operation policies">Policies |</a>
-                                <a href="/TransactionConfiguration/AccountMapping?Key=@d.id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="Configure @d.name account mapping">Mappings </a>
-                            }
-                        </td>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Range</th>
+                        <th>Status</th>
+                        <th>Action</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.SavingProducts)
+                    {
+                        <tr>
+                            <td style="width:10%">@d.Code</td>
+                            <td style="width:30%">@d.Name</td>
+                            <td style="width:13%">@d.AccountType</td>
+                            <td style="width:20%">@d.MinAmount.ToString("#,##0.0")-@d.MaxAmount.ToString("#,##0.0")</td>
+                            <td style="width:7%">
+                                @if (d.ActiveStatus)
+                                {
+                                    <span class="badge bg-info">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning">Inactive</span>
+                                }
+                            </td>
+                            <td style="width:20%">
+                                @if (!d.IsUsedForTellerProvisioning)
+                                {
+                                    <a href="/TransactionConfiguration/PolicyandSharing?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="Configure @d.Name operation policies">Policies |</a>
+                                    <a href="/TransactionConfiguration/AccountMapping?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="Configure @d.Name account mapping">Mappings </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
 }
 

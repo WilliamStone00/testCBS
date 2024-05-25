@@ -2,52 +2,44 @@
 <div class="card-body">
     @using (Html.BeginForm("Create", "Fee", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
+        @Html.HiddenFor(model => model.Id)
         <div class="row mt-2 gy-4">
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.nameOfFee, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.nameOfFee, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                     <label>Name</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.min, new { @class = "form-control"})
-                    @Html.ValidationMessageFor(m => m.min, "", new { @class = "text-danger" })
-                    <label>Min value</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.max, new { @class = "form-control"})
-                    @Html.ValidationMessageFor(m => m.max, "", new { @class = "text-danger" })
-                    <label>Max value</label>
                 </div>
             </div>
             <div class="col-12">
                 <div class="form-check">
-                    @Html.CheckBoxFor(m => m.isRate, new { @class = "form-check-input" })
-                    <label class="form-check-label">Use rate</label>
+                    @Html.RadioButtonFor(m => m.FeeBase, "Percentage", new { @class = "form-check-input", id = "percentageOption" })
+                    <label class="form-check-label" for="percentageOption">Percentage on principal amount</label>
+                </div>
+                <div class="form-check">
+                    @Html.RadioButtonFor(m => m.FeeBase, "Range", new { @class = "form-check-input", id = "rangeOption" })
+                    <label class="form-check-label" for="rangeOption">Range based on principal amount</label>
                 </div>
             </div>
-            <div class="col-md-3">
+            @*<div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.rate, new { @class = "form-control"})
-                    @Html.ValidationMessageFor(m => m.rate, "", new { @class = "text-danger" })
-                    <label>Rate</label>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.accountingRuleId, new SelectList(ViewBag.Roles, "id", "ruleName"), "---Select accounting roles---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.accountingRuleId, "", new { @class = "text-danger " })
+                    @Html.DropDownListFor(m => m.AccountingEventCode, new SelectList(ViewBag.Roles, "id", "ruleName"), "---Select accounting roles---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.AccountingEventCode, "", new { @class = "text-danger " })
                     <label>Accounting role</label>
                 </div>
-            </div>
+            </div>*@
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary me-2">Save</button>
-            <button type="reset" class="btn btn-outline-secondary">Reset</button>
+            @if (ViewBag.Key != null)
+            {
+                <button type="submit" class="btn btn-primary me-2">Update</button>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-primary me-2">Save</button>
+                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+
+            }
         </div>
     }
 </div>

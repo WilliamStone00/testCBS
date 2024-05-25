@@ -73,11 +73,11 @@
                         <table class="table">
                             <tr>
                                 <td><strong>Customer number:</strong></td>
-                                <td>@Model.Customer.customerId</td>
+                                <td>@Model.Customer.CustomerId</td>
                             </tr>
                             <tr>
                                 <td><strong>Customer Code:</strong></td>
-                                <td>@Model.Customer.customerCode</td>
+                                <td>@Model.Customer.CustomerCode</td>
                             </tr>
                             <tr>
                                 <td><strong>Name</strong></td>
@@ -85,25 +85,25 @@
                             </tr>
                             <tr>
                                 <td><strong>Telephone</strong></td>
-                                <td>@Model.Customer.phone</td>
+                                <td>@Model.Customer.Phone</td>
                             </tr>
                             <tr>
                                 <td><strong>Branch:</strong></td>
-                                <td>@Model.Customer.bankName</td>
+                                <td>@Model.Customer.BankName</td>
                             </tr>
                             <tr>
                                 <td><strong>Approval status</strong></td>
                                 <td>
-                                    @if (Model.Customer.membershipApprovalStatus == "Approved")
+                                    @if (Model.Customer.MembershipApprovalStatus == "Approved")
                                     {
                                         <span class="text-success">
-                                            <i class="bi bi-check-circle-fill"></i>                                    @Model.Customer.membershipApprovalStatus
+                                            <i class="bi bi-check-circle-fill"></i>                                    @Model.Customer.MembershipApprovalStatus
                                         </span>
                                     }
                                     else
                                     {
                                         <span class="text-danger">
-                                            <i class="bi bi-x-circle-fill"></i>                                    @Model.Customer.membershipApprovalStatus
+                                            <i class="bi bi-x-circle-fill"></i>                                    @Model.Customer.MembershipApprovalStatus
                                         </span>
                                     }
                                 </td>

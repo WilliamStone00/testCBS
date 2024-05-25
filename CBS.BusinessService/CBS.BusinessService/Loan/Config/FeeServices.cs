@@ -32,7 +32,7 @@ namespace CBS.BusinessService.Config
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"{objFee.nameOfFee}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{objFee.Name}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
@@ -40,7 +40,7 @@ namespace CBS.BusinessService.Config
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objFee, false, $"{objFee.nameOfFee}", MessagesResults.Failed,
+                    GetExecutionMessages(objFee, false, $"{objFee.Name}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -91,21 +91,18 @@ namespace CBS.BusinessService.Config
             {
 
                 // Make an API call to create an individual profile
-                model.bankId = GetBankID();
-                model.branchId = GetBranchID();
-                model.organizationId = GetOrganizationID();
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<Fee>>(APICallHelper.CreateFee, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.nameOfFee}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.nameOfFee, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -121,30 +118,24 @@ namespace CBS.BusinessService.Config
         {
             try
             {
-
-                var Fee = await GetFee(model.id);
+                var Fee = await GetFee(model.Id);
                 if (Fee != null)
                 {
-                    Fee.nameOfFee = model.nameOfFee;
-                    Fee.min = model.min;
-                    Fee.max = model.max;
-                    Fee.isRate = model.isRate;
-                    Fee.accountingRuleId = model.accountingRuleId;
-                    Fee.organizationId = model.organizationId;
-                    Fee.bankId = model.bankId;
-                    Fee.branchId = model.branchId;
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Fee>>(string.Format(APICallHelper.Get_Update_Delete_Fee, model.id), Fee);
+                    Fee.Name = model.Name;
+                    Fee.FeeBase = model.FeeBase;
+                    Fee.AccountingEventCode = model.AccountingEventCode;
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Fee>>(string.Format(APICallHelper.Get_Update_Delete_Fee, model.Id), Fee);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{model.nameOfFee}", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, model.nameOfFee, MessagesResults.Failed,
+                        GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }

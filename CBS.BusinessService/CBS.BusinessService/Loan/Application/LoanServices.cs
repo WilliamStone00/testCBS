@@ -104,6 +104,23 @@ namespace CBS.BusinessService
                 throw;
             }
         }
+        public async Task<IEnumerable<Loan>> GetCustomerCurrentLoans(string customerId)
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Loan>>>(string.Format(APICallHelper.GetAllLoanByCustomerId, customerId));
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<Loan>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<Loan> GetLoan(string id)
         {
             try

@@ -1,5 +1,7 @@
-﻿using CBS.BusinessService.Accounts;
+﻿using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
@@ -15,15 +17,34 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
     public class CashDeskController : BaseController
     {
         private readonly CashDeskServices _cashDeskService;
-        public CashDeskController(CashDeskServices cashDeskService = null)
+        private readonly AccountingServices _accountingServices;
+
+
+        public CashDeskController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null)
         {
             _cashDeskService = cashDeskService;
+            _accountingServices = accountingServices;
         }
         // GET: CashDesk
         public ActionResult Index()
         {
             return View();
         }
+        public async Task<ActionResult> OtherCashTransactions()
+        {
+            ViewBag.Operation = "income_expense";
+            var cashDesk = await _cashDeskService.GetOtherCashDeskTransactions();
+            ViewBag.Members = cashDesk.Customers;
+            await GetEventNames("INCOME");
+            //ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
+            return View(cashDesk);
+        }
+        private async Task GetEventNames(string operationType)
+        {
+            ViewBag.EventCodes = await _accountingServices.GetEventNamesOtherCashIn(operationType);
+
+        }
+        //income_expense
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = "_DataNotFound", string path = null, string serviceOption = null)
         {
             try
@@ -46,7 +67,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
 
                 }
-                else if (path == "cashin" || path == "cashout" || path == "repayment")
+                else if (path == "cashin" || path == "cashout" || path == "repayment" || path == "withdrawalnotification")
                 {
                     if (KEY == null || KEY == "")
                     {

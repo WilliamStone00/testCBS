@@ -3,7 +3,7 @@
 <div class="card-body">
     @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
     {
-        @Html.HiddenFor(model => model.CustomerList.customerId)
+        @Html.HiddenFor(model => model.CustomerList.CustomerId)
         <input type="hidden" name="option" value="upload" />
         <input type="hidden" name="CustomerDocumentRequest.DocumentType" value="CustomerOtherDocument" />
         <div class="input-group">
@@ -19,9 +19,9 @@
     <div class="col-12 col-lg-12 mb-4 mb-xl-0">
         <div class="demo-inline-spacing mt-3">
             <div class="list-group">
-                @for (var i = 0; i < Model.CustomerList.customerDocuments.Count; i++)
+                @for (var i = 0; i < Model.CustomerList.CustomerDocuments.Count; i++)
                 {
-                    var file = Model.CustomerList.customerDocuments[i];
+                    var file = Model.CustomerList.CustomerDocuments[i];
                     <div class="list-group-item list-group-item-action d-flex align-items-center cursor-pointer">
                         <div class="w-100">
                             <div class="d-flex justify-content-between">

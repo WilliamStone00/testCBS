@@ -277,7 +277,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public List<DocumentPack> DocumentPackes { get; set; } = new List<DocumentPack>();
         public List<FundingLine> FundingLines { get; set; } = new List<FundingLine>();
         public List<InstallmentType> InstallmentTypes { get; set; }= new List<InstallmentType>();
-        public List<OtherFee> OtherFees { get; set; } = new List<OtherFee>();
+        public List<FeeRange> FeeRanges { get; set; } = new List<FeeRange>();
         
     }
     public class LoanProductEnumAgregates

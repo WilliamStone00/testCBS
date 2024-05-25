@@ -17,8 +17,8 @@ namespace CBS.FrontDesk.Data.Entity
         public AccountBalance AccountBalance { get; set; }
         public MemberAccountActivation MemberAccountActivation { get; set; }
         public List<MemberAccountActivation> MemberAccountActivations { get; set; }
-        public MembershipNextOfKingsMember MembershipNextOfKingsMember { get; set; }
-        public List<MembershipNextOfKingsMember> MembershipNextOfKingsMembers { get; set; }
+        public MembershipNextOfKing MembershipNextOfKingsMember { get; set; }
+        public List<MembershipNextOfKing> MembershipNextOfKingsMembers { get; set; }
         public List<CardSignatureSpecimen> CardSignatureSpecimens { get; set; }
         public CardSignatureSpecimen CardSignatureSpecimen { get; set; }
         public List<CustomerAccount> CustomerAccounts { get; set; }
@@ -30,7 +30,7 @@ namespace CBS.FrontDesk.Data.Entity
         {
             
         }
-        public IndividualCustomerProfile(IndividualProfile customer=null, Aggregrate aggregrate=null, AccountBalance accountBalance=null, List<CustomerAccount> customerAccounts=null, AddCustomerAccount addCustomerAccount=null, MembershipNextOfKingsMember membershipNextOfKingsMember=null, CardSignatureSpecimen cardSignatureSpecimen=null)
+        public IndividualCustomerProfile(IndividualProfile customer=null, Aggregrate aggregrate=null, AccountBalance accountBalance=null, List<CustomerAccount> customerAccounts=null, AddCustomerAccount addCustomerAccount=null, MembershipNextOfKing membershipNextOfKingsMember=null, CardSignatureSpecimen cardSignatureSpecimen=null)
         {
             CustomerList = customer;
             Aggregrate = aggregrate;
@@ -43,7 +43,7 @@ namespace CBS.FrontDesk.Data.Entity
             CardSignatureSpecimen = cardSignatureSpecimen;
         }
 
-        public IndividualCustomerProfile(MembershipNextOfKingsMember membershipNextOfKingsMember, CardSignatureSpecimen cardSignatureSpecimen)
+        public IndividualCustomerProfile(MembershipNextOfKing membershipNextOfKingsMember, CardSignatureSpecimen cardSignatureSpecimen)
         {
             MembershipNextOfKingsMember = membershipNextOfKingsMember;
             CardSignatureSpecimen = cardSignatureSpecimen;

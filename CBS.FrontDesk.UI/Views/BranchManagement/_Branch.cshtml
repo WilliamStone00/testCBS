@@ -28,27 +28,12 @@
                         <label class="form-check-label" for="isActive">Active</label>
                     </div>
                 </div>
-                @if (Model.Branch.Id != null)
-                {
-                    if (Model.Branch.IsHeadOffice)
-                    {
-                        <span class="badge bg-success">Head-Office</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-dark">Branch-office</span>
-                    }
-                }
-                else
-                {
-                    <div class="col-6">
-                        <div class="form-check">
-                            @Html.CheckBoxFor(m => m.Branch.IsHeadOffice, new { @class = "form-check-input" })
-                            <label class="form-check-label" for="isActive">Set as head office branch</label>
-                        </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.Branch.IsHeadOffice, new { @class = "form-check-input" })
+                        <label class="form-check-label" for="isActive">Set as head office branch</label>
                     </div>
-                }
-
+                </div>
 
                 <div class="col-md-5">
                     <div class="form-floating form-floating-outline">
@@ -86,12 +71,12 @@
                     </div>
                 </div>
                 @*<div class="col-md-6">
-                        <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.Capital, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Branch.Capital, "", new { @class = "text-danger" })
-                            <label>Capital</label>
-                        </div>
-                    </div>*@
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.Branch.Capital, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Branch.Capital, "", new { @class = "text-danger" })
+                <label>Capital</label>
+            </div>
+        </div>*@
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.RegistrationNumber, new { @class = "form-control" })

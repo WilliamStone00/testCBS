@@ -11,7 +11,7 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="group-title">
-                    MEMBER REFERENCE # <span class="highlight-text">@Model.CustomerList.customerId</span><br />
+                    MEMBER REFERENCE # <span class="highlight-text">@Model.CustomerList.CustomerId</span><br />
                     <hr />
                     <small>Member code: Last 4 digits</small><br />
                     <small>Bank Code: @Session["BankCode"].ToString()</small><br />
@@ -25,18 +25,18 @@
                 <h4 class="group-title">
                     MEMBER STATUS
                     <hr />
-                    @if (Model.CustomerList.membershipApprovalStatus == "Approved")
+                    @if (Model.CustomerList.MembershipApprovalStatus == "Approved")
                     {
-                        <small>Approved BY:  @Model.CustomerList.membershipApprovalBy</small><br />
-                        <small>Approved Date:  @Model.CustomerList.membershipApprovedDate</small><br />
-                        <small>Status: <span class="highlight-text">@Model.CustomerList.membershipApprovalStatus.ToUpper()</span></small>
+                        <small>Approved BY:  @Model.CustomerList.MembershipApprovalBy</small><br />
+                        <small>Approved Date:  @Model.CustomerList.MembershipApprovedDate</small><br />
+                        <small>Status: <span class="highlight-text">@Model.CustomerList.MembershipApprovalStatus.ToUpper()</span></small>
                     }
                     else
                     {
-                        <small>Status: <span class="highlight-text">@Model.CustomerList.membershipApprovalStatus</span></small>
+                        <small>Status: <span class="highlight-text">@Model.CustomerList.MembershipApprovalStatus</span></small>
                     }
                     <br />
-                    <small>Registration Date: @Model.CustomerList.membershipApplicantDate</small>
+                    <small>Registration Date: @Model.CustomerList.MembershipApplicantDate</small>
                 </h4>
             </div>
         </div>
@@ -181,7 +181,7 @@
                                     data-bs-target="#navs-justified-cardsignature"
                                     aria-controls="navs-justified-cardsignature"
                                     aria-selected="false">
-                                <i class="tf-icons mdi mdi-account me-1"></i> Signature card
+                                <i class="tf-icons mdi mdi-account me-1"></i> Signatories
                             </button>
                         </li>
 
@@ -388,7 +388,7 @@
                                                 aria-expanded="true"
                                                 data-bs-target="#accordionPayment-1"
                                                 aria-controls="accordionPayment-1">
-                                            Create next of kings
+                                            Add next of kings
                                         </button>
                                     </h2>
 
@@ -432,7 +432,7 @@
                                                 aria-expanded="true"
                                                 data-bs-target="#accordionPayment-1"
                                                 aria-controls="accordionPayment-1">
-                                            Issue card signature
+                                            Add account signatories
                                         </button>
                                     </h2>
 
@@ -450,7 +450,7 @@
                                                 data-bs-toggle="collapse"
                                                 data-bs-target="#accordionPayment-2"
                                                 aria-controls="accordionPayment-2">
-                                            Membership Card Signature
+                                            Accounts signatories
                                         </button>
                                     </h2>
                                     <div id="accordionPayment-2" class="accordion-collapse collapse">
@@ -466,8 +466,7 @@
                     </div>
 
                 </div>
-            </div>
-        </div>
+            </div>        </div>
     </div>
 </div>
 
@@ -476,7 +475,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="imagePreviewModalLabel">@Model.CustomerList.firstName @Model.CustomerList.lastName photo preview.</h5>
+                <h5 class="modal-title" id="imagePreviewModalLabel">@Model.CustomerList.FirstName @Model.CustomerList.LastName photo preview.</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">

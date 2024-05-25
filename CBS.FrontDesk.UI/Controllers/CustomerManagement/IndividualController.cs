@@ -222,7 +222,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
 
             else if (model.option == "upload")
             {///NextofkingsPhoto,NextofkingsSignature,CustomerPhoto,CustomerSignature,CustomerOtherDocument
-                model.CustomerDocumentRequest.CustomerID = model.CustomerList.customerId;
+                model.CustomerDocumentRequest.CustomerID = model.CustomerList.CustomerId;
                 model.CustomerDocumentRequest.ServiceTypeType = "ClientManagement";
                 var data = await _individualProfileServices.UploadFiles(model.CustomerDocumentRequest);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });

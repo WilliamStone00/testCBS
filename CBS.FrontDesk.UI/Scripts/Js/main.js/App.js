@@ -553,7 +553,7 @@ function DeleteWithRedirect(controller, KEY, option, url_redirect) {
 
 }
 //LoadDataTableNew("Country", "myDataTable", "InitializeData", null, "_Data", 1);
-function DeleteRecordDataTable(controller, KEY, tableID, partialView, order, divToLoadTheData) {
+function DeleteRecordDataTable(controller, KEY, tableID, partialView, order, divToLoadTheData,Key2) {
 
     alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
         function () {
@@ -564,7 +564,7 @@ function DeleteRecordDataTable(controller, KEY, tableID, partialView, order, div
                 success: function (response) {
                     if (response.success) {
                         appalert(response.message, 1, 1);
-                        LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, "list", divToLoadTheData)
+                        LoadDataTableNew(controller, tableID, "InitializeData", Key2, partialView, order, "list", divToLoadTheData)
                     }
                     else {
                         appalert(response.message, 3, 1);
@@ -981,7 +981,22 @@ function LoadDataGen(controller, tableID, partialView, order, datalistingview, K
 function AddORUpdateGen(KEY, divToLoadData, partialView, path, controller, serviceOption) {
     EditResetMain(KEY, partialView, divToLoadData, controller, "InitializeData", null, path, null, serviceOption);
     $('.select2').select2();
+    initializeDatePickers();
 }
+
+function initializeDatePickers() {
+    var datepickerList = document.querySelectorAll('.date-picker');
+    if (datepickerList.length > 0) {
+        datepickerList.forEach(function (datepicker) {
+            flatpickr(datepicker, {
+                // Customize your date picker options here
+                dateFormat: "Y-m-d",
+                mode: 'range'
+            });
+        });
+    }
+}
+
 
 function navigateToDetails(url) {
     window.location.href = url;

@@ -29,6 +29,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public bool IsForUpdate { get; set; }
         public string AccountNumberCamCCUL { get; set; }
         public string AccountNumberAffiliate { get; set; }
+        public string GeneralRepresentation { get; set; }
 
     }
    

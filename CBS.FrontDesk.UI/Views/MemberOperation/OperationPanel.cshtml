@@ -9,7 +9,7 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="group-title">
-                    MEMBER REFERENCE # <span class="highlight-text">@Model.Customer.customerId</span><br />
+                    MEMBER REFERENCE # <span class="highlight-text">@Model.Customer.CustomerId</span><br />
                     <hr />
                     <small>Member code: Last 4 digits</small><br />
                     <small>Bank Code: @Session["BankCode"].ToString()</small><br />
@@ -23,18 +23,18 @@
                 <h4 class="group-title">
                     MEMBER STATUS
                     <hr />
-                    @if (Model.Customer.membershipApprovalStatus == "Approved")
+                    @if (Model.Customer.MembershipApprovalStatus == "Approved")
                     {
-                        <small>Approved BY:  @Model.Customer.membershipApprovalBy</small><br />
-                        <small>Approved Date:  @Model.Customer.membershipApprovedDate</small><br />
-                        <small>Status: <span class="highlight-text">@Model.Customer.membershipApprovalStatus.ToUpper()</span></small>
+                        <small>Approved BY:  @Model.Customer.MembershipApprovalBy</small><br />
+                        <small>Approved Date:  @Model.Customer.MembershipApprovedDate</small><br />
+                        <small>Status: <span class="highlight-text">@Model.Customer.MembershipApprovalStatus.ToUpper()</span></small>
                     }
                     else
                     {
-                        <small>Status: <span class="highlight-text">@Model.Customer.membershipApprovalStatus</span></small>
+                        <small>Status: <span class="highlight-text">@Model.Customer.MembershipApprovalStatus</span></small>
                     }
                     <br />
-                    <small>Registration Date: @Model.Customer.membershipApplicantDate</small>
+                    <small>Registration Date: @Model.Customer.MembershipApplicantDate</small>
                 </h4>
             </div>
         </div>
@@ -151,12 +151,12 @@
                                                         <button type="button" class="btn btn-primary" onclick="AddORUpdateGen(null,'datalistingview','_MakeLoanSimulation','create_loan_simulation','MemberOperation','applications')">Simulate amortization schedule</button>
                                                     </div>*@
                                                 <div class="ms-3">
-                                                    <a type="button" onclick="AddORUpdateGen('@Model.Customer.customerId','datalistingview','_LoanApplication','loanapplication','MemberOperation',null)" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Apply for a new loan">
+                                                    <a type="button" onclick="AddORUpdateGen('@Model.Customer.CustomerId','datalistingview','_LoanApplication','loanapplication','MemberOperation',null)" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Apply for a new loan">
                                                         <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                                     </a>
                                                 </div>
                                                 <div class="ms-3">
-                                                    <a type="button" onclick="LoadDataGen('MemberOperation','myDataTable','_MemberLoanApplicationData',0,'datalistingview','@Model.Customer.customerId','applications','list_of_members_loan_application')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View listing of loan applications">
+                                                    <a type="button" onclick="LoadDataGen('MemberOperation','myDataTable','_MemberLoanApplicationData',0,'datalistingview','@Model.Customer.CustomerId','applications','list_of_members_loan_application')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View listing of loan applications">
                                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                                     </a>
                                                 </div>
@@ -190,7 +190,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="imagePreviewModalLabel">@Model.Customer.firstName @Model.Customer.lastName photo preview.</h5>
+                <h5 class="modal-title" id="imagePreviewModalLabel">@Model.Customer.FirstName @Model.Customer.LastName photo preview.</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">

@@ -1,0 +1,71 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.Config.System.SysConfiguration>
+
+<fieldset class="fieldset-custom">
+    <legend>Operation year lising.</legend>
+
+    @if (Model.Any())
+    {<div class="table-responsive">
+            <table class="table table-hover" id="myDataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Current year</th>
+                        <th>Year status</th>
+                        <th>Day status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model)
+                    {
+                        <tr>
+                            <td style="width:60%">@d.Name</td>
+                            <td style="width:10%">@d.Value</td>
+                            <td style="width:10%">
+                                @if (d.IsYearOpen)
+                                {
+                                    <span class="badge bg-info">Opened</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Closed</span>
+                                }
+                            </td>
+                            <td style="width:10%">
+                                @if (d.IsDayOpen)
+                                {
+                                    <span class="badge bg-info">Opened</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Closed</span>
+                                }
+                            </td>
+                            <td style="width:10%">
+                                
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_SysConfiguration','get','SysConfiguration','SysConfiguration')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Configure</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+
+    }
+    else
+    {
+<div class="text-center my-3">
+    There is no running year configured. Click on the + to add new running year.
+    <br />
+    <br />
+    <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','SysConfiguration','SysConfiguration')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+    </a>
+</div>
+    }
+
+
+
+</fieldset>

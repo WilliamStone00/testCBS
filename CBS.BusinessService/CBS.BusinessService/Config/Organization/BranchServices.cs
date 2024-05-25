@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Config
 {
-    public class BranchServices : BaseService
+    public class BranchServices : BaseService, IBranchServices
     {
         private readonly ApiCallerHelper _BranchConfigApiHelper;
 
@@ -70,7 +70,7 @@ namespace CBS.BusinessService.Config
                 else
                 {
                     var couApiResponse = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
-                    return couApiResponse.ApiResponseData.Data.Where(x=>x.Id==GetBranchID());
+                    return couApiResponse.ApiResponseData.Data.Where(x => x.Id == GetBranchID());
 
                 }
 
@@ -87,7 +87,7 @@ namespace CBS.BusinessService.Config
             try
             {
                 var cusResponseObject = await _BranchConfigApiHelper.GetAsync<ResponseObject<Branch>>(string.Format(APICallHelper.Get_Update_Delete_Branch, id));
-                if (cusResponseObject.ApiResponseData!=null)
+                if (cusResponseObject.ApiResponseData != null)
                 {
                     return cusResponseObject.ApiResponseData.Data;
                 }
@@ -131,7 +131,7 @@ namespace CBS.BusinessService.Config
                 {
                     // Failed creation
                     GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(),null, response.Message);
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
             catch (Exception ex)

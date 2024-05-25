@@ -206,7 +206,7 @@ function Reprint() {
     ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
 
 }
-function confirmTransaction(title, message, ajaxUrl, data,operationType) {
+function confirmTransaction(title, message, ajaxUrl, data, operationType) {
     alertify.confirm(title, message,
         function () {
             $.ajax({
@@ -216,11 +216,15 @@ function confirmTransaction(title, message, ajaxUrl, data,operationType) {
                 data: JSON.stringify(data),
                 success: function (response) {
                     if (response.success) {
-                        if (operationType ==='CashIn') {
+                        if (operationType === 'CashIn') {
                             GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashin')
                         }
+
                         else if (operationType === 'Withdrawal') {
                             GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashout')
+                        }
+                        else if (operationType === 'SavingWithdrawalFormFee') {
+                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'withdrawalnotification')
                         }
                         else if (operationType === 'Loan') {
                             GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'repayment')
@@ -288,10 +292,33 @@ function PostCashIn() {
     var message = "";
     message += "Are you sure you want to perform a cash-in of " + totalInfo.total + " to the selected account numbers?\n";
     message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-    confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits,'CashIn');
+    confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits, 'CashIn');
+}
+
+function PostWithdrawalFromFee() {
+    if (!checkTotalNotes()) return false;
+
+    var totalNotes = parseFloat($("#totalNoteAmount").val());
+    var totalInfo = calculateTotalAmount();
+
+    if (!validateTotalAmount(totalInfo, totalNotes)) return;
+
+    var deposits = collectDeposits();
+    if (deposits.length === 0) {
+        appalert("Please select at least one account to perform the cash-in.", 3, 1);
+        return;
+    }
+
+    deposits[0].currencyNotes = collectCurrencyNotes();
+    deposits[0].Depositer = collectDepositorInfo();
+
+    var message = "";
+    message += "Are you sure you want to confirm the payment of " + totalInfo.total + " as withdrawal form fee?\n";
+    confirmTransaction('Payment of S.W.F', message, '/CashDesk/PostRequestCash', deposits, 'SavingWithdrawalFormFee');
 }
 
 // Similarly update PostCashOut() and PostLoanRepayment() functions
+
 
 function PostCashOut() {
     if (!checkTotalNotes()) return false;
@@ -313,7 +340,7 @@ function PostCashOut() {
     var message = "";
     message += "Are you sure you want to perform a cash-out of " + totalInfo.total + " from the selected account numbers?\n";
     message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-    confirmTransaction('Confirm Cash-Out Operation', message, '/CashDesk/PostRequestCash', deposits,'Withdrawal');
+    confirmTransaction('Confirm Cash-Out Operation', message, '/CashDesk/PostRequestCash', deposits, 'Withdrawal');
 }
 
 function PostLoanRepayment() {
@@ -336,7 +363,7 @@ function PostLoanRepayment() {
     var message = "";
     message += "Are you sure you want to perform loan repayment of " + totalInfo.total + " to the selected account numbers?\n";
     message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-    confirmTransaction('Confirm Loan Repayment Operation', message, '/CashDesk/PostRequestCash', deposits,'Loan');
+    confirmTransaction('Confirm Loan Repayment Operation', message, '/CashDesk/PostRequestCash', deposits, 'Loan');
 }
 
 

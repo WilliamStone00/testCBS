@@ -1,0 +1,53 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.OperationFee>
+<fieldset class="fieldset-custom">
+    <legend>Charges listing</legend>
+    @if (Model.Count == 0)
+    {
+        <div class="text-center my-3">
+            <p>No fee type is created</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mb-3">
+            <table class="table table-hover" id="myDataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Applied</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model)
+                    {
+                        <tr>
+                            <td style="width:15%">@d.Name</td>
+                            <td style="width:10%">@d.FeeType</td>
+                            <td style="width:10%">
+                                @if (d.IsAppliesOnHoliday)
+                                {
+                                    <span class="badge bg-info">Only on holidays</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning">Normal days</span>
+                                }
+                            </td>
+                            <td style="width:50%">@d.Description</td>
+                            <td style="width:15%">
+                                <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview','_Create','update','OperationFee')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a> |
+                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('OperationFee','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    }
+
+</fieldset>
+

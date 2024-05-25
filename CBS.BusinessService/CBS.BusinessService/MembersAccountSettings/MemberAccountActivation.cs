@@ -140,11 +140,11 @@ namespace CBS.BusinessService.MembersAccountSettings
                 var MemberAccountActivation = await GetMemberAccountActivation(model.Id);
                 if (MemberAccountActivation != null)
                 {
-                    MemberAccountActivation.MemberAccountActivationPolicyId = model.MemberAccountActivationPolicyId;
-                    MemberAccountActivation.ClossingFee = model.ClossingFee;
-                    MemberAccountActivation.ReopeningFee = model.ReopeningFee;
-                    MemberAccountActivation.RegistrationFee = model.RegistrationFee;
-                 
+                    MemberAccountActivation.MemberRegistrationFeePolicyId = model.MemberRegistrationFeePolicyId;
+                    MemberAccountActivation.ByeLawFee = model.ByeLawFee;
+                    MemberAccountActivation.BuildingContribution = model.BuildingContribution;
+                    MemberAccountActivation.LoanPolicyFee = model.LoanPolicyFee;
+                    MemberAccountActivation.EntranceFee = model.EntranceFee;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<MemberAccountActivation>>(string.Format(APICallHelper.Get_Update_Delete_MemberAccountActivation, model.Id), MemberAccountActivation);
                     if (response.IsSuccess)
                     {

@@ -23,6 +23,35 @@ namespace CBS.BusinessService.Accounting
             _accountingApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
 
         }
+        public async Task<IEnumerable<StringValues>> GetEventNames(string opertionType)
+        {
+            try
+            {
+                // Make an API call to retrieve accounting event attributes
+                var response = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<AccountingEventAttributs>>>(string.Format(APICallHelper.GetAllOperationServicesAccountingRuleEntryQuery, opertionType));
+                if (response.IsSuccess && response.ApiResponseData != null)
+                {
+                    // Map the API response to StringValues objects with Text and Value properties
+                    var stringValuesList = response.ApiResponseData.Data
+                        .Select(item => new StringValues(item.EventCode, item.AccountingRuleEntryName))
+                        .ToList();
+
+                    return stringValuesList;
+                }
+                else
+                {
+                    // Handle unsuccessful API response
+                    // You can log the error or return an empty list
+                    return Enumerable.Empty<StringValues>();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw new ApplicationException("Error occurred while fetching accounting event names.", ex);
+            }
+        }
+
         public async Task<IEnumerable<StringValues>> GetChartOfAccounts()
         {
             try
@@ -73,8 +102,8 @@ namespace CBS.BusinessService.Accounting
                 {
                     return couApiResponse.Data.Select(a => new StringValues
                     {
-                        Text = $"{a.AccountNumber}-{a.LabelEn}",
-                        Value = a.Id
+                        Text = $"{a.Id}-{a.GeneralRepresentation}",
+                        Value = a.Id 
                     });
                 }
             }
