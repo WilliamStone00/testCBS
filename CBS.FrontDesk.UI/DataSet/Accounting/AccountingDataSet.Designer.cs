@@ -2109,7 +2109,6 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
                 base.Columns.Add(this.columnLogoPath);
                 this.columnFromDate.Caption = "Date";
                 this.columnBeginningBalance.Caption = "CurrentBalance";
-                this.columnCurrentBalance.Caption = "DebitBalance";
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

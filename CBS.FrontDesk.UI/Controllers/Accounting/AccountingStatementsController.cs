@@ -179,10 +179,43 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
         }
+
+
+        [HttpGet]
+        public async Task<ActionResult> LiaisonLedger(string branchId = null)
+        {
+            if (_accountingServices.IsHeadOffice())
+            {
+                if (branchId == null)
+                {
+                    var listOfBranch = await _branchServices.GetBranches();
+
+                    return View(new AccountingStatementDto { Branches = listOfBranch.ToList() });
+                }
+                else
+                {
+                    SystemQuery query = new SystemQuery();
+                    query.BranchId = _branchServices.GetBranchID();
+
+                    var models = await _acountServices.GenerateLiaisonLedgerForBranch(query.BranchId);
+                    return View(new AccountingStatementDto { AccountDtos = models });
+                }
+
+
+            }
+            else
+            {
+                SystemQuery query = new SystemQuery();
+                query.BranchId = _branchServices.GetBranchID();
+
+                var models = await _acountServices.GenerateLiaisonLedgerForBranch(query.BranchId);
+                return View(new AccountingStatementDto { AccountDtos = models });
+            }
+
+
+        }
         public async Task<ActionResult> JournalEntriesPerBranch(SystemQuery query)
         {
-
-
             try
             {
                 //SystemQuery query = new SystemQuery();
@@ -190,6 +223,24 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                 var models = await _acountServices.GenerateAccountingLedgerForAnumber(query);
               
+
+                return Json(models, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public async Task<ActionResult> LiaisonLedgerPerBranch(string branchId)
+        {
+            try
+            {
+                //SystemQuery query = new SystemQuery();
+                //query.BranchId = branchId;
+
+                var models = await _acountServices.GenerateLiaisonLedgerForBranch(branchId);
+
 
                 return Json(models, JsonRequestBehavior.AllowGet);
             }

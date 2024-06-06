@@ -14,8 +14,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string AccountNumber { get; set; }
         [Required]
         public string LabelEn { get; set; }
-        [Required]
-        public string OperationDirection { get; set; }
+      
+        //public string OperationDirection { get; set; }
         [Required]
         public string AccountCartegoryId { get; set; }
         [Required]

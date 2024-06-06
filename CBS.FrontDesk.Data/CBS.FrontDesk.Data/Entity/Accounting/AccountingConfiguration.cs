@@ -1,4 +1,5 @@
-﻿using CBS.FrontDesk.Data.Entity.SavingProducts;
+﻿using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,9 +39,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<AccountingRuleEntry> AccountingRuleEntries { get; set; } = new List<AccountingRuleEntry>();
         public List<AccountingRuleEntryDto> AccountingRuleEntriesDTOS { get; set; } = new List<AccountingRuleEntryDto>();
         public AccountingRule  AccountingRule{ get; set; } = new AccountingRule();
- 
+        public List<Branch> Branches { get; set; } = new List<Branch>();
+        public Branch Branch { get; set; }  
         public List<AccountingRuleDtos> AccountingRules { get; set; } = new List<AccountingRuleDtos>();
-
+        public string BranchId { get; set; }
         public string ManualOperationCode { get; set; }
         public string ManualOperationName { get; set; }
         public string ServiceOption { get; set; }

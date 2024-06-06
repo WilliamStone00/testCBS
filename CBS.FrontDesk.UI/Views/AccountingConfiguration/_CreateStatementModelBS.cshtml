@@ -28,13 +28,13 @@
                     <label for="AccountIds">Select account numbers from chart of account to be used as Gross account</label>
                 </div>
             </div>
-            <div class="col-md-6 ">
+            @*<div class="col-md-6 ">
                 <div class="form-floating form-floating-outline">
                     @Html.DropDownListFor(m => m.IncomeStatement.OperationSideGross, new SelectList(ViewBag.OperationSide == null ? "" : ViewBag.OperationSide, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
                     @Html.ValidationMessageFor(model => model.IncomeStatement.OperationSideGross, "", new { @class = "text-danger" })
                     <label for="Document">Select gross account booking direction</label>
                 </div>
-            </div>
+            </div>*@
             <div class="col-md-6 ">
                 <div class="form-floating form-floating-outline">
                     @Html.ListBoxFor(m => m.IncomeStatement.AmortizationChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? new List<SelectListItem>() : ViewBag.ChartOfAccounts, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple" })
@@ -42,13 +42,13 @@
                     <label for="AccountIds">Select account numbers from chart of account to be used as amortization account</label>
                 </div>
             </div>
-            <div class="col-md-6 ">
+            @*<div class="col-md-6 ">
                 <div class="form-floating form-floating-outline">
                     @Html.DropDownListFor(m => m.IncomeStatement.OperationSideAmortization, new SelectList(ViewBag.OperationSide == null ? "" : ViewBag.OperationSide, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
                     @Html.ValidationMessageFor(model => model.IncomeStatement.OperationSideAmortization, "", new { @class = "text-danger" })
                     <label for="Document">Select amortizations booking direction</label>
                 </div>
-            </div>
+            </div>*@
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.IncomeStatement.Heading, new { @class = "form-control", @style = "height: 150px;" })

@@ -63,8 +63,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Address { get; set; }
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
-        public string CurrentBalnce { get; set; }
- 
+        public Decimal CurrentBalance { get; set; }
+        public string BranchId { get; set; }
     }
 
     public class JournalEntryDto

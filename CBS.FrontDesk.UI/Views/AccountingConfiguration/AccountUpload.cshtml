@@ -6,6 +6,13 @@
         <h5 class="card-header">Basic</h5>
         <div class="card-body">
             <form action="" class="dropzone needsclick dz-clickable" id="dropzone-basic">
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true", @id = "BranchIdOption" })
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                        <label>Select @ViewBag.BankName's  you which to upload accounts</label>
+                    </div>
+                </div>
                 <div class="dz-message needsclick">
                     Account Upload
                     <span class="note needsclick">
@@ -34,7 +41,7 @@
                 <div class="fallback">
                     <input name="file" type="file" class="btn btn-primary" id="uploadedFile" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <button onclick="ReadExcelFile()" Id="ReadUploadedFile" class="btn btn-primary me-2">Read file</button>
-                    @*<button onclick="ExecuteExcelFile(12320)" class="btn btn-primary me-2">Execute File</button>*@
+                    <button onclick="ExecuteExcelFile()" class="btn btn-primary me-2">Execute File</button>
                 </div>
 
             </form>

@@ -25,6 +25,10 @@ using System.Web.UI.WebControls;
 using OfficeOpenXml;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using CBS.BusinessService.Config;
+using System.Xml.Linq;
+using CBS.FrontDesk.Data.Entity.Config;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -36,8 +40,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly OperationEventAttributeServices _OperationEventAttributeService;
         private readonly ChartOfAccountServices _chartOfAccountServices;
         private readonly AccountingEntryRuleService _accountingEntryRuleService;
+        private readonly BranchServices _branchService;
         private readonly OperationEventServices _OperationEventService;
         private readonly AccountingServices _AccountServices;
+        private readonly AccountClassServices _AccountClassServices;
         private readonly AccountingRuleService _AccountingRuleServices;
         private readonly AccountTypeServices _AccountTypeServices;
         private readonly ChartOfAccountManagementPositionService _ChartOfAccountManagementPositionServicesServices;
@@ -51,6 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _OperationEventAttributeService = new OperationEventAttributeServices();
             _chartOfAccountServices = new ChartOfAccountServices();
             _accountingEntryRuleService = new AccountingEntryRuleService();
+            _branchService = new BranchServices();
             _OperationEventService = new OperationEventServices();
             _AccountServices = new AccountingServices();
             _AccountTypeServices = new AccountTypeServices();
@@ -58,6 +65,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _trialBalanceReferenceServices = new TrialBalanceReferenceServices();
             _statementModelServices = new StatementModelServices();
             _ChartOfAccountManagementPositionServicesServices = new ChartOfAccountManagementPositionService();
+            _AccountClassServices = new AccountClassServices();
         }
         // GET: AccountingConfiguration
 
@@ -66,10 +74,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             await GetList();
             return View(new AccountingConfiguration());
         }
+    
         public async Task<ActionResult> AccountUpload()
         {
-           
-            return View(new AccountingConfiguration());
+            ViewBag.Branches = BuildMenuISViewBag((await _branchService.GetBranches()).ToList());
+            ViewBag.BankName= _branchService.GetBankName();
+            return View(new AccountingConfiguration { BranchId = _branchService.GetBranchID() });
         }
 
 
@@ -119,6 +129,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             };
             return selectListItems;
+        }
+        private dynamic BuildMenuISViewBag(List<Branch> listOfItems)
+        {
+           List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            foreach (var item in listOfItems)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.BranchCode} - {item.Name}" });
+            }
+            return selectListItems;
+ 
         }
         private dynamic BuildMenuViewBag()
         {
@@ -286,7 +306,30 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 //var number = chartOfAccountNumber.Length==1? chartOfAccountNumber: chartOfAccountNumber.Substring(0, 1);
                 var data = await _chartOfAccountServices.GetChartOfAccountById(Id);
                 var dataList = new List<StringValues>();
-                dataList.Add(new StringValues { Text = (await _AccountCategoryServices.GetAccountCategory(data.AccountCartegoryId)).Name, Value = data.AccountCartegoryId });
+                if (data.LabelEn== "BALANCING_ACCOUNT")
+                {
+                    var dataModel = (await _AccountCategoryServices.GetAccountCategory()).FirstOrDefault();
+                    dataList.Add(new StringValues { Text = dataModel.Name, Value = dataModel.Id });
+
+                }
+                else
+                {
+                    if (data.AccountNumber.StartsWith("4") || data.AccountNumber.StartsWith("3"))
+                    {
+                        var datas = (await _AccountCategoryServices.GetAccountCategory()).Where(x => x.Name.ToLower() == "asset"|| x.Name.ToLower() == "liability").ToList();
+                        foreach (var item in datas)
+                        {
+
+                            dataList.Add(new StringValues { Text = item.Name, Value = item.Id });
+                        }
+                    }
+                    else
+                    {
+                        dataList.Add(new StringValues { Text = (await _AccountCategoryServices.GetAccountCategory(data.AccountCartegoryId)).Name, Value = data.AccountCartegoryId });
+
+                    }
+
+                }
                 return Json(dataList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -969,8 +1012,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                  {
                                      Id = tr.Id,
                                      ChartOfAccountId = tr.ChartOfAccountId,
-                                     AccountInfo = acc.AccountNumber + "-" + acc.LabelEn,
-                                     OperationSide = tr.OperationSide,
+                                     AccountInfo = acc.AccountNumber.PadRight(6,'0' ) + "-" + acc.LabelEn,
+                                     //OperationSide = tr.OperationSide,
                                      StatementModelId = data.Id
                                  };
 
@@ -1170,7 +1213,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
 
 
-        public ActionResult UploadAccountModel(AccountUploadModel model)
+        public async Task<ActionResult> UploadAccountModel(AccountUploadModel model)
         {
             List<AccountModel> models = new List<AccountModel>();
 
@@ -1187,7 +1230,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     DataTable dt = ReadExcelFile(filePath);
 
                     // Process the data from the DataTable
-                    models = ProcessExcelData(dt);
+                    models = await ProcessExcelDataAsync(dt);
 
                     // Delete the temporary file
                     System.IO.File.Delete(filePath);
@@ -1207,8 +1250,23 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         }
 
+        [HttpPost]
+        public async Task<ActionResult> UploadAccountsAsync(string branchId)
+        {
+            UploadAccountCommand model = new UploadAccountCommand();
+           
+            if (this.HttpContext.Session["account" + this.HttpContext.Session.SessionID] != null)
+            {
+                 model= (UploadAccountCommand)this.HttpContext.Session["account" + this.HttpContext.Session.SessionID];
+                model.BranchId = branchId;
+                model.BranchCode = (await _branchService.GetBranchByBankID(branchId)).BranchCode;
+                var node= _AccountServices.Create(model);
+            }
 
-      
+            return Json(true, JsonRequestBehavior.AllowGet);
+
+        }
+
 
         private DataTable ReadExcelFile(string filePath)
         {
@@ -1222,9 +1280,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var worksheet = package.Workbook.Worksheets.First();
 
                 // Add columns to the DataTable
-                for (int col = 1; col <= worksheet.Dimension.Columns; col++)
+                try
                 {
-                    dt.Columns.Add(new DataColumn(worksheet.Cells[1, col].Value.ToString()));
+                    for (int col = 1; col <= worksheet.Dimension.Columns; col++)
+                    {
+                        dt.Columns.Add(new DataColumn(worksheet.Cells[1, col].Value.ToString()));
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw(ex);
                 }
 
                 // Populate the DataTable with data from the worksheet
@@ -1242,17 +1308,32 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return dt;
         }
 
-        private List<AccountModel> ProcessExcelData(DataTable dt)
+        private async Task<List<AccountModel>> ProcessExcelDataAsync(DataTable dt)
         {
             List<AccountModel> models = new List<AccountModel>();
             var model = new UploadAccountCommand();
             foreach (DataRow row in dt.Rows)
             {
-                models.Add(new AccountModel(row["Account Number"].ToString(), row["Account Name"].ToString(), row["CHarOfAccount"].ToString(), row["Created date"].ToString(), Convert.ToDecimal(row["Beginning Balance"]), Convert.ToDecimal(row["Current Balance"]), row["Branc code"].ToString()));
+                //Account Number	Account name	BEG.DEBIT	BEG.CREDIT	MOV.DEBIT	MOV.CREDIT	End.DEBIT	End.CREDIT	BranchCode
+                string accountNumber = row["Account Number"].ToString();
+                string accountName = row["Account name"].ToString();
+                string beginningDebit = row["BEG.DEBIT"].ToString();
+                string beginningCredit = row["BEG.CREDIT"].ToString();
+                string movementDebit = row["MOV.DEBIT"].ToString();
+                string movementCredit = row["MOV.CREDIT"].ToString();
+                string endDebit = row["End.DEBIT"].ToString();
+                string endCredit = row["End.CREDIT"].ToString();
+                string branchCode = row["BranchCode"].ToString();
+              
+                models.Add(new AccountModel(accountNumber, accountName, accountNumber.Substring(0,6), DateTime.Today.ToString("yyyy-MM-dd"), (Convert.ToDecimal(beginningCredit)- Convert.ToDecimal(beginningDebit)),( Convert.ToDecimal(endCredit)- Convert.ToDecimal(endDebit)), branchCode));
             }
-
             model.AccountModelList = models;
-            _AccountServices.Create(model);
+            //this.HttpContext.Session["account" + this.HttpContext.Session.SessionID] = model;
+         var listOfBranches=   (await _branchService.GetBranches()).ToList();
+            var modelBR = listOfBranches.Find(x => x.BranchCode ==  models[0].BranchCode);
+            model.BranchId = modelBR.Id;
+            model.BranchCode = modelBR.BranchCode;
+            var node = _AccountServices.Create(model);
             return models;
         }
 

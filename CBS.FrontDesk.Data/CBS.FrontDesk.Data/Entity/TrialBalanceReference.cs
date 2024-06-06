@@ -12,7 +12,7 @@ namespace CBS.FrontDesk.Data.Entity
  
         public string ChartOfAccountId { get; set; }
 
-        public string OperationSide { get; set; }
+        //public string OperationSide { get; set; }
 
         public string AccountInfo { get; set; }
 

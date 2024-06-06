@@ -340,6 +340,35 @@ function LoadJournalEntryByBranchID() {
     });
 }
 
+
+function LoadLiaionLedgerByBranchID(branchId) {
+    console.log(branchId);
+    $.ajax({
+        url: '/AccountingStatements/LiaisonLedgerPerBranch',
+        type: 'Get',
+        dataType: 'json',
+data: { branchId: branchId },
+        success: function (data) {
+            /* $('#largeModal').hide();*/
+            $('#LiaisonLedgerHeading').empty();
+            var description = $("#" + branchId + "-Name").text();
+            var names = "Liaison Ledger for " + description +".";
+            console.log(names);
+            $("#LiaisonLedgerHeading").text(names);
+            // Append text to the modal title
+            //$('#LiaisonLedgerHeading').append(names);
+            var table;
+            initializeDataTableForLiaisonLedger(data);
+
+            $('#selectedBranchId').val(branchId);
+           
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
 function ShareBranchID(branchId)
 {
     $('#journalEntryLabel').empty();
@@ -375,7 +404,33 @@ function initializeDataTableForGL(data) {
         table.clear().draw();
     }
 }
+function initializeDataTableForLiaisonLedger(data) {
+    console.log(data);
+    if ($.fn.DataTable.isDataTable('#LiaisonLadgerDataTable')) {
+        // If the DataTable instance already exists, destroy it
+        table.destroy();
+    }
 
+    if (data && data.length > 0) {
+
+        // Create a new DataTable instance with the provided data
+        table = $('#LiaisonLadgerDataTable').DataTable({
+            data: data,
+            columns: [
+             
+                { data: 'AccountNumber' },
+                { data: 'AccountName' },
+                { data: 'DebitBalance' },
+                { data: 'CreditBalance' },
+                { data: 'CurrentBalance' }
+            ]
+        });
+    } else {
+        // Create an empty DataTable instance
+        table = $('#LiaisonLadgerDataTable').DataTable();
+        table.clear().draw();
+    }
+}
 function initializeDataTableForJE(data) {
     console.log(data);
     if ($.fn.DataTable.isDataTable('#JournalEntriesTable')) {

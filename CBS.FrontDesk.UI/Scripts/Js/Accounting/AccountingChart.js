@@ -38,7 +38,8 @@ function AjaxPostAndUpdateChartOfAccount(form) {
 
                 if (response.success) {
                        
-                    LoadChartOfAccounts();  
+                    LoadChartOfAccounts();
+                    window.location.href = "/AccountingChart/Index";
                 }
                 else {
                     alert("Error has occured!");
@@ -70,7 +71,18 @@ $('#jstree-context-menu').on('click', '.parent', function (e, data) {
     var nodeName = clickedElement.text();
 
     // Example: Display information about the clicked node
-    alert('Clicked Node ID: ' + nodeId + '\nClicked Node Name: ' + nodeName);
+/*    alert('Clicked Node ID: ' + nodeId + '\nClicked Node Name: ' + nodeName);*/
+
+    alertify.confirm("TRUSTSOFT CREDIT ACCOUNTING SYSTEM", "You are about to modify " + nodeName + ".\n Are you sure you want to proceed?",
+        function () {
+
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
+
+        }
+
+    );
     $("#selectedID").val(nodeId);
     $(".RootId").val(nodeId);
     // Example: Load a partial view based on the clicked node

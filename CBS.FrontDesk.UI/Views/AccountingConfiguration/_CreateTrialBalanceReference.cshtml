@@ -37,8 +37,8 @@
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.TrialBalanceReference.OperationSide, new SelectList(ViewBag.OperationSide == null ? "" : ViewBag.OperationSide, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(model => model.TrialBalanceReference.OperationSide, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(model => model.IncomeStatement.Reference, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.IncomeStatement.Reference, "", new { @class = "text-danger" })
                     <label for="Document_type">Select Opertation side</label>
                 </div>
             </div>
