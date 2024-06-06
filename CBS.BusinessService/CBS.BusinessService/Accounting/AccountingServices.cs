@@ -332,7 +332,7 @@ namespace CBS.BusinessService.Accounting
                 // Make an API call to create an individual profile
 
 
-                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<List<AccountModel>>>(APICallHelper.CreateAccounOnUploadie, list);
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<UploadAccountCommand>>(APICallHelper.CreateAccounOnUploadie, list);
                 if (response.IsSuccess)
                 {
                     // Successful creation

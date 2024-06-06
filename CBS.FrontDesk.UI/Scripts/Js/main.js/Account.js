@@ -115,12 +115,13 @@
 function ReadExcelFile() {
     var formData = new FormData();
     var file = $("#uploadedFile")[0].files[0];
+ 
     console.log(file);
     formData.append("ExcelFile", file);
     console.log(formData.get("ExcelFile"));
     event.preventDefault();
     $.ajax({
-        url: "/AccountingConfiguration/UploadAccountModel",
+        url: "/AccountingConfiguration/UploadAccountModel/",
         type: "POST",
         data: formData,
         contentType: false,
@@ -136,13 +137,15 @@ function ReadExcelFile() {
     });
 }
 
-function ExecuteExcelFile(branchId) {
+function ExecuteExcelFile() {
+    var branchId = $("#BranchIdOption").val();
     console.log(branchId);
+ 
     $.ajax({
-        url: '/AccountingConfiguration/AddTransferAccountModelForProcessing',
+        url: '/AccountingConfiguration/UploadAccounts/'+branchId,
         type: 'Post',
         dataType: 'json',
-        data: { branchId: ""},
+        data: { branchId: branchId },
         success: function (data) {
             
         },

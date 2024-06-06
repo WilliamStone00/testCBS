@@ -48,11 +48,11 @@
                             @Html.ValidationMessageFor(model => model.LabelFr, "", new { @class = "text-danger" })
                         </div>
 
-                        <div class="form-floating form-floating-outline mb-4">
+                        @*<div class="form-floating form-floating-outline mb-4">
                             @Html.DropDownListFor(model => model.OperationDirection, new SelectList(ViewBag.OperationDirection == null ? "" : ViewBag.OperationDirection, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
                             @Html.ValidationMessageFor(model => model.OperationDirection, "", new { @class = "text-danger" })
                             <label>BookingDirection</label>
-                        </div>
+                        </div>*@
 
                         <div class="form-floating form-floating-outline mb-4">
                             @Html.DropDownListFor(model => model.AccountCartegoryId, new SelectList(ViewBag.AccountCartegories == null ? "" : ViewBag.AccountCartegories, "Id", "Name"), "---Select Cartegory---", new { @class = "form-control select2", @search = "true" })

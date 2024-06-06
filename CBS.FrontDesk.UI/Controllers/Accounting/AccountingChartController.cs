@@ -51,7 +51,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             IsBalanceAccount = modeldto.IsBalanceSheetAccount,
                             AccountNumber = modeldto.AccountNumber,
                             CanBeNegative = modeldto.CanBeNegative,
-                            IsDebit = modeldto.OperationDirection == "DEBIT",
+                            //IsDebit = modeldto.OperationDirection == "DEBIT",
                             AccountCartegoryId = modeldto.AccountCartegoryId
                         };
 
@@ -74,7 +74,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         IsBalanceAccount = modeldto.IsBalanceSheetAccount,
                         AccountNumber = modeldto.AccountNumber,
                         CanBeNegative = modeldto.CanBeNegative,
-                        IsDebit = modeldto.OperationDirection == "DEBIT",
+                        //IsDebit = modeldto.OperationDirection == "DEBIT",
                         AccountCartegoryId = modeldto.AccountCartegoryId
                     };
 
@@ -99,7 +99,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     AccountNumber = modeldto.AccountNumber,
                       LabelFr = modeldto.LabelFr,                
                     CanBeNegative = modeldto.CanBeNegative,
-                    IsDebit = modeldto.OperationDirection == "DEBIT",
+                    //IsDebit = modeldto.OperationDirection == "DEBIT",
                     AccountCartegoryId = modeldto.AccountCartegoryId
                 };
                 var data = await _Services.Update(modeldto);

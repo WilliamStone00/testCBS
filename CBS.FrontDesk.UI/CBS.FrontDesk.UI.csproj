@@ -2797,6 +2797,8 @@
     <Content Include="Views\CashDesk\_NoneMemberPayment.cshtml" />
     <Content Include="Views\CashDesk\_MemberPayment.cshtml" />
     <Content Include="Views\MemberOperation\_SearchBox.cshtml" />
+    <Content Include="Views\AccountingStatements\LiaisonLedger.cshtml" />
+    <Content Include="Views\AccountingStatements\_LiaisonLedger.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

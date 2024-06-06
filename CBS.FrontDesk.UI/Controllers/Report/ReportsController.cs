@@ -290,7 +290,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 {
                     worksheet.Cell(row, 1).Value = account.AccountNumber;
                     worksheet.Cell(row, 2).Value = account.AccountName;
-                    worksheet.Cell(row, 3).Value = account.CurrentBalnce;
+                    worksheet.Cell(row, 3).Value = account.CurrentBalance;
                     row++;
                 }
 

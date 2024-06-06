@@ -115,6 +115,7 @@ function loadAccountingEntries(reference)
                 tableBody.append(row);
             });
             $("#datalistingview_AddEntryPurpose").show();
+      
             // Append text to the modal title
             $('#selectedId').val(id);
         },
@@ -239,8 +240,7 @@ function postingValidationOfTransactions(title, message, ajaxUrl, data) {
                     else {
                         appalert(response.message, 3, 4);
 
-                        LoadJournalEntryData("ManuallyJournalEntry", "InitializeData", "datalistingview_JournalEntries", "JournalEntryDataTable", "EntryTempData", "", "_JournalEntries", "list", "desc");
-
+                       
                     }
                 },
                 error: function () {
@@ -334,7 +334,9 @@ function DoPosting() {
     var message = "WARNING!!!\n";
     message += "Are you sure you want to confirm this various account adjustment?\n";
     postingValidationOfTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/AddOrUpdate', entry);
- 
+    $("#JournalEntryDataTable").hide(1000);
+    $("#datalistingview_AddEntryPurpose").hide(1000);
+
 }
  
 function PostEntries() {
@@ -392,7 +394,9 @@ function ApproveJournalEntryTransactions(title, message, ajaxUrl, serviceoption,
                 success: function (response) {
 
                     appalert(response.message, 3, 1);
-
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 20000);
                 },
                 error: function () {
 
@@ -454,12 +458,14 @@ function loadAccountingEntries(reference) {
                 }
 
                 tableBody.append(row);
+
             });
           
             // Append text to the modal title
             $('#selectedId').val(reference);
             console.log(statusCell);
             updateStatus(statusCell);
+         
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
@@ -481,7 +487,7 @@ function ApproveJournalEntry(response) {
         var message = "WARNING!!!\n";
         message += "Are you sure you want to confirm this various account adjustment?\n";
         ApproveJournalEntryTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/ApproveEntries', ServiceOption, response, storedId,comment);
-
+     
     }
     }
 function postentries()

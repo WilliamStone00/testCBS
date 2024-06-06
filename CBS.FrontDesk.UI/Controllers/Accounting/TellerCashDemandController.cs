@@ -13,6 +13,7 @@ using CBS.BusinessService.Accounts;
 using System.Web.Services.Description;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
+using System.Web.Configuration;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -148,27 +149,24 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         public async Task<ActionResult> CreateCashReplenishmentRequest()
         {
-            await GetList();
+            await GetList(); 
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> CreateCashReplenishmentRequest(CashInfusionRequest model)
+        public async Task<ActionResult> CreateCashReplenishmentRequest(CashDemandDataEntity model)
         {
-            if (ModelState.IsValid)
-            {
-                var result = await Service.CreateCashReplenishmentRequest(model);
+          
+                var result = await Service.CreateCashReplenishmentRequest(model.CashInfusionRequest);
                 if (result.MessageStatus.Equals("Failed"))
                 {
-                    var datas = DetailsDto.SetDefault(model);
+                    var datas = DetailsDto.SetDefault(model.CashInfusionRequest);
                     return View("Failed_Request_View", datas);
                 }
                 else
                 {
                     return View("Successfull_Request_View", result.Data);
                 }
-            }
-            var dataccs = DetailsDto.SetDefault(model);
-            return View("Failed_Request_View", dataccs);
+          
         }
 
 

@@ -499,9 +499,11 @@
         //ChartOfAccount
         //Get,Update,Delete ChartOfAccount By Id
         public static string Get_Update_Delete_ChartOfAccount = "/api/v1/ChartOfAccount/{0}";
+        //Get All ChartOfAccount
+        public static string GetAllChartOfAccount = "/api/v1/ChartOfAccounts";
         public static string Get_ChartOfAccount_By_AccountNumber = "/api/v1/ChartOfAccount/GetChartOfAccountByAccountNumber/{0}";
         //Get All ChartOfAccount
-        public static string GetAllChartOfAccount = "/api/v1/ChartOfAccountManagementPosition/GetAllChartOfAccounts";
+ 
         public static string GetOperationEventAttributes = "/api/v1/AccountType/GetOperationEventAttributes/{0}";
         public static string GetAllOperationEventAttributes = "/api/v1/OperationEventAttributes";
         ///api/v1/OperationEventAttributes

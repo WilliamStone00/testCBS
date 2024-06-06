@@ -26,15 +26,42 @@ namespace CBS.FrontDesk.Data
         public string BookingDirection { get; set; }
         public bool CanBeNegative { get; set; }
         public bool IsBalanceSheetAccount { get; set; }
+        public string Account7 { get; set; }
+        public string Account6 { get; set; }
+        public string Account5 { get; set; }
+        public string Account4 { get; set; }
+        public string Account3 { get; set; }
+        public string Account2 { get; set; }
+    }
 
+
+    public class AccountDto
+    {
+        //public string BranchName { get; set; }
+        //public string BranchLocation { get; set; }
+
+        //public string Capital { get; set; }
+        //public string ImmatriculationNumber { get; set; }
+        //public string WebSite { get; set; }
+        //public string BranchTelephone { get; set; }
+        //public string HeadOfficeTelePhone { get; set; }
+        //public string Name { get; set; }
+        //public string Location { get; set; }
+        //public string Address { get; set; }
+        //public string Id { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public string DebitBalance { get; set; }
+        public string CreditBalance { get; set; }
+        public string CurrentBalance { get; set; }
+ 
     }
 
     public class UploadAccountCommand  
     {
+        public string BranchCode { get; set; }
+        public string BranchId { get; set; }
         public List<AccountModel> AccountModelList { get; set; }
-
-
-
     }
     public class AccountModel
     {

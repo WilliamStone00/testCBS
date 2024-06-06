@@ -98,6 +98,40 @@ namespace CBS.BusinessService.Accounting
 
         }
 
+
+        public async Task<List<AccountDto>> GenerateLiaisonLedgerForBranch(string BranchId)
+        {
+            try
+            {
+                List<AccountDto> filteredEntries = new List<AccountDto>();
+                var letterHead = await _BranchServices.GetBranch(BranchId);
+                var accounts = await _AccountServices.GetAllAccounting();
+                var entries = accounts.Where(x => x.Account3 == "451" && x.AccountOwnerId == BranchId).ToList();
+                var query = from entry in entries
+
+                            select new AccountDto
+                            {
+     
+                                AccountNumber = entry.AccountNumberCU,
+                                AccountName = entry.AccountName,
+                               
+                                DebitBalance =entry.DebitBalance.ToString(),
+                                CreditBalance =  entry.CreditBalance.ToString(),
+                                CurrentBalance = entry.CurrentBalance.ToString(),
+                                //CreditAccountBalance = entry.DrCurrentBalance.ToString()
+                            };
+
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+
+        }
+
         public async Task<List<AccountLedgerDto>> GenerateAccountLedger(GLQuery model)
         {
             try
@@ -105,7 +139,7 @@ namespace CBS.BusinessService.Accounting
                 List<AccountLedgerDto> AccountLedgerDtoList = new List<AccountLedgerDto>();
                 List<Account> query = new List<Account>();
                 var letterHead = await _BranchServices.GetBranch(model.BranchId);
-                var accounts = await _AccountServices.GetAllAccounting();
+                var accounts =( await _AccountServices.GetAllAccounting()).Where(n=>n.AccountOwnerId==letterHead.Id);
                 if (_AccountServices.IsHeadOffice() && model.BranchId == "XXXXXX")
                 {
                      query = accounts.ToList();
@@ -121,8 +155,8 @@ namespace CBS.BusinessService.Accounting
                 {
                     AccountLedgerDtoList.Add(BuildLedgerAccount(account, letterHead));
                 }
-
-                return AccountLedgerDtoList.OrderBy(n => n.AccountNumber).ToList();
+              var GL =  AccountLedgerDtoList.Where(br => br.BranchId == letterHead.Id);
+                return GL.OrderBy(n => n.AccountNumber).ToList();
             }
             catch (Exception ex)
             {
@@ -163,9 +197,9 @@ namespace CBS.BusinessService.Accounting
         private AccountLedgerDto BuildLedgerAccount(Account account, Branch model)
         {
             AccountLedgerDto dto = new AccountLedgerDto();
-            dto.AccountNumber=account.AccountNumber.PadRight(6,'0');
+            dto.AccountNumber=account.AccountNumberCU;
             dto.AccountName=account.AccountName;
-            dto.CurrentBalnce = account.CurrentBalance;
+            dto.CurrentBalance = Convert.ToDecimal( account.CurrentBalance);
             dto.Address = model.Address;
             dto.BranchLocation=model.Location;
             dto.Location=model.Location;
@@ -175,8 +209,10 @@ namespace CBS.BusinessService.Accounting
             dto.ImmatriculationNumber=model.ImmatriculationNumber;
             dto.Name=model.Bank.Name;
             dto.BranchName=model.Name;
+            dto.BranchId=model.Id;
             dto.FromDate = DateTime.Now.ToString("yyyy-MM-dd");
             dto.ToDate = DateTime.Now.ToString("yyyy-MM-dd");
+
             return dto;
         }
         private JournalEntryDto BuildJournalEntry(AccountingEntry account, Branch model, JEQuery query)

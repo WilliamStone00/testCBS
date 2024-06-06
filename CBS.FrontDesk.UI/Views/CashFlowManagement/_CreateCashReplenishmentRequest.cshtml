@@ -15,15 +15,15 @@
                             <input type="hidden" name="ServiceOption" value="CashInfusionModel" id="ServiceOption" />
                             <div class="row mt-2 gy-4">
 
-                                <div class="col-md-6">
+                                @*<div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
 
                                         @Html.DropDownListFor(m => m.CashInfusionModel.CurrentOpenOfDayHistoryId, new SelectList(ViewBag.OpeningOfDayId, "Text", "Value"), "---Select OpeningOfDay ---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(model => model.CashInfusionModel.CurrentOpenOfDayHistoryId, "", new { @class = "text-danger" })
                                         <label for="Account">Select CurrentOperation</label>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
+                                </div>*@
+                                <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(model => model.CashInfusionModel.Amount, new { @class = "form-control", placeholder = "XFA 0.0" })
                                         @Html.ValidationMessageFor(model => model.CashInfusionModel.Amount, "", new { @class = "text-danger" })
