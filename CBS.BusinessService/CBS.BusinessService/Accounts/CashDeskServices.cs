@@ -21,6 +21,9 @@ using CBS.BusinessService.UserManagement;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using Irony.Parsing;
+using System.Web.Mvc;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -252,7 +255,7 @@ namespace CBS.BusinessService.Accounts
                         var transaction = response.ApiResponseData.Data;
                         Branch branch = RetrieveBranchFromSession();
                         IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                        User user = await RetrieveUserFromSession(transaction.Teller.inUsedByUserId);
+                        User user = await RetrieveUserFromSession(transaction.CreatedBy);
                         var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
                         var rptSource = new List<TransactionReportDS>();
                         rptSource.Add(rpt);
@@ -282,7 +285,7 @@ namespace CBS.BusinessService.Accounts
                         var transaction = response.ApiResponseData.Data;
                         Branch branch = RetrieveBranchFromSession();
                         IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                        User user = await RetrieveUserFromSession(transaction.Teller.inUsedByUserId);
+                        User user = await RetrieveUserFromSession(transaction.CreatedBy);
                         var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
                         var rptSource = new List<TransactionReportDS>();
                         rptSource.Add(rpt);
@@ -307,7 +310,46 @@ namespace CBS.BusinessService.Accounts
                         var transaction = response.ApiResponseData.Data;
                         Branch branch = RetrieveBranchFromSession();
                         IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                        User user = await RetrieveUserFromSession(transaction.Teller.inUsedByUserId);
+                        User user = await RetrieveUserFromSession(transaction.CreatedBy);
+                        var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
+                        var rptSource = new List<TransactionReportDS>();
+                        rptSource.Add(rpt);
+                        HttpContext.Current.Session["rptSource"] = rptSource;
+                        GetExecutionMessages(response, true, $"Deposit", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(null, false, $"Bulk deposit", MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+                else if (bulkDeposits.FirstOrDefault().OperationType == "OtherCashIn")
+                {
+                    var a = bulkDeposits.FirstOrDefault();
+                    var addOtherTransaction = new AddOtherTransactionCommand
+                    {
+                        AccountNumber = a.AccountNumber,
+                        Amount = a.Amount,
+                        CurrencyNotesRequest = a.currencyNotes,
+                        CustomerId = a.CustomerId,
+                        Description = a.Note,
+                        Direction = "",
+                        EnventName = a.EventCode,
+                        EventCode = a.EventCode,
+                        Naration = a.Note,
+                        SourceType = a.SourceType,
+                        TransactionType = "Income"
+                    };
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.CreateOtherTransaction, addOtherTransaction);
+                    if (response.ApiResponseData != null)
+                    {
+                        var transaction = response.ApiResponseData.Data;
+                        Branch branch = RetrieveBranchFromSession();
+                        IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
+                        User user = await RetrieveUserFromSession(transaction.CreatedBy);
                         var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
                         var rptSource = new List<TransactionReportDS>();
                         rptSource.Add(rpt);
@@ -348,9 +390,9 @@ namespace CBS.BusinessService.Accounts
                 var Accounts = new List<CustomerAccount> { };
                 var customer = new IndividualProfile { CustomerId = "N/A", name = "None Member" };
                 var branch = await _branchServices.GetBranch(GetBranchID());
-                var branchMembers = await _individualProfileServices.GetAllIndividualProfileLight();
+                //await _individualProfileServices.GetAllIndividualProfileLight();
                 decimal amountRequested = 0;
-                var cashDesk = new CashDesk { Branch = branch, Customers = branchMembers.ToList(), Accounts = Accounts, BulkDeposit = new BulkDeposit { Amount = amountRequested }, BulkDeposits = BuidObject(Accounts), OtherTransaction = new OtherTransaction(), Customer = customer, LoanId = null, CustomerId = customer.CustomerId };
+                var cashDesk = new CashDesk { Branch = branch, Accounts = Accounts, BulkDeposit = new BulkDeposit { Amount = amountRequested }, BulkDeposits = BuidObject(Accounts), OtherTransaction = new OtherTransaction(), Customer = customer, LoanId = null, CustomerId = customer.CustomerId };
                 return cashDesk;
             }
             catch (Exception ex)
@@ -515,6 +557,55 @@ namespace CBS.BusinessService.Accounts
                 return new List<BulkDeposit> { defaultBulkDeposit };
 
             }
+
+        }
+
+
+        public async Task<SelectList> LoadMembersAccountByMemberReference(string customerid)
+        {
+            try
+            {
+                var customerAccounts = await GetCustomerAccounts(customerid);
+                return LoadAccountsToList(customerAccounts);
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+        private SelectList LoadAccountsToList(List<CustomerAccount> customerAccounts)
+        {
+            var defaultSelectedValue = "default-value";
+            if (customerAccounts != null)
+            {
+
+                if (customerAccounts.Any())
+                {
+                    var charOfAccount = customerAccounts.Select(a => new StringValues
+                    {
+                        Text = $"[{a.accountNumber}] [{a.accountType}] [{a.accountName}]",
+                        Value = a.accountNumber
+                    });
+
+
+                    return new SelectList(charOfAccount.ToList(), "Value", "Text", defaultSelectedValue);
+                }
+
+            }
+            defaultSelectedValue = "Member not found";
+            return new SelectList(new List<CustomerAccount>(), "Value", "Text", defaultSelectedValue);
+
+        }
+        public List<StringValues> LoadMembersToList(List<IndividualProfile> individuals)
+        {
+            var values = individuals.Select(a => new StringValues
+            {
+                Text = $"[{a.CustomerId}] [{a.FirstName} {a.LastName}] [{a.branch}]",
+                Value = a.CustomerId
+            });
+            return values.ToList();
 
         }
     }

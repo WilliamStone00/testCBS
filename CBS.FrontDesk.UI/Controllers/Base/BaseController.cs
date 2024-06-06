@@ -243,47 +243,70 @@ namespace CBS.FrontDesk.UI.Controllers
                 return new List<DatabaseMenus>();
             }
         }
-
         public DataTableOptions GetDataTableOptions()
         {
+            var queryParams = HttpContext.Request.QueryString;
 
-            DataTableOptions dataTableOptions = new DataTableOptions();
-            dataTableOptions.draw = Request.Form.GetValues("draw")[0];
-            // Skiping number of Rows count
-            dataTableOptions.start = Convert.ToInt32(Request.Form.GetValues("start")[0]);
-            // Paging Length 10,20
-            dataTableOptions.length = Convert.ToInt32(Request.Form.GetValues("length")[0]);
-            // Sort Column Index (changed from name to index)
-            dataTableOptions.sortColumnName = Convert.ToInt32(Request.Form.GetValues("order[0][column]")[0]);
-            // Sort Column Direction ( asc ,desc)
-            dataTableOptions.sortColumnDirection = Request.Form.GetValues("order[0][dir]")[0];
-            // Search Value from (Search box)
-            dataTableOptions.searchValue = Request.Params["search[value]"];
-            dataTableOptions.pageSize = dataTableOptions.length != 0 ? Convert.ToInt32(dataTableOptions.length) : 0;
-            dataTableOptions.skip = dataTableOptions.start != 0 ? Convert.ToInt32(dataTableOptions.start) : 0;
+            DataTableOptions dataTableOptions = new DataTableOptions
+            {
+                draw = queryParams["draw"],
+                start = int.TryParse(queryParams["start"], out var start) ? start : 0,
+                length = int.TryParse(queryParams["length"], out var length) ? length : 10,
+                sortColumnName = queryParams[$"columns[{queryParams["order[0][column]"]}][name]"],
+                sortColumnDirection = queryParams["order[0][dir]"],
+                searchValue = queryParams["search[value]"] ?? string.Empty
+            };
+
+            dataTableOptions.pageSize = dataTableOptions.length;
+            dataTableOptions.skip = dataTableOptions.start;
             dataTableOptions.recordsTotal = 0;
+
             return dataTableOptions;
         }
+        //public DataTableOptions GetDataTableOptions()
+        //{
+        //    DataTableOptions dataTableOptions = new DataTableOptions();
+        //    // Retrieve HttpContext from the current HTTP context
+        //    var context = HttpContext;
+        //    // Retrieve values from query parameters
+        //    dataTableOptions.draw = context.Request.QueryString["draw"];
+        //    dataTableOptions.start = Convert.ToInt32(context.Request.QueryString["start"]);
+        //    dataTableOptions.length = Convert.ToInt32(context.Request.QueryString["length"]);
+        //    //dataTableOptions.sortColumnName = context.Request.QueryString["order[0][column]"];
+        //    dataTableOptions.sortColumnName = context.Request.QueryString["columns[" + context.Request.QueryString["order[0][column]"] + "][name]"];
+        //    dataTableOptions.sortColumnDirection = context.Request.QueryString["order[0][dir]"];
+        //    dataTableOptions.searchValue = context.Request.QueryString["search[value]"];
 
-        public DataTableOptions GetDataTableOptions(HttpRequest request)
-        {
-            DataTableOptions dataTableOptions = new DataTableOptions();
-            dataTableOptions.draw = request.Form.GetValues("draw")[0];
-            // Skiping number of Rows count
-            dataTableOptions.start = Convert.ToInt32(request.Form.GetValues("start")[0]);
-            // Paging Length 10,20
-            dataTableOptions.length = Convert.ToInt32(request.Form.GetValues("length")[0]);
-            // Sort Column Index (changed from name to index)
-            dataTableOptions.sortColumnName = Convert.ToInt32(request.Form.GetValues("order[0][column]")[0]);
-            // Sort Column Direction ( asc ,desc)
-            dataTableOptions.sortColumnDirection = request.Form.GetValues("order[0][dir]")[0];
-            // Search Value from (Search box)
-            dataTableOptions.searchValue = request.Params["search[value]"];
-            dataTableOptions.pageSize = dataTableOptions.length != 0 ? Convert.ToInt32(dataTableOptions.length) : 0;
-            dataTableOptions.skip = dataTableOptions.start != 0 ? Convert.ToInt32(dataTableOptions.start) : 0;
-            dataTableOptions.recordsTotal = 0;
-            return dataTableOptions;
-        }
+        //    // Calculate pageSize and skip
+        //    dataTableOptions.pageSize = dataTableOptions.length != 0 ? dataTableOptions.length : 0;
+        //    dataTableOptions.skip = dataTableOptions.start != 0 ? dataTableOptions.start : 0;
+
+        //    // Set recordsTotal (you need to implement this logic)
+        //    dataTableOptions.recordsTotal = 0;
+
+        //    return dataTableOptions;
+        //}
+
+
+        //public DataTableOptions GetDataTableOptions(HttpRequest request)
+        //{
+        //    DataTableOptions dataTableOptions = new DataTableOptions();
+        //    dataTableOptions.draw = request.Form.GetValues("draw")[0];
+        //    // Skiping number of Rows count
+        //    dataTableOptions.start = Convert.ToInt32(request.Form.GetValues("start")[0]);
+        //    // Paging Length 10,20
+        //    dataTableOptions.length = Convert.ToInt32(request.Form.GetValues("length")[0]);
+        //    // Sort Column Index (changed from name to index)
+        //    dataTableOptions.sortColumnName = Convert.ToInt32(request.Form.GetValues("order[0][column]")[0]);
+        //    // Sort Column Direction ( asc ,desc)
+        //    dataTableOptions.sortColumnDirection = request.Form.GetValues("order[0][dir]")[0];
+        //    // Search Value from (Search box)
+        //    dataTableOptions.searchValue = request.Params["search[value]"];
+        //    dataTableOptions.pageSize = dataTableOptions.length != 0 ? Convert.ToInt32(dataTableOptions.length) : 0;
+        //    dataTableOptions.skip = dataTableOptions.start != 0 ? Convert.ToInt32(dataTableOptions.start) : 0;
+        //    dataTableOptions.recordsTotal = 0;
+        //    return dataTableOptions;
+        //}
 
         public void BuildLocalSession(UserDto userSession)
         {

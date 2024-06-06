@@ -97,6 +97,7 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string photoUrl { get; set; }
         public string mobileOrOnLineBankingLoginState { get; set; }
         public string signatureUrl { get; set; }
+        public PaginationMetadata PaginationMetadata { get; set; } = new PaginationMetadata();
         public IndividualProfile()
         {
             ImageVirtualPath= "~/AppFiles/Images/p.jpg";
@@ -104,25 +105,25 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
             ImageNoVirtualPath = "~/AppFiles/Images/noimage.jpg";
             ImageVirtualNoSignaturePath = "~/AppFiles/Images/no signature.png";
         }
-
-       
-
-        public class CustomerDocument
-        {
-            public string documentId { get; set; }
-            public string personId { get; set; }
-            public string urlPath { get; set; }
-            public string documentName { get; set; }
-            public string extension { get; set; }
-            public string baseUrl { get; set; }
-            public string documentType { get; set; }
-
-          
-        }
-
-
-      
-
+    }
+    public class PaginationMetadata
+    {
+        public int TotalCount { get; set; }
+        public int PageSize { get; set; }
+        public int Skip { get; set; }
+        public int TotalPages { get; set; }
     }
 
+    public class CustomerDocument
+    {
+        public string documentId { get; set; }
+        public string personId { get; set; }
+        public string urlPath { get; set; }
+        public string documentName { get; set; }
+        public string extension { get; set; }
+        public string baseUrl { get; set; }
+        public string documentType { get; set; }
+
+
+    }
 }

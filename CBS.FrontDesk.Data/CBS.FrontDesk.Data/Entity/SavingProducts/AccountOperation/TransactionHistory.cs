@@ -58,6 +58,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public string BranchId { get; set; }
         public string TellerId { get; set; }
         public string ReceiptTitle { get; set; }
+        public string CreatedBy { get; set; }
         public virtual ICollection<TellerOperation> TellerOperations { get; set; }
         public virtual Teller Teller { get; set; }
         public virtual Account Account { get; set; }

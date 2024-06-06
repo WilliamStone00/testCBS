@@ -35,7 +35,22 @@
     <link href="~/CBSTemp/ui/assets/vendor/css/rtl/theme-default.css" rel="stylesheet" type="text/css" />
     <link href="~/CBSTemp/ui/assets/css/demo.css" rel="stylesheet" type="text/css" />
     <link href="~/CBSTemp/ui/assets/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+    <style>
+        .error-container {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            color: #721c24;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+        }
 
+            .error-container p {
+                margin: 0;
+            }
+    </style>
     <style>
         #superposedModal {
             z-index: 1200; /* Make sure it has a higher z-index than other modals */
@@ -51,10 +66,11 @@
             #superposedModal .modal-dialog {
             }
 
-            .withdrawal-notification i {
-                margin-right: 8px;
-                color: #28a745;
-            }
+        .withdrawal-notification i {
+            margin-right: 8px;
+            color: #28a745;
+        }
+
         .form-greyed-out {
             opacity: 0.5; /* Reduce opacity to grey out */
             pointer-events: none; /* Disable pointer events */
@@ -637,6 +653,7 @@
             background-color: #fff; /* White background color for cards */
             color: #333; /* Dark text color */
         }
+
         .status-label {
             padding: 4px 8px;
             border-radius: 4px;
@@ -708,7 +725,7 @@
     <script src="~/CBSTemp/ui/assets/vendor/js/template-customizer.js"></script>
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="~/CBSTemp/ui/assets/js/config.js"></script>
-   
+
 </head>
 
 <body style="position: relative;">
@@ -826,15 +843,27 @@
             });
         </script>*@
     @*<script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const menuToggle = document.querySelector(".layout-menu-toggle");
-            const userProfile = document.querySelector(".user-profile");
+            document.addEventListener("DOMContentLoaded", function () {
+                const menuToggle = document.querySelector(".layout-menu-toggle");
+                const userProfile = document.querySelector(".user-profile");
 
-            menuToggle.addEventListener("click", function () {
-                userProfile.classList.toggle("hidden");
+                menuToggle.addEventListener("click", function () {
+                    userProfile.classList.toggle("hidden");
+                });
+            });
+        </script>*@
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({
+                //width: '100%', 
+                //allowClear: true, 
+                //placeholder: '---Select an option---' 
             });
         });
-    </script>*@
+    </script>
+
+
+
 
     @RenderSection("scripts", required: false)
 </body>

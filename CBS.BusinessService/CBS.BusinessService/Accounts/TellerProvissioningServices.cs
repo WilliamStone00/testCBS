@@ -35,32 +35,30 @@ namespace CBS.BusinessService.Accounts
             _brancheServices = new BranchServices();
         }
 
-        public async Task<ExecutionMessages> PrimaryTellerProvision(PrimaryTellerProvissioning model)
+        public async Task<ExecutionMessages> PrimaryTellerProvision(OpenningOfDayRequest model)
         {
             try
             {
-                model.amount = ComputeDenomination(model.currencyNotes);
-                if (model.amount <= 0)
+                model.Amount = ComputeDenomination(model.CurrencyNotes);
+                if (model.Amount <= 0)
                 {
-                    GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered be greater than 0");
+                    GetExecutionMessages(model, false, $"{model.Amount}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered must be greater than 0");
                     return ExecutionMessage;
                 }
 
-                model.bankId = GetBankID();
-                model.branchId = GetBranchID();
-                var response = await _transactionApiHelper.PostAsync<ServiceResponse<OpeningOfTheDayResponse>>(APICallHelper.PrimaryTellerProvisioning, model);
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.OpenningOfDayPrimaryTeller, model);
                 if (response.IsSuccess)
                 {
 
-                    GetExecutionMessages(response, true, $"{model.amount}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.Amount}", MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
+                    GetExecutionMessages(model, false, $"{model.Amount}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
 
@@ -75,31 +73,28 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> SubTellerProvision(SubTellerProvissioning model)
+        public async Task<ExecutionMessages> SubTellerProvision(OpenningOfDayRequest model)
         {
             try
             {
-                model.initialAmount = ComputeDenomination(model.currencyNotes);
-                if (model.initialAmount <= 0)
+                model.InitialAmount = ComputeDenomination(model.CurrencyNotes);
+                if (model.InitialAmount <= 0)
                 {
-                    GetExecutionMessages(model, false, $"{model.initialAmount}", MessagesResults.Failed,
+                    GetExecutionMessages(model, false, $"{model.InitialAmount}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered be greater than 0");
                     return ExecutionMessage;
                 }
-                model.bankId = GetBankID();
-                model.branchId = GetBranchID();
-                var response = await _transactionApiHelper.PostAsync<ServiceResponse<OpeningOfTheDayResponse>>(APICallHelper.SubTellerProvisioning, model);
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.OpenningOfDaySubTeller, model);
                 if (response.IsSuccess)
                 {
-
-                    GetExecutionMessages(response, true, $"{model.initialAmount}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.InitialAmount}", MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, $"{model.initialAmount}", MessagesResults.Failed,
+                    GetExecutionMessages(model, false, $"{model.InitialAmount}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
 
@@ -131,7 +126,6 @@ namespace CBS.BusinessService.Accounts
                                         branchId = a.branchId,
                                         code = a.code,
                                         id = a.id,
-                                        inUsedByUserId = a.inUsedByUserId,
                                         name = $"{a.name}-{b.Name}"
 
                                     }).ToList();
@@ -170,7 +164,6 @@ namespace CBS.BusinessService.Accounts
                                         branchId = a.branchId,
                                         code = a.code,
                                         id = a.id,
-                                        inUsedByUserId = a.inUsedByUserId,
                                         name = $"{a.name}-{b.Name}"
 
                                     }).ToList();
@@ -267,6 +260,50 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+        public async Task<IEnumerable<StringValues>> GetUserTellerRoleDropDown()
+        {
+            try
+            {
+                List<StringValues> stringValues;
+
+                if (IsHeadOffice())
+                {
+                    // Get all user roles and filter for tellers
+                    var userRoles = await _userManagementServices.GetUSerRoles();
+                    var branches = await _brancheServices.GetBranches();
+                     stringValues = (from a in userRoles
+                                join b in branches on a.branchId equals b.Id
+                                where a.IsTeller
+                                select new StringValues
+                                {
+                                    Text = $"[{a.RoleName}]-[{a.FirstName} {a.LastName}] [{b.Name}]",
+                                    Value = $"{a.UserId}@{a.FirstName} {a.LastName}",
+                                }).ToList();
+
+                    
+                }
+                else
+                {
+                    // Get user roles for the current branch and filter for tellers
+                    var userRoles = await _userManagementServices.GetUSerRoles();
+                    stringValues = (from a in userRoles
+                                where a.IsTeller && a.branchId == GetBranchID()
+                                select new StringValues
+                                {
+                                    Text = $"[{a.RoleName}]-[{a.FirstName} {a.LastName}]",
+                                    Value = $"{a.UserId}@{a.FirstName} {a.LastName}",
+                                }).ToList();
+                }
+
+                return stringValues;
+            }
+            catch (Exception ex)
+            {
+                // Log and rethrow exception
+                throw ex;
+            }
+        }
+
         public async Task<List<Teller>> GetUserTellerRole(string primaryTellerId)
         {
             try

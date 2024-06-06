@@ -1,5 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
-<div class="table-responsive mb-3">
+﻿<div class="table-responsive mb-3">
     <table class="table table-hover" id="myDataTable">
         <thead class="table-light">
             <tr>
@@ -10,38 +9,9 @@
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var d in Model.Customers)
-            {
-                <tr>
-                    <td style="width:28%">@d.name</td>
-                    <td style="width:8%">@d.CustomerId</td>
-                    <td style="width:8%">@d.Phone</td>
-                    <td style="width:32%">@d.branch</td>
-                    <td style="width:18%">
-                        <a href="/MembersFSeries/F2MembersGeneratSituation?KEY=@d.CustomerId" target="_blank" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select to view F-Series reports">
-                            <i class="mdi mdi-folder mr-1"></i> <!-- Icon of a folder -->
-                            F2-F5:Series
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
+       
     </table>
 </div>
 
 
 
-
-@*<table class="datatables-users table" id="myDataTable">
-        <thead class="table-light">
-            <tr>
-                <th>Name</th>
-                <th>phone</th>
-                <th>Town</th>
-                <th>Branch</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-    </table>*@

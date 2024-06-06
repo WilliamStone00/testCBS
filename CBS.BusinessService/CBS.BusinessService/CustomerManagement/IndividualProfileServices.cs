@@ -11,11 +11,13 @@ using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
-
+using System.Net.Http.Headers;
 using CBS.FrontDesk.Data.Entity;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.MembersAccountSettings;
 using CBS.BusinessService.MembersAccountSettings.policy;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace CBS.BusinessService.CustomerManagement
 {
@@ -115,17 +117,59 @@ namespace CBS.BusinessService.CustomerManagement
 
         // Other methods refactored similarly...
 
-        public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions)
+        public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string searchCriterial)
         {
-            Func<Task<List<IndividualProfile>>> getDataFunc = async () => (await GetMembers()).ToList();
-            var dataTable = await DatatableHelper.GenerateDataTable<IndividualProfile>(dataTableOptions, getDataFunc);
+            var customerParam = new CustomerResource
+            {
+                OrderBy = "CustomerId",
+                PageSize = dataTableOptions.pageSize,
+                Skip = dataTableOptions.skip,
+                SearchQuery = searchCriterial == "" ? "all" : searchCriterial,
+            };
+            Func<Task<List<IndividualProfile>>> getDataFunc = async () => (await GetMembers(customerParam)).ToList();
+            var dataTable = await GenerateDataTable(dataTableOptions, getDataFunc);
+            return dataTable;
+
+        }
+
+        public async Task<CustomDataTable> GenerateDataTable(DataTableOptions dataTableOptions, Func<Task<List<IndividualProfile>>> getDataFunc)
+        {
+            List<IndividualProfile> data = (await getDataFunc()).ToList();
+            //var filteredData = DatatableHelper.FilterData(data, dataTableOptions);
+
+            // Handle potential null values safely
+            var paginationMetadata = data?.FirstOrDefault()?.PaginationMetadata ?? new PaginationMetadata
+            {
+                TotalCount = 0
+            };
+
+            // Construct CustomDataTable using pagination metadata
+            var dataTable = new CustomDataTable(
+                Convert.ToInt32(dataTableOptions.draw),
+                paginationMetadata.TotalCount,
+                dataTableOptions.recordsFiltered,
+                data,
+                dataTableOptions
+            );
+
             return dataTable;
         }
-        public async Task<IEnumerable<IndividualProfile>> GetMembers()
+
+
+        public async Task<IEnumerable<IndividualProfile>> GetMembers(CustomerResource resource = null)
         {
             try
             {
-                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.GetAllIndividualProfile);
+
+                var queryString = ToQueryString(resource);
+                var fullUrl = $"{APICallHelper.SearchByAnyCriterialQuery}?{queryString}";
+                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(fullUrl);
+
+
+
+                //GetCustomersWithPagination
+                //var individualProfiles = await _customerApiHelper.PostAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.SearchByAnyCriterialQuery, resource);
+
                 var aggregates = await GetAggregates();
                 var data = (from a in individualProfiles.ApiResponseData.Data
                             join b in aggregates.Branches on a.BranchId equals b.Id
@@ -141,6 +185,8 @@ namespace CBS.BusinessService.CustomerManagement
                 throw;
             }
         }
+        //using System.Net.Http.Headers;
+
 
         public async Task<IEnumerable<StringValues>> GetMembers(List<IndividualProfile> individuals)
         {
@@ -162,8 +208,12 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {
+
+
+
+
                 var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(string.Format(APICallHelper.GetCustomersByBranchID, GetBranchID()));
-                var aggregates = await GetAggregates();
+                var aggregates = await GetAggregatesBankConfiguration();
 
                 var data = (from a in individualProfiles.ApiResponseData.Data
                             join b in aggregates.Branches on a.BranchId equals b.Id
@@ -180,35 +230,24 @@ namespace CBS.BusinessService.CustomerManagement
             }
         }
 
-        public async Task<IEnumerable<IndividualProfile>> GetAllIndividualProfileByBranchLight()
-        {
-            try
-            {
-                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(string.Format(APICallHelper.GetCustomersByBranchID, GetBranchID()));
-                var aggregates = await GetAggregates();
-
-                var data = (from a in individualProfiles.ApiResponseData.Data
-                            select TransformToCustomerList(a, null, null)).ToList();
-
-                return data;
-            }
-            catch (Exception ex)
-            {
-                // Log and handle exception
-                throw;
-            }
-        }
+       
         public async Task<IEnumerable<IndividualProfile>> GetAllIndividualProfileLight()
         {
             try
             {
-                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.GetAllIndividualProfile);
-                //var aggregates = await GetAggregates();
+                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.AllCustomers);
 
-                var data = (from a in individualProfiles.ApiResponseData.Data
-                            select TransformToCustomerList(a, null, null)).ToList();
+                var individuals = individualProfiles.ApiResponseData.Data.ToList();
 
+
+                var aggregates = await GetAggregatesBankConfiguration();
+                var data = (from a in individuals
+                            join b in aggregates.Branches on a.BranchId equals b.Id
+                            join t in aggregates.Towns on a.TownId equals t.Id into townJoin
+                            from t in townJoin.DefaultIfEmpty() // Left join operation
+                            select TransformToCustomerList(a, b, t)).ToList();
                 return data;
+
             }
             catch (Exception ex)
             {
@@ -254,7 +293,7 @@ namespace CBS.BusinessService.CustomerManagement
                 Email = a.Email,
                 TownId = a.TownId,
                 town = t == null ? "N/A" : t.Name,
-                branch =b == null ? "N/A" : b.Name,
+                branch = b == null ? "N/A" : b.Name,
                 BranchId = a.BranchId,
                 Active = a.Active,
                 ActiveStatus = a.Active ? "Active" : "In-Active",
@@ -323,7 +362,7 @@ namespace CBS.BusinessService.CustomerManagement
                 SpouseOccupation = a.SpouseOccupation,
                 BankName = b == null ? "N/A" : b.Bank.Name,
                 CustomerCode = a.CustomerCode,
-                VillageOfOrigin = a.VillageOfOrigin,
+                VillageOfOrigin = a.VillageOfOrigin, PaginationMetadata=a.PaginationMetadata
             };
 
             return customer;
@@ -351,9 +390,9 @@ namespace CBS.BusinessService.CustomerManagement
                 var policy = new MemberRegistrationFeePolicy();
                 if (policies.Any())
                 {
-                    policy = policies.Where(x=>x.LegalForm== cusResponseObject.LegalForm).FirstOrDefault();
+                    policy = policies.Where(x => x.LegalForm == cusResponseObject.LegalForm).FirstOrDefault();
                 }
-                if (policy==null)
+                if (policy == null)
                 {
                     policy = new MemberRegistrationFeePolicy();
                 }
@@ -430,6 +469,32 @@ namespace CBS.BusinessService.CustomerManagement
                     return apiResponse.ApiResponseData.Data;
                 }
                 return new List<SavingProduct>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<Aggregrate> GetAggregatesBankConfiguration()
+        {
+            try
+            {
+
+                //bool exists = SessionHelper.Exists("aggregates");
+                //if (exists)
+                //{
+                //    return SessionHelper.Retrieve<Aggregrate>("aggregates");
+                //}
+
+                var subscriptionAggregatesResponse = await _bankConfigApiHelper.GetAsync<ResponseObject<Aggregrate>>(APICallHelper.SubcriptionAggregates);
+                if (subscriptionAggregatesResponse.IsSuccess)
+                {
+                    var aggregates = subscriptionAggregatesResponse?.ApiResponseData.Data ?? new Aggregrate();
+                    return aggregates;
+                }
+                return new Aggregrate();
+
             }
             catch (Exception ex)
             {

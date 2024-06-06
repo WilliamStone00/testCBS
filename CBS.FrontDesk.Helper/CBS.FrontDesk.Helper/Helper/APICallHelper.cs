@@ -99,7 +99,8 @@
         //Customer
         ///api/v1/Customers/{BranchId}
         public static string CreateIndividualProfile = "/api/v1/Customer";
-        public static string GetAllIndividualProfile = "/api/v1/Customers";
+        public static string SearchByAnyCriterialQuery = "/api/v1/Customers/SearchByAnyCriterialQuery";
+        public static string AllCustomers = "/api/v1/Customers";
         public static string GetAllIndividualProfileByBranch = "/api/v1/Customers/{0}";
         public static string SubcriptionAggregates = "/api/v1/SubcriptionAggregates";
         public static string DeleteCustomer = "/api/v1/Customer/{0}";
@@ -162,11 +163,14 @@
         public static string GetAllTransactions = "/api/v1/Transaction";
         public static string GetTransaction = "/api/v1/Transaction/{0}";
         //Teller
-        public static string PrimaryTellerProvisioning = "/api/v1/Teller/Provision/PrimaryTeller";
+        public static string PrimaryTellerProvisioning = "/api/v1/Teller/Dinomination/Provisioning/PrimaryTeller";
         public static string SubTellerProvisioning = "/api/v1/Teller/Provision/SubTeller";
         public static string SubTellerEndOfDay = "/api/v1/Teller/SubTellerEndOfDay";
         public static string PrimaryTellerEndOfDay = "/api/v1/Teller/PrimaryTellerEndOfDay";
         public static string EndOfDayAccountant = "/api/v1/Teller/EndOfDayAccountant";
+        public static string GetTellerAccountInfo = "/api/v1/Account/GetTellerAccount";
+        public static string OpenningOfDayPrimaryTeller = "/api/v1/Teller/Primary/OpenningOfTheDay";
+        public static string OpenningOfDaySubTeller = "/api/v1/Teller/SubTeller/OpenningOfTheDay";
         //
         public static string GetSubTellerProvisioningHistoryByUserIncharge = "/api/v1/Teller/GetSubTellerProvisioningHistoryByUserIncharge/{0}";
         public static string GetPrimaryTellerProvisioningHistoryByUserIncharge = "/api/v1/Teller/GetPrimaryTellerProvisioningHistoryByUserIncharge/{0}";
@@ -194,6 +198,31 @@
         public static string Get_Update_Delete_Teller = "/api/v1/Teller/{0}";
         public static string GetAllTeller = "/api/v1/Teller";
         public static string CreateTeller = "/api/v1/Teller";
+        //DailyTeller
+        public static string Get_Update_Delete_DailyTeller = "/api/v1/DailyTeller/{0}";
+        public static string GetAllDailyTeller = "/api/v1/DailyTeller/All";
+        public static string GetAllDailyTellerByBranch = "/api/v1/DailyTeller/Branch";
+        public static string CreateDailyTeller = "/api/v1/DailyTeller";
+
+        //PrimaryTellerCashReplenishment
+        public static string Get_Update_Delete_PrimaryTellerCashReplenishment = "/api/v1/PrimaryTellerCashReplenishment/{0}";
+        public static string GetAllPrimaryTellerCashReplenishment = "/api/v1/PrimaryTellerCashReplenishment/GetAllRequest";
+        public static string GetAllPrimaryTellerCashReplenishmentByBranch = "/api/v1/PrimaryTellerCashReplenishment/ReplenishmentByBranch";
+        public static string ValidatePrimaryTellerCashReplenishment = "/api/v1/PrimaryTellerCashReplenishment/Topup";
+        public static string PrimaryTellerCashReplenishmentRequest = "/api/v1/PrimaryTellerCashReplenishment/Request";
+        public static string GetAllApendingPrimaryTellerCashReplenishment = "/api/v1/PrimaryTellerCashReplenishment/AllPendingProvisions";
+
+
+        //PrimaryTellerCashReplenishment/AllPendingProvisions
+        //SubTellerCashReplenishment
+        public static string Get_Update_Delete_SubTellerCashReplenishment = "/api/v1/SubTellerCashReplenishment/Request/{0}";
+        public static string GetAllSubTellerCashReplenishment = "/api/v1/SubTellerCashReplenishment/GetAllRequest";
+        public static string GetAllSubTellerCashReplenishmentByBranch = "/api/v1/SubTellerCashReplenishment/GetRequestByBranch";
+        public static string CreateSubTellerCashReplenishment = "/api/v1/SubTellerCashReplenishment/Request";
+        public static string ValidateSubTellerCashReplenishment = "/api/v1/SubTellerCashReplenishment/RequestValidation/{0}";
+        public static string GetAllApendingSubTellerCashReplenishment = "/api/v1/SubTellerCashReplenishment/Request/Pending";
+
+        //SubTellerCashReplenishment/Request/Pending
         //OtherTransaction
         public static string Get_Update_Delete_OtherTransaction = "/api/v1/OtherTransaction/{0}";
         public static string GetAllOtherTransaction = "/api/v1/OtherTransaction";
@@ -316,6 +345,8 @@
         public static string GetAllLoanByCustomerId = "/api/v1/Loan/GetAllLoanByCustomerId/{0}";
         public static string GetLoan = "/api/v1/Loan/{0}";
         public static string GetLoans = "/api/v1/Loans";
+        public static string GelLoansSearchByAnyCriterialQuery = "/api/v1/Loan/SearchByAnyCriterialQuery";
+        ///api/v1/Loan/SearchByAnyCriterialQuery
         public static string GetAllLoanByBranchIdQuery = "/api/v1/Loan/GetAllLoanByBranchIdQuery/{id}";
 
         //LOAN Amortization

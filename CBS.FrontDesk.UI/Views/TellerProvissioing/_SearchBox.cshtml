@@ -1,0 +1,31 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.DailyTeller
+
+<fieldset class="fieldset-custom">
+    <legend>Filter tellers in operation</legend>
+    <hr />
+    <div class="row g-4">
+        <div class="col-md-6">
+            <label for="branchInput">Branch</label>
+            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control select2", @id = "branchInput" })
+        </div>
+        <div class="col-md-6">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label for="dateFromInput">Date From</label>
+                    <div class="input-group">
+                        <input type="date" id="dateFromInput" class="form-control shadow-box date-picker" placeholder="Date From">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="dateToInput">Date To</label>
+                    <div class="input-group">
+                        <input type="date" id="dateToInput" class="form-control shadow-box date-picker" placeholder="Date To">
+                        <button class="btn btn-primary btn-sm" onclick="SearchByDates('_Data','datalistingview')">Search</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+

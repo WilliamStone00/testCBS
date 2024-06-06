@@ -72,6 +72,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string AccountType { get; set; }
         public string LoanId { get; set; }
         public string Note { get; set; }
+        public string EventCode { get; set; }
+        public string SourceType { get; set; }
         public string OperationType { get; set; }
         public bool isDepositDoneByAccountOwner { get; set; }
         public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();

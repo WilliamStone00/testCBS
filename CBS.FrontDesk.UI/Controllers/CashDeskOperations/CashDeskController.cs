@@ -1,6 +1,7 @@
 ﻿using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
@@ -34,7 +35,8 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             ViewBag.Operation = "income_expense";
             var cashDesk = await _cashDeskService.GetOtherCashDeskTransactions();
-            ViewBag.Members = cashDesk.Customers;
+            //ViewBag.Members = _cashDeskService.LoadMembersToList(cashDesk.Customers);
+            ViewBag.MemberAccounts = new SelectList(new List<StringValues>(), "None", "No-Account-Loaded");
             await GetEventNames("INCOME");
             //ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
             return View(cashDesk);
@@ -43,6 +45,11 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             ViewBag.EventCodes = await _accountingServices.GetEventNamesOtherCashIn(operationType);
 
+        }
+        public async Task<ActionResult> Ajaxloader(string Key)
+        {
+            var listing = await _cashDeskService.LoadMembersAccountByMemberReference(Key);
+            return Json(listing, JsonRequestBehavior.AllowGet);
         }
         //income_expense
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = "_DataNotFound", string path = null, string serviceOption = null)
@@ -107,8 +114,14 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             try
             {
-                var data = await _cashDeskService.BulkDeposi(deposits);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                if (deposits!=null)
+                {
+                    var data = await _cashDeskService.BulkDeposi(deposits);
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+                }
+                return Json(new { success = false, status = false, message = $"No data was submitted." });
+
             }
             catch (Exception ex)
             {

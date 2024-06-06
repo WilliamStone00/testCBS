@@ -38,6 +38,20 @@ namespace CBS.FrontDesk.UI.Controllers.Series
         {
             return View();
         }
+        [HttpGet]
+        public async Task<ActionResult> LoadData(string searchCriteria = "All")
+        {
+            try
+            {
+                var dataTable = await _individualProfileServices.GetDataTable(GetDataTableOptions(), searchCriteria);
+                return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
         public async Task<ActionResult> F2MembersGeneratSituation(string KEY)
         {
             if (KEY == null || KEY == "")
@@ -143,7 +157,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                         var receiptTransaction = await _accountServices.GetTransactionsAsync(KEY);
                         var receiptCustomer = receiptTransaction != null ? await _individualProfileServices.GetSingleCustomer(receiptTransaction.CustomerId) : null;
                         var receiptBranch = receiptCustomer != null ? await _branchServices.GetBranch(receiptCustomer.BranchId) : null;
-                        var receiptUser = receiptTransaction != null ? await _cashDeskService.RetrieveUserFromSession(receiptTransaction.Teller.inUsedByUserId) : null;
+                        var receiptUser = receiptTransaction != null ? await _cashDeskService.RetrieveUserFromSession(receiptTransaction.CreatedBy) : null;
 
                         if (receiptTransaction == null)
                             return Json(new { success = false, status = false, message = "No transactions are found." }, JsonRequestBehavior.AllowGet);

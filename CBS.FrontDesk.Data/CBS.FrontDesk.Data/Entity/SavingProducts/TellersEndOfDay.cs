@@ -1,4 +1,6 @@
-﻿using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
+﻿using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using System;
 using System.Collections.Generic;
@@ -109,6 +111,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string subTellerProvioningHistoryID { get; set; }
      
     }
+
     public class PrimaryTellerProvisioningHistory
     {
         public string id { get; set; }
@@ -169,5 +172,103 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<SubTellerProvisioningDto> SubTellerProvioningHistories { get; set; } = new List<SubTellerProvisioningDto>();
         public SubTellerProvisioningDto SubTellerProvioningHistory { get; set; } = new SubTellerProvisioningDto();
         public List<TransactionHistory> TransactionHistories { get; set; } = new List<TransactionHistory>();
+    }
+    public class DailyTeller
+    {
+        public string Id { get; set; }
+        [Required]
+        public string UserId { get; set; }
+        public string UserName { get; set; }
+        public string ProvisionedBy { get; set; }
+        [Required]
+        public string TellerId { get; set; }
+        public bool Status { get; set; }
+        public bool IsPrimary { get; set; }
+        [Required]
+        public string BranchId { get; set; }
+        [Required]
+        public decimal MaximumWithdrawalAmount { get; set; }
+        [Required]
+        public decimal MaximumCeilin { get; set; }
+        public Teller Teller { get; set; }
+        public Branch Branch { get; set; }
+        public List<Branch> Branches { get; set; }
+        public List<PrimaryTellerProvisioningHistory> PrimaryTellerProvisioningHistories { get; set; }
+        public List<SubTellerProvioningHistory> SubTellerProvioningHistories { get; set; }
+
+    }
+    public class QueryParamWithDates
+    {
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+        public string BranchId { get; set; }
+    }
+    public class CashReplenishmentSubTeller
+    {
+        public string Id { get; set; }
+        [Required]
+        public decimal RequestedAmount { get; set; }
+        [Required]
+        public decimal ConfirmedAmount { get; set; }
+        public string RequesterUserId { get; set; }
+        public string RequesterName { get; set; }
+        public string ApprovedBy { get; set; }
+        public string ApprovedByUserId { get; set; }
+        public DateTime ApprovedDate { get; set; }
+        public DateTime InitializeDate { get; set; }
+        [Required]
+        public string ApprovedComment { get; set; }
+        [Required]
+        public string Requetcomment { get; set; }
+        public string ApprovedStatus { get; set; }//Pending,Approved, Rejected
+        public string TellerId { get; set; }
+        public string BranchId { get; set; }
+        public bool Approved { get; set; }
+        public Branch Branch { get; set; }
+        public string TransactionReference { get; set; }
+        public CurrencyNotes CurrencyNotes { get; set; } = new CurrencyNotes();
+
+        public CashReplenishmentSubTeller()
+        {
+            Approved = true;
+            ApprovedComment = "Approved: Cash replenishment authorized to maintain optimal cash levels for customer service and operational efficiency.";
+            Requetcomment = "Cash replenishment needed to meet current customer demand and ensure seamless operations at the teller station.";
+        }
+    }
+    public class CashReplenishmentPrimaryTeller
+    {
+        public string Id { get; set; }
+        public string TellerId { get; set; }
+        public bool Status { get; set; }
+        public string BranchId { get; set; }
+        [Required]
+        public decimal RequestedAmount { get; set; }
+        [Required]
+        public decimal ConfirmedAmount { get; set; }
+        public string RequesterUserId { get; set; }
+        public string ApprovedBy { get; set; }
+        public string ApprovedByUserId { get; set; }
+        public DateTime ApprovedDate { get; set; }
+        public DateTime InitializeDate { get; set; }
+        [Required]
+        public string ApprovedComment { get; set; }
+        [Required]
+        public string Requetcomment { get; set; }
+        [Required]
+        public string ApprovedStatus { get; set; }//Pending,Approved, Rejected
+        public string TransactionReference { get; set; }
+        public string AccountingPostingReference { get; set; }
+
+        public string RequesterName { get; set; }
+        public Teller Teller { get; set; } = new Teller();
+        public Branch Branch { get; set; } = new Branch();
+        public CurrencyNotes CurrencyNote { get; set; } = new CurrencyNotes();
+        public CashReplenishmentPrimaryTeller()
+        {
+            Status = true;
+            ApprovedComment = "Approved: Cash replenishment authorized to maintain optimal cash levels for customer service and operational efficiency.";
+            Requetcomment = "Cash replenishment needed to meet current customer demand and ensure seamless operations at the teller station.";
+        }
+
     }
 }

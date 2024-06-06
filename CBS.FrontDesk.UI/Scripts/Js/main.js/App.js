@@ -80,7 +80,35 @@
 })();
 // Call extendSessionTimeout every 5 minutes (300,000 milliseconds)
 //setInterval(extendSessionTimeout, 300000);
+function validateDates() {
+    var dateFrom = document.getElementById("dateFromInput").value;
+    var dateTo = document.getElementById("dateToInput").value;
 
+    // Check if both fields are filled
+    if (dateFrom === "" || dateTo === "") {
+        appalert("Please select both Date From and Date To.", 3, 1);
+        return false;
+    }
+
+    // Check if both inputs are valid dates
+    if (!isValidDate(dateFrom) || !isValidDate(dateTo)) {
+        appalert("Please enter valid dates for Date From and Date To.", 3, 1);
+        return false;
+    }
+
+    // Check if Date From is before Date To
+    if (new Date(dateFrom) > new Date(dateTo)) {
+        appalert("Date From cannot be greater than Date To.", 3, 1);
+        return false;
+    }
+
+    return true;
+}
+// Function to validate if a string is a valid date
+function isValidDate(dateString) {
+    var regexDate = /^\d{4}-\d{2}-\d{2}$/;
+    return regexDate.test(dateString);
+}
 function FillDropDownAjaxCall(url, affecteddropdownID, select_option) {
     var data = "<option value='0'> Please wait loading...</option>";
     var T = '#' + affecteddropdownID;
@@ -276,6 +304,48 @@ function calculateBalance() {
     $("#totalNoteAmount").val(totalAmount);
     // Update the lblDepositRequest_amount span with the formatted total amount
     document.getElementById("lblDepositRequest_amount").textContent = "Total Amount: " + formattedTotalAmount;
+
+
+
+    //Primary teller
+
+    // Get total note amount
+    var totalNoteAmount = parseFloat(document.getElementById("totalNoteAmount").value);
+    var totalProvision = parseFloat(document.getElementById("totalProvision").value);
+    // Calculate balance
+    var balance = totalProvision-totalNoteAmount;
+
+    // Format balance with commas and one decimal place
+    var formattedBalance = balance.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+    // Display balance
+    document.getElementById("lblBalance").innerText = "Balance: " + formattedBalance;
+
+    // Check if balance is 0 and enable/disable the save button accordingly
+    var btnSave = document.getElementById("btnSave");
+    if (balance === 0) {
+        btnSave.disabled = false; // Enable save button
+    } else {
+        btnSave.disabled = true; // Disable save button
+    }
+
+    // Change balance color based on condition
+    if (totalNoteAmount !== totalProvision) {
+        document.getElementById("lblBalance").style.color = "red"; // Set red color for balance
+    } else {
+        document.getElementById("lblBalance").style.color = "black"; // Set default color for balance
+    }
+    // Change balance color only if balance is not zero and differs from provision amount
+    if (balance !== totalProvision) {
+        document.getElementById("lblBalance").style.color = "red"; // Set red color for balance
+    } else {
+        document.getElementById("lblBalance").style.color = "black"; // Set black color for balance
+    }
+
+    if (totalNoteAmount == 0 || totalNoteAmount == totalProvision) {
+        document.getElementById("lblBalance").style.color = "black"; // Set black color for balance 
+        
+    }
 }
 function PrintSingleObject(controller, objectID, path, rptType) {
     var url = "/" + controller + "/GetReport?KEY=" + objectID + "&path=" + path;
@@ -978,8 +1048,8 @@ function LoadDataGen(controller, tableID, partialView, order, datalistingview, K
     LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, path, datalistingview, serviceOption);
 
 }
-function AddORUpdateGen(KEY, divToLoadData, partialView, path, controller, serviceOption) {
-    EditResetMain(KEY, partialView, divToLoadData, controller, "InitializeData", null, path, null, serviceOption);
+function AddORUpdateGen(KEY, divToLoadData, partialView, path, controller, serviceOption,dateFrom,dateTo) {
+    EditResetMain(KEY, partialView, divToLoadData, controller, "InitializeData", null, path, null, serviceOption,dateFrom,dateTo);
     $('.select2').select2();
     initializeDatePickers();
 }
@@ -1001,22 +1071,22 @@ function initializeDatePickers() {
 function navigateToDetails(url) {
     window.location.href = url;
 }
-function EditResetMain(KEY, partialView, divID, controller, action, div1, path, div2, serviceOption) {
+function EditResetMain(KEY, partialView, divID, controller, action, div1, path, div2, serviceOption, dateFrom, dateTo) {
     $.ajax({
         type: "GET",
-        url: '/' + controller + '/' + action + '?KEY=' + KEY + '&partialView=' + partialView + '&path=' + path + '&serviceOption=' + serviceOption,
+        url: '/' + controller + '/' + action + '?KEY=' + KEY + '&partialView=' + partialView + '&path=' + path + '&serviceOption=' + serviceOption + '&dateFrom=' + dateFrom + '&dateTo=' + dateTo,
         success: function (data) {
             $('#' + divID).html(data);
             $('#' + div2).hide();
             $('#' + div1).show();
             $('.select2').select2();
-
-        }, error: function (err) {
-
+        },
+        error: function (err) {
             appalert(err.statusText, 3, 0);
         }
     });
 }
+
 function DetailPage(url) {
     window.open(url);
 }
@@ -1191,10 +1261,10 @@ function LoadDataTableNew(controller, tableID, action, KEY, partialView, order, 
 }
 
 
-function LoadDataMain(controller, option, divLoader, tableID, action, KEY, ReadOptions, path, group, datefrom, dateto, startpath, actionType, order) {
+function LoadDataMain(controller, option, divLoader, tableID, action, KEY, ReadOptions, path, group, datefrom, dateto, startpath, actionType, order, partialView) {
     $.ajax({
         type: "GET",
-        url: '/' + controller + '/' + action + '?serviceoption=' + option + '&KEY=' + KEY + '&ReadOptions=' + ReadOptions + '&path=' + path + '&group=' + group + '&actionType=' + actionType + '&datefrom=' + datefrom + '&dateto=' + dateto + '&startpath=' + startpath,
+        url: '/' + controller + '/' + action + '?serviceoption=' + option + '&KEY=' + KEY + '&ReadOptions=' + ReadOptions + '&path=' + path + '&group=' + group + '&actionType=' + actionType + '&datefrom=' + datefrom + '&dateto=' + dateto + '&startpath=' + startpath + '&partialView=' + partialView,
         success: function (data) {
             $('#' + divLoader).html(data);
             LoadDT(tableID, order);

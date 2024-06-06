@@ -41,6 +41,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string BranchId { get; set; }
         public string ModifiedBy { get; set; }
         public string CreatedBy { get; set; }
+        public string ErrorMessage { get; set; }
+        public bool HasError { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
         public DateTime DateOfOpeningBalance { get; set; } = DateTime.MinValue;
@@ -79,5 +81,17 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     {
         public List<Account> accounts { get; set; }
         public string totalBalance { get; set; }
+    }
+    public class GetTellerAccountBalanceQuery
+    {
+        public string TellerId { get; set; }
+        public bool IsPrimary { get; set; }
+        public bool HasValue { get; set; }
+        public GetTellerAccountBalanceQuery(string tellerId = "N/A", bool isPrimary = false, bool hasValue = false)
+        {
+            TellerId = tellerId;
+            IsPrimary = isPrimary;
+            HasValue = hasValue;
+        }
     }
 }

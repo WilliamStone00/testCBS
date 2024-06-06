@@ -1,5 +1,8 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -23,12 +26,54 @@ namespace CBS.BusinessService
 
         }
 
+        public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string searchCriterial)
+        {
+            var customerParam = new CustomerResource
+            {
+                OrderBy = "CustomerId",
+                PageSize = dataTableOptions.pageSize,
+                Skip = dataTableOptions.skip,
+                SearchQuery = searchCriterial == "" ? "all" : searchCriterial,
+            };
+            var loans = await GetLoans(customerParam);
+            // Handle potential null values safely
+            var paginationMetadata = loans?.FirstOrDefault()?.PaginationMetadata ?? new PaginationMetadata
+            {
+                TotalCount = 0
+            };
 
-        public async Task<IEnumerable<Loan>> GetLoans()
+            Func<Task<List<DataTableLoan>>> getDataFunc = async () => (await GetDataTable(loans.ToList()));
+            var dataTable = await GenerateDataTable(dataTableOptions, getDataFunc, paginationMetadata.TotalCount);
+            return dataTable;
+
+        }
+
+        public async Task<CustomDataTable> GenerateDataTable(DataTableOptions dataTableOptions, Func<Task<List<DataTableLoan>>> getDataFunc, int totalRecords)
+        {
+            List<DataTableLoan> data = (await getDataFunc()).ToList();
+            dataTableOptions.recordsTotal = totalRecords;
+            //var filteredData = DatatableHelper.FilterData(data, dataTableOptions);
+            // Construct CustomDataTable using pagination metadata
+            var dataTable = new CustomDataTable(
+                Convert.ToInt32(dataTableOptions.draw),
+                totalRecords,
+                dataTableOptions.recordsFiltered,
+                data,
+                dataTableOptions
+            );
+
+            return dataTable;
+        }
+
+
+        public async Task<IEnumerable<Loan>> GetLoans(CustomerResource resource)
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Loan>>>(APICallHelper.GetLoans);
+
+                var queryString = ToQueryString(resource);
+                var fullUrl = $"{APICallHelper.GelLoansSearchByAnyCriterialQuery}?{queryString}";
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Loan>>>(fullUrl);
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
@@ -40,6 +85,30 @@ namespace CBS.BusinessService
                 // Log and handle exception
                 throw;
             }
+        }
+        public async Task<List<DataTableLoan>> GetDataTable(List<Loan> loans)
+        {
+
+            var loanDtos = loans.Select(loan => new DataTableLoan
+            {
+                DisbursementDate = loan.DisbursementDate.ToString("yyyy-MM-dd"),
+                MaturityDate = loan.MaturityDate.ToString("yyyy-MM-dd"),
+                Principal = loan.Principal,
+                InterestRate = loan.InterestRate,
+                AccrualInterest = loan.AccrualInterest,
+                Fee = loan.Fee,
+                Penalty = loan.Penalty,
+                DueAmount = loan.DueAmount,
+                Paid = loan.Paid,
+                Balance = loan.Balance,
+                LastPayment = loan.LastPayment,
+                LoanStatus = loan.LoanStatus,
+                IsCurrentLoan = loan.IsCurrentLoan,
+                Id = loan.Id, CustomerId=loan.CustomerId
+            }).ToList();
+            return loanDtos;
+
+
         }
         public async Task<ExecutionMessages> ApprovePendingDisbursement(AddLoanDisbumentCommand model)
         {

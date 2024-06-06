@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.LoanCommitee;
 using System;
 using System.Collections.Generic;
@@ -155,10 +156,30 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string OrganizationId { get; set; }
         public string BranchId { get; set; }
         public string BankId { get; set; }
+        public PaginationMetadata PaginationMetadata { get; set; }
         public virtual LoanApplication LoanApplication { get; set; }
         public virtual ICollection<Refund> Refunds { get; set; }
         public virtual ICollection<LoanAmortization> LoanAmortizations { get; set; }
     }
+    public class DataTableLoan
+    {
+        public string DisbursementDate { get; set; }
+        public string MaturityDate { get; set; }
+        public decimal Principal { get; set; }
+        public decimal InterestRate { get; set; }
+        public decimal AccrualInterest { get; set; }
+        public decimal Fee { get; set; }
+        public decimal Penalty { get; set; }
+        public decimal DueAmount { get; set; }
+        public decimal Paid { get; set; }
+        public decimal Balance { get; set; }
+        public decimal LastPayment { get; set; }
+        public string LoanStatus { get; set; }
+        public bool IsCurrentLoan { get; set; }
+        public string CustomerId { get; set; }
+        public string Id { get; set; }
+    }
+
     public class Refund
     {
 

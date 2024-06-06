@@ -3,10 +3,7 @@
     <table class="table table-hover" id="myDataTableT">
         <thead class="table-light">
             <tr>
-                <th style="display:none;">Account Number</th>
-                <th>Ordinary accounts</th>
                 <th>Amount</th>
-                <th style="display:none">Fee</th>
                 <th>Total</th>
                 <th>confirm</th>
             </tr>
@@ -15,13 +12,8 @@
             @foreach (var d in Model.BulkDeposits.Where(x => x.AccountType.ToLower() != "loan").OrderBy(t => t.AccountType))
             {
                 <tr>
-                    <td style="display:none;">@d.AccountNumber</td>
-                    <td>@d.AccountType</td>
                     <td>
                         <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
-                    </td>
-                    <td style="display:none;">
-                        <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
                     </td>
                     <td>
                         <span class="total-span">@d.Total</span>
@@ -34,15 +26,13 @@
         </tbody>
         <tfoot>
             <tr>
-                <td style="display:none;"></td>
-                <td colspan="2" style="text-align: right;"><strong>Total:</strong></td>
+                <td colspan="1" style="text-align: right;"><strong>Total:</strong></td>
                 <td style="display:none;"></td>
                 <td id="tableTotal">0</td>
                 <td></td>
             </tr>
             <tr>
-                <td style="display:none;"></td>
-                <td colspan="2" style="text-align: right;"><strong>Balance:</strong></td>
+                <td colspan="1" style="text-align: right;"><strong>Balance:</strong></td>
                 <td id="tableBalance">0</td>
                 <td></td>
             </tr>
