@@ -140,7 +140,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
 
-
+            list.Add(new SelectListItem { Text = $"Redirect-To-Branch", Value = "Redirect-To-Branch" });
             return list;
         }
 
@@ -148,7 +148,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public async Task<ActionResult> CreateCashReplenishmentRequest()
         {
             await GetList();
-            return View();
+            return View(new CashDemandDataEntity());
         }
 
         [HttpGet]
@@ -198,9 +198,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (model.ServiceOption.Equals("CashRequestApproval"))
             {
-                model.CashReplenimentRequestdto.IsApproved = model.CashReplenimentRequestdto.ApprovedBy == "Approve" ? true : false;
 
-                var datac = await _accountingEntryServices.CreateApprovalRequest(model.CashReplenimentRequestdto.ConvertToCashApprovalResponse(_AccountServices.GetBranchCode()));
+                model.CashReplenimentRequestdto.IsApproved = model.CashReplenimentRequestdto.ApprovedBy == "Approve" ? true :(model.CashReplenimentRequestdto.ApprovedBy == "Redirect-To-Branch") ? true : false;
+              
+                model.CashReplenimentRequestdto.CashRequisitionType =  (model.CashReplenimentRequestdto.ApprovedBy == "Redirect-To-Branch") ? "ORDER" : "DEMAND";
+                model.CashReplenimentRequestdto.ParentCashReplenishId = model.CashReplenimentRequestdto.CashRequisitionType=="ORDER"? model.CashReplenimentRequestdto.Id:"NONE";
+                var approval = model.CashReplenimentRequestdto.ConvertToCashApprovalResponse(_AccountServices.GetBranchCode());
+                approval .CorrespondingBranchId= (model.CashReplenimentRequestdto.ApprovedBy == "Redirect-To-Branch") ? model.CashReplenimentRequestdto.CorrespondingBranchId: "XXXXX";
+                approval.CashRequisitionType = model.CashReplenimentRequestdto.CashRequisitionType;
+                var datac = await _accountingEntryServices.CreateApprovalRequest(approval);
 
                 return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
 
@@ -278,11 +284,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (path == "approve")
             {
-
+                await GetList();
                 var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
-                var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
+                //cashDemandDataEntity.CashReplenimentRequestdto.ApprovedMessage = $"I {_AccountServices.GetUserFullName()} Approved you withdraw XAF {cashDemandDataEntity.CashReplenimentRequestdto.AmountRequested.ToString("N")} from the bank in favour" +
+                //                                                                 $" of Vault of {_AccountServices.GetBranchName()}";
+               var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
                 ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
                 ViewBag.Decisions = BuildMenuViewBag();
                 return PartialView(partialView, cashDemandDataEntity);

@@ -602,7 +602,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     workbook.SaveAs(stream);
                     stream.Position = 0;
 
-                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "BalanceSheet.xlsx");
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "TrialBalance6Column.xlsx");
                 }
                 //worksheet.Cell(row + 1, 1).Value = $"Ending Balance Sign: {trialBalance.EndingBalanceSigne}";
                 using (var stream = new MemoryStream())

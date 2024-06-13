@@ -26,7 +26,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string CurrencyCode { get; set; }
         [Required]
         public string ApprovedMessage { get; set; }
+        public string CashRequisitionType { get; set; } = "REQUEST";
         public string Status { get; set; }
+        public string ParentCashReplenishId { get; set; } = "SIMPLE REQUEST";
+        public string ApprovalCode { get; set; } 
 
         public CashApprovalResponse ConvertToCashApprovalResponse(bool Approved)
         { return new CashApprovalResponse { ApprovedMessage =this.ApprovedMessage, IsApproved=Approved,Id= this.Id }; }
@@ -61,12 +64,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
     public class CashReplenimentRequestDto: CashReplenimentRequest
     {
-        [Required]
-        public string AccountId { get; set; }
-      
-     
-
        
+
+
+        public string CorrespondingBranchId { get; set; }
+
         public string BranchOffice { get; set; }
         public bool IsRejected { get; set; }
 
@@ -76,7 +78,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 ApprovedMessage = this.ApprovedMessage, 
                 IsApproved = DetermineApprovalStatus(), 
                 Id = this.Id,
-                AccountId = this.AccountId,
+                CorrespondingBranchId = this.CorrespondingBranchId,
                 ApprovedAmount = this.AmountConfirm,
                 BranchId = this.BranchId,
                 BranchCode= BranchCode
@@ -86,7 +88,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public bool DetermineApprovalStatus()
         {
              bool result = false;
-            if (this.IsApproved == true && this.IsRejected == false)
+            if (this.IsApproved == true || this.IsRejected == false)
             {
                 result = true;
             }

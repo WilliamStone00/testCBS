@@ -431,7 +431,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             {
                                 this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                                 this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
-                                this.HttpContext.Session["rptSource"] = (account.Count() > 0) ? account[0].ConvertToExcelTrialBalance(account) : new TrialBalance6ColumnDto { }.ConvertToExcelTrialBalance(account);
+                                this.HttpContext.Session["rptSource"] = (account.Count() > 0) ? account : new List<TrialBalance6ColumnDto>();
                             }
                      
                             if (!account.Any())

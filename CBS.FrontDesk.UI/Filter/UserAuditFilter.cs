@@ -103,8 +103,8 @@ namespace CBS.FrontDesk.UI.Filters
         {
             using (var context = new CBSDbContext())
             {
-                context.FrontEndAuditLoggs.Add(objaudit);
-               context.SaveChanges();
+               // context.FrontEndAuditLoggs.Add(objaudit);
+               //context.SaveChanges();
             }
         }
 

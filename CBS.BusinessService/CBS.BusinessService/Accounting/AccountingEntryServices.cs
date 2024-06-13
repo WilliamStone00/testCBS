@@ -351,7 +351,7 @@ namespace CBS.BusinessService
             }
         }
 
-        public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
+public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
         {
             try
             {
