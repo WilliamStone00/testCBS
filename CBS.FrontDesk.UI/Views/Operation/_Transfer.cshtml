@@ -8,16 +8,16 @@
         <div class="row mt-2 gy-4">
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.TransferRequest.SenderAccountNumber, new SelectList(ViewBag.Source, "Value", "Text"), "---Source account---", new { @class = "form-control select2", @search = "true" })
+                    @Html.TextBoxFor(m => m.TransferRequest.SenderAccountNumber, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.TransferRequest.SenderAccountNumber, "", new { @class = "text-danger " })
-                    <label for="formValidationDob">Select source account</label>
+                    <label for="formValidationDob">Enter sending account number</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.TransferRequest.ReceiverAccountNumber, new SelectList(ViewBag.Destination, "Value", "Text"), "---Source account---", new { @class = "form-control select2", @search = "true" })
+                    @Html.TextBoxFor(m => m.TransferRequest.ReceiverAccountNumber, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.TransferRequest.ReceiverAccountNumber, "", new { @class = "text-danger " })
-                    <label for="formValidationDob">Select destination account</label>
+                    <label for="formValidationDob">Enter recieving account number</label>
                 </div>
             </div>
             <div class="col-md-12">

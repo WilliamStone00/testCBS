@@ -87,11 +87,13 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string TellerId { get; set; }
         public bool IsPrimary { get; set; }
         public bool HasValue { get; set; }
-        public GetTellerAccountBalanceQuery(string tellerId = "N/A", bool isPrimary = false, bool hasValue = false)
+        public bool IsCloseOfDayPrimaryTeller { get; set; }
+        public GetTellerAccountBalanceQuery(string tellerId = "N/A", bool isPrimary = false, bool hasValue = false, bool isCloseOfDayPrimaryTeller = false)
         {
             TellerId = tellerId;
             IsPrimary = isPrimary;
             HasValue = hasValue;
+            IsCloseOfDayPrimaryTeller = isCloseOfDayPrimaryTeller;
         }
     }
 }

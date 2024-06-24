@@ -56,7 +56,7 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ChartOfAccount>>>(APICallHelper.GetAllChartOfAccount);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ChartOfAccountStateDto>>>(APICallHelper.GetAllChartOfAccount);
                 return ProcessApiResponseForChartOfAccount(couApiResponse.ApiResponseData);
             }
             catch (Exception ex)
@@ -94,7 +94,7 @@ namespace CBS.BusinessService.Accounting
             }
         }
 
-        private IEnumerable<StringValues> ProcessApiResponseForChartOfAccount(ResponseObject<List<ChartOfAccount>> couApiResponse)
+        private IEnumerable<StringValues> ProcessApiResponseForChartOfAccount(ResponseObject<List<ChartOfAccountStateDto>> couApiResponse)
         {
             if (couApiResponse!=null)
             {
@@ -102,7 +102,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     return couApiResponse.Data.Select(a => new StringValues
                     {
-                        Text = $"{a.Id}-{a.GeneralRepresentation}",
+                        Text = $"{a.GeneralRepresentation}",
                         Value = a.Id 
                     });
                 }

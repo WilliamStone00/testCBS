@@ -1,0 +1,48 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@{
+    ViewBag.Title = "Other cash operations";
+}
+<div class="row">
+    <div class="col">
+        <div class="row my-4">
+            <div class="accordion" id="collapsibleSection">
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingDeliveryAddress">
+
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionPopoutIcon-3"
+                                aria-expanded="true"
+                                aria-controls="accordionPopoutIcon-3">
+                            <i class="mdi mdi-cash-register me-2"></i>
+                            OTHER CASH TRANSACTIONS
+                        </button>
+                    </h2>
+                    <hr />
+                    <div id="collapseDeliveryAddress"
+                         data-bs-parent="#collapsibleSection">
+                        <div class="accordion-body">
+                            <div id="datalistingview">
+
+                                @Html.Partial("_OtherTransactionDesk");
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*}*@
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal to display customer information -->
+@Html.Partial("_model")
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/Crud/CashDesk/OtherTransactions.js"></script>
+}

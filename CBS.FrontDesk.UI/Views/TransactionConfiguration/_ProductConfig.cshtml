@@ -69,6 +69,13 @@
                     <label>Interest posting frequency</label>
                 </div>
             </div>
+            <div class="col-12">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.AutoAddToMember, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="activeStatus">Add to members default ordinary account.</label>
+                </div>
+            </div>
+
         </div>
     </fieldset>
     <fieldset class="fieldset-custom">

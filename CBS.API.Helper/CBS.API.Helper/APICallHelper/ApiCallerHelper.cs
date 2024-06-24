@@ -27,20 +27,23 @@ namespace CBS.API.Helper
     {
         private readonly HttpClient _httpClient;
         string _baseURL = string.Empty;
+        string _newbaseURL = string.Empty;
         public ApiCallerHelper(string baseUrl)
         {
             if (HttpContext.Current != null && HttpContext.Current.Session != null)
             {
-                if (!string.IsNullOrEmpty(baseUrl))
+                string newbaseUrl = GetBaseUrl(baseUrl);
+                if (!string.IsNullOrEmpty(newbaseUrl))
                 {
                     _httpClient = new HttpClient();
-                    _httpClient.BaseAddress = new Uri(baseUrl);
-                    _baseURL = baseUrl;
+                    _httpClient.BaseAddress = new Uri(newbaseUrl);
+                    _baseURL = newbaseUrl;
+                    _newbaseURL = baseUrl;
 
                 }
                 else
                 {
-                    throw new ArgumentException("Base URL cannot be null or empty.", nameof(baseUrl));
+                    throw new ArgumentException("Base URL cannot be null or empty.", nameof(newbaseUrl));
                 }
             }
 
@@ -77,11 +80,36 @@ namespace CBS.API.Helper
             }
         }
 
+        public static string GetEndpoint(string fullUrl)
+        {
+            // Parse the URL using the Uri class
+            Uri uri = new Uri(fullUrl);
 
+            // Get the endpoint
+            string endpoint = uri.PathAndQuery;
+
+            return endpoint;
+        }
+        private string RemoveDuplicateSlashes(string url)
+        {
+            // Replace occurrences of double forward slashes (//) with single forward slash (/)
+            return url.Replace("//", "/");
+        }
+        public static string GetBaseUrl(string fullUrl)
+        {
+            // Parse the URL using the Uri class
+            Uri uri = new Uri(fullUrl);
+
+            // Get the base URL
+            string baseUrl = uri.GetLeftPart(UriPartial.Authority);
+
+            return baseUrl;
+        }
         public async Task<ApiResponse<T>> GetAsync<T>(string apiUrl)
         {
             try
             {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
                 AddAuthorizationHeader(_httpClient);
                 HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
                 return await HandleResponse<T>(response);
@@ -96,6 +124,7 @@ namespace CBS.API.Helper
         {
             try
             {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
 
@@ -144,6 +173,7 @@ namespace CBS.API.Helper
         {
             try
             {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
                 var formData = new MultipartFormDataContent();
 
                 // Add loan application ID as a string content
@@ -184,6 +214,7 @@ namespace CBS.API.Helper
         {
             try
             {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
                 var formData = new MultipartFormDataContent();
                 // Add additional parameters
                 if (additionalParams != null)
@@ -230,6 +261,7 @@ namespace CBS.API.Helper
         {
             try
             {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
                 var formData = new MultipartFormDataContent();
                 formData.Add(new StringContent(loanApplicationId), "LoanApplicationID");
                 formData.Add(new StreamContent(imageFile.InputStream), "AttachedFiles", imageFile.FileName);
@@ -272,6 +304,7 @@ namespace CBS.API.Helper
 
         public async Task<ApiResponse<T>> PostAsync<T>(string apiUrl, object data)
         {
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
             string jsonData = JsonConvert.SerializeObject(data);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             AddAuthorizationHeader(_httpClient);
@@ -280,6 +313,7 @@ namespace CBS.API.Helper
         }
         public async Task<List<AccountingEntry>> PostAccountingAsync(string apiUrl, object data)
         {
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
             string jsonData = JsonConvert.SerializeObject(data);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             AddAuthorizationHeader(_httpClient);
@@ -290,6 +324,7 @@ namespace CBS.API.Helper
 
         public async Task<List<LiaisonLedgerEntry>> PostLiaisonAccountAsync(string apiUrl, object data)
         {
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
             string jsonData = JsonConvert.SerializeObject(data);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             AddAuthorizationHeader(_httpClient);
@@ -299,6 +334,7 @@ namespace CBS.API.Helper
         }
         public async Task<List<BranchLiaisonLedgerEntry>> PostBranchLiaisonAccountAsync(string apiUrl, object data)
         {
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
             string jsonData = JsonConvert.SerializeObject(data);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             AddAuthorizationHeader(_httpClient);
@@ -309,6 +345,7 @@ namespace CBS.API.Helper
 
         public async Task<List<TrialBalance6ColumnDto>> PostTrialBalance6ColumnAsyncAsync(string apiUrl, object data)
         {
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
             string jsonData = JsonConvert.SerializeObject(data);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             AddAuthorizationHeader(_httpClient);
@@ -318,6 +355,7 @@ namespace CBS.API.Helper
         }
         public async Task<List<TrialBalance4ColumnDto>> PostTrialBalance4ColumnAsyncAsync(string apiUrl, object data)
         {
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
             string jsonData = JsonConvert.SerializeObject(data);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             AddAuthorizationHeader(_httpClient);
@@ -328,6 +366,7 @@ namespace CBS.API.Helper
         
         public async Task<List<ModelBalanceSheetAssets>> PostModelBalanceSheetAssetsAsync(string apiUrl, object data)
         {
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
             string jsonData = JsonConvert.SerializeObject(data);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             AddAuthorizationHeader(_httpClient);
@@ -338,6 +377,7 @@ namespace CBS.API.Helper
 
         public async Task<List<ModelExpenses>> PostIncomeAndExpenseEntriesAsync(string apiUrl, object data)
         {
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
             string jsonData = JsonConvert.SerializeObject(data);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             AddAuthorizationHeader(_httpClient);
@@ -347,6 +387,7 @@ namespace CBS.API.Helper
         }
         public async Task<ServiceResponseXX<T>> PostxxAsync<T>(string apiUrl, object data)
         {
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
             string jsonData = JsonConvert.SerializeObject(data);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             AddAuthorizationHeader(_httpClient);
@@ -356,6 +397,7 @@ namespace CBS.API.Helper
 
         public ApiResponse<T> Post<T>(string apiUrl, object data)
         {
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
             string jsonData = JsonConvert.SerializeObject(data);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             AddAuthorizationHeader(_httpClient);
@@ -364,6 +406,7 @@ namespace CBS.API.Helper
         }
         public async Task<ApiResponse<T>> PutAsync<T>(string apiUrl, object data)
         {
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
             string jsonData = JsonConvert.SerializeObject(data);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             AddAuthorizationHeader(_httpClient);
@@ -451,6 +494,7 @@ namespace CBS.API.Helper
 
         public async Task<ApiResponse<T>> DeleteAsync<T>(string apiUrl)
         {
+            apiUrl = $"{GetEndpoint(_newbaseURL)}{apiUrl}";
             AddAuthorizationHeader(_httpClient);
             HttpResponseMessage response = await _httpClient.DeleteAsync(apiUrl);
             return await HandleResponse<T>(response);

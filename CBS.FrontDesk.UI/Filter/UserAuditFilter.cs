@@ -60,8 +60,15 @@ namespace CBS.FrontDesk.UI.Filters
                 objaudit.RequestMethod = request.HttpMethod; // Capture request method
                 objaudit.UserAgent = request.UserAgent; // Capture user agent
                 objaudit.Referer = request.UrlReferrer?.ToString() ?? "N/A"; // Capture referer
-                objaudit.SerializedRequestData = SerializeRequestData(request);
+                if (request.AppRelativeCurrentExecutionFilePath.Contains("UserManagement/FLoginChangePassword") && request.HttpMethod=="GET")
+                {
 
+                }
+                else
+                {
+                    objaudit.SerializedRequestData = SerializeRequestData(request);
+
+                }
                 // Capture AJAX post data
                 if (request.Headers["X-Requested-With"] == "XMLHttpRequest" && request.ContentType.Contains("application/json"))
                 {

@@ -38,32 +38,30 @@ namespace CBS.BusinessService.Accounts
 
             return totalNotesValue == amount;
         }
-        public async Task<ExecutionMessages> EndTheDay(EndOfDayPrimaryTellerCommand model)
+        public async Task<ExecutionMessages> EndTheDay(CloseOfDayRequest model)
         {
             try
             {
-                if (IsCurrencySumValid(model.currencyNotes, model.cashAtHand))
+                model.Amount = ComputeDenomination(model.CurrencyNotes);
+                if (model.Amount <= 0)
                 {
-                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<SubTellerProvioningHistory>>(APICallHelper.PrimaryTellerEndOfDay, model);
-                    if (response.IsSuccess)
-                    {
-
-                        GetExecutionMessages(response, true, $"{model.cashAtHand}", MessagesResults.Success,
-                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
-                        return ExecutionMessage;
-                    }
-                    else
-                    {
-                        // Failed creation
-                        GetExecutionMessages(model, false, $"{model.cashAtHand}", MessagesResults.Failed,
-                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
-                    }
+                    GetExecutionMessages(model, false, $"{model.Amount}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered must be greater than 0");
+                    return ExecutionMessage;
+                }
+                model.ClossedStatus = "CLOSED";
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<SubTellerProvioningHistory>>(APICallHelper.PrimaryTellerEndOfDay, model);
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response, true, $"{model.CashAtHand}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, $"{model.cashAtHand}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Sum of notes and coins must be equal to deposit amount.");
-
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"{model.CashAtHand}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
                 // Make an API call to create an individual profile
 
@@ -230,11 +228,11 @@ namespace CBS.BusinessService.Accounts
                         {
                             EndOfDayPrimaryTellerCommand = new EndOfDayPrimaryTellerCommand
                             {
-                                primaryTellerProvioningHistoryID = couApiResponse.ApiResponseData.Data.id,
+                                primaryTellerProvioningHistoryID = couApiResponse.ApiResponseData.Data.Id,
                             },
                             EndOfDayAccountantCommand = new EndOfDayAccountantCommand
                             {
-                                primaryTellerProvioningHistoryID = couApiResponse.ApiResponseData.Data.id,
+                                primaryTellerProvioningHistoryID = couApiResponse.ApiResponseData.Data.Id,
                             },
                             PrimaryTellerProvisioningHistory = couApiResponse.ApiResponseData.Data,
                             TransactionHistories = couApiResponse.ApiResponseData.Data.teller.Transactions,

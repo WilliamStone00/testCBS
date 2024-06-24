@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping;
 using CBS.FrontDesk.Data.Entity.DataTable;
@@ -71,6 +72,67 @@ namespace CBS.BusinessService.CustomerManagement
                 throw;
             }
         }
+        public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string searchCriterial, bool IsByBranch = true)
+        {
+            var customerParam = new GroupResource
+            {
+                PageSize = dataTableOptions.pageSize,
+                OrderBy = "GroupName",
+                Skip = dataTableOptions.skip,
+                SearchQuery = searchCriterial == "" ? "all" : searchCriterial,
+                IsByBranch = IsByBranch,
+                BranchId = GetBranchID(),
+            };
+            Func<Task<List<Group>>> getDataFunc = async () => (await GetGroups(customerParam)).ToList();
+            var dataTable = await GenerateDataTable(dataTableOptions, getDataFunc);
+            return dataTable;
+
+        }
+
+        public async Task<CustomDataTable> GenerateDataTable(DataTableOptions dataTableOptions, Func<Task<List<Group>>> getDataFunc)
+        {
+            List<Group> data = (await getDataFunc()).ToList();
+            //var filteredData = DatatableHelper.FilterData(data, dataTableOptions);
+
+            // Handle potential null values safely
+            var paginationMetadata = data?.FirstOrDefault()?.PaginationMetadata ?? new PaginationMetadata
+            {
+                TotalCount = 0
+            };
+
+            // Construct CustomDataTable using pagination metadata
+            var dataTable = new CustomDataTable(
+                Convert.ToInt32(dataTableOptions.draw),
+                paginationMetadata.TotalCount,
+                dataTableOptions.recordsFiltered,
+                data,
+                dataTableOptions
+            );
+
+            return dataTable;
+        }
+
+
+        public async Task<IEnumerable<Group>> GetGroups(GroupResource resource)
+        {
+            try
+            {
+
+                var queryString = ToQueryString(resource);
+                var fullUrl = $"{APICallHelper.SearchByAnyCriterialGroupQuery}?{queryString}";
+                var apiResponse = await _customerConfigApiHelper.GetAsync<ResponseObject<List<Group>>>(fullUrl);
+
+                var data = apiResponse.ApiResponseData.Data;
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
         public async Task<Group> GetGroup(string id)
         {
             try
@@ -104,7 +166,7 @@ namespace CBS.BusinessService.CustomerManagement
 
                         GroupCustomers = group.GroupCustomers,
                         GroupDocuments = group.GroupDocuments,
-                        GroupDocument = new GroupDocument { GroupId=groupId},
+                        GroupDocument = new GroupDocument { GroupId = groupId },
                         AddGroupCustomerCommand = new AddGroupCustomerCommand { GroupId = groupId, commit = false, CustomerIds = new List<string>() },
                         Customer = group.GroupCustomers.Where(x => x.CustomerId == group.GroupLeaderId).FirstOrDefault().Customer,
                     };

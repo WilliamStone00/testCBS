@@ -37,6 +37,7 @@ namespace CBS.FrontDesk.Service
                     var userAuth = response.ApiResponseData.Data;
                     HttpContext.Current.Session["Token"] = userAuth.bearerToken;
                     HttpContext.Current.Session["BranchObject"]= userAuth.Branch;
+                    response.ApiResponseData.Data.Branch = userAuth.Branch;
                     userAuth.password = request.Password;
                     GetExecutionMessages(userAuth, true, request.UserName, MessagesResults.Success,
                         ExecutionProcessOption.LoginSuccessful, SystemMessageStatus.Success.ToString(), null,
@@ -55,7 +56,7 @@ namespace CBS.FrontDesk.Service
 
             }
             GetExecutionMessages(null, false, request.UserName, MessagesResults.Failed,
-                ExecutionProcessOption.InvalidUserNameOrPassword, SystemMessageStatus.Failed.ToString(), null,
+                ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
                 errormessage);
             return ExecutionMessage;
         }

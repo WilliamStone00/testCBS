@@ -85,6 +85,13 @@
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.Bank.CustomerServiceContact, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Bank.CustomerServiceContact, "", new { @class = "text-danger" })
+                <label>Customer service contact</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.DateOfCreation, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.DateOfCreation, "", new { @class = "text-danger" })
                 <label>Date of creation</label>

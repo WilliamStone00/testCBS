@@ -405,6 +405,7 @@
     <Compile Include="Controllers\CustomerManagement\GroupTypeController.cs" />
     <Compile Include="Controllers\CustomerManagement\IndividualController.cs" />
     <Compile Include="Controllers\CustomerManagement\Policy\MemberAccountActivationPolicyController.cs" />
+    <Compile Include="Controllers\Loan\Configuration\LoanDeliquencyConfigurationController.cs" />
     <Compile Include="Controllers\TransactionManagement\ChargesWaivedController.cs" />
     <Compile Include="Controllers\TransactionManagement\DailyTellerAssignationController.cs" />
     <Compile Include="Controllers\TransactionManagement\MigrationController.cs" />
@@ -2273,6 +2274,9 @@
     <Content Include="Scripts\Js\Crud\ChargesWaived\Requests.js" />
     <Content Include="Scripts\Js\Crud\ChargesWaived\ChargesWaived.js" />
     <Content Include="Scripts\Js\Crud\CashRequestForTellers\TellerCashRequisitionSearch.js" />
+    <Content Include="Scripts\Js\Crud\Groups\Groups.js" />
+    <Content Include="Scripts\Js\Crud\Groups\Customers\CustomersProfile.js" />
+    <Content Include="Scripts\Js\Crud\Groups\Customers\MyCustomers.js" />
     <Content Include="Scripts\Js\Crud\DailyTellerAssignation\DailyTellerAssignation.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Pending.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Requests.js" />
@@ -2286,7 +2290,7 @@
     <Content Include="Scripts\Js\Crud\MembersFSeries\FSeries.js" />
     <Content Include="Scripts\Js\Crud\MembersFSeries\Members.js" />
     <Content Include="Scripts\Js\Crud\LoanProductCollateral\LoanProductCollateral.js" />
-    <Content Include="Scripts\Js\Crud\LoanTransactions\Loans.js" />
+    <Content Include="Scripts\Js\Crud\Loan\LoanTransactions\Loans.js" />
     <Content Include="Scripts\Js\Budgetmanagement\Budget.js" />
     <Content Include="Scripts\Js\Crud\Loan\Product\AccountMapping.js" />
     <Content Include="Scripts\Js\Crud\OperationPanel\Customers.js" />
@@ -2540,8 +2544,8 @@
     <Content Include="Views\Operation\_Depositer.cshtml" />
     <Content Include="Views\EndOfDayOperation\_Primary.cshtml" />
     <Content Include="Views\EndOfDayOperation\_SubTeller.cshtml" />
-    <Content Include="Views\EndOfDayOperation\Primary.cshtml" />
-    <Content Include="Views\EndOfDayOperation\SubTeller.cshtml" />
+    <Content Include="Views\EndOfDayOperation\PrimaryX.cshtml" />
+    <Content Include="Views\EndOfDayOperation\SubTellerX.cshtml" />
     <Content Include="Views\EndOfDayOperation\_PrimaryTellerViewOfSubTellerHistoryData.cshtml" />
     <Content Include="Views\EndOfDayOperation\_PrimaryTellerViewOfOwnHistoryData.cshtml" />
     <Content Include="Views\EndOfDayOperation\_SubTellerTellerViewOfOwnHistoryData.cshtml" />
@@ -2836,6 +2840,25 @@
     <Content Include="Views\OpenningOfDay\_OpenOfDayForm.cshtml" />
     <Content Include="Views\OpenningOfDay\SubTeller.cshtml" />
     <Content Include="Views\Shared\_GeneralErrorDiv.cshtml" />
+    <Content Include="Views\EndOfDayOperation\SubTeller.cshtml" />
+    <Content Include="Views\EndOfDayOperation\Primary.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_CloseOfDayForm.cshtml" />
+    <Content Include="Views\CashDesk\OtherPayment.cshtml" />
+    <Content Include="Views\CashDesk\_OtherPaymentForm.cshtml" />
+    <Content Include="Views\CashDesk\_OtherPaymentDesk.cshtml" />
+    <Content Include="Views\LoanDeliquencyConfiguration\_Create.cshtml" />
+    <Content Include="Views\LoanDeliquencyConfiguration\_Data.cshtml" />
+    <Content Include="Views\LoanDeliquencyConfiguration\Index.cshtml" />
+    <Content Include="Views\Loan\Details.cshtml" />
+    <Content Include="Views\Loan\_Details.cshtml" />
+    <Content Include="Views\Loan\_LoanTerm.cshtml" />
+    <Content Include="Views\Loan\_LoanIformation.cshtml" />
+    <Content Include="Views\Loan\_Refunds.cshtml" />
+    <Content Include="Views\Loan\_DailyInterest.cshtml" />
+    <Content Include="Views\Loan\_RepaymentSchedle.cshtml" />
+    <Content Include="Views\Loan\_FileDownloadData.cshtml" />
+    <Content Include="Views\Loan\_SearchBox.cshtml" />
+    <Content Include="Views\Loan\LoanReportGeneration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

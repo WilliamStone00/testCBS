@@ -20,6 +20,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public string Currency { get; set; }
         public decimal Credit { get; set; }
         public string AccountId { get; set; }
+        public string AccountType { get; set; }
         public string AccountNumber { get; set; }
         public string TransactionType { get; set; }
         public string OperationType { get; set; }//Debit or Credit

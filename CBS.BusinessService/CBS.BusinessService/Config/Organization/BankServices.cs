@@ -133,6 +133,7 @@ namespace CBS.BusinessService.Config
                     bank.TaxPayerNUmber = model.TaxPayerNUmber;
                     bank.PBox = model.PBox;
                     bank.WebSite = model.WebSite;
+                    bank.CustomerServiceContact = model.CustomerServiceContact;
                     bank.BankInitial = model.BankInitial;
                     bank.Motto = model.Motto;
                     bank.Capital = model.Capital ?? "0";

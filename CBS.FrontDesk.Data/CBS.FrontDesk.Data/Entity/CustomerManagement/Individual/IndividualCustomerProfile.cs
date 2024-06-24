@@ -22,20 +22,20 @@ namespace CBS.FrontDesk.Data.Entity
         public List<CardSignatureSpecimen> CardSignatureSpecimens { get; set; }
         public CardSignatureSpecimen CardSignatureSpecimen { get; set; }
         public List<CustomerAccount> CustomerAccounts { get; set; }
-        public List<SavingProduct> SavingProducts { get; set; }=new List<SavingProduct>();
+        public List<SavingProduct> SavingProducts { get; set; } = new List<SavingProduct>();
         public CustomerDocumentRequest CustomerDocumentRequest { get; set; } = new CustomerDocumentRequest();
-        
+
         public string option { get; set; }
         public IndividualCustomerProfile()
         {
-            
+
         }
-        public IndividualCustomerProfile(IndividualProfile customer=null, Aggregrate aggregrate=null, AccountBalance accountBalance=null, List<CustomerAccount> customerAccounts=null, AddCustomerAccount addCustomerAccount=null, MembershipNextOfKing membershipNextOfKingsMember=null, CardSignatureSpecimen cardSignatureSpecimen=null)
+        public IndividualCustomerProfile(IndividualProfile customer = null, Aggregrate aggregrate = null, AccountBalance accountBalance = null, List<CustomerAccount> customerAccounts = null, AddCustomerAccount addCustomerAccount = null, MembershipNextOfKing membershipNextOfKingsMember = null, CardSignatureSpecimen cardSignatureSpecimen = null)
         {
             CustomerList = customer;
             Aggregrate = aggregrate;
-            MemberAccountActivation=new MemberAccountActivation();
-            MemberAccountActivations=new List<MemberAccountActivation>();
+            MemberAccountActivation = new MemberAccountActivation();
+            MemberAccountActivations = new List<MemberAccountActivation>();
             AccountBalance = accountBalance;
             CustomerAccounts = customerAccounts;
             AddCustomerAccount = addCustomerAccount;
@@ -51,10 +51,12 @@ namespace CBS.FrontDesk.Data.Entity
     }
     public abstract class ResourceParameter
     {
-        public ResourceParameter(string orderBy)
+        public ResourceParameter(string OrderBy)
         {
-            this.OrderBy = orderBy;
+            this.OrderBy = OrderBy;
+
         }
+
         const int MaxPageSize = 100;
         public int Skip { get; set; } = 0;
 
@@ -75,11 +77,53 @@ namespace CBS.FrontDesk.Data.Entity
         public string SearchQuery { get; set; }
         public string OrderBy { get; set; }
 
+
     }
     public class CustomerResource : ResourceParameter
     {
-        public CustomerResource() : base("CustomerId")
+        public CustomerResource():base("CustomerId")
         {
         }
+        public string BranchId { get; set; }
+        public bool IsByBranch { get; set; }
+    }
+    public abstract class GroupResourceParameter
+    {
+       
+        const int MaxPageSize = 100;
+        public int Skip { get; set; } = 0;
+
+        private int _PageSize = 10;
+        public int PageSize
+        {
+            get
+            {
+                return _PageSize;
+            }
+            set
+            {
+
+                _PageSize = (value > MaxPageSize) ? MaxPageSize : value;
+            }
+        }
+
+        public string SearchQuery { get; set; }
+        public string OrderBy { get; set; }
+
+
+    }
+    public class GroupResource : GroupResourceParameter
+    {
+        public string BranchId { get; set; }
+        public bool IsByBranch { get; set; }
+
+    }
+    public class LoanResource : ResourceParameter
+    {
+        public LoanResource() : base("CustomerId")
+        {
+        }
+        public bool IsByBranch { get; set; }
+
     }
 }

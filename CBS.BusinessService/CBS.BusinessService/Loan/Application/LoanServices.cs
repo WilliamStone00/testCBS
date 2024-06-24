@@ -12,30 +12,36 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBS.BusinessService.Config;
+using CBS.BusinessService.CustomerManagement;
 
 namespace CBS.BusinessService
 {
-  
+
     public class LoanServices : BaseService
     {
         private readonly ApiCallerHelper _loanConfigApiHelper;
+        private readonly BranchServices _branchServices;
+        private readonly IndividualProfileServices _individualProfileServices;
 
-        public LoanServices()
+        public LoanServices(BranchServices branchServices = null, IndividualProfileServices individualProfileServices = null)
         {
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
-
+            _branchServices = branchServices;
+            _individualProfileServices = individualProfileServices;
         }
 
-        public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string searchCriterial)
+        public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string searchCriterial, bool isByBranch = true)
         {
-            var customerParam = new CustomerResource
+            var loanResource = new LoanResource
             {
                 OrderBy = "CustomerId",
                 PageSize = dataTableOptions.pageSize,
                 Skip = dataTableOptions.skip,
+                IsByBranch = isByBranch,
                 SearchQuery = searchCriterial == "" ? "all" : searchCriterial,
             };
-            var loans = await GetLoans(customerParam);
+            var loans = await GetLoans(loanResource);
             // Handle potential null values safely
             var paginationMetadata = loans?.FirstOrDefault()?.PaginationMetadata ?? new PaginationMetadata
             {
@@ -66,7 +72,7 @@ namespace CBS.BusinessService
         }
 
 
-        public async Task<IEnumerable<Loan>> GetLoans(CustomerResource resource)
+        public async Task<IEnumerable<Loan>> GetLoans(LoanResource resource)
         {
             try
             {
@@ -91,12 +97,14 @@ namespace CBS.BusinessService
 
             var loanDtos = loans.Select(loan => new DataTableLoan
             {
-                DisbursementDate = loan.DisbursementDate.ToString("yyyy-MM-dd"),
+                DisbursementDate = loan.DisbursementDate.ToString("yyyy-MM-dd, hh:mm:ss"),
                 MaturityDate = loan.MaturityDate.ToString("yyyy-MM-dd"),
                 Principal = loan.Principal,
                 InterestRate = loan.InterestRate,
                 AccrualInterest = loan.AccrualInterest,
                 Fee = loan.Fee,
+                Tax = loan.Tax,
+                Fines=loan.Penalty,
                 Penalty = loan.Penalty,
                 DueAmount = loan.DueAmount,
                 Paid = loan.Paid,
@@ -104,7 +112,8 @@ namespace CBS.BusinessService
                 LastPayment = loan.LastPayment,
                 LoanStatus = loan.LoanStatus,
                 IsCurrentLoan = loan.IsCurrentLoan,
-                Id = loan.Id, CustomerId=loan.CustomerId
+                Id = loan.Id,
+                CustomerId = loan.CustomerId
             }).ToList();
             return loanDtos;
 
@@ -146,7 +155,7 @@ namespace CBS.BusinessService
                 var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Loan>>>(APICallHelper.GetLoans);
                 if (couApiResponse.IsSuccess)
                 {
-                    return couApiResponse.ApiResponseData.Data.Where(x=>!x.IsLoanDisbursted);
+                    return couApiResponse.ApiResponseData.Data.Where(x => !x.IsLoanDisbursted);
                 }
                 return new List<Loan>();
             }
@@ -156,11 +165,123 @@ namespace CBS.BusinessService
                 throw;
             }
         }
-        public async Task<IEnumerable<Loan>> GetLoanByCustomerID(string customerId)
+        public async Task<IEnumerable<FileDownloadInfoLoan>> GetAllFileDownloadInfoLoan()
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Loan>>>(string.Format(APICallHelper.GetAllLoanByCustomerId, customerId));
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FileDownloadInfoLoan>>>(APICallHelper.GetAllBulkDownloadInfosLoan);
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<FileDownloadInfoLoan>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public async Task<IEnumerable<FileDownloadInfoLoan>> GetAllFileDownloadInfoLoanPerUser()
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FileDownloadInfoLoan>>>(string.Format(APICallHelper.GetAllBulkDownloadInfosLoanPerUser, GetUserID()));
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<FileDownloadInfoLoan>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public async Task<ExecutionMessages> Delete(string id)
+        {
+            try
+            {
+                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.BulkDownloadDeleteAndGetLoan, id));
+                if (inResponse.IsSuccess)
+                {
+
+                    GetExecutionMessages(inResponse, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
+                    return ExecutionMessage;
+
+                }
+                else
+                {
+                    // Handle failure scenario
+                    GetExecutionMessages(inResponse, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+            }
+            return ExecutionMessage;
+        }
+        public async Task<FileDownloadInfoLoan> GetFileDownloadInfoLoan(string id)
+        {
+            try
+            {
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<FileDownloadInfoLoan>>(string.Format(APICallHelper.BulkDownloadDeleteAndGetLoan, id));
+                if (cusResponseObject.IsSuccess)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<ExecutionMessages> InitiateBulkDownloadLoansBranch(InitiateLoanDownloadCommand model)
+        {
+            try
+            {
+                model.IsByBranch = true;
+                model.StartDate = GetDateTime(model.StrStartDate);
+                model.EndDate = GetDateTime(model.StrEndDate);
+                model.EndDate = GetDateTime(model.StrEndDate);
+                model.UserId = GetUserID();
+                model.FullName = GetUserFullName();
+                model.BranchName = GetBranchName();
+                model.BranchId = GetBranchID();
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<FileDownloadInfoLoan>>(APICallHelper.InitiateBulkDownloadLoans, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Bulk Download", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, "Bulk Download", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<IEnumerable<Loan>> GetLoanByCustomerID(GetAllLoanByCustomerIdQuery loanByCustomerIdQuery)
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.PostAsync<ResponseObject<List<Loan>>>(APICallHelper.GetAllLoanByCustomerId, loanByCustomerIdQuery);
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
@@ -173,23 +294,7 @@ namespace CBS.BusinessService
                 throw;
             }
         }
-        public async Task<IEnumerable<Loan>> GetCustomerCurrentLoans(string customerId)
-        {
-            try
-            {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Loan>>>(string.Format(APICallHelper.GetAllLoanByCustomerId, customerId));
-                if (couApiResponse.IsSuccess)
-                {
-                    return couApiResponse.ApiResponseData.Data;
-                }
-                return new List<Loan>();
-            }
-            catch (Exception ex)
-            {
-                // Log and handle exception
-                throw;
-            }
-        }
+
         public async Task<Loan> GetLoan(string id)
         {
             try
@@ -206,6 +311,27 @@ namespace CBS.BusinessService
                 // Log and handle exception
                 throw ex;
             }
+        }
+        public async Task<Loan> GetLoanWithCustomerAndBranch(string customerId)
+        {
+            try
+            {
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<Loan>>(string.Format(APICallHelper.GetLoan, customerId));
+                if (cusResponseObject.IsSuccess && cusResponseObject.ApiResponseData != null)
+                {
+                    var loan = cusResponseObject.ApiResponseData.Data;
+                    var individualCustomerProfile = await _individualProfileServices.GetCustomerLight(loan.CustomerId);
+                    loan.IndividualCustomer = individualCustomerProfile;
+                    return loan;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+
         }
 
     }

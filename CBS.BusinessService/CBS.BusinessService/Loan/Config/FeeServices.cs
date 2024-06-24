@@ -123,6 +123,7 @@ namespace CBS.BusinessService.Config
                 {
                     Fee.Name = model.Name;
                     Fee.FeeBase = model.FeeBase;
+                    Fee.IsBoforeProcesing = model.IsBoforeProcesing;
                     Fee.AccountingEventCode = model.AccountingEventCode;
                     var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Fee>>(string.Format(APICallHelper.Get_Update_Delete_Fee, model.Id), Fee);
                     if (response.IsSuccess)

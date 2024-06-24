@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         [HttpPost]
         public async Task<ActionResult> Create(LoanProduct model)
         {
-            if (model.Action=="Create")
+            if (model.Id==null)
             {
                 if (ModelState.IsValid)
                 {
@@ -163,6 +163,9 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             ViewBag.RefundOrders = productEnumAgregates.RefundOrders;
             ViewBag.PenaltyTypes = productEnumAgregates.PenaltyTypes;
             ViewBag.YesOrNo = productEnumAgregates.YesOrNo;
+            ViewBag.LoanCategories = productEnumAgregates.LoanCategories;
+            ViewBag.LoanTargets = productEnumAgregates.LoanTargets;
+            ViewBag.LoanTerms = productEnumAgregates.LoanTerms;
             //YesOrNo
             return true;
         }

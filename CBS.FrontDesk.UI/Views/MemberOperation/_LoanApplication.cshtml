@@ -4,7 +4,7 @@
 <div class="col">
     @using (Html.BeginForm("Create", "MemberOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
-        @Html.HiddenFor(m => m.Customer.CustomerId)
+        @Html.HiddenFor(m => m.LoanApplication.CustomerId)
 
         <br />
         <div class="row my-4">
@@ -40,6 +40,20 @@ By carefully selecting the appropriate loan product and terms in this section, y
                                         <label>Select loan product</label>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.LoanApplication.LoanCategory, new SelectList(ViewBag.LoanCategories, "Value", "Text"), "---Select loan category---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.LoanApplication.LoanCategory, "", new { @class = "text-danger " })
+                                        <label>Select loan category</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.LoanApplication.LoanTarget, new SelectList(ViewBag.LoanTargets, "Value", "Text"), "---Select loan category---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.LoanApplication.LoanTarget, "", new { @class = "text-danger " })
+                                        <label>Select member's target</label>
+                                    </div>
+                                </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.LoanApplication.LoanType, new SelectList(ViewBag.LoanTypes, "Value", "Text"), "---Select loan type---", new { @class = "form-control select2", @search = "true" })
@@ -47,11 +61,12 @@ By carefully selecting the appropriate loan product and terms in this section, y
                                         <label>Select loan type</label>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanApplication.Amount, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanApplication.Amount, "", new { @class = "text-danger" })
-                                        <label id="amount"> Amount</label>
+                                        <label id="amount">Amount</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -222,13 +237,13 @@ By accurately specifying these details, you can ensure transparency and clarity 
                          data-bs-parent="#collapsibleSection">
                         <div class="accordion-body">
                             <div class="row g-4">
-                                <div class="col-md-12">
+                                @*<div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.LoanApplication.AmortizationType, new SelectList(ViewBag.AmortizationTypes, "Value", "Text"), "---Select loan type---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.LoanApplication.AmortizationType, "", new { @class = "text-danger " })
                                         <label>Select amortization type</label>
                                     </div>
-                                </div>
+                                </div>*@
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanApplication.InterestRate, new { @class = "form-control" })
@@ -322,21 +337,14 @@ By providing transparent information on fees, you ensure clarity for both the bo
 
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.ProcessingFee, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.ProcessingFee, "", new { @class = "text-danger" })
-                                        <label id="fee">Processing fee rate</label>
+                                        @Html.ListBoxFor(m => m.LoanApplication.FeeIds, new MultiSelectList(ViewBag.LoanFees, "Value", "Text"), new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.LoanApplication.FeeIds, "", new { @class = "text-danger " })
+                                        <label>Select loan fees</label>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.LoanApplication.InspectionFee, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LoanApplication.InspectionFee, "", new { @class = "text-danger" })
-                                        <label id="inspectionfee">Inspection fee</label>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="card accordion-item mb-3">

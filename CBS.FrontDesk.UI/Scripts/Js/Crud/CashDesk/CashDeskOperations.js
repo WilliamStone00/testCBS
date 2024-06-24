@@ -167,7 +167,11 @@ function collectDeposits() {
             deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
             deposit.OperationType = $('#OperationType').val();
             deposit.CustomerId = $('#customerId').val();
+            deposit.LoanApplicationId = $(this).find('.loan-application-id').val();
+            deposit.Period = $(this).find('.period').val();
             deposits.push(deposit);
+
+            //
         }
     });
 
@@ -215,32 +219,18 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
                 contentType: 'application/json',
                 data: JSON.stringify(data),
                 success: function (response) {
-                    if (response.success) {
-                        if (operationType === 'CashIn') {
-                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashin')
-                        }
-
-                        else if (operationType === 'Withdrawal') {
-                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashout')
-                        }
-                        else if (operationType === 'SavingWithdrawalFormFee') {
-                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'withdrawalnotification')
-                        }
-                        else if (operationType === 'Loan') {
-                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'repayment')
-                        }
-                        appalert(response.message, 1, 1);
-                        ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
+                    if (response && response.success) {
+                        successCallback(response, operationType);
                     } else {
-                        if (response.message === undefined) {
+                        if (!response) {
                             alert("Your session is expired.");
                         } else {
-                            appalert(response.message, 3, 1);
+                            failureCallback(response);
                         }
                     }
                 },
                 error: function (xhr, status, error) {
-                    appalert(error, 0, 1);
+                    appalert("An error occurred while processing the transaction. Please try again later.", 0, 1);
                 }
             });
         },
@@ -249,6 +239,77 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
         }
     );
 }
+
+function successCallback(response, operationType) {
+    appalert(response.message, 1, 1);
+    switch (operationType) {
+        case 'CashIn':
+            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashin');
+            break;
+        case 'Withdrawal':
+            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashout');
+            break;
+        case 'SavingWithdrawalFormFee':
+            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'withdrawalnotification');
+            break;
+        case 'LoanRepayment':
+            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'repayment');
+            break;
+        case 'LoanFee':
+            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'loanapplicationfeepayment');
+            break;
+        default:
+            break;
+    }
+}
+
+function failureCallback(response) {
+    appalert(response.message || "An error occurred while processing the transaction", 3, 1);
+}
+
+//function confirmTransaction(title, message, ajaxUrl, data, operationType) {
+//    alertify.confirm(title, message,
+//        function () {
+//            $.ajax({
+//                url: ajaxUrl,
+//                type: 'POST',
+//                contentType: 'application/json',
+//                data: JSON.stringify(data),
+//                success: function (response) {
+//                    if (response && response.success) {
+//                        appalert(response.message, 1, 1);
+//                        ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
+//                        if (operationType === 'CashIn') {
+//                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashin');
+//                        } else if (operationType === 'Withdrawal') {
+//                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashout');
+//                        } else if (operationType === 'SavingWithdrawalFormFee') {
+//                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'withdrawalnotification');
+//                        } else if (operationType === 'Loan') {
+//                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'repayment');
+//                        }
+//                        else if (operationType === 'LoanFee') {
+//                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'loanapplicationfeepayment');
+//                        }
+
+//                    } else {
+//                        if (!response) {
+//                            alert("Your session is expired.");
+//                        } else {
+//                            appalert(response.message || "An error occurred while processing the transaction", 3, 1);
+//                        }
+//                    }
+//                },
+//                error: function (xhr, status, error) {
+//                    appalert("An error occurred while processing the transaction. Please try again later.", 0, 1);
+//                }
+//            });
+//        },
+//        function () {
+//            appalert('Transaction cancelled', 3, 1);
+//        }
+//    );
+//}
 
 //function PostCashIn() {
 //    if (!checkTotalNotes()) return false;
@@ -295,6 +356,28 @@ function PostCashIn() {
     confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits, 'CashIn');
 }
 
+function PostFEE() {
+    if (!checkTotalNotes()) return false;
+
+    var totalNotes = parseFloat($("#totalNoteAmount").val());
+    var totalInfo = calculateTotalAmount();
+
+    if (!validateTotalAmount(totalInfo, totalNotes)) return;
+
+    var deposits = collectDeposits();
+    if (deposits.length === 0) {
+        appalert("Please select at least one fee label to perform the payment", 3, 1);
+        return;
+    }
+
+    deposits[0].currencyNotes = collectCurrencyNotes();
+    deposits[0].Depositer = collectDepositorInfo();
+
+    var message = "";
+    message += "Are you sure you want to pay loan fee of " + totalInfo.total + "?\n";
+    confirmTransaction('Loan Fee Operation', message, '/CashDesk/PostRequestCash', deposits, 'LoanFee');
+}
+
 function PostWithdrawalFromFee() {
     if (!checkTotalNotes()) return false;
 
@@ -329,10 +412,10 @@ function PostCashOut() {
     if (!validateTotalAmount(totalInfo, totalNotes)) return;
 
     var deposits = collectDeposits();
-    if (deposits.length !== 1) {
-        appalert("Cash-out can only be done from one account only. Please deselect other accounts.", 3, 1);
-        return;
-    }
+    //if (deposits.length !== 1) {
+    //    appalert("Cash-out can only be done from one account only. Please deselect other accounts.", 3, 1);
+    //    return;
+    //}
 
     deposits[0].currencyNotes = collectCurrencyNotes();
     deposits[0].Depositer = collectDepositorInfo();
@@ -353,7 +436,7 @@ function PostLoanRepayment() {
 
     var deposits = collectDeposits();
     if (deposits.length !== 1) {
-        appalert("Loan repayment can only be done from one account only. Please deselect other accounts.", 3, 1);
+        appalert("Only one loan can be paid at an instant. Please deselect other accounts.", 3, 1);
         return;
     }
 
@@ -361,9 +444,8 @@ function PostLoanRepayment() {
     deposits[0].Depositer = collectDepositorInfo();
 
     var message = "";
-    message += "Are you sure you want to perform loan repayment of " + totalInfo.total + " to the selected account numbers?\n";
-    message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-    confirmTransaction('Confirm Loan Repayment Operation', message, '/CashDesk/PostRequestCash', deposits, 'Loan');
+    message += "Are you sure you want to perform loan repayment of " + totalInfo.total + "?";
+    confirmTransaction('Confirm Loan Repayment Operation', message, '/CashDesk/PostRequestCash', deposits, 'LoanRepayment');
 }
 
 
@@ -406,6 +488,11 @@ function SearchByCustomerNumber(partialView, divToloadPV) {
     AddORUpdateGen($('#manualSearchInput').val(), divToloadPV, partialView, 'search', "CashDesk");
     calculateBalance();
 }
+function GetMember() {
+    var memberId = $('#manualSearchInput').val();
+    GetMemberData(memberId, '_OperationDesk', 'datalistingview', 'cashin');
+}
+
 function GetMemberData(Key, partialView, divToloadPV, path) {
 
     AddORUpdateGen(Key, divToloadPV, partialView, path, "CashDesk");
@@ -434,7 +521,6 @@ function GetLoan(KEY) {
         }
     });
 }
-
 
 
 

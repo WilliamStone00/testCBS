@@ -1,0 +1,251 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
+<style>
+    .small-image {
+        max-width: 100px; /* Adjust the size as needed */
+        max-height: 100px; /* Adjust the size as needed */
+    }
+
+    .modal-lg .modal-content img {
+        width: 100%; /* Ensure the image uses the full modal width */
+        height: auto; /* Maintain the aspect ratio */
+    }
+
+    .borderless-table td, .borderless-table th {
+        border: none;
+    }
+</style>
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="row">
+
+
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
+                    <table class="table borderless-table">
+                        <tr>
+                            <td class="align-top">
+                                <!-- Image for picture -->
+                                @if (Model.IndividualCustomer.CustomerList.photoUrl != null)
+                                {
+                                    <!-- Clickable photo for preview -->
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
+                                        <img src="@Model.IndividualCustomer.CustomerList.photoUrl" class="img-fluid preview-image small-image" alt="Uploaded Image">
+                                    </a>
+                                    <!-- Modal for photo preview -->
+                                    <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <img src="@Model.IndividualCustomer.CustomerList.photoUrl"
+                                                         alt="user image"
+                                                         class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img thick-border" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <img src="@Url.Content(Model.IndividualCustomer.CustomerList.ImageNoVirtualPath)" class="img-fluid preview-image small-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+                                }
+                            </td>
+                            <td class="align-top">
+                                <!-- Right Column for Information -->
+                                <div class="flex-grow-1 mt-3 mt-sm-5">
+                                    <div class="mx-4">
+                                        <h4>@Model.IndividualCustomer.CustomerList.name.ToUpper()</h4>
+                                        <hr />
+                                        <ul class="list-inline mb-0 d-flex flex-wrap gap-2">
+                                            <li class="list-inline-item">
+                                                <i class="mdi mdi-file-code me-1 mdi-20px"></i><span class="fw-medium">Member Reference: @Model.IndividualCustomer.CustomerList.CustomerId</span>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <i class="mdi mdi-phone me-1 mdi-20px"></i><span class="fw-medium">Phone: @Model.IndividualCustomer.CustomerList.Phone</span>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <i class="mdi mdi-map-marker-outline me-1 mdi-20px"></i><span class="fw-medium">Address: @Model.IndividualCustomer.CustomerList.Address, Email: @Model.IndividualCustomer.CustomerList.Email, Branch and Code: @Model.IndividualCustomer.CustomerList.branch, @Model.IndividualCustomer.CustomerList.branchCode</span>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <i class="mdi mdi-calendar-blank-outline me-1 mdi-20px"></i><span class="fw-medium"> Membership Approved Date: @Model.IndividualCustomer.CustomerList.MembershipApprovedDate</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-xl-12">
+
+            <div class="card mb-4">
+                <div class="card-header p-0">
+                    <div class="nav-align-top">
+                        <ul class="nav nav-tabs nav-fill" role="tablist">
+                            <li class="nav-item">
+                                <button type="button"
+                                        class="nav-link active"
+                                        role="tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#navs-justified-home"
+                                        aria-controls="navs-justified-home"
+                                        aria-selected="true">
+                                    <i class="tf-icons mdi mdi-home-outline me-1"></i> Loan Term
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button type="button"
+                                        class="nav-link"
+                                        role="tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#navs-loan-Informations"
+                                        aria-controls="navs-loan-Informations"
+                                        aria-selected="false">
+                                    <i class="tf-icons mdi mdi-account-outline me-1"></i> Lona Information
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button type="button"
+                                        class="nav-link"
+                                        role="tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#navs-daily-interest"
+                                        aria-controls="navs-daily-interest"
+                                        aria-selected="false">
+                                    <i class="tf-icons mdi mdi-message-text-outline me-1"></i> Accrual Interests
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button type="button"
+                                        class="nav-link"
+                                        role="tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#navs-loan-refunds"
+                                        aria-controls="navs-loan-refunds"
+                                        aria-selected="false">
+                                    <i class="tf-icons mdi mdi-home-outline me-1"></i> Refunds
+                                    <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">@Model.Refunds.Count()</span>
+                                </button>
+                            </li>
+
+                            <li class="nav-item">
+                                <button type="button"
+                                        class="nav-link"
+                                        role="tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#navs-loan-scheduller"
+                                        aria-controls="navs-loan-scheduller"
+                                        aria-selected="false">
+                                    <i class="tf-icons mdi mdi-message-text-outline me-1"></i> Repayment schedule
+                                </button>
+                            </li>
+                            @*<li class="nav-item">
+                                    <button type="button"
+                                            class="nav-link"
+                                            role="tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#navs-loan-fee"
+                                            aria-controls="navs-loan-fee"
+                                            aria-selected="false">
+                                        <i class="tf-icons mdi mdi-message-text-outline me-1"></i> Loan Fee
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button type="button"
+                                            class="nav-link"
+                                            role="tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#navs-loan-documents"
+                                            aria-controls="navs-loan-documents"
+                                            aria-selected="false">
+                                        <i class="tf-icons mdi mdi-message-text-outline me-1"></i> Documents
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button type="button"
+                                            class="nav-link"
+                                            role="tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#navs-loan-guarantors"
+                                            aria-controls="navs-loan-guarantors"
+                                            aria-selected="false">
+                                        <i class="tf-icons mdi mdi-message-text-outline me-1"></i> Gurantors
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button type="button"
+                                            class="nav-link"
+                                            role="tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#navs-loan-collateral"
+                                            aria-controls="navs-loan-collateral"
+                                            aria-selected="false">
+                                        <i class="tf-icons mdi mdi-message-text-outline me-1"></i> Collateral
+                                    </button>
+                                </li>*@
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content p-0">
+                        <div class="tab-pane fade show active" id="navs-justified-home" role="tabpanel">
+                            @Html.Partial("_LoanTerm")
+                        </div>
+                        <div class="tab-pane fade" id="navs-loan-Informations" role="tabpanel">
+                            @Html.Partial("_LoanIformation")
+                        </div>
+                        <div class="tab-pane fade" id="navs-loan-refunds" role="tabpanel">
+                            @Html.Partial("_Refunds")
+                        </div>
+                        <div class="tab-pane fade" id="navs-daily-interest" role="tabpanel">
+                            @Html.Partial("_DailyInterest")
+                        </div>
+                        <div class="tab-pane fade" id="navs-loan-scheduller" role="tabpanel">
+                            @Html.Partial("_RepaymentSchedle")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    @*<td style="width:10%">
+            @if (d.RefundDetails != null && d.RefundDetails.Any())
+            {
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Collected</th>
+                            <th>Principal</th>
+                            <th>Tax</th>
+                            <th>Interest</th>
+                            <th>Penalty</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var detail in d.RefundDetails)
+                        {
+                            <tr>
+                                <td>@detail.CollectedAmount.ToString("#,##0.0")</td>
+                                <td>@detail.PrincipalAmount.ToString("#,##0.0")</td>
+                                <td>@detail.TaxAmount.ToString("#,##0.0")</td>
+                                <td>@detail.Interest.ToString("#,##0.0")</td>
+                                <td>@detail.PenaltyAmount.ToString("#,##0.0")</td>
+                                <td>@detail.Balance.ToString("#,##0.0")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <span>No details available</span>
+            }
+        </td>*@
+</div>

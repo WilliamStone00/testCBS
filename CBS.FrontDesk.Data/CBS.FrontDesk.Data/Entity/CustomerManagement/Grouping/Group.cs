@@ -48,6 +48,7 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping
         public List<GroupCustomer> GroupCustomers { get; set; }
         public List<GroupDocument> GroupDocuments { get; set; }
         public bool Active { get; set; }
+        public PaginationMetadata PaginationMetadata { get; set; } = new PaginationMetadata();
     }
     public class AddGroupCustomerCommand
     {

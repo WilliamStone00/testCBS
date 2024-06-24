@@ -83,7 +83,7 @@ namespace CBS.BusinessService.Config
                 var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProduct);
                 if (couApiResponse.IsSuccess)
                 {
-                    var data = couApiResponse.ApiResponseData.Data.Select(x => new StringValues { Text = $"{x.ProductName}, Loan Range>> Min: {x.LoanMinimumAmount.ToString("#0,0.0")}, Max: {x.LoanMaximumAmount.ToString("#0,0.0")}", Value = x.Id }).ToList();
+                    var data = couApiResponse.ApiResponseData.Data.Select(x => new StringValues { Text = $"{x.ProductName}, Loan Range>> Min: {x.LoanMinimumAmount.ToString("#0,##0.0")}, Max: {x.LoanMaximumAmount.ToString("#0,##0.0")}", Value = x.Id }).ToList();
                     return data;
                 }
                 return new List<StringValues>();
@@ -94,6 +94,26 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+
+        public async Task<IEnumerable<StringValues>> GetFees()
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Fee>>>(APICallHelper.GetAllFee);
+                if (couApiResponse.IsSuccess)
+                {
+                    var data = couApiResponse.ApiResponseData.Data.Select(x => new StringValues { Text = $"{x.Name}", Value = x.Id }).ToList();
+                    return data;
+                }
+                return new List<StringValues>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
 
         ///api/v1/LoanProductConfigurationAgregates
         public async Task<LoanProduct> GetLoanProduct(string id)
@@ -235,6 +255,7 @@ namespace CBS.BusinessService.Config
                         LoanProduct.TaxId = model.TaxId;
                         LoanProduct.ActiveStatus = model.ActiveStatus;
                         LoanProduct.Description = model.Description;
+                        LoanProduct.LoanTerm = model.LoanTerm;
                     }
                     else if (model.ServiceOption == "gurantee")
                     {
@@ -264,6 +285,7 @@ namespace CBS.BusinessService.Config
                         LoanProduct.LoanMinimumAmount = model.LoanMinimumAmount;
                         LoanProduct.DefaultLoanAmount = model.DefaultLoanAmount;
                         LoanProduct.LoanMaximumAmount = model.LoanMaximumAmount;
+                        LoanProduct.LoanTerm = model.LoanTerm;
 
                     }
                     else if (model.ServiceOption == "topup")

@@ -6,6 +6,7 @@ using CBS.FrontDesk.Helper;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,11 +51,11 @@ namespace CBS.BusinessService.Application
             return ExecutionMessage;
         }
 
-        public async Task<IEnumerable<LoanApplication>> GetLoanApplications()
+        public async Task<IEnumerable<LoanApplication>> GetLoanApplications(string param)
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanApplication>>>(APICallHelper.GetAllLoanApplication);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanApplication>>>(string.Format(APICallHelper.GetAllLoanApplicationByParameter, param));
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
@@ -71,7 +72,7 @@ namespace CBS.BusinessService.Application
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanApplication>>>(string.Format(APICallHelper.GetAllLoanApplicationByCustomerId,customerId));
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanApplication>>>(string.Format(APICallHelper.GetAllLoanApplicationByCustomerId, customerId));
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
@@ -139,7 +140,7 @@ namespace CBS.BusinessService.Application
             try
             {
 
-               
+
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<OTPNotification>>(APICallHelper.GenerateOTP, model);
                 if (response.IsSuccess)
                 {
@@ -177,7 +178,7 @@ namespace CBS.BusinessService.Application
                     if (response.IsSuccess)
                     {
                         GetExecutionMessages(response, true, $"Loan application", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(),null, response.Message);
+                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
                     else
@@ -202,7 +203,7 @@ namespace CBS.BusinessService.Application
         //    try
         //    {
 
-                
+
 
         //            var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanApplication>>(string.Format(APICallHelper.ApproveLoanApplication, model.id), LoanApplication);
         //            if (response.IsSuccess)
@@ -218,7 +219,7 @@ namespace CBS.BusinessService.Application
         //                GetExecutionMessages(model, false, $"Loan application", MessagesResults.Failed,
         //                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
         //            }
-               
+
 
         //    }
         //    catch (Exception ex)

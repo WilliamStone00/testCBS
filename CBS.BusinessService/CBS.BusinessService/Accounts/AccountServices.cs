@@ -909,17 +909,28 @@ namespace CBS.BusinessService.Accounts
                 var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.TransferConfirmation, model);
                 if (response.ApiResponseData != null)
                 {
-                    var transaction = response.ApiResponseData.Data;
-                    Branch branch = RetrieveBranchFromSession();
-                    IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                    User user = await RetrieveUserFromSession(transaction.CreatedBy);
-                    var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
-                    var rptSource = new List<TransactionReportDS>();
-                    rptSource.Add(rpt);
-                    HttpContext.Current.Session["rptSource"] = rptSource;
-                    GetExecutionMessages(response, true, $"Transfer confirmation", MessagesResults.Success,
-                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
-                    return ExecutionMessage;
+                    if (model.Status=="Approved")
+                    {
+                        var transaction = response.ApiResponseData.Data;
+                        Branch branch = RetrieveBranchFromSession();
+                        IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
+                        User user = await RetrieveUserFromSession(transaction.CreatedBy);
+                        var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
+                        var rptSource = new List<TransactionReportDS>();
+                        rptSource.Add(rpt);
+                        HttpContext.Current.Session["rptSource"] = rptSource;
+                        GetExecutionMessages(response, true, $"Transfer confirmation", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+
+                    }
+                    else
+                    {
+                        GetExecutionMessages(response, true, $"Transfer Canceled", MessagesResults.Success,
+                          ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                 
                 }
                 else
                 {

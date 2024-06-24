@@ -74,8 +74,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         {
             ViewBag.KEY = KEY;
             var customer = await InitializeCustomerData(KEY);
-            var CustomerLoans = await _loanServices.GetLoanByCustomerID(KEY);
-            return View(new MemberOperationPanel { Customer = customer.CustomerList, Loans = CustomerLoans.ToList() });
+            //var CustomerLoans = await _loanServices.GetLoanByCustomerID(KEY);
+            return View(new MemberOperationPanel { Customer = customer.CustomerList});
         }
         public async Task<ActionResult> MyMembers()
         {
@@ -106,17 +106,17 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         }
         public async Task<ActionResult> LoanApplicationApproval(string KEY = null, string ReadOptions = null, string path = null, string group = null)
         {
-            var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
-            ViewBag.LoanApplicationStatus = productEnumAgregates.LoanStatuses;
-            var loanApplications = await _loanApplicationServices.GetLoanApplications();
+            //var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
+            //ViewBag.LoanApplicationStatus = productEnumAgregates.LoanStatuses;
+            var loanApplications = await _loanApplicationServices.GetLoanApplications("Approval");
             return View(new MemberOperationPanel { LoanApplications = loanApplications.ToList() });
         }
         public async Task<ActionResult> LoanApplicationForCommitees(string KEY = null, string ReadOptions = null, string path = null, string group = null)
         {
 
-            var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
-            ViewBag.LoanCommiteeValidationStatuses = productEnumAgregates.LoanCommiteeValidationStatuses;
-            var loanApplications = await _loanApplicationServices.GetLoanApplications();
+            //var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
+            //ViewBag.LoanCommiteeValidationStatuses = productEnumAgregates.LoanCommiteeValidationStatuses;
+            var loanApplications = await _loanApplicationServices.GetLoanApplications("Pending");
             return View(new MemberOperationPanel { LoanApplications = loanApplications.ToList() });
         }
         
@@ -128,10 +128,12 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             if (path == "loanapplication")
             {
                 ViewBag.LoanProducts = await _loanProductServices.GetLoanProductsDropDown();
+                ViewBag.LoanFees = await _loanProductServices.GetFees();
+                
                 ViewBag.KEY = KEY;
                 await PopulateAggregatesInViewBag();
-                var customer = await InitializeCustomerData(KEY);
-                return PartialView(partialView, new MemberOperationPanel { Customer = customer.CustomerList });
+                //var customer = await InitializeCustomerData(KEY);
+                return PartialView(partialView, new MemberOperationPanel { LoanApplication = new LoanApplication { CustomerId= KEY } });
 
             }
             else
@@ -240,10 +242,39 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         ViewBag.LoanDurationPeriods = productEnumAgregates.LoanDurationPeriods;
                         ViewBag.RepaymentCycles = productEnumAgregates.RepaymentCycles;
                         ViewBag.AmortizationTypes = productEnumAgregates.AmortizationTypes;
-                        var amortization=new LoanParameters { InterestRate= loanApplication.InterestRate,
-                          AmortizationType=loanApplication.AmortizationType, Amount=loanApplication.Amount,
-                         LoanDuration= loanApplication.LoanDuration, RepaymentCycle=loanApplication.LoanProduct.LoanProductRepaymentCycles.FirstOrDefault(x=>x.Id== loanApplication.RepaymentCircle).RepaymentCycle,
-                        };
+                        var amortization = new LoanParameters();
+
+                        if (loanApplication != null && loanApplication.LoanProduct != null && loanApplication.LoanProduct.LoanProductRepaymentCycles != null)
+                        {
+                            var repaymentCycle = loanApplication.LoanProduct.LoanProductRepaymentCycles.FirstOrDefault(x => x.Id == loanApplication.RepaymentCircle);
+
+                            if (repaymentCycle != null)
+                            {
+                                amortization = new LoanParameters
+                                {
+                                    InterestRate = loanApplication.InterestRate,
+                                    AmortizationType = loanApplication.AmortizationType,
+                                    Amount = loanApplication.Amount,
+                                    LoanDuration = loanApplication.LoanDuration,
+                                    RepaymentCycle = repaymentCycle.RepaymentCycle
+                                };
+                            }
+                            else
+                            {
+                                // Handle the case where repaymentCycle is null
+                                // You may throw an exception, log an error, or set default values for amortization
+                            }
+                        }
+                        else
+                        {
+                            // Handle the case where loanApplication or loanProduct or loanProductRepaymentCycles is null
+                            // You may throw an exception, log an error, or set default values for amortization
+                        }
+
+                        //var amortization =new LoanParameters { InterestRate= loanApplication.InterestRate,
+                        //  AmortizationType=loanApplication.AmortizationType, Amount=loanApplication.Amount,
+                        // LoanDuration= loanApplication.LoanDuration, RepaymentCycle=loanApplication.LoanProduct.LoanProductRepaymentCycles.FirstOrDefault(x=>x.Id== loanApplication.RepaymentCircle).RepaymentCycle,
+                        //};
                         var collaterals = await _loanProductCollateralServices.GetAllLaonApplicationCollateralByApplicationIdQuery(KEY);
                         var attachedDoc = new DocumentAttachedToLoan { LoanApplicationId = loanApplication.Id };
                         var loanCommiteeValidationHistories = loanApplication.LoanCommiteeValidations;
@@ -314,8 +345,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         }
                         else if (serviceOption == "all")
                         {
-                            var data = await _individualProfileServices.GetMembers();
-                            return PartialView(partialView, new MemberOperationPanel { Customers = data.ToList() });
+                            //var data = await _individualProfileServices.GetMembers();
+                            return PartialView(partialView, new MemberOperationPanel { Customers = null });
                         }
 
 
@@ -395,7 +426,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             }
             else
             {
-                model.LoanApplication.CustomerId = model.Customer.CustomerId;
+                
                 var data = await _loanApplicationServices.Create(model.LoanApplication);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
@@ -430,6 +461,9 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             ViewBag.LoanTypes = productEnumAgregates.LoanTypes;
             ViewBag.AmortizationTypes = productEnumAgregates.AmortizationTypes;
             ViewBag.LoanCommiteeValidationStatuses = productEnumAgregates.LoanCommiteeValidationStatuses;
+            ViewBag.LoanCategories = productEnumAgregates.LoanCategories;
+            ViewBag.LoanTargets = productEnumAgregates.LoanTargets;
+            ViewBag.LoanTerms = productEnumAgregates.LoanTerms;
         }
 
 
