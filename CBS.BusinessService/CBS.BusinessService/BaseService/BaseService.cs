@@ -109,6 +109,14 @@ namespace BusinessServices
             StringCurrentDay = CurrentDate.DayOfWeek.ToString();
             InCurrentMonth = CurrentDate.Day;
         }
+        public string ToQueryString<T>(T obj)
+        {
+            var properties = from p in typeof(T).GetProperties()
+                             where p.GetValue(obj, null) != null
+                             select $"{p.Name}={Uri.EscapeDataString(p.GetValue(obj, null).ToString())}";
+
+            return string.Join("&", properties.ToArray());
+        }
         public int ComputeDenomination(CurrencyNotes currencyNotes)
         {
             int totalNotesValue = currencyNotes.note10000 * 10000 +

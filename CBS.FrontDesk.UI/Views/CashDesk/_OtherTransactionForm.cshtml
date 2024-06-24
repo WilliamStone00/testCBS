@@ -4,13 +4,17 @@
 {
     <div class="form-wrapper">
         <fieldset class="fieldset-custom">
-            <legend>OTHER INCOME</legend>
+            <legend>OTHER CASH-IN</legend>
             <hr />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
+
                     <div class="col-md-6">
-                        <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">Member's name: None Member</span>
+                        <div class="input-group mb-3">
+                            <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Enter member's account number">
+                            <button class="btn btn-outline-secondary" type="button" id="manualSearchInputbutton" onclick="LoadMembersAccounts('account_number')">
+                                Search
+                            </button>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -24,46 +28,47 @@
                         <div class="col-6">
                             <div class="form-check">
                                 @Html.RadioButtonFor(m => m.BulkDeposit.OtherTransaction.SourceType, "MemberAccount", new { @class = "form-check-input", id = "memberAccountOption" })
-                                <label class="form-check-label" for="memberAccountOption">Pay with member's account</label>
+                                <label class="form-check-label" for="memberAccountOption">From member's account</label>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-check">
                                 @Html.RadioButtonFor(m => m.BulkDeposit.OtherTransaction.SourceType, "CashCollection", new { @class = "form-check-input", id = "cashCollectionOption" })
-                                <label class="form-check-label" for="cashCollectionOption">Collect cash from member</label>
+                                <label class="form-check-label" for="cashCollectionOption">Collect cash</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
-                            @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.EventCode, new SelectList(ViewBag.EventCodes, "Value", "Text"), "---Select branch---", new { @class = "form-control select2", @search = "true" })
+                            @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.EventCode, new SelectList(ViewBag.EventCodes, "Value", "Text"), "---Select branch---", new { @class = "form-control select2", @search = "true", @id = "BulkDeposit_OtherTransaction_EventCode" })
                             @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.EventCode, "", new { @class = "text-danger" })
                             <label>What service ?</label>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
-                            @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.CustomerId, new SelectList(ViewBag.Members, "CustomerId", "name"), "---Source account---", new { @class = "form-control select2", @search = "true" })
-                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.CustomerId, "", new { @class = "text-danger " })
-                            <label for="formValidationDob">Select member</label>
+                            @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.AccountNumber, new SelectList(ViewBag.MemberAccounts, "Value", "Text"), "---Member's account---", new { @class = "form-control select2", @id = "account_number", @search = "true" })
+                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.AccountNumber, "", new { @class = "text-danger " })
+                            <label for="formValidationDob">Select account to perform the operation</label>
                         </div>
                     </div>
-                    <div id="paymentDiv">
-                        @Html.Partial("_NoneMemberPayment")
-                    </div>
+
                     <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextAreaFor(m => m.OtherTransaction.Description, new { @class = "form-control", @style = "height: 75px;", @id = "DepositerNote" })
+                            @Html.TextAreaFor(m => m.OtherTransaction.Description, new { @class = "form-control", @style = "height: 50px;", @id = "DepositerNote" })
                             @Html.ValidationMessageFor(m => m.OtherTransaction.Description, "", new { @class = "text-danger" })
                             <label>Description</label>
                         </div>
                     </div>
+
+                    @Html.Partial("_NoneMemberPayment")
+
                 </div>
                 <div class="header-buttons mt-4 float-end">
-                    <input type="hidden" name="OperationType" value="CashIn" id="OperationType" />
+                    <input type="hidden" name="OperationType" value="OtherCashIn" id="OperationType" />
                     <input type="hidden" name="customerId" value="" id="customerId" />
                     <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashIn()">
-                        <i class="fas fa-save me-1"></i> Save
+                        <i class="fas fa-save me-1"></i> Post
                     </button>
                     <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
                         <i class="fas fa-print me-1"></i> Re-print

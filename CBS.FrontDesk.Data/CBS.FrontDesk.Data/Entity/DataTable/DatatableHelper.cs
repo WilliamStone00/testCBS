@@ -11,52 +11,44 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
         public static async Task<CustomDataTable> GenerateDataTable<T>(DataTableOptions dataTableOptions, Func<Task<List<T>>> getDataFunc) where T : class
         {
             List<T> data = (await getDataFunc()).ToList();
-            var filteredData = FilterData(data, dataTableOptions);
-            var dataTable = new CustomDataTable(Convert.ToInt32(dataTableOptions.draw), data.Count(), dataTableOptions.recordsFiltered, filteredData, dataTableOptions);
+            //var filteredData = FilterData(data, dataTableOptions);
+            var dataTable = new CustomDataTable(Convert.ToInt32(dataTableOptions.draw), data.Count(), dataTableOptions.recordsFiltered, data, dataTableOptions);
             return dataTable;
         }
 
-        public static List<T> FilterData<T>(List<T> items, DataTableOptions dataTableOptions) where T : class
-        {
-            var data = items;
-            string searchValue = dataTableOptions.searchValue.ToLower();
+        //public static List<T> FilterData<T>(List<T> items, DataTableOptions dataTableOptions) where T : class
+        //{
+        //    var data = items;
+        //    string searchValue = dataTableOptions.searchValue?.ToLower() ?? string.Empty;
 
-            if (!string.IsNullOrEmpty(searchValue))
-            {
-                data = data.Where(m => m.GetType().GetProperties()
-                    .Any(prop => prop.PropertyType == typeof(string) &&
-                                  prop.GetValue(m).ToString().ToLower().Contains(searchValue.ToLower())))
-                    .ToList();
-            }
+        //    if (!string.IsNullOrEmpty(searchValue))
+        //    {
+        //        data = data.Where(m => m.GetType().GetProperties()
+        //            .Any(prop => prop.PropertyType == typeof(string) &&
+        //                          prop.GetValue(m)?.ToString().ToLower().Contains(searchValue) == true))
+        //            .ToList();
+        //    }
 
-            dataTableOptions.recordsTotal = data.Count;
+        //    dataTableOptions.recordsTotal = data.Count;
 
-            // Sorting
-            if (dataTableOptions.sortColumnName.HasValue)
-            {
-                if (dataTableOptions.sortDirection == "asc")
-                {
-                    data = data.OrderBy(x => GetPropertyValue(x, dataTableOptions.sortColumnName.Value)).ToList();
-                }
-                else
-                {
-                    data = data.OrderByDescending(x => GetPropertyValue(x, dataTableOptions.sortColumnName.Value)).ToList();
-                }
-            }
+        //    // Sorting
+        //    if (!string.IsNullOrEmpty(dataTableOptions.sortColumnName))
+        //    {
+        //        var propertyInfo = typeof(T).GetProperty(dataTableOptions.sortColumnName);
+        //        if (propertyInfo != null)
+        //        {
+        //            //data = dataTableOptions.sortColumnDirection == "asc"
+        //            //    ? data.OrderBy(x => propertyInfo.GetValue(x, null)).ToList()
+        //            //    : data.OrderByDescending(x => propertyInfo.GetValue(x, null)).ToList();
+        //        }
+        //    }
 
-            var dataList = data.Skip(dataTableOptions.skip).Take(dataTableOptions.pageSize).ToList();
-            return dataList;
-        }
+        //    // Apply paging
+        //    var dataList = data.Take(dataTableOptions.pageSize).ToList();
+        //    return dataList;
+        //}
 
-        private static object GetPropertyValue<T>(T obj, int index)
-        {
-            var properties = typeof(T).GetProperties();
-            if (index >= 0 && index < properties.Length)
-            {
-                return properties[index].GetValue(obj);
-            }
-            return null;
-        }
+
 
     }
 

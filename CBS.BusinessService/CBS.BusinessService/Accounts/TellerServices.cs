@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
@@ -84,7 +85,6 @@ namespace CBS.BusinessService.Accounts
                                        MaximumTransferAmount = teller.MaximumTransferAmount,
                                        Branch = branch,
                                        inUseStatus = teller.inUseStatus,
-                                       inUsedByUserId = teller.inUsedByUserId,
                                        activeStatus = teller.activeStatus,
                                        Transactions = teller.Transactions
                                    };
@@ -107,6 +107,26 @@ namespace CBS.BusinessService.Accounts
                 }
 
                 return new List<Teller>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<StringValues>> GetTellersStringValuesAsync()
+        {
+            try
+            {
+                var data = await GetTellers();
+                var stringValues = data.Select(a => new StringValues
+                {
+                    Text = $"[{a.name}] [{a.Branch.Name}] [{(a.isPrimary ? "Primary" : "Sub")}-Teller]",
+                    Value = $"{a.id}",
+                }).ToList();
+
+                return stringValues;
             }
             catch (Exception ex)
             {
@@ -202,7 +222,6 @@ namespace CBS.BusinessService.Accounts
                     Teller.isPrimary = model.isPrimary;
                     Teller.activeStatus = model.activeStatus;
                     Teller.inUseStatus = model.inUseStatus;
-                    Teller.inUsedByUserId = model.inUsedByUserId;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<Teller>>(string.Format(APICallHelper.Get_Update_Delete_Teller, model.id), Teller);
                     if (response.IsSuccess)
                     {

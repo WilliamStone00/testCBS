@@ -201,8 +201,11 @@
     <Compile Include="Accounts\BankingOperationServices.cs" />
     <Compile Include="Accounts\CloseFeeParameterServices.cs" />
     <Compile Include="Accounts\ChargesWaivedServices.cs" />
+    <Compile Include="Accounts\SubTellerCashReplenishmentServices.cs" />
+    <Compile Include="Accounts\PrimaryTellerCashReplenishmentServices.cs" />
     <Compile Include="Accounts\IMemberAccountJob.cs" />
     <Compile Include="Accounts\OtherTransactionServices.cs" />
+    <Compile Include="Accounts\DailyTellerServices.cs" />
     <Compile Include="Accounts\WithdrawalNotificationServices.cs" />
     <Compile Include="Accounts\FeePolicyServices.cs" />
     <Compile Include="Accounts\OperationFeeServices.cs" />

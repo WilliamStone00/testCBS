@@ -1,27 +1,11 @@
-﻿function AddNote() {
-    EditResetModal(null, 'modal', 'modalContent', 'CashDesk', 'InitializeData', '_Note', 'new_depositor', 'NOTE', 'modalLabel')
+﻿
+function LoadMembersAccounts(affectedId) {
+    console.log(id);
+    var id = $('#manualSearchInput').val();
+    var url = "/CashDesk/Ajaxloader?Key=" + id;
+    FillDropDownAjaxCall(url, affectedId, "---Select account---")
 }
-function AddDepositor() {
-    EditResetModal(null, 'modal', 'modalContent', 'CashDesk', 'InitializeData', '_DepositerForm', 'new_depositor', 'Depositor information', 'modalLabel')
-    $('#DepositorIDIssueDate, #DepositorIDExpiryDate').on('input', function () {
-        var value = $(this).val();
-        if (value.length === 4 || value.length === 7) {
-            $(this).val(value + '/');
-        }
-    });
 
-    // Format telephone mask
-    $('#DepositorTelephone').on('input', function () {
-        var value = $(this).val().replace(/\D/g, '');
-        if (value.length > 3) {
-            value = value.replace(/(\d{3})(\d)/, '$1-$2');
-        }
-        if (value.length > 6) {
-            value = value.replace(/(\d{3})(\d{2})(\d)/, '$1-$2-$3');
-        }
-        $(this).val(value);
-    });
-}
 
 $(document).on('input', '.amount-input, .fee-input, .interest-input, .penalty-input, .loan-amount-input', function () {
     var $row = $(this).closest('tr');
@@ -89,16 +73,6 @@ function calculateTableTotal() {
 }
 
 
-function checkTotalNotes() {
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
-
-    if (totalNotes === 0) {
-        appalert("Please enter cash in the denomination box.", 3, 1);
-        return false;
-    }
-
-    return true;
-}
 
 function calculateTotalAmount() {
     var total = 0;
@@ -140,17 +114,17 @@ function collectDeposits() {
     $('#myDataTableT tbody tr').each(function () {
         if ($(this).find('.form-check-input').prop('checked')) {
             var deposit = {};
-            deposit.AccountNumber = $(this).find('td:eq(0)').text();
+            // Update the deposit object with values from form inputs in the current row
+            deposit.AccountNumber = $('#account_number').val(); // Assuming this is the selected account number
             deposit.Amount = parseFloat($(this).find('.amount-input').val());
-            deposit.Fee = parseFloat($(this).find('.fee-input').val());
-            deposit.Penalty = parseFloat($(this).find('.penalty-input').val());
-            deposit.Interest = parseFloat($(this).find('.interest-input').val());
             deposit.Total = parseFloat($(this).find('.total-span').text());
-            deposit.AccountType = $(this).find('td:eq(1)').text();
-            deposit.Note = $('#Note').val();
+            deposit.Note = $('#DepositerNote').val();
             deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
             deposit.OperationType = $('#OperationType').val();
-            deposit.CustomerId = $('#customerId').val();
+            deposit.CustomerId = $('#manualSearchInput').val(); // Assuming this is the selected customer ID
+            deposit.SourceType = $("input[name='BulkDeposit.OtherTransaction.SourceType']:checked").val(); // Get the selected source type
+            deposit.EventCode = $('#BulkDeposit_OtherTransaction_EventCode').val(); // Assuming this is the selected event code value
+            // Push the updated deposit object to the deposits array
             deposits.push(deposit);
         }
     });
@@ -158,39 +132,12 @@ function collectDeposits() {
     return deposits;
 }
 
-function collectCurrencyNotes() {
-    return {
-        note10000: parseFloat($('#Notes_note10000').val()),
-        note5000: parseFloat($('#Notes_note5000').val()),
-        note2000: parseFloat($('#Notes_note2000').val()),
-        note1000: parseFloat($('#Notes_note1000').val()),
-        note500: parseFloat($('#Notes_note500').val()),
-        coin500: parseFloat($('#Notes_coin500').val()),
-        coin100: parseFloat($('#Notes_coin100').val()),
-        coin50: parseFloat($('#Notes_coin50').val()),
-        coin25: parseFloat($('#Notes_coin25').val()),
-        coin10: parseFloat($('#Notes_coin10').val()),
-        coin5: parseFloat($('#Notes_coin5').val()),
-        coin1: parseFloat($('#Notes_coin1').val())
-    };
-}
 
-function collectDepositorInfo() {
-    return {
-        DepositorName: $('#DepositorName').val(),
-        DepositerTelephone: $('#DepositerTelephone').val(),
-        DepositorIDNumber: $('#DepositorIDNumber').val(),
-        DepositorIDIssueDate: $('#DepositorIDIssueDate').val(),
-        DepositorIDExpiryDate: $('#DepositorIDExpiryDate').val(),
-        DepositorIDNumberPlaceOfIssue: $('#DepositorIDNumberPlaceOfIssue').val(),
-        DepositerNote: $('#DepositerNote').val()
-    };
-}
 function Reprint() {
     ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
 
 }
-function confirmTransaction(title, message, ajaxUrl, data, operationType) {
+function confirmTransaction(title, message, ajaxUrl, data) {
     alertify.confirm(title, message,
         function () {
             $.ajax({
@@ -200,21 +147,9 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
                 data: JSON.stringify(data),
                 success: function (response) {
                     if (response.success) {
-                        if (operationType === 'CashIn') {
-                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashin')
-                        }
-
-                        else if (operationType === 'Withdrawal') {
-                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashout')
-                        }
-                        else if (operationType === 'SavingWithdrawalFormFee') {
-                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'withdrawalnotification')
-                        }
-                        else if (operationType === 'Loan') {
-                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'repayment')
-                        }
                         appalert(response.message, 1, 1);
-                        ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
+                        //ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
+                        window.PageReload();
                     } else {
                         if (response.message === undefined) {
                             alert("Your session is expired.");
@@ -234,74 +169,7 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
     );
 }
 
-//function PostCashIn() {
-//    if (!checkTotalNotes()) return false;
 
-//    var totalNotes = parseFloat($("#totalNoteAmount").val());
-//    var total = calculateTotalAmount();
-
-//    if (!validateTotalAmount(total, totalNotes)) return;
-
-//    var deposits = collectDeposits();
-//    if (deposits.length === 0) {
-//        appalert("Please select at least one account to perform the cash-in.", 3, 1);
-//        return;
-//    }
-
-//    deposits[0].currencyNotes = collectCurrencyNotes();
-//    deposits[0].Depositer = collectDepositorInfo();
-
-//    var message = "WARNING!!!\n";
-//    message += "Are you sure you want to perform a cash-in of " + total + " to the selected account numbers?\n";
-//    message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-//    confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCashIn', deposits);
-//}
-function PostCashIn() {
-    if (!checkTotalNotes()) return false;
-
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
-    var totalInfo = calculateTotalAmount();
-
-    if (!validateTotalAmount(totalInfo, totalNotes)) return;
-
-    var deposits = collectDeposits();
-    if (deposits.length === 0) {
-        appalert("Please select at least one account to perform the cash-in.", 3, 1);
-        return;
-    }
-
-    deposits[0].currencyNotes = collectCurrencyNotes();
-    deposits[0].Depositer = collectDepositorInfo();
-
-    var message = "";
-    message += "Are you sure you want to perform a cash-in of " + totalInfo.total + " to the selected account numbers?\n";
-    message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-    confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits, 'CashIn');
-}
-
-function PostWithdrawalFromFee() {
-    if (!checkTotalNotes()) return false;
-
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
-    var totalInfo = calculateTotalAmount();
-
-    if (!validateTotalAmount(totalInfo, totalNotes)) return;
-
-    var deposits = collectDeposits();
-    if (deposits.length === 0) {
-        appalert("Please select at least one account to perform the cash-in.", 3, 1);
-        return;
-    }
-
-    deposits[0].currencyNotes = collectCurrencyNotes();
-    deposits[0].Depositer = collectDepositorInfo();
-
-    var message = "";
-    message += "Are you sure you want to confirm the payment of " + totalInfo.total + " as withdrawal form fee?\n";
-    confirmTransaction('Payment of S.W.F', message, '/CashDesk/PostRequestCash', deposits, 'SavingWithdrawalFormFee');
-}
-
-// Similarly update PostCashOut() and PostLoanRepayment() functions
 
 
 function PostCashOut() {
@@ -327,7 +195,37 @@ function PostCashOut() {
     confirmTransaction('Confirm Cash-Out Operation', message, '/CashDesk/PostRequestCash', deposits, 'Withdrawal');
 }
 
-function PostLoanRepayment() {
+function PostCashIn() {
+
+    // Check if at least one table row is checked
+    var checkedRows = $("#myDataTableT tbody input[type='checkbox']:checked");
+    if (checkedRows.length === 0) {
+        appalert("Please select the confirmation option from the table", 3, 1);
+        return;
+    }
+
+    // Check if one of the radio buttons is selected
+    var sourceType = $("input[name='BulkDeposit.OtherTransaction.SourceType']:checked").val();
+    if (!sourceType) {
+        appalert("Please select source type, Either member's account OR Cash collection", 3, 1);
+        return;
+    }
+    // Check if amount entered is greater than 0 and not negative
+    var amountInputs = $("#myDataTableT tbody input.amount-input");
+    var isValidAmount = true;
+    amountInputs.each(function () {
+        var amount = parseFloat($(this).val());
+        if (isNaN(amount) || amount <= 0) {
+            isValidAmount = false;
+            return false; // Exit the loop early
+        }
+    });
+    if (!isValidAmount) {
+        appalert("Please enter a valid amount greater than 0");
+        return;
+    }
+
+
     if (!checkTotalNotes()) return false;
 
     var totalNotes = parseFloat($("#totalNoteAmount").val());
@@ -336,22 +234,49 @@ function PostLoanRepayment() {
     if (!validateTotalAmount(totalInfo, totalNotes)) return;
 
     var deposits = collectDeposits();
-    if (deposits.length !== 1) {
-        appalert("Loan repayment can only be done from one account only. Please deselect other accounts.", 3, 1);
+    if (deposits.length === 0) {
+        appalert("Please select at least one account to perform the cash-in.", 3, 1);
         return;
     }
 
     deposits[0].currencyNotes = collectCurrencyNotes();
-    deposits[0].Depositer = collectDepositorInfo();
-
     var message = "";
-    message += "Are you sure you want to perform loan repayment of " + totalInfo.total + " to the selected account numbers?\n";
-    message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-    confirmTransaction('Confirm Loan Repayment Operation', message, '/CashDesk/PostRequestCash', deposits, 'Loan');
+    // Check if MemberAccount radio button is checked
+    if ($('#memberAccountOption').prop('checked')) {
+        message += "Are you sure you want to debit " + totalInfo.total + " from the account number " + $("#account_number").val() + "?\n";
+        message += "and pay for the service: " + $("#BulkDeposit_OtherTransaction_EventCode option:selected").text() + " on behalf of the member?\n";
+    } else {
+        message += "Are you sure you want to process a transaction of " + totalInfo.total + " for the service: " + $("#BulkDeposit_OtherTransaction_EventCode option:selected").text() + "?\n";
+    }
+    confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits);
 }
 
+function collectCurrencyNotes() {
+    return {
+        note10000: parseFloat($('#Notes_note10000').val()),
+        note5000: parseFloat($('#Notes_note5000').val()),
+        note2000: parseFloat($('#Notes_note2000').val()),
+        note1000: parseFloat($('#Notes_note1000').val()),
+        note500: parseFloat($('#Notes_note500').val()),
+        coin500: parseFloat($('#Notes_coin500').val()),
+        coin100: parseFloat($('#Notes_coin100').val()),
+        coin50: parseFloat($('#Notes_coin50').val()),
+        coin25: parseFloat($('#Notes_coin25').val()),
+        coin10: parseFloat($('#Notes_coin10').val()),
+        coin5: parseFloat($('#Notes_coin5').val()),
+        coin1: parseFloat($('#Notes_coin1').val())
+    };
+}
+function checkTotalNotes() {
+    var totalNotes = parseFloat($("#totalNoteAmount").val());
 
+    if (totalNotes === 0) {
+        appalert("Please enter cash in the denomination box.", 3, 1);
+        return false;
+    }
 
+    return true;
+}
 
 
 function getSelectedAccountNumbers() {
@@ -395,29 +320,6 @@ function GetMemberData(Key, partialView, divToloadPV, path) {
     AddORUpdateGen(Key, divToloadPV, partialView, path, "CashDesk");
     calculateBalance();
 }
-function GetLoan(KEY) {
-    $.ajax({
-        type: "GET",
-        url: '/Operation/GetLoan?KEY=' + KEY,
-        success: function (data) {
-            var balance = parseFloat(data.Balance).toFixed(1); // Format Balance with 1 decimal place
-            var paid = parseFloat(data.Paid).toFixed(1); // Format Paid with 1 decimal place
-
-            // Format numbers with commas as thousands separators
-            balance = parseFloat(balance).toLocaleString('en-US');
-            paid = parseFloat(paid).toLocaleString('en-US');
-
-            // Assuming #balance and #paid are HTML input elements
-            $('#balance').val(balance);
-            $('#paid').val(paid);
-            $('#loanid').val(data.Id);
-            //$('#balance').val(data.Balance);
-            //$('#paid').val(data.Paid);
-        }, error: function (err) {
-            appalert(err.statusText, 3, 0);
-        }
-    });
-}
 
 
 
@@ -425,77 +327,3 @@ function GetLoan(KEY) {
 
 
 
-
-function AjaxPostAndUpdate(form) {
-
-
-    $.validator.unobtrusive.parse(form);
-    if ($(form).valid()) {
-
-
-        alertify.confirm("WARNING!!!", "Are you sure you want to perform this action! ",
-            function () {
-
-
-                var ajaxConfig = {
-                    type: 'POST',
-                    url: form.action,
-                    data: new FormData(form),
-                    success: function (response) {
-
-                        if (response.success) {
-                            if (response.status === "Exist") {
-                                appalert(response.message, 3, 1);
-                            }
-                            else if (response.status === "Failed") {
-                                appalert(response.message, 2, 1);
-                            }
-                            else {
-                                appalert(response.message, 1, 1);
-
-                            }
-                            if (response.option === 'Update' && response.reloadDataView === "Yes") {
-                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
-                            }
-                            else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
-                                EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
-                            }
-                            else if (response.reloadDataView === "Yes") {
-                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
-                            }
-                        }
-                        else {
-                            if (response.Status === "Exist") {
-                                appalert(response.message, 3, 1);
-                            }
-                            else {
-                                appalert(response.message, 2, 1);
-                            }
-
-                        }
-
-                    }
-                    , error: function (err) {
-                        console.log(err.statusText);
-                        appalert(err.statusText, 0, 1);
-                    }
-                };
-
-                if ($(form).attr('enctype') === "multipart/form-data") {
-                    ajaxConfig["contentType"] = false;
-                    ajaxConfig["processData"] = false;
-                }
-                console.log(ajaxConfig);
-                $.ajax(ajaxConfig);
-            },
-            function () {
-                appalert('Transaction cancelled', 3, 1);
-
-            }
-
-        );
-    }
-    return false;
-
-
-}

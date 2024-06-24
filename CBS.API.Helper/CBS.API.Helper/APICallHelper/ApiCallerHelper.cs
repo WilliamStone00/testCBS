@@ -19,6 +19,7 @@ using System.Net.Http.Headers;
 using System.Web.UI.WebControls;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using System.Net.Sockets;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
 
 namespace CBS.API.Helper
 {
@@ -45,6 +46,36 @@ namespace CBS.API.Helper
 
         }
 
+        public async Task<(List<IndividualProfile> customers, PaginationMetadata pagination)> GetCustomersWithPagination(string apiUrl)
+        {
+            try
+            {
+                AddAuthorizationHeader(_httpClient);
+                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+
+                // Ensure the response was successful before proceeding
+                response.EnsureSuccessStatusCode();
+
+                // Read the pagination header
+                PaginationMetadata pagination = null;
+                if (response.Headers.TryGetValues("X-Pagination", out IEnumerable<string> headerValues))
+                {
+                    string paginationHeader = headerValues.FirstOrDefault();
+                    pagination = JsonConvert.DeserializeObject<PaginationMetadata>(paginationHeader);
+                }
+
+                // Handle the API response
+                ApiResponse<List<IndividualProfile>> apiResponse = await HandleResponse<List<IndividualProfile>>(response);
+
+                // Return the customer list and pagination metadata as a tuple
+                return (apiResponse.ApiResponseData, pagination);
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
 
 
         public async Task<ApiResponse<T>> GetAsync<T>(string apiUrl)

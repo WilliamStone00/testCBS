@@ -40,6 +40,20 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
 
             return View();
         }
+        [HttpGet]
+        public async Task<ActionResult> LoadData(string searchCriteria = "All")
+        {
+            try
+            {
+                var dataTable = await _LoanServices.GetDataTable(GetDataTableOptions(), searchCriteria);
+                return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
 
         {
@@ -69,8 +83,8 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                 {
                     return async () =>
                     {
-                        var data = await _LoanServices.GetLoans();
-                        var sysData = new MemberOperationPanel { Loans = data.ToList() };
+                        //var data = await _LoanServices.GetLoans();
+                        var sysData = new MemberOperationPanel { Loans = null };
                         return PartialView(partialView, sysData);
                     };
                 }
@@ -104,7 +118,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
 
         public async Task<bool> GetList()
         {
-            ViewBag.Groups = await _LoanServices.GetLoans();
+            //ViewBag.Groups = await _LoanServices.GetLoans();
             var users = await _userManagementServices.GetUserDropDownList();
             ViewBag.Users = users.ToList();
             return true;

@@ -156,13 +156,13 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         }
 
 
-        [HttpPost]
+        [HttpGet]
         public async Task<ActionResult> LoadData(string searchCriteria = "All")
         {
             try
             {
-                var dataTable = await _individualProfileServices.GetDataTable(GetDataTableOptions());
-                return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data });
+                var dataTable = await _individualProfileServices.GetDataTable(GetDataTableOptions(),searchCriteria);
+                return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data }, JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)
@@ -171,11 +171,11 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             }
         }
         [HttpPost]
-        public async Task<ActionResult> LoadDataSearch(string Search = "All")
+        public async Task<ActionResult> LoadDataSearch(string searchCriterial = "All")
         {
             try
             {
-                var dataTable = await _individualProfileServices.GetDataTable(GetDataTableOptions());
+                var dataTable = await _individualProfileServices.GetDataTable(GetDataTableOptions(),searchCriterial);
                 return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data });
 
             }

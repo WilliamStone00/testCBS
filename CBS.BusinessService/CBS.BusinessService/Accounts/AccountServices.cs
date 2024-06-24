@@ -66,11 +66,11 @@ namespace CBS.BusinessService.Accounts
             var dataTable = await DatatableHelper.GenerateDataTable<CustomerAccountDto>(dataTableOptions, getDataFunc);
             return dataTable;
         }
-        public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccountsForTransfter()
+        public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccountsForTransfter(string searchCriterial="All")
         {
             try
             {
-                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.GetAllIndividualProfile);
+                var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.AllCustomers);
                 var accounts = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(APICallHelper.GetAllAccounts);
                 var branchesx = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
                 var branches = branchesx.ApiResponseData.Data;
@@ -249,14 +249,14 @@ namespace CBS.BusinessService.Accounts
 
             return dataList;
         }
-        public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccounts(string path = null)
+        public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccounts(string path = null, string searchCriterial = "All")
         {
             try
             {
                 if (path == "all")
                 {
                     // Fetch individual profiles and accounts for head office
-                    var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.GetAllIndividualProfile);
+                    var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(string.Format(APICallHelper.SearchByAnyCriterialQuery, searchCriterial));
                     var accounts = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(APICallHelper.GetAllAccounts);
                     var branchesx = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
                     var branches = branchesx.ApiResponseData.Data;
@@ -490,6 +490,25 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+        public async Task<Account> GetTellerAccount(GetTellerAccountBalanceQuery getTellerAccountBalanceQuery)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.PostAsync<ResponseObject<Account>>(APICallHelper.GetTellerAccountInfo, getTellerAccountBalanceQuery);
+                if (cusResponseObject.ApiResponseData!=null)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+
+                }
+                return new Account { Balance=0,HasError=true, ErrorMessage=$"{cusResponseObject.Message}"};
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        
         public async Task<List<TransactionHistory>> GetCustomerTransactionsByAccountNumber(string accountNumber)
         {
             try
@@ -826,7 +845,7 @@ namespace CBS.BusinessService.Accounts
                     var transaction = response.ApiResponseData.Data;
                     Branch branch = RetrieveBranchFromSession();
                     IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                    User user = await RetrieveUserFromSession(transaction.Teller.inUsedByUserId);
+                    User user = await RetrieveUserFromSession(transaction.CreatedBy);
                     var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
                     var rptSource = new List<TransactionReportDS>();
                     rptSource.Add(rpt);
@@ -893,7 +912,7 @@ namespace CBS.BusinessService.Accounts
                     var transaction = response.ApiResponseData.Data;
                     Branch branch = RetrieveBranchFromSession();
                     IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                    User user = await RetrieveUserFromSession(transaction.Teller.inUsedByUserId);
+                    User user = await RetrieveUserFromSession(transaction.CreatedBy);
                     var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
                     var rptSource = new List<TransactionReportDS>();
                     rptSource.Add(rpt);
@@ -992,7 +1011,7 @@ namespace CBS.BusinessService.Accounts
                     var transaction = response.ApiResponseData.Data;
                     Branch branch = RetrieveBranchFromSession();
                     IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                    User user = await RetrieveUserFromSession(transaction.Teller.inUsedByUserId);
+                    User user = await RetrieveUserFromSession(transaction.CreatedBy);
                     var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
                     var rptSource = new List<TransactionReportDS>();
                     rptSource.Add(rpt);
@@ -1058,7 +1077,7 @@ namespace CBS.BusinessService.Accounts
                     var transaction = response.ApiResponseData.Data;
                     Branch branch = RetrieveBranchFromSession();
                     IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                    User user = await RetrieveUserFromSession(transaction.Teller.inUsedByUserId);
+                    User user = await RetrieveUserFromSession(transaction.CreatedBy);
                     var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
                     var rptSource = new List<TransactionReportDS>();
                     rptSource.Add(rpt);
@@ -1239,7 +1258,9 @@ namespace CBS.BusinessService.Accounts
                     var data = new Data
                     {
                         CustomerId = row.Cell(1).GetString(),
-                        OpeningBalance = row.Cell(2).GetValue<decimal>()
+                        CustomerName = $"{row.Cell(2).GetString()} {row.Cell(4).GetString()}",
+                        BranchCode = row.Cell(5).GetString(),
+                        OpeningBalance = row.Cell(6).GetValue<decimal>()
                     };
 
                     dataList.Add(data);

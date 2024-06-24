@@ -12,7 +12,7 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
         public int start { get; set; }
         public string draw { get; set; }
         public int length { get; set; }
-        public int? sortColumnName { get; set; } // Change type to int?
+        public string sortColumnName { get; set; } // Change type to int?
         public string sortColumnDirection { get; set; }
         public string searchValue { get; set; }
         public int pageSize { get; set; }

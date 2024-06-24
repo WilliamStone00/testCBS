@@ -18,48 +18,50 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
     {
         // GET: TellerProvissioing
         private readonly TellerProvissioningServices _services;
-        public TellerProvissioingController(TellerProvissioningServices services)
+        private readonly PrimaryTellerCashReplenishmentServices _primaryTellerCashReplenishmentServices;
+        public TellerProvissioingController(TellerProvissioningServices services, PrimaryTellerCashReplenishmentServices primaryTellerCashReplenishmentServices = null)
         {
             _services = services;
+            _primaryTellerCashReplenishmentServices = primaryTellerCashReplenishmentServices;
         }
 
         public async Task<ActionResult> Index()
         {
-            await GetList();
-            return View(new OpeningOfTheDay());
+            var data = await _primaryTellerCashReplenishmentServices.GetAllPendingPrimaryTellerCashReplenishments();
+            return View(new OpeningOfTheDay { CashReplenishmentPrimaryTellers = data.ToList() });
         }
 
-        public async Task<ActionResult> Primary()
+        public async Task<ActionResult> Primary(string ProvisionKey)
         {
-            await GetList();
-            return View(new OpeningOfTheDay());
+            var replenishmentPrimaryTeller = await _primaryTellerCashReplenishmentServices.GetCashReplenishmentPrimaryTeller(ProvisionKey);
+            return View(new OpeningOfTheDay { CashReplenishmentPrimaryTeller = replenishmentPrimaryTeller, PrimaryTellerProvissioning = new PrimaryTellerProvissioning { Amount = replenishmentPrimaryTeller.RequestedAmount, currencyNotes = new Data.Entity.SavingProducts.AccountActivation.CurrencyNotes(), Note = "", ReplenishmentId = replenishmentPrimaryTeller.Id } });
         }
         public async Task<ActionResult> SubTeller()
         {
             await GetList();
             return View(new OpeningOfTheDay());
         }
+        //GetAllApendingPrimaryTellerCashReplenishments
+        //[HttpPost]
+        //public async Task<ActionResult> Primary(OpeningOfTheDay model)
+        //{
+        //    var data = await _services.PrimaryTellerProvision(model.PrimaryTellerProvissioning);
+        //    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
-        [HttpPost]
-        public async Task<ActionResult> Primary(OpeningOfTheDay model)
-        {
-            var data = await _services.PrimaryTellerProvision(model.PrimaryTellerProvissioning);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+        //}
+        //[HttpPost]
+        //public async Task<ActionResult> SubTeller(OpeningOfTheDay model)
+        //{
+        //    var data = await _services.SubTellerProvision(model.SubTellerProvissioning);
+        //    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
-        }
-        [HttpPost]
-        public async Task<ActionResult> SubTeller(OpeningOfTheDay model)
-        {
-            var data = await _services.SubTellerProvision(model.SubTellerProvissioning);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-
-        }
+        //}
 
         public async Task<ActionResult> Ajaxloader(string Key, string path)
         {
             if (Key != null)
             {
-                if (path=="")
+                if (path == "")
                 {
                     var listing = await _services.GetUserTellerRole(Key);
                     return Json(listing, JsonRequestBehavior.AllowGet);
@@ -69,7 +71,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                     var listing = await _services.GetSubTellers(Key);
                     return Json(listing, JsonRequestBehavior.AllowGet);
                 }
-              
+
             }
             return Json(null, JsonRequestBehavior.AllowGet);
         }
