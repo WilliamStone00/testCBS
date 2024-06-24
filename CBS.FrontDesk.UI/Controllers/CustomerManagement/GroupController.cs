@@ -30,11 +30,11 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             await GetViewBags();
             return View(new Group());
         }
-        public async Task<ActionResult> Details(string groupId)
+        public async Task<ActionResult> Details(string KEY)
         {
 
-            var groupmanagement = await _groupServices.GetGroupManagement(groupId);
-            var members = await _individualProfileServices.GetMembers();
+            var groupmanagement = await _groupServices.GetGroupManagement(KEY);
+            var members = await _individualProfileServices.GetIndividualProfileByBranch();
             ViewBag.Members = await _individualProfileServices.GetMembers(members.ToList());
             await GetViewBags();
 
@@ -45,6 +45,23 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             var data = await _groupServices.GetGroups();
             return View(data);
         }
+
+        [HttpGet]
+        public async Task<ActionResult> LoadData(string searchCriteria = "All")
+        {
+            try
+            {
+                var dataTable = await _groupServices.GetDataTable(GetDataTableOptions(), searchCriteria);
+                return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+       
+
         //
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(Group model)

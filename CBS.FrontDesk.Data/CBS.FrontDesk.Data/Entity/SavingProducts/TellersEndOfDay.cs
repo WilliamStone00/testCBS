@@ -65,30 +65,29 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     }
     public class PrimaryTellerProvisioningDto
     {
-        public string id { get; set; }
-        public string tellerId { get; set; }
-        public string userIdInChargeOfThisTeller { get; set; }
-        public string provisionedBy { get; set; }
-        public string openedDate { get; set; }
-        public string clossedDate { get; set; }
-        public decimal openOfDayAmount { get; set; }
-        public decimal cashReplenishmentAmount { get; set; }
-        public string replenishmentReferenceNumber { get; set; }
-        public bool isCashReplenishment { get; set; }
-        public decimal cashAtHand { get; set; }
-        public decimal endOfDayAmount { get; set; }
-        public decimal accountBalance { get; set; }
-        public decimal previouseBalance { get; set; }
-        public string lastUserID { get; set; }
-        public string bankId { get; set; }
-        public string branchId { get; set; }
-        public string startOfDayCurrencyNoteId { get; set; }
-        public string accountantComment { get; set; }
-        public string accountantUserID { get; set; }
-        public string clossedStatus { get; set; }
-        public string primaryTellerComment { get; set; }
-        public string accountantConfirmationStatus { get; set; }
-        public string accountantCloseOfDayComment { get; set; }
+        public string Id { get; set; }
+        public string TellerId { get; set; }
+        public string ReferenceId { get; set; }
+        public string CloseOfDayReferenceId { get; set; }
+        public string UserIdInChargeOfThisTeller { get; set; }
+        public string ProvisionedBy { get; set; }
+        public DateTime? OpenedDate { get; set; }
+        public string PrimaryTellerId { get; set; }
+        public DateTime? ClossedDate { get; set; } = new DateTime(1900, 1, 1);
+        public decimal OpenOfDayAmount { get; set; } = 0;
+        public decimal CashReplenishmentAmount { get; set; } = 0;
+        public string ReplenishmentReferenceNumber { get; set; }
+        public bool IsCashReplenishment { get; set; }
+        public decimal CashAtHand { get; set; } = 0;
+        public decimal EndOfDayAmount { get; set; } = 0;
+        public decimal AccountBalance { get; set; } = 0;
+        public string DailyTellerId { get; set; }
+        public decimal PreviouseBalance { get; set; }
+        public string LastUserID { get; set; }
+        public string BankId { get; set; }
+        public string BranchId { get; set; }
+        public string ClossedStatus { get; set; }
+        public string PrimaryTellerComment { get; set; }
         public Teller teller { get; set; }
     }
     public class EndOfDaySubTellerCommand
@@ -163,6 +162,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     }
     public class EndOfTheDay
     {
+        public CloseOfDayRequest CloseOfDayRequest { get; set; } = new CloseOfDayRequest();
         public EndOfDayAccountantCommand EndOfDayAccountantCommand { get; set; } = new EndOfDayAccountantCommand();
         public EndOfDayBySubTellerIDCommand EndOfDayBySubTellerIDCommand { get; set; } = new EndOfDayBySubTellerIDCommand();
         public EndOfDayPrimaryTellerCommand EndOfDayPrimaryTellerCommand { get; set; } = new EndOfDayPrimaryTellerCommand();
@@ -172,6 +172,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<SubTellerProvisioningDto> SubTellerProvioningHistories { get; set; } = new List<SubTellerProvisioningDto>();
         public SubTellerProvisioningDto SubTellerProvioningHistory { get; set; } = new SubTellerProvisioningDto();
         public List<TransactionHistory> TransactionHistories { get; set; } = new List<TransactionHistory>();
+        public string Option { get; set; }
     }
     public class DailyTeller
     {

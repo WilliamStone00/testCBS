@@ -120,10 +120,11 @@
                                                     <th>Principal</th>
                                                     <th>Interest rate</th>
                                                     <th>Accrual Interest</th>
-                                                    <th>Charges</th>
+                                                    <th>Fines</th>
                                                     <th>VAT</th>
                                                     <th>Repayments</th>
                                                     <th>Balance</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -138,6 +139,9 @@
                                                         <td>@d.Tax.ToString("#,##0.0")</td>
                                                         <td>@d.Paid.ToString("#,##0.0")</td>
                                                         <td>@d.Balance.ToString("#,##0.0")</td>
+                                                        <td>
+                                                            <a href="/Loan/Details?KEY=@d.Id" target="_blank" class="mr-2" data-toggle="tooltip" data-placement="top" title="View details id @d.Id">Details</a>
+                                                        </td>
                                                     </tr>
                                                 }
                                             </tbody>

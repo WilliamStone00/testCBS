@@ -1,0 +1,108 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
+
+<fieldset class="fieldset-custom">
+    <legend>Refunds</legend>
+    @if (Model.Refunds.Count() == 0)
+    {
+        <div class="text-center my-3">
+            <p>No refund is done by @Model.IndividualCustomer.CustomerList.name</p>
+        </div>
+    }
+    else
+    {
+        // Calculate totals
+        decimal totalRefunds = Model.Refunds.Sum(r => r.Amount);
+        decimal totalCapital = Model.Refunds.Sum(r => r.Principal);
+        decimal totalInterest = Model.Refunds.Sum(r => r.Interest);
+        decimal totalBalance = Model.Balance; // Assuming there is a Balance property in your Refund model
+        decimal grandTotal = totalRefunds + totalCapital + totalInterest;
+        int serialNumber = 1; // Initialize the serial number
+        <hr style="border: 2px solid green;" />
+        <div class="card-body d-flex justify-content-between flex-wrap gap-3">
+            <div class="d-flex gap-3" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <div class="avatar">
+                    <div class="avatar-initial bg-label-primary rounded">
+                        <i class="mdi mdi-currency-usd mdi-24px"></i> <!-- Icon for totalRefunds -->
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h4 class="mb-0">@totalRefunds.ToString("#,##0.0")</h4>
+                    <small>Total Refunds</small>
+                </div>
+            </div>
+            <div class="d-flex gap-3" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <div class="avatar">
+                    <div class="avatar-initial bg-label-warning rounded">
+                        <i class="mdi mdi-currency-usd mdi-24px"></i> <!-- Icon for totalCapital -->
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h4 class="mb-0">@totalCapital.ToString("#,##0.0")</h4>
+                    <small>Capital</small>
+                </div>
+            </div>
+            <div class="d-flex gap-3" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <div class="avatar">
+                    <div class="avatar-initial bg-label-info rounded">
+                        <i class="mdi mdi-currency-usd mdi-24px"></i> <!-- Icon for totalInterest -->
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h4 class="mb-0">@totalInterest.ToString("#,##0.0")</h4>
+                    <small>Interest</small>
+                </div>
+            </div>
+            <div class="d-flex gap-3" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <div class="avatar">
+                    <div class="avatar-initial bg-label-info rounded">
+                        <i class="mdi mdi-currency-usd mdi-24px"></i> <!-- Icon for totalBalance -->
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h4 class="mb-0">@totalBalance.ToString("#,##0.0")</h4>
+                    <small>Balance</small>
+                </div>
+            </div>
+        </div>
+        <hr style="border: 2px solid green;" />
+        <div class="table-responsive mb-3">
+            <table class="table table-hover" id="myDataTableRefund">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th> <!-- Serial number column -->
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Capital</th>
+                        <th>Interest</th>
+                        <th>Source</th>
+                        <th>Method</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.Refunds.OrderByDescending(r => r.DateOfPayment))
+                    {
+                        <tr>
+                            <td>@serialNumber</td> <!-- Serial number cell -->
+                            <td style="width:50%">@d.DateOfPayment</td>
+                            <td style="width:10%">@d.Amount.ToString("#,##0.0")</td>
+                            <td style="width:10%">@d.Principal.ToString("#,##0.0")</td>
+                            <td style="width:10%">@d.Interest.ToString("#,##0.0")</td>
+                            <td style="width:10%">@d.PaymentChannel</td>
+                            <td style="width:10%">@d.PaymentMethod</td>
+                        </tr>
+                        serialNumber++; // Increment the serial number for each row
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"><strong>Totals:</strong></td>
+                        <td><strong>@totalRefunds.ToString("#,##0.0")</strong></td>
+                        <td><strong>@totalCapital.ToString("#,##0.0")</strong></td>
+                        <td><strong>@totalInterest.ToString("#,##0.0")</strong></td>
+                        <td colspan="2"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+</fieldset>

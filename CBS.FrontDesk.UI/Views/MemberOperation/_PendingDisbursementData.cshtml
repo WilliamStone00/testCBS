@@ -12,10 +12,11 @@ else
         <table class="table table-hover" id="myDataTable_customer_loan">
             <thead class="table-light">
                 <tr>
-                    <th>Date</th>
+                    <th>Approved Date</th>
+                    <th>Member Reference</th>
                     <th>Principal</th>
                     <th>Interest Rate</th>
-                    <th>Fee</th>
+                    <th>Fee Paid</th>
                     <th>Balance</th>
                     <th>Status</th>
                     <th>State</th>
@@ -26,24 +27,25 @@ else
                 @foreach (var d in Model.Loans.OrderBy(app => app.LoanDate))
                 {
                     <tr>
-                        <td style="width: 30%">@d.LoanDate</td>
-                        <td style="width: 10%">@d.Principal.ToString("#,0.00")</td>
+                        <td style="width: 20%">@d.LoanDate</td>
+                        <td style="width: 10%">@d.CustomerId</td>
+                        <td style="width: 10%">@d.Principal.ToString("#,##0.0")</td>
                         <td style="width: 10%">@d.InterestRate %</td>
-                        <td style="width: 10%">@d.Fee.ToString("#,0.00")</td>
-                        <td style="width: 10%">@d.Balance.ToString("#,0.00")</td>
+                        <td style="width: 10%">@d.FeePaid.ToString("#,##0.0")</td>
+                        <td style="width: 10%">@d.Balance.ToString("#,##0.0")</td>
                         <td style="width: 10%">@d.LoanStatus</td>
                         <td style="width: 10%">
-                            @if (d.IsCurrentLoan)
+                            @if (!d.IsLoanDisbursted)
                             {
-                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Current</span>
+                                <span class="badge bg-warning">Awaits Disbursment</span>
                             }
                             else
-                            {
-                                <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Restructured</span>
+                            { 
+                                <span class="badge bg-info">Disbursed</span>
                             }
                         </td>
                         <td style="width: 10%">
-                            <a href="#" onclick="GetPendingLoans('@d.Id')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select for detail">
+                            <a href="#" onclick="GetPendingLoans('@d.Id')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select for disbursment">
                                 Disbursed
                             </a>
                         </td>

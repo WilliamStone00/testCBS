@@ -36,6 +36,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
         [Required]
         public int MinimumDurationPeriod { get; set; }
+        [Required]
+        public string LoanTerm { get; set; }
+
 
         [Required]
         public int MaximumDurationPeriod { get; set; }
@@ -236,7 +239,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     {
         public string Id { get; set; }
         public int RepaymentOrder { get; set; }
-        public string RepaymentReceive { get; set; }
+        public string RepaymentType { get; set; }
         public string LoanProductId { get; set; }
         public virtual LoanProduct LoanProduct { get; set; }
 
@@ -299,8 +302,12 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public List<StringValues> LoanCommiteeValidationStatuses { get; set; } = new List<StringValues>();
         public List<StringValues> AmortizationTypes { get; set; } = new List<StringValues>();
         public List<StringValues> DisbursmentStatuses { get; set; } = new List<StringValues>();
+        public List<StringValues> LoanTerms { get; set; } = new List<StringValues>();
+        public List<StringValues> LoanTargets { get; set; } = new List<StringValues>();
+        public List<StringValues> LoanCategories { get; set; } = new List<StringValues>();
+        public List<StringValues> LoanDeliquenciesStatus { get; set; } = new List<StringValues>();
 
-        //AmortizationTypes
+        //LoanDeliquenciesStatus
         //ApprovalStatus
     }
 

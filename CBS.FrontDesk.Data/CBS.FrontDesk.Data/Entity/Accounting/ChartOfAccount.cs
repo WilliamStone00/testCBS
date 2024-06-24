@@ -32,5 +32,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string GeneralRepresentation { get; set; }
 
     }
-   
+    public class ChartOfAccountStateDto
+    {
+        public string Id { get; set; }
+        public string GeneralRepresentation { get; set; }
+    }
 }

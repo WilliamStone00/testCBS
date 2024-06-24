@@ -122,13 +122,12 @@ namespace CBS.BusinessService.Config
                     LoanDeliquencyConfiguration.DaysFrom = model.DaysFrom;
                     LoanDeliquencyConfiguration.DaysTo = model.DaysTo;
                     LoanDeliquencyConfiguration.Status = model.Status;
-                    LoanDeliquencyConfiguration.ActionToPerform = model.ActionToPerform;
+                    LoanDeliquencyConfiguration.SendMail = model.SendMail;
                     LoanDeliquencyConfiguration.SendSMStoClient = model.SendSMStoClient;
-                    LoanDeliquencyConfiguration.BankId = model.BankId;
-                    LoanDeliquencyConfiguration.BranchId = model.BranchId;
-                    LoanDeliquencyConfiguration.BranchId = model.BranchId;
-                    LoanDeliquencyConfiguration.OrganizationId = model.OrganizationId;
-                    LoanDeliquencyConfiguration.AccountingRuleId = model.AccountingRuleId;
+                    LoanDeliquencyConfiguration.SendSMS = model.SendSMS;
+                    LoanDeliquencyConfiguration.ApplyFine = model.ApplyFine;
+                    LoanDeliquencyConfiguration.ReportToCreditOffice = model.ReportToCreditOffice;
+                    LoanDeliquencyConfiguration.AffectScoring = model.AffectScoring;
                     var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanDeliquencyConfiguration>>(string.Format(APICallHelper.Get_Update_Delete_LoanDeliquencyConfiguration, model.Id), LoanDeliquencyConfiguration);
                     if (response.IsSuccess)
                     {

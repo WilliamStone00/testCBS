@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 var account = await _accountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", true));
                 ViewBag.Error = account.ErrorMessage;
                 ViewBag.HasError = account.HasError;
-                return View(new OpeningOfTheDay { OpenningOfDayRequest = new OpenningOfDayRequest { Amount = account.Balance, InitialAmount = account.Balance, CurrencyNotes = new Data.Entity.SavingProducts.AccountActivation.CurrencyNotes() } });
+                return View(new OpeningOfTheDay { OpenningOfDayRequest = new OpenningOfDayRequest { Comment = $"As Primary Teller, {Session["FullName"].ToString()} is commencing operations for the day on [{DateTime.Now}] with a total balance of {account.Balance.ToString("#,##0")}.", Amount = account.Balance, InitialAmount = account.Balance, CurrencyNotes = new Data.Entity.SavingProducts.AccountActivation.CurrencyNotes() } });
 
             }
             catch (Exception ex)
@@ -63,7 +63,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             }
             
 
-            return View(new OpeningOfTheDay { OpenningOfDayRequest = new OpenningOfDayRequest { Amount = account.Balance, InitialAmount = account.Balance, CurrencyNotes = new Data.Entity.SavingProducts.AccountActivation.CurrencyNotes() } });
+            return View(new OpeningOfTheDay { OpenningOfDayRequest = new OpenningOfDayRequest { Amount = account.Balance, InitialAmount = account.Balance, CurrencyNotes = new Data.Entity.SavingProducts.AccountActivation.CurrencyNotes(), Comment = $"As Sub-Teller {Session["FullName"].ToString()}, I hereby commence today's operations on [{DateTime.Now}] with an opening balance of {account.Balance.ToString("#,##0")}." }
+        });
         }
 
         [HttpPost]

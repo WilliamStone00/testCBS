@@ -117,13 +117,15 @@ namespace CBS.BusinessService.CustomerManagement
 
         // Other methods refactored similarly...
 
-        public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string searchCriterial)
+        public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string searchCriterial, bool isByBranch = true)
         {
             var customerParam = new CustomerResource
             {
                 OrderBy = "CustomerId",
                 PageSize = dataTableOptions.pageSize,
                 Skip = dataTableOptions.skip,
+                BranchId = GetBranchID(),
+                IsByBranch = isByBranch,
                 SearchQuery = searchCriterial == "" ? "all" : searchCriterial,
             };
             Func<Task<List<IndividualProfile>>> getDataFunc = async () => (await GetMembers(customerParam)).ToList();
@@ -156,7 +158,7 @@ namespace CBS.BusinessService.CustomerManagement
         }
 
 
-        public async Task<IEnumerable<IndividualProfile>> GetMembers(CustomerResource resource = null)
+        public async Task<IEnumerable<IndividualProfile>> GetMembers(CustomerResource resource)
         {
             try
             {
@@ -230,7 +232,7 @@ namespace CBS.BusinessService.CustomerManagement
             }
         }
 
-       
+
         public async Task<IEnumerable<IndividualProfile>> GetAllIndividualProfileLight()
         {
             try
@@ -362,7 +364,8 @@ namespace CBS.BusinessService.CustomerManagement
                 SpouseOccupation = a.SpouseOccupation,
                 BankName = b == null ? "N/A" : b.Bank.Name,
                 CustomerCode = a.CustomerCode,
-                VillageOfOrigin = a.VillageOfOrigin, PaginationMetadata=a.PaginationMetadata
+                VillageOfOrigin = a.VillageOfOrigin,
+                PaginationMetadata = a.PaginationMetadata
             };
 
             return customer;
@@ -387,6 +390,7 @@ namespace CBS.BusinessService.CustomerManagement
                 var cardSignatureSpecimen = new CardSignatureSpecimen { CustomerId = id };
                 var result = new IndividualCustomerProfile(data.First(), aggregrates, accountBalance, accounts, addaccount, nextOfKingsMember, cardSignatureSpecimen);
                 result.SavingProducts = aggregrates.Savings;
+                result.AddCustomerAccount.CustomerName = result.CustomerList.name;
                 var policy = new MemberRegistrationFeePolicy();
                 if (policies.Any())
                 {
@@ -405,6 +409,7 @@ namespace CBS.BusinessService.CustomerManagement
                         ByeLawFee = policy.MaximumByeLawsFee,
                         LoanPolicyFee = policy.MaximumLoanPolicyFee,
                         MemberRegistrationFeePolicyId = policy.Id,
+                        Balance = policy.MaximumEntrancenFee + policy.MaximumByeLawsFee + policy.MaximumLoanPolicyFee, AmountPaid=0,
                         BuildingContribution = policy.MaximumBuildingContribution
                     };
                     result.option = "AddMemberAccount";
@@ -787,7 +792,7 @@ namespace CBS.BusinessService.CustomerManagement
             try
             {
                 var tel = CleanTelephoneNumber(model.Phone);
-                model.branchCode = GetBankCode();
+                model.bankCode = GetBankCode();
                 model.branchCode = GetBranchCode();
                 model.BranchId = GetBranchID();
                 model.BankId = GetBankID();

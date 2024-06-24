@@ -11,11 +11,19 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     {
         public string Id { get; set; }
         public string FeeRangeId { get; set; }
-        public decimal Amount { get; set; }
+        public decimal FeeAmount { get; set; }
+        public string FeeLable { get; set; }
+        public decimal AmountPaid { get; set; }
         public bool IsPaid { get; set; }
         public string LoanApplicationId { get; set; }
-        public FeeRange FeeRanges { get; set; }
-        public LoanApplication LoanApplication { get; set; }
+        public string CustomerId { get; set; }
+        public string Status { get; set; }
+        public string Period { get; set; }
+        public string TransactionReference { get; set; }
+        public virtual FeeRange FeeRange { get; set; }
+        public virtual LoanApplication LoanApplication { get; set; }
+        public DateTime DateOfPayment { get; set; } = DateTime.MinValue;
+        public string PaidBy { get; set; }
     }
 
 }

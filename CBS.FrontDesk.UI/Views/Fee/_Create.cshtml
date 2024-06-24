@@ -1,45 +1,53 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Fee
 <div class="card-body">
     @using (Html.BeginForm("Create", "Fee", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-    {
-        @Html.HiddenFor(model => model.Id)
-        <div class="row mt-2 gy-4">
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                    <label>Name</label>
+    {<fieldset class="fieldset-custom">
+            <legend>Fee Types</legend>
+            @Html.HiddenFor(model => model.Id)
+            <div class="row mt-2 gy-4">
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        <label>Name</label>
+                    </div>
                 </div>
+                <div class="col-12">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.FeeBase, "Percentage", new { @class = "form-check-input", id = "percentageOption" })
+                        <label class="form-check-label" for="percentageOption">Percentage on principal amount</label>
+                    </div>
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.FeeBase, "Range", new { @class = "form-check-input", id = "rangeOption" })
+                        <label class="form-check-label" for="rangeOption">Range based on principal amount</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.IsBoforeProcesing, new { @class = "form-check-input" })
+                        <label class="form-check-label" for="isActive">Before processing</label>
+                    </div>
+                </div>
+                @*<div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.AccountingEventCode, new SelectList(ViewBag.Roles, "id", "ruleName"), "---Select accounting roles---", new { @class = "form-control select2", @search = "true" })
+                            @Html.ValidationMessageFor(m => m.AccountingEventCode, "", new { @class = "text-danger " })
+                            <label>Accounting role</label>
+                        </div>
+                    </div>*@
             </div>
-            <div class="col-12">
-                <div class="form-check">
-                    @Html.RadioButtonFor(m => m.FeeBase, "Percentage", new { @class = "form-check-input", id = "percentageOption" })
-                    <label class="form-check-label" for="percentageOption">Percentage on principal amount</label>
-                </div>
-                <div class="form-check">
-                    @Html.RadioButtonFor(m => m.FeeBase, "Range", new { @class = "form-check-input", id = "rangeOption" })
-                    <label class="form-check-label" for="rangeOption">Range based on principal amount</label>
-                </div>
-            </div>
-            @*<div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.AccountingEventCode, new SelectList(ViewBag.Roles, "id", "ruleName"), "---Select accounting roles---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.AccountingEventCode, "", new { @class = "text-danger " })
-                    <label>Accounting role</label>
-                </div>
-            </div>*@
-        </div>
-        <div class="mt-4">
-            @if (ViewBag.Key != null)
-            {
-                <button type="submit" class="btn btn-primary me-2">Update</button>
-            }
-            else
-            {
-                <button type="submit" class="btn btn-primary me-2">Save</button>
-                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+            <div class="mt-4">
+                @if (ViewBag.Key != null)
+                {
+                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary me-2">Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
 
-            }
-        </div>
+                }
+            </div>
+        </fieldset>
     }
 </div>

@@ -289,6 +289,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string Name { get; set; }
         [Required]
         public string Code { get; set; }
+        public string AccountNuber { get; set; }
+        public string AccountManagementPositionId { get; set; }
+
         [Required]
         public decimal MinAmount { get; set; }
         [Required]
@@ -302,6 +305,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public bool IsDepositAllowedDirectlyTothisAccount { get; set; } = false;
         public decimal MinimumAccountBalancePhysicalPerson { get; set; } = 0;
         public decimal MinimumAccountBalanceMoralPerson { get; set; } = 0;
+        public bool AutoAddToMember { get; set; } = false;
 
         public bool AllowInterbranchWithdrawal { get; set; } = false;
         public bool AllowShareing { get; set; } = false;
@@ -416,13 +420,16 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     }
     public class OpeningOfTheDay
     {
-        public List<CashReplenishmentPrimaryTeller>  CashReplenishmentPrimaryTellers { get; set; } = new List<CashReplenishmentPrimaryTeller>();
+        public List<CashReplenishmentPrimaryTeller> CashReplenishmentPrimaryTellers { get; set; } = new List<CashReplenishmentPrimaryTeller>();
         public CashReplenishmentPrimaryTeller CashReplenishmentPrimaryTeller { get; set; } = new CashReplenishmentPrimaryTeller();
 
         public SubTellerProvissioning SubTellerProvissioning { get; set; } = new SubTellerProvissioning();
         public PrimaryTellerProvissioning PrimaryTellerProvissioning { get; set; } = new PrimaryTellerProvissioning();
 
         public OpenningOfDayRequest OpenningOfDayRequest { get; set; } = new OpenningOfDayRequest();
+        public CloseOfDayRequest CloseOfDayRequest { get; set; } = new CloseOfDayRequest();
+
+
         public string Option { get; set; }
 
     }
@@ -434,9 +441,23 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal Amount { get; set; }
         [Required]
         public string Comment { get; set; }
-
+        [Required]
         public CurrencyNotes CurrencyNotes { get; set; }
 
+    }
+
+    public class CloseOfDayRequest
+    {
+        [Required]
+        public CurrencyNotes CurrencyNotes { get; set; }
+        [Required]
+        public string Comment { get; set; }
+        [Required]
+        public decimal CashAtHand { get; set; }
+        [Required]
+        public string ClossedStatus { get; set; }
+        [Required]
+        public decimal Amount { get; set; }
     }
     public class OpeningOfTheDayResponse
     {
@@ -480,7 +501,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal Amount { get; set; }
         public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
     }
-   
+
     public class SystemConfigForSaving
     {
         public string id { get; set; }
@@ -519,6 +540,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string bankId { get; set; }
 
         public string branchId { get; set; }
+        public string CustomerName { get; set; }
+
     }
     public class WithdrawalNotification
     {
@@ -669,13 +692,11 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     public class AddOtherTransactionCommand
     {
         public string EnventName { get; set; }
-        public string Description { get; set; }
         public decimal Amount { get; set; }
         public string EventCode { get; set; }
         public string Direction { get; set; }
         public string TransactionType { get; set; }//Income Or Expenses
         public string SourceType { get; set; }//Cash_Collection Or Member_Account
-        public string Naration { get; set; }
         public string CustomerId { get; set; }
         public string AccountNumber { get; set; }
         public CurrencyNotes CurrencyNotesRequest { get; set; }

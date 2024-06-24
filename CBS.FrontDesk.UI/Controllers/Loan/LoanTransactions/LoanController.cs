@@ -1,9 +1,11 @@
 using CBS.BusinessService;
+using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.LoanCommitee;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Config;
 using CBS.FrontDesk.Data.Entity.LoanCommitee;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.MemberOperation;
 using CBS.FrontDesk.Data.Message;
 using System;
@@ -40,12 +42,30 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
 
             return View();
         }
-        [HttpGet]
+        //
+        public async Task<ActionResult> Details(string KEY=null)
+        {
+            var loan = await _LoanServices.GetLoanWithCustomerAndBranch(KEY);
+            return View(loan);
+        }
+        public async Task<ActionResult> LoanReportGeneration()
+        {
+            var downloadInfoLoans = await _LoanServices.GetAllFileDownloadInfoLoanPerUser();
+
+            return View(new Loan {FileDownloadInfoLoans= downloadInfoLoans.ToList()});
+        }
+        [HttpPost]
+        public async Task<ActionResult> InitializeDownload(InitiateLoanDownloadCommand initiateLoanDownloadCommand)
+        {
+            var data = await _LoanServices.InitiateBulkDownloadLoansBranch(initiateLoanDownloadCommand);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+        }
+        [HttpPost]
         public async Task<ActionResult> LoadData(string searchCriteria = "All")
         {
             try
             {
-                var dataTable = await _LoanServices.GetDataTable(GetDataTableOptions(), searchCriteria);
+                var dataTable = await _LoanServices.GetDataTable(PostDataTableOptions(), searchCriteria,true);
                 return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data }, JsonRequestBehavior.AllowGet);
 
             }
@@ -122,6 +142,11 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
             var users = await _userManagementServices.GetUserDropDownList();
             ViewBag.Users = users.ToList();
             return true;
+        }
+        public async Task<ActionResult> Delete(string id)
+        {
+            var data = await _LoanServices.Delete(id);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
     }
 }

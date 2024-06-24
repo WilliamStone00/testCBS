@@ -37,7 +37,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             var cashDesk = await _cashDeskService.GetOtherCashDeskTransactions();
             //ViewBag.Members = _cashDeskService.LoadMembersToList(cashDesk.Customers);
             ViewBag.MemberAccounts = new SelectList(new List<StringValues>(), "None", "No-Account-Loaded");
-            await GetEventNames("INCOME");
+            await GetEventNames("FEE");
             //ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
             return View(cashDesk);
         }
@@ -74,7 +74,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
 
                 }
-                else if (path == "cashin" || path == "cashout" || path == "repayment" || path == "withdrawalnotification")
+                else if (path == "cashin" || path == "cashout" || path == "repayment" || path == "withdrawalnotification" || path== "loanapplicationfeepayment")
                 {
                     if (KEY == null || KEY == "")
                     {

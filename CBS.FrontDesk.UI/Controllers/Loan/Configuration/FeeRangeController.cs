@@ -33,7 +33,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         [HttpPost]
         public async Task<ActionResult> Create(FeeRange model)
         {
-            if (ViewBag.Key==null)
+            if (model.Id == null)
             {
                 var data = await _services.Create(model);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
@@ -53,6 +53,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
+
             if (path == "list")
             {
                 var data = await _services.GetFeeRanges();
@@ -69,7 +70,9 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             {
                 var fees = await _feeServices.GetFees();
                 ViewBag.Fees = fees;
+                ViewBag.Key = KEY;
                 var Guaranty = await _services.GetFeeRange(KEY);
+                ViewBag.Base = Guaranty.Fee.FeeBase;
                 return PartialView(partialView, Guaranty);
 
             }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
@@ -35,18 +36,54 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             return View(new EndOfTheDay());
         }
 
+        //public async Task<ActionResult> Primary()
+        //{
+        //    var primaryTellerProvisionings = await _primaryTellerEndOfDayServices.GetPrimaryTellerHistories();
+        //    return View(new EndOfTheDay { PrimaryTellerProvisioningHistories = primaryTellerProvisionings.ToList() });
+        //}2
         public async Task<ActionResult> Primary()
         {
-            var primaryTellerProvisionings = await _primaryTellerEndOfDayServices.GetPrimaryTellerHistories();
-            return View(new EndOfTheDay { PrimaryTellerProvisioningHistories = primaryTellerProvisionings.ToList() });
+            try
+            {
+                //var primaryTellerProvisionings = await _primaryTellerEndOfDayServices.GetPrimaryTellerHistories();
+                ViewBag.Option = "Primary";
+                var account = await _acountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", true, false, true));
+                ViewBag.Error = account.ErrorMessage;
+                ViewBag.HasError = account.HasError;
+                return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest { Amount = account.Balance, CashAtHand = account.Balance, CurrencyNotes = new Data.Entity.SavingProducts.AccountActivation.CurrencyNotes(), ClossedStatus = "Pending", Comment = $"As Primary Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{DateTime.Now}] with a final total balance of {account.Balance.ToString("#,##0")}." } });
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         //
+        //public async Task<ActionResult> SubTeller()
+        //{
+
+        //    var tellerProvisioningDtos = await _subTellerEndOfDay.GetSubTellerHistories();
+        //    return View(new EndOfTheDay { SubTellerProvioningHistories = tellerProvisioningDtos.ToList() });
+        //}
+
         public async Task<ActionResult> SubTeller()
         {
+            ViewBag.Option = "SubTeller";
+            var account = await _acountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", false));
+            ViewBag.Error = account.ErrorMessage;
+            ViewBag.HasError = account.HasError;
+            if (account.Balance == 0 && !account.HasError)
+            {
+                ViewBag.HasNoBalance = true;
+                ViewBag.Error = $"The current balance of Teller {account.AccountName} is 0. Kindly make a cash request";
+            }
 
-            var tellerProvisioningDtos = await _subTellerEndOfDay.GetSubTellerHistories();
-            return View(new EndOfTheDay { SubTellerProvioningHistories = tellerProvisioningDtos.ToList() });
+
+            return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest { Amount = account.Balance, CashAtHand = account.Balance, CurrencyNotes = new Data.Entity.SavingProducts.AccountActivation.CurrencyNotes(), ClossedStatus = "Pending", Comment = $"As Sub-Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{DateTime.Now}] with a final total balance of {account.Balance.ToString("#,##0")}." } });
         }
+
+
         public async Task<ActionResult> SubtellerVerification()
         {
 
@@ -59,34 +96,33 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             return View(new EndOfTheDay { PrimaryTellerProvisioningHistories = tellerProvisioningDtos.ToList() });
         }
 
+
+
         [HttpPost]
-        public async Task<ActionResult> Primary(EndOfTheDay model)
+        public async Task<ActionResult> CloseTheDay(EndOfTheDay model)
         {
-            var data = await _primaryTellerEndOfDayServices.EndTheDay(model.EndOfDayPrimaryTellerCommand);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            if (model.Option == "Primary")
+            {
+                var data = await _primaryTellerEndOfDayServices.EndTheDay(model.CloseOfDayRequest);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else if (model.Option == "SubTeller")
+            {
+                var data = await _subTellerEndOfDay.EndTheDay(model.CloseOfDayRequest);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else if (model.Option == "Verification")
+            {
+                var data = await _primaryTellerEndOfDayServices.EndTheDaySubTellerVerification(model.EndOfDayBySubTellerIDCommand);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            return Json(new { success = false, status = false, message = "Invalid choise" });
 
         }
-        [HttpPost]
-        public async Task<ActionResult> Accountant(EndOfTheDay model)
-        {
-            var data = await _primaryTellerEndOfDayServices.EndTheDayAccountant(model.EndOfDayAccountantCommand);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
-        }
-        [HttpPost]
-        public async Task<ActionResult> SubtellerVerification(EndOfTheDay model)
-        {
-            var data = await _primaryTellerEndOfDayServices.EndTheDaySubTellerVerification(model.EndOfDayBySubTellerIDCommand);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-
-        }
-        [HttpPost]
-        public async Task<ActionResult> SubTeller(EndOfTheDay model)
-        {
-            var data = await _subTellerEndOfDay.EndTheDay(model.EndOfDaySubTellerCommand);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-
-        }
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
             try

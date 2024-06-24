@@ -1,17 +1,18 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 
 <div class="row g-4">
+    <div class="col-md-3">
+        @Html.Partial("_DenominationBreakDown")
+    </div>
     <div class="col-md-9">
-        <div class="card mb-3 border-2">
-            @Html.Partial("_OtherTransactionTabs")
-        </div>
-        <div class="mb-3 border-2">
+        @*<div class="card mb-3 border-2">
+                @Html.Partial("_OtherTransactionTabs")
+            </div>*@
+        <div class="mb-9 border-2">
             <div id="datalistingview_inner">
                 @Html.Partial("_OtherTransactionForm")
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        @Html.Partial("_DenominationBreakDown")
-    </div>
+
 </div>

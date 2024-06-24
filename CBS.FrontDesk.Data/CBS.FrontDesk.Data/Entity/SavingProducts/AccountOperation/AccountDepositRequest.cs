@@ -37,6 +37,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<BulkDeposit> BulkDeposits { get; set; } = new List<BulkDeposit>();
         public List<WithdrawalNotification> WithdrawalNotifications { get; set; } = new List<WithdrawalNotification>();
         public IndividualProfile Customer { get; set; } = new IndividualProfile();
+        public List<LoanApplicationFee> LoanApplicationFees { get; set; } = new List<LoanApplicationFee>();
         public List<CustomerAccount> Accounts { get; set; } = new List<CustomerAccount>();
         public List<Loan> Loans { get; set; } = new List<Loan>();
         public List<Refund> Refunds { get; set; } = new List<Refund>();
@@ -57,6 +58,14 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
     public class  BulkOperation
     {
         public List<BulkDeposit> BulkOperations { get; set; } = new List<BulkDeposit>();
+        public string DepositType { get; set; }
+        public string Period { get; set; }
+        
+        public BulkOperation()
+        {
+            DepositType = "Normal";
+        }//Normal, LoanFeePayment, Disbursment, LoanRepayment
+
     }
 
     public class BulkDeposit
@@ -71,10 +80,12 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public decimal Total { get; set; }
         public string AccountType { get; set; }
         public string LoanId { get; set; }
+        public string LoanApplicationId { get; set; }
         public string Note { get; set; }
         public string EventCode { get; set; }
         public string SourceType { get; set; }
         public string OperationType { get; set; }
+        public string Period { get; set; }
         public bool isDepositDoneByAccountOwner { get; set; }
         public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
         public Depositer Depositer { get; set; } = new Depositer();

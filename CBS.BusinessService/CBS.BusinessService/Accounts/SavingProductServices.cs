@@ -26,7 +26,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var objSavingProduct = await GetSavingProduct(id);
-                var inResponse = await _savingConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, id), id));
+                var inResponse = await _savingConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, id));
                 if (inResponse.IsSuccess)
                 {
 
@@ -150,6 +150,7 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.IsUsedForTellerProvisioning = model.IsUsedForTellerProvisioning;
                     SavingProduct.Description = model.Description;
                     SavingProduct.AccountType = model.AccountType;
+                    SavingProduct.AutoAddToMember = model.AutoAddToMember;
                     SavingProduct.AllowShareing = model.AllowShareing;
                     SavingProduct.AllowInterbranchWithdrawal = model.AllowInterbranchWithdrawal;
                     SavingProduct.IsDepositAllowedDirectlyTothisAccount = model.IsDepositAllowedDirectlyTothisAccount;

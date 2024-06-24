@@ -9,6 +9,7 @@ using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.BusinessService;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -59,9 +60,9 @@ namespace CBS.FrontDesk.UI.Controllers
             ViewBag.Operation = "LoanRepayment";
             ViewBag.Sources = _acountServices.GetPaymentSources();
             var account = await _acountServices.GetAccountByAccountNumber(KEY);
-            var loan = await _loanServices.GetLoanByCustomerID(account.CustomerId);
-            account.Loans = loan.Where(x => x.LoanStatus == "Open").ToList();
-            account.LoanRepayments = loan.SelectMany(x=>x.Refunds).ToList();
+            var loan = await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = KEY, QueryParameter = "Open" });
+            account.Loans = loan.ToList();
+            account.LoanRepayments = loan.SelectMany(x => x.Refunds).ToList();
             return View(account);
         }
         //LoanRepayment
@@ -86,14 +87,14 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         public async Task<ActionResult> TransferRequest()
         {
-            var account = await _acountServices.SourceAndDestinationAccount();
-            var conf = await _acountServices.GetSavingConfigurationAggregates();
-            ViewBag.Source = account;
-            ViewBag.Destination = account;
-            ViewBag.TransferTypes = conf.transferTypes;
+            //var account = await _acountServices.SourceAndDestinationAccount();
+            //var conf = await _acountServices.GetSavingConfigurationAggregates();
+            //ViewBag.Source = account;
+            //ViewBag.Destination = account;
+            //ViewBag.TransferTypes = conf.transferTypes;
             return View(new Account());
         }
-       
+
         //Transactions
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
@@ -105,23 +106,23 @@ namespace CBS.FrontDesk.UI.Controllers
                     var account = await _acountServices.GetTransactionsAsync();
                     return PartialView(partialView, account);
                 }
-                else if (path== "confirmation_request")
+                else if (path == "confirmation_request")
                 {
                     var Statuses = await _acountServices.GetSavingConfigurationAggregates();
                     ViewBag.Status = Statuses.Statuses;
                     var transfer = await _acountServices.GetTransfer(KEY);
-                    var account=new Account {Transfer=transfer, TransferConfirmation=new TransferConfirmation{ TransferId= transfer.Id} };
+                    var account = new Account { Transfer = transfer, TransferConfirmation = new TransferConfirmation { TransferId = transfer.Id } };
                     return PartialView(partialView, account);
                 }
                 else if (path == "details")
                 {
                     var transfer = await _acountServices.GetTransfer(KEY);
-                    var account = new Account { Transfer = transfer};
+                    var account = new Account { Transfer = transfer };
                     return PartialView(partialView, account);
                 }
                 else if (path == "pending_request")
                 {
-                   
+
                     var transfers = await _acountServices.GetPendingTransfers();
                     var account = new Account { Transfers = transfers };
                     return PartialView(partialView, account);
@@ -183,7 +184,7 @@ namespace CBS.FrontDesk.UI.Controllers
             {
 
                 var data = await _acountServices.LoanRepayment(model.DepositRequest);
-               
+
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
@@ -205,7 +206,7 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult> GetReport(string rptType = null, string ReportName = null, string serviceoption = null,string reportpath=null,string fileTitle=null, string ReadOptions = null, string KEY = null, string path = null, string yearID = null, string datefrom = null, string dateto = null)
+        public async Task<ActionResult> GetReport(string rptType = null, string ReportName = null, string serviceoption = null, string reportpath = null, string fileTitle = null, string ReadOptions = null, string KEY = null, string path = null, string yearID = null, string datefrom = null, string dateto = null)
         {
             if (path == "export_transactions")
             {
@@ -221,7 +222,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
 
             }
-            else if (path== "customer_account_transaction")
+            else if (path == "customer_account_transaction")
             {
                 var transactionHistories = await _acountServices.GetCustomerTransactionsByAccountNumber(KEY);
                 this.HttpContext.Session["rptSource"] = _acountServices.GetTransactionHistoryExports(transactionHistories);
@@ -258,14 +259,14 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 var transactionHistories = await _acountServices.GetCustomerTransactionsByAccountNumber(KEY);
                 var customer = await _individualProfileServices.GetSingleCustomer(transactionHistories.FirstOrDefault().Account.CustomerId);
-                if (customer==null)
+                if (customer == null)
                 {
                     return Json(new { success = true, status = false, message = "Failed getting customer" }, JsonRequestBehavior.AllowGet);
 
                 }
                 var branch = await _branchServices.GetBranch(customer.CustomerId);
                 var rpt = _acountServices.MaprptSource(transactionHistories, branch, customer);
-             
+
                 string accountnumber = null;
                 if (!transactionHistories.Any())
                 {
@@ -288,12 +289,12 @@ namespace CBS.FrontDesk.UI.Controllers
                 //this.HttpContext.Session["DateFrom"] = datefrom;
                 //this.HttpContext.Session["DateTo"] = dateto;
             }
-           
+
 
             return Json(new { success = true, status = false, message = "OK" }, JsonRequestBehavior.AllowGet);
 
         }
-       
+
         public async Task<ActionResult> GetLoan(string Key)
         {
             var loan = await _loanServices.GetLoan(Key);

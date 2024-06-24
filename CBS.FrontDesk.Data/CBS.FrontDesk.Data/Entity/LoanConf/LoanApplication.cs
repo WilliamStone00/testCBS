@@ -44,13 +44,13 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     public class LoanApplication
     {
         public string Id { get; set; }
+        [Required]
         public string LoanProductId { get; set; }
+        [Required]
         public decimal Amount { get; set; }
         public bool IsThereGuarantor { get; set; }
         public bool IsThereCollateral { get; set; }
         public decimal InterestRate { get; set; }
-        public decimal ProcessingFee { get; set; }
-        public decimal InspectionFee { get; set; }
         public decimal VatRate { get; set; }
         public int NumberOfRepayment { get; set; }
         public string RepaymentCircle { get; set; }
@@ -80,6 +80,10 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string BankId { get; set; }
         public string ApprovalStatus { get; set; }
         public string LoanManager { get; set; }
+        [Required]
+        public string LoanTarget { get; set; }//Employee, Government, Groups etc
+        [Required]
+        public string LoanCategory { get; set; }//Main OR Special Saving Facilities
         public bool IsApproved { get; set; }
         public bool IsDisbursed { get; set; }
         public string ApprovalComment { get; set; }
@@ -88,6 +92,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IsChargesApplied { get; set; }
         public decimal ChargesPercentage { get; set; }
         public int NumberOfDaysToApplyCharges { get; set; }
+        public List<string> FeeIds { get; set; }
         public virtual LoanProduct LoanProduct { get; set; }
         public virtual ICollection<LoanApplicationCollateral> Collateras { get; set; }
         public virtual ICollection<LoanGuarantor> Guarantors { get; set; }
@@ -95,13 +100,13 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public virtual ICollection<DocumentAttachedToLoan> DocumentAttachedToLoans { get; set; }
         public virtual LoanPurpose LoanPurpose { get; set; }
         public virtual ICollection<OTPNotification> OTPNotifications { get; set; }
+        public List<LoanApplicationFee> LoanApplicationFees { get; set; }
 
         public LoanApplication()
         {
             // Initialize double properties to 0
             Amount = 0;
             InterestRate = 0;
-            ProcessingFee = 0;
             VatRate= 0;
             CollateralCoverageRate = 0;
             ShareAccountCoverageAmount = 0;
@@ -112,6 +117,11 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             GracePeriodBeforeFirstPayment = 1;
             AmortizationType = "Constant_Amortization";
         }
+    }
+    public class GetAllLoanByCustomerIdQuery
+    {
+        public string CustomerId { get; set; }
+        public string QueryParameter { get; set; }
     }
     public class Loan
     {
@@ -125,6 +135,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal InterestRate { get; set; }
         public decimal LastPayment { get; set; }
         public decimal Paid { get; set; }
+        public decimal VatRate { get; set; }
+
         public decimal Balance { get; set; }
         public decimal DueAmount { get; set; }
         public decimal AccrualInterest { get; set; }
@@ -132,6 +144,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal TotalPrincipalPaid { get; set; }
         public decimal Tax { get; set; }
         public decimal TaxPaid { get; set; }
+        public string LoanTarget { get; set; }//Employee, Government, Groups etc
+        public string LoanCategory { get; set; }//Main OR Special Saving Facilities
         public decimal FeePaid { get; set; }
         public decimal Fee { get; set; }
         public decimal Penalty { get; set; }
@@ -145,6 +159,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public DateTime LastRefundDate { get; set; }
         public DateTime LastEventData { get; set; }
         public string CustomerId { get; set; }
+        public string LoanJourneyStatus { get; set; }
+
         public string LoanManager { get; set; }
         public string LoanStatus { get; set; }
         public bool IsRestructured { get; set; }
@@ -156,10 +172,49 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string OrganizationId { get; set; }
         public string BranchId { get; set; }
         public string BankId { get; set; }
+        public string LoanType { get; set; }
+        public string BranchCode { get; set; }
+        public string CustomerName { get; set; }
+        public string LoanDurarion { get; set; }
+        public IndividualCustomerProfile IndividualCustomer { get; set; }
         public PaginationMetadata PaginationMetadata { get; set; }
+        public List<FileDownloadInfoLoan> FileDownloadInfoLoans { get; set; }
+        public InitiateLoanDownloadCommand InitiateLoanDownloadCommand { get; set; }
         public virtual LoanApplication LoanApplication { get; set; }
         public virtual ICollection<Refund> Refunds { get; set; }
         public virtual ICollection<LoanAmortization> LoanAmortizations { get; set; }
+        public List<DisburstedLoan> DisburstedLoans { get; set; }
+        public List<DailyInterestCalculation> DailyInterestCalculations { get; set; }
+
+    }
+    public class InitiateLoanDownloadCommand
+    {
+        public bool IsByBranch { get; set; }
+        public string BranchId { get; set; }
+        public string FullName { get; set; }
+        public string UserId { get; set; }
+        public string BranchName { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string StrStartDate { get; set; }
+        public string StrEndDate { get; set; }
+    }
+    public class FileDownloadInfoLoan
+    {
+        public string Id { get; set; }
+        public string FileName { get; set; }
+        public string Extension { get; set; }
+        public string DownloadPath { get; set; }
+        public string FileType { get; set; }
+        public string FullPath { get; set; }
+        public string Size { get; set; }
+        public string UserId { get; set; }
+        public string TransactionType { get; set; }
+        public string UserName { get; set; }
+        public string BranchName { get; set; }
+        public string BranchId { get; set; }
+        public DateTime DateInitiated { get; set; }
+
     }
     public class DataTableLoan
     {
@@ -169,6 +224,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal InterestRate { get; set; }
         public decimal AccrualInterest { get; set; }
         public decimal Fee { get; set; }
+        public decimal Fines { get; set; }
+        public decimal Tax { get; set; }
         public decimal Penalty { get; set; }
         public decimal DueAmount { get; set; }
         public decimal Paid { get; set; }
@@ -179,6 +236,35 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string CustomerId { get; set; }
         public string Id { get; set; }
     }
+    public class DailyInterestCalculation
+    {
+        public string Id { get; set; }
+        public string LoanId { get; set; }
+        public string CustomerId { get; set; }
+        public string CustomerName { get; set; }
+        public string BranchId { get; set; }
+        public decimal InterestCalculated { get; set; }
+        public decimal PreviouseBalance { get; set; }
+        public decimal NewBalance { get; set; }
+        public decimal InterestRate { get; set; }
+        public decimal LoanAmount { get; set; }
+        public decimal VatRate { get; set; }
+        public decimal CalculatedVat { get; set; }
+        public DateTime Date { get; set; }
+        public Loan Loan { get; set; }
+    }
+    public class DisburstedLoan
+    {
+        public string Id { get; set; }
+        public string LoanId { get; set; }
+        public DateTime DisbursmentDate { get; set; }
+        public string DisbursedBy { get; set; }
+        public string DisbursementStatus { get; set; }
+        public string Comment { get; set; }
+        public Loan Loan { get; set; }
+    }
+
+   
 
     public class Refund
     {
@@ -198,6 +284,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string RepaymentType { get; set; }
         public decimal Paid { get; set; }
         public string BranchId { get; set; }
+        public decimal Balance { get; set; }
+
         public string BankId { get; set; }
         public DateTime DateOfPayment { get; set; }
         public Loan Loan { get; set; }

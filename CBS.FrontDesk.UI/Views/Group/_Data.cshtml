@@ -1,12 +1,11 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping.Group>
-@if (Model != null)
+@*@if (Model != null)
 {<div class="table-responsive mb-3">
         <table class="table table-hover" id="myDataTable">
             <thead class="table-light">
                 <tr>
                     <th>Group</th>
                     <th>Type</th>
-                    <th>Established date</th>
                     <th>Registration number</th>
                     <th>Members</th>
                     <th>Status</th>
@@ -18,9 +17,8 @@
                 {
                     <tr>
 
-                        <td style="width:25%">@d.GroupName</td>
+                        <td style="width:35%">@d.GroupName</td>
                         <td style="width:20%">@d.GroupType.GroupTypeName</td>
-                        <td style="width:15%">@d.DateOfEstablishment</td>
                         <td style="width:10%">@d.RegistrationNumber</td>
                         <td style="width:5%">
                             <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@d.GroupCustomers.Count()</span>
@@ -35,7 +33,7 @@
                                 <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">In-Active</span>
                             }
                         </td>
-                        <td style="width:15%">
+                        <td style="width:20%">
                             <a href="/Group/Details?groupId=@d.GroupId" target="_blank" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.GroupName to edit">Details</a> |
                             <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.GroupName" onclick="DeleteRecordDataTable('Group','@d.GroupId','myDataTable','_Data',0,'datalistingview')">Delete</a>
                         </td>
@@ -50,4 +48,18 @@ else
     <div class="alert alert-info" role="alert">
         No group was found at the moment.
     </div>
-}
+}*@
+
+
+<div class="table-responsive mb-3">
+    <table class="table table-hover" id="myDataTable">
+        <thead class="table-light">
+            <tr>
+                <th>Group</th>
+                <th>Registration number</th>
+                <th>Tax</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>

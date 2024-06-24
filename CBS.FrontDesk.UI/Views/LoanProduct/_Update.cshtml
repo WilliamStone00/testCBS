@@ -72,6 +72,13 @@ Key Points:
                                             <label>Maximum loan amount</label>
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.LoanTerm, new SelectList(ViewBag.LoanTerms, "Text", "Value"), "---Select Loan Term---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.LoanTerm, "", new { @class = "text-danger " })
+                                            <label>Loan term</label>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary me-2">Update</button>
@@ -306,7 +313,13 @@ Key Points:
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.LoanTerm, new SelectList(ViewBag.LoanTerms, "Text", "Value"), "---Select Loan Term---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.LoanTerm, "", new { @class = "text-danger " })
+                                        <label>Loan term</label>
+                                    </div>
+                                </div>
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary me-2">Update</button>
                                     @Html.HiddenFor(m => m.Id)
@@ -590,13 +603,15 @@ Key Points:
                                     <div class="col-md-12">
                                         <label>Selected refund orders</label>
                                         <div class="form-floating form-floating-outline">
-                                            @if (Model.RefundOrders != null && Model.RefundOrders.Any())
+                                           
+                                            @if (Model.LoanProductRepaymentOrders != null && Model.RefundOrders.Any())
                                             {
                                                 <ul>
-                                                    @foreach (var order in Model.RefundOrders)
+                                                    @foreach (var item in Model.LoanProductRepaymentOrders.OrderBy(x => x.RepaymentOrder))
                                                     {
-                                                        <li>@order</li>
+                                                        <li>@item.RepaymentOrder - @item.RepaymentType</li>
                                                     }
+                                                   
                                                 </ul>
                                             }
                                             else
@@ -621,7 +636,7 @@ Key Points:
 
                 </div>
             </div>
-            <div class="card accordion-item mb-3">
+            @*<div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingPaymentMethod8">
                     <button type="button"
                             class="accordion-button collapsed"
@@ -655,32 +670,7 @@ Key Points:
                                 <legend>FEE POLICIES</legend>
                                 <div class="row g-4">
 
-                                    @*<div class="col-12">
-                                            <div class="form-check">
-                                                @Html.CheckBoxFor(m => m.IsEarlyPartialRepaymentFeeRate, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">Support early partial payment?</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.EarlyPartialRepaymentFee, new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(m => m.EarlyPartialRepaymentFee, "", new { @class = "text-danger" })
-                                                <label>Early partial payment fee</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-check">
-                                                @Html.CheckBoxFor(m => m.IsEarlyTotalRepaymentFeeRate, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">Support early total payment?</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.EarlyTotalRepaymentFee, new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(m => m.EarlyTotalRepaymentFee, "", new { @class = "text-danger" })
-                                                <label>Early total payment fee</label>
-                                            </div>
-                                        </div>*@
+                                
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.MinimumProcessingFeeRate, new { @class = "form-control" })
@@ -736,7 +726,7 @@ Key Points:
                     </div>
 
                 </div>
-            </div>
+            </div>*@
 
 
             <div class="card accordion-item mb-3">

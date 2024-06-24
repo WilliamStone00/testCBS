@@ -19,6 +19,7 @@ namespace CBS.FrontDesk.Data.Entity.Config
         public string Telephone { get; set; }
         [Required]
         public string Email { get; set; }
+        public string CustomerServiceContact { get; set; }
         public string Address { get; set; }
         public string Capital { get; set; }
         public string RegistrationNumber { get; set; }

@@ -263,6 +263,27 @@ namespace CBS.FrontDesk.UI.Controllers
 
             return dataTableOptions;
         }
+        public DataTableOptions PostDataTableOptions()
+        {
+            var form = HttpContext.Request.Form;
+
+            DataTableOptions dataTableOptions = new DataTableOptions
+            {
+                draw = form["draw"],
+                start = int.TryParse(form["start"], out var start) ? start : 0,
+                length = int.TryParse(form["length"], out var length) ? length : 10,
+                sortColumnName = form[$"columns[{form["order[0][column]"]}][name]"],
+                sortColumnDirection = form["order[0][dir]"],
+                searchValue = form["search[value]"] ?? string.Empty
+            };
+
+            dataTableOptions.pageSize = dataTableOptions.length;
+            dataTableOptions.skip = dataTableOptions.start;
+            dataTableOptions.recordsTotal = 0;
+
+            return dataTableOptions;
+        }
+
         //public DataTableOptions GetDataTableOptions()
         //{
         //    DataTableOptions dataTableOptions = new DataTableOptions();

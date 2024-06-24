@@ -22,21 +22,21 @@
                                             @if (Model.Customer.CustomerId == file.CustomerId)
                                             {
                                                 <h6 class="mb-1">
-                                                    @(i + 1). @file.Customer.FirstName @file.Customer.LastName
+                                                    @(i + 1). @file.Customer.FirstName @file.Customer.LastName, Tel: @file.Customer.Phone
                                                     <span class="badge rounded-pill bg-primary">Group Leader</span>
                                                 </h6>
                                             }
                                             else
                                             {
-                                                <h6 class="mb-1">
-                                                    @(i + 1). @file.Customer.FirstName @file.Customer.LastName
-                                                    <span class="badge rounded-pill bg-secondary">Member</span>
-                                                </h6>
+                                        <h6 class="mb-1">
+                                            @(i + 1). @file.Customer.FirstName @file.Customer.LastName, Tel: @file.Customer.Phone
+                                            <span class="badge rounded-pill bg-secondary">Member</span>
+                                        </h6>
                                             }
                                         </div>
-                                        <div class="file-actions">
+                                        @*<div class="file-actions">
                                             <a href="#" target="_blank" class="btn btn-sm btn-primary">Details</a>
-                                        </div>
+                                        </div>*@
                                     </div>
                                 </div>
                             </div>

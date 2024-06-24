@@ -241,7 +241,7 @@ namespace CBS.BusinessService.Accounts
                 var DailyTeller = await GetDailyTeller(model.Id);
                 if (DailyTeller != null)
                 {
-                    DailyTeller.IsPrimary = model.IsPrimary;
+                    //DailyTeller.IsPrimary = model.IsPrimary;
                     DailyTeller.MaximumCeilin = model.MaximumCeilin;
                     DailyTeller.MaximumWithdrawalAmount = model.MaximumWithdrawalAmount;
                     DailyTeller.ProvisionedBy = GetUserFullName();

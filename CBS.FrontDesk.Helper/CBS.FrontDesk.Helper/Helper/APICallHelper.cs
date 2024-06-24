@@ -120,12 +120,14 @@
         public static string Get_Update_Delete_GroupType = "/api/v1/GroupType/{0}";
         public static string CreateGroupType = "/api/v1/AddGroupType";
         public static string GetAllGroupTypes = "/api/v1/GroupTypes";
+        public static string LoanApplicationFeesPending = "/api/v1/LoanApplicationFees/Pending/{0}";
+        //
 
         //Group
         public static string Get_Update_Delete_Group = "/api/v1/Group/{0}";
         public static string CreateGroup = "/api/v1/Group/Add";
         public static string GetAllGroups = "/api/v1/Groups";
-
+        public static string SearchByAnyCriterialGroupQuery = "/api/v1/Group/SearchByAnyCriterialGroupQuery";
         //GroupMembers
         public static string RemoveMemberFromGroup = "/api/v1/GroupCustomer/{0}";
         public static string AddMemberToGroup = "/api/v1/GroupCustomer/Add";
@@ -165,8 +167,8 @@
         //Teller
         public static string PrimaryTellerProvisioning = "/api/v1/Teller/Dinomination/Provisioning/PrimaryTeller";
         public static string SubTellerProvisioning = "/api/v1/Teller/Provision/SubTeller";
-        public static string SubTellerEndOfDay = "/api/v1/Teller/SubTellerEndOfDay";
-        public static string PrimaryTellerEndOfDay = "/api/v1/Teller/PrimaryTellerEndOfDay";
+        public static string SubTellerEndOfDay = "/api/v1/Teller/SubTeller/EndOfDay";
+        public static string PrimaryTellerEndOfDay = "/api/v1/Teller/PrimaryTeller/EndOfDay";
         public static string EndOfDayAccountant = "/api/v1/Teller/EndOfDayAccountant";
         public static string GetTellerAccountInfo = "/api/v1/Account/GetTellerAccount";
         public static string OpenningOfDayPrimaryTeller = "/api/v1/Teller/Primary/OpenningOfTheDay";
@@ -330,7 +332,7 @@
         ///api/v1/Loan/Disbursed
         //Loan Application
         public static string Get_Update_Delete_LoanApplication = "/api/v1/LoanApplication/{0}";
-        public static string GetAllLoanApplication = "/api/v1/LoanApplications";
+        public static string GetAllLoanApplicationByParameter = "/api/v1/LoanApplications/Query/{0}";
         public static string CreateLoanApplication = "/api/v1/LoanApplication";
         public static string GetLoanApplicationInstallment = "/api/v1/LoanApplication/Installment/{0}";
         public static string LoanSimulation = "/api/v1/LoanApplication/Simulation";
@@ -339,13 +341,18 @@
         public static string GenerateAmortizationSchedule = "/api/LoanAmortization/Loan/Simulation";
         public static string Disbursed = "/api/v1/Loan/Disbursed";
         public static string GenerateOTP = "/api/v1/OTPNotification";
-
+        //
 
         //LOAN
-        public static string GetAllLoanByCustomerId = "/api/v1/Loan/GetAllLoanByCustomerId/{0}";
+        public static string GetAllLoanByCustomerId = "/api/v1/Loan/GetAllLoanByCustomerId";
         public static string GetLoan = "/api/v1/Loan/{0}";
         public static string GetLoans = "/api/v1/Loans";
+        public static string InitiateBulkDownloadLoans = "/api/v1/FileDownloadInfo/InitiateBulkDownloadLoans";
+        public static string BulkDownloadDeleteAndGetLoan = "/api/v1/FileDownloadInfo/{0}";
+        public static string GetAllBulkDownloadInfosLoan = "/api/v1/FileDownloadInfos";
         public static string GelLoansSearchByAnyCriterialQuery = "/api/v1/Loan/SearchByAnyCriterialQuery";
+        public static string GetAllBulkDownloadInfosLoanPerUser = "/api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{0}";
+        ///api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{userid}
         ///api/v1/Loan/SearchByAnyCriterialQuery
         public static string GetAllLoanByBranchIdQuery = "/api/v1/Loan/GetAllLoanByBranchIdQuery/{id}";
 
@@ -531,7 +538,7 @@
         //Get,Update,Delete ChartOfAccount By Id
         public static string Get_Update_Delete_ChartOfAccount = "/api/v1/ChartOfAccount/{0}";
         //Get All ChartOfAccount
-        public static string GetAllChartOfAccount = "/api/v1/ChartOfAccounts";
+        public static string GetAllChartOfAccount = "/api/v1/ChartOfAccountManagementPosition/GetAllChartOfAccounts";
         public static string Get_ChartOfAccount_By_AccountNumber = "/api/v1/ChartOfAccount/GetChartOfAccountByAccountNumber/{0}";
         //Get All ChartOfAccount
  

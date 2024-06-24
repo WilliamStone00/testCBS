@@ -148,7 +148,7 @@ function confirmTransaction(title, message, ajaxUrl, data) {
                 success: function (response) {
                     if (response.success) {
                         appalert(response.message, 1, 1);
-                        //ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
+                        ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
                         window.PageReload();
                     } else {
                         if (response.message === undefined) {
@@ -195,7 +195,7 @@ function PostCashOut() {
     confirmTransaction('Confirm Cash-Out Operation', message, '/CashDesk/PostRequestCash', deposits, 'Withdrawal');
 }
 
-function PostCashIn() {
+function PostOtherCashIn() {
 
     // Check if at least one table row is checked
     var checkedRows = $("#myDataTableT tbody input[type='checkbox']:checked");
@@ -315,11 +315,7 @@ function SearchByCustomerNumber(partialView, divToloadPV) {
     AddORUpdateGen($('#manualSearchInput').val(), divToloadPV, partialView, 'search', "CashDesk");
     calculateBalance();
 }
-function GetMemberData(Key, partialView, divToloadPV, path) {
 
-    AddORUpdateGen(Key, divToloadPV, partialView, path, "CashDesk");
-    calculateBalance();
-}
 
 
 

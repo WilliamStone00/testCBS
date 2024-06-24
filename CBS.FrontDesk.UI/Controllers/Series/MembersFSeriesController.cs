@@ -43,7 +43,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
         {
             try
             {
-                var dataTable = await _individualProfileServices.GetDataTable(GetDataTableOptions(), searchCriteria);
+                var dataTable = await _individualProfileServices.GetDataTable(GetDataTableOptions(), searchCriteria,false);
                 return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data }, JsonRequestBehavior.AllowGet);
 
             }
@@ -71,12 +71,13 @@ namespace CBS.FrontDesk.UI.Controllers.Series
         {
             try
             {
-                if (path == "list")
-                {
-                    var cashDesk = await _cashDeskService.GetMembers();
-                    return PartialView(partialView, cashDesk);
-                }
-                else if (path == "members_profile")
+                //if (path == "list")
+                //{
+                //    var cashDesk = await _cashDeskService.GetMembers();
+                //    return PartialView(partialView, cashDesk);
+                //}
+                //else
+                if (path == "members_profile")
                 {
                     if (KEY == null || KEY == "")
                     {
