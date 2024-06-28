@@ -312,7 +312,10 @@
         public static string Get_Update_Delete_Period = "/api/v1/Period/{0}";
         public static string GetAllPeriod = "/api/v1/Periods";
         public static string CreatePeriod = "/api/v1/Period";
-        public static string AttachedDocuments = "/api/v1/DocumentAttachedToLoan";
+        public static string AttachedDocuments = "/api/FIleManagement/Upload";
+        public static string AttachedDocumentsRemotelyLoan = "/api/v1/DocumentAttachedToLoan/AddLoanAttachedDocumentCallBackCommand";
+        public static string AttachedDocumentsRemotelyBank = "/api/v1/Bank/UpdateBankLogoCallBack";
+
         public static string Get_Update_Delete_InstallmentType = "/api/v1/InstallmentType/{0}";
         public static string GetAllInstallmentType = "/api/v1/InstallmentTypes";
         public static string CreateInstallmentType = "/api/v1/InstallmentType";
@@ -323,7 +326,9 @@
         public static string CreateLoanProduct = "/api/v1/LoanProduct";
         public static string GetLoanProductConfigurationAgregates = "/api/v1/LoanProductConfigurationAgregates";
         public static string GetAllLoanApplicationByCustomerId = "/api/v1/LoanApplication/GetAllLoanApplicationByCustomerId/{0}";
-        
+        public static string AttachedDocumentsRemotelyMembers = "/api/v1/uploadCustomerDocuments";
+
+        //
 
         //Upload FIles
         public static string UploadFile = "/api/FIleManagement/Upload";

@@ -16,10 +16,10 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
     public class MigrationController : BaseController
     {
         // GET: Migration
-        private readonly IMemberAccountJob _services;
+        private readonly MemberAccountJob _services;
         private readonly SavingProductServices _savingProductServices;
         private readonly IBranchServices _branchServices;
-        public MigrationController(IMemberAccountJob services, SavingProductServices savingProduct = null, IBranchServices branchServices = null)
+        public MigrationController(MemberAccountJob services, SavingProductServices savingProduct = null, IBranchServices branchServices = null)
         {
             _services = services;
             _savingProductServices = savingProduct;
@@ -38,11 +38,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             try
             {
                 var account = await _services.ExtractFile(model);
+                var data = await _services.UploadMembersAccount(account);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
-                // Schedule the background job to run after 30 minutes
-                BackgroundJob.Schedule(() => _services.UploadMembersAccount(account), TimeSpan.FromMinutes(1));
-
-                return Json(new { success = true, message = "Your request is being processed." });
             }
             catch (Exception ex)
             {

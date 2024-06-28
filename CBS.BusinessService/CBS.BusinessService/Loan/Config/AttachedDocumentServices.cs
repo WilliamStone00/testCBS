@@ -15,13 +15,13 @@ namespace CBS.BusinessService.Config
     {
         private readonly ApiCallerHelper _loanConfigApiHelper;
         private readonly ApiCallerHelper _customerApiHelper;
-
+        private readonly ApiCallerHelper _identityServerBaseUrl;
         public AttachedDocumentServices()
         {
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
             _customerApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["CustomerBaseUrl"].ToString());
-
-
+            _identityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+            
         }
         public async Task<ExecutionMessages> UploadFiles(DocumentAttachedToLoan attachedToLoan)
         {
@@ -32,21 +32,24 @@ namespace CBS.BusinessService.Config
                 {
                     // Handle case where no files are attached
                     return GetExecutionMessages(attachedToLoan, false, "File", MessagesResults.Failed,
-              ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
+                  ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
               null);
                 }
                 var additionalParams = new Dictionary<string, string>
                 {
-                    { "loanApplicationId", attachedToLoan.LoanApplicationId },
-                    { "documentId", attachedToLoan.DocumentId },
-
+                    { "OperationID", attachedToLoan.LoanApplicationId },
+                    { "DocumentId", attachedToLoan.DocumentId },
+                    { "DocumentType", "Loan" },
+                    { "ServiceType", "LoanMicroservice" },
+                    { "CallBackBaseUrl",ConfigurationManager.AppSettings["LoanBaseUrl"].ToString()},
+                    { "CallBackEndPoint", APICallHelper.AttachedDocumentsRemotelyLoan},
+                    { "RemoteFilePath", $"LoanDocuments" },
                 };
-
-                var response = await _loanConfigApiHelper.PostFilesAndParamsAsync<DocumentAttachedToLoan>(APICallHelper.AttachedDocuments, additionalParams, attachedToLoan.AttachedFiles);
+                var response = await _identityServerBaseUrl.PostFilesAndParamsAsync<DocumentAttachedToLoan>(APICallHelper.AttachedDocuments, additionalParams, attachedToLoan.AttachedFiles);
                 if (response.IsSuccess)
                 {
                     GetExecutionMessages(response, true, null, MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
                         response.Message);
                     return ExecutionMessage;
                 }

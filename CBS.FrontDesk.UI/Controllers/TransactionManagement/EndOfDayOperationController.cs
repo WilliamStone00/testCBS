@@ -51,7 +51,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 ViewBag.Error = account.ErrorMessage;
                 ViewBag.HasError = account.HasError;
                 return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest { Amount = account.Balance, CashAtHand = account.Balance, CurrencyNotes = new Data.Entity.SavingProducts.AccountActivation.CurrencyNotes(), ClossedStatus = "Pending", Comment = $"As Primary Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{DateTime.Now}] with a final total balance of {account.Balance.ToString("#,##0")}." } });
-
+                //85,222,000.0
             }
             catch (Exception ex)
             {

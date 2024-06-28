@@ -1180,7 +1180,7 @@ namespace CBS.BusinessService.Accounts
     }
 
 
-    public class MemberAccountJob : BaseService, IMemberAccountJob
+    public class MemberAccountJob : BaseService
     {
         private readonly ApiCallerHelper _transactionApiHelper;
         private readonly ApiCallerHelper _BranchConfigApiHelper;
@@ -1234,7 +1234,7 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
-        public async Task UploadMembersAccount(AccountMigrationCommand accountMigrationCommand)
+        public async Task UploadMembersAccountx(AccountMigrationCommand accountMigrationCommand)
         {
             var branch = await _branchServices.GetBranch(accountMigrationCommand.BranchId);
 
@@ -1253,7 +1253,36 @@ namespace CBS.BusinessService.Accounts
 
         }
 
+        public async Task<ExecutionMessages> UploadMembersAccount(AccountMigrationCommand accountMigrationCommand)
+        {
+            try
+            {
 
+
+
+
+                var cusResponseObject = await _transactionApiHelper.PostAsync<ResponseObject<bool>>(APICallHelper.AccountMigration, accountMigrationCommand);
+                var branch = await _branchServices.GetBranch(accountMigrationCommand.BranchId);
+                if (cusResponseObject.IsSuccess)
+                {
+                    GetExecutionMessages(null, true, $"{branch.Name}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, cusResponseObject.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(accountMigrationCommand, false, $"{branch.Name} Members account migration", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, cusResponseObject.Message);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
 
         private List<Data> ReadExcelFile(Stream stream)
         {
@@ -1269,9 +1298,9 @@ namespace CBS.BusinessService.Accounts
                     var data = new Data
                     {
                         CustomerId = row.Cell(1).GetString(),
-                        CustomerName = $"{row.Cell(2).GetString()} {row.Cell(4).GetString()}",
-                        BranchCode = row.Cell(5).GetString(),
-                        OpeningBalance = row.Cell(6).GetValue<decimal>()
+                        CustomerName = $"{row.Cell(2).GetString()} {row.Cell(3).GetString()}",
+                        BranchCode = row.Cell(4).GetString(),
+                        OpeningBalance = row.Cell(5).GetValue<decimal>()
                     };
 
                     dataList.Add(data);

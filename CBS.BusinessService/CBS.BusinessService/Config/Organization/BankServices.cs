@@ -3,6 +3,7 @@ using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -18,10 +19,12 @@ namespace CBS.BusinessService.Config
     public class BankServices : BaseService
     {
         private readonly ApiCallerHelper _bankConfigApiHelper;
+        private readonly ApiCallerHelper _identityServerBaseUrl;
 
         public BankServices()
         {
             _bankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
+            _identityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -163,25 +166,35 @@ namespace CBS.BusinessService.Config
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> UploadBankLogo(CustomerDocumentRequest attachedToLoan)
+        public async Task<ExecutionMessages> UploadBankLogo(CustomerDocumentRequest documentRequest)
         {
             try
             {
+                //var additionalParams = new Dictionary<string, string>
+                //{
+                //    { "BankID", attachedToLoan.CustomerID }
+                //};
                 var additionalParams = new Dictionary<string, string>
                 {
-                    { "BankID", attachedToLoan.CustomerID }
+                    { "OperationID", documentRequest.CustomerID },
+                    { "DocumentId", "N/A" },
+                    { "DocumentType", "Bank Logo" },
+                    { "ServiceType", "BankMicroservice" },
+                    { "CallBackBaseUrl",ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString()},
+                    { "CallBackEndPoint", APICallHelper.AttachedDocumentsRemotelyBank},
+                    { "RemoteFilePath", $"BankLogo" },
                 };
-                var response = await _bankConfigApiHelper.PostFilesAndParamsAsync<ServiceResponse<Bank>>(APICallHelper.UpdateBankLogo, additionalParams, attachedToLoan.AttachedFiles);
-                if (response.ApiResponseData.Success)
+                var response = await _identityServerBaseUrl.PostFilesAndParamsAsync<DocumentAttachedToLoan>(APICallHelper.AttachedDocuments, additionalParams, documentRequest.AttachedFiles);
+
+                if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response, true, attachedToLoan.DocumentType, MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null,
-                        null);
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
+                        response.Message);
                     return ExecutionMessage;
                 }
-                GetExecutionMessages(attachedToLoan, false, attachedToLoan.DocumentType, MessagesResults.Failed,
-                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
-                    null);
+                GetExecutionMessages(documentRequest, false, null, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
             }
             catch (Exception ex)
             {

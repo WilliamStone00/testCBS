@@ -41,6 +41,16 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             //ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
             return View(cashDesk);
         }
+        public async Task<ActionResult> ExpenseOtherPayment()
+        {
+            ViewBag.Operation = "income_expense";
+            var cashDesk = await _cashDeskService.GetOtherCashDeskTransactions();
+            //ViewBag.Members = _cashDeskService.LoadMembersToList(cashDesk.Customers);
+            ViewBag.MemberAccounts = new SelectList(new List<StringValues>(), "None", "No-Account-Loaded");
+            await GetEventNames("EXPENSE");
+            //ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
+            return View(cashDesk);
+        }
         private async Task GetEventNames(string operationType)
         {
             ViewBag.EventCodes = await _accountingServices.GetEventNamesOtherCashIn(operationType);

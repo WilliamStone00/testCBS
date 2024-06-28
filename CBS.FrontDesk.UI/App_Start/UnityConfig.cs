@@ -27,7 +27,7 @@ namespace CBS.FrontDesk.UI
             // Register your dependencies here using container.RegisterType<>()
             container.RegisterType<IAuthenticationServices, AuthenticationServices>();
             container.RegisterType<IUserManagementServices, UserManagementServices>();
-            container.RegisterType<IMemberAccountJob, MemberAccountJob>();
+            //container.RegisterType<IMemberAccountJob, MemberAccountJob>();
             container.RegisterType<IBranchServices, BranchServices>();
             
             container.RegisterType<CountryServices, CountryServices>();

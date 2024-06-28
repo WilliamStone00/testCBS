@@ -324,6 +324,7 @@
     <Content Include="AppFiles\Images\SideImageHeader.jpeg" />
     <Content Include="AppFiles\Images\SideImageHeader.png" />
     <Content Include="AppFiles\Images\SideImageHeader_login.png" />
+    <Content Include="AppFiles\Images\BG4.jpeg" />
     <Content Include="App_Code\Helper\HtmlExtension.cs" />
     <Compile Include="AppFiles\Reporting\Accounting\GeneralLedger.cs">
       <AutoGen>True</AutoGen>
@@ -2842,7 +2843,7 @@
     <Content Include="Views\EndOfDayOperation\SubTeller.cshtml" />
     <Content Include="Views\EndOfDayOperation\Primary.cshtml" />
     <Content Include="Views\EndOfDayOperation\_CloseOfDayForm.cshtml" />
-    <Content Include="Views\CashDesk\OtherPayment.cshtml" />
+    <Content Include="Views\CashDesk\ExpenseOtherPayment.cshtml" />
     <Content Include="Views\CashDesk\_OtherPaymentForm.cshtml" />
     <Content Include="Views\CashDesk\_OtherPaymentDesk.cshtml" />
     <Content Include="Views\LoanDeliquencyConfiguration\_Create.cshtml" />
@@ -2858,6 +2859,11 @@
     <Content Include="Views\Loan\_FileDownloadData.cshtml" />
     <Content Include="Views\Loan\_SearchBox.cshtml" />
     <Content Include="Views\Loan\LoanReportGeneration.cshtml" />
+    <Content Include="Views\CashDesk\_ExpenseOtherPaymentDesk.cshtml" />
+    <Content Include="Views\CashDesk\_ExpenseOtherPaymentForm.cshtml" />
+    <Content Include="Views\CashDesk\_ExpenseOtherTransactionDesk.cshtml" />
+    <Content Include="Views\CashDesk\_ExpenseOtherTransactionForm.cshtml" />
+    <Content Include="Views\CashDesk\_ExpenseOtherTransactionTabs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -2979,13 +2985,13 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52456</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44389/</IISUrl>
+          <IISUrl>https://localhost:44381/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
           </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
-          <servers defaultServer="SelfHostServer">
+          <servers defaultServer="">
             <server name="SelfHostServer" exePath="" cmdArgs="" url="http://localhost:52456/" workingDir="" />
           </servers>
         </WebProjectProperties>

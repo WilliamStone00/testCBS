@@ -18,6 +18,7 @@ using CBS.BusinessService.MembersAccountSettings;
 using CBS.BusinessService.MembersAccountSettings.policy;
 using System.Net.Http;
 using Newtonsoft.Json;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 
 namespace CBS.BusinessService.CustomerManagement
 {
@@ -28,6 +29,8 @@ namespace CBS.BusinessService.CustomerManagement
         private readonly ApiCallerHelper _customerApiHelper;
         private readonly ApiCallerHelper _bankConfigApiHelper;
         private readonly ApiCallerHelper _transactionApiHelper;
+        private readonly ApiCallerHelper _identityServerBaseUrl;
+
         private readonly BranchServices _branchServices;
         private readonly MemberAccountActivationServices _memberAccountActivationServices;
         private readonly MemberAccountActivationPolicyServices _memberAccountActivationPolicyServices;
@@ -38,42 +41,89 @@ namespace CBS.BusinessService.CustomerManagement
             //_bankConfigApiHelper = new ApiCallerHelper("https://localhost:7085/");
             _bankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
             _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
+            _identityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
             _branchServices = branchServices;
             _memberAccountActivationServices = memberAccountActivationServices;
             _memberAccountActivationPolicyServices = memberAccountActivationPolicyServices;
         }
         //https://localhost:7085/
         // Other existing methods...
-        public async Task<ExecutionMessages> UploadFiles(CustomerDocumentRequest attachedToLoan)
+        //public async Task<ExecutionMessages> UploadFiles(CustomerDocumentRequest documentRequest)
+        //{
+        //    try
+        //    {
+
+        //        // Check if files are attached
+        //        if (documentRequest.AttachedFiles[0] == null)
+        //        {
+        //            // Handle case where no files are attached
+        //            return GetExecutionMessages(documentRequest, false, documentRequest.DocumentType, MessagesResults.Failed,
+        //      ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
+        //      null);
+        //        }
+        //        var additionalParams = new Dictionary<string, string>
+        //        {
+        //            { "Id", documentRequest.CustomerID },
+        //            { "documentType", documentRequest.DocumentType },
+        //            { "serviceType", documentRequest.ServiceTypeType },
+        //        };
+
+
+
+
+
+        //        var response = await _bankConfigApiHelper.PostFilesAndParamsAsync<ServiceResponse<DocumentUploadResponse>>(APICallHelper.UploadFile, additionalParams, documentRequest.AttachedFiles);
+        //        if (response.ApiResponseData != null)
+        //        {
+        //            GetExecutionMessages(response, true, documentRequest.DocumentType, MessagesResults.Success,
+        //                ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null,
+        //                null);
+        //            return ExecutionMessage;
+        //        }
+        //        GetExecutionMessages(documentRequest, false, documentRequest.DocumentType, MessagesResults.Failed,
+        //            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
+        //            null);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+        //            SystemMessageStatus.Failed.ToString(), ex);
+        //    }
+        //    return ExecutionMessage;
+        //}
+        public async Task<ExecutionMessages> UploadFiles(CustomerDocumentRequest documentRequest)
         {
             try
             {
-
                 // Check if files are attached
-                if (attachedToLoan.AttachedFiles[0] == null)
+                if (documentRequest.AttachedFiles[0] == null)
                 {
                     // Handle case where no files are attached
-                    return GetExecutionMessages(attachedToLoan, false, attachedToLoan.DocumentType, MessagesResults.Failed,
-              ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
+                    return GetExecutionMessages(documentRequest, false, "File", MessagesResults.Failed,
+                  ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
               null);
                 }
                 var additionalParams = new Dictionary<string, string>
                 {
-                    { "Id", attachedToLoan.CustomerID },
-                    { "documentType", attachedToLoan.DocumentType },
-                    { "serviceType", attachedToLoan.ServiceTypeType },
+                    { "OperationID", documentRequest.CustomerID },
+                    { "DocumentId", "N/A" },
+                    { "DocumentType", documentRequest.DocumentType },
+                    { "ServiceType", documentRequest.ServiceTypeType },
+                    { "CallBackBaseUrl",ConfigurationManager.AppSettings["CustomerBaseUrl"].ToString()},
+                    { "CallBackEndPoint", APICallHelper.AttachedDocumentsRemotelyMembers},
+                    { "RemoteFilePath", $"MembersImages/{documentRequest.DocumentType}" },
                 };
-                var response = await _bankConfigApiHelper.PostFilesAndParamsAsync<ServiceResponse<DocumentUploadResponse>>(APICallHelper.UploadFile, additionalParams, attachedToLoan.AttachedFiles);
-                if (response.ApiResponseData != null)
+                var response = await _identityServerBaseUrl.PostFilesAndParamsAsync<DocumentUploadResponse>(APICallHelper.AttachedDocuments, additionalParams, documentRequest.AttachedFiles);
+                if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response, true, attachedToLoan.DocumentType, MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null,
-                        null);
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
+                        response.Message);
                     return ExecutionMessage;
                 }
-                GetExecutionMessages(attachedToLoan, false, attachedToLoan.DocumentType, MessagesResults.Failed,
-                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
-                    null);
+                GetExecutionMessages(documentRequest, false, null, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
 
             }
             catch (Exception ex)
@@ -409,7 +459,8 @@ namespace CBS.BusinessService.CustomerManagement
                         ByeLawFee = policy.MaximumByeLawsFee,
                         LoanPolicyFee = policy.MaximumLoanPolicyFee,
                         MemberRegistrationFeePolicyId = policy.Id,
-                        Balance = policy.MaximumEntrancenFee + policy.MaximumByeLawsFee + policy.MaximumLoanPolicyFee, AmountPaid=0,
+                        Balance = policy.MaximumEntrancenFee + policy.MaximumByeLawsFee + policy.MaximumLoanPolicyFee,
+                        AmountPaid = 0,
                         BuildingContribution = policy.MaximumBuildingContribution
                     };
                     result.option = "AddMemberAccount";

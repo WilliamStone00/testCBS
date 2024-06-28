@@ -29,7 +29,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             try
             {
                 ViewBag.Key = null;
-                await GetList();
+                ViewBag.EventCodes = await _accountingServices.GetEventNamesOtherCashIn("FEE");
                 return View();
             }
             catch (Exception ex)
@@ -63,7 +63,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
    
-            await GetList();
+            
             if (path == "list")
             {
                 var data = await _FeeServices.GetFees();
@@ -72,12 +72,14 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
             else if (path == "new")
             {
+                ViewBag.EventCodes = await _accountingServices.GetEventNamesOtherCashIn("FEE");
                 ViewBag.Key = null;
                 return PartialView(partialView, new Fee());
             }
             else
             {
                 ViewBag.Key = KEY;
+                ViewBag.EventCodes = await _accountingServices.GetEventNamesOtherCashIn("FEE");
                 var Fee = await _FeeServices.GetFee(KEY);
                 return PartialView(partialView, Fee);
 
@@ -92,7 +94,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         public async Task<bool> GetList()
         {
             ViewBag.Languages = _FeeServices.GetLanguages();
-            ViewBag.Roles = await _accountingServices.GetAccountingRoles();
+            
             return true;
         }
     }
