@@ -1,8 +1,13 @@
-﻿function AddORUpdateGenCustom(KEY, divToLoadData, partialView, path, controller, serviceOption,feeid) {
+﻿function AddORUpdateGenCustom(KEY, divToLoadData, partialView, path, controller, serviceOption, feeid) {
+    // Initialize data and reset the main form
     EditResetMainCustom(KEY, partialView, divToLoadData, controller, "InitializeData", null, path, null, serviceOption);
+
+    // Initialize select2 elements
     $('.select2').select2();
-    GetFee(feeid);
+
+   
 }
+
 function EditResetMainCustom(KEY, partialView, divID, controller, action, div1, path, div2, serviceOption) {
     $.ajax({
         type: "GET",

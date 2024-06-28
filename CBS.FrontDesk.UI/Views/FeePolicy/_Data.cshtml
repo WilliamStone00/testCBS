@@ -34,7 +34,7 @@
                             <td style="width:10%">@d.Value.ToString("#,##0.0")</td>
                             <td style="width:10%">@d.Fee.FeeType</td>
                             <td style="width:13%">
-                                <a href="#" onclick="AddORUpdateGenCustom(@d.Id,'datalistingview','_Create','update','FeePolicy',null,'@d.FeeId')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Fee.Name to edit">Edit</a> |
+                                <a href="#" onclick="AddORUpdateGenCustom('@d.Id','datalistingview','_Create','update','FeePolicy',null,'@d.FeeId')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Fee.Name to edit">Edit</a> |
                                 <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Fee.Name" onclick="DeleteRecordDataTable('FeePolicy','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
                             </td>
                         </tr>

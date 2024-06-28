@@ -72,7 +72,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 ViewBag.Key = KEY;
                 var fees = await _feeServices.GetFees();
                 ViewBag.Fees = fees;
+       
                 var Guaranty = await _services.GetFeePolicy(KEY);
+                ViewBag.Base = Guaranty.Fee.FeeType;
                 return PartialView(partialView, Guaranty);
 
             }
