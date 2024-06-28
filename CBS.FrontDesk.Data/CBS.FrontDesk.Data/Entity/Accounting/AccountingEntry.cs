@@ -84,11 +84,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string EntryDateTime { get; set; }
         public string EntryDate { get; set; }
         public string Description { get; set; }
-        public string TransactionReference { get; set; }
+        public string Reference { get; set; }
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
-        public string DebitAmount { get; set; }
-        public string CreditAmount { get; set; }
+        public string Debit { get; set; }
+        public string Credit { get; set; }
         //public string CrCurrentBalance { get; set; }
         //public string DrCurrentBalance { get; set; }
    public string CurrentBalance { get; set; }

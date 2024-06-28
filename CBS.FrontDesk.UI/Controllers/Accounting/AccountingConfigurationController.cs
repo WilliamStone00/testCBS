@@ -29,6 +29,8 @@ using CBS.BusinessService.Config;
 using System.Xml.Linq;
 using CBS.FrontDesk.Data.Entity.Config;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using System.IO.Packaging;
+using ClosedXML.Excel;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -50,6 +52,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly AccountCategoryServices _AccountCategoryServices;
         private readonly StatementModelServices _statementModelServices;
         private readonly TrialBalanceReferenceServices _trialBalanceReferenceServices;
+        private readonly TrailBalanceUploudServices _trialBalanceUploudServices;
         public AccountingConfigurationController()
         {
             _AccountingRuleServices = new AccountingRuleService();
@@ -66,6 +69,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _statementModelServices = new StatementModelServices();
             _ChartOfAccountManagementPositionServicesServices = new ChartOfAccountManagementPositionService();
             _AccountClassServices = new AccountClassServices();
+            _trialBalanceUploudServices = new TrailBalanceUploudServices();
         }
         // GET: AccountingConfiguration
 
@@ -74,7 +78,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             await GetList();
             return View(new AccountingConfiguration());
         }
-    
+        public async Task<ActionResult> DownloadFile()
+        {
+      
+            return View(new AccountingConfiguration());
+        }
         public async Task<ActionResult> AccountUpload()
         {
             ViewBag.Branches = BuildMenuISViewBag((await _branchService.GetBranches()).ToList());
@@ -133,9 +141,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private dynamic BuildMenuISViewBag(List<Branch> listOfItems)
         {
            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select BranchCode" });
             foreach (var item in listOfItems)
             {
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.BranchCode} - {item.Name}" });
+                if (!item.BranchCode.Equals("000"))
+                {
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.BranchCode} - {item.Name}" });
+                }
+               
             }
             return selectListItems;
  
@@ -306,7 +319,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 //var number = chartOfAccountNumber.Length==1? chartOfAccountNumber: chartOfAccountNumber.Substring(0, 1);
                 var data = await _chartOfAccountServices.GetChartOfAccountById(Id);
                 var dataList = new List<StringValues>();
-                if (data.LabelEn== "BALANCING_ACCOUNT")
+                if (data.LabelEn== "BALANCING_ACCOUNT"|| data.LabelEn.ToUpper()== "ENGLISH")
                 {
                     var dataModel = (await _AccountCategoryServices.GetAccountCategory()).FirstOrDefault();
                     dataList.Add(new StringValues { Text = dataModel.Name, Value = dataModel.Id });
@@ -814,10 +827,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     return PartialView(partialView, new AccountingConfiguration { Account = data });
 
                 }
-                else if (path == "upload")
+                else if (path == "accountUpload")
                 {
 
-                    return PartialView(partialView, new AccountingConfiguration { Accounts = new List<Data.Account>() });
+                    return PartialView(partialView, new AccountingConfiguration { TBuploadHistories = new List<Data.TrailBalanceUploud>() });
 
                 }
                 else
@@ -1120,6 +1133,32 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
 
             }
+            else if (serviceOption == "accountUpload")
+            {
+                if (path == "list")
+                {
+                   
+                  
+
+                    var sysData = new AccountingConfiguration { TBuploadHistories = (await _trialBalanceUploudServices.GetTrailBalanceUploud()).ToList() };
+                    return PartialView(partialView, sysData);
+
+                }
+                else if (path == "new")
+                {
+                    ViewBag.Branches = BuildMenuISViewBag((await _branchService.GetBranches()).ToList());
+                    ViewBag.BankName = _branchService.GetBankName();
+                    return PartialView(partialView, new AccountingConfiguration { });
+                }
+                else
+                {
+
+
+
+                    return PartialView(partialView, new AccountingConfiguration {  });
+                }
+
+            }
             return null;
         }
 
@@ -1205,137 +1244,185 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
 
             }
+            else if (serviceOption == "accountUpload")
+            {
+
+                var data = await _trialBalanceUploudServices.Delete(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
             else
             {
                 return null;
             }
 
         }
-
-
+ 
         public async Task<ActionResult> UploadAccountModel(AccountUploadModel model)
         {
-            List<AccountModel> models = new List<AccountModel>();
-
-            if (ModelState.IsValid)
+            var UploadModel = new UploadAccount();
+            List<AccountModelX> models = new List<AccountModelX>();
+            try
             {
-                if (model.ExcelFile.ContentType == "application/vnd.ms-excel" || model.ExcelFile.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                if (ModelState.IsValid)
                 {
-                    string filePath = Path.GetTempFileName();
+                    // Check if the uploaded file is an Excel file
+                    if (model.ExcelFile != null && model.ExcelFile.ContentLength > 0)
+                    {
+                        // Check if the file is an Excel file
+                        if (Path.GetExtension(model.ExcelFile.FileName).Equals(".xls") || Path.GetExtension(model.ExcelFile.FileName).Equals(".xlsx"))
+                        {
+                            try
+                            {
+                                using (var stream = model.ExcelFile.InputStream)
+                                {
+                                    // Call the method to read the Excel file and convert it to a list of Data objects
+                                    var dataList = ReadExcelFile(stream);
+                                    UploadModel.AccountModelList = dataList;
+                                    //this.HttpContext.Session["account" + this.HttpContext.Session.SessionID] = model;
 
-                    // Save the uploaded file to the file system
-                    model.ExcelFile.SaveAs(filePath);
+                                    if (_AccountServices.IsHeadOffice() == true)
+                                    {
+                                        UploadModel.BranchId = model.BranchId;
+                                    }
+                                    else
+                                    {
+                                        UploadModel.BranchId = _AccountServices.GetBranchID();
+                                    }
+                                   
 
-                    // Read data from the Excel file
-                    DataTable dt = ReadExcelFile(filePath);
-
-                    // Process the data from the DataTable
-                    models = await ProcessExcelDataAsync(dt);
-
-                    // Delete the temporary file
-                    System.IO.File.Delete(filePath);
+                                        var data = await  _AccountServices.Create(UploadModel);
+                                    this.HttpContext.Session["account" + this.HttpContext.Session.SessionID] = data.Data;
+                  
+                                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data), Data= data.Data });
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                // Log the exception
+                                // Handle the error gracefully
+                                throw new InvalidOperationException("An error occurred while extracting data from the file.", ex);
+                            }
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("Please upload a valid Excel file.");
+                        }
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("No file was uploaded.");
+                    }
+                   
                 }
                 else
                 {
-                    ModelState.AddModelError("ExcelFile", "Please upload an Excel file.");
+                    return Json("Invalid model state. Please check your input.", JsonRequestBehavior.AllowGet);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return Json("Please upload an Excel file.", JsonRequestBehavior.AllowGet);
+                // Log the exception details
+                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                return Json($"An error occurred: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
-            // Check if the uploaded file is an Excel file
-
-            return Json(models, JsonRequestBehavior.AllowGet);
-
+ 
         }
 
-        [HttpPost]
-        public async Task<ActionResult> UploadAccountsAsync(string branchId)
+
+      
+        private List<AccountModelX> ReadExcelFile(Stream stream)
         {
-            UploadAccountCommand model = new UploadAccountCommand();
-           
-            if (this.HttpContext.Session["account" + this.HttpContext.Session.SessionID] != null)
+            var dataList = new List<AccountModelX>();
+            try
             {
-                 model= (UploadAccountCommand)this.HttpContext.Session["account" + this.HttpContext.Session.SessionID];
-                model.BranchId = branchId;
-                model.BranchCode = (await _branchService.GetBranchByBankID(branchId)).BranchCode;
-                var node= _AccountServices.Create(model);
+                using (var workbook = new XLWorkbook(stream))
+                {
+                    var worksheet = workbook.Worksheets.First();
+                    foreach (var row in worksheet.RowsUsed().Skip(1)) // Skip header row
+                    {
+                        if (row.CellsUsed().Count() < 8) continue; // Skip rows with insufficient columns
+
+                        var data = new AccountModelX
+                        {
+                            AccountNumber = row.Cell(1).GetString(),
+                            AccountName = row.Cell(2).GetString(),
+                            ChartofAccount = row.Cell(1).GetString().Substring(0, Math.Min(6, row.Cell(1).GetString().Length)),
+                            CreatedDate = DateTime.Today.ToString("yyyy-MM-dd"),
+                            BeginningDebitBalance = decimal.Parse(row.Cell(3).GetString()),
+                            BeginningCreditBalance = decimal.Parse(row.Cell(4).GetString()),
+                          BookingDirection = decimal.Parse(row.Cell(4).GetString()) == 0 ? "D" : "C",
+                            MovementDebitBalance = decimal.Parse(row.Cell(5).GetString()),
+                            MovementCreditBalance = decimal.Parse(row.Cell(6).GetString()),
+                            EndBalanceDebit = decimal.Parse(row.Cell(7).GetString()),
+                            EndBalanceCredit = decimal.Parse(row.Cell(8).GetString())
+                        };
+
+                        dataList.Add(data);
+                    }
+                }
             }
-
-            return Json(true, JsonRequestBehavior.AllowGet);
-
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error reading Excel file: {ex.Message}");
+                throw;
+            }
+            return dataList;
         }
-
 
         private DataTable ReadExcelFile(string filePath)
         {
             DataTable dt = new DataTable();
-            // Set the license context
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
-            using (var package = new OfficeOpenXml.ExcelPackage(filePath))
+            try
             {
-                // Get the first worksheet
-                var worksheet = package.Workbook.Worksheets.First();
+                
+                // Set the license context
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-                // Add columns to the DataTable
-                try
+                using (var package = new OfficeOpenXml.ExcelPackage(new FileInfo(filePath)))
                 {
+                    var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                    if (worksheet == null)
+                    {
+                        throw new InvalidOperationException("The Excel file does not contain any worksheets.");
+                    }
+
+                    if (worksheet.Dimension == null)
+                    {
+                        throw new InvalidOperationException("The worksheet is empty or invalid.");
+                    }
+
+                    // Add columns to the DataTable
                     for (int col = 1; col <= worksheet.Dimension.Columns; col++)
                     {
-                        dt.Columns.Add(new DataColumn(worksheet.Cells[1, col].Value.ToString()));
+                        var cellValue = worksheet.Cells[1, col].Value;
+                        dt.Columns.Add(new DataColumn(cellValue?.ToString() ?? $"Column{col}"));
                     }
-                }
-                catch (Exception ex)
-                {
 
-                    throw(ex);
-                }
-
-                // Populate the DataTable with data from the worksheet
-                for (int row = 2; row <= worksheet.Dimension.Rows; row++)
-                {
-                    DataRow dr = dt.NewRow();
-                    for (int col = 1; col <= worksheet.Dimension.Columns; col++)
+                    // Populate the DataTable with data from the worksheet
+                    for (int row = 2; row <= worksheet.Dimension.Rows; row++)
                     {
-                        dr[col - 1] = worksheet.Cells[row, col].Value;
+                        DataRow dr = dt.NewRow();
+                        for (int col = 1; col <= worksheet.Dimension.Columns; col++)
+                        {
+                            dr[col - 1] = worksheet.Cells[row, col].Value;
+                        }
+                        dt.Rows.Add(dr);
                     }
-                    dt.Rows.Add(dr);
                 }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Console.WriteLine($"Error reading Excel file: {ex.Message}");
+                Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                throw; // Re-throw the exception to be handled by the calling method
             }
 
             return dt;
         }
 
-        private async Task<List<AccountModel>> ProcessExcelDataAsync(DataTable dt)
-        {
-            List<AccountModel> models = new List<AccountModel>();
-            var model = new UploadAccountCommand();
-            foreach (DataRow row in dt.Rows)
-            {
-                //Account Number	Account name	BEG.DEBIT	BEG.CREDIT	MOV.DEBIT	MOV.CREDIT	End.DEBIT	End.CREDIT	BranchCode
-                string accountNumber = row["Account Number"].ToString();
-                string accountName = row["Account name"].ToString();
-                string beginningDebit = row["BEG.DEBIT"].ToString();
-                string beginningCredit = row["BEG.CREDIT"].ToString();
-                string movementDebit = row["MOV.DEBIT"].ToString();
-                string movementCredit = row["MOV.CREDIT"].ToString();
-                string endDebit = row["End.DEBIT"].ToString();
-                string endCredit = row["End.CREDIT"].ToString();
-                string branchCode = row["BranchCode"].ToString();
-              
-                models.Add(new AccountModel(accountNumber, accountName, accountNumber.Substring(0,6), DateTime.Today.ToString("yyyy-MM-dd"), (Convert.ToDecimal(beginningCredit)- Convert.ToDecimal(beginningDebit)),( Convert.ToDecimal(endCredit)- Convert.ToDecimal(endDebit)), branchCode));
-            }
-            model.AccountModelList = models;
-            //this.HttpContext.Session["account" + this.HttpContext.Session.SessionID] = model;
-         var listOfBranches=   (await _branchService.GetBranches()).ToList();
-            var modelBR = listOfBranches.Find(x => x.BranchCode ==  models[0].BranchCode);
-            model.BranchId = modelBR.Id;
-            model.BranchCode = modelBR.BranchCode;
-            var node = _AccountServices.Create(model);
-            return models;
-        }
 
     }
 

@@ -90,7 +90,7 @@
                     </table>
                 </div>
                 <div class="card card-action mb-5">
-                    <h5 class="card-header">Cash Replenishment Request Status</h5>
+                    <h5 class="card-title">Cash Replenishment Request Status</h5>
                     <div class="card-body">
                         <div class="mb-3 col-12 mb-0">
                             @if (@Model.CashReplenimentRequestdto.IsApproved)
@@ -148,14 +148,7 @@
                         </div>
                     }*@
 
-                                    <div class="form-check mb-3">
-                                        <div class="form-floating form-floating-outline">
-
-                                            @Html.DropDownListFor(m => m.CashReplenimentRequestdto.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.AccountId, "", new { @class = "text-danger" })
-                                            <label for="Account">Select debiting account</label>
-                                        </div>
-                                    </div>
+                             
                                     <div class="form-check mb-3">
                                         <div class="form-floating form-floating-outline">
 
@@ -164,17 +157,29 @@
                                             <label for="Account">Make decision</label>
                                         </div>
                                     </div>
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.CashReplenimentRequestdto.AmountConfirm, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.AmountConfirm, "", new { @class = "text-danger" })
+                                    <div class="form-check mb-3" id="hideBranchID">
+                                        <div class="form-floating form-floating-outline">
 
-                                        <label for="Description"> Approved Amount</label>
+                                            @Html.DropDownListFor(m => m.CashReplenimentRequestdto.CorrespondingBranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.CorrespondingBranchId, "", new { @class = "text-danger" })
+                                            <label for="Account">Select Branch</label>
+                                        </div>
                                     </div>
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextAreaFor(m => m.CashReplenimentRequestdto.ApprovedMessage, new { @class = "form-control", @style = "height: 200px;" })
-                                        @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.ApprovedMessage, "", new { @class = "text-danger" })
+                                    <div class="form-check mb-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.CashReplenimentRequestdto.AmountConfirm, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.AmountConfirm, "", new { @class = "text-danger" })
 
-                                        <label for="Description"> Approved Message Description</label>
+                                            <label for="Description"> Approved Amount</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextAreaFor(m => m.CashReplenimentRequestdto.ApprovedMessage, new { @class = "form-control", @style = "height: 200px;" })
+                                            @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.ApprovedMessage, "", new { @class = "text-danger" })
+
+                                            <label for="Description"> Approved Message Description</label>
+                                        </div>
                                     </div>
                                     <div class="col-12 text-end">
                                         <button type="submit" class="btn btn-primary me-2">Validate</button>
@@ -188,7 +193,7 @@
 
                             }
 
-                    }
+                        }
 
 
                     </div>
@@ -202,4 +207,4 @@
 </div>
 
 
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")}
+ 

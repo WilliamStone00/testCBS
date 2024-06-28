@@ -8,46 +8,47 @@
             <div class="card-body">
                 @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                 {<input type="hidden" name="ServiceOption" value="account" id="ServiceOption" />
-                    <div class="row mt-2 gy-4">
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.Account.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---Select ChartOfAccount---", new { @class = "form-control select2", @search = "true", @id = "Account_ChartOfAccountId" })
-                                @Html.ValidationMessageFor(m => m.Account.ChartOfAccountId, "", new { @class = "text-danger" })
-                                <label>Chart Of Account</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.Account.AccountCategoryId, new SelectList(ViewBag.AccountCategories == null ? "" : ViewBag.AccountCategories, "Text", "Value"), "---Select Account---", new { @class = "form-control select2", @search = "true", @id = "Account_AccountCategoryId" })
-                                @Html.ValidationMessageFor(m => m.Account.AccountCategoryId, "", new { @class = "text-danger" })
-                                <label>Account Category</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.TextBoxFor(m => m.Account.AccountNumber, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Account.AccountNumber, "", new { @class = "text-danger" })
-                                <label>Account Number</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.TextBoxFor(m => m.Account.AccountName, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Account.AccountName, "", new { @class = "text-danger" })
-                                <label>Account Label</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.Account.AccountTypeId, new SelectList(ViewBag.AccountTypes == null ? "" : ViewBag.AccountTypes, "Text", "Value"), "---Select AccountType---", new { @class = "form-control select2", @search = "true" })
-                                @Html.ValidationMessageFor(m => m.Account.AccountTypeId, "", new { @class = "text-danger" })
-                                <label>AccountType</label>
-                            </div>
-                        </div>
+                 <div class="row mt-2 gy-4">
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+                             @Html.DropDownListFor(m => m.Account.ChartOfAccountManagementPositionId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---Select ChartOfAccount---", new { @class = "form-control select2", @search = "true", @id = "Account_ChartOfAccountId" })
+                             @Html.ValidationMessageFor(m => m.Account.ChartOfAccountManagementPositionId, "", new { @class = "text-danger" })
+                             <label>Chart of account management position</label>
+                         </div>
+                     </div>
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+                             @Html.DropDownListFor(m => m.Account.AccountOwnerId, new SelectList(ViewBag.AccountCategories == null ? "" : ViewBag.AccountCategories, "Text", "Value"), "---Select Account---", new { @class = "form-control select2", @search = "true", @id = "Account_AccountCategoryId" })
+                             @Html.ValidationMessageFor(m => m.Account.AccountOwnerId, "", new { @class = "text-danger" })
+                             <label>Account Owner (Branch managing the account)</label>
+                         </div>
+                     </div>
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+                             @Html.TextBoxFor(m => m.Account.AccountNumber, new { @class = "form-control" })
+                             @Html.ValidationMessageFor(m => m.Account.AccountNumber, "", new { @class = "text-danger" })
+                             <label>Chart of account number</label>
+                         </div>
+                     </div>
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+                             @Html.TextBoxFor(m => m.Account.AccountNumberCU, new { @class = "form-control" })
+                             @Html.ValidationMessageFor(m => m.Account.AccountNumberCU, "", new { @class = "text-danger" })
+                             <label>Account number [(chart of account)(branchCode)(management position)] [(000000)(000)(000)]</label>
+                           
+                         </div>
+                     </div>
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+                             @Html.TextBoxFor(m => m.Account.AccountName, new { @class = "form-control" })
+                             @Html.ValidationMessageFor(m => m.Account.AccountName, "", new { @class = "text-danger" })
+                             <label>Account Label</label>
+                         </div>
+                     </div>
 
 
 
-                    </div>
+                 </div>
                     <div class="mt-4">
                         @if (Model.Account.Id == null)
                         {

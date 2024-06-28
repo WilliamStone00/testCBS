@@ -86,6 +86,7 @@
     <Compile Include="Entity\Accounting\IncomeStatement.cs" />
     <Compile Include="Entity\Accounting\ModelIncomeExpenses.cs" />
     <Compile Include="Entity\Accounting\ModelBalanceSheetAssets.cs" />
+    <Compile Include="Entity\Accounting\TrailBalanceUploud.cs" />
     <Compile Include="Entity\Accounting\TrialBalance6ColumnDto.cs" />
     <Compile Include="Entity\Accounting\TrialBalance4ColumnDto.cs" />
     <Compile Include="Entity\Accounting\LiaisonLedgerEntry.cs" />

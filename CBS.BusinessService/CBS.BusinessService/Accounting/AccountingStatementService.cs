@@ -41,9 +41,9 @@ namespace CBS.BusinessService.Accounting
                             AccountNumber = entry.EntryType == "DEBIT" ? drAccount?.AccountNumber : crAccount?.AccountNumber,
                             AccountName = entry.EntryType == "DEBIT" ? drAccount?.AccountName : crAccount?.AccountName,
                             Description = entry.Description,
-                            TransactionReference = entry.ReferenceID,
-                            DebitAmount = entry.EntryType == "DEBIT" ? entry.DrAmount.ToString() : "0",
-                            CreditAmount = entry.EntryType == "CREDIT" ? entry.CrAmount.ToString() : "0",
+                            Reference = entry.ReferenceID,
+                            Debit  = entry.EntryType == "DEBIT" ? entry.DrAmount.ToString() : "0",
+                            Credit = entry.EntryType == "CREDIT" ? entry.CrAmount.ToString() : "0",
                             EntryDateTime = entry.EntryDate.ToString(),
                             //CreditAccountBalance = entry.DrCurrentBalance.ToString()
                         };
@@ -76,18 +76,18 @@ namespace CBS.BusinessService.Accounting
                             join drAccount in accounts on entry.AccountId equals drAccount.Id                   
                             select new AccountingEntryDto
                             {
-                                EntryDate = entry.EntryDate.Date.ToShortDateString(),
-                                AccountNumber =  entry.AccountNumber,
+                                EntryDate = entry.EntryDate.ToString(),
+                                AccountNumber = drAccount.AccountNumberCU,
                                 AccountName = drAccount.AccountName,
                                 Description = entry.Description,
-                                TransactionReference = entry.ReferenceID,
-                                DebitAmount = entry.EntryType == "DEBIT" ? entry.DrAmount.ToString() : "0",
-                                CreditAmount = entry.EntryType == "CREDIT" ? entry.CrAmount.ToString() : "0",
+                                 Reference = entry.ReferenceID,
+                                Debit = entry.DrAmount.ToString("N") ,
+                                Credit  = entry.CrAmount.ToString("N")
                                 //DebitAccountBalance = entry.CrCurrentBalance.ToString(),
                                 //CreditAccountBalance = entry.DrCurrentBalance.ToString()
                             };
 
-                return query.OrderBy(n=>n.TransactionReference).ToList();
+                return query.OrderBy(n=>n.Reference).ToList();
             }
             catch (Exception ex)
             {
@@ -220,11 +220,12 @@ namespace CBS.BusinessService.Accounting
             JournalEntryDto dto = new JournalEntryDto();
             dto.AccountNumber = account.AccountNumber.PadRight(6, '0');
             dto.Description = account.Description;
-            dto.DebitAmount = account.DrAmount.ToString();
-            dto.CreditAmount = account.CrAmount.ToString();
+            dto.Debit  = account.DrAmount.ToString();
+            dto.Credit = account.CrAmount.ToString();
             dto.Reference = account.ReferenceID.ToString();
-            dto.EntryDatetime=account.EntryDate.ToString();
-            dto.Address = model.Address;
+            dto.EntryDate =account.EntryDate.ToString();
+                
+        dto.Address = model.Address;
             dto.BranchLocation = model.Location;
             dto.Location = model.Location;
             dto.Capital = model.Capital;

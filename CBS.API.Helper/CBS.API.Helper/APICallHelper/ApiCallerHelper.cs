@@ -20,7 +20,8 @@ using System.Web.UI.WebControls;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using System.Net.Sockets;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
-
+using CBS.FrontDesk.Data;
+ 
 namespace CBS.API.Helper
 {
     public class ApiCallerHelper : IDisposable
@@ -363,7 +364,16 @@ namespace CBS.API.Helper
             var Model = await HandleTrialBalance4ColumnResponse(response);
             return Model.Data;
         }
-        
+        public async Task<UploadAccountResultServiceResponse> PostUploadAccountResultResponseAsync(string apiUrl, object data)
+        {
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+            string jsonData = JsonConvert.SerializeObject(data);
+            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            AddAuthorizationHeader(_httpClient);
+            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+            var Model = await HandleUploadAccountResultResponse(response);
+            return Model;
+        }
         public async Task<List<ModelBalanceSheetAssets>> PostModelBalanceSheetAssetsAsync(string apiUrl, object data)
         {
             apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
@@ -494,7 +504,7 @@ namespace CBS.API.Helper
 
         public async Task<ApiResponse<T>> DeleteAsync<T>(string apiUrl)
         {
-            apiUrl = $"{GetEndpoint(_newbaseURL)}{apiUrl}";
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
             AddAuthorizationHeader(_httpClient);
             HttpResponseMessage response = await _httpClient.DeleteAsync(apiUrl);
             return await HandleResponse<T>(response);
@@ -934,6 +944,25 @@ namespace CBS.API.Helper
             }
         }
 
+        private async Task<UploadAccountResultServiceResponse> HandleUploadAccountResultResponse(HttpResponseMessage response)
+        {
+            string responseData = "";
+            UploadAccountResultServiceResponse entries = new UploadAccountResultServiceResponse();
+            try
+            {
+                if (response.Content != null)
+                {
+                      responseData = await response.Content.ReadAsStringAsync();
+
+                    entries = JsonConvert.DeserializeObject<UploadAccountResultServiceResponse>(responseData);
+                }
+                return entries;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
         private async Task<ModelBalanceSheetAssetsServiceResponse> HandleBalanceSheetAssetsResponse(HttpResponseMessage response)
         {
 

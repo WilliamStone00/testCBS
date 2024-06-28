@@ -13,6 +13,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Description { get; set; }
         public string RootDescription { get; set; }
         public string ChartOfAccountId { get; set; }
+        public bool IsHeadOfficeAccount { get; set; }
     }
     public class ManagementSelectionOption
     {

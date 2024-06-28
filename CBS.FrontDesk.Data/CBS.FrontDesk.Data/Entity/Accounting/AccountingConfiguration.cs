@@ -28,6 +28,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<Account> Accounts { get; set; } = new List<Account>();
         public List<ChartOfAccount> ChartOfAccounts { get; set; } = new List<ChartOfAccount>();
         public List<AccountType> AccountTypes { get; set; } = new List<AccountType>();
+        public List<TrailBalanceUploud> TBuploadHistories { get; set; } = new List<TrailBalanceUploud>();
         public StatementModel IncomeStatement { get; set; } = new StatementModel();
         public List<StatementModel> IncomeStatements { get; set; } = new List<StatementModel>();
         public TrialBalanceReference TrialBalanceReference { get; set; } = new TrialBalanceReference();

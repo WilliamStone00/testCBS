@@ -509,17 +509,14 @@
 
         public static string Get_AccountClassCategory = "/api/v1/AccountClassCartegory/{0}";
         //Get All AccountCategory
-        public static string GetAllAccountCategory = "/api/v1/AccountClassCartegories/{0}";
+        public static string GetAllAccountCategory = "/api/v1/AccountCartegories";
         // POST  Create a AccountClass
         public static string CreateAccountCategory = "/api/v1/AccountCartegory";
         //AccountCategory
         //Get,Update,Delete AccountCategory By Id
         public static string Get_Update_Delete_ChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition/{0}";
-
         public static string Get_ChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition/{0}";
-        //Get All AccountCategory
         public static string GetAllChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPositions";
-        // POST  Create a AccountClass
         public static string CreateChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition";
         //Statementmodel
         //Get,Update,Delete AccountCategory By Id api/v1/StatementModel/
@@ -543,7 +540,8 @@
         //Get,Update,Delete ChartOfAccount By Id
         public static string Get_Update_Delete_ChartOfAccount = "/api/v1/ChartOfAccount/{0}";
         //Get All ChartOfAccount
-        public static string GetAllChartOfAccount = "/api/v1/ChartOfAccountManagementPosition/GetAllChartOfAccounts";
+        public static string GetAllChartOfAccount = "/api/v1/ChartOfAccounts"; ///
+        public static string GetAllChartOfAccountManagementPositionByChart = "api/v1/ChartOfAccountManagementPosition/GetAllChartOfAccounts";
         public static string Get_ChartOfAccount_By_AccountNumber = "/api/v1/ChartOfAccount/GetChartOfAccountByAccountNumber/{0}";
         //Get All ChartOfAccount
  
@@ -640,5 +638,9 @@
         public static string Create_BudgetCategory = "/api/v1/BudgetCategory";
         public static string LockBudget_BudgetCategory = "/api/v1/BudgetCategory/LockBudget/{0}";
         public static string ActivateBudget_BudgetCategory = "/api/v1/BudgetCategory/ApprovedBudget/{0}";
+
+        public static string Get_Update_Delete_TrailBalanceUploud = "/api/v1/TrailBalanceUploud/{0}";
+
+        public static string GetAllTrailBalanceUploud = "/api/v1/TrailBalanceUplouds";
     }
 }

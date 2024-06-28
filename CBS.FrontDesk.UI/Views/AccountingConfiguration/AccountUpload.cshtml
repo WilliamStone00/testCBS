@@ -1,60 +1,107 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
 <!-- Basic  -->
-<div class="col-12">
-    <div class="card mb-4">
-        <h5 class="card-header">Basic</h5>
-        <div class="card-body">
-            <form action="" class="dropzone needsclick dz-clickable" id="dropzone-basic">
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true", @id = "BranchIdOption" })
-                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                        <label>Select @ViewBag.BankName's  you which to upload accounts</label>
+<div class="row">
+    <div class="col-md-12">
+
+
+        @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+        {
+            <div class="accordion mt-3" id="accordionExample">
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionThree"
+                                aria-expanded="false"
+                                aria-controls="accordionThree">
+                            <i class="tf-icons mdi mdi-typewriter me-1"></i>
+                        </button>
+                        &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Upload Trial Balance(System Migration)
+                    </h2>
+                    <div id="accordionThree"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingThree"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGen('AccountingConfiguration','FileUploadDataTable','_FileUploadHistory','desc','datalistingview_accountUpload',0,'accountUpload','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_accountUpload','_AccountUploud','new','AccountingConfiguration','accountUpload')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_accountUpload">
+                                @Html.Partial("_AccountUploud")
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="dz-message needsclick">
-                    Account Upload
-                    <span class="note needsclick">
-                        The format of this file should be .XLSX and should have the following column.
-                        <span class="fw-medium">Respect</span>Column as mention below
-                    </span>
-                    (This view is only visible for migration)
-                    <table class="table table-hover" id="myDataTable_AccountUploadData">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Account Number</th>
-                                <th>Account Name</th>
-                                <th>ChartOfAccount</th>
-                                <th>CreatedDate</th>
-                                <th>Current Balance</th>
-                                <th>Beginning Balance</th>
 
-                                <th>Branch Code</th>
+            </div>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+        }
+        else
+        {
+            <div class="accordion mt-3" id="accordionExample">
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionThree"
+                                aria-expanded="false"
+                                aria-controls="accordionThree">
+                            <i class="tf-icons mdi mdi-typewriter me-1"></i>
+                        </button>
+                        &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Upload Trial Balance(System Migration)
+                    </h2>
+                    <div id="accordionThree"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingThree"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGen('AccountingConfiguration','FileUploadDataTable','_FileUploadHistory','desc','datalistingview_accountUpload',0,'accountUpload','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_accountUpload','_AccountUploud','new','AccountingConfiguration','accountUpload')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_accountUpload">
+                                @Html.Partial("_AccountUploud")
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="fallback">
-                    <input name="file" type="file" class="btn btn-primary" id="uploadedFile" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button onclick="ReadExcelFile()" Id="ReadUploadedFile" class="btn btn-primary me-2">Read file</button>
-                    <button onclick="ExecuteExcelFile()" class="btn btn-primary me-2">Execute File</button>
-                </div>
 
-            </form>
-        </div>
+            </div>
+        }
+
     </div>
 </div>
+
+  
 <!-- /Basic  -->
 
 
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
 
-<script src="~/Scripts/Js/main.js/Account.js"></script>
+<script src="~/Scripts/Js/main.js/Account_Upload.js"></script>
 
 }
 

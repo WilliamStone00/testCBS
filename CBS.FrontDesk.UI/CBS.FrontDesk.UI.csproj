@@ -100,6 +100,12 @@
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.4\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.4.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.4.3\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -463,6 +469,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Code\Helper\SessionTimeoutFilterAttribute.cs" />
+    <Compile Include="Hub\ChatHub.cs" />
     <Compile Include="Models\AccountUploadModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -2256,6 +2263,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.3.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.3.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -2300,6 +2309,7 @@
     <Content Include="Scripts\Js\Crud\Penalty\Penalty.js" />
     <Content Include="Scripts\Js\Crud\Teller\Teller.js" />
     <Content Include="Scripts\Js\Crud\TransactionConfiguration\SavingProductFeeMapping.js" />
+    <Content Include="Scripts\Js\main.js\Account_Upload.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />
     <Content Include="Scripts\Js\Crud\Config\Localization\Countries.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\CustomersProfile.js" />
@@ -2574,13 +2584,7 @@
     <Content Include="Views\BankingOperations\_JournalEntries.cshtml" />
     <Content Include="Views\CashFlowManagement\Failed_RequestApproval_View.cshtml" />
     <Content Include="Views\CashFlowManagement\Successfull_RequestApproval_View.cshtml" />
-    <Content Include="Views\TellerCashDemand\Index.cshtml" />
     <Content Include="Views\BankingOperations\CreateTransactionReversalRequest.cshtml" />
-    <Content Include="Views\TellerCashDemand\Failed_Request_View.cshtml" />
-    <Content Include="Views\TellerCashDemand\Successfull_Request_View.cshtml" />
-    <Content Include="Views\TellerCashDemand\_ViewCashReplenishmentRequestDetails.cshtml" />
-    <Content Include="Views\TellerCashDemand\Successfull_RequestApproval_View.cshtml" />
-    <Content Include="Views\TellerCashDemand\Failed_RequestApproval_View.cshtml" />
     <Content Include="Views\Individual\_MembershipStatus.cshtml" />
     <Content Include="Views\Individual\_LegalSector.cshtml" />
     <Content Include="Views\Individual\_AddMembershipNextOfKingsMember.cshtml" />
@@ -2657,8 +2661,6 @@
     <Content Include="Views\BudgetManagement\_BudgetData.cshtml" />
     <Content Include="Views\BudgetManagement\_BudgetCategoryData.cshtml" />
     <Content Include="Views\AccountingStatements\_SearchOptions.cshtml" />
-    <Content Include="Views\TellerCashDemand\_CreateCashReplenishmentRequest.cshtml" />
-    <Content Include="Views\TellerCashDemand\_CashReplenimentRequestData.cshtml" />
     <Content Include="Views\CashFlowManagement\_CashReplenishmentRequestData.cshtml" />
     <Content Include="Views\CashFlowManagement\_ViewCashRequestStatus.cshtml" />
     <Content Include="Views\CashFlowManagement\CreateCashReplenishmentRequest.cshtml" />
@@ -2859,6 +2861,8 @@
     <Content Include="Views\Loan\_FileDownloadData.cshtml" />
     <Content Include="Views\Loan\_SearchBox.cshtml" />
     <Content Include="Views\Loan\LoanReportGeneration.cshtml" />
+    <Content Include="Views\AccountingConfiguration\DownloadFile.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_FileUploadHistory.cshtml" />
     <Content Include="Views\CashDesk\_ExpenseOtherPaymentDesk.cshtml" />
     <Content Include="Views\CashDesk\_ExpenseOtherPaymentForm.cshtml" />
     <Content Include="Views\CashDesk\_ExpenseOtherTransactionDesk.cshtml" />
@@ -2867,6 +2871,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
+    <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\CustomerManagement\MemberActivation\" />
     <Folder Include="Views\DocumentPack\" />

@@ -58,11 +58,11 @@
                                 @Html.ValidationMessageFor(model => model.ChartOfAccount.LabelFr, "", new { @class = "text-danger" })
                             </div>
 
-                            <div class="form-floating form-floating-outline mb-4">
+                            @*<div class="form-floating form-floating-outline mb-4">
                                 @Html.DropDownListFor(model => model.ChartOfAccount.OperationDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(model => model.ChartOfAccount.OperationDirection, "", new { @class = "text-danger" })
                                 <label>BookingDirection</label>
-                            </div>
+                            </div>*@
 
                             <div class="form-floating form-floating-outline mb-4">
                                 @Html.DropDownListFor(model => model.ChartOfAccount.AccountCartegoryId, new SelectList(ViewBag.AccountCartegories == null ? "" : ViewBag.AccountCartegories, "Id", "Name"), "---Select Cartegory---", new { @class = "form-control select2", @search = "true" })
@@ -122,9 +122,9 @@
                                 </div>
 
                                 <div class="form-floating form-floating-outline mb-4">
-                                    @Html.DropDownListFor(model => model.ChartOfAccount.OperationDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
-                                    @Html.ValidationMessageFor(model => model.ChartOfAccount.OperationDirection, "", new { @class = "text-danger" })
-                                    <label>BookingDirection</label>
+                                    @*@Html.DropDownListFor(model => model.ChartOfAccount.OperationDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(model => model.ChartOfAccount.OperationDirection, "", new { @class = "text-danger" })*@
+                                    @*<label>BookingDirection</label>*@
                                 </div>
 
                                 <div class="form-floating form-floating-outline mb-4">

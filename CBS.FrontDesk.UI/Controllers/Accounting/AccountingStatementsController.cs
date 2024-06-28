@@ -272,8 +272,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             try
             {
                 var listOfAccounts = (await _accountingServices.GetAllAccountForABranch(branchId));
-
-                return Json(listOfAccounts, JsonRequestBehavior.AllowGet);
+                 var data = (from account in listOfAccounts
+                            select new Account
+                            {
+                                AccountNumber= account.AccountNumberCU,
+                            AccountName = account.AccountName,
+                            CurrentBalance = account.CurrentBalance
+                            }).ToList();
+                return Json(data, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -405,7 +411,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             string fileTitle = $"TB4C{model.SystemQuery.FromDate.Date.ToString("yyyyMMddhhmmss")}"; 
                             var account = await _acountServices.GenerateTrialBalance_4column(model.SystemQuery);
                             this.HttpContext.Session["rptSource"] = account;
-                            string ReportName = $"TrialBalance6Column.rpt";
+                            string ReportName = $"TrialBalance4Column.rpt";
                             if (!account.Any())
                             {
                                 this.HttpContext.Session["rptSource"] = "empty";
@@ -414,7 +420,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                             this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
                             this.HttpContext.Session["ReportName"] = $"{ReportName}";
-                            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/TrialBalance6Column.rpt";
+                            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
 
                         }
                         break;
@@ -431,7 +437,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             {
                                 this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                                 this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
-                                this.HttpContext.Session["rptSource"] = (account.Count() > 0) ? account[0].ConvertToExcelTrialBalance(account) : new TrialBalance6ColumnDto { }.ConvertToExcelTrialBalance(account);
+                                this.HttpContext.Session["rptSource"] = (account.Count() > 0) ? account : new List<TrialBalance6ColumnDto>();
                             }
                      
                             if (!account.Any())
@@ -441,7 +447,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                             this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
                             this.HttpContext.Session["ReportName"] = $"{ReportName}";
-                            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/TrialBalance8Column.rpt";
+                            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
 
 
                         }
