@@ -20,7 +20,7 @@ namespace CBS.FrontDesk.Data
         public string CreditBalance { get; set; }
         public string LastBalance { get; set; }
         public string CurrentBalance { get; set; }
-        public string ChartOfAccountId { get; set; }
+        public string ChartOfAccountManagementPositionId { get; set; }
         public string AccountCategoryId { get; set; }
         public string AccountOwnerId { get; set; }
         public string BookingDirection { get; set; }
@@ -57,13 +57,20 @@ namespace CBS.FrontDesk.Data
  
     }
 
-    public class UploadAccountCommand  
+    public class UploadAccountCommand
     {
-        public string BranchCode { get; set; }
+        public List<AccountModelX> AccountModelList { get; set; }
+
         public string BranchId { get; set; }
-        public List<AccountModel> AccountModelList { get; set; }
+   
     }
-    public class AccountModel
+    public class UploadAccount
+    {
+  
+        public string BranchId { get; set; }
+        public List<AccountModelX> AccountModelList { get; set; }
+    }
+    public class AccountModelX
     {
         public string AccountNumberNetwork { get; set; } = "";
 
@@ -71,29 +78,40 @@ namespace CBS.FrontDesk.Data
         public string ChartofAccount { get; set; }
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
-        public string BranchCode { get; set; }
 
-        public decimal BeginningBalance { get; set; }
-     
-        public decimal CurrentBalance { get; set; }
-  
-        public string CreatedDate { get;  set; }
+        public string BookingDirection { get; set; }
+        public decimal BeginningDebitBalance { get; set; }
 
-        public AccountModel()
+        public decimal BeginningCreditBalance { get; set; }
+        public decimal MovementDebitBalance { get; set; }
+        public decimal MovementCreditBalance { get; set; }
+        public decimal EndBalanceDebit { get; set; }
+        public decimal EndBalanceCredit { get; set; }
+
+public string CreatedDate { get; set; }
+
+        public AccountModelX()
         {
                 
         }
-        public AccountModel(string AccNumber, string AccName, string chartofaccount, string DateCreated, decimal beginningBalance , decimal currentBalance, string branchCode)
+        public AccountModelX(string AccNumber, string AccName, string chartofaccount, string DateCreated, decimal beginningBalanceDr, decimal beginningBalanceCr,   decimal movementCreditBalance, decimal movementDebitBalance, decimal endingBalanceCr, decimal endingBalanceDr)
         {
-           
-            AccountNumber = AccNumber;  
+
+            AccountNumber = AccNumber;
             AccountName = AccName;
-            BeginningBalance= beginningBalance;
-            CurrentBalance = currentBalance;
-  CreatedDate= DateCreated;
+            BeginningDebitBalance = beginningBalanceDr;
+            BeginningCreditBalance = beginningBalanceCr;
+            CreatedDate = DateCreated;
             ChartofAccount = chartofaccount;
-            BranchCode= branchCode;
+            //BranchCode = branchCode;
+            BookingDirection = beginningBalanceCr == 0 ? "D" : "C";
+            EndBalanceCredit = endingBalanceCr;
+            EndBalanceDebit = endingBalanceDr;
+            MovementDebitBalance = movementDebitBalance;
+            MovementCreditBalance = movementCreditBalance;
         }
+
+
 
     }
 

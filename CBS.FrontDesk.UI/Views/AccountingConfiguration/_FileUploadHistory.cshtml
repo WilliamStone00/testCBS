@@ -1,0 +1,47 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+
+ 
+<div class="table-responsive mb-3">
+    <table class="table table-hover" id="FileUploadDataTable">
+        <thead class="table-light" >
+            <tr>
+                <th>Branch Name</th>
+                <th>UserName</th>
+                <th>Upload Status</th>
+                <th>Account_Left</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.TBuploadHistories)
+            {
+                <tr>
+                    <td style="width:20%">@d.BranchName</td>
+                    <td style="width:20%">@d.UserName</td>
+
+                    @{
+                        if (d.UploadStatus == true)
+                        {
+                            <td style="width:20%" class="bg-success-subtle"> Account Completed</td>
+                        }
+                        else
+                        {
+                            <td style="width:20%" class="bg-danger-subtle"> Account not Completed</td>
+                        }
+
+                    }
+                    <td style="width:20%">@d.Account_Left</td>
+                    <td style="width:20%">
+                        <a href="#" onclick="DownloadFileResults('@d.FilePath')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.BranchName TrialBalance">  Download </a>|
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.BranchName" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','FileUploadDataTable','_FileUploadHistory',0,'datalistingview_accountUpload','accountUpload')">Delete</a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+

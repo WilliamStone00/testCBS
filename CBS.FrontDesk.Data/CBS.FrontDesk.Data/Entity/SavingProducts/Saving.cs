@@ -650,7 +650,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
 
     }
 
-    public class MemberAccountUpload
+public class MemberAccountUpload
     {
         [Required]
         public string BranchId { get; set; }

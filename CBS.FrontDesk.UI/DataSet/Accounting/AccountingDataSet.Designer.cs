@@ -2252,13 +2252,15 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
             
             private global::System.Data.DataColumn columnEntryDate;
             
-            private global::System.Data.DataColumn columnDrAccountNumber;
+            private global::System.Data.DataColumn columnReference;
             
-            private global::System.Data.DataColumn columnCrAccountNumber;
+            private global::System.Data.DataColumn columnAccountNumber;
             
-            private global::System.Data.DataColumn columnDrAmount;
+            private global::System.Data.DataColumn columnAccountName;
             
-            private global::System.Data.DataColumn columnCrAmount;
+            private global::System.Data.DataColumn columnDebit;
+            
+            private global::System.Data.DataColumn columnCredit;
             
             private global::System.Data.DataColumn columnBranchName;
             
@@ -2355,33 +2357,41 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn DrAccountNumberColumn {
+            public global::System.Data.DataColumn ReferenceColumn {
                 get {
-                    return this.columnDrAccountNumber;
+                    return this.columnReference;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn CrAccountNumberColumn {
+            public global::System.Data.DataColumn AccountNumberColumn {
                 get {
-                    return this.columnCrAccountNumber;
+                    return this.columnAccountNumber;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn DrAmountColumn {
+            public global::System.Data.DataColumn AccountNameColumn {
                 get {
-                    return this.columnDrAmount;
+                    return this.columnAccountName;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn CrAmountColumn {
+            public global::System.Data.DataColumn DebitColumn {
                 get {
-                    return this.columnCrAmount;
+                    return this.columnDebit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CreditColumn {
+                get {
+                    return this.columnCredit;
                 }
             }
             
@@ -2508,10 +2518,11 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
                         string FromDate, 
                         string Address, 
                         System.DateTime EntryDate, 
-                        string DrAccountNumber, 
-                        string CrAccountNumber, 
-                        decimal DrAmount, 
-                        decimal CrAmount, 
+                        string Reference, 
+                        string AccountNumber, 
+                        decimal AccountName, 
+                        decimal Debit, 
+                        string Credit, 
                         string BranchName, 
                         string ToDate, 
                         string BranchAddress, 
@@ -2529,10 +2540,11 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
                         FromDate,
                         Address,
                         EntryDate,
-                        DrAccountNumber,
-                        CrAccountNumber,
-                        DrAmount,
-                        CrAmount,
+                        Reference,
+                        AccountNumber,
+                        AccountName,
+                        Debit,
+                        Credit,
                         BranchName,
                         ToDate,
                         BranchAddress,
@@ -2570,10 +2582,11 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
                 this.columnFromDate = base.Columns["FromDate"];
                 this.columnAddress = base.Columns["Address"];
                 this.columnEntryDate = base.Columns["EntryDate"];
-                this.columnDrAccountNumber = base.Columns["DrAccountNumber"];
-                this.columnCrAccountNumber = base.Columns["CrAccountNumber"];
-                this.columnDrAmount = base.Columns["DrAmount"];
-                this.columnCrAmount = base.Columns["CrAmount"];
+                this.columnReference = base.Columns["Reference"];
+                this.columnAccountNumber = base.Columns["AccountNumber"];
+                this.columnAccountName = base.Columns["AccountName"];
+                this.columnDebit = base.Columns["Debit"];
+                this.columnCredit = base.Columns["Credit"];
                 this.columnBranchName = base.Columns["BranchName"];
                 this.columnToDate = base.Columns["ToDate"];
                 this.columnBranchAddress = base.Columns["BranchAddress"];
@@ -2599,14 +2612,16 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
                 base.Columns.Add(this.columnAddress);
                 this.columnEntryDate = new global::System.Data.DataColumn("EntryDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnEntryDate);
-                this.columnDrAccountNumber = new global::System.Data.DataColumn("DrAccountNumber", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDrAccountNumber);
-                this.columnCrAccountNumber = new global::System.Data.DataColumn("CrAccountNumber", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnCrAccountNumber);
-                this.columnDrAmount = new global::System.Data.DataColumn("DrAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDrAmount);
-                this.columnCrAmount = new global::System.Data.DataColumn("CrAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnCrAmount);
+                this.columnReference = new global::System.Data.DataColumn("Reference", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReference);
+                this.columnAccountNumber = new global::System.Data.DataColumn("AccountNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAccountNumber);
+                this.columnAccountName = new global::System.Data.DataColumn("AccountName", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAccountName);
+                this.columnDebit = new global::System.Data.DataColumn("Debit", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDebit);
+                this.columnCredit = new global::System.Data.DataColumn("Credit", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCredit);
                 this.columnBranchName = new global::System.Data.DataColumn("BranchName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBranchName);
                 this.columnToDate = new global::System.Data.DataColumn("ToDate", typeof(string), null, global::System.Data.MappingType.Element);
@@ -2628,8 +2643,8 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
                 this.columnDescription = new global::System.Data.DataColumn("Description", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDescription);
                 this.columnEntryDate.Caption = "Date";
-                this.columnDrAmount.Caption = "CurrentBalance";
-                this.columnCrAmount.Caption = "DebitBalance";
+                this.columnAccountName.Caption = "CurrentBalance";
+                this.columnDebit.Caption = "DebitBalance";
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5525,65 +5540,81 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string DrAccountNumber {
+            public string Reference {
                 get {
                     try {
-                        return ((string)(this[this.tableJournalEntries.DrAccountNumberColumn]));
+                        return ((string)(this[this.tableJournalEntries.ReferenceColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'DrAccountNumber\' in table \'JournalEntries\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Reference\' in table \'JournalEntries\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableJournalEntries.DrAccountNumberColumn] = value;
+                    this[this.tableJournalEntries.ReferenceColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string CrAccountNumber {
+            public string AccountNumber {
                 get {
                     try {
-                        return ((string)(this[this.tableJournalEntries.CrAccountNumberColumn]));
+                        return ((string)(this[this.tableJournalEntries.AccountNumberColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'CrAccountNumber\' in table \'JournalEntries\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'AccountNumber\' in table \'JournalEntries\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableJournalEntries.CrAccountNumberColumn] = value;
+                    this[this.tableJournalEntries.AccountNumberColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public decimal DrAmount {
+            public decimal AccountName {
                 get {
                     try {
-                        return ((decimal)(this[this.tableJournalEntries.DrAmountColumn]));
+                        return ((decimal)(this[this.tableJournalEntries.AccountNameColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'DrAmount\' in table \'JournalEntries\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'AccountName\' in table \'JournalEntries\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableJournalEntries.DrAmountColumn] = value;
+                    this[this.tableJournalEntries.AccountNameColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public decimal CrAmount {
+            public decimal Debit {
                 get {
                     try {
-                        return ((decimal)(this[this.tableJournalEntries.CrAmountColumn]));
+                        return ((decimal)(this[this.tableJournalEntries.DebitColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'CrAmount\' in table \'JournalEntries\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Debit\' in table \'JournalEntries\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableJournalEntries.CrAmountColumn] = value;
+                    this[this.tableJournalEntries.DebitColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Credit {
+                get {
+                    try {
+                        return ((string)(this[this.tableJournalEntries.CreditColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Credit\' in table \'JournalEntries\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableJournalEntries.CreditColumn] = value;
                 }
             }
             
@@ -5810,50 +5841,62 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsDrAccountNumberNull() {
-                return this.IsNull(this.tableJournalEntries.DrAccountNumberColumn);
+            public bool IsReferenceNull() {
+                return this.IsNull(this.tableJournalEntries.ReferenceColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetDrAccountNumberNull() {
-                this[this.tableJournalEntries.DrAccountNumberColumn] = global::System.Convert.DBNull;
+            public void SetReferenceNull() {
+                this[this.tableJournalEntries.ReferenceColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsCrAccountNumberNull() {
-                return this.IsNull(this.tableJournalEntries.CrAccountNumberColumn);
+            public bool IsAccountNumberNull() {
+                return this.IsNull(this.tableJournalEntries.AccountNumberColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetCrAccountNumberNull() {
-                this[this.tableJournalEntries.CrAccountNumberColumn] = global::System.Convert.DBNull;
+            public void SetAccountNumberNull() {
+                this[this.tableJournalEntries.AccountNumberColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsDrAmountNull() {
-                return this.IsNull(this.tableJournalEntries.DrAmountColumn);
+            public bool IsAccountNameNull() {
+                return this.IsNull(this.tableJournalEntries.AccountNameColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetDrAmountNull() {
-                this[this.tableJournalEntries.DrAmountColumn] = global::System.Convert.DBNull;
+            public void SetAccountNameNull() {
+                this[this.tableJournalEntries.AccountNameColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsCrAmountNull() {
-                return this.IsNull(this.tableJournalEntries.CrAmountColumn);
+            public bool IsDebitNull() {
+                return this.IsNull(this.tableJournalEntries.DebitColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetCrAmountNull() {
-                this[this.tableJournalEntries.CrAmountColumn] = global::System.Convert.DBNull;
+            public void SetDebitNull() {
+                this[this.tableJournalEntries.DebitColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCreditNull() {
+                return this.IsNull(this.tableJournalEntries.CreditColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCreditNull() {
+                this[this.tableJournalEntries.CreditColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

@@ -179,7 +179,7 @@ function DownLoadGL(FileType) {
         success: function (data) {
             console.log(data);
             // Clear existing options in the OperationEventAttributeId combo
-            appalert("GeneralLedger for " + branchName +" was created successfully" , 2, 1);
+            appalert("GeneralLedger for " + branchName +" was created successfully" , 1, 1);
             if (FileType === "EXCEL") {
                
                 window.open("/Reports/PrintAccountLedgerDtoInExcel", "_blank");
@@ -198,11 +198,12 @@ function DownLoadJE(fileType) {
     var BranchId = $('#selectedBranchId').val();
     var dateFrom = $('#selectedDateFromForJE').val();
     var dateTo = $('#selectedDateToForJE').val();
+    console.log(BranchId +" - "+ dateFrom +" - "+ dateTo)
         $.ajax({
         url: '/AccountingStatements/GenerateJEByBranchId',
         type: 'Get',
         dataType: 'json',
-        data: { branchId: BranchId, fileType: fileType, FromDate: dateFrom, ToDate:dateTo },
+            data: { branchId: BranchId, fileType: fileType, DateFrom: dateFrom, DateTo:dateTo },
         success: function (data) {
             console.log(data);
  
@@ -310,9 +311,10 @@ function loadBranchGeneralLedgerByBranchId(branchId) {
 
 function LoadJournalEntryByBranchID() {
     var branchId = $('#selectedForJEBranchId').val();
-    console.log(branchId);
+ 
     const $fromDate = $('#FromDate');
     const $toDate = $('#ToDate');
+    console.log(branchId + $fromDate.val() + $toDate.val());
     $.ajax({
         url: '/AccountingStatements/JournalEntriesPerBranch',
         type: 'Post',
@@ -379,6 +381,7 @@ function ShareBranchID(branchId)
   $('#selectedForJEBranchName').val(description);        
 }
 function initializeDataTableForGL(data) {
+    console.log(data);
     if ($.fn.DataTable.isDataTable('#BranchAccountDataTable')) {
         // If the DataTable instance already exists, destroy it
         table.destroy();
@@ -412,12 +415,10 @@ function initializeDataTableForLiaisonLedger(data) {
     }
 
     if (data && data.length > 0) {
-
         // Create a new DataTable instance with the provided data
         table = $('#LiaisonLadgerDataTable').DataTable({
             data: data,
             columns: [
-             
                 { data: 'AccountNumber' },
                 { data: 'AccountName' },
                 { data: 'DebitBalance' },
@@ -426,11 +427,23 @@ function initializeDataTableForLiaisonLedger(data) {
             ]
         });
     } else {
-        // Create an empty DataTable instance
-        table = $('#LiaisonLadgerDataTable').DataTable();
-        table.clear().draw();
+        // Create a new DataTable instance with an empty array and a custom rendering for the empty state
+        table = $('#LiaisonLadgerDataTable').DataTable({
+            data: [],
+            columns: [
+                { data: null, defaultContent: '' },
+                { data: null, defaultContent: '' },
+                { data: null, defaultContent: '' },
+                { data: null, defaultContent: '' },
+                { data: null, defaultContent: '' }
+            ],
+            language: {
+                emptyTable: "No data found"
+            }
+        });
     }
 }
+ 
 function initializeDataTableForJE(data) {
     console.log(data);
     if ($.fn.DataTable.isDataTable('#JournalEntriesTable')) {
@@ -438,26 +451,36 @@ function initializeDataTableForJE(data) {
         table.destroy();
     }
 
-    if (data && data.length > 0)
-    {
-       
+    if (data && data.length > 0) {
         // Create a new DataTable instance with the provided data
         table = $('#JournalEntriesTable').DataTable({
             data: data,
             columns: [
                 { data: 'EntryDate' },
-                { data: 'TransactionReference' },
-                { data: 'AccountNumber'},
+                { data: 'Reference' },
+                { data: 'AccountNumber' },
                 { data: 'Description' },
-                { data: 'DebitAmount' },
-                { data: 'CreditAmount' },
-             
+                { data: 'Debit' },
+                { data: 'Credit' },
             ]
         });
     } else {
         // Create an empty DataTable instance
-        table = $('#JournalEntriesDataTable').DataTable();
-        table.clear().draw();
+        console.log("Table length is empty " + data.length)
+        table = $('#JournalEntriesTable').DataTable({
+            data: [],
+            columns: [
+                { data: 'EntryDate' },
+                { data: 'Reference' },
+                { data: 'AccountNumber' },
+                { data: 'Description' },
+                { data: 'Debit' },
+                { data: 'Credit' },
+            ],
+            language: {
+                emptyTable: "No data found"
+            }
+        });
     }
 }
 function loadBranchLiasonAccount(branchId) {

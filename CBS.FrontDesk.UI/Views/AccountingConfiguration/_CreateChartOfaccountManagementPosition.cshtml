@@ -9,33 +9,38 @@
             <div class="card-body">
                 @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                 {<input type="hidden" name="ServiceOption" value="chartOfAccountManagementPosition" id="ServiceOption" />
-                    <div class="row mt-2 gy-4">
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.ChartofAccountManagementPosition.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---Select ChartOfAccount---", new { @class = "form-control select2", @search = "true", @id = "Account_ChartOfAccountId" })
-                                @Html.ValidationMessageFor(m => m.Account.ChartOfAccountId, "", new { @class = "text-danger" })
-                                <label>Chart Of Account</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                             
-                                @Html.TextBoxFor(m => m.ChartofAccountManagementPosition.Description, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.ChartofAccountManagementPosition.Description, "", new { @class = "text-danger" })
-                                <label>Account Descrption</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.TextBoxFor(m => m.ChartofAccountManagementPosition.PositionNumber, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.ChartofAccountManagementPosition.PositionNumber, "", new { @class = "text-danger" })
-                                <label>Account Number</label>
-                            </div>
-                        </div>
-              
+                 <div class="row mt-2 gy-4">
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+                             @Html.DropDownListFor(m => m.ChartofAccountManagementPosition.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---Select ChartOfAccount---", new { @class = "form-control select2", @search = "true", @id = "Account_ChartOfAccountId" })
+                             @Html.ValidationMessageFor(m => m.ChartofAccountManagementPosition.ChartOfAccountId, "", new { @class = "text-danger" })
+                             <label>Chart of account management position</label>
+                         </div>
+                     </div>
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+
+                             @Html.TextBoxFor(m => m.ChartofAccountManagementPosition.Description, new { @class = "form-control" })
+                             @Html.ValidationMessageFor(m => m.ChartofAccountManagementPosition.Description, "", new { @class = "text-danger" })
+                             <label>Account Descrption</label>
+                         </div>
+                     </div>
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+                             @Html.TextBoxFor(m => m.ChartofAccountManagementPosition.PositionNumber, new { @class = "form-control" })
+                             @Html.ValidationMessageFor(m => m.ChartofAccountManagementPosition.PositionNumber, "", new { @class = "text-danger" })
+                             <label>Account Number</label>
+                         </div>
+                     </div>
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+                             @Html.CheckBoxFor(m => m.ChartofAccountManagementPosition.IsHeadOfficeAccount, new { @class = "form-control" })
+                             <label>Check this box if the account is to be managed only at the level of Head Office</label>
+                         </div>
+                     </div>
 
 
-                    </div>
+                 </div>
                     <div class="mt-4">
                         @if (Model.ChartofAccountManagementPosition.Id == null)
                         {

@@ -6,6 +6,26 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
+       public class UploadAccountResult
+    {
+        public int Account_Present { get; set; }
+        public int Total_Account { get; set; }
+        public string file_path { get; set; }
+
+        public bool UploadStatus { get; set; }
+
+        public string BranchName { get; set; }
+
+ 
+    }
+    public class UploadAccountResultServiceResponse
+    {
+        public bool isSuccess { get; set; }
+        public string message { get; set; }
+        public UploadAccountResult apiResponseData { get; set; }
+    }
+
+
     public class TrialBalance4ColumnDtoServiceResponse
     {
         public List<TrialBalance4ColumnDto> Data { get; set; }
@@ -85,10 +105,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Address { get; set; }
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
-        public string DebitAmount { get; set; }
-        public string CreditAmount { get; set; }
+        public string Debit { get; set; }
+        public string Credit{ get; set; }
         public string Description { get; set; }
         public string Reference { get; set; }
-        public string EntryDatetime { get; set; }
+        public string EntryDate { get; set; }
     }
 }

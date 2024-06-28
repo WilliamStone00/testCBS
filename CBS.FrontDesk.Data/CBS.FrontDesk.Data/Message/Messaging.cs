@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.Accounting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -168,6 +169,7 @@ namespace CBS.FrontDesk.Data.Message
             Executionfailed = $"Execution failed;";
             ExecutionfailedWithError = $"Execution failed, Error:";
         }
+        
     }
 
     public class Messaging

@@ -11,7 +11,11 @@
             $('#DeterminationManagementAccountId').hide();
         }
     });
-
+  
+    // Trigger the processing simulation when needed
+    $('#ReadUploadedFile').click(function () {
+        simulateProcessing();
+    });
     $('#document_type').change(function () {
         var selectedValue = $(this).val();
 
@@ -111,30 +115,80 @@
 
 
 });
+function updateProgressBar(progress) {
+    var progressBar = $('.progress-bar');
+    progressBar.css('width', progress + '%');
+    progressBar.attr('aria-valuenow', progress);
+    progressBar.text(progress + '%');
+}
+
+function simulateProcessing() {
+    var progress = 0;
+    var interval = setInterval(function () {
+        progress += 10;
+        updateProgressBar(progress);
+
+        if (progress >= 100) {
+            clearInterval(interval);
+            console.log('Processing complete!');
+        }
+    }, 1000); // Update every 1 second
+}
+
+function ApproveJournalEntry(response) {
+    //comment_description
+    var storedId = $("#selectedId").val();
+    var comment = $("#comment_description").val();
+
+    if (comment === "") {
+
+        appalert("Please kindly enter your comment for this entry with referenceId:" + storedId + " before you continue", 3, 1);
+        return;
+    } else {
+        var ServiceOption = "EntryTempData";
+        var message = "WARNING!!!\n";
+        message += "Are you sure you want to confirm this various account adjustment?\n";
+        ApproveJournalEntryTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/ApproveEntries', ServiceOption, response, storedId, comment);
+
+    }
+}
 
 function ReadExcelFile() {
     var formData = new FormData();
     var file = $("#uploadedFile")[0].files[0];
- 
-    console.log(file);
-    formData.append("ExcelFile", file);
-    console.log(formData.get("ExcelFile"));
-    event.preventDefault();
-    $.ajax({
-        url: "/AccountingConfiguration/UploadAccountModel/",
-        type: "POST",
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (response) {
-            console.log("File uploaded successfully.");
-            initializeDataTableForAccountUpload(response)
-        },
-        error: function (xhr, status, error) {
-            console.log("Error uploading file: " + error);
-            // Handle error response
-        }
-    });
+    var branchCode = $("#branchCodeDropdown").val(); // Assuming your dropdown has this ID
+
+    if (branchCode === "") {
+
+        appalert("PLEASE KINDLY SELECT YOUR BRANCH CODE", 2, 1);
+        return;
+    } else {
+        console.log(file);
+        formData.append("ExcelFile", file);
+        formData.append("BranchId", branchCode); // Adding branch code to formData
+        console.log(formData.get("ExcelFile"));
+        console.log("Branch Code:", formData.get("BranchCode"));
+
+        event.preventDefault();
+        $.ajax({
+            url: "/AccountingConfiguration/UploadAccountModel/",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                appalert("PLEASE KINDLY SELECT YOUR BRANCH CODE", 2, 1);
+               
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.log("Error uploading file: " + error);
+                // Handle error response
+            }
+        });
+
+    }
+
 }
 
 function ExecuteExcelFile() {
@@ -308,33 +362,33 @@ function EntryRule() {
     };
     return formData;
 }
-function initializeDataTableForAccountUpload(data) {
-    if ($.fn.DataTable.isDataTable('#myDataTable_AccountUploadData')) {
-        // If the DataTable instance already exists, destroy it
-        table.destroy();
-    }
-    console.log(data);
-    if (data && data.length > 0) {
-        // Create a new DataTable instance with the provided data
-        table = $('#myDataTable_AccountUploadData').DataTable({
-            data: data,
-            columns: [
-                { data: 'AccountNumber' },
-                { data: 'AccountName' },
-                { data: 'ChartofAccount' },
-                { data: 'CreatedDate' },
-                { data: 'CurrentBalance' },
-                { data: 'BeginningBalance' },
-                { data: 'BranchCode' },
+//function initializeDataTableForAccountUpload(data) {
+//    if ($.fn.DataTable.isDataTable('#myDataTable_AccountUploadData')) {
+//        // If the DataTable instance already exists, destroy it
+//        table.destroy();
+//    }
+//    console.log(data);
+//    if (data && data.length > 0) {
+//        // Create a new DataTable instance with the provided data
+//        table = $('#myDataTable_AccountUploadData').DataTable({
+//            data: data,
+//            columns: [
+//                { data: 'AccountNumber' },
+//                { data: 'AccountName' },
+//                { data: 'ChartofAccount' },
+//                { data: 'CreatedDate' },
+//                { data: 'CurrentBalance' },
+//                { data: 'BeginningBalance' },
+//                { data: 'BranchCode' },
 
-            ]
-        });
-    } else {
-        // Create an empty DataTable instance
-        table = $('#myDataTable_AccountUploadData').DataTable();
-        table.clear().draw();
-    }
-}
+//            ]
+//        });
+//    } else {
+//        // Create an empty DataTable instance
+//        table = $('#myDataTable_AccountUploadData').DataTable();
+//        table.clear().draw();
+//    }
+//}
 
 function initializeDataTableAccountingRuleData(data) {
     // Get the table element

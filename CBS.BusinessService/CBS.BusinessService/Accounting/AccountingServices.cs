@@ -324,7 +324,10 @@ namespace CBS.BusinessService.Accounting
             }
             return null;
         }
-        public async Task<ExecutionMessages> Create(UploadAccountCommand list)
+ 
+
+
+        public async Task<ExecutionMessages> Create(UploadAccount list)
         {
             try
             {
@@ -332,19 +335,30 @@ namespace CBS.BusinessService.Accounting
                 // Make an API call to create an individual profile
 
 
-                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<UploadAccountCommand>>(APICallHelper.CreateAccounOnUploadie, list);
-                if (response.IsSuccess)
+                var response = await _accountingApiCallerHelper.PostUploadAccountResultResponseAsync(APICallHelper.CreateAccounOnUploadie, list);
+                if (response!=null)
                 {
+                    if (response.isSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"{list.AccountModelList[0].AccountNumber}", MessagesResults.Success,
+                   ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(response, true, $"{list.AccountModelList[0].AccountNumber}", MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.message);
+                    }
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{list.AccountModelList[0].AccountNumber}", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
-                    return ExecutionMessage;
+              
                 }
                 else
                 {
                     // Failed creation
                     GetExecutionMessages(response, true, $"{list.AccountModelList[0].AccountNumber}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"{list.AccountModelList[0].AccountNumber}");
                 }
             }
             catch (Exception ex)
@@ -355,6 +369,6 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
-     
+
     }
 }

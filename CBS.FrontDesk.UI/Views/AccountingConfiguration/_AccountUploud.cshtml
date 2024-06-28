@@ -5,38 +5,78 @@
     <div class="card mb-4">
         <h5 class="card-header">Basic</h5>
         <div class="card-body">
-         <form action="" class="dropzone needsclick dz-clickable" id="dropzone-basic">
-                <div class="dz-message needsclick">
-                    Account Upload
-                    <span class="note needsclick">
-                        The format of this file should be .XLSX and should have the following column.
-                        <span class="fw-medium">Respect</span>Column as mention below
-                    </span>
-                    (This view is only visible for migration)
-                    <table class="table table-hover" id="myDataTable_AccountUploadData">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Account Number</th>
-                                <th>Account Name</th>
-                                <th>ChartOfAccount</th>
-                                <th>CreatedDate</th>
-                                <th>Current Balance</th>
-                                <th>Beginning Balance</th>
+            <div class="card-body">
+                <form action="" class="dropzone needsclick dz-clickable" id="dropzone-basic">
 
-                                <th>Branch Code</th>
+                    @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+                    {
+                        <div class="col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true", @id = "branchCodeDropdown" })
+                                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                                <label>Select @ViewBag.BankName's  you which to upload accounts</label>
+                            </div>
+                        </div>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="fallback">
-                    <input name="file" type="file" class="btn btn-primary" id="uploadedFile" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button onclick="ReadExcelFile()" Id="ReadUploadedFile"class="btn btn-primary me-2">Read file</button>
-                </div>-->
-                
-            </form>
+                    }
+
+
+                    <div class="dz-message needsclick">
+
+                        <span class="note needsclick">
+                            The format of this file should be .XLSX and should have the following column.
+                            <span class="fw-medium">Respect </span>Column as mention below
+                        </span>
+                        <div class="table-responsive mb-3">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>AccountNumber</th>
+                                        <th>AccountName</th>
+                                        <th>BEG.DEBIT</th>
+                                        <th>BEG.CREDIT</th>
+                                        <th>MOV.DEBIT</th>
+                                        <th>MOV.CREDIT</th>
+                                        <th>End.DEBIT</th>
+                                        <th>End.CREDIT</th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="mdi-cloud-download" id="ResultFile" colspan="8">
+                                            <div id="resultContainer" style="display: none;">
+                                                <h3>Upload Results:</h3>
+                                                <p>Accounts not existing : <span id="accountsPresent"></span></p>
+                                                <p>Total Accounts: <span id="totalAccounts"></span></p>
+                                                <p>Accounts Existing: <span id="accountsNotMatching"></span></p>
+                                                <p>Download non-matching accounts: <a id="downloadLink" href="#" target="_blank">Download Excel</a></p>
+                                            </div>
+                                            <div id="progressBarContainer" style="display:none;">
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                                        0%
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                    <div class="fallback">
+                        <input name="file" type="file" class="btn btn-primary" id="uploadedFile" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button onclick="ReadExcelFile()" Id="ReadUploadedFile" class="btn btn-primary me-2">Upload File</button>
+
+                    </div>
+
+                </form>
+
+            </div>
         </div>
     </div>
 </div>

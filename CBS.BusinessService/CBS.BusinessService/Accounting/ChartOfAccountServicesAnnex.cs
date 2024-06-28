@@ -56,7 +56,7 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ChartOfAccountStateDto>>>(APICallHelper.GetAllChartOfAccount);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ChartOfAccountStateDto>>>(APICallHelper.GetAllChartOfAccountManagementPositionByChart);
                 return ProcessApiResponseForChartOfAccount(couApiResponse.ApiResponseData);
             }
             catch (Exception ex)

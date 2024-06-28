@@ -2308,6 +2308,7 @@
     <Content Include="Scripts\Js\Crud\Penalty\Penalty.js" />
     <Content Include="Scripts\Js\Crud\Teller\Teller.js" />
     <Content Include="Scripts\Js\Crud\TransactionConfiguration\SavingProductFeeMapping.js" />
+    <Content Include="Scripts\Js\main.js\Account_Upload.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />
     <Content Include="Scripts\Js\Crud\Config\Localization\Countries.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\CustomersProfile.js" />
@@ -2859,9 +2860,12 @@
     <Content Include="Views\Loan\_FileDownloadData.cshtml" />
     <Content Include="Views\Loan\_SearchBox.cshtml" />
     <Content Include="Views\Loan\LoanReportGeneration.cshtml" />
+    <Content Include="Views\AccountingConfiguration\DownloadFile.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_FileUploadHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
+    <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\CustomerManagement\MemberActivation\" />
     <Folder Include="Views\DocumentPack\" />
