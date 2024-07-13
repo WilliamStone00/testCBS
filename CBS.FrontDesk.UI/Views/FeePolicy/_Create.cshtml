@@ -15,40 +15,92 @@
                     <label>Select fee</label>
                 </div>
             </div>
-            <div id="range" style="display:block">
-                <div class="row">
-                    <div class="col-md-5 mb-3">
-                        <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.AmountFrom, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.AmountFrom, "", new { @class = "text-danger" })
-                            <label>Amount From</label>
+
+
+
+
+
+            @if (ViewBag.Base == "Range")
+            {
+                <div id="range" style="display:block">
+                    <div class="row">
+                        <div class="col-md-5 mb-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.AmountFrom, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.AmountFrom, "", new { @class = "text-danger" })
+                                <label>Amount From</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-5 mb-3">
-                        <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.AmountTo, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.AmountTo, "", new { @class = "text-danger" })
-                            <label>Amount To</label>
+                        <div class="col-md-5 mb-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.AmountTo, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.AmountTo, "", new { @class = "text-danger" })
+                                <label>Amount To</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-2 mb-3">
-                        <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Charge, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Charge, "", new { @class = "text-danger" })
-                            <label>Charge</label>
+                        <div class="col-md-2 mb-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.Charge, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Charge, "", new { @class = "text-danger" })
+                                <label>Charge</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div id="percentage" style="display:none">
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Value, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Value, "", new { @class = "text-danger" })
-                        <label id="lblevalue">Enter value (in %)</label>
+
+            }
+            else if (ViewBag.Base == "Rate")
+            {
+                <div id="percentage" style="display:none">
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.Value, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Value, "", new { @class = "text-danger" })
+                            <label id="lblevalue">Enter value (in %)</label>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
+
+            else
+            {
+                <div id="range" style="display:block">
+                    <div class="row">
+                        <div class="col-md-5 mb-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.AmountFrom, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.AmountFrom, "", new { @class = "text-danger" })
+                                <label>Amount From</label>
+                            </div>
+                        </div>
+                        <div class="col-md-5 mb-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.AmountTo, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.AmountTo, "", new { @class = "text-danger" })
+                                <label>Amount To</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.Charge, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Charge, "", new { @class = "text-danger" })
+                                <label>Charge</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="percentage" style="display:none">
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.Value, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Value, "", new { @class = "text-danger" })
+                            <label id="lblevalue">Enter value (in %)</label>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
         </div>
             <div class="mt-4">
                 @if (ViewBag.Key != null)

@@ -263,7 +263,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
                     return async () =>
                     {
-                        await GetList();
+                        var conf = await _savingProductServices.GetSavingConfigurationAggregates();
+                        ViewBag.Frequences = conf.freeQuencies.ToList();
+                        ViewBag.Currencies = conf.currencies.ToList();
                         return PartialView(partialView, new SavingConfiguration { SavingProduct = new SavingProduct() });
 
                     };
@@ -272,7 +274,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 {
                     return async () =>
                     {
-                        await GetList();
+                        var conf = await _savingProductServices.GetSavingConfigurationAggregates();
+                        ViewBag.Frequences = conf.freeQuencies.ToList();
+                        ViewBag.Currencies = conf.currencies.ToList();
                         return PartialView(partialView, new SavingConfiguration { SavingProduct = await _savingProductServices.GetSavingProduct(key) });
 
                     };
@@ -389,7 +393,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 {
                     return async () =>
                     {
-                        await GetList();
+                        var conf = await _savingProductServices.GetSavingConfigurationAggregates();
+                        ViewBag.Frequences = conf.freeQuencies.ToList();
+                        ViewBag.Currencies = conf.currencies.ToList();
                         var savingProduct = await _savingProductServices.GetSavingProduct(key);
                         return PartialView(partialView, new SavingConfiguration { WithdrawalLimit = new WithdrawalLimit { ProductId = key }, SavingProduct=savingProduct });
                     };
@@ -398,7 +404,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 {
                     return async () =>
                     {
-                        await GetList();
+                        var conf = await _savingProductServices.GetSavingConfigurationAggregates();
+                        ViewBag.Frequences = conf.freeQuencies.ToList();
+                        ViewBag.Currencies = conf.currencies.ToList();
                         var data = await _withdrawalLimitServices.GetWithdrawalLimit(key);
                         var savingProduct = await _savingProductServices.GetSavingProduct(data.ProductId);
                         return PartialView(partialView, new SavingConfiguration { WithdrawalLimit = data, SavingProduct = savingProduct });

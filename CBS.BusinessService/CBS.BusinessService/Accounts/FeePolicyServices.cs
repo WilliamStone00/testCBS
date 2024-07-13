@@ -122,11 +122,18 @@ namespace CBS.BusinessService.Accounts
                 var Fee = await GetFeePolicy(model.Id);
                 if (Fee != null)
                 {
-                    Fee.AmountFrom = model.AmountFrom;
-                    Fee.AmountTo = model.AmountTo;
-                    Fee.Value = model.Value;
-                    Fee.FeeId = model.FeeId;
-                    Fee.Charge = model.Charge;
+                    if (Fee.Fee.FeeType=="Range")
+                    {
+                        Fee.AmountFrom = model.AmountFrom;
+                        Fee.AmountTo = model.AmountTo;
+                        Fee.Charge = model.Charge;
+
+                    }
+                    else
+                    {
+                        Fee.Value = model.Value;
+
+                    }
                     var response = await _transactionApiHelper.PutAsync<ServiceResponse<FeePolicy>>(string.Format(APICallHelper.Get_Update_Delete_FeePolicy, model.Id), Fee);
                     if (response.IsSuccess)
                     {
