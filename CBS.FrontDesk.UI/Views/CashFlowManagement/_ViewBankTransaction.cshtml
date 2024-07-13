@@ -1,0 +1,127 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+@{
+    ViewBag.Title = "View Cash Replenishment Details";
+
+}
+<div class="table-responsive">
+    <div class="modal fade" id="exLargeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel3">
+                        Bank Transaction Information :Loading ...
+                    </h4>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+
+                </div>
+                <div class="modal-body">
+                    <div class="row invoice-preview">
+                        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+                            <div class="accordion-item active">
+                              
+                                <div class="card-body">
+
+                                    <br />
+                                    <div class="collapse show">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2"> <h5 class="card-title">Bank Cash Out Transaction Details</h5></th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table-border-bottom-0">
+                                                @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+                                                {
+                                                    <tr>
+                                                        <td>Branch Office</td>
+                                                        <td id="BranchName">Loading ...</td>
+                                                    </tr>
+                                                }
+
+                                                <tr>
+                                                    <td>Request Reference</td>
+                                                    <td id="AccountReferenceId">Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Account Balance Before Operation</td>
+                                                    <td id="Balance">loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Bank Transaction Date</td>
+                                                    <td id="BankTransactionDate"> Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Amount Withdrawn</td>
+                                                    <td id="Amount">Loading ...</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Created By</td>
+                                                    <td id="CreatedBy"> Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Created Date </td>
+                                                    <td id="CreatedDate"> Loading ...</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Cash Requested By </td>
+                                                    <td id="CashRequestedBy">Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Requested Amount </td>
+                                                    <td id="CashRequestedAmount">Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Cash Requested Date</td>
+                                                    <td id="CashRequestedDate">Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Approved Amount </td>
+                                                    <td id="CashApprovedAmount">Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Cash Request Approved By </td>
+                                                    <td id="CashApprovedBy"> Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Cash Request Approved Date</td>
+                                                    <td id="CashApprovedDate">Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Bank Reciept</td>
+                                                    <td>
+                                                        <div class="image-preview">
+                                                            <img src="@Url.Content(Model.BankCashOut.FileUpload)" alt="No Image Found" id="previewimage" class="img-fluid" />
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+      
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

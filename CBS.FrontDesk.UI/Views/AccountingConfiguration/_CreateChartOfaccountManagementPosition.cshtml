@@ -33,10 +33,9 @@
                          </div>
                      </div>
                      <div class="col-md-12">
-                         <div class="form-floating form-floating-outline">
-                             @Html.CheckBoxFor(m => m.ChartofAccountManagementPosition.IsHeadOfficeAccount, new { @class = "form-control" })
-                             <label>Check this box if the account is to be managed only at the level of Head Office</label>
-                         </div>
+                         @Html.CheckBoxFor(m => m.ChartofAccountManagementPosition.IsHeadOfficeAccount, new { @class = "form-check-input", @id = "IsActiveCheckbox",@value=false })
+                         <label>Check this box if the account is to be managed only at the level of Head Office</label>
+
                      </div>
 
 

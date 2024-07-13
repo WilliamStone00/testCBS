@@ -9,10 +9,10 @@
     <a type="button" id="loadChartOfAccount" class="btn btn-icon btn-label-secondary" data-bs-toggle="tooltip" title="Reload Chart Of Account">
         <span class="tf-icons mdi mdi-refresh-auto mdi-18px"></span>
     </a>
-    <div>&nbsp;</div>
+    <div>&nbsp;</div> 
     <div class="row">
         <!-- Context Menu -->
-        <div class="col-md-8 col-12">
+        <div class="col-md-6 col-6">
             <div class="card mb-4">
                 <br>
                 <h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CamCCUL Network Accounting Chart</h5>
@@ -26,7 +26,12 @@
             </div>
         </div>
         <input type="hidden" id="selectedID" name="name" value="" />
-        <div class="col-md-4 col-12 operationSelector">
+        @*<div class="col-md-4 col-12 operationSelector">
+
+                @Html.Partial("_CreateModal")
+
+            </div>*@
+        <div class="col-md-6 col-6 operationSelector">
 
             @Html.Partial("_Operation")
 

@@ -5,6 +5,14 @@
         {
             <input type="hidden" name="ServiceOption" value="accountingRuleEntry" id="ServiceOption" />
             <div class="row mt-2 gy-4">
+
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.AccountingRuleEntry.OperationEventId, new SelectList(ViewBag.OperationEvent == null ? "" : ViewBag.OperationEvent, "Id", "OperationEventName"), "---Select Operation Event---", new { @class = "form-control select2", @search = "true", id = "OperationEventId" })
+                        @Html.ValidationMessageFor(model => model.AccountingRuleEntry.OperationEventId, "", new { @class = "text-danger" })
+                        <label for="OperationEventId">Event</label>
+                    </div>
+                </div>
                 <div class="col-md-6">
 
                     <div class="form-floating form-floating-outline">
@@ -12,13 +20,6 @@
                         @Html.TextBoxFor(model => model.AccountingRuleEntry.AccountingRuleEntryName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.AccountingRuleEntry.AccountingRuleEntryName, "", new { @class = "text-danger" })
                         <label for="AccountingRuleEntryName">RuleEntry Name</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.AccountingRuleEntry.OperationEventId, new SelectList(ViewBag.OperationEvent == null ? "" : ViewBag.OperationEvent, "Id", "OperationEventName"), "---Select Operation Event---", new { @class = "form-control select2", @search = "true", id = "OperationEventId" })
-                        @Html.ValidationMessageFor(model => model.AccountingRuleEntry.OperationEventId, "", new { @class = "text-danger" })
-                        <label for="OperationEventId">Event</label>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -55,8 +56,16 @@
                     </div>
 
                 </div>
-                
 
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+
+                        @Html.TextAreaFor(m => m.AccountingRuleEntry.Description, new { @class = "form-control", @style = "height: 200px;" })
+                        @Html.ValidationMessageFor(m => m.AccountingRuleEntry.Description, "", new { @class = "text-danger" })
+                        <label>Description</label>
+
+                    </div>
+                </div>
 
 
             </div>

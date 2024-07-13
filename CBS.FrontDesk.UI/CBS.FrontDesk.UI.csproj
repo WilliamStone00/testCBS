@@ -320,6 +320,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppFiles\Images\Bank-deposit-slip-excel-template.jpg" />
     <Content Include="AppFiles\Images\BG.jpeg" />
     <Content Include="AppFiles\Images\BG2.png" />
     <Content Include="AppFiles\Images\BG3.jpeg" />
@@ -2868,6 +2869,15 @@
     <Content Include="Views\CashDesk\_ExpenseOtherTransactionDesk.cshtml" />
     <Content Include="Views\CashDesk\_ExpenseOtherTransactionForm.cshtml" />
     <Content Include="Views\CashDesk\_ExpenseOtherTransactionTabs.cshtml" />
+    <Content Include="Views\AccountingConfiguration\IndexForEventConfiguration.cshtml" />
+    <Content Include="Views\AccountingChart\_CreateModal.cshtml" />
+    <Content Include="Views\CashFlowManagement\GetCashReplenimentRequestDataAwaitingApproval.cshtml" />
+    <Content Include="Views\CashFlowManagement\_ApproveCashRequest.cshtml" />
+    <Content Include="Views\CashFlowManagement\GetAllCashReplenimentRequestData.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CreateBankCashOutApproval.cshtml" />
+    <Content Include="Views\CashFlowManagement\_ViewBankTransaction.cshtml" />
+    <Content Include="Views\CashFlowManagement\GetCashReplenimentRequestDataAwaitingApprovalCompleted.cshtml" />
+    <Content Include="Views\CashFlowManagement\CreateBankCashOut.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

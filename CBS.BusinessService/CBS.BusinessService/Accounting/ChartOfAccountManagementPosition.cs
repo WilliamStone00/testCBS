@@ -36,7 +36,7 @@ namespace CBS.BusinessService.Accounting
             try
             {
                 var objAccountCategory = await GetChartOfAccountManagementPosition(id);
-                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_AccountCategory, id), id));
+                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_ChartOfAccountManagementPosition, id), id));
                 if (inResponse.IsSuccess)
                 {
 

@@ -20,7 +20,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string BalancingAccountId { get; set; }
         public bool HasManagementAccount { get; set; }
         public string BankId { get; set; }
-      
+        
+                    public string Description { get; set; }
     }
 
     public class AccountingRuleEntryx

@@ -344,41 +344,45 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             try
             {
-            
+                if (Request.IsAjaxRequest())
+                {
+                    // Process the data
+                    // Generate the report or prepare the data
                     switch (model.SystemQuery.ReportType)
                     {
-                    case "JE":
-                        { 
-                            string fileTitle = $"JournalEntries_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
-                            var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery);
-                            this.HttpContext.Session["rptSource"] = account;
-                            string ReportName = $"JournalEntries.rpt";
-                            if (!account.Any())
+                        case "JE":
                             {
-                                this.HttpContext.Session["rptSource"] = "empty";
-                            }
-                            this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
-                            this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
-                            this.HttpContext.Session["ReportName"] = $"{ReportName}";
-                            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/JournalEntries.rpt";
-                        }break;
-                    case "GL":
-                            {
-                            string fileTitle = $"GeneralLedger_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
- 
-                                var account = await _acountServices.GenerateAccountLedger(new GLQuery { BranchId=model.SystemQuery.BranchId, FileType= model.SystemQuery.FileType});
+                                string fileTitle = $"JournalEntries_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
+                                var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery);
                                 this.HttpContext.Session["rptSource"] = account;
-                            string ReportName = $"GeneralLedger.rpt";
-                            if (!account.Any())
+                                string ReportName = $"JournalEntries.rpt";
+                                if (!account.Any())
                                 {
                                     this.HttpContext.Session["rptSource"] = "empty";
                                 }
                                 this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
-                            this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
-                            this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
-                            this.HttpContext.Session["ReportName"] = $"{ReportName}";
-                            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/GeneralLedger.rpt";
-                        }
+                                this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
+                                this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/JournalEntries.rpt";
+                            }
+                            break;
+                        case "GL":
+                            {
+                                string fileTitle = $"GeneralLedger_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
+
+                                var account = await _acountServices.GenerateAccountLedger(new GLQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType });
+                                this.HttpContext.Session["rptSource"] = account;
+                                string ReportName = $"GeneralLedger.rpt";
+                                if (!account.Any())
+                                {
+                                    this.HttpContext.Session["rptSource"] = "empty";
+                                }
+                                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                                this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
+                                this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/GeneralLedger.rpt";
+                            }
                             break;
                         case "LL":
                             {
@@ -408,77 +412,87 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             break;
                         case "TB4":
                             {
-                            string fileTitle = $"TB4C{model.SystemQuery.FromDate.Date.ToString("yyyyMMddhhmmss")}"; 
-                            var account = await _acountServices.GenerateTrialBalance_4column(model.SystemQuery);
-                            this.HttpContext.Session["rptSource"] = account;
-                            string ReportName = $"TrialBalance4Column.rpt";
-                            if (!account.Any())
-                            {
-                                this.HttpContext.Session["rptSource"] = "empty";
-                            }
-                           
-                            this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
-                            this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
-                            this.HttpContext.Session["ReportName"] = $"{ReportName}";
-                            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
-
-                        }
-                        break;
-                        case "TB6":
-                            {
-                            string fileTitle = $"TB6C{model.SystemQuery.FromDate.Date.ToString("yyyyMMddhhmmss")}";
-                            string ReportName = $"TrialBalance8Column.rpt";
-                            var account = await _acountServices.GenerateTrialBalance_6column(model.SystemQuery);
-                            if (model.SystemQuery.FileType == "PDF")
-                            {
+                                string fileTitle = $"TB4C{model.SystemQuery.FromDate.Date.ToString("yyyyMMddhhmmss")}";
+                                var account = await _acountServices.GenerateTrialBalance_4column(model.SystemQuery);
                                 this.HttpContext.Session["rptSource"] = account;
-                            }
-                            else
-                            {
+                                string ReportName = $"TrialBalance4Column.rpt";
+                                if (!account.Any())
+                                {
+                                    this.HttpContext.Session["rptSource"] = "empty";
+                                }
+
                                 this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                                 this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
-                                this.HttpContext.Session["rptSource"] = (account.Count() > 0) ? account : new List<TrialBalance6ColumnDto>();
+                                this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
+
                             }
-                     
-                            if (!account.Any())
+                            break;
+                        case "TB6":
                             {
-                                this.HttpContext.Session["rptSource"] = "empty";
+                                string fileTitle = $"TB6C{model.SystemQuery.FromDate.Date.ToString("yyyyMMddhhmmss")}";
+                                string ReportName = $"TrialBalance8Column.rpt";
+                                var account = await _acountServices.GenerateTrialBalance_6column(model.SystemQuery);
+                                if (model.SystemQuery.FileType == "PDF")
+                                {
+                                    this.HttpContext.Session["rptSource"] = account;
+                                }
+                                else
+                                {
+                                    this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                                    this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
+                                    this.HttpContext.Session["rptSource"] = (account.Count() > 0) ? account : new List<TrialBalance6ColumnDto>();
+                                }
+
+                                if (!account.Any())
+                                {
+                                    this.HttpContext.Session["rptSource"] = "empty";
+                                }
+                                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                                this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
+                                this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
+
+
                             }
-                            this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
-                            this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
-                            this.HttpContext.Session["ReportName"] = $"{ReportName}";
-                            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
-
-
-                        }
-                        break;
+                            break;
                         case "BS":
                             {
-                            string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
-                            var account = await _acountServices.GenerateBalanceSheet(model.SystemQuery);
-                            this.HttpContext.Session["rptSource"] = account;
-                            if (!account.Any())
-                            {
-                                this.HttpContext.Session["rptSource"] = "empty";
+                                string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                                var account = await _acountServices.GenerateBalanceSheet(model.SystemQuery);
+                                this.HttpContext.Session["rptSource"] = account;
+                                if (!account.Any())
+                                {
+                                    this.HttpContext.Session["rptSource"] = "empty";
+                                }
+                                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                             }
-                            this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
-                        }
                             break;
                         case "PANDL":
                             {
-                            string fileTitle = $"InComeStatement{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
-                            var account = await _acountServices.GenerateIncomeStatement(model.SystemQuery);
-                            this.HttpContext.Session["rptSource"] = account;
-                            if (!account.Any())
-                            {
-                                this.HttpContext.Session["rptSource"] = "empty";
+                                string fileTitle = $"InComeStatement{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                                var account = await _acountServices.GenerateIncomeStatement(model.SystemQuery);
+                                this.HttpContext.Session["rptSource"] = account;
+                                if (!account.Any())
+                                {
+                                    this.HttpContext.Session["rptSource"] = "empty";
+                                }
+                                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                             }
-                            this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
-                        }
                             break;
                     }
-               
-                return Json(true, JsonRequestBehavior.AllowGet);
+
+                    return Json(new { success = true, message = "Report generated successfully" }, JsonRequestBehavior.AllowGet);
+                    // Return a JSON result
+                  
+                }
+                else
+                {
+                    // Handle non-AJAX requests if needed
+                    // You might want to redirect here or return a view
+                    return RedirectToAction("Index");
+                }
+          
 
             }
             catch (Exception ex)

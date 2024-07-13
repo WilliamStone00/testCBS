@@ -1,0 +1,75 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+
+<div class="card-body">
+
+
+
+    @using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostBankTransaction(this);", @id = "formValidationExamples" }))
+    {
+        <!-- Account Details -->
+            @*@Html.HiddenFor(v => v.BankCashOut.ReferenceId)
+            @Html.HiddenFor(v => v.BankCashOut.TransactionType, "CASH OUT")*@
+
+        <input type="hidden" name="ServiceOption" value="BranchToBranchTransfer" id="ServiceOption" />
+
+
+        <div class="col-md-6 mb-sm-1">
+            <div class="form-floating form-floating-outline">
+
+                @Html.DropDownListFor(m => m.BranchToBranchTransfer.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "AccountId" })
+                @Html.ValidationMessageFor(model => model.BranchToBranchTransfer.AccountId, "", new { @class = "text-danger" })
+                <label for="Account">Select Bank Account</label>
+            </div>
+        </div>
+        <div class="col-md-6 mb-sm-1">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.BranchToBranchTransfer.Balance, new { @class = "form-control", @readonly = true, @id = "account_balance" })
+                @Html.ValidationMessageFor(model => model.BranchToBranchTransfer.Balance, "", new { @class = "text-danger" })
+                <label for="Account">Bank Account Balance</label>
+            </div>
+        </div>
+        <div class="col-md-6 mb-sm-1">
+            <div class="form-floating form-floating-outline">
+
+                @Html.DropDownListFor(m => m.BranchToBranchTransfer.LiaiAccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "AccountId" })
+                @Html.ValidationMessageFor(model => model.BranchToBranchTransfer.LiaiAccountId, "", new { @class = "text-danger" })
+                <label for="Account">Select Liaison Account</label>
+            </div>
+        </div>
+        <div class="col-md-6 mb-sm-1">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.BranchToBranchTransfer.Amount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BranchToBranchTransfer.Amount, "", new { @class = "text-danger" })
+
+                <label for="Amount"> Amount To Transfer </label>
+            </div>
+        </div>
+
+
+
+        <div class="col-md-6 mb-sm-1">
+            <div class="form-floating form-floating-outline">
+                @*   @Html.TextAreaFor(m => m.BankCashOut.ValueDate, new { @class = "form-control", @style = "height: 200px;" })*@
+                @Html.TextAreaFor(model => model.BankCashOut.Description, new { @class = "form-control", @style = "height: 200px;" })
+                @Html.ValidationMessageFor(model => model.BankCashOut.Description, "", new { @class = "text-danger" })
+
+
+                <label>Naration</label>
+            </div>
+        </div>
+
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary me-2">Validate</button>
+            <input type="hidden" name="Action" value="insert" id="Action" />
+
+        </div>
+
+    }
+
+
+
+
+
+
+</div>
