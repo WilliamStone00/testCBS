@@ -9,7 +9,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 {
 
 
-    public class LoanProduct
+    public class LoanProducct
     {
         public string Id { get; set; }
 
@@ -171,7 +171,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string Action { get; set; }
         public string UpdateOption { get; set; }
 
-        public LoanProduct()
+        public LoanProducct()
         {
             MinimumInterestRate = 0;
             MaximumInterestRate = 0;
@@ -210,6 +210,174 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             LoanProductMaturityPeriodExtensions = new List<LoanProductMaturityPeriodExtension>();
         }
     }
+
+    public class LoanProduct
+    {
+        public string Id { get; set; }
+        public string ProductCode { get; set; }
+        public string ProductName { get; set; }
+        public string LoanInterestPeriod { get; set; }//Per Day, Per Week, Per Month, Per Year
+        public decimal MinimumInterestRate { get; set; }
+        public decimal MaximumInterestRate { get; set; }
+        public string LoanDurationPeriod { get; set; }//Days, Weeks, Months, Years
+        public int MinimumDurationPeriod { get; set; }
+        public int MaximumDurationPeriod { get; set; }
+        public bool RequiresGuarantor { get; set; }
+        public bool IsInterestWaiverApplied { get; set; }
+        public decimal MinimumInterestWaiver { get; set; }
+        public decimal MaximumInterestWaiver { get; set; }
+
+        public bool IsChargesApplied { get; set; }
+        public decimal MinimumChargesToAppliedInPercentage { get; set; }
+        public decimal MaximumChargesToAppliedPercentage { get; set; }
+        public decimal DefaultChargeToAppliedPercentage { get; set; }
+        public decimal MinimumChargesStartDayAfterLoanDueDate { get; set; }
+        public decimal MaximumChargesStartDayAfterLoanDueDate { get; set; }
+        public decimal MinimumDownPaymentPercentage { get; set; }
+        public decimal DefaulChargesStartDayAfterLoanDueDate { get; set; } = 60;
+        public string ChargesAreAppliedToInterestOrBalance { get; set; } = "Interest";
+        public int ChargesStopAfterHowManyDaysFromStart { get; set; } = 30;
+        public bool StartGeneratingInterestAfterDisbustment { get; set; }
+        public int MinimumNumberOfRepayment { get; set; }
+        public string Description { get; set; }
+        public decimal LoanMinimumAmount { get; set; }
+        public decimal MinimumCollateralPercentage { get; set; }
+        public bool IsRequiredShareAccount { get; set; }
+        public bool IsRequiredSalaryccount { get; set; }
+        public bool IsRequiredSavingAccount { get; set; }
+        public bool IsRequresRegisteredPublicAuthority { get; set; }
+        public bool IsRequredIrrivocableSalaryTransfer { get; set; }
+        public bool IsRequiredCollateral { get; set; }
+        public bool BlockedSavingAccount { get; set; }
+        public bool BlockedGuarantorAccount { get; set; }
+        public bool BlockedSalaryAccount { get; set; }
+        public decimal MinimumSavingAccountBalanceRateForTheRequestAmount { get; set; }
+        public decimal MinimumSalaryAccountBalanceRateForTheRequestAmount { get; set; }
+        public decimal MinimumShareAccountBalanceForTheRequestAmount { get; set; }
+        public bool ActiveStatus { get; set; }
+        public bool HasTopUp { get; set; }
+        public string ChartOfAccountIdForPrincipalAmount { get; set; }
+        public string ChartOfAccountIdForAccrualInterest { get; set; }
+        public string ChartOfAccountIdForPenalty { get; set; }
+        public string ChartOfAccountIdForFee { get; set; }
+        public string ChartOfAccountIdForTax { get; set; }
+        public string ChartOfAccountIdForLoanTransition { get; set; }
+        public string ChartOfAccountIdForWriteOffPrincipal { get; set; }
+        public string ChartOfAccountIdForProvisionOnPrincipal { get; set; }
+        public List<string> RepaymentCycles { get; set; }
+        public List<Penalty> Penalties { get; set; }
+        public List<LoanProductRepaymentCycle> LoanProductRepaymentCycles { get; set; }//Daily, Weekly, Biweekly, Monthly, Bimonthly, Quarterly, Every 4 Months, Semi-Annual, Every 9 Months, Yearly, Lump-Sum
+        public List<LoanProductRepaymentOrder> LoanProductRepaymentOrders { get; set; }
+        public List<LoanApplication> LoanApplications { get; set; }
+        public List<LoanProductCollateral> LoanProductCollaterals { get; set; }
+        public List<LoanProductMaturityPeriodExtension> LoanProductMaturityPeriodExtensions { get; set; }//Daily, Weekly, Biweekly, Monthly, Bimonthly, Quarterly, Every 4 Months, Semi-Annual, Every 9 Months, Yearly, Lump-Sum> LoanProductCollaterals { get; set; }
+        public string UpdateOption { get; set; }
+        public int InterestOrder { get; set; }
+        public int CapitalOrder { get; set; }
+        public int FineOrder { get; set; }
+        public decimal InterestRate { get; set; }
+        public decimal CapitalRate { get; set; }
+        public decimal FineRate { get; set; }
+        public string LoanDeliquencyPeriod { get; set; }
+        public string RepaymentTypeName { get; set; }
+        public string LoanProductId { get; set; }
+    }
+
+    public class LoanProductObject
+    {
+        public AddLoanProductCommand AddLoanProductCommand { get; set; }
+        public UpdateLoanProductCommand UpdateLoanProductCommand { get; set; }
+        public Penalty Penalty { get; set; }
+        public List<Penalty> Penalties { get; set; }
+        public List<LoanProduct> LoanProducts { get; set; }
+        public string ServiceOption { get; set; }
+        public LoanProductObject()
+        {
+            AddLoanProductCommand = new AddLoanProductCommand();
+            UpdateLoanProductCommand = new UpdateLoanProductCommand();
+            Penalty = new Penalty();
+            Penalties = new List<Penalty>();
+            LoanProducts = new List<LoanProduct>();
+    }
+    }
+    public class AddLoanProductCommand
+    {
+        public string Id { get; set; }
+        [Required]
+        public string ProductCode { get; set; }
+        [Required]
+        public string ProductName { get; set; }
+        [Required]
+        public string Description { get; set; }
+        public bool ActiveStatus { get; set; }
+    }
+    public class UpdateLoanProductCommand
+    {
+        public string Id { get; set; }
+        public string ProductCode { get; set; }
+        public string ProductName { get; set; }
+        public string LoanInterestPeriod { get; set; }//Per Day, Per Week, Per Month, Per Year
+        public decimal MinimumInterestRate { get; set; }
+        public decimal MaximumInterestRate { get; set; }
+        public string LoanDurationPeriod { get; set; }//Days, Weeks, Months, Years
+        public int MinimumDurationPeriod { get; set; }
+        public int MaximumDurationPeriod { get; set; }
+        public bool RequiresGuarantor { get; set; }
+        public bool IsInterestWaiverApplied { get; set; }
+        public decimal MinimumInterestWaiver { get; set; }
+        public decimal MaximumInterestWaiver { get; set; }
+        public bool IsChargesApplied { get; set; }
+        public decimal MinimumChargesToAppliedInPercentage { get; set; }
+        public decimal MaximumChargesToAppliedPercentage { get; set; }
+        public decimal DefaultChargeToAppliedPercentage { get; set; }
+        public decimal MinimumChargesStartDayAfterLoanDueDate { get; set; }
+        public decimal MaximumChargesStartDayAfterLoanDueDate { get; set; }
+        public decimal MinimumDownPaymentPercentage { get; set; }
+        public decimal DefaulChargesStartDayAfterLoanDueDate { get; set; } = 60;
+        public string ChargesAreAppliedToInterestOrBalance { get; set; } = "Interest";
+        public int ChargesStopAfterHowManyDaysFromStart { get; set; } = 30;
+        public bool StartGeneratingInterestAfterDisbustment { get; set; }
+        public int MinimumNumberOfRepayment { get; set; }
+        public string Description { get; set; }
+        public decimal LoanMinimumAmount { get; set; }
+        public decimal MinimumCollateralPercentage { get; set; }
+        public bool IsRequiredShareAccount { get; set; }
+        public bool IsRequiredSalaryccount { get; set; }
+        public bool IsRequiredSavingAccount { get; set; }
+        public bool IsRequresRegisteredPublicAuthority { get; set; }
+        public bool IsRequredIrrivocableSalaryTransfer { get; set; }
+        public bool IsRequiredCollateral { get; set; }
+        public bool BlockedSavingAccount { get; set; }
+        public bool BlockedGuarantorAccount { get; set; }
+        public bool BlockedSalaryAccount { get; set; }
+        public decimal MinimumSavingAccountBalanceRateForTheRequestAmount { get; set; }
+        public decimal MinimumSalaryAccountBalanceRateForTheRequestAmount { get; set; }
+        public decimal MinimumShareAccountBalanceForTheRequestAmount { get; set; }
+        public bool ActiveStatus { get; set; }
+        public bool HasTopUp { get; set; }
+        public string ChartOfAccountIdForPrincipalAmount { get; set; }
+        public string ChartOfAccountIdForAccrualInterest { get; set; }
+        public string ChartOfAccountIdForPenalty { get; set; }
+        public string ChartOfAccountIdForFee { get; set; }
+        public string ChartOfAccountIdForTax { get; set; }
+        public string ChartOfAccountIdForLoanTransition { get; set; }
+        public string ChartOfAccountIdForWriteOffPrincipal { get; set; }
+        public string ChartOfAccountIdForProvisionOnPrincipal { get; set; }
+        public List<string> RepaymentCycles { get; set; }
+        public string ServiceOption { get; set; }
+        public string UpdateOption { get; set; }
+
+        public int InterestOrder { get; set; }
+        public int CapitalOrder { get; set; }
+        public int FineOrder { get; set; }
+        public decimal InterestRate { get; set; }
+        public decimal CapitalRate { get; set; }
+        public decimal FineRate { get; set; }
+        public string LoanDeliquencyPeriod { get; set; }
+        public string RepaymentTypeName { get; set; }
+        public string LoanProductId { get; set; }
+    }
+
     public class AddLoanDisbumentCommand
     {
         public string LoanId { get; set; }
@@ -234,12 +402,18 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public virtual LoanProduct LoanProduct { get; set; }
     }
 
-    
+
     public class LoanProductRepaymentOrder
     {
         public string Id { get; set; }
-        public int RepaymentOrder { get; set; }
-        public string RepaymentType { get; set; }
+        public int InterestOrder { get; set; }
+        public int CapitalOrder { get; set; }
+        public int FineOrder { get; set; }
+        public decimal InterestRate { get; set; }
+        public decimal CapitalRate { get; set; }
+        public decimal FineRate { get; set; }
+        public string LoanDeliquencyPeriod { get; set; }
+        public string RepaymentTypeName { get; set; }
         public string LoanProductId { get; set; }
         public virtual LoanProduct LoanProduct { get; set; }
 
@@ -306,6 +480,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public List<StringValues> LoanTargets { get; set; } = new List<StringValues>();
         public List<StringValues> LoanCategories { get; set; } = new List<StringValues>();
         public List<StringValues> LoanDeliquenciesStatus { get; set; } = new List<StringValues>();
+        public List<StringValues> LoanApplicationTypes { get; set; } = new List<StringValues>();
 
         //LoanDeliquenciesStatus
         //ApprovalStatus

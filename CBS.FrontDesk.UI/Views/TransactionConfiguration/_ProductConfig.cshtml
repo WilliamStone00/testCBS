@@ -135,7 +135,6 @@
     <fieldset class="fieldset-custom">
         <legend>Account types</legend>
         <div class="row">
-
             <div class="col-12">
                 <div class="form-check form-check-inline" id="accountType">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "PreferenceShare", new { id = "preferenceShare", @class = "form-check-input" })
@@ -152,6 +151,10 @@
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Saving", new { id = "saving", @class = "form-check-input" })
                     <label class="form-check-label" for="saving">Saving account.</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Salary", new { id = "Salary", @class = "form-check-input" })
+                    <label class="form-check-label" for="Salary">Salary account.</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Loan", new { id = "loan", @class = "form-check-input" })
@@ -172,6 +175,14 @@
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Teller", new { id = "teller", @class = "form-check-input" })
                     <label class="form-check-label" for="teller">Teller account (Reserved for operations).</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "MobileMoneyMTN", new { id = "MobileMoneyMTN", @class = "form-check-input" })
+                    <label class="form-check-label" for="MobileMoneyMTN">Mobile Money MTN</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "MobileMoneyORANGE", new { id = "MobileMoneyORANGE", @class = "form-check-input" })
+                    <label class="form-check-label" for="MobileMoneyORANGE">Mobile Money Orange</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Other", new { id = "other", @class = "form-check-input" })

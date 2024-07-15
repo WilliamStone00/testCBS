@@ -166,14 +166,16 @@ function collectDeposits() {
             deposit.Note = $('#Note').val();
             deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
             deposit.OperationType = $('#OperationType').val();
+            deposit.CheckName = $('#CheckName').val();
+            deposit.CheckNumber = $('#CheckNumber').val();
+            deposit.IsSWS = true;
             deposit.CustomerId = $('#customerId').val();
             deposit.LoanApplicationId = $(this).find('.loan-application-id').val();
             deposit.Period = $(this).find('.period').val();
             deposits.push(deposit);
-
-            //
         }
     });
+
 
     return deposits;
 }
@@ -206,6 +208,16 @@ function collectDepositorInfo() {
         DepositerNote: $('#DepositerNote').val()
     };
 }
+function resetDepositorForm() {
+    $('#DepositorName').val('');
+    $('#DepositerTelephone').val('');
+    $('#DepositorIDNumber').val('');
+    $('#DepositorIDIssueDate').val('');
+    $('#DepositorIDExpiryDate').val('');
+    $('#DepositorIDNumberPlaceOfIssue').val('');
+    $('#DepositerNote').val('');
+    $('#Note').val('')
+}
 function Reprint() {
     ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
 
@@ -230,7 +242,7 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
                     }
                 },
                 error: function (xhr, status, error) {
-                    appalert("An error occurred while processing the transaction. Please try again later.", 0, 1);
+                    appalert("Your session is expired Or An error occurred while processing the transaction. Please try again later.", 0, 1);
                 }
             });
         },
@@ -242,12 +254,16 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
 
 function successCallback(response, operationType) {
     appalert(response.message, 1, 1);
+    resetDepositorForm();
     switch (operationType) {
         case 'CashIn':
             GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashin');
             break;
         case 'Withdrawal':
             GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashout');
+            break;
+        case 'WithdrawalSWS':
+            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashoutsws');
             break;
         case 'SavingWithdrawalFormFee':
             GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'withdrawalnotification');
@@ -264,75 +280,9 @@ function successCallback(response, operationType) {
 }
 
 function failureCallback(response) {
-    appalert(response.message || "An error occurred while processing the transaction", 3, 1);
+    appalert(response.message || "Your session is expired Or An error occurred while processing the transaction", 3, 1);
 }
 
-//function confirmTransaction(title, message, ajaxUrl, data, operationType) {
-//    alertify.confirm(title, message,
-//        function () {
-//            $.ajax({
-//                url: ajaxUrl,
-//                type: 'POST',
-//                contentType: 'application/json',
-//                data: JSON.stringify(data),
-//                success: function (response) {
-//                    if (response && response.success) {
-//                        appalert(response.message, 1, 1);
-//                        ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
-//                        if (operationType === 'CashIn') {
-//                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashin');
-//                        } else if (operationType === 'Withdrawal') {
-//                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashout');
-//                        } else if (operationType === 'SavingWithdrawalFormFee') {
-//                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'withdrawalnotification');
-//                        } else if (operationType === 'Loan') {
-//                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'repayment');
-//                        }
-//                        else if (operationType === 'LoanFee') {
-//                            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'loanapplicationfeepayment');
-//                        }
-
-//                    } else {
-//                        if (!response) {
-//                            alert("Your session is expired.");
-//                        } else {
-//                            appalert(response.message || "An error occurred while processing the transaction", 3, 1);
-//                        }
-//                    }
-//                },
-//                error: function (xhr, status, error) {
-//                    appalert("An error occurred while processing the transaction. Please try again later.", 0, 1);
-//                }
-//            });
-//        },
-//        function () {
-//            appalert('Transaction cancelled', 3, 1);
-//        }
-//    );
-//}
-
-//function PostCashIn() {
-//    if (!checkTotalNotes()) return false;
-
-//    var totalNotes = parseFloat($("#totalNoteAmount").val());
-//    var total = calculateTotalAmount();
-
-//    if (!validateTotalAmount(total, totalNotes)) return;
-
-//    var deposits = collectDeposits();
-//    if (deposits.length === 0) {
-//        appalert("Please select at least one account to perform the cash-in.", 3, 1);
-//        return;
-//    }
-
-//    deposits[0].currencyNotes = collectCurrencyNotes();
-//    deposits[0].Depositer = collectDepositorInfo();
-
-//    var message = "WARNING!!!\n";
-//    message += "Are you sure you want to perform a cash-in of " + total + " to the selected account numbers?\n";
-//    message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-//    confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCashIn', deposits);
-//}
 function PostCashIn() {
     if (!checkTotalNotes()) return false;
 
@@ -425,6 +375,38 @@ function PostCashOut() {
     message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
     confirmTransaction('Confirm Cash-Out Operation', message, '/CashDesk/PostRequestCash', deposits, 'Withdrawal');
 }
+function PostCashOutSWS() {
+    // Validate CheckName and CheckNumber
+    var checkName = $('#CheckName').val();
+    var checkNumber = $('#CheckNumber').val();
+
+    if (!checkName || !checkNumber) {
+        appalert("Check Name and Check Number are required.", 3, 1);
+        return false;
+    }
+
+    if (!checkTotalNotes()) return false;
+
+    var totalNotes = parseFloat($("#totalNoteAmount").val());
+    var totalInfo = calculateTotalAmount();
+
+    if (!validateTotalAmount(totalInfo, totalNotes)) return;
+
+    var deposits = collectDeposits();
+    if (deposits.length !== 1) {
+        appalert("Cash-out can only be done from one account only. Please deselect other accounts.", 3, 1);
+        return;
+    }
+
+    deposits[0].currencyNotes = collectCurrencyNotes();
+    deposits[0].Depositer = collectDepositorInfo();
+
+    var message = "";
+    message += "Are you sure you want to perform a SWS cash-out of " + totalInfo.total + " from the selected account numbers?\n";
+    message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
+    confirmTransaction('Confirm SWS Cash-Out Operation', message, '/CashDesk/PostRequestCash', deposits, 'WithdrawalSWS');
+}
+
 
 function PostLoanRepayment() {
     if (!checkTotalNotes()) return false;
@@ -486,18 +468,61 @@ function GetObject(KEY, divToLoadData, partialView, path) {
 function SearchByCustomerNumber(partialView, divToloadPV) {
 
     AddORUpdateGen($('#manualSearchInput').val(), divToloadPV, partialView, 'search', "CashDesk");
-    calculateBalance();
+    //calculateBalance();
 }
 function GetMember() {
+    var operation = $("#currentselectedOperation").val();
     var memberId = $('#manualSearchInput').val();
-    GetMemberData(memberId, '_OperationDesk', 'datalistingview', 'cashin');
+    GetMemberData(memberId, '_OperationDesk', 'datalistingview', operation);
+    /*GetMemberData(memberId, '_OperationDesk', 'datalistingview', 'cashin');*/
 }
 
 function GetMemberData(Key, partialView, divToloadPV, path) {
+    $("#currentselectedOperation").val(path);
+    var spanElement = document.getElementById('cashDeskOperations');
 
+    // Default style
+    spanElement.style.fontWeight = "bold";
+    spanElement.style.textDecoration = "underline";
+    spanElement.style.textDecorationThickness = "2px";
+
+    if (path == "cashin") {
+        spanElement.innerText = "CASH-IN OPERATIONS";
+        spanElement.style.color = "green";
+    }
+    else if (path == "cashout") {
+        spanElement.innerText = "CASH-OUT OPERATIONS";
+        spanElement.style.color = "red";
+    }
+    else if (path == "cashoutsws") {
+        spanElement.innerText = "SWS CASH-OUT OPERATIONS";
+        spanElement.style.color = "red";
+    }
+    else if (path == "repayment") {
+        spanElement.innerText = "LOAN REPAYMENT OPERATIONS";
+        spanElement.style.color = "green";
+    }
+    else if (path == "withdrawalnotification") {
+        spanElement.innerText = "SAVING WITHDRAWAL NOTIFICATION PAYMENT";
+        spanElement.style.color = "red";
+    }
+    else if (path == "loanapplicationfeepayment") {
+        spanElement.innerText = "LOAN APPLICATION FEE PAYMENT";
+        spanElement.style.color = "green";
+    }
+    else if (path == "search") {
+        spanElement.innerText = "MEMBER'S INFORMATION";
+        spanElement.style.color = "blue";
+    }
+    else {
+        spanElement.innerText = "CASH OPERATIONS";
+        spanElement.style.color = "blue"; // Default color for other paths
+    }
+    
     AddORUpdateGen(Key, divToloadPV, partialView, path, "CashDesk");
-    calculateBalance();
+    //calculateBalance();
 }
+
 function GetLoan(KEY) {
     $.ajax({
         type: "GET",

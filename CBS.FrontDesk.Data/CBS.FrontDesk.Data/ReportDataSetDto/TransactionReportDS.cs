@@ -90,4 +90,42 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public decimal OpeningBalance { get; set; }
         public string ReceiptTitle { get; set; }
     }
+    public class OtherTransactionDto
+    {
+        public string TransactionReference { get; set; }
+        public string EnventName { get; set; }
+        public string Description { get; set; }
+        public string TellerCode { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+        public string AccountNumber { get; set; }
+        public string Direction { get; set; }
+        public string TransactionType { get; set; }
+        public string SourceType { get; set; }
+        public string Naration { get; set; }
+        public string CustomerId { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime ModifiedDate { get; set; }
+        public string EventCode { get; set; }
+        public string MemberName { get; set; }
+        public string Logo { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchAddress { get; set; }
+        public string BranchTelephone { get; set; }
+        public string HeadOfficeName { get; set; }
+        public string HeadOfficeAddress { get; set; }
+        public string HeadOfficeTelephone { get; set; }
+        public string HeadOfficeEmail { get; set; }
+        public string HeadOfficeWebSite { get; set; }
+        public string HeadOfficeInitial { get; set; }
+        public string HeadOfficeCode { get; set; }
+        public DateTime DateOfOPeration { get; set; }
+        public string TellerName { get; set; }
+        public string AmountInWord { get; set; }
+        public string ReceiptTitle { get; set; }
+
+    }
+
 }

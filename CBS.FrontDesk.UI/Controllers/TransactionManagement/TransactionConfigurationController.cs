@@ -396,6 +396,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                         var conf = await _savingProductServices.GetSavingConfigurationAggregates();
                         ViewBag.Frequences = conf.freeQuencies.ToList();
                         ViewBag.Currencies = conf.currencies.ToList();
+                        ViewBag.WithdrawalLimitTypes = conf.withdrawalTypes.ToList();
                         var savingProduct = await _savingProductServices.GetSavingProduct(key);
                         return PartialView(partialView, new SavingConfiguration { WithdrawalLimit = new WithdrawalLimit { ProductId = key }, SavingProduct=savingProduct });
                     };
@@ -407,6 +408,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                         var conf = await _savingProductServices.GetSavingConfigurationAggregates();
                         ViewBag.Frequences = conf.freeQuencies.ToList();
                         ViewBag.Currencies = conf.currencies.ToList();
+                        ViewBag.WithdrawalLimitTypes = conf.withdrawalTypes.ToList();
                         var data = await _withdrawalLimitServices.GetWithdrawalLimit(key);
                         var savingProduct = await _savingProductServices.GetSavingProduct(data.ProductId);
                         return PartialView(partialView, new SavingConfiguration { WithdrawalLimit = data, SavingProduct = savingProduct });

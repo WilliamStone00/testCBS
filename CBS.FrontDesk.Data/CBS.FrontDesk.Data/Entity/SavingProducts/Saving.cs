@@ -147,6 +147,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public bool IsAppliesOnHoliday { get; set; }
         public decimal MaximumRateAboveMaximumRange { get; set; }
         public decimal MaximumExtraCharge { get; set; }
+        public bool IsMoralPerson { get; set; }
 
         public virtual ICollection<FeePolicy> FeePolicies { get; set; }
 
@@ -201,8 +202,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     {
         Withdrawal,
         Transfer,
-        Deposit,
-        Saving,
+        Deposit
     }
     public class CloseFeeParameter : Sharing
     {
@@ -232,7 +232,12 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal TotalFee { get; set; }
         public string BankId { get; set; }
         public string BranchId { get; set; }
-        public string MemberRegistrationFeePolicyId { get; set; }
+        public string MemberAccountActivationPolicyId { get; set; }
+
+       
+        public bool NotifyBeforeWithdrawal { get; set; }
+
+
         public virtual MemberRegistrationFeePolicy MemberRegistrationFeePolicy { get; set; }
 
         // Constructor
@@ -541,6 +546,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
 
         public string branchId { get; set; }
         public string CustomerName { get; set; }
+        public bool IsRemoveAccount { get; set; }
 
     }
     public class WithdrawalNotification
@@ -670,6 +676,8 @@ public class MemberAccountUpload
         [Required]
         public string EventCode { get; set; }
         public string Description { get; set; }
+        [Required]
+        public string Name { get; set; }
         public string TellerId { get; set; }
         [Required]
         public decimal Amount { get; set; }
@@ -686,15 +694,112 @@ public class MemberAccountUpload
         public string BranchId { get; set; }
         public Branch Branch { get; set; }
         public string BankId { get; set; }
+        public string AmountInWord { get; set; }
+        public string ReceiptTitle { get; set; }
+
         public Teller Teller { get; set; }
+        public DateTime DateOfOPeration { get; set; }
+
     }
 
+    public class TransactionReversal
+    {
+        public List<TransactionHistory> Transactions { get; set; }
+        public ReversalRequest ReversalRequest { get; set; }
+        public List<ReversalRequest> ReversalRequests { get; set; }
+        public GetAllReversalRequestQuery GetAllReversalRequestQuery { get; set; }
+        public AddReversalRequestCommand AddReversalRequestCommand { get; set; }
+        public ApprovedReversalRequestCommand ApprovedReversalRequestCommand { get; set; }
+        public ValidationReversalRequestCommand ValidationReversalRequestCommand { get; set; }
+        public CashCompletionOfReversalCommand CashCompletionOfReversalCommand { get; set; }
+        public string Option { get; set; }
+        // Empty constructor
+        public TransactionReversal()
+        {
+            ReversalRequest = new ReversalRequest();
+            ReversalRequests = new List<ReversalRequest>();
+            GetAllReversalRequestQuery = new GetAllReversalRequestQuery();
+            AddReversalRequestCommand = new AddReversalRequestCommand();
+            ApprovedReversalRequestCommand = new ApprovedReversalRequestCommand();
+            ValidationReversalRequestCommand = new ValidationReversalRequestCommand();
+            CashCompletionOfReversalCommand = new CashCompletionOfReversalCommand();
+            Transactions = new List<TransactionHistory>();
+        }
+    }
+
+    public class ReversalRequest
+    {
+        public string Id { get; set; }
+        public string TransactionReference { get; set; }
+        public decimal Amount { get; set; }
+        public string Reason { get; set; }
+        public string Status { get; set; } // "Pending", "Approved", "Rejected","Validated"
+        public string InitiatedBy { get; set; }
+        public string ApprovedBy { get; set; }
+        public string ValidatedBy { get; set; }
+        public string DebitDirection { get; set; }
+        public string ApprovedComment { get; set; }
+        public string ValidationComment { get; set; }
+        public bool IsValidated { get; set; }
+        public bool IsAppoved { get; set; }
+        public bool RequestStatus { get; set; }
+        public DateTime ValidationDate { get; set; }
+        public DateTime ApprovedDate { get; set; }
+        public DateTime RequestDate { get; set; }
+        public DateTime DateTreated { get; set; }
+        public string TreatedTellerName { get; set; }
+        public string TreatedTellerCode { get; set; }
+        public string TreatedUserName { get; set; }
+        public string BranchId { get; set; }
+        public string CustomerId { get; set; }
+        public string AccountId { get; set; }
+        public string AccountNumber { get; set; }
+        public string TellerId { get; set; }
+        public Branch Branch { get; set; } = new Branch();
+        public Account Account { get; set; } = new Account();
+        public List<TransactionHistory> Transactions { get; set; } = new List<TransactionHistory>();
+        public Teller Teller { get; set; } = new Teller();
+    }
+    public class GetAllReversalRequestQuery
+    {
+        public string QueryString { get; set; }
+        public string DateFrom { get; set; }
+        public string DateTo { get; set; }
+        public bool IsBranch { get; set; }
+        public bool IsByDate { get; set; }
+        public string BranchId { get; set; }
+    }
+    public class AddReversalRequestCommand
+    {
+        public string TransactionId { get; set; }
+        public string Reason { get; set; }
+        public decimal Amount { get; set; }
+        public string DebitDirection { get; set; }
+    }
+    public class ApprovedReversalRequestCommand
+    {
+        public string Status { get; set; } // "Pending", "Approved", "Rejected","Validated"
+        public string ApprovedComment { get; set; }
+        public string Id { get; set; }
+    }
+    public class ValidationReversalRequestCommand
+    {
+        public string Status { get; set; } // "Pending", "Approved", "Rejected","Validated"
+        public string ValidationComment { get; set; }
+        public string Id { get; set; }
+    }
+    public class CashCompletionOfReversalCommand
+    {
+        public string Id { get; set; }
+    }
     public class AddOtherTransactionCommand
     {
         public string EnventName { get; set; }
         public decimal Amount { get; set; }
         public string EventCode { get; set; }
         public string Direction { get; set; }
+        public string Name { get; set; }
+        public string Naration { get; set; }
         public string TransactionType { get; set; }//Income Or Expenses
         public string SourceType { get; set; }//Cash_Collection Or Member_Account
         public string CustomerId { get; set; }

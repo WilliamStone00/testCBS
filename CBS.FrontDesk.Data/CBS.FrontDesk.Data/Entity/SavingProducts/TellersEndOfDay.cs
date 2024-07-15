@@ -192,6 +192,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public decimal MaximumCeilin { get; set; }
         public Teller Teller { get; set; }
+        public GetAllTellerOperationsQuery GetAllTellerOperationsQuery { get; set; } = new GetAllTellerOperationsQuery();
         public Branch Branch { get; set; }
         public List<Branch> Branches { get; set; }
         public List<PrimaryTellerProvisioningHistory> PrimaryTellerProvisioningHistories { get; set; }
@@ -203,6 +204,73 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public string BranchId { get; set; }
+    }
+    public class TellerOperationGL
+    {
+        public DateTime Date { get; set; }
+        public string Naration { get; set; }
+        public decimal Amount { get; set; }
+        public decimal BalanceBF { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+        public decimal Balance { get; set; }
+       
+        public string AccountNumber { get; set; }
+        public string TransactionType { get; set; }
+        public string TransactionRef { get; set; }
+
+        public string DailyReferences { get; set; }
+
+        public string MemberId { get; set; }
+        public string Description { get; set; }
+        public string MemberAccountNumber { get; set; }
+
+
+        public string TellerID { get; set; }
+       
+        public string BranchId { get; set; }
+
+    }
+
+    public class ExportTellerGL
+    {
+        public DateTime Date { get; set; }
+        public string Naration { get; set; }
+        public decimal BalanceBF { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+        public decimal Balance { get; set; }
+        public string BranchName { get; set; }
+        public string TellerName { get; set; }
+        public string UserName { get; set; }
+        public string DailyReferences { get; set; }
+        public string MemberId { get; set; }
+        public string Description { get; set; }
+        public string MemberAccountNumber { get; set; }
+        public string AccountNumber { get; set; }
+        public string TransactionType { get; set; }
+        public string HeadOffice { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchTel { get; set; }
+        public string BranchAddress { get; set; }
+        public string LogoUrl { get; set; }
+        public decimal OpeningBalance { get; set; }
+        public decimal TotalCredit { get; set; }
+        public decimal ClosingBalance { get; set; }
+        public int TotalTransactions { get; set; }
+        public decimal TotalDebit { get; set; }
+    }
+    public class GetAllTellerOperationsQuery
+    {
+        public string QueryString { get; set; }
+        public string TellerId { get; set; }
+        public string DateFrom { get; set; }
+        public string DateTo { get; set; }
+        public string BranchId { get; set; }
+        public bool IsByTeller { get; set; }
+        public bool IsByBranch { get; set; }
+        public bool IsByDate { get; set; }
+        public bool IsPDF { get; set; }
     }
     public class CashReplenishmentSubTeller
     {

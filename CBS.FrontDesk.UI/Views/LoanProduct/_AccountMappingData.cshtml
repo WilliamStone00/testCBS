@@ -1,5 +1,5 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.LoanProduct>
-@if (Model != null && Model.Any())
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
+@if (Model != null && Model.LoanProducts.Any())
 {
     <div class="table-responsive mb-3">
         <table class="table table-hover" id="myDataTable">
@@ -13,12 +13,12 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var d in Model)
+                @foreach (var d in Model.LoanProducts)
                 {
                     <tr>
                         <td style="width:8%">@d.ProductCode</td>
                         <td style="width:47%">@d.ProductName</td>
-                        <td style="width:20%">@d.LoanMinimumAmount.ToString("#,##0.0")-@d.LoanMaximumAmount.ToString("#,##0.0")</td>
+                        <td style="width:20%">@d.LoanMinimumAmount.ToString("#,##0.0")</td>
                         <td style="width:10%">
                             @if (d.ActiveStatus)
                             {

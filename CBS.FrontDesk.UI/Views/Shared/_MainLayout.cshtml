@@ -855,15 +855,32 @@
     <script>
         $(document).ready(function () {
             $('.select2').select2({
-                //width: '100%', 
-                //allowClear: true, 
-                //placeholder: '---Select an option---' 
+                //width: '100%',
+                //allowClear: true,
+                //placeholder: '---Select an option---'
             });
         });
     </script>
 
 
+    <script>
+        $(document).ajaxComplete(function (event, xhr, settings) {
+            if (xhr.status === 401) {
+                alert("Your session has expired. Please log in again.");
+                // Optionally, you can redirect the user to the login page
+                // window.location.href = "/Account/Login";
+                window.location.href = "/Authentication/Login";
+            }
+        });
 
+        $(document).ajaxError(function (event, jqxhr, settings, exception) {
+            if (jqxhr.status === 401) {
+                alert("Your session has expired. Please log in again.");
+                // Optionally, you can redirect the user to the login page
+                window.location.href = "/Authentication/Login";
+            }
+        });
+    </script>
 
     @RenderSection("scripts", required: false)
 </body>

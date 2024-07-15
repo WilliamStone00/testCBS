@@ -86,17 +86,17 @@
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.IsYearOpen, new { @class = "form-check-input" })
                                             @*@if (Model.IsYearOpen)
-                                            {
-                                                <label class="form-check-label" for="isActive">
-                                                    Year is currently opened. Uncheck to stop the running of the year
-                                                </label>
-                                            }
-                                            else
-                                            {
-                                                <label class="form-check-label" for="isActive">
-                                                    Year is not opened. Check to keep the year open and running.
-                                                </label>
-                                            }*@
+                                                {
+                                                    <label class="form-check-label" for="isActive">
+                                                        Year is currently opened. Uncheck to stop the running of the year
+                                                    </label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="form-check-label" for="isActive">
+                                                        Year is not opened. Check to keep the year open and running.
+                                                    </label>
+                                                }*@
                                             @if (Model.IsYearOpen)
                                             {
                                                 <span class="status-label running">Running</span>
@@ -129,6 +129,63 @@
                 </div>
             </div>
             <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingPaymentMethod55">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePaymentMethod55"
+                            aria-expanded="false"
+                            aria-controls="collapsePaymentMethod55">
+                        Set Automatic Charging System
+
+                    </button>
+                </h2>
+                <div id="collapsePaymentMethod55"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingPaymentMethod55"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        @using (Html.BeginForm("AddOrUpdate", "SysConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        {
+                            <fieldset class="fieldset-custom">
+                                <legend>System Daily Status</legend>
+                                <div class="row g-4">
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.UseAutomaticChargingSystem, new { @class = "form-check-input" })
+
+                                            @if (Model.UseAutomaticChargingSystem)
+                                            {
+                                                <span class="status-label running">ON</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="status-label closed">OFF</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    @if (Model.UseAutomaticChargingSystem)
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Uncheck to set it OFF</button>
+
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Check to set it ON.</button>
+
+                                    }                                   @Html.HiddenFor(m => m.Id)
+
+                                    <input type="hidden" name="ServiceOption" value="automatic_charging_system" id="ServiceOption" />
+                                </div>
+                            </fieldset>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingPaymentMethod5">
                     <button type="button"
                             class="accordion-button collapsed"
@@ -154,17 +211,17 @@
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.IsDayOpen, new { @class = "form-check-input" })
                                             @*@if (Model.IsDayOpen)
-                                            {
-                                                <label class="form-check-label" for="isActive">
-                                                    Day is currently opened. Uncheck to stop the running of the day
-                                                </label>
-                                            }
-                                            else
-                                            {
-                                                <label class="form-check-label" for="isActive">
-                                                    Day is not opened. Check to keep the day open and running.set_off_days
-                                                </label>
-                                            }*@
+                                                {
+                                                    <label class="form-check-label" for="isActive">
+                                                        Day is currently opened. Uncheck to stop the running of the day
+                                                    </label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="form-check-label" for="isActive">
+                                                        Day is not opened. Check to keep the day open and running.set_off_days
+                                                    </label>
+                                                }*@
 
                                             @if (Model.IsDayOpen)
                                             {

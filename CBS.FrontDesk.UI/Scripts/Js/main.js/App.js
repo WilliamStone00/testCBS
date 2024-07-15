@@ -124,6 +124,10 @@ function FillDropDownAjaxCall(url, affecteddropdownID, select_option) {
                 console.log(markup);
             }
             $(T).html(markup).show();
+            // Call the callback function if provided
+            if (callback) {
+                callback();
+            }
         }
         , error: function (err) {
             appalert(err.statusText, 1, 3);
@@ -131,6 +135,22 @@ function FillDropDownAjaxCall(url, affecteddropdownID, select_option) {
     });
 
 
+}
+
+function FillDropDownAjaxCall(url, affectedId, defaultText, callback) {
+    // Assuming an AJAX call here
+    $.ajax({
+        url: url,
+        success: function (data) {
+            // Handle the data (fill the dropdown)
+            console.log("Dropdown filled with data");
+
+           
+        },
+        error: function (error) {
+            console.log("Error:", error);
+        }
+    });
 }
 function FillDropDownAjaxCallParam(url, affecteddropdownID, select_option) {
     var data = "<option value='0'> Please wait loading...</option>";

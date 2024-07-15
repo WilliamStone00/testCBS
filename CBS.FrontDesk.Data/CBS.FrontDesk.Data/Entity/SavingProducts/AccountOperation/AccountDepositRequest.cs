@@ -86,6 +86,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string SourceType { get; set; }
         public string OperationType { get; set; }
         public string Period { get; set; }
+        public bool IsSWS { get; set; }
+        public string CheckNumber { get; set; }
+        public string CheckName { get; set; }
         public bool isDepositDoneByAccountOwner { get; set; }
         public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
         public Depositer Depositer { get; set; } = new Depositer();

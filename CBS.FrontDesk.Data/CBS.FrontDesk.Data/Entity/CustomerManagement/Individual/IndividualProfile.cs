@@ -100,7 +100,9 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public PaginationMetadata PaginationMetadata { get; set; } = new PaginationMetadata();
         public IndividualProfile()
         {
-            ImageVirtualPath= "~/AppFiles/Images/p.jpg";
+            CustomerId = "0000000";
+            CustomerCode = "0000000";
+            ImageVirtualPath = "~/AppFiles/Images/p.jpg";
             ImageVirtualSignaturePath = "~/AppFiles/Images/s.jpg";
             ImageNoVirtualPath = "~/AppFiles/Images/noimage.jpg";
             ImageVirtualNoSignaturePath = "~/AppFiles/Images/no signature.png";

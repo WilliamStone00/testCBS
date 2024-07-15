@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = ViewBag.ReportTitle;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <script type="text/javascript">
+        window.onload = function() {
+            var url = "@ViewBag.UrlToOpen";
+            var errorMessage = "@ViewBag.ErrorMessage";
+
+            if (errorMessage) {
+                alert(errorMessage); // Display error message to the user
+                var referrerUrl = "@ViewBag.CurrentUrl";
+                if (referrerUrl) {
+                    //window.location.href = referrerUrl; // Redirect to the referrer URL
+                }
+            } else {
+                window.open(url, '_blank'); // Open PDF in a new tab/window
+                var referrerUrl = "@ViewBag.CurrentUrl";
+                if (referrerUrl) {
+                    //window.location.href = referrerUrl; // Redirect to the referrer URL after opening the new window
+                }
+            }
+        };
+    </script>
+    <p>
+        The PDF report is being opened in a new window. If it doesn't open, <a href="@ViewBag.UrlToOpen" target="_blank">click here</a>.
+        Or go back to your page <a href="@ViewBag.CurrentUrl">Back</a>.
+    </p>
+</body>
+</html>

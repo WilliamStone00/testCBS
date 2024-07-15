@@ -73,8 +73,19 @@
         public static string Get_Update_Delete_EntryFeeParameter = "/api/v1/EntryFeeParameter/{0}";
         public static string GetAllEntryFeeParameter = "/api/v1/EntryFeeParameter";
         public static string CreateEntryFeeParameter = "/api/v1/EntryFeeParameter";
-        //ManagementFeeParameter
-        public static string Get_Update_Delete_ManagementFeeParameter = "/api/v1/ManagementFeeParameter/{0}";
+
+
+        //TransactionReversal
+        public static string Delete_GetReversalRequest = "/api/v1/ReversalRequest/{0}";
+        public static string GetAllReversalRequest = "/api/v1/ReversalRequest/All";
+        public static string CreateReversalRequest = "/api/v1/ReversalRequest/Request";
+        public static string ValidateReversalRequest = "/api/v1/ReversalRequest/Validate";
+        public static string ApprovedReversalRequest = "/api/v1/ReversalRequest/Approved";
+        public static string TreatRequestReversalRequest = "/api/v1/ReversalRequest/TreatRequest";
+    
+
+    //ManagementFeeParameter
+    public static string Get_Update_Delete_ManagementFeeParameter = "/api/v1/ManagementFeeParameter/{0}";
         public static string GetAllManagementFeeParameter = "/api/v1/ManagementFeeParameter";
         public static string CreateManagementFeeParameter = "/api/v1/ManagementFeeParameter";
         //Get_Update_Delete_WithdrawalNotification
@@ -173,6 +184,10 @@
         public static string GetTellerAccountInfo = "/api/v1/Account/GetTellerAccount";
         public static string OpenningOfDayPrimaryTeller = "/api/v1/Teller/Primary/OpenningOfTheDay";
         public static string OpenningOfDaySubTeller = "/api/v1/Teller/SubTeller/OpenningOfTheDay";
+        public static string GetTellerDailyOperations = "/api/v1/TellerOperations/DailyOperations";
+
+
+        //
         //
         public static string GetSubTellerProvisioningHistoryByUserIncharge = "/api/v1/Teller/GetSubTellerProvisioningHistoryByUserIncharge/{0}";
         public static string GetPrimaryTellerProvisioningHistoryByUserIncharge = "/api/v1/Teller/GetPrimaryTellerProvisioningHistoryByUserIncharge/{0}";
@@ -322,6 +337,7 @@
         public static string Get_Delete_DocumentAttachedToLoan = "/api/v1/DocumentAttachedToLoan/{0}";
         public static string GetAllAttachedments = "/api/v1/DocumentAttachedToLoans";
         public static string Get_Update_Delete_LoanProduct = "/api/v1/LoanProduct/{0}";
+        public static string GetAllMembersCurrentLoans = "/api/v1/LoanProduct/{0}";
         public static string GetAllLoanProduct = "/api/v1/LoanProducts";
         public static string CreateLoanProduct = "/api/v1/LoanProduct";
         public static string GetLoanProductConfigurationAgregates = "/api/v1/LoanProductConfigurationAgregates";
@@ -351,7 +367,7 @@
         //LOAN
         public static string GetAllLoanByCustomerId = "/api/v1/Loan/GetAllLoanByCustomerId";
         public static string GetLoan = "/api/v1/Loan/{0}";
-        public static string GetLoans = "/api/v1/Loans";
+        public static string GetLoans = "/api/v1/Loans/GetAllLoans";
         public static string InitiateBulkDownloadLoans = "/api/v1/FileDownloadInfo/InitiateBulkDownloadLoans";
         public static string BulkDownloadDeleteAndGetLoan = "/api/v1/FileDownloadInfo/{0}";
         public static string GetAllBulkDownloadInfosLoan = "/api/v1/FileDownloadInfos";

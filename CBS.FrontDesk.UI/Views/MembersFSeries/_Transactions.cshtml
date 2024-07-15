@@ -62,7 +62,7 @@
                                                             <td>@transaction.Fee.ToString("#,##0.0")</td>
                                                             <td>@transaction.Credit.ToString("#,##0.0")</td>
                                                             <td>@transaction.Debit.ToString("#,##0.0")</td>
-                                                            <td>@totalClosingBalance.ToString("#,##0.0")</td>
+                                                            <td>@transaction.Balance.ToString("#,##0.0")</td>
                                                             <td>@transaction.Account.AccountType</td>
                                                             <td>
                                                                 <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('MembersFSeries', '@transaction.Id','receipts','ReportParameterLess')" data-bs-toggle="tooltip" title="Print receipt with reference @transaction.TransactionReference">
@@ -72,14 +72,14 @@
                                                         </tr>
                                                     }
                                                 </tbody>
-                                                <tfoot>
+                                                @*<tfoot>
                                                     <tr>
                                                         <td colspan="5" style="text-align:right;"><strong>Total Closing Balance:</strong></td>
                                                         <td>@totalClosingBalance.ToString("#,##0.0")</td>
                                                         <td></td>
                                                         <td></td>
                                                     </tr>
-                                                </tfoot>
+                                                </tfoot>*@
 
                                             </table>
                                         </div>

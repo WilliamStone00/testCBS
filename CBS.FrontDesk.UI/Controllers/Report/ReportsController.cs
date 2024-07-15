@@ -1,4 +1,5 @@
 
+using Azure.Core;
 using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.FrontDesk.Data.Entity.Accounting;
@@ -23,9 +24,9 @@ using static CBS.FrontDesk.UI.Controllers.ReportsController.Export;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
-   [CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
 
-    public class ReportsController :  BaseController
+    public class ReportsController : BaseController
     {
         private readonly AccountingServices _accountServices;
 
@@ -97,32 +98,168 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             try
             {
+                // Initialize validity flag
                 bool isValid = true;
-                string strReportName = System.Web.HttpContext.Current.Session["ReportName"].ToString();
-                var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
-                var rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
-                string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"].ToString();     // Setting FromDate 
-                string strToDate = System.Web.HttpContext.Current.Session["DateTo"].ToString();         // Setting ToDate    
-                string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();         // Setting ToDate    
 
+                // Retrieve session values
+               
+
+                string path= System.Web.HttpContext.Current.Session["param_size"]?.ToString() ?? "N/A";
+
+                if (path=="4")
+                {
+                    string strReportName = System.Web.HttpContext.Current.Session["ReportName"]?.ToString();
+                    var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+                    string rptpath = System.Web.HttpContext.Current.Session["rptpath"]?.ToString();
+                    string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"]?.ToString() ?? "N/A";
+                    string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? "N/A";
+                    string strDatePrinted = System.Web.HttpContext.Current.Session["DatePrinted"]?.ToString() ?? "N/A";
+                    string strPrintedBy = System.Web.HttpContext.Current.Session["FullName"]?.ToString() ?? "N/A";
+                    string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
+                    // Validate if the report name is present
+                    if (string.IsNullOrEmpty(strReportName))
+                    {
+                        isValid = false;
+                    }
+
+                    if (isValid)
+                    {
+                        // Load and configure the report document
+                        ReportDocument rd = new ReportDocument();
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+
+                        // Set data source if available
+                        if (rptSource != null && rptSource.GetType().ToString() != "System.String")
+                        {
+                            rd.SetDataSource(rptSource);
+                        }
+
+                        // Set report parameters
+                        SetReportParameter(rd, "DateFrom", strFromDate);
+                        SetReportParameter(rd, "DateTo", strToDate);
+                        SetReportParameter(rd, "PrintedBy", strPrintedBy);
+                        SetReportParameter(rd, "DateNow", strDatePrinted);
+
+                        // Export the report to PDF
+                        string SavedFileName = $"{strtitle}-{DateTime.UtcNow.ToString("dd_MM_yyyy_HHmmss")}";
+                        rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+
+                        // Clean up the report document
+                        CleanReport(rd);
+                    }
+                    else
+                    {
+                        Response.Write("<H2>Nothing Found; No Report name found</H2>");
+                    }
+                }
+                else
+                {
+                    string strReportName = System.Web.HttpContext.Current.Session["ReportName"]?.ToString();
+                    var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+                    string rptpath = System.Web.HttpContext.Current.Session["rptpath"]?.ToString();
+                    string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"]?.ToString() ?? "N/A";
+                    string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? "N/A";
+                    string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
+                    // Validate if the report name is present
+                    if (string.IsNullOrEmpty(strReportName))
+                    {
+                        isValid = false;
+                    }
+
+                    if (isValid)
+                    {
+                        // Load and configure the report document
+                        ReportDocument rd = new ReportDocument();
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+
+                        // Set data source if available
+                        if (rptSource != null && rptSource.GetType().ToString() != "System.String")
+                        {
+                            rd.SetDataSource(rptSource);
+                        }
+
+                        // Set report parameters
+                        SetReportParameter(rd, "DateFrom", strFromDate);
+                        SetReportParameter(rd, "DateTo", strToDate);
+
+                        // Export the report to PDF
+                        string SavedFileName = $"{strtitle}-{DateTime.UtcNow.ToString("dd_MM_yyyy_HHmmss")}";
+                        rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+
+                        // Clean up the report document
+                        CleanReport(rd);
+                    }
+                    else
+                    {
+                        Response.Write("<H2>Nothing Found; No Report name found</H2>");
+                    }
+                }
+
+               
+            }
+            catch (Exception ex)
+            {
+                // Handle specific known exception
+                if (ex.Message.Contains("Error in formula PercentagePassed"))
+                {
+                    Response.Write("<H2>No Data was found</H2>");
+                }
+                else
+                {
+                    Response.Write($"{ex.ToString()}<H2>Nothing Found; report session expired</H2>");
+                }
+            }
+        }
+
+        public void ReportWithParameters()
+        {
+            try
+            {
+                // Initialize validity flag
+                bool isValid = true;
+
+                // Retrieve session values
+                string strReportName = System.Web.HttpContext.Current.Session["ReportName"]?.ToString();
+                var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+                string rptpath = System.Web.HttpContext.Current.Session["rptpath"]?.ToString();
+                string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"]?.ToString() ?? "N/A";
+                string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? "N/A";
+                string strDatePrinted = System.Web.HttpContext.Current.Session["DatePrinted"]?.ToString() ?? "N/A";
+                string strPrintedBy = System.Web.HttpContext.Current.Session["FullName"]?.ToString() ?? "N/A";
+                string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
+
+                // Validate if the report name is present
                 if (string.IsNullOrEmpty(strReportName))
                 {
                     isValid = false;
                 }
+
                 if (isValid)
                 {
+                    // Load and configure the report document
                     ReportDocument rd = new ReportDocument();
                     string strRptPath = Server.MapPath(rptpath);
                     rd.Load(strRptPath);
-                    if (rptSource != null && rptSource.GetType().ToString() != "System.String")
-                        rd.SetDataSource(rptSource);
-                    if (!string.IsNullOrEmpty(strFromDate))
-                        rd.SetParameterValue("DateFrom", strFromDate);
-                    if (!string.IsNullOrEmpty(strToDate))
-                        rd.SetParameterValue("DateTo", strToDate);
 
-                    string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.ToString("dd_mm_yyyy_hhmmss")}");
+                    // Set data source if available
+                    if (rptSource != null && rptSource.GetType().ToString() != "System.String")
+                    {
+                        rd.SetDataSource(rptSource);
+                    }
+
+                    // Set report parameters
+                    SetReportParameter(rd, "DateFrom", strFromDate);
+                    SetReportParameter(rd, "DateTo", strToDate);
+                    SetReportParameter(rd, "PrintedBy", strPrintedBy);
+                    SetReportParameter(rd, "DateNow", strDatePrinted);
+
+                    // Export the report to PDF
+                    string SavedFileName = $"{strtitle}-{DateTime.UtcNow.ToString("dd_MM_yyyy_HHmmss")}";
                     rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+
+                    // Clean up the report document
                     CleanReport(rd);
                 }
                 else
@@ -132,17 +269,87 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             catch (Exception ex)
             {
+                // Handle specific known exception
                 if (ex.Message.Contains("Error in formula PercentagePassed"))
                 {
                     Response.Write("<H2>No Data was found</H2>");
                 }
                 else
                 {
-                    Response.Write(ex.ToString() + "<H2>Nothing Found; report session expired</H2>");
+                    Response.Write($"{ex.ToString()}<H2>Nothing Found; report session expired</H2>");
                 }
-
             }
         }
+
+
+        // Helper method to set report parameter
+        private void SetReportParameter(ReportDocument report, string parameterName, string parameterValue)
+        {
+            if (!string.IsNullOrEmpty(parameterValue))
+            {
+                report.SetParameterValue(parameterName, parameterValue);
+            }
+
+        }
+
+        //public ActionResult ReportWithParameters()
+        //{
+        //    try
+        //    {
+        //        bool isValid = true;
+        //        string strReportName = System.Web.HttpContext.Current.Session["ReportName"].ToString();
+        //        var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+        //        var rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
+        //        string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"].ToString();     // Setting FromDate 
+        //        string strToDate = System.Web.HttpContext.Current.Session["DateTo"].ToString();
+        //        string strDatePrinted = System.Web.HttpContext.Current.Session["DatePrinted"].ToString();// Setting ToDate
+        //        string strPrintedBy = System.Web.HttpContext.Current.Session["FullName"].ToString();// Setting ToDate  
+        //        string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
+        //        // Setting ToDate    
+
+        //        if (string.IsNullOrEmpty(strReportName))
+        //        {
+        //            isValid = false;
+        //        }
+        //        if (isValid)
+        //        {
+        //            ReportDocument rd = new ReportDocument();
+        //            string strRptPath = Server.MapPath(rptpath);
+        //            rd.Load(strRptPath);
+        //            if (rptSource != null && rptSource.GetType().ToString() != "System.String")
+        //                rd.SetDataSource(rptSource);
+        //            if (!string.IsNullOrEmpty(strFromDate))
+        //                rd.SetParameterValue("DateFrom", strFromDate);
+        //            if (!string.IsNullOrEmpty(strToDate))
+        //                rd.SetParameterValue("DateTo", strToDate);
+        //            if (!string.IsNullOrEmpty(strPrintedBy))
+        //                rd.SetParameterValue("PrintedBy", strPrintedBy);
+        //            if (!string.IsNullOrEmpty(strDatePrinted))
+        //                rd.SetParameterValue("DateNow", strDatePrinted);
+        //            string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.ToString("dd_mm_yyyy_hhmmss")}");
+        //            rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+        //            CleanReport(rd);
+        //        }
+        //        else
+        //        {
+        //            Response.Write("<H2>Nothing Found; No Report name found</H2>");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (ex.Message.Contains("Error in formula PercentagePassed"))
+        //        {
+        //            Response.Write("<H2>No Data was found</H2>");
+        //        }
+        //        else
+        //        {
+        //            Response.Write(ex.ToString() + "<H2>Nothing Found; report session expired</H2>");
+        //        }
+
+        //    }
+        //    return View();
+        //}
+
         public ActionResult DownloadExcelFile()
         {
             var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
@@ -150,51 +357,51 @@ namespace CBS.FrontDesk.UI.Controllers
             string rpTType = System.Web.HttpContext.Current.Session["rptType"].ToString();
             string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
             var model = rptSource;
-           
-                if (rpTType == "EXCEL")
+
+            if (rpTType == "EXCEL")
+            {
+                Export export = new Export();
+                export.ToExcel(Response, model as IEnumerable<object>, strtitle);
+
+            }
+            else
+            {
+
+                if (rptSource != "empty")
                 {
-                    Export export = new Export();
-                    export.ToExcel(Response, model as IEnumerable<object>, strtitle);
+                    ReportDocument rd = new ReportDocument();
+                    string strRptPath = Server.MapPath(rptpath);
+                    rd.Load(strRptPath);
+
+                    rd.SetDataSource(rptSource);
+                    string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
+                    // Export the report to a byte array
+                    Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+                    byte[] bytes = new byte[stream.Length];
+                    stream.Read(bytes, 0, bytes.Length);
+
+                    // Clear the response and set the content type
+                    Response.ClearContent();
+                    Response.ClearHeaders();
+                    Response.ContentType = "application/pdf";
+
+                    // Write the report bytes to the response
+                    Response.BinaryWrite(bytes);
+                    Response.Flush();
+                    Response.End();
+                    //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+                    //CleanReport(rd);
+
 
                 }
-                else
-                {
 
-                    if (rptSource != "empty")
-                    {
-                        ReportDocument rd = new ReportDocument();
-                        string strRptPath = Server.MapPath(rptpath);
-                        rd.Load(strRptPath);
+            }
+            return new EmptyResult();
 
-                        rd.SetDataSource(rptSource);
-                        string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
-                        // Export the report to a byte array
-                        Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
-                        byte[] bytes = new byte[stream.Length];
-                        stream.Read(bytes, 0, bytes.Length);
-
-                        // Clear the response and set the content type
-                        Response.ClearContent();
-                        Response.ClearHeaders();
-                        Response.ContentType = "application/pdf";
-
-                        // Write the report bytes to the response
-                        Response.BinaryWrite(bytes);
-                        Response.Flush();
-                        Response.End();
-                        //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
-                        //CleanReport(rd);
-
-
-                    }
-
-                }
-                return new EmptyResult();
-          
 
         }
 
- 
+
 
         public ActionResult DownloadExcelFileForTB4C()
         {
@@ -247,7 +454,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
         }
 
-        
+
         public ActionResult PrintAccountLedgerDtoInExcel()
         {
             //new Dto();
@@ -568,7 +775,7 @@ namespace CBS.FrontDesk.UI.Controllers
         //    //return new EmptyResult();
         //}
 
- 
+
         public ActionResult PrintJournalEntryDtoInExcel()
         {
             //new Dto();
@@ -723,10 +930,10 @@ namespace CBS.FrontDesk.UI.Controllers
                 worksheet.Cell(12, 1).Value = "Entry Date";
                 worksheet.Cell(12, 2).Value = "Reference";
                 worksheet.Cell(12, 3).Value = "Account Number";
-                worksheet.Cell(12,4).Value = "Description";
+                worksheet.Cell(12, 4).Value = "Description";
                 worksheet.Cell(12, 5).Value = "Debit Balance";
                 worksheet.Cell(12, 6).Value = "Credit Balance";
-             
+
 
 
                 // Apply header style
@@ -751,9 +958,9 @@ namespace CBS.FrontDesk.UI.Controllers
                     worksheet.Cell(row, 2).Value = account.Reference;
                     worksheet.Cell(row, 3).Value = account.AccountNumber;
                     worksheet.Cell(row, 4).Value = account.Description;
-                    worksheet.Cell(row,5).Value = account.Debit;
+                    worksheet.Cell(row, 5).Value = account.Debit;
                     worksheet.Cell(row, 6).Value = account.Credit;
-               
+
 
                     row++;
                 }
@@ -785,7 +992,7 @@ namespace CBS.FrontDesk.UI.Controllers
             var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
             var paths = System.Web.HttpContext.Current.Session["rptpath"].ToString();
             var rpttitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
- 
+
             List<TrialBalance4ColumnDto> accounts = (rptSource == "empty") ? new List<TrialBalance4ColumnDto>() : (List<TrialBalance4ColumnDto>)rptSource;
             TrialBalance4ColumnDto trialBalance = (rptSource == "empty") ? new TrialBalance4ColumnDto() : accounts[0];
 
@@ -855,7 +1062,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 worksheet.Cell(12, 4).Value = "Debit Balance";
                 worksheet.Cell(12, 5).Value = "Credit Balance";
                 worksheet.Cell(12, 6).Value = "Ending Balance";
-  
+
 
                 // Apply header style
                 var headerRange0 = worksheet.Range(12, 1, 12, 8);
@@ -878,14 +1085,14 @@ namespace CBS.FrontDesk.UI.Controllers
                     worksheet.Cell(row, 1).Value = account.AccountNumber;
                     worksheet.Cell(row, 2).Value = account.AccountName;
                     worksheet.Cell(row, 3).Value = account.BeginningBalance;
-                   
+
                     worksheet.Cell(row, 4).Value = account.DebitBalance;
                     worksheet.Cell(row, 5).Value = account.CreditBalance;
                     worksheet.Cell(row, 6).Value = account.EndingBalance;
-                  
+
                     row++;
                 }
-                
+
                 worksheet.Columns().AdjustToContents();
 
                 if ((rptSource == "empty"))
@@ -911,7 +1118,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     worksheet.Cell(row, 4).Value = trialBalance.totalDebitBalance.ToString();
                     worksheet.Cell(row, 5).Value = trialBalance.totalCreditBalance.ToString();
                     worksheet.Cell(row, 6).Value = trialBalance.totalEndingBalance.ToString();
-          
+
                 }
 
 
@@ -940,8 +1147,8 @@ namespace CBS.FrontDesk.UI.Controllers
             var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
             var paths = System.Web.HttpContext.Current.Session["rptpath"].ToString();
             var rpttitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
-            List<TrialBalance6ColumnDto> accounts = (rptSource=="empty")? new List<TrialBalance6ColumnDto>(): (List<TrialBalance6ColumnDto>)rptSource;
-            TrialBalance6ColumnDto trialBalance = (rptSource == "empty") ? new TrialBalance6ColumnDto(): accounts[0];
+            List<TrialBalance6ColumnDto> accounts = (rptSource == "empty") ? new List<TrialBalance6ColumnDto>() : (List<TrialBalance6ColumnDto>)rptSource;
+            TrialBalance6ColumnDto trialBalance = (rptSource == "empty") ? new TrialBalance6ColumnDto() : accounts[0];
             using (var workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add(rpttitle);
@@ -972,7 +1179,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 worksheet.Cell(6, 1).Value = $"Branch Telephone";
                 worksheet.Cell(7, 1).Value = $"Head Office Telephone";
                 // Apply header style
-             
+
                 var headerRange = worksheet.Range(1, 1, 7, 1);
                 headerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
                 headerRange.Style.Font.FontSize = 12;
@@ -986,7 +1193,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 var headerRange2 = worksheet.Range(1, 1, 7, 2);
 
                 headerRange2.Style.Font.FontSize = 12;
- 
+
                 headerRange2.Style.Alignment.WrapText = true;
                 headerRange2.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
                 headerRange2.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
@@ -1021,7 +1228,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 headerRange0.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
                 headerRange0.Style.Border.RightBorder = XLBorderStyleValues.Thin;
                 headerRange0.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-                var headerRange10 = worksheet.Range(13, 1, accounts.Count()+13, 8);
+                var headerRange10 = worksheet.Range(13, 1, accounts.Count() + 13, 8);
                 headerRange10.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
                 headerRange10.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
                 headerRange10.Style.Border.RightBorder = XLBorderStyleValues.Thin;
@@ -1049,12 +1256,12 @@ namespace CBS.FrontDesk.UI.Controllers
                 }
                 else
                 {
-                    var footerRange = worksheet.Range(accounts.Count() + 13, 2, accounts.Count()+13, 8);
+                    var footerRange = worksheet.Range(accounts.Count() + 13, 2, accounts.Count() + 13, 8);
                     footerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
                     footerRange.Style.Font.FontSize = 12;
                     footerRange.Style.Font.Bold = true;
                     footerRange.Style.Alignment.WrapText = false;
-                    footerRange.Style.Alignment.JustifyLastLine= false;
+                    footerRange.Style.Alignment.JustifyLastLine = false;
                     footerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     footerRange.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
                     footerRange.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
@@ -1069,7 +1276,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     worksheet.Cell(row, 7).Value = trialBalance.totalEndDebitBalance.ToString();
                     worksheet.Cell(row, 8).Value = trialBalance.totalEndCreditBalance.ToString();
                 }
-              
+
 
                 using (var stream = new MemoryStream())
                 {
@@ -1079,7 +1286,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", _accountServices.GetBranchName() + "-" + trialBalance.branchName + "TB6C.xlsx");
                 }
                 //worksheet.Cell(row + 1, 1).Value = $"Ending Balance Sign: {trialBalance.EndingBalanceSigne}";
-         
+
                 // Save the workbook
 
             }

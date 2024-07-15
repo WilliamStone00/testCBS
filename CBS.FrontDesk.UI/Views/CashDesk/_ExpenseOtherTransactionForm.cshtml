@@ -1,18 +1,17 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 
-@if (ViewBag.Operation == "income_expense")
-{
+
     <div class="form-wrapper">
         <fieldset class="fieldset-custom">
-            <legend>OTHER CASH-IN</legend>
+            <legend>OTHER PAYMENTS EXPENSE</legend>
             <hr />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
 
                     <div class="col-md-6">
                         <div class="input-group mb-3">
-                            <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Enter member's account number">
-                            <button class="btn btn-outline-secondary" type="button" id="manualSearchInputbutton" onclick="LoadMembersAccounts('account_number')">
+                            <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Enter member's reference number">
+                            <button class="btn btn-outline-secondary" type="button" id="manualSearchInputbutton" onclick="GetMember()">
                                 Search
                             </button>
                         </div>
@@ -28,13 +27,13 @@
                         <div class="col-6">
                             <div class="form-check">
                                 @Html.RadioButtonFor(m => m.BulkDeposit.OtherTransaction.SourceType, "Member_Account", new { @class = "form-check-input", id = "memberAccountOption" })
-                                <label class="form-check-label" for="memberAccountOption">From member's account</label>
+                                <label class="form-check-label" for="memberAccountOption">It's a member</label>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-check">
                                 @Html.RadioButtonFor(m => m.BulkDeposit.OtherTransaction.SourceType, "Cash_Collected", new { @class = "form-check-input", id = "cashCollectionOption" })
-                                <label class="form-check-label" for="cashCollectionOption">Collect cash</label>
+                                <label class="form-check-label" for="cashCollectionOption">None Member or Staff</label>
                             </div>
                         </div>
                     </div>
@@ -47,9 +46,16 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
-                            @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.AccountNumber, new SelectList(ViewBag.MemberAccounts, "Value", "Text"), "---Member's account---", new { @class = "form-control select2", @id = "account_number", @search = "true" })
-                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.AccountNumber, "", new { @class = "text-danger " })
-                            <label for="formValidationDob">Select account to perform the operation</label>
+                            @Html.TextBoxFor(m => m.BulkDeposit.OtherTransaction.Name, new { @class = "form-control", @id = "Name" })
+                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.Name, "", new { @class = "text-danger " })
+                            <label for="formValidationDob">Enter individual name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextAreaFor(m => m.BulkDeposit.OtherTransaction.Naration, new { @class = "form-control", @style = "height: 80px;", @id = "Naration" })
+                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.Naration, "", new { @class = "text-danger " })
+                            <label for="formValidationDob">Naration or Description</label>
                         </div>
                     </div>
 
@@ -58,9 +64,9 @@
 
                 </div>
                 <div class="header-buttons mt-4 float-end">
-                    <input type="hidden" name="OperationType" value="OtherCashIn" id="OperationType" />
+                    <input type="hidden" name="OperationType" value="OtherCashInExpense" id="OperationType" />
                     <input type="hidden" name="customerId" value="" id="customerId" />
-                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostOtherCashIn()">
+                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostExpense()">
                         <i class="fas fa-save me-1"></i> Post
                     </button>
                     <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
@@ -73,195 +79,7 @@
             </div>
         </fieldset>
     </div>
-}
-else if (ViewBag.Operation == "transfer_non_member")
-{
-    <div class="form-wrapper">
-        <fieldset class="fieldset-custom">
-            <legend>SAVING WITHDRAWAL NOTIFICATION CHARGES</legend>
-            <hr />
-            <div class="change-group">
-                <div class="row mt-2 gy-4">
-                    <div class="col-md-6">
-                        <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
-                        </div>
-                    </div>
 
-                    <div class="col-md-6">
-                        <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
-                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
-                        </div>
-                    </div>
-                    <div class="table-responsive" style="width: 100%;">
-                        <table class="table table-hover" id="myDataTableT">
-                            <thead class="table-light">
-                                <tr>
-                                    <th style="display:none;">Notification Id</th>
-                                    <th>Requested Amount</th>
-                                    <th>Form charges</th>
-                                    <th>Status</th>
-                                    <th>IDW</th>
-                                    <th>Grace</th>
-                                    <th>Total</th>
-                                    <th>confirm</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var d in Model.WithdrawalNotifications.Where(x => !x.IsWithdrawalDone).OrderBy(t => t.NotificationDate))
-                                {
-                                    <tr>
-                                        <td style="display:none;">@d.Id</td>
-                                        <td>
-                                            <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.AmountRequired">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.FormNotificationCharge" readonly="readonly">
-                                        </td>
-                                        <td>
-                                            <span class="status">@d.ApprovalStatus</span>
-                                        </td>
-                                        <td>
-                                            <span class="doiw">@d.DateOfIntendedWithdrawal.ToShortDateString()</span>
-                                        </td>
-                                        <td>
-                                            <span class="dogp">@d.GracePeriodDate.ToShortDateString()</span>
-                                        </td>
-                                        <td>
-                                            <span class="total-span">@d.Total</span>
-                                        </td>
-                                        <td>
-                                            <input type="checkbox" class="form-check-input">
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="5" style="text-align: right;"><strong>Total:</strong></td>
-                                    <td id="tableTotal">0</td>
-                                    <td></td> <!-- Empty cell to align with the checkbox column -->
-                                </tr>
-                                <tr>
-                                    <td colspan="6" style="text-align: right;"><strong>Balance:</strong></td>
-                                    <td id="tableBalance">0</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-                <div class="header-buttons mt-4 float-end">
-                    <input type="hidden" name="OperationType" value="SavingWithdrawalFormFee" id="OperationType" />
-                    <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
-                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostWithdrawalFromFee()">
-                        <i class="fas fa-money-bill-wave me-1"></i> Confirm payment
-                    </button>
-                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                        <i class="fas fa-print me-1"></i> Re-print
-                    </button>
-                    <button type="reset" class="btn btn-outline-secondary">
-                        <i class="fas fa-sync-alt me-1"></i> Reset
-                    </button>
-                </div>
-            </div>
-        </fieldset>
-    </div>
-
-}
-
-else if (ViewBag.Operation == "withdrawal_non_member")
-{
-    <div class="form-wrapper">
-        <fieldset class="fieldset-custom">
-            <legend>CASH OUT</legend>
-            <hr />
-            <div class="change-group">
-                <div class="row mt-2 gy-4">
-                    <div class="col-md-6">
-                        <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
-                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
-                        </div>
-                    </div>
-                    <div class="table-responsive" style="width: 100%;">
-                        <table class="table table-hover" id="myDataTableT">
-                            <thead class="table-light">
-                                <tr>
-                                    <th style="display:none;">ProductID</th>
-                                    <th>Ordinary accounts</th>
-                                    <th>Amount</th>
-                                    <th>Fee/Charges</th>
-                                    <th>Total</th>
-                                    <th>confirm</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var d in Model.BulkDeposits.Where(x => x.AccountType.ToLower() != "loan").OrderBy(t => t.AccountType))
-                                {
-                                    <tr>
-                                        <td style="display:none;">@d.AccountNumber</td>
-                                        <td>@d.AccountType</td>
-                                        <td>
-                                            <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
-                                        </td>
-                                        <td>
-                                            <span class="total-span">@d.Total</span>
-                                        </td>
-                                        <td>
-                                            <input type="checkbox" class="form-check-input">
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
-                                    <td id="tableTotal">0</td>
-                                    <td></td> <!-- Empty cell to align with the checkbox column -->
-                                </tr>
-                                <tr>
-                                    <td colspan="4" style="text-align: right;"><strong>Balance:</strong></td>
-                                    <td id="tableBalance">0</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    @*<div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id = "Note" })
-                                @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
-                                <label for="formValidationDob">Reasons for cash out</label>
-                            </div>
-                        </div>*@
-                </div>
-                <div class="header-buttons mt-4 float-end">
-                    <input type="hidden" name="OperationType" value="Withdrawal" id="OperationType" />
-                    <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
-                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashOut()">
-                        <i class="fas fa-money-bill-wave me-1"></i> Cash-out
-                    </button>
-                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                        <i class="fas fa-print me-1"></i> Re-print
-                    </button>
-                    <button type="reset" class="btn btn-outline-secondary">
-                        <i class="fas fa-sync-alt me-1"></i> Reset
-                    </button>
-                </div>
-            </div>
-        </fieldset>
-    </div>
-
-}
 
 
 

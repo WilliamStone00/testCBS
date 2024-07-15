@@ -91,6 +91,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal InterestWaiverPercentage { get; set; }
         public bool IsChargesApplied { get; set; }
         public decimal ChargesPercentage { get; set; }
+        public string LoanApplicationType { get; set; }
         public int NumberOfDaysToApplyCharges { get; set; }
         public List<string> FeeIds { get; set; }
         public virtual LoanProduct LoanProduct { get; set; }
@@ -116,7 +117,90 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             GracePeriodAfterMaturityDate = 15;
             GracePeriodBeforeFirstPayment = 1;
             AmortizationType = "Constant_Amortization";
+            LoanApplicationType = "Normal";
         }
+    }
+
+    public class AddLoanApplicationCommand
+    {
+        [Required]
+        public string LoanTarget { get; set; }//Employee, Government, Group, Company, Individual etc
+        [Required]
+        public string LoanCategory { get; set; }//Main_Loan OR Special_Saving_Facilities
+        [Required]
+        public List<string> FeeIds { get; set; }
+        [Required]
+        public string LoanProductId { get; set; }
+        [Required]
+        public decimal Amount { get; set; }
+        public bool IsThereGuarantor { get; set; }
+
+        public bool IsThereCollateral { get; set; }
+        public decimal InterestRate { get; set; }
+        public bool IsInterestPaidUpFront { get; set; } = true;
+        [Required]
+        public string RepaymentCircle { get; set; }
+        [Required]
+        public string LoanType { get; set; }
+        [Required]
+        public int LoanDuration { get; set; }
+        [Required]
+        public DateTime FirstInstallmentDate { get; set; }
+        [Required]
+        public string CustomerId { get; set; }
+        [Required]
+        public string EconomicActivityId { get; set; }
+        public string AmortizationType { get; set; }
+        public int GracePeriodBeforeFirstPayment { get; set; }
+        [Required]
+        public int GracePeriodAfterMaturityDate { get; set; }
+        public bool RequiredDownPaymentCoverageRate { get; set; }
+        [Required]
+        public string LoanApplicationType { get; set; }
+        [Required]
+        public string LoanId { get; set; }
+        public decimal CollateralCoverageRate { get; set; }
+        public decimal ShareAccountCoverageAmount { get; set; }
+        public decimal PreferenceShareAccountCoverageAmount { get; set; }
+        public decimal DepositAccountCoverageAmount { get; set; }
+        public decimal SalaryAccountCoverageAmount { get; set; }
+        public decimal TermDeposiAccountCoverageAmount { get; set; }
+        public bool IsPreferenceShareAccountCoverageAmount { get; set; }
+        public bool IsDepositAccountCoverageAmount { get; set; }
+        public bool IsTermDeposiAccountCoverageAmount { get; set; }
+        public decimal SavingAccountCoverageRate { get; set; }
+        public decimal SalaryAccountCoverageRate { get; set; }
+        public decimal GuaratorSavingAccountCoverageRate { get; set; }
+        [Required]
+        public string LoanPurposeId { get; set; }
+        public decimal DownPaymentCoverageAmountProvided { get; set; }
+        public string BranchId { get; set; }
+        public bool IsInterestWaiverApplied { get; set; }
+        public decimal InterestWaiverPercentage { get; set; }
+        public bool ApplyInterestToThisLoan { get; set; }
+        public bool ApplyFeeToThisLoan { get; set; }
+        public decimal ChargesPercentage { get; set; }
+        public int NumberOfDaysToApplyCharges { get; set; }
+        public AddLoanApplicationCommand()
+        {
+            Amount = 0;
+            InterestRate = 0;
+            CollateralCoverageRate = 0;
+            ShareAccountCoverageAmount = 0;
+            SavingAccountCoverageRate = 0;
+            LoanDuration = 0;
+            GracePeriodAfterMaturityDate = 15;
+            GracePeriodBeforeFirstPayment = 1;
+            AmortizationType = "Constant_Amortization";
+            LoanApplicationType = "Normal";
+            LoanCategory = "Main_Loan";
+        }
+    }
+    public class GetAllLoanQuery
+    {
+        public string QueryParam { get; set; }
+        public bool IsByBranch { get; set; }
+        public string BranchId { get; set; }
     }
     public class GetAllLoanByCustomerIdQuery
     {

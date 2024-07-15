@@ -140,7 +140,7 @@ namespace CBS.BusinessService.MembersAccountSettings
                 var MemberAccountActivation = await GetMemberAccountActivation(model.Id);
                 if (MemberAccountActivation != null)
                 {
-                    MemberAccountActivation.MemberRegistrationFeePolicyId = model.MemberRegistrationFeePolicyId;
+                    MemberAccountActivation.MemberAccountActivationPolicyId = model.MemberAccountActivationPolicyId;
                     MemberAccountActivation.ByeLawFee = model.ByeLawFee;
                     MemberAccountActivation.BuildingContribution = model.BuildingContribution;
                     MemberAccountActivation.LoanPolicyFee = model.LoanPolicyFee;

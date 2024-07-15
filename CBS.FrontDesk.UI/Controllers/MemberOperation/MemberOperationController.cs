@@ -73,9 +73,19 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         public async Task<ActionResult> OperationPanel(string KEY = null, string ReadOptions = null, string path = null, string group = null)
         {
             ViewBag.KEY = KEY;
+            //var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
+            //ViewBag.LoanApplicationStatus = productEnumAgregates.LoanStatuses;
             var customer = await InitializeCustomerData(KEY);
+            ViewBag.LoanProducts = await _loanProductServices.GetLoanProductsDropDown();
+            ViewBag.LoanFees = await _loanProductServices.GetFees();
+            ViewBag.MembersLoan = ViewBag.LoanFees;
+            ViewBag.KEY = KEY;
+            await PopulateAggregatesInViewBag();
+            //var customer = await InitializeCustomerData(KEY);
+            return View(new MemberOperationPanel { LoanApplication = new LoanApplication { CustomerId = KEY }, AddLoanApplicationCommand = new AddLoanApplicationCommand { CustomerId = KEY }, Customer = customer.CustomerList });
+
+
             //var CustomerLoans = await _loanServices.GetLoanByCustomerID(KEY);
-            return View(new MemberOperationPanel { Customer = customer.CustomerList});
         }
         public async Task<ActionResult> MyMembers()
         {
@@ -129,11 +139,11 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             {
                 ViewBag.LoanProducts = await _loanProductServices.GetLoanProductsDropDown();
                 ViewBag.LoanFees = await _loanProductServices.GetFees();
-                
+                ViewBag.MembersLoan = ViewBag.LoanApplicationStatus;
                 ViewBag.KEY = KEY;
                 await PopulateAggregatesInViewBag();
                 //var customer = await InitializeCustomerData(KEY);
-                return PartialView(partialView, new MemberOperationPanel { LoanApplication = new LoanApplication { CustomerId= KEY } });
+                return PartialView(partialView, new MemberOperationPanel { LoanApplication = new LoanApplication { CustomerId= KEY }, AddLoanApplicationCommand=new AddLoanApplicationCommand { CustomerId=KEY} });
 
             }
             else
@@ -427,7 +437,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             else
             {
                 
-                var data = await _loanApplicationServices.Create(model.LoanApplication);
+                var data = await _loanApplicationServices.Create(model.AddLoanApplicationCommand);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
@@ -460,6 +470,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             ViewBag.LoanPurposes = loanpurpose;
             ViewBag.LoanTypes = productEnumAgregates.LoanTypes;
             ViewBag.AmortizationTypes = productEnumAgregates.AmortizationTypes;
+            ViewBag.LoanApplicationTypes = productEnumAgregates.LoanApplicationTypes;
             ViewBag.LoanCommiteeValidationStatuses = productEnumAgregates.LoanCommiteeValidationStatuses;
             ViewBag.LoanCategories = productEnumAgregates.LoanCategories;
             ViewBag.LoanTargets = productEnumAgregates.LoanTargets;
@@ -491,8 +502,18 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         {
             if (Key!=null)
             {
-                var listing = await _loanProductServices.GetLoanProductRepayments(Key, path);
-                return Json(listing, JsonRequestBehavior.AllowGet);
+                if (path== "loanrepayment_cycles")
+                {
+                    var listing = await _loanProductServices.GetLoanProductRepayments(Key, path);
+                    return Json(listing, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    var loans = await _loanservices.GetAllMembersCurrents(Key);
+                    var listing= _loanservices.GetAllMembersCurrentsDropdown(loans).ToList();
+                    return Json(listing, JsonRequestBehavior.AllowGet);
+
+                }
             }
             return Json(null, JsonRequestBehavior.AllowGet);
         }

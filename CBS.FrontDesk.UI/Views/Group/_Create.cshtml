@@ -28,21 +28,28 @@
                                             <label>Select group type</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.CustomerId, new { @class = "form-control", @placeholder = "1234" })
+                                            @Html.ValidationMessageFor(m => m.CustomerId, "", new { @class = "text-danger" })
+                                            <label>Group Reference Number</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.GroupName, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.GroupName, "", new { @class = "text-danger" })
                                             <label>Group type name</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.RegistrationNumber, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.RegistrationNumber, "", new { @class = "text-danger" })
                                             <label>Registration number</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.TaxPayerNumber, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.TaxPayerNumber, "", new { @class = "text-danger" })
@@ -58,28 +65,28 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control"})
+                                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
                                             <label>Phone</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.IDNumber, new { @class = "form-control"})
+                                            @Html.TextBoxFor(m => m.IDNumber, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.IDNumber, "", new { @class = "text-danger" })
                                             <label>National id card</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.IDNumberIssueDate, new { @class = "form-control date-picker"})
+                                            @Html.TextBoxFor(m => m.IDNumberIssueDate, new { @class = "form-control date-picker" })
                                             @Html.ValidationMessageFor(m => m.IDNumberIssueDate, "", new { @class = "text-danger" })
                                             <label>Date issued</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.IDNumberIssueAt, new { @class = "form-control"})
+                                            @Html.TextBoxFor(m => m.IDNumberIssueAt, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.IDNumberIssueAt, "", new { @class = "text-danger" })
                                             <label>Place of issue</label>
                                         </div>

@@ -151,7 +151,7 @@
                                                         <button type="button" class="btn btn-primary" onclick="AddORUpdateGen(null,'datalistingview','_MakeLoanSimulation','create_loan_simulation','MemberOperation','applications')">Simulate amortization schedule</button>
                                                     </div>*@
                                                 <div class="ms-3">
-                                                    <a type="button" onclick="AddORUpdateGen('@Model.Customer.CustomerId','datalistingview','_LoanApplication','loanapplication','MemberOperation',null)" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Apply for a new loan">
+                                                    <a href="/MemberOperation/OperationPanel?KEY=@Model.Customer.CustomerId" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Apply for a new loan">
                                                         <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                                     </a>
                                                 </div>
@@ -171,7 +171,7 @@
                                     <fieldset class="fieldset-custom">
 
                                         <div id="datalistingview">
-                                            @Html.Partial("_LoanData")
+                                            @Html.Partial("_LoanApplication")
                                         </div>
                                     </fieldset>
                                 </div>
