@@ -399,8 +399,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 //cashDemandDataEntity.BankCashOut.ValueDate = DateTime.Now.Date;
                 //cashDemandDataEntity.CashReplenimentRequestdto.ApprovedMessage = $"I {_AccountServices.GetUserFullName()} Approved you withdraw XAF {cashDemandDataEntity.CashReplenimentRequestdto.AmountRequested.ToString("N")} from the bank in favour" +
                 //                                                                 $" of Vault of {_AccountServices.GetBranchName()}";
-                var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.CorrespondingBranchId);
-                ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
+                if (OperationEventAttribute.CashRequisitionType.Equals("REQUEST"))
+                {
+                    var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
+                    ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
+                }
+                else
+                {
+                    var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.CorrespondingBranchId);
+                    ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
+                }
+
 
                 return PartialView(partialView, cashDemandDataEntity);
 

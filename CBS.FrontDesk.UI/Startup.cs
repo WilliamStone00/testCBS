@@ -11,11 +11,11 @@ namespace CBS.FrontDesk.UI
     {
         public void Configuration(IAppBuilder app)
        {
-            GlobalConfiguration.Configuration
-           .UseSqlServerStorage("CBSTransactionDB");
+            //GlobalConfiguration.Configuration
+           //.UseSqlServerStorage("CBSTransactionDB");
 
-            app.UseHangfireDashboard();
-            app.UseHangfireServer();
+           // app.UseHangfireDashboard();
+           // app.UseHangfireServer();
             ConfigureAuth(app);
         }
     }
