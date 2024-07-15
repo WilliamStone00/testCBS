@@ -74,6 +74,9 @@
     <Compile Include="Entity\Accounting\AccountingStatementDto.cs" />
     <Compile Include="Entity\Accounting\AccountType.cs" />
     <Compile Include="Entity\Accounting\AccountValidator.cs" />
+    <Compile Include="Entity\Accounting\BankCashOut.cs" />
+    <Compile Include="Entity\Accounting\BankTransaction.cs" />
+    <Compile Include="Entity\Accounting\BranchToBranchTransfer.cs" />
     <Compile Include="Entity\Accounting\CashApprovalResponse.cs" />
     <Compile Include="Entity\Accounting\CashDemandDataEntity.cs" />
     <Compile Include="Entity\Accounting\CashFlowManagement.cs" />
@@ -82,6 +85,7 @@
     <Compile Include="Entity\Accounting\CashInfusionRequest.cs" />
     <Compile Include="Entity\Accounting\BranchLiaisonLedgerEntry.cs" />
     <Compile Include="Entity\Accounting\ChartofAccountManagementPosition.cs" />
+    <Compile Include="Entity\Accounting\DocumentUpload.cs" />
     <Compile Include="Entity\Accounting\PostedEntry.cs" />
     <Compile Include="Entity\Accounting\IncomeStatement.cs" />
     <Compile Include="Entity\Accounting\ModelIncomeExpenses.cs" />

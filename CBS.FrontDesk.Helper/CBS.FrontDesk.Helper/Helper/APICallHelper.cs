@@ -616,8 +616,11 @@
     public static string UpdateCashReplenishmentRequest = "/api/v1/BankingOperation/UpdateRequestForCashReplenishment/{0}";
     public static string CashReplenishmentResponse = "/api/v1/BankingOperation/ResponseToCashReplenishment";
         public static string GetAllCashReplenishmentRequests = "/api/v1/BankingOperation/GetAllCashReplenishmentRequests";
+        public static string GetAllCashRequestApprovalQuery = "/api/v1/BankingOperation/GetAllCashRequestApprovalQuery";
+       
         public static string GetCashReplenishmentRequestByBranchId = "/api/v1/BankingOperation/GetCashReplenishmentRequestByBranchId/{0}";
-
+        public static string GetBankTransactionQueryByIdURL  = "/api/v1/BankingOperation/GetBankTransactionQueryById/{0}";
+        public static string GetBankTransactionQueryByReferenceIdURL = "/api/v1/BankingOperation/GetBankTransactionQueryByReferenceId/{0}";
         public static string GetCashReplenishmentRequestById = "/api/v1/BankingOperation/GetCashReplenishmentRequestById/{0}";
         public static string GetCashReplenishmentRequestIdReference = "/api/v1/BankingOperation/GetCashReplenishmentRequestByRefereceId/{0}";
         public static string TransactionReversalRequest = "/api/v1/BankingOperation/TransactionReversalRequest";
@@ -625,7 +628,9 @@
         public static string GetTransactionReversalRequest = "/api/v1/BankingOperation/GetTransactionReversalRequestById/{0}";
         public static string GetAllTransactionReversalRequest = "/api/v1/BankingOperation/GetAllTransactionReversalRequests";
         public static string GetTransactionReversalRequestByReferenceId = "/api/v1/BankingOperation/GetTransactionReversalRequestByReferenceId/{0}";
-        ///CheckIfTransactionReversalRequestByReferenceIdExist/
+        public static string BankCashOutCommandUrl = "/api/v1/BankingOperation/BankCashOutCommand";
+        public static string AttachedReceiptRemotely = "BankReceipt/CashOutOperation";
+        ///CheckIfTransactionReversalRequestByReferenceIdExist/  
         public static string CheckIfTransactionReversalRequestByReferenceIdExist = "/api/v1/BankingOperation/CheckIfTransactionReversalRequestByReferenceIdExist/{0}";
 
         public static string Create_EntryTempData = "/api/v1/EntryTempData";

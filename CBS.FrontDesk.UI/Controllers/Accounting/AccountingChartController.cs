@@ -32,6 +32,29 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
          
             return View();
         }
+
+        [HttpGet]
+        public async Task<ActionResult> LoadChartOfAccountByAccountNumber(string AccountNumber)
+        {
+            if (ModelState.IsValid)
+            {
+                string accNum = (AccountNumber.Length == 1) ?  AccountNumber :  AccountNumber.Substring(0, AccountNumber.Length - 1);
+                var model = await _Services.GetChartOfAccountByAccountNumber(accNum);
+                if (model == null)
+                {
+                   
+                     
+                  
+                }
+                else
+                {
+                    return Json(new {Data= model ,});
+                }
+
+            }
+
+            return Json(new { success = false, status = false, message = "Fill the required fields." });
+        }
         [HttpPost]
         public async Task<ActionResult> Create(ChartOfAccount modeldto)
         {

@@ -72,8 +72,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _trialBalanceUploudServices = new TrailBalanceUploudServices();
         }
         // GET: AccountingConfiguration
-
+        
         public async Task<ActionResult> Index()
+        {
+            await GetList();
+            return View(new AccountingConfiguration());
+        }
+        public async Task<ActionResult> IndexForEventConfiguration()
         {
             await GetList();
             return View(new AccountingConfiguration());
@@ -317,6 +322,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             try
             {
                 //var number = chartOfAccountNumber.Length==1? chartOfAccountNumber: chartOfAccountNumber.Substring(0, 1);
+                var datas0 = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPosition(Id);
                 var data = await _chartOfAccountServices.GetChartOfAccountById(Id);
                 var dataList = new List<StringValues>();
                 if (data.LabelEn== "BALANCING_ACCOUNT"|| data.LabelEn.ToUpper()== "ENGLISH")
@@ -1241,6 +1247,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
 
                 var data = await _trialBalanceReferenceServices.Delete(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
+            else if (serviceOption == "chartOfAccountManagementPosition")
+            {
+
+                var data = await _ChartOfAccountManagementPositionServicesServices.Delete(KEY);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
 
             }

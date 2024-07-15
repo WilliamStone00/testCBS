@@ -32,7 +32,9 @@
         }
 
     });
-
+    $(document).on('click', '#print_btn', function () {
+       
+    });
 
 });
 
@@ -122,49 +124,106 @@ function GetTransactionHistory(KEY, divToLoadData, partialView, path, myDataTabl
     LoadDataTableNew("AccountingStatements", myDataTable, "InitializeData", KEY, partialView, order, path, divToLoadData);
 
 }
+
+ 
+function getReportTitle(reportType) {
+    if ((reportType === "TB6") || (reportType === "TB4")) {
+        return "TRIAL BALANCE REPORT";
+    } else if (reportType === "GL") {
+        return "GENERAL LEDGER REPORT";
+    } else if (reportType === "LL") {
+        return "LIAISON LEDGER REPORT";
+    } else if (reportType === "JE") {
+        return "JOURNAL ENTRY REPORT";
+    }
+    // You can add more conditions here for other report types
+    return reportType; // Return the original report type if no match
+}
+
 function AjaxPostSearch(form) {
-    var fileType = $("#SystemQuery_FileType").val();
-    var reportType = $("#SystemQuery_ReportType").val();
-    alert(fileType + reportType);
+
+    var model = CollectionOfData();
+
+    console.log(model);
+
     $.validator.unobtrusive.parse(form);
     if ($(form).valid()) {
-        var ajaxConfig = {
-            type: 'POST',
-            url: form.action,
-            data: new FormData(form),
-            success: function (response) {
+      
 
-                appalert(response.message, 2, 1);
-                if (fileType === "EXCEL") {
-                    if (reportType === "TB4") {
-                        window.open("/Reports/PrintTrialBalance4Column", "_blank");
-                    } else if (reportType === "TB6") {
+        alertify.confirm("TRUST SOFT CREDIT", "Are you sure you want to  generate " + getReportTitle(model.ReportType) + " for the period of " + $("input[name='SystemQuery.FromDate']").val() + " to " + $("input[name='SystemQuery.ToDate']").val() + " !!! ",
+            function () {
 
-                        window.open("/Reports/PrintTrialBalance6Column", "_blank");
+
+                var ajaxConfig = {
+                    type: 'POST',
+                    url: form.action,
+                    data: new FormData(form),
+                    success: function (response) {
+                        openReportWindow(model.FileType, model.ReportType);
+
                     }
-                } else {
-                    window.open("/Reports/DownloadExcelFile", "_blank");
+                    , error: function (err) {
+                        console.log(err.statusText);
+                        appalert(err.statusText, 0, 1);
+                    }
+                };
+
+                if ($(form).attr('enctype') === "multipart/form-data") {
+                    ajaxConfig["contentType"] = false;
+                    ajaxConfig["processData"] = false;
                 }
-
-                // Updated URL
-
-
+                console.log(ajaxConfig);
+                $.ajax(ajaxConfig);
+            },
+            function () {
+                appalert('Transaction cancelled', 3, 1);
 
             }
-            , error: function (err) {
-                appalert(err.statusText, 0, 1);
-            }
-        };
 
-        if ($(form).attr('enctype') === "multipart/form-data") {
-            ajaxConfig["contentType"] = false;
-            ajaxConfig["processData"] = false;
-        }
-        $.ajax(ajaxConfig);
-
+        );
     }
     return false;
 
+
+}
+
+function formatDate(dateString) {
+/*    if (!dateString) return 'Not defined';*/
+
+    // Check if the date string is in the /Date(ticks)/ format
+    const ticksRegex = /^\/Date\((-?\d+)\)\/$/;
+    const match = dateString.match(ticksRegex);
+
+    if (match) {
+        // Convert ticks to milliseconds and create a Date object
+        const ticks = parseInt(match[1], 10);
+        const date = new Date(ticks);
+
+        // Format the date
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+
+        return `${day}-${month}-${year}`;
+    } else {
+        // If the date string is not in the /Date(ticks)/ format, treat it as a regular date string
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+            return 'Not defined';
+        }
+
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+
+        return `${day}-${month}-${year}`;
+    }
 }
 
 function DownLoadGL(FileType) {
@@ -238,36 +297,7 @@ function loadBranchGeneralLedgerByBranchId(branchId) {
             $('#exampleModalLabel3').append('General Ledger For ' + description);
             var table ;
             /** Populate the table with the fetched data
-            //var tableBody = $('#BranchAccountDataTable tbody');
-            //tableBody.empty(); // Clear existing rows
-            //if (data && data.length) {
-            //    $.each(data, function (index, item) {
-            //        var row = $('<tr>');
-
-            //        row.append($('<td>').text(item.AccountNumber));
-            //        row.append($('<td>').text(item.AccountName));
-            //        row.append($('<td>').text(item.CurrentBalance));
-
-            //        // Escape single quotes in the AccountName
-            //        var escapedAccountName = item.AccountName.replace(/'/g, "\\'");
-            //        // Add the new cell with the anchor tag
-            //        var anchorTag = '<td style="width:10%"><a href="#" class="btn btn-outline-primary" onclick="loadAccountingEntriesByAccountId(\'' + item.Id + '\')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#largeModal" title="Select ' + escapedAccountName + ' to journal entry">Download Journal Entry</a></td>';
-            //        row.append(anchorTag);
-
-            //        tableBody.append(row);
-            //    });
-
-            //} else {
-
-            //// Handle the case when data is null or empty
-            //var row = $('<tr>');
-            //    row.append($('<td colspan="4" style="text-align: center;">No data available</td>'));
-            //tableBody.append(row);
-
-            }**/
-
-
-            // Append text to the modal title
+      
             initializeDataTableForGL(data);
             //if (data && data.length > 0) {
             //    // Define columns only if data is available
@@ -343,6 +373,61 @@ function LoadJournalEntryByBranchID() {
 }
 
 
+ 
+ 
+
+function PostingDataToGenerateReport(title, message, ajaxUrl, data) {
+    var formData = new FormData(data);
+    formData.append("X-Requested-With", "XMLHttpRequest");
+
+    alertify.confirm(title, message,
+        function () {
+            if ($(data).valid()) {
+                sendAjaxRequest(ajaxUrl, formData);
+            }
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
+        }
+    );
+}
+
+function sendAjaxRequest(url, formData) {
+    var ajaxConfig = {
+        type: 'POST',
+        url: url,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: handleSuccess,
+        error: handleError
+    };
+
+    $.ajax(ajaxConfig);
+}
+
+function handleSuccess(response) {
+    appalert(response.message, 2, 1);
+    openReportWindow(response.fileType, response.reportType);
+}
+
+function handleError(err) {
+    appalert(err.statusText, 0, 1);
+}
+
+function openReportWindow(fileType, reportType) {
+    var url;
+    if (fileType === "EXCEL") {
+        if (reportType === "TB4") {
+            url = "/Reports/PrintTrialBalance4Column";
+        } else if (reportType === "TB6") {
+            url = "/Reports/PrintTrialBalance6Column";
+        }
+    } else {
+        url = "/Reports/DownloadExcelFile";
+    }
+    window.open(url, "_blank");
+}
 function LoadLiaionLedgerByBranchID(branchId) {
     console.log(branchId);
     $.ajax({
@@ -370,7 +455,17 @@ data: { branchId: branchId },
         }
     });
 }
-
+function CollectionOfData() {
+    var formData = {
+        BranchId: $("#SystemQuery_BranchId").val(),
+        FromDate: $("input[name='SystemQuery.FromDate']").val(),
+        ToDate: $("input[name='SystemQuery.ToDate']").val(),
+        ReportType: $("#SystemQuery_ReportType").val(),
+        FileType: $("#SystemQuery_FileType").val(),
+        AccountId: $("#SystemQuery_AccountId").val()
+    };
+    return formData;
+}
 function ShareBranchID(branchId)
 {
     $('#journalEntryLabel').empty();
@@ -564,7 +659,44 @@ function loadBranchAccountJournalEntriesByBranchIdAndAccountId(accountId) {
         }
     });
 }
+function formatDate(dateString) {
+    if (!dateString) return 'Not defined';
 
+    // Check if the date string is in the /Date(ticks)/ format
+    const ticksRegex = /^\/Date\((-?\d+)\)\/$/;
+    const match = dateString.match(ticksRegex);
+
+    if (match) {
+        // Convert ticks to milliseconds and create a Date object
+        const ticks = parseInt(match[1], 10);
+        const date = new Date(ticks);
+
+        // Format the date
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+
+        return `${day}-${month}-${year}`;
+    } else {
+        // If the date string is not in the /Date(ticks)/ format, treat it as a regular date string
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+            return 'Not defined';
+        }
+
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+
+        return `${day}-${month}-${year}`;
+    }
+}
 function readAccountNumberCellValue(accountNumber) {
     var cellId = 'account-' + accountNumber;
     var $cell = $('#' + cellId);

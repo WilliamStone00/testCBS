@@ -258,6 +258,49 @@ namespace CBS.API.Helper
             }
         }
 
+
+
+        public async Task<APICallBackRespose> PostFilesAndParamsAsync(string apiUrl, Dictionary<string, string> additionalParams, List<HttpPostedFileBase> imageFiles)
+        {
+            try
+            {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+                var formData = new MultipartFormDataContent();
+                // Add additional parameters
+                if (additionalParams != null)
+                {
+                    foreach (var param in additionalParams)
+                    {
+                        formData.Add(new StringContent(param.Value), param.Key);
+                    }
+                }
+
+                // Add each file to the form data
+                foreach (var file in imageFiles)
+                {
+                    formData.Add(new StreamContent(file.InputStream), "AttachedFiles", file.FileName);
+                }
+
+                AddAuthorizationHeader(_httpClient);
+                HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, formData);
+                return await HandleResponseCallBackRespose(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                // Handle HTTP request exceptions
+                Console.WriteLine($"HTTP Request Error: {ex.Message}");
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions or errors
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                throw ex;
+
+            }
+        }
+
+
         public async Task<ApiResponse<T>> PostImageAsync<T>(string apiUrl, HttpPostedFileBase imageFile, string loanApplicationId)
         {
             try
@@ -305,12 +348,20 @@ namespace CBS.API.Helper
 
         public async Task<ApiResponse<T>> PostAsync<T>(string apiUrl, object data)
         {
-            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
-            string jsonData = JsonConvert.SerializeObject(data);
-            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            AddAuthorizationHeader(_httpClient);
-            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
-            return await HandleResponse<T>(response);
+            try
+            {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+                string jsonData = JsonConvert.SerializeObject(data);
+                StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                AddAuthorizationHeader(_httpClient);
+                HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+                return await HandleResponse<T>(response);
+            }
+            catch (Exception EX)
+            {
+
+                throw(EX);
+            }
         }
         public async Task<List<AccountingEntry>> PostAccountingAsync(string apiUrl, object data)
         {
@@ -564,6 +615,7 @@ namespace CBS.API.Helper
                 throw (ex);
             }
         }
+        
         private async Task<ApiResponse<T>> HandleResponse<T>(HttpResponseMessage response)
         {
             string message = null;
@@ -881,6 +933,26 @@ namespace CBS.API.Helper
                     IsSuccess = false,
                     Message = $"Error in handling response: {ex.Message}"
                 };
+            }
+        }
+
+        private async Task<APICallBackRespose> HandleResponseCallBackRespose(HttpResponseMessage response)
+        {
+
+            APICallBackRespose model = new APICallBackRespose();
+            try
+            {
+                if (response.Content != null)
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    model = JsonConvert.DeserializeObject<APICallBackRespose>(responseData);
+                }
+                return model;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
             }
         }
 

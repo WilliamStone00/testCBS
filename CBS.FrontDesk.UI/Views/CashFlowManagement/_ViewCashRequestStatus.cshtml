@@ -41,11 +41,11 @@
                             }
                             <tr>
                                 <td>Invoice Number</td>
-                                <td>@Model.CashReplenimentRequestdto.ReferenceId </td>
+                                <td id="referenceId">@Model.CashReplenimentRequestdto.ReferenceId </td>
                             </tr>
                             <tr>
                                 <td>Amount Requested</td>
-                                <td>XAF @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") </td>
+                                <td id="amountRequested">XAF @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") </td>
                             </tr>
                             <tr>
                                 <td>Request Message</td>
@@ -53,11 +53,11 @@
                             </tr>
                             <tr>
                                 <td>Requested By </td>
-                                <td> @Model.CashReplenimentRequestdto.IssuedBy </td>
+                                <td id="IssuedBy"> @Model.CashReplenimentRequestdto.IssuedBy </td>
                             </tr>
                             <tr>
                                 <td>Requested Date</td>
-                                <td>@Model.CashReplenimentRequestdto.IssuedDate </td>
+                                <td id="IssuedDate">@Model.CashReplenimentRequestdto.IssuedDate </td>
                             </tr>
                             <tr>
                                 <td>Status</td>
@@ -78,13 +78,30 @@
                                     }
                                     else
                                     {
-                                        <td class="badge bg-label-danger rounded-pill text-uppercase">
-                                            @Model.CashReplenimentRequestdto.Status
-                                        </td>
+                                        if (@Model.CashReplenimentRequestdto.Status.ToUpper().Equals("COMPLETED"))
+                                        {
+                                            <td class="badge bg-label-primary rounded-pill text-uppercase">
+                                                @Model.CashReplenimentRequestdto.Status
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                                @Model.CashReplenimentRequestdto.Status
+                                            </td>
+                                        }
                                     }
 
                                 }
 
+                            </tr>
+
+                            <tr>
+                                <td>Bank Transaction</td>
+                                <td>
+                                  @*  <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.ReferenceId')" class="mr-2" id="exLargeModal" data-toggle="tooltip" data-placement="top" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>*@
+                                    <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.ReferenceId')"  class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -95,15 +112,16 @@
                         <div class="mb-3 col-12 mb-0">
                             @if (@Model.CashReplenimentRequestdto.IsApproved)
                             {
-                                <div class="alert alert-outline-success" role="alert">
+                                @*<div class="alert alert-outline-success" role="alert">
                                     <h6 class="alert-heading mb-1">@Model.CashReplenimentRequestdto.RequestMessage account is active.</h6>
                                     <p class="mb-0">Un-check the box and click on de-activate button to de-activate account</p>
-                                </div>
+                                </div>*@
                             }
                             else
-                            {<div class="alert alert-outline-primary" role="alert">
+                            {
+                                <div class="alert alert-outline-primary" role="alert">
                                     <h6 class="alert-heading mb-1">ReferenceId :@Model.CashReplenimentRequestdto.Id  with Amount XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") has not yet been approved</h6>
-                                    <p class="mb-0">Select source account to which the vault will be </p>
+                                    
                                 </div>
                             }
                             <div class="text-end" style="padding-right:2em">
@@ -120,7 +138,7 @@
 
             </div>
         </div>
-
-
+        
+        @Html.Partial("_ViewBankTransaction")
     </div>
 </div>

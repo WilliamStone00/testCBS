@@ -8,7 +8,7 @@
     $(document).on('change', '#CorrespondingBranchID', function () {
  
         // Get the selected value
-var selectedValue = $(this).val();
+        var selectedValue = $(this).val();
         if (selectedValue === 'Redirect-To-Branch') {
             // Show the element
             $('#hideBranchID').show();
@@ -18,7 +18,36 @@ var selectedValue = $(this).val();
         }
     });
 
+    $(document).on('change', '#AccountId', function () {
+
+        // Get the selected value
+        var selectedValue = $(this).val();
+        loadAccountBalance(selectedValue);
+    });
+
 });
+
+function loadAccountBalance(accountId) {
+    console.log(accountId);
+    $.ajax({
+        url: '/ManuallyJournalEntry/GetAccountBalance',
+        type: 'GET',
+        dataType: 'json',
+        data: { Id: accountId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo 
+            $('#account_balance').empty();
+            $("#account_balance").val(data.Account.CurrentBalance);
+ 
+            // Add new options based on the fetched data
+            console.log(data.Account.CurrentBalance);
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
 function refreshPage() {
     // Refresh the current page
     window.location.reload();
@@ -98,8 +127,134 @@ function LoadCashRequestDataDT(tableID) {
 
     });
 }
+//
 
 
+function LoadInfomation(referenceId) {
+    console.log(referenceId);
+
+    $.ajax({
+        url: '/CashFlowManagement/GetBankTransactionByReferenceId',
+        type: 'GET',
+        dataType: 'json',
+        data: { referenceId: referenceId },
+        success: function (data) {
+
+            console.log(data);
+
+            $('#exampleModalLabel3').empty();
+
+            // Append text to the modal title
+            $('#exampleModalLabel3').append('Bank Transaction Information:' + data.BankTransaction.Id);
+            $('#CreatedBy').text(data.BankTransaction.CreatedBy);
+            $('#CreatedDate').text(data.BankTransaction.CreatedDate);
+            var AccountReferenceId = data.Account.AccountNumberCU + "-" + data.Account.AccountName;
+            $('#AccountReferenceId').text(AccountReferenceId);
+            $('#Balance').text("XAF" +data.BankTransaction.Balance);
+            $('#BankTransactionDate').text(data.BankTransaction.ValueDate);
+            $('#Amount').text("XAF"+data.BankTransaction.Amount);
+            $('#CashRequestedBy').text(data.Cashreplenishment.IssuedBy);
+            $('#CashRequestedAmount').text("XAF" +data.Cashreplenishment.AmountRequested);
+            $('#CashRequestedDate').text(data.Cashreplenishment.IssuedDate);
+            $('#CashApprovedBy').text(data.Cashreplenishment.ApprovedBy);
+            $('#CashApprovedAmount').text("XAF" +data.Cashreplenishment.AmountApproved);
+            $('#CashApprovedDate').text(convertMicrosoftDate(data.Cashreplenishment.ApprovedDate));
+            // Update image source
+            $('#previewimage').attr('src', data.BankTransaction.FileUpload);
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+function convertMicrosoftDate(microsoftDate) {
+    // Extract the number from the string
+    const matches = microsoftDate.match(/\d+/);
+    if (!matches) {
+        return "Invalid date format";
+    }
+
+    // Convert to number and create a Date object
+    const timestamp = parseInt(matches[0], 10);
+    const date = new Date(timestamp);
+
+    // Format the date as desired
+    return date.toLocaleString(); // Or use any other date formatting method
+}
+
+function AjaxPostBankTransaction(form) {
+    formData = new FormData(form);
+
+    $.validator.unobtrusive.parse(form);
+    if ($(form).valid()) {
+
+
+        alertify.confirm("Confirmation", "Are you sure you want to perform this action! ",
+            function () {
+
+
+                var ajaxConfig = {
+                    type: 'POST',
+                    url: form.action,
+                    data: formData,
+                    success: function (response) {
+
+                        if (response.success) {
+                            if (response.status === "Exist") {
+                                appalert(response.message, 3, 1);
+                            }
+                            else if (response.status === "Failed") {
+                                appalert(response.message, 2, 1);
+                            }
+                            else {
+                                appalert(response.message, 1, 1);
+
+                            }
+                            if (response.option === 'Update' && response.reloadDataView === "Yes") {
+                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                            }
+                            else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
+                                EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
+                            }
+                            else if (response.reloadDataView === "Yes") {
+                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                            }
+                        }
+                        else {
+                            if (response.Status === "Exist") {
+                                appalert(response.message, 3, 1);
+                            }
+                            else {
+                                appalert(response.message, 2, 1);
+                            }
+
+                        }
+
+                    }
+                    , error: function (err) {
+                        console.log(err.statusText);
+                        appalert(err.statusText, 0, 1);
+                    }
+                };
+
+                if ($(form).attr('enctype') === "multipart/form-data") {
+                    ajaxConfig["contentType"] = false;
+                    ajaxConfig["processData"] = false;
+                }
+                console.log(ajaxConfig);
+                $.ajax(ajaxConfig);
+            },
+            function () {
+                appalert('Transaction cancelled', 3, 1);
+
+            }
+
+        );
+    }
+    return false;
+
+
+}
 function LoadCashReplenishmentDataDT(tableID) {
 
 

@@ -134,15 +134,9 @@ namespace CBS.BusinessService
                 var OperationEvent = await GetOperationEvent(model.Id);
                 if (OperationEvent != null)
                 {
-                    OperationEvent.OperationEventName = model.OperationEventName;
-                    //OperationEvent.BankId = model.BankId;
-                    //OperationEvent.BranchId = model.BranchId;
-                    //OperationEvent.OrganizationId = model.OrganizationId;
                    
-                    OperationEvent.Id = model.Id;
-                    OperationEvent.Description = model.Description;
                  
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<OperationEvent>>(string.Format(APICallHelper.Get_Update_Delete_OperationEvent, model.Id), OperationEvent);
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<OperationEvent>>(string.Format(APICallHelper.Get_Update_Delete_OperationEvent, model.Id), model);
                     if (response.IsSuccess)
                     {
                         // Successful creation

@@ -14,6 +14,11 @@ using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.UserManagement;
 using System.Runtime.InteropServices;
 using CBS.FrontDesk.Data;
+using DocumentFormat.OpenXml.EMMA;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using System.Web;
+using System.IO;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 
 namespace CBS.BusinessService
@@ -22,11 +27,13 @@ namespace CBS.BusinessService
     {
         private readonly ApiCallerHelper _accountingApiCallerHelper;
         private readonly ApiCallerHelper _TransactionBaseUrl;
+        private readonly ApiCallerHelper _IdentityServerBaseUrl;
         private List<Currency> _currencies;
         public AccountingEntryServices()
         {
             _accountingApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
             _TransactionBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
+            _IdentityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
         }
         public async Task<List<CashRoot>> GetCashReplenimentCurrentOpenOfDayHistoryRequestId()
         {
@@ -295,7 +302,33 @@ namespace CBS.BusinessService
             }
         }
 
-     
+        public async Task<List<CashReplenimentRequestDto>> GetAllCashRequestApprovalQuery()
+        {
+
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<CashReplenimentRequestDto>>>(APICallHelper.GetAllCashRequestApprovalQuery);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData == null)
+                    {
+                        return new List<CashReplenimentRequestDto>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<CashReplenimentRequestDto>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+
 
         public async Task<List<CashReplenimentRequestDto>> GetAllCashReplenimentRequest()
         {
@@ -371,7 +404,26 @@ public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
                 throw (ex);
             }
         }
+        //public async Task<BankTransaction> GetBankTransactionById(string Id)
+        //{
+        //    try
+        //    {
 
+        //        var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<BankTransaction>>(string.Format(APICallHelper.GetBankTransactionQueryByIdURL, Id));
+        //        if (couApiResponse.IsSuccess)
+        //        {
+        //            var user = await GetUser(couApiResponse.ApiResponseData.Data.IssuedBy);
+        //            couApiResponse.ApiResponseData.Data.IssuedBy = user.name + "," + user.phoneNumber + " ";
+        //            return couApiResponse.ApiResponseData.Data;
+        //        }
+        //        return new CashReplenimentRequest();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log and handle exception
+        //        throw (ex);
+        //    }
+        //} 
         public async Task<CashReplenimentRequest> GetCashReplenimentReferenceRequest(string Id)
         {
             try
@@ -391,6 +443,116 @@ public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
                 // Log and handle exception
                 throw (ex);
             }
+        }
+        public async Task<CashReplenimentRequest> GetCashReplenishmentRequestIdReference(string Id)
+        {
+            try
+            {
+
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<CashReplenimentRequest>>(string.Format(APICallHelper.GetCashReplenishmentRequestIdReference, Id));
+                if (couApiResponse.IsSuccess)
+                {
+                    var user = await GetUser(couApiResponse.ApiResponseData.Data.IssuedBy);
+                    couApiResponse.ApiResponseData.Data.IssuedBy = user.name + "," + user.phoneNumber + " ";
+                    var userx = await GetUser(couApiResponse.ApiResponseData.Data.ApprovedBy);
+                    couApiResponse.ApiResponseData.Data.ApprovedBy = userx.name + "," + userx.phoneNumber + " ";
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new CashReplenimentRequest();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+        public async Task<ExecutionMessages> UploadFiles(AddDocumentUploadedCommand documentRequest)
+        {
+            try
+            {
+                // Check if files are attached
+                if (documentRequest.FormFiles == null)
+                {
+                   // throw new FileLoadException("File not uploaded successfully") ;
+                    // Handle case where no files are attached
+                    return GetExecutionMessages(documentRequest, false, "File", MessagesResults.Failed,
+                  ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
+              null);
+                }
+                var additionalParams = new Dictionary<string, string>
+                {
+                    
+                     { "IsSynchronus", (true).ToString()},
+                    { "OperationID", documentRequest.OperationID },
+                    { "DocumentId", "N/A" },
+                    { "DocumentType", documentRequest.DocumentType },
+                    { "ServiceType", documentRequest.ServiceType },
+                    { "CallBackBaseUrl",ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString()},
+                    { "CallBackEndPoint", APICallHelper.AttachedReceiptRemotely},
+                    { "RemoteFilePath", $"BankCashOutReciept/{documentRequest.DocumentType}" },
+                };
+                List<HttpPostedFileBase>  httpPostedFileBases = new List<HttpPostedFileBase>();
+                httpPostedFileBases.Add(documentRequest.FormFiles);
+                var response = await _IdentityServerBaseUrl. PostFilesAndParamsAsync(APICallHelper.AttachedDocuments, additionalParams, httpPostedFileBases);
+                if (response.statusCode==200)
+                {
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
+                        "Uploaded successfully");
+                    return ExecutionMessage;
+                }
+                GetExecutionMessages(documentRequest, false, null, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "File upload failed");
+
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task<IExecutionMessages> CreateBankCashTransaction(BankCashOut model)
+        {
+            try
+            {
+                var documentUrl = new AddDocumentUploadedCommand
+                {
+                    FormFiles = model.UploadedFile,
+                    IsSynchronus = true,
+                    OperationID = model.Id,
+                    DocumentType = "BankCashOut_Reciept",
+                    ServiceType = "AccountingService".ToUpper(),
+                    DocumentId = "N/A",
+                    CallBackBaseUrl = "N/A",
+                    CallBackEndPoint = "N/A",
+                    RemoteFilePath =  $"{GetBranchCode()}/{APICallHelper.AttachedReceiptRemotely}"
+                };
+                var result =( APICallBackRespose)( await UploadFiles(documentUrl)).Data;
+                   model.FileUpload= result.data.fullPath;
+                    var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.BankCashOutCommandUrl, model.ConvertToBankCashOutDto(model));
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
         }
         public async Task<ExecutionMessages> CreateApprovalRequest(CashApprovalResponse model)
         {
@@ -766,6 +928,27 @@ public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
                 // Log and handle exception
                 GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
                     SystemMessageStatus.Failed.ToString(), ex);
+                throw (ex);
+            }
+        }
+
+        public async Task<BankTransaction> GetBankTransactionByReferenceId(string referenceId)
+        {
+            try
+            {
+                var urlString = string.Format(APICallHelper.GetBankTransactionQueryByReferenceIdURL, referenceId);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<BankTransaction>>(string.Format(urlString));
+                if (couApiResponse.IsSuccess)
+                {
+                    var user = await GetUser(couApiResponse.ApiResponseData.Data.CreatedBy);
+                    couApiResponse.ApiResponseData.Data.CreatedBy = user.roleName + "," + user.name + " ";
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new BankTransaction();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
                 throw (ex);
             }
         }

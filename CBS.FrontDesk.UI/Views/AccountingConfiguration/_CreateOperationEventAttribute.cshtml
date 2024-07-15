@@ -3,31 +3,29 @@
     @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {<input type="hidden" name="ServiceOption" value="operationEventAttribute" id="ServiceOption" />
 
-        <div class="row mt-2 gy-4">
-            <div class="col-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.OperationEventAttribute.Name, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.OperationEventAttribute.Name, "", new { @class = "text-danger" })
-                    <label>Name</label>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.OperationEventAttribute.OperationEventId, new SelectList(ViewBag.OperationEvent == null ? "" : ViewBag.OperationEvent, "Id", "OperationEventName"), "---Select AccountType---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.OperationEventAttribute.OperationEventId, "", new { @class = "text-danger" })
-                    <label>OperationEvent</label>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextAreaFor(m => m.OperationEventAttribute.Description, new { @class = "form-control", @style = "height: 200px;" })
-                    @Html.ValidationMessageFor(m => m.OperationEventAttribute.Description, "", new { @class = "text-danger" })
-                    <label>Description</label>
-                </div>
-            </div>
+     <div class="row mt-2 gy-4">
+         <div class="col-6">
+             <div class="form-floating form-floating-outline">
+                 @Html.DropDownListFor(m => m.OperationEventAttribute.OperationEventId, new SelectList(ViewBag.OperationEvent == null ? "" : ViewBag.OperationEvent, "Id", "OperationEventName"), "---Select AccountType---", new { @class = "form-control select2", @search = "true" })
+                 @Html.ValidationMessageFor(m => m.OperationEventAttribute.OperationEventId, "", new { @class = "text-danger" })
+                 <label>OperationEvent</label>
+             </div>
+         </div>
+         <div class="col-6">
+             <div class="form-floating form-floating-outline">
+                 @Html.TextBoxFor(m => m.OperationEventAttribute.Name, new { @class = "form-control" })
+                 @Html.ValidationMessageFor(m => m.OperationEventAttribute.Name, "", new { @class = "text-danger" })
+                 <label>Name</label>
+             </div>
+         </div>
 
 
-        </div>
+    
+                 @Html.HiddenFor(m => m.OperationEventAttribute.Description, new { @Value = "no description", @id = "Description" })
+      
+
+
+     </div>
 
         <div class="mt-4">
             @if (Model.OperationEvent.Id == null)

@@ -1,0 +1,93 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+
+<div class="card-body">
+
+
+
+    @using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostBankTransaction(this);", @id = "formValidationExamples" }))
+    {
+        <!-- Account Details -->
+        @Html.HiddenFor(v => v.BankCashOut.ReferenceId)
+        @Html.HiddenFor(v => v.BankCashOut.TransactionType, "CASH OUT")
+
+        <input type="hidden" name="ServiceOption" value="bankCashOutApproval" id="ServiceOption" />
+        <input type="hidden" name="IsHeadOffice" value=@Session["IsHeadOffice"] id="IsHeadOffice" />
+
+        <div class="col-md-6 mb-sm-1">
+            <div class="form-floating form-floating-outline">
+
+                @Html.DropDownListFor(m => m.BankCashOut.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "AccountId" })
+                @Html.ValidationMessageFor(model => model.BankCashOut.AccountId, "", new { @class = "text-danger" })
+                <label for="Account">Select Bank Account</label>
+            </div>
+        </div>
+        <div class="col-md-6 mb-sm-1">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.BankCashOut.Balance, new { @class = "form-control", @readonly = true, @id = "account_balance" })
+                @Html.ValidationMessageFor(model => model.BankCashOut.Balance, "", new { @class = "text-danger" })
+                <label for="Account">Bank Account Balance</label>
+            </div>
+        </div>
+        <div class="col-md-6 mb-sm-1">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.BankCashOut.Amount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BankCashOut.Amount, "", new { @class = "text-danger" })
+
+                <label for="Amount"> Cash Out Amount</label>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-sm-1">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.BankCashOut.BankTransactionReference, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BankCashOut.BankTransactionReference, "", new { @class = "text-danger" })
+
+                <label for="Amount"> Bank Transaction Reference</label>
+            </div>
+        </div>
+        <div class="col-md-6 mb-sm-1">
+            <div class="form-floating form-floating-outline">
+                @*   @Html.TextAreaFor(m => m.BankCashOut.ValueDate, new { @class = "form-control", @style = "height: 200px;" })*@
+                @Html.TextBoxFor(model => model.BankCashOut.ValueDate, new { @class = "form-control date-picker", @type = "datetime-local", @id = "html5-datetime-local-input" })
+                @Html.ValidationMessageFor(model => model.BankCashOut.ValueDate, "", new { @class = "text-danger" })
+
+                <label for="ValueDate">Date Of Bank CashOut</label>
+            </div>
+
+        </div>
+        <div class="col-md-6 mb-sm-1">
+            <div class="form-floating form-floating-outline">
+                @*   @Html.TextAreaFor(m => m.BankCashOut.ValueDate, new { @class = "form-control", @style = "height: 200px;" })*@
+                @Html.TextAreaFor(model => model.BankCashOut.Description, new { @class = "form-control", @style = "height: 200px;" })
+                @Html.ValidationMessageFor(model => model.BankCashOut.Description, "", new { @class = "text-danger" })
+
+
+                <label>Naration</label>
+            </div>
+        </div>
+        <div class="col-md-6 mb-sm-1">
+            <div class="upload-container">
+                <div class="image-preview">
+                    <img src="@Url.Content(Model.BankCashOut.FileUpload)" alt="No Image Found" id="previewimage" class="img-fluid" />
+                </div>
+                <label for="imageuploadSignature" class="custom-file-upload">
+                    <i class="fas fa-cloud-upload-alt"></i> Choose Photo
+                </label>
+                <input type="file" name="BankCashOut.UploadedFile" accept="image/jpeg,image/png,image/JPG" id="imageuploadSignature" onchange="ShowImagePreview(this, document.getElementById('previewimage'))" />
+            </div>
+        </div>
+
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary me-2">Validate</button>
+            <input type="hidden" name="Action" value="insert" id="Action" />
+
+        </div>
+
+    }
+
+
+
+
+
+
+</div>

@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
+    public enum CashRequisitionType
+    {
+        ORDER,
+        REQUEST
+
+    }
     public class CashReplenimentRequest
     {
         public string Id { get; set; }
@@ -14,9 +20,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public decimal AmountRequested { get; set; }
         public string RequestMessage { get; set; }
         [Required]
-        public decimal AmountConfirm { get; set; }
+        public decimal AmountApproved { get; set; }
         [Required]
         public string CurrentOpenOfDayHistoryId { get; set; }
+        public string CorrespondingBranchId { get; set; }
         public string IssuedBy { get; set; }
         public string IssuedDate { get; set; }
         public string ApprovedBy { get; set; }
@@ -28,9 +35,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string ApprovedMessage { get; set; }
         public string CashRequisitionType { get; set; } = "REQUEST";
         public string Status { get; set; }
-        public string ParentCashReplenishId { get; set; } = "SIMPLE REQUEST";
-        public string ApprovalCode { get; set; } 
-
+        public string ParentCashReplenishId { get; set; } = "XXXXXXXX";
+        public string ApprovalCode { get; set; }
+        public string CashReplishmentRequestStatus { get; set; } = "Pendding";
         public CashApprovalResponse ConvertToCashApprovalResponse(bool Approved)
         { return new CashApprovalResponse { ApprovedMessage =this.ApprovedMessage, IsApproved=Approved,Id= this.Id }; }
 
@@ -57,17 +64,19 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 ApprovedMessage = this.ApprovedMessage,
                 Status = this.Status,
                 IsRejected = false,
-                BranchId = this.BranchId
+                BranchId = this.BranchId,
+                CashReplishmentRequestStatus = this.CashReplishmentRequestStatus, 
+                CorrespondingBranchId = this.CorrespondingBranchId
             };
         }
     }
-
+    //
     public class CashReplenimentRequestDto: CashReplenimentRequest
     {
        
 
 
-        public string CorrespondingBranchId { get; set; }
+  
 
         public string BranchOffice { get; set; }
         public bool IsRejected { get; set; }
@@ -79,7 +88,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 IsApproved = DetermineApprovalStatus(), 
                 Id = this.Id,
                 CorrespondingBranchId = this.CorrespondingBranchId,
-                ApprovedAmount = this.AmountConfirm,
+                ApprovedAmount = this.AmountApproved,
                 BranchId = this.BranchId,
                 BranchCode= BranchCode
             };  
@@ -93,6 +102,42 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 result = true;
             }
              return result;
+        }
+    }
+
+
+    public class CashReplenimentRequestCompleteDto : CashReplenimentRequest
+    {
+
+
+        public string BankRecieptVirtualPath { get; set; }
+        public string CorrespondingBranchId { get; set; }
+
+        public string BranchOffice { get; set; }
+        public bool IsRejected { get; set; }
+
+        public CashApprovalResponse ConvertToCashApprovalResponse(string BranchCode)
+        {
+            return new CashApprovalResponse
+            {
+                ApprovedMessage = this.ApprovedMessage,
+                IsApproved = DetermineApprovalStatus(),
+                Id = this.Id,
+                CorrespondingBranchId = this.CorrespondingBranchId,
+                ApprovedAmount = this.AmountApproved,
+                BranchId = this.BranchId,
+                BranchCode = BranchCode
+            };
+        }
+
+        public bool DetermineApprovalStatus()
+        {
+            bool result = false;
+            if (this.IsApproved == true || this.IsRejected == false)
+            {
+                result = true;
+            }
+            return result;
         }
     }
 }
