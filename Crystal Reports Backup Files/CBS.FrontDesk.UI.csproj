@@ -46,14 +46,56 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="Azure.Core, Version=1.6.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Azure.Core.1.6.0\lib\net461\Azure.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Azure.Identity, Version=1.3.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Azure.Identity.1.3.0\lib\netstandard2.0\Azure.Identity.dll</HintPath>
+    </Reference>
+    <Reference Include="ClosedXML, Version=0.102.2.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.102.2\lib\netstandard2.0\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine">
+      <HintPath>..\..\..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource">
+      <HintPath>..\..\..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared">
+      <HintPath>..\..\..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.16.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.16.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=7.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.7.1.1\lib\net462\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces, Version=6.1.1.0, Culture=neutral, PublicKeyToken=a694d7f3b0907a61, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.Interfaces.6.1.1\lib\net462\EPPlus.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.System.Drawing, Version=6.1.1.0, Culture=neutral, PublicKeyToken=2308d35469c9bac0, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.System.Drawing.6.1.1\lib\net462\EPPlus.System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.Autofac, Version=2.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Autofac.2.6.0\lib\net45\Hangfire.Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.Core, Version=1.8.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.8.12\lib\net46\Hangfire.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.SqlServer, Version=1.8.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.SqlServer.1.8.12\lib\net451\Hangfire.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Irony, Version=1.0.11.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
+      <HintPath>..\packages\Irony.NetCore.1.0.11\lib\net461\Irony.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.4\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -64,10 +106,25 @@
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.4\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.4.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.4.3\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.SqlClient, Version=3.0.0.0, Culture=neutral, PublicKeyToken=23ec7fc2d6eaa4a5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.SqlClient.3.1.1\lib\net461\Microsoft.Data.SqlClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Identity.Client, Version=4.22.0.0, Culture=neutral, PublicKeyToken=0a613f4dd989e8ae, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Identity.Client.4.22.0\lib\net461\Microsoft.Identity.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Identity.Client.Extensions.Msal, Version=2.16.5.0, Culture=neutral, PublicKeyToken=0a613f4dd989e8ae, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Identity.Client.Extensions.Msal.2.16.5\lib\net45\Microsoft.Identity.Client.Extensions.Msal.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.IdentityModel.Abstractions, Version=7.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Abstractions.7.0.3\lib\net472\Microsoft.IdentityModel.Abstractions.dll</HintPath>
     </Reference>
@@ -77,11 +134,23 @@
     <Reference Include="Microsoft.IdentityModel.Logging, Version=7.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Logging.7.0.3\lib\net472\Microsoft.IdentityModel.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocols, Version=6.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocols.6.8.0\lib\net461\Microsoft.IdentityModel.Protocols.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect, Version=6.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocols.OpenIdConnect.6.8.0\lib\net461\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.IdentityModel.Tokens, Version=7.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Tokens.7.0.3\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.3.0.0\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Owin, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.4.2.2\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin.Security, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.4.2.2\lib\net45\Microsoft.Owin.Security.dll</HintPath>
@@ -101,47 +170,124 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="SixLabors.Fonts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
+      <HintPath>..\packages\SixLabors.Fonts.1.0.0\lib\netstandard2.0\SixLabors.Fonts.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration.ConfigurationManager, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Configuration.ConfigurationManager.4.7.0\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.7.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=7.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.7.0.3\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.6.0.0\lib\net461\System.IO.Packaging.dll</HintPath>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Security" />
+    <Reference Include="System.Security.AccessControl, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.AccessControl.4.7.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.ProtectedData, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.ProtectedData.4.5.0\lib\net461\System.Security.Cryptography.ProtectedData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Permissions, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Permissions.4.7.0\lib\net461\System.Security.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Principal.Windows.4.7.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Text.Encodings.Web, Version=4.0.5.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.4.7.2\lib\net461\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Json, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Json.4.7.2\lib\net461\System.Text.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.RegularExpressions.4.3.1\lib\net463\System.Text.RegularExpressions.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.DynamicData.Design" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Entity.Design" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions.Design" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -151,8 +297,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.1\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
@@ -206,6 +350,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="XLParser, Version=1.5.2.0, Culture=neutral, PublicKeyToken=63397e1e46bb91b4, processorArchitecture=MSIL">
+      <HintPath>..\packages\XLParser.1.5.2\lib\net461\XLParser.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
@@ -213,6 +361,67 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppFiles\Images\Bank-deposit-slip-excel-template.jpg" />
+    <Content Include="AppFiles\Images\BG.jpeg" />
+    <Content Include="AppFiles\Images\BG2.png" />
+    <Content Include="AppFiles\Images\BG3.jpeg" />
+    <Content Include="AppFiles\Images\BG3.png" />
+    <Content Include="AppFiles\Images\Logog2.jpeg" />
+    <Content Include="AppFiles\Images\Logog2X.jpeg" />
+    <Content Include="AppFiles\Images\Logog2XI.png" />
+    <Content Include="AppFiles\Images\SideImageHeader.jpeg" />
+    <Content Include="AppFiles\Images\SideImageHeader.png" />
+    <Content Include="AppFiles\Images\SideImageHeader_login.png" />
+    <Content Include="AppFiles\Images\BG4.jpeg" />
+    <Content Include="App_Code\Helper\HtmlExtension.cs" />
+    <Compile Include="AppFiles\Reporting\Accounting\GeneralLedger.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralLedger.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\JournalEntries.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JournalEntries.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\LiaisonLedger.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LiaisonLedger.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\OtherTransactionReciept.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OtherTransactionReciept.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\Receipts_Duplicate.cs">
+      <DependentUpon>Receipts_Duplicate.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TellerStatement.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Statement\AllIAccountStatement.cs">
+      <DependentUpon>AllIAccountStatement.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Statement\IAccountStatementGroupByAccounts.cs">
+      <DependentUpon>IAccountStatementGroupByAccounts.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -221,7 +430,11 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
+    <Compile Include="Controllers\Accounting\AccountEntry.cs" />
     <Compile Include="Controllers\Accounting\AccountingChartController.cs" />
+    <Compile Include="Controllers\Accounting\BranchAccountJournalEntriesQueryObject.cs" />
+    <Compile Include="Controllers\Accounting\ManagementSelectionOption.cs" />
+    <Compile Include="Controllers\Accounting\ManuallyJournalEntryController.cs" />
     <Compile Include="Controllers\Accounting\AccountingConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\AccountingEntryRuleController.cs" />
     <Compile Include="Controllers\Accounting\AccountingRuleController.cs" />
@@ -233,10 +446,34 @@
     <Compile Include="Controllers\Accounting\TellerCashDemandController.cs" />
     <Compile Include="Controllers\Authentication\AuthenticationController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
+    <Compile Include="Controllers\CashDeskOperations\CashDeskController.cs" />
+    <Compile Include="Controllers\CashDeskOperations\OtherTransactionController.cs" />
+    <Compile Include="Controllers\Commitee\LoanCommiteeController.cs" />
+    <Compile Include="Controllers\BudgetManagement\BudgetManagementController.cs" />
     <Compile Include="Controllers\Configuration\Localization\CountryController.cs" />
+    <Compile Include="Controllers\Configuration\Organ\BankController.cs" />
     <Compile Include="Controllers\Configuration\Organ\BranchManagementController.cs" />
+    <Compile Include="Controllers\Configuration\Organ\EconomicActivityController.cs" />
+    <Compile Include="Controllers\Configuration\Organ\MembersCategoryController.cs" />
+    <Compile Include="Controllers\Configuration\System\SysConfigurationController.cs" />
+    <Compile Include="Controllers\CustomerManagement\GroupController.cs" />
+    <Compile Include="Controllers\CustomerManagement\GroupTypeController.cs" />
     <Compile Include="Controllers\CustomerManagement\IndividualController.cs" />
-    <Compile Include="Controllers\ErrorHandler\ErrorController.cs" />
+    <Compile Include="Controllers\CustomerManagement\Policy\MemberAccountActivationPolicyController.cs" />
+    <Compile Include="Controllers\Loan\Configuration\LoanDeliquencyConfigurationController.cs" />
+    <Compile Include="Controllers\TransactionManagement\ChargesWaivedController.cs" />
+    <Compile Include="Controllers\TransactionManagement\DailyTellerAssignationController.cs" />
+    <Compile Include="Controllers\TransactionManagement\MigrationController.cs" />
+    <Compile Include="Controllers\TransactionManagement\OpenningOfDayController.cs" />
+    <Compile Include="Controllers\TransactionManagement\PrimaryTellerCashRequisitionController.cs" />
+    <Compile Include="Controllers\TransactionManagement\SavingProductFeeController.cs" />
+    <Compile Include="Controllers\TransactionManagement\FeePolicyController.cs" />
+    <Compile Include="Controllers\TransactionManagement\OperationFeeController.cs" />
+    <Compile Include="Controllers\TransactionManagement\SubTellerCashRequisitionController.cs" />
+    <Compile Include="Controllers\TransactionManagement\TransactionReversalController.cs" />
+    <Compile Include="Controllers\TransactionManagement\WithdrawalNotificationController.cs" />
+    <Compile Include="Controllers\UnauthorizedH\ErrorController.cs" />
+    <Compile Include="Controllers\Home\DashboardController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Loan\Configuration\AlertProfileController.cs" />
     <Compile Include="Controllers\Loan\Configuration\AttachedLoanDocumentsController.cs" />
@@ -244,8 +481,9 @@
     <Compile Include="Controllers\Loan\Configuration\DocumentPackController.cs" />
     <Compile Include="Controllers\Loan\Configuration\FeeController.cs" />
     <Compile Include="Controllers\Loan\Configuration\FundingLineController.cs" />
-    <Compile Include="Controllers\Loan\Configuration\GuarantyPackController.cs" />
+    <Compile Include="Controllers\Loan\Configuration\FeeRangeController.cs" />
     <Compile Include="Controllers\Loan\Configuration\GuarantyController.cs" />
+    <Compile Include="Controllers\Loan\Configuration\LoanProductCollateralController.cs" />
     <Compile Include="Controllers\Loan\Configuration\LoanProductController.cs" />
     <Compile Include="Controllers\Loan\Configuration\InstallmentTypeController.cs" />
     <Compile Include="Controllers\Loan\Configuration\LoanPurposeController.cs" />
@@ -253,10 +491,13 @@
     <Compile Include="Controllers\Loan\Configuration\PeriodController.cs" />
     <Compile Include="Controllers\Loan\Configuration\DocumentController.cs" />
     <Compile Include="Controllers\Loan\Configuration\TaxController.cs" />
+    <Compile Include="Controllers\Loan\LoanTransactions\LoanController.cs" />
+    <Compile Include="Controllers\MemberOperation\MemberOperationController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
     <Compile Include="Controllers\RoleManagement\MenuMasterController.cs" />
     <Compile Include="Controllers\RoleManagement\RoleController.cs" />
     <Compile Include="Controllers\RoleManagement\RolePermissionController.cs" />
+    <Compile Include="Controllers\Series\MembersFSeriesController.cs" />
     <Compile Include="Controllers\Session\SessionController.cs" />
     <Compile Include="Controllers\Settings\GlobalConfigurationController.cs" />
     <Compile Include="Controllers\TransactionManagement\EndOfDayOperationController.cs" />
@@ -265,17 +506,26 @@
     <Compile Include="Controllers\TransactionManagement\TellerManagementController.cs" />
     <Compile Include="Controllers\TransactionManagement\TellerProvissioingController.cs" />
     <Compile Include="Controllers\TransactionManagement\TransactionConfigurationController.cs" />
+    <Compile Include="Controllers\UserManagement\MFAVerificationController.cs" />
     <Compile Include="Controllers\UserManagement\UserManagementController.cs" />
+    <Compile Include="DataSet\Accounting\AccountingDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet\Transaction\TransactionDS.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TransactionDS.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Filter\AuthorizeAttributeEASIMS.cs" />
+    <Compile Include="Filter\UserAuditFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helper\HtmlExtensions.cs" />
-    <Compile Include="Helper\SessionTimeoutFilterAttribute.cs" />
+    <Compile Include="App_Code\Helper\SessionTimeoutFilterAttribute.cs" />
+    <Compile Include="Hub\ChatHub.cs" />
+    <Compile Include="Models\AccountUploadModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -285,19 +535,43 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Reporting\Transactions\Reciepts\Receipts.cs">
+    <Compile Include="AppFiles\Reporting\Accounting\TrialBalance6Column.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrialBalance6Column.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\TrialBalance8Column.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrialBalance8Column.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\Receipts.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Receipts.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Statement\IAccountStatement.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IAccountStatement.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppFiles\Images\Icon PNG.png" />
+    <Content Include="AppFiles\Images\Icon.ico" />
+    <Content Include="AppFiles\Images\images.jpeg" />
+    <Content Include="AppFiles\Images\Logog.png" />
     <Content Include="AppFiles\Images\no signature.png" />
     <Content Include="AppFiles\Images\noimage.jpg" />
     <Content Include="AppFiles\Images\p.jpg" />
     <Content Include="AppFiles\Images\s.jpg" />
+    <Content Include="AppFiles\Images\TrusBank_LoginBG.png" />
+    <Content Include="AppFiles\Images\TrustBankTitle.png" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\alertify.js" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\alertify.min.js" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\css\alertify.css" />
@@ -2010,6 +2284,17 @@
     <Content Include="DataSet\Transaction\TransactionDS.xsc">
       <DependentUpon>TransactionDS.xsd</DependentUpon>
     </Content>
+    <Content Include="DataSet\Accounting\AccountingDataSet.xsc">
+      <DependentUpon>AccountingDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet\Accounting\AccountingDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>AccountingDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="DataSet\Accounting\AccountingDataSet.xss">
+      <DependentUpon>AccountingDataSet.xsd</DependentUpon>
+    </Content>
     <None Include="DataSet\Transaction\TransactionDS.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -2021,7 +2306,8 @@
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
+    <None Include="Properties\PublishProfiles\Production.pubxml" />
+    <None Include="Properties\PublishProfiles\TestBed.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -2032,11 +2318,54 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.3.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.3.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
+    <Content Include="Scripts\Js\Crud\CashDesk\ExpensesCashDesk.js" />
+    <Content Include="Scripts\Js\Crud\CashDesk\OtherTransactions.js" />
+    <Content Include="Scripts\Js\Crud\ChargesWaived\Pending.js" />
+    <Content Include="Scripts\Js\Crud\ChargesWaived\Requests.js" />
+    <Content Include="Scripts\Js\Crud\ChargesWaived\ChargesWaived.js" />
+    <Content Include="Scripts\Js\Crud\CashRequestForTellers\TellerCashRequisitionSearch.js" />
+    <Content Include="Scripts\Js\Crud\Groups\Groups.js" />
+    <Content Include="Scripts\Js\Crud\Groups\Customers\CustomersProfile.js" />
+    <Content Include="Scripts\Js\Crud\Groups\Customers\MyCustomers.js" />
+    <Content Include="Scripts\Js\Crud\DailyTellerAssignation\DailyTellerAssignation.js" />
+    <Content Include="Scripts\Js\Crud\WithdrawalNotification\Pending.js" />
+    <Content Include="Scripts\Js\Crud\WithdrawalNotification\Requests.js" />
+    <Content Include="Scripts\Js\Crud\WithdrawalNotification\WithdrawalNotification.js" />
+    <Content Include="Scripts\Js\Crud\SysConfiguration\SysConfigurations.js" />
+    <Content Include="Scripts\Js\Crud\Bank\Banks.js" />
+    <Content Include="Scripts\Js\Crud\CashDesk\CashDeskOperations.js" />
+    <Content Include="Scripts\Js\Crud\Collateral\Collateral.js" />
+    <Content Include="Scripts\Js\Crud\FeePolicy\FeePolicy.js" />
+    <Content Include="Scripts\Js\Crud\FeeRange\FeeRange.js" />
+    <Content Include="Scripts\Js\Crud\MembersFSeries\FSeries.js" />
+    <Content Include="Scripts\Js\Crud\MembersFSeries\Members.js" />
+    <Content Include="Scripts\Js\Crud\LoanProductCollateral\LoanProductCollateral.js" />
+    <Content Include="Scripts\Js\Crud\Loan\LoanTransactions\Loans.js" />
+    <Content Include="Scripts\Js\Budgetmanagement\Budget.js" />
+    <Content Include="Scripts\Js\Crud\Loan\Product\AccountMapping.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\Customers.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\Collateral.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\Attachedment.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\LoanApplication.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\Guarantor.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\Loans.js" />
+    <Content Include="Scripts\Js\Crud\OperationPanel\MyCustomers.js" />
+    <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\MyCustomers.js" />
+    <Content Include="Scripts\Js\Crud\EOD\EOD.js" />
+    <Content Include="Scripts\Js\Crud\Operation\TransferPending.js" />
+    <Content Include="Scripts\Js\Crud\Operation\Transfer.js" />
+    <Content Include="Scripts\Js\Crud\Operation\Transfers.js" />
+    <Content Include="Scripts\Js\Crud\Penalty\Penalty.js" />
+    <Content Include="Scripts\Js\Crud\Teller\Teller.js" />
+    <Content Include="Scripts\Js\Crud\TransactionConfiguration\SavingProductFeeMapping.js" />
+    <Content Include="Scripts\Js\main.js\Account_Upload.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />
     <Content Include="Scripts\Js\Crud\Config\Localization\Countries.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\CustomersProfile.js" />
@@ -2046,15 +2375,16 @@
     <Content Include="Scripts\Js\Crud\Operation\Operation.js" />
     <Content Include="Scripts\Js\Crud\Operation\Savings.js" />
     <Content Include="Scripts\Js\Crud\RolePermission.js" />
-    <Content Include="Scripts\Js\Crud\User\AlertProfile.js" />
+    <Content Include="Scripts\Js\Crud\User\Users.js" />
     <Content Include="Scripts\Js\Crud\User\PromoWhitelist.js" />
     <Content Include="Scripts\Js\Crud\User\Services.js" />
     <Content Include="Scripts\Js\Crud\User\StringConfiguration.js" />
     <Content Include="Scripts\Js\Crud\User\SystemStatus.js" />
     <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\Customers.js" />
-    <Content Include="Scripts\Js\Crud\User\UserListing.js" />
+    <Content Include="Scripts\Js\Crud\MenuMaster\Menus.js" />
     <Content Include="Scripts\Js\main.js\AccountingStatements.js" />
     <Content Include="Scripts\Js\main.js\App.js" />
+    <Content Include="Scripts\Js\main.js\BankingOperations.js" />
     <Content Include="Scripts\Js\main.js\CashFlowManagement.js" />
     <Content Include="Scripts\Js\main.js\MultipleManualEntry.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
@@ -2106,8 +2436,7 @@
     <Content Include="Views\Operation\_AccountInfo.cshtml" />
     <Content Include="Views\Operation\_OpenAccount.cshtml" />
     <Content Include="Views\Operation\_TotalBalance.cshtml" />
-    <Content Include="Views\Operation\_Deposit.cshtml" />
-    <Content Include="Views\Operation\_Withdrawal.cshtml" />
+    <Content Include="Views\Operation\_DepositAndWithdrawal.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SiteMapTitleHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SiteMapPathHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SiteMapNodeModelList.cshtml" />
@@ -2124,7 +2453,6 @@
     <Content Include="Views\UserManagement\_MFA.cshtml" />
     <Content Include="Views\UserManagement\_ResetPassword.cshtml" />
     <Content Include="Views\Document\Index.cshtml" />
-    <Content Include="Views\Document\_Update.cshtml" />
     <Content Include="Views\Document\_Data.cshtml" />
     <Content Include="Views\Document\_Create.cshtml" />
     <Content Include="Views\Period\_Create.cshtml" />
@@ -2133,24 +2461,22 @@
     <Content Include="Views\Period\Index.cshtml" />
     <Content Include="Views\GlobalConfiguration\Index.cshtml" />
     <Content Include="Views\Saving\_AccountData.cshtml" />
-    <Content Include="Views\Saving\Index.cshtml" />
+    <Content Include="Views\Saving\Accounts.cshtml" />
     <Content Include="Views\Operation\_TransactionHistrotriesData.cshtml" />
     <Content Include="Views\Guaranty\Index.cshtml" />
     <Content Include="Views\Guaranty\_Update.cshtml" />
     <Content Include="Views\Guaranty\_Data.cshtml" />
     <Content Include="Views\Guaranty\_Create.cshtml" />
-    <Content Include="Views\GuarantyPack\Index.cshtml" />
-    <Content Include="Views\GuarantyPack\_Update.cshtml" />
-    <Content Include="Views\GuarantyPack\_Data.cshtml" />
-    <Content Include="Views\GuarantyPack\_Create.cshtml" />
+    <Content Include="Views\FeeRange\Index.cshtml" />
+    <Content Include="Views\FeeRange\_Data.cshtml" />
+    <Content Include="Views\FeeRange\_Create.cshtml" />
     <Content Include="Views\AttachedLoanDocuments\Index.cshtml" />
     <Content Include="Views\LoanProduct\Index.cshtml" />
     <Content Include="Views\LoanProduct\_Update.cshtml" />
     <Content Include="Views\LoanProduct\_Data.cshtml" />
-    <Content Include="Views\LoanProduct\_Create.cshtml" />
+    <Content Include="Views\LoanProduct\_LoanProduct.cshtml" />
     <Content Include="Views\AttachedLoanDocuments\CustomerDocument.cshtml" />
     <Content Include="Views\Collateral\Index.cshtml" />
-    <Content Include="Views\Collateral\_Update.cshtml" />
     <Content Include="Views\Collateral\_Data.cshtml" />
     <Content Include="Views\Collateral\_Create.cshtml" />
     <Content Include="Views\AlertProfile\Index.cshtml" />
@@ -2158,7 +2484,6 @@
     <Content Include="Views\AlertProfile\_Data.cshtml" />
     <Content Include="Views\AlertProfile\_Create.cshtml" />
     <Content Include="Views\Fee\Index.cshtml" />
-    <Content Include="Views\Fee\_Update.cshtml" />
     <Content Include="Views\Fee\_Data.cshtml" />
     <Content Include="Views\Fee\_Create.cshtml" />
     <Content Include="Views\InstallmentType\Index.cshtml" />
@@ -2169,7 +2494,6 @@
     <Content Include="Views\FundingLine\_Update.cshtml" />
     <Content Include="Views\FundingLine\_Data.cshtml" />
     <Content Include="Views\FundingLine\_Create.cshtml" />
-    <Content Include="Views\Penalty\_Create.cshtml" />
     <Content Include="Views\Penalty\_Data.cshtml" />
     <Content Include="Views\Penalty\_Update.cshtml" />
     <Content Include="Views\Penalty\Index.cshtml" />
@@ -2204,7 +2528,6 @@
     <Content Include="Views\Individual\_SignatureUploader.cshtml" />
     <Content Include="Views\Individual\_FilesUploader.cshtml" />
     <Content Include="Views\Individual\_UploadedFiles.cshtml" />
-    <Content Include="Views\TellerProvissioing\Primary.cshtml" />
     <Content Include="Views\TellerProvissioing\_Primary.cshtml" />
     <Content Include="Views\TellerProvissioing\_SubTeller.cshtml" />
     <Content Include="Views\TellerProvissioing\SubTeller.cshtml" />
@@ -2256,7 +2579,7 @@
     <Content Include="Views\BankingOperations\_CashInfusion.cshtml" />
     <Content Include="Views\CashFlowManagement\Index.cshtml" />
     <Content Include="Views\CashFlowManagement\_ManualAccountingEntry.cshtml" />
-    <Content Include="Views\CashFlowManagement\CreateCashReplenishmentRequest.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CreateCashReplenishmentRequest.cshtml" />
     <Content Include="Views\AccountingConfiguration\_AccountTypeData.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateAccountingEntryRule.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateOperationEventAttribute.cshtml" />
@@ -2279,13 +2602,13 @@
     <Content Include="Views\Operation\_Depositer.cshtml" />
     <Content Include="Views\EndOfDayOperation\_Primary.cshtml" />
     <Content Include="Views\EndOfDayOperation\_SubTeller.cshtml" />
-    <Content Include="Views\EndOfDayOperation\Primary.cshtml" />
-    <Content Include="Views\EndOfDayOperation\SubTeller.cshtml" />
+    <Content Include="Views\EndOfDayOperation\PrimaryX.cshtml" />
+    <Content Include="Views\EndOfDayOperation\SubTellerX.cshtml" />
     <Content Include="Views\EndOfDayOperation\_PrimaryTellerViewOfSubTellerHistoryData.cshtml" />
     <Content Include="Views\EndOfDayOperation\_PrimaryTellerViewOfOwnHistoryData.cshtml" />
     <Content Include="Views\EndOfDayOperation\_SubTellerTellerViewOfOwnHistoryData.cshtml" />
     <Content Include="Views\EndOfDayOperation\_AccountantViewOfPrimaryTellerHistoryData.cshtml" />
-    <Content Include="Views\Operation\Transfer.cshtml" />
+    <Content Include="Views\Operation\TransferRequest.cshtml" />
     <Content Include="Views\Operation\_Transfer.cshtml" />
     <Content Include="Views\TransactionConfiguration\_ManagementFeeConfig.cshtml" />
     <Content Include="Views\TransactionConfiguration\_ManagementFeeData.cshtml" />
@@ -2311,27 +2634,338 @@
     <Content Include="Views\Role\_RolePermissionData.cshtml" />
     <Content Include="Views\Operation\Transactions.cshtml" />
     <Content Include="Views\Operation\_TransactionData.cshtml" />
-    <Content Include="Views\CashFlowManagement\GetAllCashReplenimentRequestData.cshtml" />
-    <Content Include="Views\CashFlowManagement\GetCashReplenimentRequest.cshtml" />
+    <Content Include="Views\CashFlowManagement\_ApproveCashReplenimentRequest.cshtml" />
     <Content Include="Views\CashFlowManagement\Successfull_Request_View.cshtml" />
     <Content Include="Views\CashFlowManagement\Failed_Request_View.cshtml" />
-    <Content Include="Views\BankingOperations\Create.cshtml" />
+    <Content Include="Views\BankingOperations\_JournalEntries.cshtml" />
     <Content Include="Views\CashFlowManagement\Failed_RequestApproval_View.cshtml" />
     <Content Include="Views\CashFlowManagement\Successfull_RequestApproval_View.cshtml" />
-    <Content Include="Views\TellerCashDemand\Index.cshtml" />
-    <Content Include="Views\TellerCashDemand\CreateCashReplenishmentRequest.cshtml" />
-    <Content Include="Views\TellerCashDemand\Failed_Request_View.cshtml" />
-    <Content Include="Views\TellerCashDemand\Successfull_Request_View.cshtml" />
-    <Content Include="Views\TellerCashDemand\GetCashReplenimentRequest.cshtml" />
-    <Content Include="Views\TellerCashDemand\Successfull_RequestApproval_View.cshtml" />
-    <Content Include="Views\TellerCashDemand\Failed_RequestApproval_View.cshtml" />
-    <Content Include="Views\TellerCashDemand\GetAllCashReplenimentRequestData.cshtml" />
+    <Content Include="Views\BankingOperations\CreateTransactionReversalRequest.cshtml" />
+    <Content Include="Views\Individual\_MembershipStatus.cshtml" />
+    <Content Include="Views\Individual\_LegalSector.cshtml" />
+    <Content Include="Views\Individual\_AddMembershipNextOfKingsMember.cshtml" />
+    <Content Include="Views\Individual\_AddCardSignatureSpecimen.cshtml" />
+    <Content Include="Views\Individual\_AddMembershipNextOfKingsMemberData.cshtml" />
+    <Content Include="Views\Individual\_AddCardSignatureSpecimenData.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_SubTellerProvisioningDetails.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_PrimaryTellerViewOfSubTellerStatus.cshtml" />
+    <Content Include="Views\EndOfDayOperation\SubtellerVerification.cshtml" />
+    <Content Include="Views\EndOfDayOperation\Accountant.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_Accountant.cshtml" />
+    <Content Include="Views\Individual\MyMembers.cshtml" />
+    <Content Include="Views\TellerManagement\Index.cshtml" />
+    <Content Include="Views\TellerManagement\_PrimaryTeller.cshtml" />
+    <Content Include="Views\TellerManagement\_PrimaryTellerData.cshtml" />
+    <Content Include="Views\MemberOperation\_MembersData.cshtml" />
+    <Content Include="Views\MemberOperation\OperationPanel.cshtml" />
+    <Content Include="Views\MemberOperation\Members.cshtml" />
+    <Content Include="Views\MemberOperation\MyMembers.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanApplication.cshtml" />
+    <Content Include="Views\MemberOperation\_MemberLoanApplicationData.cshtml" />
+    <Content Include="Views\MemberOperation\_MemberLoanApplicationDetail.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanData.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanDetails.cshtml" />
+    <Content Include="Views\MemberOperation\_RefundForm.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanScheduleData.cshtml" />
+    <Content Include="Views\MemberOperation\_SelectedLoanData.cshtml" />
+    <Content Include="Views\MemberOperation\LoanApplicationApproval.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanApplicationApprovalData.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanApplicationApproval.cshtml" />
+    <Content Include="Views\LoanProduct\_SetPenalty.cshtml" />
+    <Content Include="Views\MemberOperation\_MakeLoanSimulation.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanSimulationScheduleData.cshtml" />
+    <Content Include="Views\LoanCommitee\Index.cshtml" />
+    <Content Include="Views\LoanCommitee\_LoanCommitee.cshtml" />
+    <Content Include="Views\LoanCommitee\_LoanCommiteeData.cshtml" />
+    <Content Include="Views\LoanCommitee\_LoanCommiteeMember.cshtml" />
+    <Content Include="Views\LoanCommitee\_LoanCommiteeMemberData.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanCommiteeValidation.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanCommiteeValidationData.cshtml" />
+    <Content Include="Views\MemberOperation\LoanApplicationForCommitees.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanApplicationForCommiteeData.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanTerm.cshtml" />
+    <Content Include="Views\Loan\Index.cshtml" />
+    <Content Include="Views\Loan\_LoanData.cshtml" />
+    <Content Include="Views\MemberOperation\LoanSimulation.cshtml" />
+    <Content Include="Views\LoanProductCollateral\_LoanProductCollateral.cshtml" />
+    <Content Include="Views\LoanProductCollateral\_Data.cshtml" />
+    <Content Include="Views\LoanProductCollateral\Index.cshtml" />
+    <Content Include="Views\MemberOperation\_SharedLoanTerm.cshtml" />
+    <Content Include="Views\MemberOperation\_SendOTP.cshtml" />
+    <Content Include="Views\MemberOperation\_AddLoanGuarantor.cshtml" />
+    <Content Include="Views\MemberOperation\_AddLoanGuarantorData.cshtml" />
+    <Content Include="Views\MemberOperation\_AddLoanCollateral.cshtml" />
+    <Content Include="Views\MemberOperation\_AddLoanCollateralData.cshtml" />
+    <Content Include="Views\MemberOperation\_AddtachedLoanDocument.cshtml" />
+    <Content Include="Views\MemberOperation\_AttachedFileData.cshtml" />
+    <Content Include="Views\MemberAccountActivationPolicy\Index.cshtml" />
+    <Content Include="Views\MemberAccountActivationPolicy\_Create.cshtml" />
+    <Content Include="Views\MemberAccountActivationPolicy\_Data.cshtml" />
+    <Content Include="Views\Individual\_MemberAccountActivation.cshtml" />
+    <Content Include="Views\MemberOperation\PendingDisbursment.cshtml" />
+    <Content Include="Views\MemberOperation\_PendingDisbursementData.cshtml" />
+    <Content Include="Views\MemberOperation\_PendingDisbursmentForm.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\Index.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_JournalEntries.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_AddEntry.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_AddEntryPurpose.cshtml" />
+    <Content Include="Views\BudgetManagement\Index.cshtml" />
+    <Content Include="Views\BudgetManagement\_CreateBudget.cshtml" />
+    <Content Include="Views\BudgetManagement\_CreateBudgetCategory.cshtml" />
+    <Content Include="Views\BudgetManagement\_BudgetDetails.cshtml" />
+    <Content Include="Views\BudgetManagement\_BudgetCategoryDetails.cshtml" />
+    <Content Include="Views\BudgetManagement\_BudgetData.cshtml" />
+    <Content Include="Views\BudgetManagement\_BudgetCategoryData.cshtml" />
+    <Content Include="Views\AccountingStatements\_SearchOptions.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CashReplenishmentRequestData.cshtml" />
+    <Content Include="Views\CashFlowManagement\_ViewCashRequestStatus.cshtml" />
+    <Content Include="Views\CashFlowManagement\CreateCashReplenishmentRequest.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CashReplenishmentRequestDataWithOutApproval.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_AccountDetails.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_Policies.cshtml" />
+    <Content Include="Views\TransactionConfiguration\PolicyandSharing.cshtml" />
+    <Content Include="Views\TransactionConfiguration\AccountMapping.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_AccountMapping.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_AccountMappingData.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_OrdinaryAccountData.cshtml" />
+    <Content Include="Views\TransactionConfiguration\OrdinaryAccounts.cshtml" />
+    <Content Include="Views\Operation\Withdrawal.cshtml" />
+    <Content Include="Views\Operation\Deposit.cshtml" />
+    <Content Include="Views\Operation\_AccountBalance.cshtml" />
+    <Content Include="Views\Operation\Statement.cshtml" />
+    <Content Include="Views\Operation\_SharedModal.cshtml" />
+    <Content Include="Views\Operation\_DenominationNotes.cshtml" />
+    <Content Include="Views\Operation\LoanRepayment.cshtml" />
+    <Content Include="Views\Operation\_LoanData.cshtml" />
+    <Content Include="Views\LoanProduct\_AccountMappingData.cshtml" />
+    <Content Include="Views\LoanProduct\_LoanAccountMapping.cshtml" />
+    <Content Include="Views\LoanProduct\LoanAccountMapping.cshtml" />
+    <Content Include="Views\Operation\_TransferInitiatorData.cshtml" />
+    <Content Include="Views\Operation\TransferPending.cshtml" />
+    <Content Include="Views\Operation\_TransferPendingData.cshtml" />
+    <Content Include="Views\Operation\Transfers.cshtml" />
+    <Content Include="Views\Operation\_TransferDetails.cshtml" />
+    <Content Include="Views\Operation\_TransferConfirmation.cshtml" />
+    <Content Include="Views\CashDesk\Index.cshtml" />
+    <Content Include="Views\CashDesk\_CustomerCard.cshtml" />
+    <Content Include="Views\CashDesk\_Tabs.cshtml" />
+    <Content Include="Views\CashDesk\_SearchBox.cshtml" />
+    <Content Include="Views\CashDesk\_OperationDesk.cshtml" />
+    <Content Include="Views\Shared\_DataNotFound.cshtml" />
+    <Content Include="Views\CashDesk\_OperationForm.cshtml" />
+    <Content Include="Views\CashDesk\_DenominationBreakDown.cshtml" />
+    <Content Include="Views\CashDesk\_DepositerForm.cshtml" />
+    <Content Include="Views\CashDesk\_OperationFormOld.cshtml" />
+    <Content Include="Views\CashDesk\_Note.cshtml" />
+    <Content Include="Views\MembersFSeries\Index.cshtml" />
+    <Content Include="Views\MembersFSeries\_MembersData.cshtml" />
+    <Content Include="Views\MembersFSeries\_Tabs.cshtml" />
+    <Content Include="Views\MembersFSeries\_CustomerCard.cshtml" />
+    <Content Include="Views\MembersFSeries\F2MembersGeneratSituation.cshtml" />
+    <Content Include="Views\MembersFSeries\_MembersAccount.cshtml" />
+    <Content Include="Views\MembersFSeries\_MembersProfile.cshtml" />
+    <Content Include="Views\MembersFSeries\_MembersAccountStatement.cshtml" />
+    <Content Include="Views\MembersFSeries\_PrintDateForm.cshtml" />
+    <Content Include="Views\MembersFSeries\_Transactions.cshtml" />
+    <Content Include="Views\Dashboard\HeadOffice.cshtml" />
+    <Content Include="Views\Dashboard\BranchOffice.cshtml" />
+    <Content Include="Views\UserManagement\FLoginChangePassword.cshtml" />
+    <Content Include="Views\UserManagement\_UserDetails.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_AccountUploud.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateIncomeStatementStructure.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateStatementModel.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateStatementModelBS.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateTrialBalanceReference.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_statementModelData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_statementModelDetails.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_UpdateStatementModel.cshtml" />
+    <Content Include="Views\AccountingStatements\GeneralLedger.cshtml" />
+    <Content Include="Views\AccountingStatements\_JournalEntries.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\PendingAccountingEntries.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_ReferenceDataEntries.cshtml" />
+    <Content Include="Views\AccountingStatements\JournalEntries.cshtml" />
+    <Content Include="Views\AccountingStatements\_DateRange.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateChartOfaccountManagementPosition.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_ChartofAccountManagementPositionData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateAccountingRule.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_AddRuleEntry.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_EntryRuleData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\AccountUpload.cshtml" />
+    <Content Include="Views\Error\Unauthorized.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\OperationFee\_Create.cshtml" />
+    <Content Include="Views\OperationFee\_Data.cshtml" />
+    <Content Include="Views\OperationFee\Index.cshtml" />
+    <Content Include="Views\FeePolicy\_Create.cshtml" />
+    <Content Include="Views\FeePolicy\_Data.cshtml" />
+    <Content Include="Views\FeePolicy\Index.cshtml" />
+    <Content Include="Views\Bank\Index.cshtml" />
+    <Content Include="Views\Bank\_Bank.cshtml" />
+    <Content Include="Views\Bank\_BankData.cshtml" />
+    <Content Include="Views\Bank\_ImageUploader.cshtml" />
+    <Content Include="Views\EconomicActivity\Index.cshtml" />
+    <Content Include="Views\EconomicActivity\_EconomicActivity.cshtml" />
+    <Content Include="Views\EconomicActivity\_EconomicActivityData.cshtml" />
+    <Content Include="Views\MembersCategory\Index.cshtml" />
+    <Content Include="Views\MembersCategory\_CustomerCategory.cshtml" />
+    <Content Include="Views\MembersCategory\_CustomerCategoryData.cshtml" />
+    <Content Include="Views\SysConfiguration\_SysConfiguration.cshtml" />
+    <Content Include="Views\SysConfiguration\_SysConfigurationData.cshtml" />
+    <Content Include="Views\SysConfiguration\Index.cshtml" />
+    <Content Include="Views\SysConfiguration\_Create.cshtml" />
+    <Content Include="Views\SavingProductFee\_SavingProductFeeMapperData.cshtml" />
+    <Content Include="Views\GroupType\Index.cshtml" />
+    <Content Include="Views\GroupType\_Data.cshtml" />
+    <Content Include="Views\GroupType\_Create.cshtml" />
+    <Content Include="Views\Group\Index.cshtml" />
+    <Content Include="Views\Group\_Data.cshtml" />
+    <Content Include="Views\Group\_Create.cshtml" />
+    <Content Include="Views\Group\_Details.cshtml" />
+    <Content Include="Views\Group\Details.cshtml" />
+    <Content Include="Views\Group\_AddGroupDocument.cshtml" />
+    <Content Include="Views\Group\_AttachedFileData.cshtml" />
+    <Content Include="Views\Group\_GroupMemberData.cshtml" />
+    <Content Include="Views\Group\_AddGroupMembers.cshtml" />
+    <Content Include="Views\Group\_UpdateGroupProfile.cshtml" />
+    <Content Include="Views\Group\Listing.cshtml" />
+    <Content Include="Views\WithdrawalNotification\_CustomerCard.cshtml" />
+    <Content Include="Views\WithdrawalNotification\_ValidatePendingRequest.cshtml" />
+    <Content Include="Views\WithdrawalNotification\_OperationDesk.cshtml" />
+    <Content Include="Views\WithdrawalNotification\_OperationForm.cshtml" />
+    <Content Include="Views\WithdrawalNotification\_SearchBox.cshtml" />
+    <Content Include="Views\WithdrawalNotification\_Tabs.cshtml" />
+    <Content Include="Views\WithdrawalNotification\Index.cshtml" />
+    <Content Include="Views\WithdrawalNotification\_MemberRequestData.cshtml" />
+    <Content Include="Views\WithdrawalNotification\_PendingRequestData.cshtml" />
+    <Content Include="Views\WithdrawalNotification\Requests.cshtml" />
+    <Content Include="Views\WithdrawalNotification\Pending.cshtml" />
+    <Content Include="Views\WithdrawalNotification\_RequestsData.cshtml" />
+    <Content Include="Views\WithdrawalNotification\_RequestDetail.cshtml" />
+    <Content Include="Views\ChargesWaived\Requests.cshtml" />
+    <Content Include="Views\ChargesWaived\Pending.cshtml" />
+    <Content Include="Views\ChargesWaived\Index.cshtml" />
+    <Content Include="Views\ChargesWaived\_ValidatePendingRequest.cshtml" />
+    <Content Include="Views\ChargesWaived\_Tabs.cshtml" />
+    <Content Include="Views\ChargesWaived\_SearchBox.cshtml" />
+    <Content Include="Views\ChargesWaived\_RequestsData.cshtml" />
+    <Content Include="Views\ChargesWaived\_RequestDetail.cshtml" />
+    <Content Include="Views\ChargesWaived\_PendingRequestData.cshtml" />
+    <Content Include="Views\ChargesWaived\_OperationForm.cshtml" />
+    <Content Include="Views\ChargesWaived\_OperationDesk.cshtml" />
+    <Content Include="Views\ChargesWaived\_MemberRequestData.cshtml" />
+    <Content Include="Views\ChargesWaived\_CustomerCard.cshtml" />
+    <Content Include="Views\Migration\MembersAccount.cshtml" />
+    <Content Include="Views\Migration\_MembersAccountUpload.cshtml" />
+    <Content Include="Views\OtherTransaction\_OtherTransaction.cshtml" />
+    <Content Include="Views\OtherTransaction\_OtherTransactionData.cshtml" />
+    <Content Include="Views\CashDesk\OtherCashTransactions.cshtml" />
+    <Content Include="Views\CashDesk\_OtherTransactionDesk.cshtml" />
+    <Content Include="Views\CashDesk\_OtherTransactionForm.cshtml" />
+    <Content Include="Views\CashDesk\_OtherTransactionTabs.cshtml" />
+    <Content Include="Views\CashDesk\_NoneMemberPayment.cshtml" />
+    <Content Include="Views\CashDesk\_MemberPayment.cshtml" />
+    <Content Include="Views\MemberOperation\_SearchBox.cshtml" />
+    <Content Include="Views\AccountingStatements\LiaisonLedger.cshtml" />
+    <Content Include="Views\AccountingStatements\_LiaisonLedger.cshtml" />
+    <Content Include="Views\DailyTellerAssignation\_Create.cshtml" />
+    <Content Include="Views\DailyTellerAssignation\_Data.cshtml" />
+    <Content Include="Views\DailyTellerAssignation\Index.cshtml" />
+    <Content Include="Views\DailyTellerAssignation\_SearchBox.cshtml" />
+    <Content Include="Views\TellerProvissioing\Index.cshtml" />
+    <Content Include="Views\TellerProvissioing\_SearchBox.cshtml" />
+    <Content Include="Views\TellerProvissioing\_AwaitCashReplenishmentPrimaryTellerData.cshtml" />
+    <Content Include="Views\TellerProvissioing\Primary.cshtml" />
+    <Content Include="Views\TellerProvissioing\_Details.cshtml" />
+    <Content Include="Views\SubTellerCashRequisition\Index.cshtml" />
+    <Content Include="Views\SubTellerCashRequisition\_CashReplenishmentSubTellerData.cshtml" />
+    <Content Include="Views\SubTellerCashRequisition\_Request.cshtml" />
+    <Content Include="Views\SubTellerCashRequisition\Request.cshtml" />
+    <Content Include="Views\SubTellerCashRequisition\RequestValidation.cshtml" />
+    <Content Include="Views\SubTellerCashRequisition\_RequestValidation.cshtml" />
+    <Content Include="Views\SubTellerCashRequisition\_AwaitCashReplenishmentSubTellerData.cshtml" />
+    <Content Include="Views\SubTellerCashRequisition\PendingRequest.cshtml" />
+    <Content Include="Views\SubTellerCashRequisition\_SearchBox.cshtml" />
+    <Content Include="Views\PrimaryTellerCashRequisition\RequestValidation.cshtml" />
+    <Content Include="Views\PrimaryTellerCashRequisition\Request.cshtml" />
+    <Content Include="Views\PrimaryTellerCashRequisition\PendingRequest.cshtml" />
+    <Content Include="Views\PrimaryTellerCashRequisition\Index.cshtml" />
+    <Content Include="Views\PrimaryTellerCashRequisition\_SearchBox.cshtml" />
+    <Content Include="Views\PrimaryTellerCashRequisition\_RequestValidation.cshtml" />
+    <Content Include="Views\PrimaryTellerCashRequisition\_Request.cshtml" />
+    <Content Include="Views\PrimaryTellerCashRequisition\_PrimaryTellerCashRequisitionData.cshtml" />
+    <Content Include="Views\PrimaryTellerCashRequisition\_AwaitPrimaryTellerCashRequisitionData.cshtml" />
+    <Content Include="Views\OpenningOfDay\Primary.cshtml" />
+    <Content Include="Views\OpenningOfDay\_OpenOfDayForm.cshtml" />
+    <Content Include="Views\OpenningOfDay\SubTeller.cshtml" />
+    <Content Include="Views\Shared\_GeneralErrorDiv.cshtml" />
+    <Content Include="Views\EndOfDayOperation\SubTeller.cshtml" />
+    <Content Include="Views\EndOfDayOperation\Primary.cshtml" />
+    <Content Include="Views\EndOfDayOperation\_CloseOfDayForm.cshtml" />
+    <Content Include="Views\CashDesk\ExpenseOtherPayment.cshtml" />
+    <Content Include="Views\CashDesk\_OtherPaymentForm.cshtml" />
+    <Content Include="Views\CashDesk\_OtherPaymentDesk.cshtml" />
+    <Content Include="Views\LoanDeliquencyConfiguration\_Create.cshtml" />
+    <Content Include="Views\LoanDeliquencyConfiguration\_Data.cshtml" />
+    <Content Include="Views\LoanDeliquencyConfiguration\Index.cshtml" />
+    <Content Include="Views\Loan\Details.cshtml" />
+    <Content Include="Views\Loan\_Details.cshtml" />
+    <Content Include="Views\Loan\_LoanTerm.cshtml" />
+    <Content Include="Views\Loan\_LoanIformation.cshtml" />
+    <Content Include="Views\Loan\_Refunds.cshtml" />
+    <Content Include="Views\Loan\_DailyInterest.cshtml" />
+    <Content Include="Views\Loan\_RepaymentSchedle.cshtml" />
+    <Content Include="Views\Loan\_FileDownloadData.cshtml" />
+    <Content Include="Views\Loan\_SearchBox.cshtml" />
+    <Content Include="Views\Loan\LoanReportGeneration.cshtml" />
+    <Content Include="Views\AccountingConfiguration\DownloadFile.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_FileUploadHistory.cshtml" />
+    <Content Include="Views\CashDesk\_ExpenseOtherPaymentDesk.cshtml" />
+    <Content Include="Views\CashDesk\_ExpenseOtherPaymentForm.cshtml" />
+    <Content Include="Views\CashDesk\_ExpenseOtherTransactionDesk.cshtml" />
+    <Content Include="Views\CashDesk\_ExpenseOtherTransactionForm.cshtml" />
+    <Content Include="Views\CashDesk\_ExpenseOtherTransactionTabs.cshtml" />
+    <Content Include="Views\DailyTellerAssignation\DownloadTellerOperations.cshtml" />
+    <Content Include="Views\DailyTellerAssignation\_DownloadSearch.cshtml" />
+    <Content Include="Views\Shared\OpenInNewWindow.cshtml" />
+    <Content Include="Views\TransactionReversal\RequestReversalForm.cshtml" />
+    <Content Include="Views\TransactionReversal\RequestValidationForm.cshtml" />
+    <Content Include="Views\TransactionReversal\PendingRequest.cshtml" />
+    <Content Include="Views\TransactionReversal\Index.cshtml" />
+    <Content Include="Views\TransactionReversal\_SearchBox.cshtml" />
+    <Content Include="Views\TransactionReversal\_RequestReversalForm.cshtml" />
+    <Content Include="Views\TransactionReversal\_InitiatedPendingRequestData.cshtml" />
+    <Content Include="Views\TransactionReversal\InitiatedPendingRequest.cshtml" />
+    <Content Include="Views\TransactionReversal\_PendingRequestData.cshtml" />
+    <Content Include="Views\TransactionReversal\_PendingApprovalData.cshtml" />
+    <Content Include="Views\TransactionReversal\RequestApprovalForm.cshtml" />
+    <Content Include="Views\TransactionReversal\_RequestValidationForm.cshtml" />
+    <Content Include="Views\TransactionReversal\_RequestApprovalForm.cshtml" />
+    <Content Include="Views\TransactionReversal\RequestTreatmentForm.cshtml" />
+    <Content Include="Views\TransactionReversal\_RequestTreatmentForm.cshtml" />
+    <Content Include="Views\TransactionReversal\PendingApprovals.cshtml" />
+    <Content Include="Views\AccountingConfiguration\IndexForEventConfiguration.cshtml" />
+    <Content Include="Views\AccountingChart\_CreateModal.cshtml" />
+    <Content Include="Views\CashFlowManagement\GetCashReplenimentRequestDataAwaitingApproval.cshtml" />
+    <Content Include="Views\CashFlowManagement\_ApproveCashRequest.cshtml" />
+    <Content Include="Views\CashFlowManagement\GetAllCashReplenimentRequestData.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CreateBankCashOutApproval.cshtml" />
+    <Content Include="Views\CashFlowManagement\_ViewBankTransaction.cshtml" />
+    <Content Include="Views\CashFlowManagement\GetCashReplenimentRequestDataAwaitingApprovalCompleted.cshtml" />
+    <Content Include="Views\CashFlowManagement\CreateBankCashOut.cshtml" />
+    <Content Include="Views\AccountingConfiguration\AccountPolicySetting.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateAccountPolicy.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_AccountPolicyData.cshtml" />
+    <Content Include="Views\CashFlowManagement\_branchToBranchTransfer.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AppFiles\BarCodeImages\" />
+    <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\CustomerManagement\MemberActivation\" />
     <Folder Include="Views\DocumentPack\" />
     <Folder Include="Views\Reports\" />
     <Folder Include="Views\Session\" />
+    <Folder Include="Views\TwoStepaccountverification\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -2379,9 +3013,53 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Reporting\Transactions\Reciepts\Receipts.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\GeneralLedger.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GeneralLedger.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\JournalEntries.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>JournalEntries.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\LiaisonLedger.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LiaisonLedger.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\TrialBalance6Column.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TrialBalance6Column.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\TrialBalance8Column.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TrialBalance8Column.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\OtherTransactionReciept.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>OtherTransactionReciept.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\Receipts_Duplicate.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Receipts_Duplicate.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\Receipts.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Receipts.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TellerStatement.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Statement\AllIAccountStatement.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AllIAccountStatement.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Statement\IAccountStatementGroupByAccounts.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>IAccountStatementGroupByAccounts.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Statement\IAccountStatement.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>IAccountStatement.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -2390,6 +3068,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -2405,14 +3086,15 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52456</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44389/</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>https://localhost:44389/</IISAppRootUrl>
+          <IISUrl>https://localhost:44388/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
           </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <servers defaultServer="">
+            <server name="SelfHostServer" exePath="" cmdArgs="" url="http://localhost:52456/" workingDir="" />
+          </servers>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
@@ -2424,8 +3106,10 @@
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Data.SqlClient.SNI.3.0.0\build\net46\Microsoft.Data.SqlClient.SNI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Data.SqlClient.SNI.3.0.0\build\net46\Microsoft.Data.SqlClient.SNI.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.3.0.0\build\net46\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.3.0.0\build\net46\Microsoft.Data.SqlClient.SNI.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
