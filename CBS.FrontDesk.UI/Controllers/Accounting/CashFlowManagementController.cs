@@ -47,16 +47,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             ViewBag.Accounts = BuildDropDown(GenerateAccountListView(DebitAccounts));
             ViewBag.Decisions = BuildMenuViewBag();
-            var models = BuildMenuViewBag(await _accountingEntryServices.GetCashReplenimentCurrentOpenOfDayHistoryRequestId());
-
-
-            ViewBag.OpeningOfDayId = models;//BuildMenuViewBag(await _accountingEntryServices.GetCashReplenimentCurrentOpenOfDayHistoryRequestId());
-
-            if (models.Count() == 0)
-            {
-                ViewBag.OpeningOfDayId = new List<StringValues> { new StringValues { Text = "Id001", Value = "Current Opening Reference" } };
-            }
-
+   
         }
         private IEnumerable<StringValues> GenerateAccountListView(List<Data.Account> accounts)
         {
@@ -131,7 +122,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             return list;
         }
-
+        //AccountPolicySetting
 
         private dynamic BuildMenuViewBag()
         {
@@ -155,7 +146,30 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public async Task<ActionResult> CreateBankCashOut()
         {
             await GetList();
-            return View(new CashDemandDataEntity());
+            var account = (await _AccountServices.GetAllAccounting()).Where(pp=>pp.Account5=="57101"&&pp.BranchCode==_AccountServices.GetBranchCode());
+            string name,balance = string.Empty;
+            string Id = string.Empty;
+            if (account.Any())
+            {
+                var acc = account.FirstOrDefault();
+                name = $"{acc.AccountNumber}-{acc.AccountName}";
+                balance=acc.CurrentBalance;
+                Id = acc.Id;
+            }
+            else
+            {
+                balance = "0";
+                name = $"No Vault Found";
+            }
+            ViewBag.AccountName = name;
+            ViewBag.AccountBalance = balance;
+            var listBranch = await branchServices.GetLiaison();
+            ViewBag.Liaisons = BuildDropDown(GenerateBranchListView(listBranch.ToList()));
+            var mOdelsd = new BranchToBranchTransfer();
+            mOdelsd.Balance = balance;
+            mOdelsd.Accountinfor= name;
+            mOdelsd.AccountId = Id;
+            return View(new CashDemandDataEntity { BranchToBranchTransfer = mOdelsd});
         }
         public async Task<ActionResult> CreateBankCashOutApproval(string referenceId)
         {
@@ -195,7 +209,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(CashDemandDataEntity model)
-        {
+        {//
             if (model.ServiceOption.Equals("CashInfusionModel"))
             {
                 if (model.Action.Equals("insert"))
@@ -234,6 +248,25 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 model .BankCashOut.Id =  BaseUtilities.GenerateInsuranceUniqueNumber(15, "BCO");
                 var datac = await _accountingEntryServices.CreateBankCashTransaction(model.BankCashOut);
                  
+                return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
+
+            }
+            else if (model.ServiceOption.Equals("BranchToBranchTransfer")) //(path == "")
+            {
+                string reference = string.Empty;
+                var crpmodel = (await _accountingEntryServices.GetAllCashReplenimentRequestByBranch()).Where(c=>c.BranchId== model.BranchToBranchTransfer.LiaisonId);
+                var modelList = crpmodel.Where(xxx => xxx.Status.Equals("awaiting_corresponding_entry_posting"));
+                if (modelList.Any())
+                {
+                    reference = modelList.FirstOrDefault().ReferenceId;
+                }
+                else
+                {
+                    reference = BaseUtilities.GenerateInsuranceUniqueNumber(12, "BTB");
+                }
+                model.BranchToBranchTransfer.ReferenceId = reference;
+                var datac = await _accountingEntryServices.CreateBranchToBranchTransferTransaction(model.BranchToBranchTransfer);
+
                 return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
 
             }
@@ -289,7 +322,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                  AmountRequested = request.AmountRequested,
                                  BranchOffice = branch.Name,
                                  RequestMessage = request.RequestMessage,
-                                 IssuedBy = user.name + "," + user.roleName,
+                                 IssuedBy = user.name + "," + user.phoneNumber,
                                  IssuedDate = request.IssuedDate,
                                  AmountApproved = request.AmountApproved,
                                  ApprovedBy = request.ApprovedBy,

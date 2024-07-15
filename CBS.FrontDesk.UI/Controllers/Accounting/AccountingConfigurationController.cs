@@ -53,6 +53,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly StatementModelServices _statementModelServices;
         private readonly TrialBalanceReferenceServices _trialBalanceReferenceServices;
         private readonly TrailBalanceUploudServices _trialBalanceUploudServices;
+        private readonly AccountPolicyServices _accountPolicyServices;
         public AccountingConfigurationController()
         {
             _AccountingRuleServices = new AccountingRuleService();
@@ -70,6 +71,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _ChartOfAccountManagementPositionServicesServices = new ChartOfAccountManagementPositionService();
             _AccountClassServices = new AccountClassServices();
             _trialBalanceUploudServices = new TrailBalanceUploudServices();
+            _accountPolicyServices = new AccountPolicyServices();
         }
         // GET: AccountingConfiguration
         
@@ -88,13 +90,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
       
             return View(new AccountingConfiguration());
         }
+        
         public async Task<ActionResult> AccountUpload()
         {
             ViewBag.Branches = BuildMenuISViewBag((await _branchService.GetBranches()).ToList());
             ViewBag.BankName= _branchService.GetBankName();
             return View(new AccountingConfiguration { BranchId = _branchService.GetBranchID() });
         }
+        public async Task<ActionResult> AccountPolicySetting()
+        {
+            var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+            ViewBag.ChartOfAccountManagementPositions = BuildMenuAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), listAccounts.ToList());
 
+            return View(new AccountingConfiguration());
+        }
 
         private async Task GetList()
         {
@@ -193,7 +202,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private dynamic BuildMenuAccountViewBag(List<ChartofAccountManagementPosition> ChartofAccountManagementPositions, List<ChartOfAccount> ListchartOfAccounts)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-            string code = "[BranchCode]";
+            string code = "[BCD]";
             var listOfItems = (from item in ChartofAccountManagementPositions
                                join element in ListchartOfAccounts on item.ChartOfAccountId equals element.Id
                                select new ManagementSelectionOption
@@ -622,6 +631,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
             }
+            else if (model.ServiceOption == "accountPolicy")
+            {
+                if (model.Action == "insert")
+                {
+                    serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+                }
+                else
+                {
+
+                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                }
+
+
+            }
             if (serviceAction != null)
             {
                 try
@@ -728,6 +751,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
             }
+            else if (serviceOption == "accountPolicy")
+            {
+
+                return () => _accountPolicyServices.Create(model.AccountPolicy);
+            }
             else
             {
                 return null;
@@ -775,6 +803,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
 
                 return () => _trialBalanceReferenceServices.Update(model.TrialBalanceReference);
+            }
+            else if (serviceOption == "accountPolicy")
+            {
+
+                return () => _accountPolicyServices.Update(model.AccountPolicy);
             }
             else
             {
@@ -1165,6 +1198,30 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
 
             }
+            else if (serviceOption == "accountPolicy")
+            {
+                if (path == "list")
+                {
+
+
+
+                    var sysData = new AccountingConfiguration { AccountPolicies = (await _accountPolicyServices.GetAccountPolicy()).ToList() };
+                    return PartialView(partialView, sysData);
+
+                }
+                else if (path == "new")
+                {
+                    return PartialView(partialView, new AccountingConfiguration { AccountPolicy = new AccountPolicy() });
+                }
+                else
+                {
+                    var data = await _accountPolicyServices.GetAccountPolicy(key);
+                    return PartialView(partialView, new AccountingConfiguration { AccountPolicy = data });
+
+
+                }
+
+            }
             return null;
         }
 
@@ -1261,6 +1318,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
 
                 var data = await _trialBalanceUploudServices.Delete(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
+            else if (serviceOption == "accountPolicy")
+            {
+
+                var data = await _accountPolicyServices.Delete(KEY);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
 
             }

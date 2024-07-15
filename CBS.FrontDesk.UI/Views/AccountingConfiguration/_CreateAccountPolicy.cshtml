@@ -1,0 +1,82 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+
+<div class="row">
+    <!-- Context Menu -->
+    <div class="col-12 card-body">
+        <div class="card mb-12">
+
+            <div class="card-body">
+                @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                {<input type="hidden" name="ServiceOption" value="accountPolicy" id="ServiceOption" />
+                 <div class="row mt-2 gy-4">
+
+                     <div class="col-md-6">
+                         <div class="form-floating form-floating-outline">
+                             @Html.DropDownListFor(m => m.AccountPolicy.AccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---Select Account---", new { @class = "form-control select2", @search = "true" })
+                             @Html.ValidationMessageFor(m => m.AccountPolicy.AccountId, "", new { @class = "text-danger" })
+                             <label>Account</label>
+                         </div>
+                     </div>
+                     <div class="col-md-6">
+                         <div class="form-floating form-floating-outline">
+                             @Html.TextBoxFor(m => m.AccountPolicy.Name, new { @class = "form-control" })
+                             @Html.ValidationMessageFor(m => m.AccountPolicy.Name, "", new { @class = "text-danger" })
+                             <label>Policy Name</label>
+                         </div>
+                     </div>
+                     <div class="col-md-6">
+                         <div class="form-floating form-floating-outline">
+                             @Html.TextBoxFor(m => m.AccountPolicy.MinimumAlert, new { @class = "form-control" })
+                             @Html.ValidationMessageFor(m => m.AccountPolicy.MinimumAlert, "", new { @class = "text-danger" })
+                             <label>Account Minimum Alert</label>
+
+                         </div>
+                     </div>
+                     <div class="col-md-6">
+                         <div class="form-floating form-floating-outline">
+                             @Html.TextBoxFor(m => m.AccountPolicy.MaximumAlert, new { @class = "form-control" })
+                             @Html.ValidationMessageFor(m => m.AccountPolicy.MaximumAlert, "", new { @class = "text-danger" })
+                             <label>Account Maximum Alert</label>
+                         </div>
+                     </div>
+                     <div class="col-md-6">
+                         <div class="form-floating form-floating-outline">
+
+                             @Html.TextAreaFor(m => m.AccountPolicy.MinMessage, new { @class = "form-control", @style = "height: 200px;" })
+                             @Html.ValidationMessageFor(m => m.AccountPolicy.MinMessage, "", new { @class = "text-danger" })
+                             <label>Minimum Message to be send</label>
+
+                         </div>
+                     </div>
+
+
+                     <div class="col-md-6">
+                         <div class="form-floating form-floating-outline">
+
+                             @Html.TextAreaFor(m => m.AccountPolicy.MaxMessage, new { @class = "form-control", @style = "height: 200px;" })
+                             @Html.ValidationMessageFor(m => m.AccountPolicy.MaxMessage, "", new { @class = "text-danger" })
+                             <label>Maximum Message to be send</label>
+
+                         </div>
+                     </div>
+
+                 </div>
+                    <div class="mt-4">
+                        @if (Model.AccountPolicy.Id == null)
+                        {
+                            <button type="submit" class="btn btn-primary me-2">Save</button>
+                            <input type="hidden" name="Action" value="insert" id="Action" />
+                        }
+                        else
+                        { <button type="submit" class="btn btn-primary me-2">Update</button>
+                            @Html.HiddenFor(m => m.AccountPolicy.Id)
+                            <input type="hidden" name="Action" value="update" id="Action" />
+                        }
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+

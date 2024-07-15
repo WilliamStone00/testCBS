@@ -175,6 +175,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounting\AccountPolicy.cs" />
     <Compile Include="Accounting\AccountUploadServices.cs" />
     <Compile Include="Accounting\ChartOfAccountManagementPosition.cs" />
     <Compile Include="Accounting\TrialBalanceReferenceServices.cs" />

@@ -7,8 +7,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class BankCashOut
     {
         public string Id { get; set; }
+        [Required]
         public string AccountId { get; set; }
         public string Balance { get; set; }
+        [Required]
         public decimal Amount { get; set; }
         public string ReferenceId { get; set; }
         public string TransactionType { get; set; }

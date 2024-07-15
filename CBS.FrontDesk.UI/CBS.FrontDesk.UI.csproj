@@ -2878,6 +2878,10 @@
     <Content Include="Views\CashFlowManagement\_ViewBankTransaction.cshtml" />
     <Content Include="Views\CashFlowManagement\GetCashReplenimentRequestDataAwaitingApprovalCompleted.cshtml" />
     <Content Include="Views\CashFlowManagement\CreateBankCashOut.cshtml" />
+    <Content Include="Views\AccountingConfiguration\AccountPolicySetting.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateAccountPolicy.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_AccountPolicyData.cshtml" />
+    <Content Include="Views\CashFlowManagement\_branchToBranchTransfer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

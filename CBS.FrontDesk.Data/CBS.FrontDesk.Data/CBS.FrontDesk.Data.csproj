@@ -72,6 +72,7 @@
     <Compile Include="Entity\Accounting\AccountingConfiguration.cs" />
     <Compile Include="Entity\Accounting\AccountingEntry.cs" />
     <Compile Include="Entity\Accounting\AccountingStatementDto.cs" />
+    <Compile Include="Entity\Accounting\AccountSettingPolicy.cs" />
     <Compile Include="Entity\Accounting\AccountType.cs" />
     <Compile Include="Entity\Accounting\AccountValidator.cs" />
     <Compile Include="Entity\Accounting\BankCashOut.cs" />

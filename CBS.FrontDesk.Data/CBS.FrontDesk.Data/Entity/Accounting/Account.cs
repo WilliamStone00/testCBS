@@ -32,6 +32,7 @@ namespace CBS.FrontDesk.Data
         public string Account4 { get; set; }
         public string Account3 { get; set; }
         public string Account2 { get; set; }
+        public string BranchCode { get; set; }
     }
 
 

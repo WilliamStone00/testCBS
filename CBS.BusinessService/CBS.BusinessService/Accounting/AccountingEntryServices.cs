@@ -356,7 +356,32 @@ namespace CBS.BusinessService
                 throw (ex);
             }
         }
+        public async Task<List<CashReplenimentRequest>> GetAllCashReplenimentRequestByBranch()
+        {
 
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<CashReplenimentRequest>>>(APICallHelper.GetAllCashReplenishmentQueryAsBranch);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData == null)
+                    {
+                        return new List<CashReplenimentRequest>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<CashReplenimentRequest>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
         public async Task<List<CashReplenimentRequest>> GetAllCashReplenimentRequestByBranch(string Id)
         {
 
@@ -512,30 +537,46 @@ public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
             }
             return ExecutionMessage;
         }
-
         public async Task<IExecutionMessages> CreateBankCashTransaction(BankCashOut model)
         {
             try
             {
-                var documentUrl = new AddDocumentUploadedCommand
-                {
-                    FormFiles = model.UploadedFile,
-                    IsSynchronus = true,
-                    OperationID = model.Id,
-                    DocumentType = "BankCashOut_Reciept",
-                    ServiceType = "AccountingService".ToUpper(),
-                    DocumentId = "N/A",
-                    CallBackBaseUrl = "N/A",
-                    CallBackEndPoint = "N/A",
-                    RemoteFilePath =  $"{GetBranchCode()}/{APICallHelper.AttachedReceiptRemotely}"
-                };
-                var result =( APICallBackRespose)( await UploadFiles(documentUrl)).Data;
-                   model.FileUpload= result.data.fullPath;
-                    var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.BankCashOutCommandUrl, model.ConvertToBankCashOutDto(model));
+
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.BankCashOutCommandUrl, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<IExecutionMessages> CreateBranchToBranchTransferTransaction(BranchToBranchTransfer model)
+        {
+            try
+            {
+            
+                    var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.BranchToBranchTransferUrl, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }

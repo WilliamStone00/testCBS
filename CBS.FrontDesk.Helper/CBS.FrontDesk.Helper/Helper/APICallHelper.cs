@@ -2,7 +2,9 @@
 {
     public abstract class APICallHelper
     {
-  
+        public static  string CreateAccountPolicy = "/api/v1/AccountPolicy";
+        public static  string GetAccountPolicies = "/api/v1/AccountPolicies";
+        public static string Get_Update_Delete_AccountPolicy = "/api/v1/AccountPolicy/{0}";
         //Authentication
         public static string Authentication = "/api/Authentication/Session/Login";
         public static string RefreshToken = " /api/Authentication/Session/RefreshToken";
@@ -600,8 +602,9 @@
     public static string UpdateCashReplenishmentRequest = "/api/v1/BankingOperation/UpdateRequestForCashReplenishment/{0}";
     public static string CashReplenishmentResponse = "/api/v1/BankingOperation/ResponseToCashReplenishment";
         public static string GetAllCashReplenishmentRequests = "/api/v1/BankingOperation/GetAllCashReplenishmentRequests";
+        public static string GetAllCashReplenishmentQueryAsBranch = "/api/v1/BankingOperation/GetAllCashReplenishmentQueryAsBranch";
         public static string GetAllCashRequestApprovalQuery = "/api/v1/BankingOperation/GetAllCashRequestApprovalQuery";
-       
+        public static string BranchToBranchTransferUrl = "/api/v1/AccountingEntry/BranchToBranchTransferCommand";
         public static string GetCashReplenishmentRequestByBranchId = "/api/v1/BankingOperation/GetCashReplenishmentRequestByBranchId/{0}";
         public static string GetBankTransactionQueryByIdURL  = "/api/v1/BankingOperation/GetBankTransactionQueryById/{0}";
         public static string GetBankTransactionQueryByReferenceIdURL = "/api/v1/BankingOperation/GetBankTransactionQueryByReferenceId/{0}";
@@ -647,5 +650,7 @@
         public static string Get_Update_Delete_TrailBalanceUploud = "/api/v1/TrailBalanceUploud/{0}";
 
         public static string GetAllTrailBalanceUploud = "/api/v1/TrailBalanceUplouds";
+
+
     }
 }

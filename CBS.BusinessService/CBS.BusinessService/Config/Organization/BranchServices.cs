@@ -82,6 +82,24 @@ namespace CBS.BusinessService.Config
             }
         }
 
+
+        public async Task<IEnumerable<Branch>> GetLiaison()
+        {
+            try
+            {
+               
+                    var couApiResponse = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
+                    return couApiResponse.ApiResponseData.Data;
+
+                
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<Branch> GetBranch(string id)
         {
             try

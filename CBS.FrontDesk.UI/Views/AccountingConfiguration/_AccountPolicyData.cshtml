@@ -1,0 +1,60 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+
+@if (true)
+{
+    <table class="table table-hover" id="myDataTable_AccountPolicyData">
+        <thead class="table-light">
+            <tr>
+                <th>Policy Name</th>
+                <th>Min alert</th>
+                <th>Max alert</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.AccountPolicies)
+            {
+                <tr>
+                    <td style="width:20%">@d.Name</td>
+                    <td style="width:35%">@d.MinimumAlert</td>
+                    <td style="width:25%">@d.MaximumAlert</td>
+
+                    <td style="width:20%">
+                        @*<a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_accountPolicy','_AccountDetails','details','AccountingConfiguration','accountPolicy')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountName to edit">Details</a>|*@
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_accountPolicy','_CreateAccountPolicy','update','AccountingConfiguration','accountPolicy')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a>|
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_AccountPolicyData','_AccountPolicyData',0,'datalistingview_accountPolicy','accountPolicy')">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <table class="table table-hover" id="myDataTable_AccountData">
+        <thead class="table-light">
+            <tr>
+                <th>Account Number</th>
+                <th>Account Label</th>
+
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.Accounts)
+            {
+                <tr>
+                    <td style="width:35%">@d.AccountName</td>
+                    <td style="width:35%">@d.AccountNumber</td>
+            
+
+                    <td style="width:30%">
+                        <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview_Account','_CreateAccount','update','AccountingConfiguration','account')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.AccountName to edit">Edit</a>
+                        <a href="#" class="mr-2 btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountName" onclick="DeleteRecordDataTable('AccountingConfiguration','@d.Id','myDataTable_Account','_AccountData',0,'datalistingview_Account')">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

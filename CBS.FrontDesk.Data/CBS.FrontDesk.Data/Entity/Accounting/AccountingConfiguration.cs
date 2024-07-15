@@ -41,7 +41,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<AccountingRuleEntryDto> AccountingRuleEntriesDTOS { get; set; } = new List<AccountingRuleEntryDto>();
         public AccountingRule  AccountingRule{ get; set; } = new AccountingRule();
         public List<Branch> Branches { get; set; } = new List<Branch>();
-        public Branch Branch { get; set; }  
+        public Branch Branch { get; set; }
+        public List<AccountPolicy> AccountPolicies { get; set; } = new List<AccountPolicy>();
+        public AccountPolicy AccountPolicy { get; set; } = new AccountPolicy();
         public List<AccountingRuleDtos> AccountingRules { get; set; } = new List<AccountingRuleDtos>();
         public string BranchId { get; set; }
         public string ManualOperationCode { get; set; }
