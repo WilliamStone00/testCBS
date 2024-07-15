@@ -36,7 +36,7 @@
                          data-bs-parent="#collapsibleSection">
                         <div class="accordion-body">
                             <div class="row g-4">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanParameter.Amount, new { @class = "form-control", @id = "financialInput", @oninput = "formatFinancialFigure(this.value)" })
                                         @Html.ValidationMessageFor(m => m.LoanParameter.Amount, "", new { @class = "text-danger" })
@@ -50,35 +50,35 @@
                                         <label>Loan duration</label>
                                     </div>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.LoanParameter.LoanDurationType, new SelectList(ViewBag.LoanDurationPeriods, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.LoanParameter.LoanDurationType, "", new { @class = "text-danger " })
                                         <label>Loan duration type</label>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanParameter.InterestRate, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanParameter.InterestRate, "", new { @class = "text-danger" })
                                         <label>Interest rate (In percentage %)</label>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.LoanParameter.AmortizationType, new SelectList(ViewBag.AmortizationTypes, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.LoanParameter.AmortizationType, "", new { @class = "text-danger " })
                                         <label>Amortization type</label>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.LoanParameter.RepaymentCycle, new SelectList(ViewBag.RepaymentCycles, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.LoanParameter.RepaymentCycle, "", new { @class = "text-danger " })
                                         <label>Repayment cycle</label>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanParameter.StrRepaymentStartDate, new { @class = "form-control date-picker", @placeholder = "Date of first repayment" })
                                         @Html.ValidationMessageFor(m => m.LoanParameter.StrRepaymentStartDate, "", new { @class = "text-danger" })

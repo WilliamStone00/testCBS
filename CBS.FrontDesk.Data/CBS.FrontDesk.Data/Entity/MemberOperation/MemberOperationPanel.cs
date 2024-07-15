@@ -36,6 +36,7 @@ namespace CBS.FrontDesk.Data.Entity.MemberOperation
         public List<LoanAmortization> LoanAmortizations { get; set; }
         public RefundDetail RefundDetail { get; set; }
         public List<RefundDetail> RefundDetails { get; set; }
+        public AddLoanApplicationCommand AddLoanApplicationCommand { get; set; }
         public List<Refund> Refunds { get; set; }
         public Refund Refund { get; set; }
         public Loan Loan { get; set; }
@@ -47,6 +48,7 @@ namespace CBS.FrontDesk.Data.Entity.MemberOperation
         {
             LoanCommentry = new LoanCommentry();
             LoanCommentries = new List<LoanCommentry>();
+            AddLoanApplicationCommand = new AddLoanApplicationCommand();
             LoanApplication = new LoanApplication();
             Customer = new IndividualProfile();
             LoanCollatera = new LoanApplicationCollateral();

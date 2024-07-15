@@ -47,7 +47,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             var cashDesk = await _cashDeskService.GetOtherCashDeskTransactions();
             //ViewBag.Members = _cashDeskService.LoadMembersToList(cashDesk.Customers);
             ViewBag.MemberAccounts = new SelectList(new List<StringValues>(), "None", "No-Account-Loaded");
-            await GetEventNames("EXPENSE");
+            await GetEventNames("FEE");
             //ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
             return View(cashDesk);
         }
@@ -56,10 +56,20 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             ViewBag.EventCodes = await _accountingServices.GetEventNamesOtherCashIn(operationType);
 
         }
-        public async Task<ActionResult> Ajaxloader(string Key)
+        public async Task<ActionResult> Ajaxloader(string Key,string path)
         {
-            var listing = await _cashDeskService.LoadMembersAccountByMemberReference(Key);
-            return Json(listing, JsonRequestBehavior.AllowGet);
+            if (path== "getmember")
+            {
+                var listing = await _cashDeskService.GetCustomer(Key);
+                return Json(listing, JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+                var listing = await _cashDeskService.LoadMembersAccountByMemberReference(Key);
+                return Json(listing, JsonRequestBehavior.AllowGet);
+
+            }
         }
         //income_expense
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = "_DataNotFound", string path = null, string serviceOption = null)
@@ -67,6 +77,10 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             try
             {
                 ViewBag.KEY = KEY;
+                if (path=="")
+                {
+                    path = "cashin";
+                }
                 if (path == "search")
                 {
                     if (KEY == null || KEY == "")
@@ -84,7 +98,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
 
                 }
-                else if (path == "cashin" || path == "cashout" || path == "repayment" || path == "withdrawalnotification" || path== "loanapplicationfeepayment")
+                else if (path == "cashin" || path == "cashout" || path == "cashoutsws" || path == "repayment" || path == "withdrawalnotification" || path== "loanapplicationfeepayment")
                 {
                     if (KEY == null || KEY == "")
                     {
@@ -145,6 +159,17 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             this.HttpContext.Session["ReportName"] = $"Receipts.rpt";
             this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/Reciepts/Receipts.rpt";
             this.HttpContext.Session["rpttitle"] = $"MemberReceipts";
+            return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> GetReportOtherPayment()
+        {
+            this.HttpContext.Session["rptType"] = "ReportParameterLess";
+            this.HttpContext.Session["ReportName"] = $"OtherTransactionReciept.rpt";
+            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/Reciepts/OtherTransactionReciept.rpt";
+            this.HttpContext.Session["rpttitle"] = $"MemberReceiptsOtherPayment";
             return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
 
         }

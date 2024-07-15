@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProduct
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
 <div class="col">
 
     <div class="row my-4">
@@ -11,7 +11,7 @@
                             data-bs-target="#collapseDeliveryAddress"
                             aria-expanded="true"
                             aria-controls="collapseDeliveryAddress">
-                        Loan product account mapping for @Model.ProductName, (Term: @Model.LoanTerm)
+                        Loan product account mapping for @Model.AddLoanProductCommand.ProductName)
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
@@ -24,79 +24,79 @@
                                 <div class="row g-4">
                                     <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.ProductCode, new { @class = "form-control", @readonly = true })
-                                            @Html.ValidationMessageFor(m => m.ProductCode, "", new { @class = "text-danger" })
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.ProductCode, new { @class = "form-control", @readonly = true })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ProductCode, "", new { @class = "text-danger" })
                                             <label>Code</label>
                                         </div>
                                     </div>
                                     <div class="col-md-9">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control", @readonly = true })
-                                            @Html.ValidationMessageFor(m => m.ProductName, "", new { @class = "text-danger" })
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.ProductName, new { @class = "form-control", @readonly = true })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ProductName, "", new { @class = "text-danger" })
                                             <label>Name</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 100px;", @readonly = true })
-                                            @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                                            @Html.TextAreaFor(m => m.UpdateLoanProductCommand.Description, new { @class = "form-control", @style = "height: 100px;", @readonly = true })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.Description, "", new { @class = "text-danger" })
                                             <label>Description</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.ChartOfAccountIdForPrincipalAmount, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.ChartOfAccountIdForPrincipalAmount, "", new { @class = "text-danger " })
+                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForPrincipalAmount, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForPrincipalAmount, "", new { @class = "text-danger " })
                                             <label>Principal account for dibursement</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.ChartOfAccountIdForAccrualInterest, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.ChartOfAccountIdForAccrualInterest, "", new { @class = "text-danger " })
+                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForAccrualInterest, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForAccrualInterest, "", new { @class = "text-danger " })
                                             <label>Interest accrual account</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.ChartOfAccountIdForPenalty, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.ChartOfAccountIdForPenalty, "", new { @class = "text-danger " })
+                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForPenalty, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForPenalty, "", new { @class = "text-danger " })
                                             <label>Penalty account</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.ChartOfAccountIdForFee, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.ChartOfAccountIdForFee, "", new { @class = "text-danger " })
+                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForFee, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForFee, "", new { @class = "text-danger " })
                                             <label>Fee account</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.ChartOfAccountIdForTax, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.ChartOfAccountIdForTax, "", new { @class = "text-danger " })
+                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForTax, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForTax, "", new { @class = "text-danger " })
                                             <label>Tax account</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.ChartOfAccountIdForLoanTransition, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.ChartOfAccountIdForLoanTransition, "", new { @class = "text-danger " })
+                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForLoanTransition, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForLoanTransition, "", new { @class = "text-danger " })
                                             <label>Loan transit account</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.ChartOfAccountIdForWriteOffPrincipal, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.ChartOfAccountIdForWriteOffPrincipal, "", new { @class = "text-danger " })
+                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForWriteOffPrincipal, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForWriteOffPrincipal, "", new { @class = "text-danger " })
                                             <label>Write off loan account</label>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionOnPrincipal, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionOnPrincipal, "", new { @class = "text-danger " })
+                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForProvisionOnPrincipal, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForProvisionOnPrincipal, "", new { @class = "text-danger " })
                                             <label>Provision on principal account</label>
                                         </div>
                                     </div>
@@ -104,7 +104,7 @@
                                 </div>
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary me-2">Map accounts</button>
-                                    @Html.HiddenFor(m => m.Id)
+                                    @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
                                     <input type="hidden" name="ServiceOption" value="accounting" id="ServiceOption" />
                                     <input type="hidden" name="UpdateOption" value="assign_account_chart" id="UpdateOption" />
                                 </div>

@@ -103,6 +103,10 @@ namespace CBS.BusinessService.Accounts
                     {
                         SysConfiguration.IsYearOpen = model.IsYearOpen;
                     }
+                    else if (model.ServiceOption == "automatic_charging_system")
+                    {
+                        SysConfiguration.UseAutomaticChargingSystem = model.UseAutomaticChargingSystem;
+                    }
                     else if (model.ServiceOption == "set_off_days")
                     {
                         SysConfiguration.MondayIsHoliday = model.MondayIsHoliday;

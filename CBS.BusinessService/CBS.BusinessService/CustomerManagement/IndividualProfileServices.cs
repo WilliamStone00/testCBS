@@ -458,7 +458,7 @@ namespace CBS.BusinessService.CustomerManagement
                         EntranceFee = policy.MaximumEntrancenFee,
                         ByeLawFee = policy.MaximumByeLawsFee,
                         LoanPolicyFee = policy.MaximumLoanPolicyFee,
-                        MemberRegistrationFeePolicyId = policy.Id,
+                        MemberAccountActivationPolicyId = policy.Id,
                         Balance = policy.MaximumEntrancenFee + policy.MaximumByeLawsFee + policy.MaximumLoanPolicyFee,
                         AmountPaid = 0,
                         BuildingContribution = policy.MaximumBuildingContribution
@@ -847,10 +847,11 @@ namespace CBS.BusinessService.CustomerManagement
                 model.branchCode = GetBranchCode();
                 model.BranchId = GetBranchID();
                 model.BankId = GetBankID();
+                model.LegalForm = "Physical_Person";
                 model.EmployerTelephone = tel;
                 model.MembershipApprovalStatus = "Awaits_Validation";
                 model.BankName = GetBranchName();
-                model.Email = model.Email ?? "cbs@cbs.com";
+                model.Email = model.Email ?? "fluxdefault@trustcredit.com";
                 model.MembershipApplicantDate = DateTime.Now.ToString();
                 var response = await _customerApiHelper.PostAsync<ServiceResponse<IndividualProfile>>(APICallHelper.CreateIndividualProfile, model);
                 if (response.IsSuccess)
@@ -863,8 +864,8 @@ namespace CBS.BusinessService.CustomerManagement
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.FirstName, MessagesResults.Failed,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    GetExecutionMessages(model, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
             catch (Exception ex)

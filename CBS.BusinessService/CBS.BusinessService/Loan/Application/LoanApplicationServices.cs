@@ -102,16 +102,15 @@ namespace CBS.BusinessService.Application
                 throw ex;
             }
         }
-        public async Task<ExecutionMessages> Create(LoanApplication model)
+        public async Task<ExecutionMessages> Create(AddLoanApplicationCommand model)
         {
             try
             {
 
                 // Make an API call to create an individual profile
-                model.BankId = GetBankID();
                 model.BranchId = GetBranchID();
-                model.OrganizationId = GetOrganizationID();
-                model.LoanManager = GetUserFullName();
+                //model.LoanApplicationType = "Normal";
+                //model.AmortizationType = "Constant_Amortization";
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<LoanApplication>>(APICallHelper.CreateLoanApplication, model);
                 if (response.IsSuccess)
                 {
@@ -145,14 +144,14 @@ namespace CBS.BusinessService.Application
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"OTP", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, "OTP", MessagesResults.Failed,
+                    GetExecutionMessages(model, false, null, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }

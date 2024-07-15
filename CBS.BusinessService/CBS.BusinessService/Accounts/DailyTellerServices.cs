@@ -158,8 +158,94 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
+        public async Task<IEnumerable<ExportTellerGL>> GetDailyOperation(GetAllTellerOperationsQuery operationsQuery)
+        {
+            try
+            {
+                operationsQuery.TellerId = "N/A";
+                operationsQuery.QueryString = "all";
+                operationsQuery.IsByBranch = true;
+                operationsQuery.IsByDate = true;
+                var couApiResponse = await _transactionBaseConfigApiHelper.PostAsync<ResponseObject<List<TellerOperationGL>>>(APICallHelper.GetTellerDailyOperations, operationsQuery);
+                if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+                {
+                    var GL = couApiResponse.ApiResponseData.Data;
+                    var branch = await _branchServices.GetBranch(operationsQuery.BranchId);
+                    var exportTellerGLs = MapToExportTellerGL(GL, branch, "N/A", "N/A");
 
-        private DailyTeller MapDailyTellerWithBranch(DailyTeller dailyTeller, Branch branch,Teller teller)
+                    return exportTellerGLs;
+                }
+                return Enumerable.Empty<ExportTellerGL>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public ExportTellerGL MapToExportTellerGL(TellerOperationGL tellerOperationGL, string branchName, string tellerName, string userName)
+        {
+            return new ExportTellerGL
+            {
+                Date = tellerOperationGL.Date,
+                Naration = tellerOperationGL.Naration,
+                BalanceBF = tellerOperationGL.BalanceBF,
+                Debit = tellerOperationGL.Debit,
+                Credit = tellerOperationGL.Credit,
+                Balance = tellerOperationGL.Balance,
+                BranchName = branchName,
+                TellerName = tellerName,
+                UserName = userName
+            };
+        }
+        public List<ExportTellerGL> MapToExportTellerGL(List<TellerOperationGL> tellerOperationGLList, Branch branch, string tellerName, string userName)
+        {
+            List<ExportTellerGL> exportTellerGLList = new List<ExportTellerGL>();
+
+            // Calculate summary values
+            decimal openingBalance = tellerOperationGLList.FirstOrDefault()?.BalanceBF ?? 0;
+            decimal totalCredit = tellerOperationGLList.Sum(item => item.Credit);
+            decimal totalDebit = tellerOperationGLList.Sum(item => item.Debit);
+            decimal closingBalance = openingBalance + totalCredit - totalDebit;
+            int totalTransactions = tellerOperationGLList.Count;
+
+            foreach (var tellerOperationGL in tellerOperationGLList)
+            {
+                exportTellerGLList.Add(new ExportTellerGL
+                {
+                    Date = tellerOperationGL.Date,
+                    Naration = tellerOperationGL.Naration,
+                    BalanceBF = tellerOperationGL.BalanceBF,
+                    Debit = tellerOperationGL.Debit,
+                    Credit = tellerOperationGL.Credit,
+                    Balance = tellerOperationGL.Balance,
+                    BranchName = branch.Name,
+                    LogoUrl = branch.Bank.LogoUrl,
+                    TellerName = tellerName,
+                    AccountNumber = tellerOperationGL.AccountNumber,
+                    TransactionType = tellerOperationGL.TransactionType,
+                    Description = tellerOperationGL.Description,
+                    MemberAccountNumber = tellerOperationGL.MemberAccountNumber,
+                    MemberId = tellerOperationGL.MemberId,
+                    UserName = userName,
+                    BranchAddress = branch.Address,
+                    BranchCode = branch.BranchCode,
+                    BranchTel = branch.Telephone,
+                    HeadOffice = branch.Bank.Name,
+                    DailyReferences = tellerOperationGL.DailyReferences,
+
+                    // Summary fields
+                    OpeningBalance = openingBalance,
+                    TotalCredit = totalCredit,
+                    TotalDebit = totalDebit,
+                    ClosingBalance = closingBalance,
+                    TotalTransactions = totalTransactions
+                });
+            }
+
+            return exportTellerGLList;
+        }
+        private DailyTeller MapDailyTellerWithBranch(DailyTeller dailyTeller, Branch branch, Teller teller)
         {
             return new DailyTeller
             {

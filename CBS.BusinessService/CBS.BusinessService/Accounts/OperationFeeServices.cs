@@ -127,6 +127,7 @@ namespace CBS.BusinessService.Accounts
                     Fee.Description = model.Description;
                     Fee.IsAppliesOnHoliday = model.IsAppliesOnHoliday;
                     Fee.MaximumExtraCharge = model.MaximumExtraCharge;
+                    Fee.IsMoralPerson = model.IsMoralPerson;
                     Fee.MaximumRateAboveMaximumRange = model.MaximumRateAboveMaximumRange;
                     var response = await _transactionApiHelper.PutAsync<ServiceResponse<OperationFee>>(string.Format(APICallHelper.Get_Update_Delete_Fee, model.Id), Fee);
                     if (response.IsSuccess)

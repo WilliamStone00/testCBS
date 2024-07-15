@@ -18,6 +18,7 @@ namespace CBS.FrontDesk.Data.Entity.Config.System
         public bool IsDayOpen { get; set; }
         public bool IsDayClosedAutomatic { get; set; }
         public bool MondayIsHoliday { get; set; }
+        public bool UseAutomaticChargingSystem { get; set; }
         public bool TuesDayIsHoliday { get; set; }
         public bool MWednessdayIsHoliday { get; set; }
         public bool ThursdayIsHoliday { get; set; }

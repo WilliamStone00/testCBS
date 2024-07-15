@@ -44,14 +44,14 @@ namespace CBS.BusinessService.UserManagement
                 if (reUser.IsSuccess)
                 {
                     GetExecutionMessages(reUser, true, user.firstName + " " + user.lastName, MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null,
-                        null);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
+                        reUser.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     GetExecutionMessages(user, false, user.firstName, MessagesResults.Failed,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
                         reUser.Message);
                     return ExecutionMessage;
                 }
@@ -486,12 +486,12 @@ namespace CBS.BusinessService.UserManagement
                     HttpContext.Current.Session["BranchObject"] = userAuth.Branch;
                     userAuth.password = fLogin.Password;
                     GetExecutionMessages(userAuth, true, fLogin.UserName, MessagesResults.Success,
-                        ExecutionProcessOption.LoginSuccessful, SystemMessageStatus.Success.ToString(), null,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
                         userAuth.refreshToken);
                     return ExecutionMessage;
                 }
                 GetExecutionMessages(fLogin, false, fLogin.UserName, MessagesResults.Failed,
-                    ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Failed.ToString(), null,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
                     reUser.Message);
 
             }

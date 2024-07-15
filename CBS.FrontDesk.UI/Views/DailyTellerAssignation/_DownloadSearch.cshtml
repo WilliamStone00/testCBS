@@ -1,0 +1,75 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.DailyTeller
+
+<fieldset class="fieldset-custom">
+    <legend>Statement of account (Teller)</legend>
+    <form method="get" action="/DailyTellerAssignation/DownloadTellerOperationsToExcel/">
+        <hr />
+        <div class="col-12">
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.GetAllTellerOperationsQuery.IsPDF, new { @class = "form-check-input" })
+                <label class="form-check-label" for="isActive">Check to print in PDF</label>
+            </div>
+        </div>
+        <hr />
+        <div class="row g-4">
+            <div class="col-md-4">
+                <label for="branchInput">Branch</label>
+                @Html.DropDownListFor(m => m.GetAllTellerOperationsQuery.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
+            </div>
+            <div class="col-md-8">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label for="dateFromInput">Date From</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.GetAllTellerOperationsQuery.DateFrom, new { @class = "form-control shadow-box date-picker", @placeholder = "Date From" })
+                            @*<input type="date" id="dateFromInput" class="form-control shadow-box date-picker" placeholder="Date From">*@
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="dateToInput">Date To</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.GetAllTellerOperationsQuery.DateTo, new { @class = "form-control shadow-box date-picker", @placeholder = "Date To" })
+                            @*<input type="date" id="dateToInput" class="form-control shadow-box date-picker" placeholder="Date To">*@
+                            @*<button class="btn btn-primary btn-sm" onclick="SearchByDates('_Data','datalistingview')">Search</button>*@
+                            <button type="submit" class="btn btn-default btn-sm">Export</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</fieldset>
+
+<!--<fieldset class="fieldset-custom">
+    <legend>Print Report On PDF</legend>
+    <form method="get" action="/DailyTellerAssignation/GetReport/">
+        <hr />
+        <div class="row g-4">
+            <div class="col-md-4">
+                <label for="branchInput">Branch</label>
+                @Html.DropDownListFor(m => m.GetAllTellerOperationsQuery.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
+            </div>
+            <div class="col-md-8">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label for="dateFromInput">Date From</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.GetAllTellerOperationsQuery.DateFrom, new { @class = "form-control shadow-box date-picker", @placeholder = "Date From" })-->
+                            @*<input type="date" id="dateFromInput" class="form-control shadow-box date-picker" placeholder="Date From">*@
+                        <!--</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="dateToInput">Date To</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.GetAllTellerOperationsQuery.DateTo, new { @class = "form-control shadow-box date-picker", @placeholder = "Date To" })-->
+                            @*<input type="date" id="dateToInput" class="form-control shadow-box date-picker" placeholder="Date To">*@
+                            @*<button class="btn btn-primary btn-sm" onclick="SearchByDates('_Data','datalistingview')">Search</button>*@
+                            <!--<button type="submit" class="btn btn-default btn-sm">Export</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</fieldset>-->
+

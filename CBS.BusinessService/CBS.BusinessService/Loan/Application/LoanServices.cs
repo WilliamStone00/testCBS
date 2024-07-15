@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
+using System.Web.Mvc;
 
 namespace CBS.BusinessService
 {
@@ -152,10 +153,11 @@ namespace CBS.BusinessService
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Loan>>>(APICallHelper.GetLoans);
+                var getAllLoanQuery = new GetAllLoanQuery { BranchId = GetBranchID(), IsByBranch=true, QueryParam="Pending"};
+                var couApiResponse = await _loanConfigApiHelper.PostAsync<ResponseObject<List<Loan>>>(APICallHelper.GetLoans, getAllLoanQuery);
                 if (couApiResponse.IsSuccess)
                 {
-                    return couApiResponse.ApiResponseData.Data.Where(x => !x.IsLoanDisbursted);
+                    return couApiResponse.ApiResponseData.Data;
                 }
                 return new List<Loan>();
             }
@@ -294,7 +296,50 @@ namespace CBS.BusinessService
                 throw;
             }
         }
+        public async Task<List<Loan>> GetAllMembersCurrents(string customerid)
+        {
+            try
+            {
+                var getAllLoanByCustomerIdQuery = new GetAllLoanByCustomerIdQuery { CustomerId = customerid, QueryParameter = "Open" };
+                var couApiResponse = await _loanConfigApiHelper.PostAsync<ResponseObject<List<Loan>>>(APICallHelper.GetAllLoanByCustomerId, getAllLoanByCustomerIdQuery);
 
+                if (couApiResponse.ApiResponseData!=null)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<Loan>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public SelectList GetAllMembersCurrentsDropdown(List<Loan> loans)
+        {
+            try
+            {
+                return ProcessApiResponseResponse(loans);
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        private SelectList ProcessApiResponseResponse(List<Loan> loans)
+        {
+            var values = loans.Select(a => new StringValues
+            {
+                Text = $"[Loan Date: {a.LoanDate}][Amount: {a.LoanAmount}][Paid: {a.Paid}][Balance: {a.Balance}]",
+                Value = a.Id
+            });
+            var defaultSelectedValue = "default-value";
+            return new SelectList(values.ToList(), "Value", "Text", defaultSelectedValue);
+
+        }
+     
         public async Task<Loan> GetLoan(string id)
         {
             try

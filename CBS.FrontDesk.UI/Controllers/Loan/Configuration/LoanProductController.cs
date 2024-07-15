@@ -31,21 +31,21 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         public async Task<ActionResult> Index()
         {
             await GetValues();
-            return View(new LoanProduct());
+            return View(new LoanProductObject());
         }
         public async Task<ActionResult> LoanAccountMapping()
         {
-   
+
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> Create(LoanProduct model)
+        public async Task<ActionResult> Create(LoanProductObject model)
         {
-            if (model.Id==null)
+            if (model.ServiceOption == "insert")
             {
                 if (ModelState.IsValid)
                 {
-                    var data = await _LoanProductServices.Create(model);
+                    var data = await _LoanProductServices.Create(model.AddLoanProductCommand);
                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
                 }
                 else
@@ -69,9 +69,9 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             }
         }
         [HttpPost]
-        public async Task<ActionResult> Update(LoanProduct model)
+        public async Task<ActionResult> Update(LoanProductObject model)
         {
-            if (model.ServiceOption=="set_penalty")
+            if (model.ServiceOption == "set_penalty")
             {
                 var data = await _PenaltyServices.Create(model.Penalty);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
@@ -79,27 +79,37 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             }
             else
             {
-                var data = await _LoanProductServices.Update(model);
+                model.UpdateLoanProductCommand.ServiceOption = model.ServiceOption;
+                if (model.ServiceOption== "product")
+                {
+                    model.UpdateLoanProductCommand.ProductCode = model.AddLoanProductCommand.ProductCode;
+                    model.UpdateLoanProductCommand.ProductName = model.AddLoanProductCommand.ProductName;
+                    model.UpdateLoanProductCommand.Id = model.AddLoanProductCommand.Id;
+                    model.UpdateLoanProductCommand.Description = model.AddLoanProductCommand.Description;
+                    model.UpdateLoanProductCommand.ActiveStatus = model.AddLoanProductCommand.ActiveStatus;
+                    model.UpdateLoanProductCommand.ServiceOption = model.ServiceOption;
+                }
+                var data = await _LoanProductServices.Update(model.UpdateLoanProductCommand);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
 
         }
-        
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path=null)
+
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
             ViewBag.Key = KEY;
-            if (path=="list")
+            if (path == "list")
             {
 
                 var data = await _LoanProductServices.GetLoanProducts();
-                return PartialView(partialView, data);
+                return PartialView(partialView, new LoanProductObject { LoanProducts = data.ToList() });
             }
 
             else if (path == "new")
             {
                 await GetValues();
-                return PartialView(partialView, new LoanProduct());
+                return PartialView(partialView, new LoanProductObject());
             }
             else
             {
@@ -109,16 +119,17 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                     ViewBag.PenaltyTypes = productEnumAgregates.PenaltyTypes;
                     ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
                     var penalty = await _PenaltyServices.GetPenalty(KEY);
+                    
                     return PartialView(partialView, penalty.LoanProduct);
                 }
-                else if (path=="add_penalty")
+                else if (path == "add_penalty")
                 {
                     var productEnumAgregates = await _LoanProductServices.GetLoanProductEnumAggregates();
                     ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
                     ViewBag.PenaltyTypes = productEnumAgregates.PenaltyTypes;
                     var LoanProduct = await _LoanProductServices.GetLoanProduct(KEY);
 
-                    LoanProduct.Penalty.LoanProductId = LoanProduct.Id;
+                    //LoanProduct.Penalty.LoanProductId = LoanProduct.Id;
                     return PartialView(partialView, LoanProduct);
                 }
                 else if (path == "account_mapping")
@@ -126,25 +137,35 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                     var chartOfAccounts = await _accountingServices.GetChartOfAccounts();
                     ViewBag.ChartOfAccounts = chartOfAccounts;
                     var LoanProduct = await _LoanProductServices.GetLoanProduct(KEY);
-                    LoanProduct.Penalty.LoanProductId = LoanProduct.Id;
+                    //LoanProduct.Penalty.LoanProductId = LoanProduct.Id;
                     return PartialView(partialView, LoanProduct);
                 }
                 else
                 {
                     await GetValues();
                     var LoanProduct = await _LoanProductServices.GetLoanProduct(KEY);
-                    LoanProduct.Penalty.LoanProductId = LoanProduct.Id;
-                    return PartialView(partialView, LoanProduct);
+                    var loanProductObject = new LoanProductObject();
+                    loanProductObject.UpdateLoanProductCommand = _LoanProductServices.ProductMappingToUpdateObject(LoanProduct,"N/A","N/A");
+                    loanProductObject.AddLoanProductCommand = new AddLoanProductCommand
+                    {
+                        ActiveStatus = LoanProduct.ActiveStatus,
+                        Description = LoanProduct.Description,
+                        Id = LoanProduct.Id,
+                        ProductCode = LoanProduct.ProductCode,
+                        ProductName = LoanProduct.ProductName
+
+                    };
+                    return PartialView(partialView, loanProductObject);
                 }
-             
+
             }
         }
 
         public async Task<bool> GetValues()
         {
-            var agreggates= await _LoanProductServices.GetAgreggates();
+            var agreggates = await _LoanProductServices.GetAgreggates();
             var productEnumAgregates = await _LoanProductServices.GetLoanProductEnumAggregates();
-       
+
             ViewBag.SheduleTypes = _LoanProductServices.GetScheduleTypes();
             ViewBag.Penalties = agreggates.Penalties;
             ViewBag.Fees = agreggates.Fees;

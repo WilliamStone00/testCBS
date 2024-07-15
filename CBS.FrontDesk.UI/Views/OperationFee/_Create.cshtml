@@ -4,56 +4,62 @@
     {<fieldset class="fieldset-custom">
             <legend>Charges types</legend>
             @Html.HiddenFor(model => model.Id)
-            <div class="row mt-2 gy-4">
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                        <label>Name</label>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="form-check">
-                        @Html.RadioButtonFor(m => m.FeeType, "Rate", new { @class = "form-check-input", id = "rateOption" })
-                        <label class="form-check-label" for="rateOption">Calculated as rate (%)</label>
-                    </div>
-                    <div class="form-check">
-                        @Html.RadioButtonFor(m => m.FeeType, "Flat", new { @class = "form-check-input", id = "flatOption" })
-                        <label class="form-check-label" for="flatOption">Calculated as flat fee</label>
-                    </div>
-                    <div class="form-check">
-                        @Html.RadioButtonFor(m => m.FeeType, "Range", new { @class = "form-check-input", id = "rangeOption" })
-                        <label class="form-check-label" for="rangeOption">Calculated on ranges</label>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="form-check">
-                        @Html.CheckBoxFor(m => m.IsAppliesOnHoliday, new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">Check if its a fee applied on holidays</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.MaximumExtraCharge, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.MaximumExtraCharge, "", new { @class = "text-danger" })
-                        <label>Extra charges (Flat) on the excess amount that exceed maximum range limit</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.MaximumRateAboveMaximumRange, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.MaximumRateAboveMaximumRange, "", new { @class = "text-danger" })
-                        <label>Extra charges (%) on the excess amount that exceed maximum range limit</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 90px;" })
-                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger " })
-                        <label for="formValidationDob">Fee description</label>
-                    </div>
-                </div>
-            </div>
+     <div class="row mt-2 gy-4">
+         <div class="col-md-12">
+             <div class="form-floating form-floating-outline">
+                 @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                 @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                 <label>Name</label>
+             </div>
+         </div>
+         <div class="col-12">
+             <div class="form-check">
+                 @Html.RadioButtonFor(m => m.FeeType, "Rate", new { @class = "form-check-input", id = "rateOption" })
+                 <label class="form-check-label" for="rateOption">Calculated as rate (%)</label>
+             </div>
+             @*<div class="form-check">
+                 @Html.RadioButtonFor(m => m.FeeType, "Flat", new { @class = "form-check-input", id = "flatOption" })
+                 <label class="form-check-label" for="flatOption">Calculated as flat fee</label>
+             </div>*@
+             <div class="form-check">
+                 @Html.RadioButtonFor(m => m.FeeType, "Range", new { @class = "form-check-input", id = "rangeOption" })
+                 <label class="form-check-label" for="rangeOption">Calculated on ranges</label>
+             </div>
+         </div>
+         <div class="col-12">
+             <div class="form-check">
+                 @Html.CheckBoxFor(m => m.IsAppliesOnHoliday, new { @class = "form-check-input" })
+                 <label class="form-check-label" for="isActive">Check if its a fee applied on holidays</label>
+             </div>
+         </div>
+         <div class="col-12">
+             <div class="form-check">
+                 @Html.CheckBoxFor(m => m.IsMoralPerson, new { @class = "form-check-input" })
+                 <label class="form-check-label" for="isActive">Check if this fee type is for Moral person (Group)</label>
+             </div>
+         </div>
+         <div class="col-md-12">
+             <div class="form-floating form-floating-outline">
+                 @Html.TextBoxFor(m => m.MaximumExtraCharge, new { @class = "form-control" })
+                 @Html.ValidationMessageFor(m => m.MaximumExtraCharge, "", new { @class = "text-danger" })
+                 <label>Extra charges (Flat) on the excess amount that exceed maximum range limit</label>
+             </div>
+         </div>
+         <div class="col-md-12">
+             <div class="form-floating form-floating-outline">
+                 @Html.TextBoxFor(m => m.MaximumRateAboveMaximumRange, new { @class = "form-control" })
+                 @Html.ValidationMessageFor(m => m.MaximumRateAboveMaximumRange, "", new { @class = "text-danger" })
+                 <label>Extra charges (%) on the excess amount that exceed maximum range limit</label>
+             </div>
+         </div>
+         <div class="col-md-12">
+             <div class="form-floating form-floating-outline">
+                 @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 90px;" })
+                 @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger " })
+                 <label for="formValidationDob">Fee description</label>
+             </div>
+         </div>
+     </div>
             <div class="mt-4">
                 @if (ViewBag.Key != null)
                 {

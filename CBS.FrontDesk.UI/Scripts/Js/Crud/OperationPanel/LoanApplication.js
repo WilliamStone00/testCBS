@@ -7,15 +7,35 @@
 
 });
 
-function LoadDropDown(KEY, path,affectedID) {
-    GetLoanApplication(KEY);
-    var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
-    FillDropDownAjaxCallParam(url, affectedID, "---Select Option---");
-    
+function LoadDropDown(KEY, path, affectedID) {
+    var loandiv = document.getElementById('loandiv');
+    var showLoanDiv = (KEY === "Refinancing" || KEY === "Reschedule" || KEY === "Restructure");
+    var dataPath = KEY;
+
+    if (showLoanDiv) {
+        KEY = document.getElementById('customerid').value;
+        loandiv.style.display = "block";
+        dataPath = "Select loan to " + dataPath;
+        $('#loanlable').html(dataPath);
+
+        var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
+        FillDropDownAjaxCallParam(url, affectedID, dataPath);
+    } else {
+        loandiv.style.display = "none";
+    }
+
+    if (path === "loanrepayment_cycles") {
+        GetLoanApplication(KEY);
+        var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
+        FillDropDownAjaxCallParam(url, affectedID, "---Select Option---");
+    }
 }
+
+
+
 function LoadProductDetails(KEY) {
 
-    EditResetMain(KEY, '_LoadProductDetails', '_loanproductdetailDiv', 'MemberOperation','InitializeData')
+    EditResetMain(KEY, '_LoadProductDetails', '_loanproductdetailDiv', 'MemberOperation', 'InitializeData')
 
 }
 
@@ -28,7 +48,7 @@ function GetLoanApplication(KEY) {
             $('#loanduration').html("Loan duration is between:" + data.MinimumDurationPeriod + " to " + data.MaximumDurationPeriod + " " + data.LoanDurationPeriod);
             $('#interest').html("Enter interest between:" + data.MinimumInterestRate + "% and " + data.MaximumInterestRate + "%. Calculated on daily bases: " + data.LoanInterestPeriod);
             $('#installment').html("Minimum repayment installment is:" + data.MinimumNumberOfRepayment + " and Maximum is " + data.MaximumNumberOfRepayment);
-            $('#saving').html("Enter balance saving rate between:" + data.MinimumSavingAccountBalanceRateForTheRequestAmount + "% and " + data.MaximumSavingAccountBalanceRateForTheRequestAmount+"%");
+            $('#saving').html("Enter balance saving rate between:" + data.MinimumSavingAccountBalanceRateForTheRequestAmount + "% and " + data.MaximumSavingAccountBalanceRateForTheRequestAmount + "%");
             $('#share').html("Enter required share amount between:" + data.MinimumShareAccountBalanceForTheRequestAmount + " and " + data.MaximumShareAccountBalanceForTheRequestAmount + "");
             $('#salary').html("Enter Salary rate between:" + data.MinimumSalaryAccountBalanceRateForTheRequestAmount + "% and " + data.MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount + "%");
             $('#fee').html("Enter processing fee rate between:" + data.MinimumProcessingFeeRate + "% and " + data.MaximumProcessingFeeRate + "%.");
@@ -36,8 +56,7 @@ function GetLoanApplication(KEY) {
             $('#chargeparcentages').html("Enter charge percentage between:" + data.MinimumChargesToAppliedInPercentage + " % and " + data.MaximumChargesToAppliedPercentage + "%");
             $('#chargedayranges').html("Enter in days when charges starts between:" + data.MinimumChargesStartDayAfterLoanDueDate + " to " + data.MaximumChargesStartDayAfterLoanDueDate + "days");
             $('#waiverranges').html("Enter in percentage interest to waive between:" + data.MinimumInterestWaiver + "% and " + data.MaximumInterestWaiver + "%.");
-
-
+            $('#downpaymentrate').html("Does this application require down payment? Minimum rate is [" + data.MinimumDownPaymentPercentage + "%].");
 
             //InspectionFee
         }, error: function (err) {
@@ -64,7 +83,8 @@ function AjaxPostLoanScedule(form) {
 
                 if (response.success) {
                     appalert(response.message, 1, 1);
-                    LoadLocalSchedule();                }
+                    LoadLocalSchedule();
+                }
                 else {
                     appalert(response.message, 2, 1);
 

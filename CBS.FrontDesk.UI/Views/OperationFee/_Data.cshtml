@@ -16,6 +16,7 @@
                         <th>Name</th>
                         <th>Type</th>
                         <th>Applied</th>
+                        <th>Entity</th>
                         <th>Description</th>
                         <th>Action</th>
                     </tr>
@@ -24,7 +25,7 @@
                     @foreach (var d in Model)
                     {
                         <tr>
-                            <td style="width:15%">@d.Name</td>
+                            <td style="width:25%">@d.Name</td>
                             <td style="width:10%">@d.FeeType</td>
                             <td style="width:10%">
                                 @if (d.IsAppliesOnHoliday)
@@ -36,7 +37,17 @@
                                     <span class="badge bg-warning">Normal days</span>
                                 }
                             </td>
-                            <td style="width:50%">@d.Description</td>
+                            <td style="width:10%">
+                                @if (d.IsMoralPerson)
+                                {
+                                    <span class="badge bg-info">Moral</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning">Physical</span>
+                                }
+                            </td>
+                            <td style="width:35%">@d.Description</td>
                             <td style="width:15%">
                                 <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview','_Create','update','OperationFee')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a> |
                                 <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('OperationFee','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>

@@ -41,64 +41,70 @@
                     </div>
                 </div>
             </div>
-            <div class="card accordion-item mb-3">
-                <h2 class="accordion-header" id="headingPaymentMethod8">
-                    <button type="button"
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapsePaymentMethod8"
-                            aria-expanded="false"
-                            aria-controls="collapsePaymentMethod8">
-                        Add Guarantor
-                    </button>
-                </h2>
-                <div id="collapsePaymentMethod8"
-                     class="accordion-collapse collapse"
-                     aria-labelledby="headingPaymentMethod8"
-                     data-bs-parent="#collapsibleSection">
-                    <div class="accordion-body">
-                        <div class="row g-4">
-                            <div id="datalistingview_gurantor_add">
-                                @Html.Partial("_AddLoanGuarantor")
-                            </div>
-                        </div>
-                        <hr />
+            @if (Model.LoanApplication.IsThereGuarantor)
+            {
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingPaymentMethod8">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePaymentMethod8"
+                                aria-expanded="false"
+                                aria-controls="collapsePaymentMethod8">
+                            Add Guarantor
+                        </button>
+                    </h2>
+                    <div id="collapsePaymentMethod8"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPaymentMethod8"
+                         data-bs-parent="#collapsibleSection">
                         <div class="accordion-body">
-                            <div id="datalistingview_data">
-
+                            <div class="row g-4">
+                                <div id="datalistingview_gurantor_add">
+                                    @Html.Partial("_AddLoanGuarantor")
+                                </div>
                             </div>
-                        </div>
+                            <hr />
+                            <div class="accordion-body">
+                                <div id="datalistingview_data">
 
-                    </div>
-                </div>
-            </div>
-            <div class="card accordion-item mb-3">
-                <h2 class="accordion-header" id="headingPaymentMethod4">
-                    <button type="button"
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapsePaymentMethod4"
-                            aria-expanded="false"
-                            aria-controls="collapsePaymentMethod4">
-                        Add collateral
-                    </button>
-                </h2>
-                <div id="collapsePaymentMethod4"
-                     class="accordion-collapse collapse"
-                     aria-labelledby="headingPaymentMethod4"
-                     data-bs-parent="#collapsibleSection">
-                    <div class="accordion-body">
-                        <div class="row g-4">
-                            <div id="datalistingview_collateral_add">
-                                @Html.Partial("_AddLoanCollateral")
+                                </div>
                             </div>
-                        </div>
-                        <div id="datalistingview_collateral_data">
 
                         </div>
                     </div>
                 </div>
-            </div>
+            }
+            @if (Model.LoanApplication.IsThereCollateral)
+            {
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingPaymentMethod4">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePaymentMethod4"
+                                aria-expanded="false"
+                                aria-controls="collapsePaymentMethod4">
+                            Add collateral
+                        </button>
+                    </h2>
+                    <div id="collapsePaymentMethod4"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPaymentMethod4"
+                         data-bs-parent="#collapsibleSection">
+                        <div class="accordion-body">
+                            <div class="row g-4">
+                                <div id="datalistingview_collateral_add">
+                                    @Html.Partial("_AddLoanCollateral")
+                                </div>
+                            </div>
+                            <div id="datalistingview_collateral_data">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingPaymentMethod5">
                     <button type="button"

@@ -32,7 +32,13 @@
             </div>
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">Add account</button>
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.AddCustomerAccount.IsRemoveAccount, new { @class = "form-check-input" })
+                <label class="form-check-label" for="isActive">Check to remove/delete account.</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Add account/Remove account</button>
         </div>
     }
 </div>

@@ -112,7 +112,7 @@ namespace CBS.BusinessService.Accounts
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
@@ -149,6 +149,8 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.IsTermProduct = model.IsTermProduct;
                     SavingProduct.IsUsedForTellerProvisioning = model.IsUsedForTellerProvisioning;
                     SavingProduct.Description = model.Description;
+                    SavingProduct.MinimumAccountBalanceMoralPerson = model.MinimumAccountBalanceMoralPerson;
+                    SavingProduct.MinimumAccountBalancePhysicalPerson = model.MinimumAccountBalancePhysicalPerson;
                     SavingProduct.AccountType = model.AccountType;
                     SavingProduct.AutoAddToMember = model.AutoAddToMember;
                     SavingProduct.AllowShareing = model.AllowShareing;
@@ -163,7 +165,7 @@ namespace CBS.BusinessService.Accounts
                     {
                         // Successful creation
                         GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
                     else
@@ -204,7 +206,7 @@ namespace CBS.BusinessService.Accounts
                     {
                         // Successful creation
                         GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
                     else
@@ -240,7 +242,7 @@ namespace CBS.BusinessService.Accounts
                     {
                         // Successful creation
                         GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
                     else

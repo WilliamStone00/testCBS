@@ -1188,13 +1188,9 @@ namespace CBS.BusinessService.Accounts
         // Parameterless constructor required by Hangfire
         public MemberAccountJob()
         {
-            //_transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
-            //_branchServices = new BranchServices();
-            //_BranchConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
-
-
-            _transactionApiHelper = new ApiCallerHelper("https://localhost:7113/");
+            _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
             _branchServices = new BranchServices();
+            _BranchConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
 
         }
 

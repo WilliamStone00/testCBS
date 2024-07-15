@@ -41,6 +41,7 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping
         public string FormalOrInformalSector { get; set; }
         public string BankName { get; set; }
         public string BranchName { get; set; }
+        public string CustomerId { get; set; }
         public string CustomerCategoryId { get; set; }
         public string Action { get; set; }
         public string ServiceOption { get; set; }
@@ -49,6 +50,10 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping
         public List<GroupDocument> GroupDocuments { get; set; }
         public bool Active { get; set; }
         public PaginationMetadata PaginationMetadata { get; set; } = new PaginationMetadata();
+        public Group()
+        {
+            CustomerId = "0000000";
+        }
     }
     public class AddGroupCustomerCommand
     {

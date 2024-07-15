@@ -1,9 +1,36 @@
 ﻿
-function LoadMembersAccounts(affectedId) {
-    console.log(id);
+function GetMember() {
     var id = $('#manualSearchInput').val();
-    var url = "/CashDesk/Ajaxloader?Key=" + id;
-    FillDropDownAjaxCall(url, affectedId, "---Select account---")
+    var url = "/CashDesk/Ajaxloader?Key=" + id + "&path=getmember";
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (data) {
+            // Check if the FeeBase is Percentage or Range and show/hide the corresponding divs
+            $('#customerId').val(data.CustomerId);
+            $('#Name').val(data.FirstName + " " + data.LastName)
+            //$('#select_base').html("Configuration option: " + data.FeeBase);
+        },
+        error: function (err) {
+            appalert(err.statusText, 1, 3);
+        }
+    });
+}
+
+function LoadMembersAccounts(affectedId) {
+    var SourceType = $("input[name='BulkDeposit.OtherTransaction.SourceType']:checked").val();
+    console.log(SourceType);
+    if (SourceType == "Cash_Collected") {
+       
+    } else {
+        var id = $('#manualSearchInput').val();
+        console.log(id);
+        console.log(affectedId);
+        var url = "/CashDesk/Ajaxloader?Key=" + id;
+        FillDropDownAjaxCall(url, affectedId, "---Select account---");
+        GetMember();
+    }
+
 }
 
 
@@ -121,7 +148,8 @@ function collectDeposits() {
             deposit.Note = $('#DepositerNote').val();
             deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
             deposit.OperationType = $('#OperationType').val();
-            deposit.CustomerId = $('#manualSearchInput').val(); // Assuming this is the selected customer ID
+            deposit.Period = $('#Name').val(); // Assuming this is the selected customer ID
+            deposit.CustomerId = $('#customerId').val(); // Assuming this is the selected customer ID
             deposit.SourceType = $("input[name='BulkDeposit.OtherTransaction.SourceType']:checked").val(); // Get the selected source type
             deposit.EventCode = $('#BulkDeposit_OtherTransaction_EventCode').val(); // Assuming this is the selected event code value
             // Push the updated deposit object to the deposits array
@@ -134,7 +162,7 @@ function collectDeposits() {
 
 
 function Reprint() {
-    ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
+    ReportView("CashDesk", null, "GetReportOtherPayment", null, null, "receipts", "ReportParameterLess");
 
 }
 function confirmTransaction(title, message, ajaxUrl, data) {
@@ -148,7 +176,7 @@ function confirmTransaction(title, message, ajaxUrl, data) {
                 success: function (response) {
                     if (response.success) {
                         appalert(response.message, 1, 1);
-                        ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
+                        ReportView("CashDesk", null, "GetReportOtherPayment", null, null, "receipts", "ReportParameterLess");
                         window.PageReload();
                     } else {
                         if (response.message === undefined) {

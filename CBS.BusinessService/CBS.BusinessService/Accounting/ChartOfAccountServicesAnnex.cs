@@ -107,8 +107,6 @@ namespace CBS.BusinessService.Accounting
                     });
                 }
             }
-        
-
             return new List<StringValues>();
         }
 
