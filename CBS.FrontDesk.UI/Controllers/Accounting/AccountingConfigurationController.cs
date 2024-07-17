@@ -115,7 +115,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
             ViewBag.OperationEvent = await _OperationEventService.GetOperationEvents();
             ViewBag.ChartOfAccountManagementPositions = BuildMenuAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), listAccounts.ToList());
-
+            ViewBag.BranchCode = BuildMenuISViewBagBranch((await _branchService.GetBranches()).ToList());
             ViewBag.ChartOfAccounts = BuildMenuAccountViewBag(listAccounts.ToList());
             ViewBag.AccountingRuleEntries = BuildAccountingRuleEntryViewBag((await _accountingEntryRuleService.GetAccountingRuleEntries()).ToList());
             ViewBag.BookingDirections = await this.GetBookingDirections();
@@ -166,6 +166,22 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             return selectListItems;
  
+        }
+
+        private dynamic BuildMenuISViewBagBranch(List<Branch> listOfItems)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select BranchCode" });
+            foreach (var item in listOfItems)
+            {
+                if (!item.BranchCode.Equals("000"))
+                {
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.BranchCode, Value = $"{item.BranchCode} - {item.Name}" });
+                }
+
+            }
+            return selectListItems;
+
         }
         private dynamic BuildMenuViewBag()
         {
@@ -331,7 +347,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             try
             {
                 //var number = chartOfAccountNumber.Length==1? chartOfAccountNumber: chartOfAccountNumber.Substring(0, 1);
-                var datas0 = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPosition(Id);
+             
                 var data = await _chartOfAccountServices.GetChartOfAccountById(Id);
                 var dataList = new List<StringValues>();
                 if (data.LabelEn== "BALANCING_ACCOUNT"|| data.LabelEn.ToUpper()== "ENGLISH")
@@ -359,6 +375,49 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                 }
                 return Json(dataList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        public async Task<ActionResult> GetAccountForChartOfAccountManagementPositionId(string Id)
+        {
+
+
+            try
+            {
+                //var number = chartOfAccountNumber.Length==1? chartOfAccountNumber: chartOfAccountNumber.Substring(0, 1);
+                var datas0 = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPosition(Id);
+                var data = await _chartOfAccountServices.GetChartOfAccountById(datas0.ChartOfAccountId);
+                var dataList = new List<StringValues>();
+                if (data.LabelEn == "BALANCING_ACCOUNT" || data.LabelEn.ToUpper() == "ENGLISH")
+                {
+                    var dataModel = (await _AccountCategoryServices.GetAccountCategory()).FirstOrDefault();
+                    dataList.Add(new StringValues { Text = dataModel.Name, Value = dataModel.Id });
+
+                }
+                else
+                {
+                    if (data.AccountNumber.StartsWith("4") || data.AccountNumber.StartsWith("3"))
+                    {
+                        var datas = (await _AccountCategoryServices.GetAccountCategory()).Where(x => x.Name.ToLower() == "asset" || x.Name.ToLower() == "liability").ToList();
+                        foreach (var item in datas)
+                        {
+
+                            dataList.Add(new StringValues { Text = item.Name, Value = item.Id });
+                        }
+                    }
+                    else
+                    {
+                        dataList.Add(new StringValues { Text = (await _AccountCategoryServices.GetAccountCategory(data.AccountCartegoryId)).Name, Value = data.AccountCartegoryId });
+
+                    }
+
+                }
+                return Json(new { accountCategoryList=dataList ,  description = datas0.Description, AccountNumber = data.AccountNumber }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

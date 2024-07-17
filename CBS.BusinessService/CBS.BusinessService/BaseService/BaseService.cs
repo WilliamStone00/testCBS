@@ -379,7 +379,7 @@ namespace BusinessServices
 
             if (ex != null)
             {
-                ExecutionMessage.MessageString = ex.ToString();
+                ExecutionMessage.MessageString = ex.Message.ToString();
             }
             else
             {

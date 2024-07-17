@@ -11,6 +11,7 @@ using System.Configuration;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Config;
 
 namespace CBS.BusinessService.Accounting
 {
@@ -29,9 +30,12 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-
+                model.AccountNumberNetwok = "xxxxx";
+                model.AccountTypeId = "YYYYY";
+                model.AccountNumberManagementPosition = "0";
+              
                 // Make an API call to create an individual profile
-          
+
                 model.AccountOwnerId=GetBranchID();
                 var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.CreateAccount, model);
                 if (response.IsSuccess)
@@ -89,6 +93,29 @@ namespace CBS.BusinessService.Accounting
             {
                 var cusResponseObject =(await GetAllAccounting()).Where(i=>i.Id.Equals(id)).FirstOrDefault();
                 return cusResponseObject;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<Account> GetAccountByAccountNumber(string id)
+        {
+            try
+            {
+
+                string Url = string.Format(APICallHelper.GetAccountByAccountNumberUrl, id);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<Account>>(Url);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData != null)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new  Account ();
             }
             catch (Exception ex)
             {
@@ -163,7 +190,27 @@ namespace CBS.BusinessService.Accounting
                 throw(ex);
             }
         }
+        public async Task<List<Account>> GetAllLiaisonAccount()
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<Account>>>(APICallHelper.GetAllLiaisonAccount);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData != null)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
 
+                }
+                return new List<Account>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
         public async Task<List<Account>> GetAllAccountForABranch(string branchId)
         {
             try

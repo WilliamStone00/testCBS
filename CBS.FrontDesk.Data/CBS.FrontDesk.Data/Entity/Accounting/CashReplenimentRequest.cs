@@ -7,6 +7,16 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
+    public enum CashReplishmentRequestStatus
+    {
+        Pending,
+        Redirected,
+        Approved,
+        PendingApproval,
+        Rejected,
+        awaiting_corresponding_entry_posting,
+        Completed
+    }
     public enum CashRequisitionType
     {
         ORDER,
@@ -35,6 +45,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string ApprovedMessage { get; set; }
         public string CashRequisitionType { get; set; } = "REQUEST";
         public string Status { get; set; }
+        public bool HasAccount56 { get; set; }
         public string ParentCashReplenishId { get; set; } = "XXXXXXXX";
         public string ApprovalCode { get; set; }
         public string CashReplishmentRequestStatus { get; set; } = "Pendding";
@@ -53,6 +64,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             {
                 Id = this.Id,
                 AmountRequested = this.AmountRequested,
+                AmountApproved = this.AmountApproved,
                 RequestMessage = this.RequestMessage,
                 ReferenceId = this.ReferenceId,
                 IssuedBy = this.IssuedBy,

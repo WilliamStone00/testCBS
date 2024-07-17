@@ -106,12 +106,19 @@
         console.log("Operation Event Id selected: " + EventId);
         loadOperationEventAttributeIds(EventId);
     });
-    $(document).on('change', '#Account_ChartOfAccountId', function () {
+    $(document).on('change', '#Account_ChartOfAccountManagementPositionId', function () {
         var EventId = $(this).val();
-        console.log("Account_ChartOfAccountId selected: " + EventId);
+        console.log("AccountChartOfAccountId selected: " + EventId);
         loadAccountCartegoryByChartNumber(EventId);
     });
-
+    $(document).on('change', '#AccountOwnerId', function () {
+        var selectedValue = $(this).val();
+  
+        var accNumber = $('#AccountNumberCU').val();
+        accNumber = accNumber.replace('[BCD]', selectedValue);
+        $('#AccountNumberCU').val(accNumber);
+        $('#BranchCode').val(selectedValue);
+    });
 
 
 });
@@ -427,12 +434,26 @@ function initializeDataTableAccountingRuleData(data) {
     }
 }
  
- 
+function padNumberDigits(number,completingNumber) {
+    // Convert the number to a string
+    let numString = number.toString();
+
+    // Check if the number is already 12 or more digits
+    if (numString.length >= completingNumber) {
+        return numString;
+    }
+
+    // Calculate how many zeros we need to add
+    let zerosToAdd = completingNumber - numString.length;
+
+    // Add the zeros to the right of the number
+    return numString + '0'.repeat(zerosToAdd);
+}
 function loadAccountCartegoryByChartNumber(number) {
     console.log(number);
-
+  
     $.ajax({
-        url: '/AccountingConfiguration/GetAccountCartegoryById',
+        url: '/AccountingConfiguration/GetAccountForChartOfAccountManagementPositionId',
         type: 'GET',
         dataType: 'json',
         data: { Id: number },
@@ -440,8 +461,12 @@ function loadAccountCartegoryByChartNumber(number) {
             // Clear existing options in the OperationEventAttributeId combo
             $('#Account_AccountCategoryId').empty();
 
+            $('#AccountNumber').val(data.AccountNumber);
+            $('#AccountName').val(data.description);
+            var accNumber = padNumberDigits(data.AccountNumber,6)+"[BCD]"+"000"
+            $('#AccountNumberCU').val(accNumber);
             // Add new options based on the fetched data
-            $.each(data, function (index, item) {
+            $.each(data.accountCategoryList, function (index, item) {
                 $('#Account_AccountCategoryId').append($('<option>').text(item.Text).attr('value', item.Value));
             });
         },
@@ -450,10 +475,24 @@ function loadAccountCartegoryByChartNumber(number) {
         }
     });
 }
+function extractNumericCode(selectedValue) {
 
+    console.log('extractNumericCode' + selectedValue);
+    // Check if the selectedValue is not null or undefined
+    if (selectedValue) {
+        // Split the string by the hyphen and trim any whitespace
+        const parts = selectedValue.split('-').map(part => part.trim());
+
+        // Return the first part (which should be the numeric code)
+        return parts[0];
+    }
+
+    // Return an empty string or null if there's no valid input
+    return '';
+}
 function loadOperationEventAttributeIds(operationEventId) {
     console.log(operationEventId);
-    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+   
     $.ajax({
         url: '/AccountingConfiguration/GetOperationEventAttribute',
         type: 'GET',

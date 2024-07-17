@@ -8,11 +8,12 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 {
     public class CashDemandDataEntity
     {
+  
         public CashInfusion CashInfusionModel { get; set; } = new CashInfusion();
         public CashInfusionRequest CashInfusionRequest { get; set; } = new CashInfusionRequest();
         public Approval Approval { get; set; } = new Approval();
         public BankCashOut BankCashOut { get; set; } = new BankCashOut();
-
+        public CashClearing CashClearing { get; set; } = new CashClearing();
         public BranchToBranchTransfer BranchToBranchTransfer { get; set; } = new BranchToBranchTransfer();
         public DetailsDto DetailsDto { get; set; } = new DetailsDto();
         public CashReplenimentRequestDto CashReplenimentRequestdto { get; set; } = new CashReplenimentRequestDto();

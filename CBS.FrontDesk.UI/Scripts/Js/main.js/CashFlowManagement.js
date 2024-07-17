@@ -36,8 +36,8 @@ function loadAccountBalance(accountId) {
         data: { Id: accountId },
         success: function (data) {
             // Clear existing options in the OperationEventAttributeId combo 
-            $('#account_balance').empty();
-            $("#account_balance").val(data.Account.CurrentBalance);
+            $('#BankCashOut_Balance').empty();
+            $("#BankCashOut_Balance").val(data.Account.CurrentBalance);
  
             // Add new options based on the fetched data
             console.log(data.Account.CurrentBalance);
@@ -450,6 +450,76 @@ function GetCashReplenimentRequest(Id) {
 
 }
 
+
+function calculateCashBalance() {
+    // Get the total amount of currency notes and coins
+    var note10000 = parseInt(document.getElementById('Notes_note10000').value) || 0;
+    var note5000 = parseInt(document.getElementById('Notes_note5000').value) || 0;
+    var note2000 = parseInt(document.getElementById('Notes_note2000').value) || 0;
+    var note1000 = parseInt(document.getElementById('Notes_note1000').value) || 0;
+    var note500 = parseInt(document.getElementById('Notes_note500').value) || 0;
+    var coin500 = parseInt(document.getElementById('Notes_coin500').value) || 0;
+    var coin100 = parseInt(document.getElementById('Notes_coin100').value) || 0;
+    var coin50 = parseInt(document.getElementById('Notes_coin50').value) || 0;
+    var coin25 = parseInt(document.getElementById('Notes_coin25').value) || 0;
+    var coin10 = parseInt(document.getElementById('Notes_coin10').value) || 0;
+    var coin5 = parseInt(document.getElementById('Notes_coin5').value) || 0;
+    var coin1 = parseInt(document.getElementById('Notes_coin1').value) || 0;
+
+    // Calculate total amount
+    var totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
+        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
+    console.log(totalAmount);
+    // Format total amount as currency
+    var formattedTotalAmount = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
+    $("#totalNoteAmount").val(totalAmount);
+    console.log(formattedTotalAmount);
+    // Update the lblDepositRequest_amount span with the formatted total amount
+    document.getElementById("lblDepositRequest_amount").textContent = "Total Amount: " + formattedTotalAmount;
+
+
+
+    //Primary teller
+
+    // Get total note amount
+    var totalNoteAmount = parseFloat(document.getElementById("totalNoteAmount").value);
+    var totalProvision = parseFloat(document.getElementById("totalProvision").value);
+    // Calculate balance
+    var balance = totalNoteAmount - totalProvision ;
+    console.log(totalNoteAmount);
+
+    // Format balance with commas and one decimal place
+    var formattedBalance = balance.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    console.log(formattedBalance);
+    // Display balance
+    document.getElementById("lblBalance").innerText = "Balance: " + formattedBalance;
+
+    // Check if balance is 0 and enable/disable the save button accordingly
+    var btnSave = document.getElementById("btnSave");
+    if (balance === 0) {
+        btnSave.disabled = false; // Enable save button
+    } else {
+        btnSave.disabled = true; // Disable save button
+    }
+
+    // Change balance color based on condition
+    if (totalNoteAmount !==totalProvision) {
+        document.getElementById("lblBalance").style.color = "red"; // Set red color for balance
+    } else {
+        document.getElementById("lblBalance").style.color = "black"; // Set default color for balance
+    }
+    // Change balance color only if balance is not zero and differs from provision amount
+    if (balance !== totalProvision) {
+        document.getElementById("lblBalance").style.color = "red"; // Set red color for balance
+    } else {
+        document.getElementById("lblBalance").style.color = "black"; // Set black color for balance
+    }
+
+    if (totalNoteAmount == 0 || totalNoteAmount == totalProvision) {
+        document.getElementById("lblBalance").style.color = "black"; // Set black color for balance 
+
+    }
+}
 
 
 

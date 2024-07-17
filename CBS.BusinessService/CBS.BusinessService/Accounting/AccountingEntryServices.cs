@@ -19,6 +19,7 @@ using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using System.Web;
 using System.IO;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using CBS.FrontDesk.Data.Entity.Config;
 
 
 namespace CBS.BusinessService
@@ -28,7 +29,7 @@ namespace CBS.BusinessService
         private readonly ApiCallerHelper _accountingApiCallerHelper;
         private readonly ApiCallerHelper _TransactionBaseUrl;
         private readonly ApiCallerHelper _IdentityServerBaseUrl;
-        private List<Currency> _currencies;
+        //private List<Currency> _currencies;
         public AccountingEntryServices()
         {
             _accountingApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
@@ -60,11 +61,7 @@ namespace CBS.BusinessService
                 throw (ex);
             }
         }
-        public List<Currency> Currencies()
-        {
-            Currency currency = new Currency();
-           return  currency.CreateCurrencies();
-        }
+    
         public async Task<ExecutionMessages> CreateManualAccountingEntry( ManualAccountingEntry model)
         {
             try
@@ -247,7 +244,32 @@ namespace CBS.BusinessService
                 throw(ex);
             }
         }
+        public async Task<List<AccountingEntry>> GetAccountingEntriesByReferceId(string reference)
+        {
+            try
+            {
+                string url = string.Format(APICallHelper.AccountingEntry_Get_reference_Id, reference);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<AccountingEntry>>>(url);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData == null)
+                    {
+                        return new List<AccountingEntry>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
 
+                }
+                return new List<AccountingEntry>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
         public async Task<List<AccountingEntry>> GetAllAccountingEntriesForAnAccountPerBranch(string branchId, string accountId)
         {
             try
@@ -356,12 +378,14 @@ namespace CBS.BusinessService
                 throw (ex);
             }
         }
-        public async Task<List<CashReplenimentRequest>> GetAllCashReplenimentRequestByBranch()
+        public async Task<List<CashReplenimentRequest>> GetAllCashReplenimentRequestByBranch(bool VALUE)
         {
 
             try
             {
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<CashReplenimentRequest>>>(APICallHelper.GetAllCashReplenishmentQueryAsBranch);
+                string Url = string.Empty;
+                Url = string.Format(APICallHelper.GetAllCashReplenishmentQueryAsBranch, VALUE);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<CashReplenimentRequest>>>(Url);
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData == null)
@@ -507,7 +531,7 @@ public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
                 var additionalParams = new Dictionary<string, string>
                 {
                     
-                     { "IsSynchronus", (true).ToString()},
+                     { "IsSynchronus", documentRequest.IsSynchronus.ToString()},
                     { "OperationID", documentRequest.OperationID },
                     { "DocumentId", "N/A" },
                     { "DocumentType", documentRequest.DocumentType },
@@ -526,8 +550,12 @@ public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
                         "Uploaded successfully");
                     return ExecutionMessage;
                 }
-                GetExecutionMessages(documentRequest, false, null, MessagesResults.Failed,
-                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "File upload failed");
+                else
+                {
+                    GetExecutionMessages(documentRequest, false, null, MessagesResults.Failed,
+                  ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "File upload failed");
+                }
+              
 
             }
             catch (Exception ex)
@@ -542,7 +570,67 @@ public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
             try
             {
 
-                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.BankCashOutCommandUrl, model);
+                if (model.UploadedFile==null)
+                {
+                    throw new Exception("No receipt was uploaded, Kindly upload the reciept of the transaction!");
+                }
+                else
+                {
+                    var DocModel = new AddDocumentUploadedCommand
+                    {
+                        FormFiles = model.UploadedFile,
+                        IsSynchronus = true,
+                        OperationID = model.Id,
+                        DocumentType = "BranchBankCashOut",
+                        ServiceType = "AccountingService".ToUpper(),
+                        DocumentId = model.BankTransactionReference,
+                        CallBackBaseUrl = "N/A",
+                        CallBackEndPoint = "N/A",
+                        RemoteFilePath = APICallHelper.AttachedReceiptRemotely
+                    };
+                    var modelFile = await UploadFiles(DocModel);
+                    if (modelFile.Data == null) 
+                    {
+                        throw new Exception("File upload failed and response could not be interpreted!");
+                    }
+                    else
+                    {
+                       APICallBackRespose  responsed =(APICallBackRespose) modelFile.Data;
+                        model.FileUpload = responsed.data.fullPath;
+                        var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.BankCashOutCommandUrl, model.ConvertToTransferData());
+                        if (response.IsSuccess)
+                        {
+                            // Successful creation
+                            GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+
+                                ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                            return ExecutionMessage;
+                        }
+                        else
+                        {
+                            // Failed creation
+                            GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                                ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                        }
+                    }
+                    
+                }
+       
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<IExecutionMessages> CreateBranchToBranchTransferTransaction(BranchToBranchTransfer model)
+        {
+            try
+            {
+            
+                    var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.BranchToBranchTransferUrl, model.ConvertToTransferData());
                 if (response.IsSuccess)
                 {
                     // Successful creation
@@ -566,12 +654,13 @@ public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
             }
             return ExecutionMessage;
         }
-        public async Task<IExecutionMessages> CreateBranchToBranchTransferTransaction(BranchToBranchTransfer model)
+
+        public async Task<IExecutionMessages> CreateCashClearingTransaction(CashClearing model)
         {
             try
             {
-            
-                    var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.BranchToBranchTransferUrl, model);
+
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.CashClearingTransferUrl, model.ConvertToTransferData());
                 if (response.IsSuccess)
                 {
                     // Successful creation
