@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
 
     public class CashDeskController : BaseController
     {
@@ -41,6 +41,12 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             //ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
             return View(cashDesk);
         }
+        public async Task<ActionResult> OtherCashMobileMoney()
+        {
+            var cashDesk = await _cashDeskService.GetOtherCashDeskMobileMoney();
+            return View(cashDesk);
+        }
+        //OtherCashMobileMoney
         public async Task<ActionResult> ExpenseOtherPayment()
         {
             ViewBag.Operation = "income_expense";
@@ -138,7 +144,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             try
             {
-                if (deposits!=null)
+                if (deposits != null)
                 {
                     var data = await _cashDeskService.BulkDeposi(deposits);
                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });

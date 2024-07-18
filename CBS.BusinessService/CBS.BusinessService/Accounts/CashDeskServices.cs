@@ -25,6 +25,7 @@ using CBS.FrontDesk.Data.Entity.Accounting;
 using Irony.Parsing;
 using System.Web.Mvc;
 using CBS.BusinessService.Application;
+using DocumentFormat.OpenXml.Bibliography;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -245,14 +246,14 @@ namespace CBS.BusinessService.Accounts
                 Direction = otherTransaction.Direction,
                 TransactionType = otherTransaction.TransactionType,
                 SourceType = otherTransaction.SourceType,
-                Naration = otherTransaction.Naration,
+                Naration = otherTransaction.Narration,
                 AmountInWord = otherTransaction.AmountInWord,
                 ReceiptTitle = otherTransaction.ReceiptTitle,
                 CustomerId = otherTransaction.CustomerId,
-                CreatedDate = otherTransaction.DateOfOPeration, // Assuming CreatedDate and DateOfOPeration are the same
+                CreatedDate = otherTransaction.DateOfOperation, // Assuming CreatedDate and DateOfOPeration are the same
                 ModifiedDate = DateTime.Now, // Assuming ModifiedDate is now
                 EventCode = otherTransaction.EventCode,
-                MemberName = otherTransaction.Name, // Assuming MemberName is the Name in OtherTransaction
+                MemberName = otherTransaction.MemberName, // Assuming MemberName is the Name in OtherTransaction
                 Logo = branch.LogoUrl,
                 BranchName = branch.Name,
                 BranchCode = branch.BranchCode,
@@ -265,7 +266,7 @@ namespace CBS.BusinessService.Accounts
                 HeadOfficeWebSite = branch.IsHeadOffice ? branch.WebSite : null,
                 HeadOfficeInitial = branch.IsHeadOffice ? branch.BankInitial : null,
                 HeadOfficeCode = branch.IsHeadOffice ? branch.Id : null, // Assuming HeadOfficeCode is Branch ID
-                DateOfOPeration = otherTransaction.DateOfOPeration,
+                DateOfOPeration = otherTransaction.DateOfOperation,
                 TellerName = otherTransaction.Teller?.name // Assuming Teller has a Name property
             };
         }
@@ -310,7 +311,7 @@ namespace CBS.BusinessService.Accounts
 
                 if (bulkDeposits.FirstOrDefault().OperationType == "Withdrawal")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Withdrawal" };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.MakeWithdrawal, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -336,7 +337,7 @@ namespace CBS.BusinessService.Accounts
                 //SavingWithdrawalFormFee
                 else if (bulkDeposits.FirstOrDefault().OperationType == "WithdrawalSWS")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Withdrawal" };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.MakeWithdrawal, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -387,7 +388,7 @@ namespace CBS.BusinessService.Accounts
                 //LoanRepayment
                 else if (bulkDeposits.FirstOrDefault().OperationType == "CashIn")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Deposit" };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -412,7 +413,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepayment")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepayment" };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepayment", IsCashOperation = true, OperationType = "Deposit" };
 
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
@@ -440,7 +441,7 @@ namespace CBS.BusinessService.Accounts
                 {
                     if (IsSinglePeriodKind(bulkDeposits))
                     {
-                        var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanFeePayment", Period = bulkDeposits.FirstOrDefault().Period };
+                        var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanFeePayment", Period = bulkDeposits.FirstOrDefault().Period, IsCashOperation = true, OperationType = "Deposit" };
                         var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.BulkDeposit, BulkOperation);
                         if (response.ApiResponseData != null)
                         {
@@ -493,6 +494,43 @@ namespace CBS.BusinessService.Accounts
                     };
 
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<OtherTransaction>>(APICallHelper.CreateOtherTransaction, addOtherTransaction);
+                    if (response.ApiResponseData != null)
+                    {
+                        Branch branch = RetrieveBranchFromSession();
+                        var rpt = MapToDto(branch, response.ApiResponseData.Data);
+                        var rptSource = new List<OtherTransactionDto>();
+                        rptSource.Add(rpt);
+                        HttpContext.Current.Session["rptSource"] = rptSource;
+                        GetExecutionMessages(response, true, null, MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+
+                else if (bulkDeposits.FirstOrDefault().OperationType == "MobileMoney")
+                {
+                    var a = bulkDeposits.FirstOrDefault();
+                    var addOtherTransaction = new AddOtherTransactionMobileMoneyCommand
+                    {
+                        Amount = a.Amount,
+                        CurrencyNotesRequest = a.currencyNotes,
+                        MemberReference = a.CustomerId,
+                        CustomerName = a.MemberName,
+                        CNI = a.CNI,
+                        IsCashOperation = true,
+                        SourceType = a.SourceType,
+                        BookingDirection = a.BookingDirection,
+                        OperationType = a.BookingDirection,
+                        TelephoneNumber = a.TelephoneNumber
+                    };
+
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<OtherTransaction>>(APICallHelper.CreateOtherTransactionMobileMoney, addOtherTransaction);
                     if (response.ApiResponseData != null)
                     {
                         Branch branch = RetrieveBranchFromSession();
@@ -598,6 +636,25 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+        public async Task<CashDesk> GetOtherCashDeskMobileMoney()
+        {
+            try
+            {
+
+                var Accounts = new List<CustomerAccount> { };
+                var customer = new IndividualProfile { CustomerId = "N/A", name = "None Member" };
+                var branch = await _branchServices.GetBranch(GetBranchID());
+                //await _individualProfileServices.GetAllIndividualProfileLight();
+                decimal amountRequested = 0;
+                var cashDesk = new CashDesk { Branch = branch, Accounts = Accounts, BulkDeposit = new BulkDeposit { Amount = amountRequested }, BulkDeposits = BuidObject(Accounts), Customer = customer, LoanId = null, CustomerId = customer.CustomerId };
+                return cashDesk;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
         public async Task<CashDesk> GetAccountByAccountNumberSearch(string customerId)
         {
             try
@@ -674,7 +731,7 @@ namespace CBS.BusinessService.Accounts
 
                     }
                     customer.name = $"{customer.FirstName} {customer.LastName}";
-                    var cashDesk = new CashDesk { Branch = branch, Accounts = Accounts, BulkDeposit = new BulkDeposit { Amount = amountRequested, CheckNumber="N/A", CheckName="N/A" }, BulkDeposits = BuidObject(Accounts), Customer = customer, LoanId = null, CustomerId = customerId, Loans = loans.ToList(), WithdrawalNotifications = WithdrawalNotifications, LoanApplicationFees = loanApplicationFees };
+                    var cashDesk = new CashDesk { Branch = branch, Accounts = Accounts, BulkDeposit = new BulkDeposit { Amount = amountRequested, CheckNumber = "N/A", CheckName = "N/A" }, BulkDeposits = BuidObject(Accounts), Customer = customer, LoanId = null, CustomerId = customerId, Loans = loans.ToList(), WithdrawalNotifications = WithdrawalNotifications, LoanApplicationFees = loanApplicationFees };
                     return cashDesk;
                 }
 

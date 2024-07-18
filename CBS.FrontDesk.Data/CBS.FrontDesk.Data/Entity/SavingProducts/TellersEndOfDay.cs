@@ -183,6 +183,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string ProvisionedBy { get; set; }
         [Required]
         public string TellerId { get; set; }
+        [Required]
+        public string OperationType { get; set; }//Cash, NoneCash
         public bool Status { get; set; }
         public bool IsPrimary { get; set; }
         [Required]

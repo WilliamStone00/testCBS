@@ -44,6 +44,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<IndividualProfile> Customers { get; set; } = new List<IndividualProfile>();
         public List<TransactionHistory> Transactions { get; set; } = new List<TransactionHistory>();
         public OtherTransaction OtherTransaction { get; set; }
+        public AddOtherTransactionMobileMoneyCommand AddOtherTransactionMobileMoneyCommand { get; set; } = new AddOtherTransactionMobileMoneyCommand();
         public List<OtherTransaction> OtherTransactions { get; set; } = new List<OtherTransaction>();
         public string Action { get; set; }
         public string ServiceOption { get; set; }
@@ -60,7 +61,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<BulkDeposit> BulkOperations { get; set; } = new List<BulkDeposit>();
         public string DepositType { get; set; }
         public string Period { get; set; }
-        
+        public string OperationType { get; set; }
+        public bool IsCashOperation { get; set; }
+
         public BulkOperation()
         {
             DepositType = "Normal";
@@ -85,11 +88,16 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string EventCode { get; set; }
         public string SourceType { get; set; }
         public string OperationType { get; set; }
+        public string TelephoneNumber { get; set; }
+        public string CNI { get; set; }
         public string Period { get; set; }
         public bool IsSWS { get; set; }
         public string CheckNumber { get; set; }
+        public string BookingDirection { get; set; }
         public string CheckName { get; set; }
+        public string MemberName { get; set; }
         public bool isDepositDoneByAccountOwner { get; set; }
+        public bool IsChargesInclussive { get; set; }
         public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
         public Depositer Depositer { get; set; } = new Depositer();
         public OtherTransaction OtherTransaction { get; set; } = new OtherTransaction();

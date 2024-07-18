@@ -4,6 +4,7 @@ using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
+using CBS.FrontDesk.Data.ReportDataSetDto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -397,6 +398,16 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string bankId { get; set; }
         [Required]
         public string branchId { get; set; }
+        [Required]
+        public string TellerType { get; set; }//VirtualTeller,PhysicalTeller,DailyCollectorTeller,NoneCashTeller
+        public bool PerformCashIn { get; set; }
+        public bool PerformCashOut { get; set; }
+        [Required]
+        public string EventCode { get; set; }
+
+        public bool PerformTransfer { get; set; }
+        [Required]
+        public string OperationType { get; set; }//Cash, NoneCash
         public decimal MinimumAmountToManage { get; set; } = 0m;
         public decimal MaximumAmountToManage { get; set; } = 0m;
         public decimal MinimumDepositAmount { get; set; } = 0m;
@@ -670,6 +681,8 @@ public class MemberAccountUpload
     }
     public class OtherTransaction
     {
+
+
         public string Id { get; set; }
         public string TransactionReference { get; set; }
         public string EnventName { get; set; }
@@ -677,7 +690,7 @@ public class MemberAccountUpload
         public string EventCode { get; set; }
         public string Description { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string MemberName { get; set; }
         public string TellerId { get; set; }
         [Required]
         public decimal Amount { get; set; }
@@ -688,7 +701,7 @@ public class MemberAccountUpload
         public string TransactionType { get; set; }//Income Or Expenses
         [Required]
         public string SourceType { get; set; }//Cash_Collection Or Member_Account
-        public string Naration { get; set; }
+        public string Narration { get; set; }
         public string CustomerId { get; set; }
         public string AccountNumber { get; set; } = "N/A";
         public string BranchId { get; set; }
@@ -696,12 +709,13 @@ public class MemberAccountUpload
         public string BankId { get; set; }
         public string AmountInWord { get; set; }
         public string ReceiptTitle { get; set; }
-
         public Teller Teller { get; set; }
-        public DateTime DateOfOPeration { get; set; }
+        public DateTime DateOfOperation { get; set; }
+        public string CNI { get; set; }
+        public string TelephoneNumber { get; set; }
 
     }
-
+    
     public class TransactionReversal
     {
         public List<TransactionHistory> Transactions { get; set; }
@@ -804,6 +818,19 @@ public class MemberAccountUpload
         public string SourceType { get; set; }//Cash_Collection Or Member_Account
         public string CustomerId { get; set; }
         public string AccountNumber { get; set; }
+        public CurrencyNotes CurrencyNotesRequest { get; set; }
+    }
+    public class AddOtherTransactionMobileMoneyCommand
+    {
+        public decimal Amount { get; set; }
+        public string CustomerName { get; set; }
+        public string SourceType { get; set; }//MobileMoneyMTN Or MobileMoneyORANGE
+        public string CNI { get; set; }
+        public string TelephoneNumber { get; set; }
+        public string BookingDirection { get; set; }//Deposit, Withdrawal
+        public string OperationType { get; set; }//MobileMoney
+        public bool IsCashOperation { get; set; }
+        public string MemberReference { get; set; }
         public CurrencyNotes CurrencyNotesRequest { get; set; }
     }
 }

@@ -108,6 +108,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
             else if (path == "new")
             {
+                ViewBag.Key = null;
                 await GetValues();
                 return PartialView(partialView, new LoanProductObject());
             }

@@ -246,6 +246,7 @@
         public static string Get_Update_Delete_OtherTransaction = "/api/v1/OtherTransaction/{0}";
         public static string GetAllOtherTransaction = "/api/v1/OtherTransaction";
         public static string CreateOtherTransaction = "/api/v1/OtherTransaction";
+        public static string CreateOtherTransactionMobileMoney = "/api/v1/OtherTransaction/MobileMoney";
         //SavingProduct
         public static string Get_Update_Delete_SavingProduct = "/api/v1/SavingProduct/{0}";
         public static string GetAllSavingProducts = "/api/v1/SavingProduct";
