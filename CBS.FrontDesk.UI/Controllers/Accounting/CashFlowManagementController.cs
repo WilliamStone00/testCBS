@@ -151,42 +151,74 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         [HttpGet]
         public async Task<ActionResult> CashInfusion(string cashReplenishmentId)
         {
-            var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(cashReplenishmentId);
- 
-            //cashDemandDataEntity.BankCashOut.ValueDate = DateTime.Now.Date;
-            //cashDemandDataEntity.CashReplenimentRequestdto.ApprovedMessage = $"I {_AccountServices.GetUserFullName()} Approved you withdraw XAF {cashDemandDataEntity.CashReplenimentRequestdto.AmountRequested.ToString("N")} from the bank in favour" +
-            //                                                                 $" of Vault of {_AccountServices.GetBranchName()}";
-            if (OperationEventAttribute.CashRequisitionType.Equals("REQUEST"))
-            {
-                var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
-                ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
-            }
-            else
-            {
-                var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.CorrespondingBranchId);
-                ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
-            }
+            #region MyRegion
+            //var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(cashReplenishmentId);
 
-            var account = (await _AccountServices.GetAllAccounting()).Where(pp => pp.AccountNumberCU.EndsWith(_AccountServices.GetBranchCode()) && pp.Account3 == "451" && pp.LiaisonId == _AccountServices.GetBranchID());
-            string name, balance = string.Empty;
-            string Id = string.Empty;
-            if (account.Any())
+            ////cashDemandDataEntity.BankCashOut.ValueDate = DateTime.Now.Date;
+            ////cashDemandDataEntity.CashReplenimentRequestdto.ApprovedMessage = $"I {_AccountServices.GetUserFullName()} Approved you withdraw XAF {cashDemandDataEntity.CashReplenimentRequestdto.AmountRequested.ToString("N")} from the bank in favour" +
+            ////                                                                 $" of Vault of {_AccountServices.GetBranchName()}";
+            //if (OperationEventAttribute.CashRequisitionType.Equals("REQUEST"))
+            //{
+            //    var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
+            //    ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
+            //}
+            //else
+            //{
+            //    var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.CorrespondingBranchId);
+            //    ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
+            //}
+
+            //var account = (await _AccountServices.GetAllAccounting()).Where(pp => pp.AccountNumberCU.EndsWith(_AccountServices.GetBranchCode()) && pp.Account3 == "451" && pp.LiaisonId == _AccountServices.GetBranchID());
+            //string name, balance = string.Empty;
+            //string Id = string.Empty;
+            //if (account.Any())
+            //{
+            //    var acc = account.FirstOrDefault();
+            //    name = $"451[***]{_AccountServices.GetBranchCode()}-{acc.AccountName}";
+            //    balance = (account.Sum(ff=> Convert.ToDecimal(ff.CurrentBalance))).ToString();
+            //    Id = acc.Id;
+            //}
+            //else
+            //{
+            //    balance = "0";
+            //    name = $"No Vault Found";
+            //}
+
+            //var mOdelsd = new CashClearing();
+            ////mOdelsd.ExpectedAmount = Convert.ToDecimal( balance);
+            //mOdelsd.AccountInfo = name;
+            //return View(new CashDemandDataEntity { CashClearing = mOdelsd }); 
+            #endregion
+            List<CashReplenimentRequest> cashReplenimentRequestDtos = new List<CashReplenimentRequest>();
+            //CreateBankCashOut
+            var Id = _AccountServices.GetBranchID();
+            var datas = (await _accountingEntryServices.GetAllCashReplenimentRequest()).Where(pi => pi.BranchId.Equals(Id) && pi.CashRequisitionType.Equals(CashRequisitionType.REQUEST.ToString())&&pi.Status.Equals(CashReplishmentRequestStatus.awaiting_corresponding_entry_posting.ToString()));
+
+            var dataUser = (await _accountingEntryServices.GetUserList()).ToList();
+            var result = from request in datas
+                         join user in dataUser on request.ApprovedBy equals user.id.ToString()
+                         select new CashReplenimentRequest
+                         {
+                             Id = request.Id,
+                             ReferenceId = request.ReferenceId,
+                             AmountRequested = request.AmountRequested,
+
+                             ApprovedBy = user.name + "," + user.roleName,
+                             HasAccount56 = false,
+                             AmountApproved = request.AmountApproved,
+                             ApprovedDate = request.ApprovedDate,
+                             Status = request.Status,
+                             CashReplishmentRequestStatus = request.CashReplishmentRequestStatus,
+                             ApprovedMessage = request.ApprovedMessage
+                         };
+            CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+            foreach (var item in result.ToList())
             {
-                var acc = account.FirstOrDefault();
-                name = $"451[***]{_AccountServices.GetBranchCode()}-{acc.AccountName}";
-                balance = (account.Sum(ff=> Convert.ToDecimal(ff.CurrentBalance))).ToString();
-                Id = acc.Id;
+                item.HasAccount56 = await CheckIfBranchHasBankAccountAsync(_AccountServices.GetBranchID());
+                cashReplenimentRequestDtos.Add(item);
             }
-            else
-            {
-                balance = "0";
-                name = $"No Vault Found";
-            }
-  
-            var mOdelsd = new CashClearing();
-            //mOdelsd.ExpectedAmount = Convert.ToDecimal( balance);
-            mOdelsd.AccountInfo = name;
-            return View(new CashDemandDataEntity { CashClearing = mOdelsd });
+            cashDemandDataEntity.ListCashReplenimentRequest = cashReplenimentRequestDtos;
+            return View(cashDemandDataEntity);
         }
         [HttpGet]
         public async Task<ActionResult> CreateBankCashOut000mm()
@@ -224,7 +256,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             List<CashReplenimentRequest> cashReplenimentRequestDtos = new List<CashReplenimentRequest>();
             //CreateBankCashOut
             var Id = _AccountServices.GetBranchID();
-            var datas = (await _accountingEntryServices.GetAllCashReplenimentRequestByBranch(true)).Where(pi => pi.CorrespondingBranchId.Equals(Id) && pi.Status.Equals(CashReplishmentRequestStatus.awaiting_corresponding_entry_posting.ToString()) && pi.CashRequisitionType.Equals(CashRequisitionType.ORDER.ToString()));
+            var datas = (await _accountingEntryServices.GetAllCashReplenimentRequestByBranch(true)).Where(pi => pi.CorrespondingBranchId.Equals(Id)&& pi.Status.Equals(CashReplishmentRequestStatus.Approved.ToString()) && pi.CashRequisitionType.Equals(CashRequisitionType.REQUEST.ToString()));
 
             var dataUser = (await _accountingEntryServices.GetUserList()).ToList();
             var result = from request in datas
@@ -369,7 +401,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             if (!string.IsNullOrEmpty(referenceId))
             {
                 var CashRepleniment = await _accountingEntryServices.GetCashReplenimentRequest(referenceId);
-                var BankTransaction = await _accountingEntryServices.GetBankTransactionByReferenceId(referenceId);
+                var BankTransaction = await _accountingEntryServices.GetBankTransactionByReferenceId(CashRepleniment.Id);
                 var account = await _AccountServices.GetAccount(BankTransaction.AccountId);
                 return Json(new { BankTransaction = BankTransaction, Cashreplenishment = CashRepleniment,Account=account }, JsonRequestBehavior.AllowGet);
 
@@ -461,9 +493,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
                 cashDemandDataEntity.CashReplenimentRequestdto.ApprovedMessage = $"I {_AccountServices.GetUserFullName()} Approved you withdraw XAF {cashDemandDataEntity.CashReplenimentRequestdto.AmountRequested.ToString("N")} from the bank in favour" +
-                                                                                 $" of Vault of {_AccountServices.GetBranchName()}";
+                                                                                 $" of Vault of { (await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name}";
                 cashDemandDataEntity.CashReplenimentRequestdto.BranchOffice =( await branchServices.GetBranches()).Where(po=>po.Id.Equals(OperationEventAttribute.BranchId)).FirstOrDefault().Name;
-              var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
+                //var userx = await _accountingEntryServices.GetUser(OperationEventAttribute.IssuedBy);
+                //cashDemandDataEntity.CashReplenimentRequest.ApprovedBy = userx.firstName + " " + userx.lastName + "," + userx.phoneNumber;
+                var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
                 ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
                 ViewBag.Decisions = BuildMenuViewBag();
                 return PartialView(partialView, cashDemandDataEntity);
@@ -605,6 +639,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.CashInfusionModel = OperationEventAttribute.ConvertToCashInfusionModel();
                 cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
+                var user = await _accountingEntryServices.GetUser(cashDemandDataEntity.CashReplenimentRequestdto.ApprovedBy);
+                cashDemandDataEntity.CashReplenimentRequestdto.ApprovedBy = user.firstName + " " + user.lastName + "," + user.phoneNumber;
                 var entry  = await _accountingEntryServices.GetAccountingEntriesByReferceId(OperationEventAttribute.ReferenceId);
                 return PartialView(partialView, cashDemandDataEntity);
 
@@ -695,19 +731,23 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                              Id = request.Id,
                              ReferenceId = request.ReferenceId,
                              AmountRequested = request.AmountRequested,
- 
-                             ApprovedBy = user.name + "," + user.roleName,
-                             HasAccount56 =   false,
+
+
+                             HasAccount56 = false,
                              AmountApproved = request.AmountApproved,
                              ApprovedDate = request.ApprovedDate,
                              Status = request.Status,
-                             CashReplishmentRequestStatus= request.CashReplishmentRequestStatus,
+                             CashReplishmentRequestStatus = request.CashReplishmentRequestStatus,
                              ApprovedMessage = request.ApprovedMessage
                          };
             CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
-            foreach (var item in result.ToList())
+            foreach (var item in datas.ToList())
             {
                 item.HasAccount56 = await CheckIfBranchHasBankAccountAsync(_AccountServices.GetBranchID());
+                var userx = await _accountingEntryServices.GetUser(item.IssuedBy);
+                item.IssuedBy = userx.firstName + "," + userx.lastName;
+                var userxc = await _accountingEntryServices.GetUser(item.ApprovedBy);
+                item.ApprovedBy = userxc.firstName + "," + userxc.lastName;
                 cashReplenimentRequestDtos.Add(item);
             }
             cashDemandDataEntity.ListCashReplenimentRequest = cashReplenimentRequestDtos;

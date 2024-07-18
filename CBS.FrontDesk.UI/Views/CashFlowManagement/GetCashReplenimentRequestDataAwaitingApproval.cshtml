@@ -55,15 +55,29 @@
                                             <tr>
                                                 <td style="width:15%">@d.ApprovedBy</td>
                                                 <td style="width:15%">@d.AmountApproved</td>
-                                                <td style="width:25%">@d.ApprovedDate</td>
-                                                <td style="width:25%">@d.ApprovedMessage</td>
+                                                <td style="width:20%">@d.ApprovedDate</td>
+                                                <td style="width:40%">@d.ApprovedMessage</td>
 
 
 
 
-                                                <td style="width:20%">
+                                                <td style="width:10%">
 
                                                     @if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
+                                                    {
+                                                        if (d.HasAccount56)
+                                                        {
+                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateBankCashOutApproval','bankCashOutApproval','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">BankCashOut</a>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            @*<a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateCashInfusion','cashInFusion','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Cash Clearing</a>*@
+                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
+
+                                                        }
+                                                    }
+                                                    else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.awaiting_corresponding_entry_posting.ToString()))
                                                     {
                                                         if (d.HasAccount56)
                                                         {
@@ -78,7 +92,7 @@
                                                     }
                                                     else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Rejected.ToString()))
                                                     {
-                                                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View Status</a>
+                                                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
 
                                                     }
                                                     else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
@@ -91,13 +105,13 @@
                                                         }
                                                         else
                                                         {
-                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateCashInfusion','cashInFusion','CashFlowManagement')" class="btn btn-primary"  data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Cash Clearing</a>
+                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateCashInfusion','cashInFusion','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Cash Clearing</a>
 
                                                         }
                                                     }
                                                     else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
                                                     {
-                                                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','complete_status','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Complete Status</a>
+                                                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','complete_status','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Complete</a>
 
                                                     }
                                                     else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Rejected.ToString()))
