@@ -579,11 +579,14 @@
         //Credit a specifique Account record AddCashInfusionCommand   
         public static string CashInfusion = "/api/v1/AccountingEntry/AddCashInfusionCommand";
         public static string GetAccountByReference = "/api/v1/Account/GetAccountByReference/{0}";
-        public static string GetAccountByAccountNumber = "/api/v1/Account/AccountNumber/{0}";
+ 
         public static string GetAccountByAccountType = "/api/v1/Account/GetAccountByAccountType/{0}";
         public static string GetAccount = "/api/v1/Account/{0}";
         public static string Delete_Account = "/api/v1/Account/{0}";
-        public static string GetAlAccounts = "/api/v1/Accounts";
+        public static string GetAccountByAccountNumberUrl = "/api/v1/Account/GetAccountByAccountNumber/{0}";
+   
+    public static string GetAlAccounts = "/api/v1/Accounts";
+        public static string GetAllLiaisonAccount = "/api/v1/Accounts/LiaisonAccount";
         public static string GetAllAccountByBranch = "/api/v1/Accounts/{0}";
         public static string GetAllBranchAccountUsedToCreditCashFlow= "/api/v1/Account/GetAccountByMFIBankAccountNumberQuery/{0}";
         public static string CreateAccount = "/api/v1/Account";
@@ -619,9 +622,10 @@
     public static string UpdateCashReplenishmentRequest = "/api/v1/BankingOperation/UpdateRequestForCashReplenishment/{0}";
     public static string CashReplenishmentResponse = "/api/v1/BankingOperation/ResponseToCashReplenishment";
         public static string GetAllCashReplenishmentRequests = "/api/v1/BankingOperation/GetAllCashReplenishmentRequests";
-        public static string GetAllCashReplenishmentQueryAsBranch = "/api/v1/BankingOperation/GetAllCashReplenishmentQueryAsBranch";
+        public static string GetAllCashReplenishmentQueryAsBranch = "/api/v1/BankingOperation/GetAllCashReplenishmentQueryAsBranch/{0}";
         public static string GetAllCashRequestApprovalQuery = "/api/v1/BankingOperation/GetAllCashRequestApprovalQuery";
         public static string BranchToBranchTransferUrl = "/api/v1/AccountingEntry/BranchToBranchTransferCommand";
+        public static string CashClearingTransferUrl = "/api/v1/AccountingEntry/CashClearingTransferCommand";
         public static string GetCashReplenishmentRequestByBranchId = "/api/v1/BankingOperation/GetCashReplenishmentRequestByBranchId/{0}";
         public static string GetBankTransactionQueryByIdURL  = "/api/v1/BankingOperation/GetBankTransactionQueryById/{0}";
         public static string GetBankTransactionQueryByReferenceIdURL = "/api/v1/BankingOperation/GetBankTransactionQueryByReferenceId/{0}";

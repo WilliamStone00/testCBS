@@ -295,6 +295,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public int coin1 { get; set; }
+
+
     }
     public class CurrencyNotesDto
     {

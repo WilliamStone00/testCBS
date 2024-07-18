@@ -23,4 +23,19 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         
              public string BranchId { get; set; }
     }
+    public class BankTransactionModel
+    {
+        public string Id { get; set; }
+        public string FromAccountId { get; set; }
+        public string Balance { get; set; }
+        public string ToAccountId { get; set; }
+        public decimal Amount { get; set; }
+        public string ReferenceId { get; set; }
+        public string TransactionType { get; set; }
+        public string BankTransactionReference { get; set; }
+        public string Description { get; set; }
+        public string FileUpload { get; set; }
+        public string ValueDate { get; set; }
+    }
+
 }

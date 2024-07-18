@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 
@@ -8,7 +9,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         public string Id { get; set; }
         [Required]
-        public string AccountId { get; set; }
+        public string FromAccountId { get; set; }
         public string Balance { get; set; }
         [Required]
         public decimal Amount { get; set; }
@@ -23,7 +24,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string IssuedDate { get; set; }
         public string ApprovedBy { get; set; }
         public string CreatedDate { get; set; }
-         
+          public string ToAccountId { get; set; }
         public string ApprovedDate { get; set; }
         //public string ApprovedBy { get; set; }
         public string IssuedBy { get; set; }
@@ -33,6 +34,41 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public HttpPostedFileBase UploadedFile{ get; set; }
         [Required]
         public DateTime ValueDate { get; set; }
+        public Denomination CurrencyNotes { get; set; }
+
+        public BankTransactionModel ConvertToTransferData()
+        {
+            try
+            {
+                if (Convert.ToDecimal(Balance) - Amount > 0)
+                {
+                    return new BankTransactionModel
+                    {
+                        FromAccountId = FromAccountId,
+                        ToAccountId = ToAccountId,
+                        Amount = CurrencyNotes.GetAmountValue(),
+                        ReferenceId = ReferenceId,
+                        TransactionType = TransactionType,
+                        BankTransactionReference = BankTransactionReference,
+                        ValueDate = ValueDate.ToString(),
+                        FileUpload = FileUpload,
+                        Description = Description,
+                        Id = Id,
+                        Balance = Balance
+                    };
+                }
+                else
+                {
+                    throw new Exception("The balance of bank account does not permit this cash out");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw(ex);
+            }
+            
+        }
         public BankCashOut()
         {
             FileUpload = "~/AppFiles/Images/Bank-deposit-slip-excel-template.jpg";
@@ -43,7 +79,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             return new BankCashOutDto
             {
                 Id = cashOut.Id,
-                AccountId = cashOut.AccountId,
+                AccountId = cashOut.FromAccountId,
                 Balance = cashOut.Balance,
                 Amount = cashOut.Amount,
 
@@ -58,7 +94,40 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         }
     }
 
+    
 
+   
+    public class CashClearing
+    {
+        public string CreatedDate { get; set; }
+        public string TransferBy { get; set; }
+        public string ToAccountId { get; set; }
+        public string FromAccountId { get; set; }
+        public string AccountInfo { get; set; }
+        [Required]
+        public string ExpectedAmount { get; set; }
+       
+        public decimal AmountExpected { get; set; }
+        [Required]
+        public decimal Amount { get; set; }
+        [Required]
+        public string ReferenceId { get; set; }
+     
+        public string Description { get; set; }
+        [Required]
+        public Denomination CurrencyNotes { get; set; }
+        public BranchTransfer ConvertToTransferData()
+        {
+            return new BranchTransfer
+            {
+                FromAccountId = FromAccountId,
+                ToAccountId = ToAccountId,
+                Amount = CurrencyNotes.GetAmountValue(),
+                ReferenceId = ReferenceId,
+            };
+        }
+
+    }
     public class BankCashOutDto
     {
         public string Id { get; set; }

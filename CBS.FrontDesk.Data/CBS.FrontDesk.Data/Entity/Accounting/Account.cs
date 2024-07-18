@@ -8,7 +8,7 @@ namespace CBS.FrontDesk.Data
 {
     public class Account
     {
-        public string AccountNumberNetwork { get; set; } = "";
+        public string AccountNumberNetwok { get; set; } = "";
 
         public string AccountNumberCU { get; set; } = "";
         public string Id { get; set; }
@@ -33,6 +33,9 @@ namespace CBS.FrontDesk.Data
         public string Account3 { get; set; }
         public string Account2 { get; set; }
         public string BranchCode { get; set; }
+        public string LiaisonId { get; set; }
+        public string AccountNumberManagementPosition { get; set; }
+
     }
 
 

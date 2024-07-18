@@ -2957,6 +2957,9 @@
     <Content Include="Views\AccountingConfiguration\_CreateAccountPolicy.cshtml" />
     <Content Include="Views\AccountingConfiguration\_AccountPolicyData.cshtml" />
     <Content Include="Views\CashFlowManagement\_branchToBranchTransfer.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CreateCashInfusion.cshtml" />
+    <Content Include="Views\CashFlowManagement\CashInfusion.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CashTransferData.cshtml" />
     <Content Include="Views\CashDesk\OtherCashMobileMoney.cshtml" />
     <Content Include="Views\CashDesk\_OtherCashMobileMoneyDesk.cshtml" />
     <Content Include="Views\CashDesk\_OtherCashMobileMoneyForm.cshtml" />

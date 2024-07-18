@@ -60,14 +60,14 @@
 
                                                     @*<a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateCashReplenishmentRequest','update','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.IssuedBy Cash Request to edit">Edit|</a>
         <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','status','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.IssuedBy Cash Request to edit">Status|</a>*@
-                                                    @if (d.Status.Equals("awaiting_corresponding_entry_posting"))
+                                                    @if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
                                                     {
-                                                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ApproveCashRequest','approve','CashFlowManagement')" class="mr-2" id="approving_decision" data-toggle="tooltip" data-placement="top" title="Approve @d.IssuedBy Cash Request">Cash In Fusion</a>
+                                                        <a href="#" class="btn btn-primary" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ApproveCashRequest','approve','CashFlowManagement')" id="approving_decision" data-toggle="tooltip" data-placement="top" title="Approve @d.IssuedBy Cash Request">Approve</a>
 
                                                     }
                                                     else
                                                     {
-                                                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ApproveCashRequest','approve','CashFlowManagement')" class="mr-2" id="approving_decision" data-toggle="tooltip" data-placement="top" title="Approve @d.IssuedBy Cash Request">Approve</a>
+                                                        <a href="#" class="btn btn-default"  onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','complete_status','CashFlowManagement')"  id="approving_decision" data-toggle="tooltip" data-placement="top" title="Approve @d.IssuedBy Cash Request">Completed</a>
 
                                                     }
 
