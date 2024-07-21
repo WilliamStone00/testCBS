@@ -6,9 +6,9 @@
         <thead class="table-light">
             <tr>
                 <th>Rule Name</th>
-                <th>Determinant Account</th>
+                <th>Chart ofAccount</th>
                 <th>Booking Direction</th>
-                <th>Balancing Account</th>
+                <th>Description</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -16,14 +16,15 @@
             @foreach (var d in Model.AccountingRules)
             {
                 <tr>
-                    <td style="width:20%" id="RuleName-@d.Id">@d.RuleName</td>
-                    <td style="width:25%" id="DeterminantAccount-@d.Id">@d.DeterminantAccount</td>
-                    <td style="width:20%" id="BookingDirection-@d.Id">@d.BookingDirection</td>
-                    <td style="width:25%" id="BalancingAccount-@d.Id">@d.BalancingAccount</td>
-                    <td style="width:10%">
+ 
+
+                    <td style="width:35%" id="DeterminantAccount-@d.Id">@d.MFI_ChartOfAccountId</td>
+                    <td style="width:10%" id="BookingDirection-@d.Id">@d.BookingDirection</td>
+                    <td style="width:50%" id="Description-@d.Id">@d.Description</td>
+                    <td style="width:5%">
 
                         <a href="#" onclick="DeleteAccountingRole('@d.Id','AccountingConfiguration','DeleteAccountingRole')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.RuleName to edit">Delete</a>
-                      
+
                     </td>
                 </tr>
 
@@ -63,11 +64,9 @@ else
             @foreach (var d in Model.AccountingRules)
             {
                 <tr>
-                    <td style="width:30%">@d.RuleName</td>
-                    <td style="width:20%">@d.DeterminantAccount</td>
-                    <td style="width:25%">@d.BookingDirection</td>
-                    <td style="width:25%">@d.BalancingAccount</td>
-
+                    <td style="width:35%" id="DeterminantAccount-@d.Id">@d.MFI_ChartOfAccountId</td>
+                    <td style="width:10%" id="BookingDirection-@d.Id">@d.BookingDirection</td>
+                    <td style="width:50%" id="Description-@d.Id">@d.Description</td>
                 </tr>
             }
         </tbody>

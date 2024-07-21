@@ -14,6 +14,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         //
         public AccountTreeNode AccountTreeNode { get; set; }
         public AccountType AccountType { get; set; } = new AccountType();
+        public List<ChartofAccountManagementPosition> ListChartofAccountManagementPosition { get; set; } = new List<ChartofAccountManagementPosition>();
         public ChartofAccountManagementPosition ChartofAccountManagementPosition { get; set; } = new ChartofAccountManagementPosition();
         public OperationEvent OperationEvent { get; set; } = new OperationEvent();
         public OperationEventAttribute OperationEventAttribute { get; set; } = new OperationEventAttribute();
@@ -38,13 +39,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<OperationEvent> OperationEvents { get; set; } = new List<OperationEvent>();
         public List<OperationEventAttribute> OperationEventAttributes { get; set; } = new List<OperationEventAttribute>();
         public List<AccountingRuleEntry> AccountingRuleEntries { get; set; } = new List<AccountingRuleEntry>();
-        public List<AccountingRuleEntryDto> AccountingRuleEntriesDTOS { get; set; } = new List<AccountingRuleEntryDto>();
+        public List<AccountingRule> AccountingRules { get; set; } = new List<AccountingRule>();
         public AccountingRule  AccountingRule{ get; set; } = new AccountingRule();
+        public List<AccountingRuleEntryDto> AccountingRuleEntriesDTOS { get; set; } = new List<AccountingRuleEntryDto>();
         public List<Branch> Branches { get; set; } = new List<Branch>();
         public Branch Branch { get; set; }
         public List<AccountPolicy> AccountPolicies { get; set; } = new List<AccountPolicy>();
         public AccountPolicy AccountPolicy { get; set; } = new AccountPolicy();
-        public List<AccountingRuleDtos> AccountingRules { get; set; } = new List<AccountingRuleDtos>();
+ 
         public string BranchId { get; set; }
         public string ManualOperationCode { get; set; }
         public string ManualOperationName { get; set; }

@@ -338,6 +338,21 @@ namespace CBS.FrontDesk.UI.Controllers
         //    }
         //    return View();
         //}
+        public ActionResult DownloadExcelFilelist()
+        {
+            var rptSource = System.Web.HttpContext.Current.Session["rptSource"+Session.SessionID];
+            string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
+    
+            var model = rptSource;
+
+               Export export = new Export();
+                export.ToExcel(Response, model as IEnumerable<object>, strtitle);
+
+ 
+            return new EmptyResult();
+
+
+        }
 
         public ActionResult DownloadExcelFile()
         {
@@ -600,7 +615,167 @@ namespace CBS.FrontDesk.UI.Controllers
                 }
             }
 
-            //return new EmptyResult();
+            //return new EmptyResult(); 
+        }
+
+        public ActionResult PrintMFIChartOfAccount()
+        {
+            try
+            {
+                var rptSource = System.Web.HttpContext.Current.Session["rptSource" + Session.SessionID];
+                var rpttitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
+
+                if (rptSource == null || rpttitle == null)
+                {
+                    // Handle the case where session variables are not set
+                    return new HttpStatusCodeResult(400, "Report source or title is missing.");
+                }
+
+                List<ChartofAccountManagementPosition> accounts = (rptSource.ToString() == "empty")
+                    ? new List<ChartofAccountManagementPosition>()
+                    : rptSource as List<ChartofAccountManagementPosition>;
+
+                if (rptSource.ToString() == "empty")
+                {
+                    // Return early if there is no data
+                    return new HttpStatusCodeResult(204, "No content available for the report.");
+                }
+
+                using (var workbook = new XLWorkbook())
+                {
+                    var worksheet = workbook.Worksheets.Add(rpttitle);
+                    var headerStyle = workbook.Style;
+                    headerStyle.Font.Bold = true;
+                    headerStyle.Font.FontSize = 14;
+                    headerStyle.Font.FontColor = XLColor.Black;
+
+                    // Apply border to branch range
+                    headerStyle.Border.BottomBorder = XLBorderStyleValues.Thin;
+                    headerStyle.Border.LeftBorder = XLBorderStyleValues.Thin;
+                    headerStyle.Border.RightBorder = XLBorderStyleValues.Thin;
+                    headerStyle.Border.TopBorder = XLBorderStyleValues.Thin;
+
+                    // Print letterhead
+                    worksheet.Cell(1, 2).Value = "HEAD OFFICE";
+                    worksheet.Cell(2, 2).Value = "BRANCH LOCATION";
+                    worksheet.Cell(3, 2).Value = "Capital";
+                    worksheet.Cell(4, 2).Value = "ImmatriculationNumber";
+                    worksheet.Cell(5, 2).Value = "WebSite";
+                    worksheet.Cell(6, 2).Value = "BranchTelephone";
+                    worksheet.Cell(7, 2).Value = "HeadOfficeTelePhone";
+
+                    worksheet.Cell(1, 1).Value = "BranchName";
+                    worksheet.Cell(2, 1).Value = $"Address";
+                    worksheet.Cell(3, 1).Value = $"Capital";
+                    worksheet.Cell(4, 1).Value = $"Immatriculation Number";
+                    worksheet.Cell(5, 1).Value = $"Website";
+                    worksheet.Cell(6, 1).Value = $"Branch Telephone";
+                    worksheet.Cell(7, 1).Value = $"Head Office Telephone";
+
+                    // Apply header style
+                    var headerRange = worksheet.Range(1, 1, 7, 1);
+                    headerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
+                    headerRange.Style.Font.FontSize = 12;
+                    headerRange.Style.Font.Bold = true;
+                    headerRange.Style.Alignment.WrapText = true;
+                    headerRange.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                    headerRange.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+                    headerRange.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+                    headerRange.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+
+                    var headerRange2 = worksheet.Range(1, 1, 7, 2);
+                    headerRange2.Style.Font.FontSize = 12;
+                    headerRange2.Style.Alignment.WrapText = true;
+                    headerRange2.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                    headerRange2.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+                    headerRange2.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+                    headerRange2.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+
+                    // Print account details
+                    var titleRange = worksheet.Range("B10:F10");
+                    titleRange.Merge().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    titleRange.Style.Font.Bold = true;
+                    titleRange.Style.Font.FontSize = 14;
+                    titleRange.Style.Font.FontColor = XLColor.Black;
+                    titleRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                    titleRange.Value = $"BAPCCUL CHART OF ACCOUNT";
+
+                    // Print balance sheet header
+                    worksheet.Cell(12, 1).Value = "OLD ACCOUNT NUMBER";
+                    worksheet.Cell(12, 2).Value = "NEW ACCOUNT NUMBER";
+                    worksheet.Cell(12, 3).Value = "ACCOUNT NAME";
+
+                    var headerRange0 = worksheet.Range(12, 1, 12, 4);
+                    headerRange0.Style.Fill.BackgroundColor = XLColor.LightBlue;
+                    headerRange0.Style.Font.FontSize = 12;
+                    headerRange0.Style.Font.Bold = true;
+                    headerRange0.Style.Alignment.WrapText = true;
+                    headerRange0.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                    headerRange0.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+                    headerRange0.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+                    headerRange0.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+
+                    var headerRange10 = worksheet.Range(13, 1, accounts.Count + 13, 8);
+                    headerRange10.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                    headerRange10.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+                    headerRange10.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+                    headerRange10.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+
+                    int row = 13;
+                    foreach (var account in accounts)
+                    {
+                        worksheet.Cell(row, 1).Value = account.Old_AccountNumber;
+                        worksheet.Cell(row, 2).Value = account.New_AccountNumber;
+                        worksheet.Cell(row, 3).Value = account.Description;
+                        row++;
+                    }
+
+                    worksheet.Columns().AdjustToContents();
+                    return DownloadExcelFile(workbook, "CHARTOFACCOUNT.xlsx");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (e.g., using a logging framework)
+                // Optionally, return an error response or view
+                return new HttpStatusCodeResult(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        public class ExcelFileResult : FileResult
+        {
+            private readonly XLWorkbook _workbook;
+            private readonly string _fileName;
+
+            public ExcelFileResult(XLWorkbook workbook, string fileName)
+                : base("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            {
+                _workbook = workbook;
+                _fileName = fileName;
+            }
+
+            protected override void WriteFile(HttpResponseBase response)
+            {
+                response.AddHeader("Content-Disposition", $"attachment; filename=\"{_fileName}\"");
+                using (var memoryStream = new MemoryStream())
+                {
+                    _workbook.SaveAs(memoryStream);
+                    memoryStream.WriteTo(response.OutputStream);
+                }
+            }
+        }
+
+        public ActionResult DownloadExcelFile(XLWorkbook workbook, string fileName)
+        {
+            try
+            {
+                return new ExcelFileResult(workbook, fileName);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return Content($"Error generating Excel file: {ex.Message}");
+            }
         }
 
         public ActionResult PrintJournalEntryDtoInExcel()
@@ -1054,7 +1229,7 @@ namespace CBS.FrontDesk.UI.Controllers
                         workbook.SaveAs(stream);
                         stream.Position = 0;
 
-                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", _accountServices.GetBranchName() + "-" + trialBalance.branchName + "TB6C.xlsx");
+                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",  "BapCCUL-" + trialBalance.branchName + "TB6C.xlsx");
                     }
                     //worksheet.Cell(row + 1, 1).Value = $"Ending Balance Sign: {trialBalance.EndingBalanceSigne}";
 
@@ -1067,7 +1242,48 @@ namespace CBS.FrontDesk.UI.Controllers
             //return new EmptyResult();
         }
     }
+    public class ExcelResult : ActionResult
+    {
+        private readonly XLWorkbook _workbook;
+        private readonly string _fileName;
 
+        public ExcelResult(XLWorkbook workbook, string fileName)
+        {
+            _workbook = workbook;
+            _fileName = fileName;
+        }
+
+        public override void ExecuteResult(ControllerContext context)
+        {
+            var response = context.HttpContext.Response;
+
+            try
+            {
+                response.Buffer = true;
+                response.Clear();
+                response.ClearContent();
+                response.ClearHeaders();
+                response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                response.AddHeader("content-disposition", $"attachment;filename={_fileName}");
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    _workbook.SaveAs(memoryStream);
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    memoryStream.CopyTo(response.OutputStream);
+                }
+
+                response.Flush();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                throw new HttpException("Error generating Excel file: " + ex.Message);
+            }
+        }
+    }
+
+    
 }
 
 public class Export

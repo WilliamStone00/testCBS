@@ -96,7 +96,8 @@ namespace CBS.BusinessService.Accounting
                 throw ex;
             }
         }
-        public async Task<ExecutionMessages> Create(FrontDesk.Data.Entity.Accounting.AccountingRule model)
+
+        public async Task<ExecutionMessages> Creating(AddAccountingRuleCommand model)
         {
             try
             {
@@ -104,18 +105,18 @@ namespace CBS.BusinessService.Accounting
                 // Make an API call to create an individual profile
 
               
-                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.AccountingRule>>(APICallHelper.CreateAccountingRule, model);
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.AccountingRule>>(APICallHelper.CreateAccountingRules, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.RuleName}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.AccountingRules[0].RuleName}", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, (string)model.RuleName, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, (string)model.AccountingRules[0].RuleName, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -182,14 +183,14 @@ namespace CBS.BusinessService.Accounting
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.accountingRules[0].ruleName}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.accountingRules[0].RuleName}", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, (string)model.accountingRules[0].ruleName, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, (string)model.accountingRules[0].RuleName, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }

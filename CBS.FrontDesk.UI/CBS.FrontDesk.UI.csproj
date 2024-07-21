@@ -2365,6 +2365,7 @@
     <Content Include="Scripts\Js\Crud\Penalty\Penalty.js" />
     <Content Include="Scripts\Js\Crud\Teller\Teller.js" />
     <Content Include="Scripts\Js\Crud\TransactionConfiguration\SavingProductFeeMapping.js" />
+    <Content Include="Scripts\Js\main.js\AutoJournalEntry.js" />
     <Content Include="Scripts\Js\main.js\Account_Upload.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />
     <Content Include="Scripts\Js\Crud\Config\Localization\Countries.js" />
@@ -2959,6 +2960,10 @@
     <Content Include="Views\CashFlowManagement\_CreateCashInfusion.cshtml" />
     <Content Include="Views\CashFlowManagement\CashInfusion.cshtml" />
     <Content Include="Views\CashFlowManagement\_CashTransferData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_DownloadMFIChartOfAccount.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\MultipleJournalEntryClient.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\MultipleJournalEntryConfiguration.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_MultipleJournalEntryClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

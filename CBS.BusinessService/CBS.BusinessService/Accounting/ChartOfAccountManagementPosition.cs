@@ -1,8 +1,11 @@
 ﻿using CBS.API.Helper;
+using CBS.BusinessService.Accounts;
+using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.Service;
+using DocumentFormat.OpenXml.EMMA;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,7 +23,7 @@ namespace CBS.BusinessService.Accounting
         public string BranchId { get; private set; }
         public string BankId { get; private set; }
         public string OrganizationId { get; private set; }
-
+        private AccountingServices _accountingServices { get; set; }
         private ChartOfAccountServices _chartOfAccountServices { get;  set; }
         public ChartOfAccountManagementPositionService()
         {
@@ -29,6 +32,7 @@ namespace CBS.BusinessService.Accounting
             this.BankId = GetBankID();
             this.OrganizationId = GetOrganizationID();
             _chartOfAccountServices = new ChartOfAccountServices();
+            _accountingServices = new AccountingServices();
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -57,6 +61,32 @@ namespace CBS.BusinessService.Accounting
                 // Log and handle exception
             }
             return ExecutionMessage;
+        }
+
+        public async Task<IEnumerable<ChartofAccountManagementPosition>> DownloadChartOfAccount()
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<ChartofAccountManagementPosition>>>(APICallHelper.DownloadChartOfAccountManagementPositionUrl);
+                if (couApiResponse.IsSuccess)
+                {
+
+                    if (couApiResponse.ApiResponseData == null)
+                    {
+                        return new List<ChartofAccountManagementPosition>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+                }
+                return new List<ChartofAccountManagementPosition>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
         }
 
         public async Task<IEnumerable<ChartofAccountManagementPosition>> GetChartOfAccountManagementPositions()
@@ -188,6 +218,30 @@ namespace CBS.BusinessService.Accounting
             {
                 // Log and handle exception
                 throw ex;
+            }
+        }
+
+        public async Task<Account> GetChartOfAccountManagementPositionServiceByIdandBranchIDAsync(string mFI_ChartOfAccountId, string AccountOwnerId)
+        {
+            Account account= new Account();
+            var modelist =await _accountingServices.GetAllAccountForABranch(AccountOwnerId);
+            if (modelist == null)
+            {
+                throw new ArgumentNullException($"There is no branch account created for this branch:{_accountingServices.GetBranchName()}");
+            }
+            else
+            {
+               var list = modelist.Where(pi=>pi.ChartOfAccountManagementPositionId == mFI_ChartOfAccountId);
+
+                if (list.Any()) 
+                { 
+                 account = list.First();
+                }
+                else
+                {
+                    throw new ArgumentNullException($"There is no account {(await this.GetChartOfAccountManagementPosition(mFI_ChartOfAccountId)).AccountNumber} present in the system for {_accountingServices.GetBranchName()}");
+                }
+                return account;
             }
         }
     }
