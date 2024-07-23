@@ -98,7 +98,7 @@ namespace CBS.BusinessService.Accounting
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"Not all the account are present in {this.GetBankName()}");
                 }
 
-                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<EntryTempData>>(APICallHelper.PostAutomatedEventEntryCommand_url, model);
+                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<EventEntryResponse>>(APICallHelper.PostAutomatedEventEntryCommand_url, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation

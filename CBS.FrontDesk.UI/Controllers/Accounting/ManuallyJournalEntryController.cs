@@ -321,10 +321,10 @@ namespace CBS.FrontDesk.UI.Controllers
         {
           AccountingRule[] serverResponse = new AccountingRule[]
         {
-            new AccountingRule { Id = "1", RuleName = $"{message}", Description =  $"{message}", SystemDescription =  $"{message}", System_Id = "SYS001", BookingDirection = "Credit", MFI_ChartOfAccountId = "COA001", AccountNumber =  $"{message}", Amount = 1500.00, AccountName =  $"{message}" },
-            new AccountingRule { Id = "2", RuleName =  $"{message}", Description =  $"{message}", SystemDescription =  $"{message}", System_Id = "SYS002", BookingDirection = "Debit", MFI_ChartOfAccountId = "COA002", AccountNumber =  $"{message}", Amount = 800.00, AccountName =  $"{message}" },
-            new AccountingRule { Id = "3", RuleName =  $"{message}", Description =  $"{message}", SystemDescription =  $"{message}", System_Id = "SYS003", BookingDirection = "Debit", MFI_ChartOfAccountId = "COA003", AccountNumber =  $"{message}", Amount = 500.00, AccountName = $"{message}" },
-            new AccountingRule { Id = "4", RuleName =  $"{message}", Description =  $"{message}", SystemDescription =  $"{message}", System_Id = "SYS004", BookingDirection = "Credit", MFI_ChartOfAccountId = "COA004", AccountNumber =  $"{message}", Amount = 1200.00, AccountName = $"{message}" }
+            new AccountingRule { Id = "1", RuleName = $"{message}", Description =  $"{message}", SystemDescription =  $"{message}", System_Id = "SYS001", BookingDirection = "Credit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 1500.00, AccountName =  $"{message}" },
+            new AccountingRule { Id = "2", RuleName =  $"{message}", Description =  $"{message}", SystemDescription =  $"{message}", System_Id = "SYS002", BookingDirection = "Debit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 800.00, AccountName =  $"{message}" },
+            new AccountingRule { Id = "3", RuleName =  $"{message}", Description =  $"{message}", SystemDescription =  $"{message}", System_Id = "SYS003", BookingDirection = "Debit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 500.00, AccountName = $"{message}" },
+            new AccountingRule { Id = "4", RuleName =  $"{message}", Description =  $"{message}", SystemDescription =  $"{message}", System_Id = "SYS004", BookingDirection = "Credit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 1200.00, AccountName = $"{message}" }
         };
             return serverResponse.ToList();
         }
@@ -496,17 +496,17 @@ namespace CBS.FrontDesk.UI.Controllers
 
         }
         [HttpPost]
-        public ActionResult PostAutoJournalEntries(AutomatedEventEntryCommand data)
+        public async Task<ActionResult> PostAutoJournalEntries(AutomatedEventEntryCommand data)
         {
             // Process the received data
             // For example, you can save it to the database or perform any business logic
-            if (data.Entries[0].AccountNumber.Contains("No Account found"))
+            if (data.Entries[0].MFI_ChartOfAccountId.Contains("000000"))
             {
-                return Json(_Service.PostAutomatedJournalEntry(data,true));
+                return Json(await _Service.PostAutomatedJournalEntry(data,true));
             }
             else
             {
-              return Json(_Service.PostAutomatedJournalEntry(data));
+              return Json( await _Service.PostAutomatedJournalEntry(data));
                 
             }
             // Return a success response

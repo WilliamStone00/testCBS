@@ -36,20 +36,20 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         }
     }
 
- 
-    public class Entry
-    {
-        public string AccountNumber { get; set; }
-        public decimal Amount { get; set; }
-        public string BookingDirection { get; set; }
-        public string Description { get; set; }
-        public string MFI_ChartOfAccountId { get; set; }
-    }
 
-    public class AutomatedEventEntryCommand
+    public class AutomatedEventEntryCommand  
     {
-        public List<Entry> Entries { get; set; }
-        public string OperationDescription { get; set; }
+        public List<AutomatedEventEntry> Entries { get; set; }
+        public string ReferenceId { get; set; }
+        public string Description { get; set; }
+    }
+     
+    public class AutomatedEventEntry
+    {
+        public string MFI_ChartOfAccountId { get; set; }
+        public string BookingDirection { get; set; }
+
+        public decimal Amount { get; set; }
     }
     public class EntryTempData
     {
@@ -74,7 +74,13 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         [Required]
         public string Reference { get; set; }
     }
-    public class EntryApproval
+
+    public class EventEntryResponse
+    {
+        public string ResponseMessge { get; set; }
+        public bool Status { get; set; }
+
+    }    public class EntryApproval
     {
 
         public string Id { get; set; }

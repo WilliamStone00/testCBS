@@ -251,7 +251,7 @@ function InitiliseDataTable(serverResponse) {
                 if ($('#descriptionRow').length === 0) {
                     $('#AccountingEventEntriesDataTable').append(
                         `<tr id="descriptionRow">
-                            <td colspan="4">
+                            <td colspan="3">
                                 <textarea id="operationDescription" placeholder="Enter description of the operation" style="width: 100%;"></textarea>
                             </td>
                         </tr>`
@@ -392,10 +392,10 @@ function collectAndPostData() {
         console.log(rowData);
 
         const entry = {
-            AccountNumber: rowData.AccountNumber,
+      
             Amount: parseFloat(rowData.BookingDirection.toUpperCase() === "DEBIT" ? debitInput : creditInput),
             BookingDirection: rowData.BookingDirection,
-            Description: rowData.Description,
+           
             MFI_ChartOfAccountId: rowData.MFI_ChartOfAccountId
         };
 
@@ -408,7 +408,8 @@ function collectAndPostData() {
     // Prepare the final data object
     const finalData = {
         Entries: dataToSend,
-        OperationDescription: operationDescription
+        Description: operationDescription,
+        ReferenceId: $('#ReferenceId').val()
     };
 
     // Post the data to the server
@@ -427,6 +428,7 @@ function collectAndPostData() {
         }
     });
 }
+
 
 // Attach the function to a button click event
 $('#submitButton').on('click', function () {
@@ -470,13 +472,15 @@ function submitAccountingEntries() {
     // Prepare the final data object
     const finalData = {
         Entries: dataToSend,
-        OperationDescription: operationDescription
+        Description: operationDescription,
+        ReferenceId: $('#ReferenceId').val()
     };
 
+    console.log(finalData);
   
 
     // Confirmation dialog using alertify
-    alertify.confirm("T R U S T S O F T C R E D I T", "Are you sure you want to submit these entries in the accounting event entry rule?",
+    alertify.confirm("T R U S T S O F T C R E D I T", "Are you sure you want to this accounting entries?",
         function () {
             // If the user confirms, proceed with the submission
             $.ajax({
@@ -485,36 +489,29 @@ function submitAccountingEntries() {
                 contentType: 'application/json',
                 data: JSON.stringify(finalData),
                 success: function (response) {
-                    console.log(response.Result.MessageString,);
                     console.log(response);
-                    if (response.Result) {
-                        if (response.Result.MessageStatus === "Exist") {
-                            appalert(response.Result.MessageString, 3, 1);
-                        } else if (response.Result.MessageStatus === "Failed") {
-                            appalert(response.Result.MessageString, 2, 1);
+                    console.log(response.MessageString);
+ 
+                    if (response) {
+                        if (response.MessageStatus === "Exist") {
+                            appalert(response.MessageString, 3, 1);
+                        } else if (response.MessageStatus === "Failed") {
+                            appalert(response.MessageString, 2, 1);
                         } else {
-                            appalert(response.message, 1, 1);
-                        }
 
-                        if (response.reloadDataView === "Yes") {
-                            if (response.option === 'Update') {
-                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
-                            } else if (response.optype === 'Insert') {
-                                EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
-                            } else {
-                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
-                            }
+                            
+                            appalert(response.MessageString,  1, 1);
                         }
                     } else {
-                        if (response.status === "Exist") {
-                            appalert(response.message, 3, 1);
+                        if (response.Result.MessageStatus === "Exist") {
+                            appalert(response.Result.MessageString, 3, 1);
                         } else {
-                            appalert(response.message, 2, 1);
+                            appalert(response.Result.MessageString, 2, 1);
                         }
                     }
                 },
                 error: function (err) {
-                    console.log(err.statusText);
+                    console.log(err);
                     appalert(err.statusText, 0, 1);
                 }
             });
