@@ -210,7 +210,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
             new System.Web.WebPages.Html.SelectListItem { Value = "Debit", Text = "Debit" },
             new System.Web.WebPages.Html.SelectListItem { Value = "Credit", Text = "Credit" },
-             new System.Web.WebPages.Html.SelectListItem { Value = "NONE", Text = "NONE" }
 
             };
             return selectListItems;
@@ -280,7 +279,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         private Task<List<System.Web.WebPages.Html.SelectListItem>> GetBookingDirections()
         {
-            var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "NOT DEFINE", Value = "NOT DEFINE" } }.ToList();
+            var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" } }.ToList();
             return Task.FromResult(bookingDirections);
         }
         private dynamic BuildMenuViewBag(IEnumerable<Data.Account> debitAccounts)
@@ -487,9 +486,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     {
                         modelAcc.accountingRules.Add(new AccountingRuleX
                         {
-                            accountingEntryRuleId = item.AccountingEntryRuleId,
-                            bookingDirection = item.BookingDirection,
-                            ruleName = item.RuleName
+                            MFI_ChartOfAccountId = item.MFI_ChartOfAccountId,
+                            BookingDirection = item.BookingDirection,
+                            RuleName = item.RuleName,
+                            Description = item.Description
                         });
                     }
                     _AccountingRuleServices.Create(modelAcc);
@@ -527,27 +527,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     var dataList = await _Service.GetAccountingEntryRules();
                     var ChartofAccountManagementPositions = (await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList();
 
-                    var listOfItems = (from d in list
-                                       join e in dataList on d.AccountingEntryRuleId equals e.Id
-                                       join f in ChartofAccountManagementPositions on e.DeterminationAccountId equals f.Id
-                                       join h in ChartofAccountManagementPositions on e.BalancingAccountId equals h.Id
-
-                                       select new AccountingRuleDtos
-                                       {
-                                           Id = d.Id,
-                                           RuleName = d.RuleName,
-                                           BookingDirection = d.BookingDirection,
-                                           DeterminantAccount = f.Id + "@" + f.ChartOfAccountId,
-                                           BalancingAccount = h.Id + "@" + h.ChartOfAccountId,
-                                       }).ToList();
-
-                    foreach (var item in listOfItems)
-                    {
-                        item.DeterminantAccount = await GetAccountNumberWithMangementPositon(item.DeterminantAccount.Split('@')[0], item.DeterminantAccount.Split('@')[1]);
-                        item.BalancingAccount = await GetAccountNumberWithMangementPositon(item.BalancingAccount.Split('@')[0], item.BalancingAccount.Split('@')[1]);
-                        AccountingRuleDtos.Add(item);
-                    }
-
+                
                     return Json(AccountingRuleDtos, JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -741,7 +721,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (serviceOption == "accountingRule")
             {
-                return () => _AccountingRuleServices.Create(model.AccountingRule);
+                return () => null;
             }
             else if (serviceOption == "accountType")
             {
@@ -1168,7 +1148,44 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     return PartialView(partialView, new AccountingConfiguration { });
                 }
+                else if (path == "download")
+                {
 
+
+                    string code = "[BCD]";
+
+                    var ChartofAccountManagementPositions = await _ChartOfAccountManagementPositionServicesServices.DownloadChartOfAccount();
+                    var listOfItems = (from item in ChartofAccountManagementPositions
+                                       select new ChartofAccountManagementPosition
+                                       {
+                                           Id = item.Id,
+                                           AccountNumber = item.AccountNumber.PadRight(6, '0'),
+                                           PositionNumber = item.AccountNumber.PadRight(6, '0')+ code + item.PositionNumber.PadRight(3, '0'),
+                                           Description = item.Description,
+                                           New_AccountNumber =item.New_AccountNumber,
+                                           Old_AccountNumber =  item.Old_AccountNumber,
+
+                                          
+
+                                       }).ToList();
+                    var listOfItemsXXX = (from item in listOfItems.OrderBy(x=>x.New_AccountNumber)
+                                          select new ChartofAccountMFI
+                                          {
+
+                                           Old_AccountNumber = item.Old_AccountNumber,
+                                           New_AccountNumber = item.New_AccountNumber,                     
+                                           Description = item.Description
+                                          }).ToList();
+                    string fileTitle = $"MFI_ChartOfAccount";
+                    this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                    this.HttpContext.Session["rptSource" + Session.SessionID] = listOfItemsXXX;
+
+                    var sysData = new AccountingConfiguration { ListChartofAccountManagementPosition = listOfItems.ToList() };
+                    return PartialView(partialView, sysData);
+
+
+                }
+       
                 else
                 {
                     var data = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPosition(key);
@@ -1190,31 +1207,23 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         list = (List<AccountingRule>)this.HttpContext.Session["items" + this.HttpContext.Session.SessionID];
 
                     }
-                    var dataList = await _Service.GetAccountingEntryRules();
+                    
                     var ChartofAccountManagementPositions = (await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList();
 
                     var listOfItems = (from d in list
-                                       join e in dataList on d.AccountingEntryRuleId equals e.Id
-                                       join f in ChartofAccountManagementPositions on e.DeterminationAccountId equals f.Id
-                                       join h in ChartofAccountManagementPositions on e.BalancingAccountId equals h.Id
-
-                                       select new AccountingRuleDtos
+                                       join f in ChartofAccountManagementPositions on d.MFI_ChartOfAccountId equals f.Id
+ 
+                                       select new AccountingRule
                                        {
                                            Id = d.Id,
-                                           RuleName= d.RuleName,
+                                           Description= d.Description,
                                            BookingDirection = d.BookingDirection,
-                                           DeterminantAccount =   f.Id+"@"+f.ChartOfAccountId,
-                                           BalancingAccount = h.Id + "@" + h.ChartOfAccountId,
+                                           MFI_ChartOfAccountId =  f.AccountNumber +'-'+f.Description,
                                        }).ToList();
 
-                    foreach (var item in listOfItems)
-                    {
-                        item.DeterminantAccount = await GetAccountNumberWithMangementPositon(item.DeterminantAccount.Split('@')[0], item.DeterminantAccount.Split('@')[1]);
-                        item.BalancingAccount = await GetAccountNumberWithMangementPositon(item.BalancingAccount.Split('@')[0], item.BalancingAccount.Split('@')[1]);
-                        AccountingRuleDtos.Add(item);
-                    }
+              
 
-                    var sysData = new AccountingConfiguration { AccountingRules = AccountingRuleDtos };
+                    var sysData = new AccountingConfiguration { AccountingRules = listOfItems };
                     return PartialView(partialView, sysData);
 
                 }

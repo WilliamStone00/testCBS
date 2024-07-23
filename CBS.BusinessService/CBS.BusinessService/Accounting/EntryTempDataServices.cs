@@ -88,6 +88,41 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
+        public async Task<ExecutionMessages> PostAutomatedJournalEntry(AutomatedEventEntryCommand model,bool hasError=false)
+        {
+            try
+            {
+                if (hasError)
+                {
+                    return GetExecutionMessages(model, false, $"Not all the account are present in {this.GetBankName()}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"Not all the account are present in {this.GetBankName()}");
+                }
+
+                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<EventEntryResponse>>(APICallHelper.PostAutomatedEventEntryCommand_url, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, response.Message, MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, response.Message, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+
         public async Task<ExecutionMessages> ApproveAccountingEntry(EntryApproval model)
         {
             try

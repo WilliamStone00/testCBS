@@ -7,6 +7,50 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
+    public class AddAccountingRuleCommand  
+    {
+        public List<AccountingRule> AccountingRules { get; set; } //Loan Operation xxx
+        public string SystemDescription { get; set; }
+
+        public static AddAccountingRuleCommand BuildRequest(ManuallyJournalEntryDataSet model)
+        {
+            return new AddAccountingRuleCommand
+            {
+                SystemDescription = model.AccountingRules[0].RuleName,
+                AccountingRules = BuildRequestItems(model.AccountingRules)
+              
+            };
+        }
+
+        private static List<AccountingRule> BuildRequestItems(List<AccountingRule> accountingRules)
+        {
+            List < AccountingRule > listItems = new List < AccountingRule >();
+           foreach (var accountingRule in accountingRules)
+            {
+                accountingRule.MFI_ChartOfAccountId = accountingRule.MFI_ChartOfAccountId.Split('-')[2];
+      //          accountingRule.AccountNumber = accountingRule.MFI_ChartOfAccountId.Split('-')[1];
+                accountingRule.System_Id = "";
+                listItems.Add(accountingRule);
+            }
+           return listItems;
+        }
+    }
+
+
+    public class AutomatedEventEntryCommand  
+    {
+        public List<AutomatedEventEntry> Entries { get; set; }
+        public string ReferenceId { get; set; }
+        public string Description { get; set; }
+    }
+     
+    public class AutomatedEventEntry
+    {
+        public string MFI_ChartOfAccountId { get; set; }
+        public string BookingDirection { get; set; }
+
+        public decimal Amount { get; set; }
+    }
     public class EntryTempData
     {
         public string Id { get; set; }
@@ -30,7 +74,13 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         [Required]
         public string Reference { get; set; }
     }
-    public class EntryApproval
+
+    public class EventEntryResponse
+    {
+        public string ResponseMessge { get; set; }
+        public bool Status { get; set; }
+
+    }    public class EntryApproval
     {
 
         public string Id { get; set; }
@@ -56,12 +106,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public Data.Account Account { get; set; }= new Account();
         public EntryDescription EntryDescription { get; set; } = new EntryDescription();
         public List<EntryTempData> EntryTempDatas { get; set; }= new List<EntryTempData>(){ };
-
+        public List<AccountingRuleDtos> AccountingRuleDtos = new List<AccountingRuleDtos>();
         public List<PostedEntry> PostedEntries { get; set; }= new List<PostedEntry>();
         public List<EntryTempDataResult> EntryTempDataResult { get; set; } = new List<EntryTempDataResult> { 
     
         };   
         public List<Account> Accounts { get; set; }= new List<Account>();
+        public List<AccountingRule> AccountingRules { get; set; } = new List<AccountingRule>();
+        public AccountingRule AccountingRule { get; set; } = new AccountingRule();
         public string ServiceOption { get; set; }
         public string Action { get; set; }
         public string Key { get; set; }

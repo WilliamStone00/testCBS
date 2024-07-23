@@ -14,7 +14,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true", @id = "branchCodeDropdown" })
                                 @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                                <label>Select @ViewBag.BankName's  you which to upload accounts</label>
+                                <label>Select accounting entry rule</label>
                             </div>
                         </div>
 

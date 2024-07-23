@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     $('#DeterminationManagementAccountId').hide();
     $('#HasManagementAccount').change(function () {
-      
+
         if ($(this).is(':checked')) {
             alert("ok");
             $('#DeterminationAccountId').hide();
@@ -11,7 +11,7 @@
             $('#DeterminationManagementAccountId').hide();
         }
     });
-  
+
     // Trigger the processing simulation when needed
     $('#ReadUploadedFile').click(function () {
         simulateProcessing();
@@ -113,14 +113,14 @@
     });
     $(document).on('change', '#AccountOwnerId', function () {
         var selectedValue = $(this).val();
-  
+
         var accNumber = $('#AccountNumberCU').val();
         accNumber = accNumber.replace('[BCD]', selectedValue);
         $('#AccountNumberCU').val(accNumber);
         $('#BranchCode').val(selectedValue);
     });
 
-
+    LoadDataForEventRule();
 });
 function updateProgressBar(progress) {
     var progressBar = $('.progress-bar');
@@ -185,7 +185,7 @@ function ReadExcelFile() {
             processData: false,
             success: function (response) {
                 appalert("PLEASE KINDLY SELECT YOUR BRANCH CODE", 2, 1);
-               
+
                 console.log(response);
             },
             error: function (xhr, status, error) {
@@ -201,14 +201,14 @@ function ReadExcelFile() {
 function ExecuteExcelFile() {
     var branchId = $("#BranchIdOption").val();
     console.log(branchId);
- 
+
     $.ajax({
-        url: '/AccountingConfiguration/UploadAccounts/'+branchId,
+        url: '/AccountingConfiguration/UploadAccounts/' + branchId,
         type: 'Post',
         dataType: 'json',
         data: { branchId: branchId },
         success: function (data) {
-            
+
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
@@ -217,7 +217,7 @@ function ExecuteExcelFile() {
 }
 function RegisterEntryRule() {
 
- 
+
 
     var message = "WARNING!!!\n";
     message += "Are you sure you want to add this multiple accounting event rule?\n";
@@ -232,6 +232,14 @@ function AddEntryRule() {
     var entry = EntryRule();
     if (entry.AccountingRule.RuleName === null || entry.AccountingRule.RuleName === "") {
         appalert("Please kindly enter the Accounting RuleName", 2, 1);
+        return;
+    }
+    if (entry.AccountingRule.Description === null || entry.AccountingRule.Description === "") {
+        appalert("Please kindly enter a description for this rule", 2, 1);
+        return;
+    }
+    if (entry.AccountingRule.MFI_ChartOfAccountId === null || entry.AccountingRule.MFI_ChartOfAccountId === "") {
+        appalert("Please kindly  Select the Accounting Chart", 2, 1);
         return;
     }
     var message = "WARNING!!!\n";
@@ -270,14 +278,13 @@ function DeleteAccountingRole(key, controller, action) {
     }
     var message = "WARNING!!!\n";
     message += "Are you sure you want to add accounting event code with " + entry.AccountingRule.RuleName + " into " + entry.AccountingRule.BookingDirection + "?\n";
-    DeleteAccountingRoleFromDB('Confirm accounting event code ', message, '/' + controller + '/' + action , key);
+    DeleteAccountingRoleFromDB('Confirm accounting event code ', message, '/' + controller + '/' + action, key);
 }
 
-function DeleteAccountingRoleFromDB(title, message, ajaxUrl, key)
-{
+function DeleteAccountingRoleFromDB(title, message, ajaxUrl, key) {
     $.ajax({
         type: "GET",
-        url: ajaxUrl + '?Id=' + key ,
+        url: ajaxUrl + '?Id=' + key,
         success: function (dataResponse) {
             console.log(dataResponse);
             var table;
@@ -291,11 +298,11 @@ function DeleteAccountingRoleFromDB(title, message, ajaxUrl, key)
 }
 function ReadEntryRule(dataResponse) {
     $("#ServiceOptionn").val(dataResponse.ServiceOption);
- 
+
     $("#AccountingRule_RuleName").val(dataResponse.RuleName);
     $("#AccountingRule_AccountingEntryRuleId").val(dataResponse.AccountingEntryRuleId);
     $("#AccountingRule_BookingDirection").val(dataResponse.BookingDirection);
- 
+
 }
 
 function SavingAccountingRuleToDB(title, message, ajaxUrl, data) {
@@ -309,11 +316,11 @@ function SavingAccountingRuleToDB(title, message, ajaxUrl, data) {
                 success: function (response) {
                     if (response.success) {
                         appalert(response.message, 3, 1);
-                                   }
+                    }
                     else {
                         appalert(response.message, 1, 3);
 
-                            }
+                    }
                 },
                 error: function () {
                     appalert(error, 0, 3);
@@ -336,13 +343,10 @@ function SavingAccountingRule(title, message, ajaxUrl, data) {
                 success: function (response) {
                     if (response.success) {
                         appalert(response.message, 3, 1);
-                        LoadAccountingRuleData("AccountingConfiguration", "InitializeData", "datalistingview_RuleEntry", "myDataTable_AccountingRuleData", "accountingRule", "", "_EntryRuleData", "list", "desc");
-
+                        initializeDataTableAccountingRuleData(data);
                     }
                     else {
-                        appalert(response.message,1, 3);
-
-                        LoadAccountingRuleData("AccountingConfiguration", "InitializeData", "datalistingview_RuleEntry", "myDataTable_AccountingRuleData", "accountingRule", "", "_EntryRuleData", "list", "desc");
+                        appalert(response.message, 1, 3);
 
                     }
                 },
@@ -358,7 +362,7 @@ function SavingAccountingRule(title, message, ajaxUrl, data) {
 }
 function EntryRule() {
     const formData = {
-        ServiceOption: $("#ServiceOptionn").val() ,
+        ServiceOption: $("#ServiceOptionn").val(),
         AccountingRule: {
             RuleName: $("#AccountingRule_RuleName").val(),
             AccountingEntryRuleId: $("#AccountingRule_AccountingEntryRuleId").val(),
@@ -414,10 +418,9 @@ function initializeDataTableAccountingRuleData(data) {
         table = tableElement.DataTable({
             data: data,
             columns: [
-                { data: 'RuleName' },
-                { data: 'DeterminantAccount' },
+                { data: 'MFI_ChartOfAccountId' },
                 { data: 'BookingDirection' },
-                { data: 'BalancingAccount' },
+                { data: 'Description' },
                 {
                     "data": "Id",
                     "orderable": "false",
@@ -433,8 +436,8 @@ function initializeDataTableAccountingRuleData(data) {
         table.clear().draw();
     }
 }
- 
-function padNumberDigits(number,completingNumber) {
+
+function padNumberDigits(number, completingNumber) {
     // Convert the number to a string
     let numString = number.toString();
 
@@ -451,7 +454,7 @@ function padNumberDigits(number,completingNumber) {
 }
 function loadAccountCartegoryByChartNumber(number) {
     console.log(number);
-  
+
     $.ajax({
         url: '/AccountingConfiguration/GetAccountForChartOfAccountManagementPositionId',
         type: 'GET',
@@ -463,7 +466,7 @@ function loadAccountCartegoryByChartNumber(number) {
 
             $('#AccountNumber').val(data.AccountNumber);
             $('#AccountName').val(data.description);
-            var accNumber = padNumberDigits(data.AccountNumber,6)+"[BCD]"+"000"
+            var accNumber = padNumberDigits(data.AccountNumber, 6) + "[BCD]" + "000"
             $('#AccountNumberCU').val(accNumber);
             // Add new options based on the fetched data
             $.each(data.accountCategoryList, function (index, item) {
@@ -492,7 +495,7 @@ function extractNumericCode(selectedValue) {
 }
 function loadOperationEventAttributeIds(operationEventId) {
     console.log(operationEventId);
-   
+
     $.ajax({
         url: '/AccountingConfiguration/GetOperationEventAttribute',
         type: 'GET',
@@ -649,3 +652,10 @@ function TrialBalanceReferenceDataConfiguration(controller, KEY, tableID, partia
     LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, "details", divToLoadTheData, serviceOption);
 }
 
+function DownloadMFIChartOfAccount() {
+    // (string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+
+    window.open('/Reports/DownloadExcelFilelist', '_blank');
+
+
+}

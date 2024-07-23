@@ -31,17 +31,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             await GetList();
             return View();
         }
-        [HttpPost]
-        public async Task<ActionResult> Create(AccountingRule model)
-        {
-            if (ModelState.IsValid)
-            {
-                var data = await _Services.Create(model);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-            }
+        //[HttpPost]
+        //public async Task<ActionResult> Create(AccountingRule model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var data = await _Services.Create(model);
+        //        return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+        //    }
 
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
-        }
+        //    return Json(new { success = false, status = false, message = "Fill the required fields." });
+        //}
         [HttpPost]
         public async Task<ActionResult> Update(AccountingRule model)
         {

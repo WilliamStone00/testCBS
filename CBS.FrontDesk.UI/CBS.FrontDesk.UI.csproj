@@ -2366,6 +2366,7 @@
     <Content Include="Scripts\Js\Crud\Penalty\Penalty.js" />
     <Content Include="Scripts\Js\Crud\Teller\Teller.js" />
     <Content Include="Scripts\Js\Crud\TransactionConfiguration\SavingProductFeeMapping.js" />
+    <Content Include="Scripts\Js\main.js\AutoJournalEntry.js" />
     <Content Include="Scripts\Js\main.js\Account_Upload.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />
     <Content Include="Scripts\Js\Crud\Config\Localization\Countries.js" />
@@ -2960,9 +2961,6 @@
     <Content Include="Views\CashFlowManagement\_CreateCashInfusion.cshtml" />
     <Content Include="Views\CashFlowManagement\CashInfusion.cshtml" />
     <Content Include="Views\CashFlowManagement\_CashTransferData.cshtml" />
-    <Content Include="Views\CashDesk\OtherCashMobileMoney.cshtml" />
-    <Content Include="Views\CashDesk\_OtherCashMobileMoneyDesk.cshtml" />
-    <Content Include="Views\CashDesk\_OtherCashMobileMoneyForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
