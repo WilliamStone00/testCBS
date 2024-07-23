@@ -52,6 +52,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IsThereCollateral { get; set; }
         public decimal InterestRate { get; set; }
         public decimal VatRate { get; set; }
+        public string LoanId { get; set; }
+
         public int NumberOfRepayment { get; set; }
         public string RepaymentCircle { get; set; }
         public string LoanType { get; set; }
@@ -210,8 +212,6 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     public class Loan
     {
         public string Id { get; set; }
-        public int NumberOfInstallments { get; set; }
-        public string RepaymentCycle { get; set; }
         public string LoanApplicationId { get; set; }
         public decimal Principal { get; set; }
         public decimal LoanAmount { get; set; }
@@ -219,17 +219,14 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal InterestRate { get; set; }
         public decimal LastPayment { get; set; }
         public decimal Paid { get; set; }
-        public decimal VatRate { get; set; }
-
         public decimal Balance { get; set; }
         public decimal DueAmount { get; set; }
         public decimal AccrualInterest { get; set; }
+        public decimal LastCalculatedInterest { get; set; }
         public decimal AccrualInterestPaid { get; set; }
         public decimal TotalPrincipalPaid { get; set; }
         public decimal Tax { get; set; }
         public decimal TaxPaid { get; set; }
-        public string LoanTarget { get; set; }//Employee, Government, Groups etc
-        public string LoanCategory { get; set; }//Main OR Special Saving Facilities
         public decimal FeePaid { get; set; }
         public decimal Fee { get; set; }
         public decimal Penalty { get; set; }
@@ -239,12 +236,11 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public DateTime NextInstallmentDate { get; set; }
         public DateTime LoanDate { get; set; }
         public bool IsLoanDisbursted { get; set; }
+        public string DisbursmentStatus { get; set; }
         public DateTime LastInterestCalculatedDate { get; set; }
         public DateTime LastRefundDate { get; set; }
         public DateTime LastEventData { get; set; }
         public string CustomerId { get; set; }
-        public string LoanJourneyStatus { get; set; }
-
         public string LoanManager { get; set; }
         public string LoanStatus { get; set; }
         public bool IsRestructured { get; set; }
@@ -258,13 +254,25 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string BankId { get; set; }
         public string LoanType { get; set; }
         public string BranchCode { get; set; }
+        public string LoanId { get; set; } = "N/A";
         public string CustomerName { get; set; }
+        public int LoanDuration { get; set; }
+        public virtual LoanApplication LoanApplication { get; set; }
+        public string LoanJourneyStatus { get; set; }
+        public decimal VatRate { get; set; }
+        public string LoanTarget { get; set; }//Employee, Government, Group, Company, Individual etc
+        public string LoanCategory { get; set; }//Main_Loan OR Special_Saving_Facilities
+        public string AccountNumber { get; set; }
+        public bool IsUpload { get; set; }
+
+
+        public int NumberOfInstallments { get; set; }
+        public string RepaymentCycle { get; set; }
         public string LoanDurarion { get; set; }
         public IndividualCustomerProfile IndividualCustomer { get; set; }
         public PaginationMetadata PaginationMetadata { get; set; }
         public List<FileDownloadInfoLoan> FileDownloadInfoLoans { get; set; }
         public InitiateLoanDownloadCommand InitiateLoanDownloadCommand { get; set; }
-        public virtual LoanApplication LoanApplication { get; set; }
         public virtual ICollection<Refund> Refunds { get; set; }
         public virtual ICollection<LoanAmortization> LoanAmortizations { get; set; }
         public List<DisburstedLoan> DisburstedLoans { get; set; }

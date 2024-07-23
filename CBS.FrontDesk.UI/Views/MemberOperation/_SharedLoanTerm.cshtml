@@ -16,17 +16,26 @@
                 <td>@Model.LoanApplication.Id</td>
             </tr>
             <tr>
-                <td><strong>Loan Product ID:</strong></td>
-                <td>@Model.LoanApplication.LoanProductId</td>
+                <td><strong>Loan Application Type:</strong></td>
+                <td>@Model.LoanApplication.LoanApplicationType</td>
             </tr>
             <tr>
-                <td><strong>Loan Product Name:</strong></td>
+                <td><strong>Loan product:</strong></td>
                 <td>@Model.LoanApplication.LoanProduct.ProductName</td>
             </tr>
             <tr>
-                <td><strong>Loan type:</strong></td>
+                <td><strong>Loan Type:</strong></td>
                 <td>@Model.LoanApplication.LoanType</td>
             </tr>
+            <tr>
+                <td><strong>Target:</strong></td>
+                <td>@Model.LoanApplication.LoanTarget</td>
+            </tr>
+            <tr>
+                <td><strong>Loan Product ID:</strong></td>
+                <td>@Model.LoanApplication.LoanProductId</td>
+            </tr>
+
             <tr>
                 <td><strong>Amount:</strong></td>
                 <td>@Model.LoanApplication.Amount.ToString("#,##0.00") FCFA</td>

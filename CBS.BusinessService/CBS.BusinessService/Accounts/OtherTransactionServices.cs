@@ -76,10 +76,16 @@ namespace CBS.BusinessService.Accounts
                                        Amount = a.Amount,
                                        Debit = a.Debit,
                                        Credit = a.Credit,
+                                       AmountInWord = a.AmountInWord,
+                                       CNI = a.CNI,
+                                       DateOfOperation = a.DateOfOperation,
+                                       MemberName = a.MemberName,
+                                       ReceiptTitle = a.ReceiptTitle,
+                                       TelephoneNumber = a.TelephoneNumber,
                                        Direction = a.Direction,
                                        TransactionType = a.TransactionType,
                                        SourceType = a.SourceType,
-                                       Naration = a.Naration,
+                                       Narration = a.Narration,
                                        CustomerId = a.CustomerId,
                                        AccountNumber = a.AccountNumber,
                                        BranchId = a.BranchId,
@@ -117,7 +123,7 @@ namespace CBS.BusinessService.Accounts
         }
 
 
-       
+
         public async Task<OtherTransaction> GetOtherTransaction(string id)
         {
             try

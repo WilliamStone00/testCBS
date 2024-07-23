@@ -74,6 +74,10 @@ namespace CBS.BusinessService.Accounts
                                        name = teller.name,
                                        code = teller.code,
                                        bankId = teller.bankId,
+                                       PerformCashIn = teller.PerformCashIn,
+                                       PerformCashOut = teller.PerformCashOut,
+                                       PerformTransfer = teller.PerformTransfer,
+                                       TellerType = teller.TellerType,
                                        branchId = teller.branchId,
                                        MinimumAmountToManage = teller.MinimumAmountToManage,
                                        MaximumAmountToManage = teller.MaximumAmountToManage,
@@ -141,9 +145,9 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var couApiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<Teller>>>(APICallHelper.GetAllTeller);
-                if (couApiResponse!=null)
+                if (couApiResponse != null)
                 {
-                    var results= couApiResponse.ApiResponseData.Data.Where(x => x.isPrimary == true);
+                    var results = couApiResponse.ApiResponseData.Data.Where(x => x.isPrimary == true);
                     return results;
                 }
                 return new List<Teller>();
@@ -182,8 +186,8 @@ namespace CBS.BusinessService.Accounts
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.name}", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
@@ -222,12 +226,17 @@ namespace CBS.BusinessService.Accounts
                     Teller.isPrimary = model.isPrimary;
                     Teller.activeStatus = model.activeStatus;
                     Teller.inUseStatus = model.inUseStatus;
+                    Teller.PerformTransfer = model.PerformTransfer;
+                    Teller.PerformCashIn = model.PerformCashIn;
+                    Teller.PerformCashOut = model.PerformCashOut;
+                    Teller.TellerType = model.TellerType;
+                    Teller.OperationType = model.OperationType;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<Teller>>(string.Format(APICallHelper.Get_Update_Delete_Teller, model.id), Teller);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{Teller.name}", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                        GetExecutionMessages(response, true, null, MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
                     else

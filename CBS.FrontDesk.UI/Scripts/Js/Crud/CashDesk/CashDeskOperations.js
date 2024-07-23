@@ -165,6 +165,7 @@ function collectDeposits() {
             deposit.AccountType = $(this).find('td:eq(1)').text();
             deposit.Note = $('#Note').val();
             deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
+            deposit.IsChargesInclussive = $(this).find('.check-inclussive').prop('checked');
             deposit.OperationType = $('#OperationType').val();
             deposit.CheckName = $('#CheckName').val();
             deposit.CheckNumber = $('#CheckNumber').val();

@@ -2326,6 +2326,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\ExpensesCashDesk.js" />
+    <Content Include="Scripts\Js\Crud\CashDesk\OtherCashMobileMoney.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\OtherTransactions.js" />
     <Content Include="Scripts\Js\Crud\ChargesWaived\Pending.js" />
     <Content Include="Scripts\Js\Crud\ChargesWaived\Requests.js" />
@@ -2960,10 +2961,6 @@
     <Content Include="Views\CashFlowManagement\_CreateCashInfusion.cshtml" />
     <Content Include="Views\CashFlowManagement\CashInfusion.cshtml" />
     <Content Include="Views\CashFlowManagement\_CashTransferData.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_DownloadMFIChartOfAccount.cshtml" />
-    <Content Include="Views\ManuallyJournalEntry\MultipleJournalEntryClient.cshtml" />
-    <Content Include="Views\ManuallyJournalEntry\MultipleJournalEntryConfiguration.cshtml" />
-    <Content Include="Views\ManuallyJournalEntry\_MultipleJournalEntryClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
