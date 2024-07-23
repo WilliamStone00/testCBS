@@ -113,17 +113,17 @@
                         <th style="width: 15%">Description</th>
                         <th style="width: 10%">Principal</th>
                         <th style="width: 10%">Interest</th>
-                        <th style="width: 10%">Fees</th>
+                        <th style="width: 10%">VAT</th>
                         <th style="width: 10%">Penalty</th>
                         <th style="width: 10%">Paid</th>
-                        <th style="width: 10%">Due</th>
+                        <th style="width: 10%">Balance</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- First Additional Row -->
                     <tr>
                         <td colspan="3" class="text-end fw-bold">Principal:</td>
-                        <td colspan="6">@Model.Principal.ToString("#,0.00")</td>
+                        <td colspan="6">@Model.Principal.ToString("#,##0.0")</td>
                     </tr>
                     <!-- Second Additional Row -->
                     <tr>
@@ -136,20 +136,22 @@
                             <td>@d.Sno</td>
                             <td>@d.NextPaymentDate.ToShortDateString()</td>
                             <td>@d.Description</td>
-                            <td>@d.Principal.ToString("#,0.00")</td>
-                            <td>@d.Interest.ToString("#,0.00")</td>
-                            <td>@d.Fee.ToString("#,0.00")</td>
-                            <td>@d.Penalty.ToString("#,0.00")</td>
-                            <td>@d.Paid.ToString("#,0.00")</td>
-                            <td>@d.Due.ToString("#,0.00")</td>
+                            <td>@d.Principal.ToString("#,##0.0")</td>
+                            <td>@d.Interest.ToString("#,##0.0")</td>
+                            <td>@d.Tax.ToString("#,##0.0")</td>
+                            <td>@d.Penalty.ToString("#,##0.0")</td>
+                            <td>@d.Paid.ToString("#,##0.0")</td>
+                            <td>@d.Due.ToString("#,##0.0")</td>
                         </tr>
                     }
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="7" class="text-end fw-bold">Total:</td>
-                        <td>@Model.LoanAmortizations.Sum(x => x.Paid).ToString("#,0.00")</td>
-                        <td>@Model.LoanAmortizations.Sum(x => x.Due).ToString("#,0.00")</td>
+                        <td colspan="4" class="text-end fw-bold">Total:</td>
+                        <td>@Model.LoanAmortizations.Sum(x => x.Interest).ToString("#,##0.0")</td>
+                        <td colspan="2"></td>
+                        <td>@Model.LoanAmortizations.Sum(x => x.Paid).ToString("#,##0.0")</td>
+                        <td>@Model.LoanAmortizations.Sum(x => x.Due).ToString("#,##0.0")</td>
                     </tr>
                 </tfoot>
             </table>

@@ -24,12 +24,13 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
         private readonly LoanServices _LoanServices;
         private readonly LoanCommiteeMemberServices _loanCommiteeMember;
         private readonly UserManagementServices _userManagementServices;
-
-        public LoanController(LoanServices LoanServices, LoanCommiteeMemberServices loanCommiteeMember, UserManagementServices userManagementServices)
+        private readonly BranchServices _branchServices;
+        public LoanController(LoanServices LoanServices, LoanCommiteeMemberServices loanCommiteeMember, UserManagementServices userManagementServices, BranchServices branchServices = null)
         {
             _LoanServices = LoanServices;
             _loanCommiteeMember = loanCommiteeMember;
             _userManagementServices = userManagementServices;
+            _branchServices = branchServices;
         }
 
         public async Task<ActionResult> Index()
@@ -48,17 +49,59 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
             var loan = await _LoanServices.GetLoanWithCustomerAndBranch(KEY);
             return View(loan);
         }
+        // Action to handle file download
+        public async Task<ActionResult> DownloadFile(string fileId=null)
+        {
+            if (string.IsNullOrEmpty(fileId))
+            {
+                var downloadInfoLoans = await _LoanServices.GetAllFileDownloadInfoLoanPerUser();
+                var Branches = await _branchServices.GetBranches();
+                ViewBag.Branches = Branches;
+                return View(new Loan { FileDownloadInfoLoans = downloadInfoLoans.ToList() });
+            }
+
+            try
+            {
+                // Call the service to download the file
+                var response = await _LoanServices.DownloadFile(fileId);
+
+                if (response != null)
+                {
+                    // If response is successful, return the file
+                    return File(response.FileData, response.ContentType, response.FileName);
+                }
+                else
+                {
+                    // If the response is null or contains errors, return an error view
+               
+                    return View("Error", new HandleErrorInfo(new Exception(response.ErrorMessage), "ControllerName", "ActionName"));
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception and return an error view
+                Console.WriteLine($"Error downloading file: {ex.Message}");
+                return View("Error", new HandleErrorInfo(ex, "ControllerName", "ActionName"));
+            }
+        }
+
         public async Task<ActionResult> LoanReportGeneration()
         {
             var downloadInfoLoans = await _LoanServices.GetAllFileDownloadInfoLoanPerUser();
-
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.Branches = Branches;
             return View(new Loan {FileDownloadInfoLoans= downloadInfoLoans.ToList()});
         }
         [HttpPost]
-        public async Task<ActionResult> InitializeDownload(InitiateLoanDownloadCommand initiateLoanDownloadCommand)
+        public async Task<ActionResult> DownloadFile(InitiateLoanDownloadCommand initiateLoanDownloadCommand)
         {
             var data = await _LoanServices.InitiateBulkDownloadLoansBranch(initiateLoanDownloadCommand);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            ViewBag.Message = Messaging.MessageResult(data);
+            ViewBag.Status = data.Result;
+            var downloadInfoLoans = await _LoanServices.GetAllFileDownloadInfoLoanPerUser();
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.Branches = Branches;
+            return View(new Loan { FileDownloadInfoLoans = downloadInfoLoans.ToList() });
         }
         [HttpPost]
         public async Task<ActionResult> LoadData(string searchCriteria = "All")

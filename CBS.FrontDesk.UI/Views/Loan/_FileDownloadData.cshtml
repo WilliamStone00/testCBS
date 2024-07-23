@@ -32,7 +32,7 @@
                             <td style="width:10%">@d.Size</td>
                             <td style="width:17%">@d.UserName</td>
                             <td style="width:18%">
-                                <a href="@($"{d.DownloadPath}")" onclick="" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.FileName to download">Download</a> |
+                                <a href="/Loan/DownloadFile?fileId=@d.Id" onclick="" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.FileName to download">Download</a> |
                                 <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.FileName" onclick="DeleteRecordThenReloadPage('Loan','@d.Id')">Delete</a>
                             </td>
                         </tr>

@@ -376,9 +376,13 @@
         public static string GetAllBulkDownloadInfosLoan = "/api/v1/FileDownloadInfos";
         public static string GelLoansSearchByAnyCriterialQuery = "/api/v1/Loan/SearchByAnyCriterialQuery";
         public static string GetAllBulkDownloadInfosLoanPerUser = "/api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{0}";
-        ///api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{userid}
-        ///api/v1/Loan/SearchByAnyCriterialQuery
-        public static string GetAllLoanByBranchIdQuery = "/api/v1/Loan/GetAllLoanByBranchIdQuery/{id}";
+        public static string DownloadLoanFile = "/api/v1/FileDownloadInfos/download/{0}";
+        
+        
+    
+    ///api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{userid}
+    ///api/v1/Loan/SearchByAnyCriterialQuery
+    public static string GetAllLoanByBranchIdQuery = "/api/v1/Loan/GetAllLoanByBranchIdQuery/{id}";
 
         //LOAN Amortization
         public static string GetLoanAmortizationByID = "/api/LoanAmortization/GetLoanAmortization/{0}";

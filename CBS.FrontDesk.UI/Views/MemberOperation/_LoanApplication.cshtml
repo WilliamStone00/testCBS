@@ -35,7 +35,7 @@ By carefully selecting the appropriate loan product and terms in this section, y
                             <div class="row g-4">
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanApplicationType, new SelectList(ViewBag.LoanApplicationTypes, "Value", "Text"), "---Select loan application types---", new { @class = "form-control select2", @search = "true", @onchange = "LoadDropDown(this.value,'loanapplicationtype','loanid')" })
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanApplicationType, new SelectList(ViewBag.LoanApplicationTypes, "Value", "Text"), "---Select loan application types---", new { @class = "form-control select2", @search = "true", @onchange = "LoadRefinancing(this.value,'loanapplicationtype','loanid')" })
                                         <label>Application type</label>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@ By carefully selecting the appropriate loan product and terms in this section, y
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductId, new SelectList(ViewBag.LoanProducts, "Value", "Text"), "---Select loan product---", new { @class = "form-control select2", @search = "true", @onchange = "LoadDropDown(this.value,'loanrepayment_cycles','RepaymentCircle')" })
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductId, new SelectList(ViewBag.LoanProducts, "Value", "Text"), "---Select loan product---", new { @class = "form-control select2", @search = "true", @onchange = "LoanProductsProperties(this.value,'loanrepayment_cycles','RepaymentCircle')" })
                                         @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanProductId, "", new { @class = "text-danger " })
                                         <label>Loan product</label>
                                     </div>
@@ -98,6 +98,12 @@ By carefully selecting the appropriate loan product and terms in this section, y
                                         @Html.TextBoxFor(m => m.AddLoanApplicationCommand.LoanDuration, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanDuration, "", new { @class = "text-danger" })
                                         <label id="loanduration">Loan duration</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsChargesInclussive, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="isActive">Check me to include charges to my loan. I don't have money to pay at the cash desk.</label>
                                     </div>
                                 </div>
                             </div>
@@ -162,11 +168,11 @@ By carefully considering and implementing appropriate risk mitigation measures i
                                     </div>
                                 </div>
                                 @*<div class="col-6">
-            <div class="form-check">
-                @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsTermDeposiAccountCoverageAmount, new { @class = "form-check-input" })
-                <label class="form-check-label" for="isActive">Place temp deposit as guarantee</label>
-            </div>
-        </div>*@
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsTermDeposiAccountCoverageAmount, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">Place temp deposit as guarantee</label>
+                                        </div>
+                                    </div>*@
 
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
@@ -183,12 +189,12 @@ By carefully considering and implementing appropriate risk mitigation measures i
                                     </div>
                                 </div>
                                 @*<div class="col-md-4">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.TermDeposiAccountCoverageAmount, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.TermDeposiAccountCoverageAmount, "", new { @class = "text-danger" })
-                <label>Temp account coverage amount</label>
-            </div>
-        </div>*@
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.TermDeposiAccountCoverageAmount, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.TermDeposiAccountCoverageAmount, "", new { @class = "text-danger" })
+                                            <label>Temp account coverage amount</label>
+                                        </div>
+                                    </div>*@
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.AddLoanApplicationCommand.ShareAccountCoverageAmount, new { @class = "form-control" })
@@ -246,7 +252,7 @@ By specifying these parameters accurately, you can ensure clarity regarding char
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
-                                        <label id="chargeparcentages">Prefered first payment date (in Month e.g 1 or 2 or 3)</label>
+                                        <label>Prefered first payment date (in Month e.g 1 or 2 or 3)</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

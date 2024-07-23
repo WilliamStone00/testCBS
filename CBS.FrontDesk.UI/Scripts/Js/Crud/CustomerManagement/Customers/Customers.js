@@ -1,6 +1,6 @@
 ﻿
 $(document).ready(function () {
-    LoadUsers("All");
+    //LoadUsers("All");
     /*LoadDataGen('Individual', 'myDataTable', '_IndividualData', 0, 'datalistingview', null, 'all')*/
 });
 

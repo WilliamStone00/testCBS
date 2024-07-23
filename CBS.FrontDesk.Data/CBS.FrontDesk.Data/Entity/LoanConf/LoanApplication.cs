@@ -43,6 +43,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     }
     public class LoanApplication
     {
+        public bool IsChargesInclussive { get; set; }
+
         public string Id { get; set; }
         [Required]
         public string LoanProductId { get; set; }
@@ -136,6 +138,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required]
         public decimal Amount { get; set; }
         public bool IsThereGuarantor { get; set; }
+        public bool IsChargesInclussive { get; set; }
 
         public bool IsThereCollateral { get; set; }
         public decimal InterestRate { get; set; }
@@ -308,11 +311,19 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public DateTime DateInitiated { get; set; }
 
     }
+    public class FileDownloadDto
+    {
+        public byte[] FileData { get; set; }
+        public string FileName { get; set; }
+        public string ContentType { get; set; }
+        public string ErrorMessage { get; set; }
+    }
     public class DataTableLoan
     {
         public string DisbursementDate { get; set; }
         public string MaturityDate { get; set; }
         public decimal Principal { get; set; }
+
         public decimal InterestRate { get; set; }
         public decimal AccrualInterest { get; set; }
         public decimal Fee { get; set; }

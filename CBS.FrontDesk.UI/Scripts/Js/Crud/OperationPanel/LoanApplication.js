@@ -7,7 +7,13 @@
 
 });
 
-function LoadDropDown(KEY, path, affectedID) {
+function LoanProductsProperties(KEY, path, affectedID) {
+    GetLoanApplication(KEY);
+    var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
+    FillDropDownAjaxCallParam(url, affectedID, "---Select Option---");
+}
+
+function LoadRefinancing(KEY, path, affectedID) {
     var loandiv = document.getElementById('loandiv');
     var showLoanDiv = (KEY === "Refinancing" || KEY === "Reschedule" || KEY === "Restructure");
     var dataPath = KEY;
@@ -17,18 +23,14 @@ function LoadDropDown(KEY, path, affectedID) {
         loandiv.style.display = "block";
         dataPath = "Select loan to " + dataPath;
         $('#loanlable').html(dataPath);
-
         var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
         FillDropDownAjaxCallParam(url, affectedID, dataPath);
-    } else {
+    }
+    else {
         loandiv.style.display = "none";
     }
 
-    if (path === "loanrepayment_cycles") {
-        GetLoanApplication(KEY);
-        var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
-        FillDropDownAjaxCallParam(url, affectedID, "---Select Option---");
-    }
+   
 }
 
 
