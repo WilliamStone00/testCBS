@@ -449,8 +449,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
 
         }
-        //GetBankTransactionAccountById
-
         [HttpGet]
         public async Task<ActionResult> GetBankTransactionByReferenceId(string referenceId)
         {
