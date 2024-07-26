@@ -328,7 +328,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(branchId);
 
                 var data = BuildDropDown(GenerateAccountListView(listOfAccounts));
-                //jjjj
+              
                 return Json(data, JsonRequestBehavior.AllowGet);
 
             }
@@ -341,7 +341,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(CashDemandDataEntity model)
-        {//DepositApproval
+        { 
             if (model.ServiceOption.Equals("CashInfusionModel"))
             {
                 if (model.Action.Equals("insert"))
