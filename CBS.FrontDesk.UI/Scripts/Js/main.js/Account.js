@@ -1,4 +1,6 @@
 ﻿$(document).ready(function () {
+    
+    $('#LiaisonAccountOwnerToHide').hide();
     $('#DeterminationManagementAccountId').hide();
     $('#HasManagementAccount').change(function () {
 
@@ -107,9 +109,23 @@
         loadOperationEventAttributeIds(EventId);
     });
     $(document).on('change', '#Account_ChartOfAccountManagementPositionId', function () {
-        var EventId = $(this).val();
-        console.log("AccountChartOfAccountId selected: " + EventId);
-        loadAccountCartegoryByChartNumber(EventId);
+        var selectedOption = $(this).find('option:selected');
+        var eventId = $(this).val();
+        var selectedText = selectedOption.text();
+        var chartNumber = getFirst6Characters(splitStringByHyphen(selectedText)[1]);
+
+        console.log("Selected text:", selectedText);
+        console.log("Chart number:", chartNumber);
+
+        if (chartNumber === "451000") {
+            $('#LiaisonAccountOwnerToHide').show();
+            console.log("Showing Liaison Account Owner element");
+        } else {
+            $('#LiaisonAccountOwnerToHide').hide();
+            console.log("Hiding Liaison Account Owner element");
+        }
+
+        loadAccountCategoryByChartNumber(eventId);
     });
     $(document).on('change', '#AccountOwnerId', function () {
         var selectedValue = $(this).val();
@@ -119,9 +135,58 @@
         $('#AccountNumberCU').val(accNumber);
         $('#BranchCode').val(selectedValue);
     });
-
-    LoadDataForEventRule();
+    $(document).on('change', '#LiasonAccountOwnerId', function () {
+        var selectedValue = $(this).val();
+        var accNumber = $('#AccountNumberCU').val();
+        accNumber = replaceLastThreeChars($('#AccountNumberCU').val(), selectedValue);
+        $('#AccountNumberCU').val(accNumber);
+    });
+    $('#AccountNumber').on('input', function () {
+        var inputValue = $(this).val();
+        if (inputValue === '451') {
+            $('#LiasonAccountOwnerToHIde').show();
+         
+        } else {
+            $('#LiasonAccountOwnerToHIde').hide();
+        }
+    });
+/*    LoadDataForEventRule();*/
 });
+
+function splitStringByHyphen(inputString) {
+    // Check if the input is a string
+    if (typeof inputString !== 'string') {
+        return "Error: Input must be a string";
+    }
+
+    // Split the string using the '-' character
+    const result = inputString.split('-');
+
+    // Return the resulting array
+    return result;
+}
+
+function getFirst6Characters(str) {
+    // Check if the string is defined and not null
+    if (str == null || str == undefined) {
+        return "";
+    }
+
+    // Convert input to string (in case it's not already a string)
+    str = String(str);
+
+    // Use the slice method to get the first 6 characters
+    return str.slice(0, 7);
+}
+function replaceLastThreeChars(inputString, replacement) {
+    // Check if the string is at least 3 characters long
+    if (inputString.length < 3) {
+        return inputString; // Return the original string if it's too short
+    }
+
+    // Remove the last 3 characters and append the replacement
+    return inputString.slice(0, -3) + replacement;
+}
 function updateProgressBar(progress) {
     var progressBar = $('.progress-bar');
     progressBar.css('width', progress + '%');
@@ -452,7 +517,7 @@ function padNumberDigits(number, completingNumber) {
     // Add the zeros to the right of the number
     return numString + '0'.repeat(zerosToAdd);
 }
-function loadAccountCartegoryByChartNumber(number) {
+function loadAccountCategoryByChartNumber(number) {
     console.log(number);
 
     $.ajax({

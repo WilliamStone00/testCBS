@@ -422,7 +422,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         private async Task GetEventNames()
         {
-            ViewBag.EventCodes = await _accountingServices.GetEventNames("FEE");
+            ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
 
         }
 

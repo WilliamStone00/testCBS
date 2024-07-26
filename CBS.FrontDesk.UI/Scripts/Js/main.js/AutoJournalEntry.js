@@ -446,8 +446,6 @@ function submitAccountingEntries() {
         const debitInput = this.nodes().to$().find('input.debit').val();
         const creditInput = this.nodes().to$().find('input.credit').val();
         const MFI_ChartOfAccountId = this.data().MFI_ChartOfAccountId;
-       
-
         const entry = {
             AccountNumber: rowData.AccountNumber,
             Amount: parseFloat(rowData.BookingDirection.toUpperCase() === "DEBIT" ? debitInput : creditInput),
@@ -498,8 +496,6 @@ function submitAccountingEntries() {
                         } else if (response.MessageStatus === "Failed") {
                             appalert(response.MessageString, 2, 1);
                         } else {
-
-                            
                             appalert(response.MessageString,  1, 1);
                         }
                     } else {

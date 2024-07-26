@@ -97,7 +97,7 @@
                             {
                                 <div class="alert alert-outline-success" role="alert">
                                     <h6 class="alert-heading mb-1">The cash replenishment request of @Model.CashReplenimentRequestdto.IssuedBy is already approved.</h6>
-                                    <p class="mb-0">@Model.CashReplenimentRequestdto.AmountConfirm.ToString("N") was replenished</p>
+                                    <p class="mb-0">@Model.CashReplenimentRequestdto.AmountApproved.ToString("N") was replenished</p>
                                 </div>
                             }
                             else
@@ -167,8 +167,8 @@
                                     </div>
                                     <div class="form-check mb-3">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.CashReplenimentRequestdto.AmountConfirm, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.AmountConfirm, "", new { @class = "text-danger" })
+                                            @Html.TextBoxFor(m => m.CashReplenimentRequestdto.AmountApproved, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.AmountApproved, "", new { @class = "text-danger" })
 
                                             <label for="Description"> Approved Amount</label>
                                         </div>
