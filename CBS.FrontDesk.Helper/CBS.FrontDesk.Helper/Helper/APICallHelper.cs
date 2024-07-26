@@ -623,8 +623,10 @@
         public static string AccountingEntry_Posting_Entries = "/api/v1/AccountingEntries/RetrieveEntries";
         public static string Trialbalance4Column_Entries = "/api/v1/AccountingEntries/Trialbalance4Column";
         public static string CashReplenishmentRequest = "/api/v1/BankingOperation/RequestForCashReplenishment";
-        
-    public static string UpdateCashReplenishmentRequest = "/api/v1/BankingOperation/UpdateRequestForCashReplenishment/{0}";
+        public static string DepositNotificationUrl = "/api/v1/BankingOperation/AddDepositNotificationCommand";
+        public static string ApproveDepositNotificationUrl = "/api/v1/BankingOperation/AddDepositApprovalCommand";
+      
+        public static string UpdateCashReplenishmentRequest = "/api/v1/BankingOperation/UpdateRequestForCashReplenishment/{0}";
     public static string CashReplenishmentResponse = "/api/v1/BankingOperation/ResponseToCashReplenishment";
         public static string GetAllCashReplenishmentRequests = "/api/v1/BankingOperation/GetAllCashReplenishmentRequests";
         public static string GetAllCashReplenishmentQueryAsBranch = "/api/v1/BankingOperation/GetAllCashReplenishmentQueryAsBranch/{0}";
@@ -635,6 +637,11 @@
         public static string GetBankTransactionQueryByIdURL  = "/api/v1/BankingOperation/GetBankTransactionQueryById/{0}";
         public static string GetBankTransactionQueryByReferenceIdURL = "/api/v1/BankingOperation/GetBankTransactionQueryByReferenceId/{0}";
         public static string GetCashReplenishmentRequestById = "/api/v1/BankingOperation/GetCashReplenishmentRequestById/{0}";
+        public static string GetAllDepositNotificationRequestRequests = "/api/v1/BankingOperation/GetAllDepositNotificationQuery";
+        public static string GetDepositNotificationRequestRequests = "/api/v1/BankingOperation/GetDepositNotificationQuery/{0}";
+        public static string GetAllDepositNotificationRequestQueryAsBranch = "/api/v1/BankingOperation/GetAllCashReplenishmentQueryAsBranch/{0}";
+
+        public static string GetDepositNotificationRequestById = "/api/v1/BankingOperation/GetDepositNotificationQuery/{0}";
         public static string GetCashReplenishmentRequestIdReference = "/api/v1/BankingOperation/GetCashReplenishmentRequestByRefereceId/{0}";
         public static string TransactionReversalRequest = "/api/v1/BankingOperation/TransactionReversalRequest";
         public static string TransactionReversalRequestApproval = "/api/v1/BankingOperation/TransactionReversalRequestApproval";
@@ -642,7 +649,9 @@
         public static string GetAllTransactionReversalRequest = "/api/v1/BankingOperation/GetAllTransactionReversalRequests";
         public static string GetTransactionReversalRequestByReferenceId = "/api/v1/BankingOperation/GetTransactionReversalRequestByReferenceId/{0}";
         public static string BankCashOutCommandUrl = "/api/v1/BankingOperation/BankCashOutCommand";
-        public static string AttachedReceiptRemotely = "BankReceipt/CashOutOperation";
+        public static string AttachedCashOutReceiptRemotely = "BankReceipt/CashOutOperation";
+        public static string AttachedCashInReceiptRemotely = "BankReceipt/DepositOperation";
+        public static string UpdateDepositNotificationCommandUrl = "/api/v1/BankingOperation/UpdateDepositNotificationCommand/{0}";
         ///CheckIfTransactionReversalRequestByReferenceIdExist/  
         public static string CheckIfTransactionReversalRequestByReferenceIdExist = "/api/v1/BankingOperation/CheckIfTransactionReversalRequestByReferenceIdExist/{0}";
 

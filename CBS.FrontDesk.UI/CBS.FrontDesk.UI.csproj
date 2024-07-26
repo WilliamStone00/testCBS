@@ -2366,6 +2366,8 @@
     <Content Include="Scripts\Js\Crud\Penalty\Penalty.js" />
     <Content Include="Scripts\Js\Crud\Teller\Teller.js" />
     <Content Include="Scripts\Js\Crud\TransactionConfiguration\SavingProductFeeMapping.js" />
+    <Content Include="Scripts\Js\main.js\CashFlowManagementDeposit.js" />
+    <Content Include="Scripts\Js\main.js\Connection_checker.js" />
     <Content Include="Scripts\Js\main.js\AutoJournalEntry.js" />
     <Content Include="Scripts\Js\main.js\Account_Upload.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />
@@ -2961,6 +2963,13 @@
     <Content Include="Views\CashFlowManagement\_CreateCashInfusion.cshtml" />
     <Content Include="Views\CashFlowManagement\CashInfusion.cshtml" />
     <Content Include="Views\CashFlowManagement\_CashTransferData.cshtml" />
+    <Content Include="Views\CashFlowManagement\DepositRequest.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CreateBankDeposit.cshtml" />
+    <Content Include="Views\CashFlowManagement\_ApproveCashDepositRequest.cshtml" />
+    <Content Include="Views\CashFlowManagement\GetCashDepositDataAwaitingApproval.cshtml" />
+    <Content Include="Views\CashFlowManagement\_uploadBankDepositeReceipt.cshtml" />
+    <Content Include="Views\CashFlowManagement\_ViewDepositRequestStatus.cshtml" />
+    <Content Include="Views\CashFlowManagement\_ViewBankDepositTransaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -4,18 +4,13 @@
  
     LoadCashRequestDataDT("myRequestDataTable")
     LoadCashReplenishmentDataDT("ListOfCashReplenishmentData")
-    
-    $(document).on('change', '#CorrespondingBranchID', function () {
+    console.log("Is loaded");
+    $(document).on('change', '#BranchID', function () {
  
         // Get the selected value
         var selectedValue = $(this).val();
-        if (selectedValue === 'Redirect-To-Branch') {
-            // Show the element
-            $('#hideBranchID').show();
-        } else {
-            // Hide the element
-            $('#hideBranchID').hide();
-        }
+        console.log(selectedValue);
+        loadBankAccountForBranch(selectedValue)
     });
 
     $(document).on('change', '#AccountId', function () {
@@ -26,7 +21,28 @@
     });
 
 });
+function loadBankAccountForBranch(BranchId) {
+ 
+    $.ajax({
+        url: '/CashFlowManagement/GetAllBranchAccountUsedToCreditCashFlow',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId: BranchId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo 
+            $('#LoadBankAccountID').empty();
+            $.each(data, function (index, item) {
+                $('#LoadBankAccountID').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
 
+            // Add new options based on the fetched data
+            console.log(data);
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
 function loadAccountBalance(accountId) {
     console.log(accountId);
     $.ajax({
@@ -106,11 +122,11 @@ function LoadCashRequestDataDT(tableID) {
         ],
         "columnDefs": [
             /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
-            { "targets": 0, "searchable": true, "orderable": true, "width": "25%" },
-            { "targets": 1, "searchable": true, "orderable": true, "width": "15%" },
-            { "targets": 2, "searchable": true, "orderable": true, "width": "25%" },
-            { "targets": 3, "searchable": true, "orderable": true, "width": "15%" },
-            { "targets": 4, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 0, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 2, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 3, "searchable": true, "orderable": true, "width": "30%" },
+            { "targets": 4, "searchable": true, "orderable": true, "width": "10%" },
 
         ],
 
@@ -134,31 +150,25 @@ function LoadInfomation(referenceId) {
     console.log(referenceId);
 
     $.ajax({
-        url: '/CashFlowManagement/GetBankTransactionByReferenceId',
+        url: '/CashFlowManagement/GetBankTransactionByDepositId',
         type: 'GET',
         dataType: 'json',
         data: { referenceId: referenceId },
         success: function (data) {
 
-            console.log(data);
+            console.log(data.BankTransaction);
 
             $('#exampleModalLabel3').empty();
 
             // Append text to the modal title
             $('#exampleModalLabel3').append('Bank Transaction Information:' + data.BankTransaction.Id);
-            $('#CreatedBy').text(data.BankTransaction.CreatedBy);
-            $('#CreatedDate').text(data.BankTransaction.CreatedDate);
-            var AccountReferenceId = data.Account.AccountNumberCU + "-" + data.Account.AccountName;
-            $('#AccountReferenceId').text(AccountReferenceId);
-            $('#Balance').text("XAF" +data.BankTransaction.Balance);
+ 
+            $('#BranchName').text(data.BankTransaction.TransactionType);
+            $('#Balance').text(data.BankTransaction.Balance.toLocaleString('en-US', { style: 'currency', currency: 'XAF' }));
             $('#BankTransactionDate').text(data.BankTransaction.ValueDate);
-            $('#Amount').text("XAF"+data.BankTransaction.Amount);
-            $('#CashRequestedBy').text(data.Cashreplenishment.IssuedBy);
-            $('#CashRequestedAmount').text("XAF" +data.Cashreplenishment.AmountRequested);
-            $('#CashRequestedDate').text(data.Cashreplenishment.IssuedDate);
-            $('#CashApprovedBy').text(data.Cashreplenishment.ApprovedBy);
-            $('#CashApprovedAmount').text("XAF" +data.Cashreplenishment.AmountApproved);
-            $('#CashApprovedDate').text(convertMicrosoftDate(data.Cashreplenishment.ApprovedDate));
+            $('#Amount').text( data.BankTransaction.Amount.toLocaleString('en-US', { style: 'currency', currency: 'XAF' }));
+            $('#TransactionId').text(data.BankTransaction.BankTransactionReference);
+       
             // Update image source
             $('#previewimage').attr('src', data.BankTransaction.FileUpload);
         },
@@ -347,110 +357,6 @@ function DeleteCashRequestData(controller, KEY, serviceOption, status) {
 
 }
 
-function GetCashReplenimentRequest(Id) {
-    $('#exampleModalLabel_CashRequestApproval').empty();
-
-    $.ajax({
-        url: '/TellerCashDemand/GetCashReplenimentRequest',
-        type: 'GET',
-        dataType: 'json',
-        data: { KEY: Id },
-        success: function (data) {
-            // Clear existing options in the OperationEventAttributeId combo
-            // Update the Reference ID
-            console.log(data);
-            var newReferenceId = data.id == null ? "Not Defined" : data.id;
-            var newRequestedBy = data.requesterUserId == null ? "Not Defined" : data.requesterUserId;
-            var newApprovedMessage = data.approvedComment === null ? "Not Defined" : data.approvedComment;
-            var newApprovedBy = data.approvedByUserId === null ? "Not Defined" : data.approvedByUserId;
-            var newApprovedAmount = data.confirmedAmount === null ? 0.0 : data.confirmedAmount;
-            var newApprovedDate = data.approvedDate === null ? "Not Defined" : data.approvedDate;
-            var newStatus = data.approvedStatus === null ? "Not Defined" : data.approvedStatus;
-
-            var newRequestedAmount = data.approvedStatus === null ? "Not Defined" : data.approvedStatus;
-            $('#exampleModalLabel_CashRequestApproval').text('Voucher ReferenceId: ' + data.id);
-            $('#requestedBy').text(data.requesterUserId);
-            // Update the table data
-            $('#invoiceNumber').text(data.id);
-            $('#newStatus').text(data.approvedStatus);
-            $('#amountRequested').text('XFA ' + data.requestedAmount + '.0');
-            $('#requestMessage').text(data.requetcomment);
-            $('#requestedBy').text(data.requesterUserId);
-            $('#approvedBy').text(newApprovedBy);
-            $('#amountApproved').text('XFA ' + newApprovedAmount + '.0');
-            $('#approvedDate').text(formatDate(newApprovedDate));
-            $('#approvedMessage').text(newApprovedMessage);
-            $('#requestedBy').text(data.requesterUserId);
-            // Update the status badge
-            var statusBadge = $('#statusBadge');
-            if (newStatus.toUpperCase() === 'PENDING') {
-                statusBadge.text('PENDING').removeClass('bg-label-success bg-label-danger').addClass('bg-label-primary');
-            } else if (newStatus.toUpperCase() === 'APPROVE') {
-                statusBadge.text('APPROVE').removeClass('bg-label-primary bg-label-danger').addClass('bg-label-success');
-            } else {
-                statusBadge.text('REJECTED').removeClass('bg-label-primary bg-label-success').addClass('bg-label-danger');
-            }
-
-            // Update the alert message
-            var alertMessage = $('.alert-heading');
-            if (newStatus.toUpperCase() === 'APPROVE') {
-                alertMessage.text('The Cash replenishment request issued by ' + newRequestedBy + ' with reference: ' + newReferenceId + ' with Amount ' + newApprovedAmount + ' has already been approved.');
-            } else if (newStatus.toUpperCase() === 'REJECTED') {
-                alertMessage.text('The Cash replenishment request issued by ' + newRequestedBy + ' with reference: ' + newReferenceId + ' with Amount ' + newRequestedAmount + ' has already been rejected.');
-            } else {
-                alertMessage.text('ReferenceId: ' + newReferenceId + ' with Amount ' + newRequestedAmount + ' has not yet been approved');
-            }
-
-        },
-        error: function (xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-
-    // Helper function to format the date
-    function formatDate(dateString) {
-        if (!dateString) return 'Not defined';
-
-        // Check if the date string is in the /Date(ticks)/ format
-        const ticksRegex = /^\/Date\((-?\d+)\)\/$/;
-        const match = dateString.match(ticksRegex);
-
-        if (match) {
-            // Convert ticks to milliseconds and create a Date object
-            const ticks = parseInt(match[1], 10);
-            const date = new Date(ticks);
-
-            // Format the date
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            const seconds = String(date.getSeconds()).padStart(2, '0');
-
-            return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
-        } else {
-            // If the date string is not in the /Date(ticks)/ format, treat it as a regular date string
-            const date = new Date(dateString);
-            if (isNaN(date.getTime())) {
-                return 'Not defined';
-            }
-
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            const seconds = String(date.getSeconds()).padStart(2, '0');
-
-            return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
-        }
-    }
-
-
-}
-
-
 function calculateCashBalance() {
     // Get the total amount of currency notes and coins
     var note10000 = parseInt(document.getElementById('Notes_note10000').value) || 0;
@@ -474,55 +380,38 @@ function calculateCashBalance() {
     var formattedTotalAmount = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
     $("#totalNoteAmount").val(totalAmount);
     console.log(formattedTotalAmount);
+    
+    $("#lblBalanceDeposit").val(totalAmount);
     // Update the lblDepositRequest_amount span with the formatted total amount
-    document.getElementById("lblDepositRequest_amount").textContent = "Total Amount: " + formattedTotalAmount;
+    var element = document.getElementById("lblDepositRequest_amount");
+    if (element) { element.textContent = "Total Amount: " + formattedTotalAmount; } 
+  
 
 
+    ////Primary teller
 
-    //Primary teller
-
-    // Get total note amount
-    var totalNoteAmount = parseFloat(document.getElementById("totalNoteAmount").value);
-    var totalProvision = parseFloat(document.getElementById("totalProvision").value);
-    // Calculate balance
-    var balance = totalNoteAmount - totalProvision ;
-    console.log(totalNoteAmount);
+    //// Get total note amount
+    //var totalNoteAmount = parseFloat(document.getElementById("totalNoteAmount").value);
+    //var totalProvision = parseFloat(document.getElementById("totalProvision").value);
+    //// Calculate balance
+    //var balance = totalNoteAmount - totalProvision ;
+    //console.log(totalNoteAmount);
 
     // Format balance with commas and one decimal place
-    var formattedBalance = balance.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-    console.log(formattedBalance);
+    var formattedTotalAmount = formattedTotalAmount.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    console.log(totalAmount);
     // Display balance
-    document.getElementById("lblBalance").innerText = "Balance: " + formattedBalance;
-    document.getElementById("lblBalanceDeposit").innerText = "Balance: " + formattedBalance;
+   
+    document.getElementById("lblBalanceDeposit").innerText = "Balance: " + formattedTotalAmount;
     // Check if balance is 0 and enable/disable the save button accordingly
     var btnSave = document.getElementById("btnSave");
-    if (balance === 0) {
-        btnSave.disabled = false; // Enable save button
+    if (totalAmount === 0) {
+        btnSave.disabled = true; // Enable save button
     } else {
-        btnSave.disabled = true; // Disable save button
+        btnSave.disabled = false; // Disable save button
     }
 
-    // Change balance color based on condition
-    if (totalNoteAmount !==totalProvision) {
-        document.getElementById("lblBalance").style.color = "red"; // Set red color for balance
-        document.getElementById("lblBalanceDeposit").style.color = "black";
-    } else {
-        document.getElementById("lblBalance").style.color = "black"; // Set default color for balance
-        document.getElementById("lblBalanceDeposit").style.color = "black";
-    }
-    // Change balance color only if balance is not zero and differs from provision amount
-    if (balance !== totalProvision) {
-        document.getElementById("lblBalance").style.color = "red"; // Set red color for balance
-        document.getElementById("lblBalanceDeposit").style.color = "black";
-    } else {
-        document.getElementById("lblBalance").style.color = "black"; // Set black color for balance
-        document.getElementById("lblBalanceDeposit").style.color = "black";
-    }
-
-    if (totalNoteAmount == 0 || totalNoteAmount == totalProvision) {
-        document.getElementById("lblBalance").style.color = "black"; // Set black color for balance 
-        document.getElementById("lblBalanceDeposit").style.color = "black";
-    }
+    
 }
 
 

@@ -102,6 +102,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 CorrespondingBranchId = this.CorrespondingBranchId,
                 ApprovedAmount = this.AmountApproved,
                 BranchId = this.BranchId,
+                CashRequisitionType = this.CashRequisitionType,
                 BranchCode= BranchCode
             };  
         }

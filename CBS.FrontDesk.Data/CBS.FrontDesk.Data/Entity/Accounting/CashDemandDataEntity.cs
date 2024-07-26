@@ -16,6 +16,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public CashClearing CashClearing { get; set; } = new CashClearing();
         public BranchToBranchTransfer BranchToBranchTransfer { get; set; } = new BranchToBranchTransfer();
         public DetailsDto DetailsDto { get; set; } = new DetailsDto();
+        public UploadBankReciept UploadBankReciept { get; set; } = new UploadBankReciept();
+        public DepositNotificationApproval DepositApproval { get; set; } = new DepositNotificationApproval();
+        public DepositNotification DepositNotification { get; set; } = new DepositNotification();
+        public DepositNotificationDto DepositNotificationDto { get; set; } = new DepositNotificationDto();
+        public List<DepositNotificationDto> ListDepositNotificationDto { get; set; } = new List<DepositNotificationDto>();
         public CashReplenimentRequestDto CashReplenimentRequestdto { get; set; } = new CashReplenimentRequestDto();
         public CashReplenimentRequestCompleteDto CashReplenimentRequestCompleteDto { get; set; } = new CashReplenimentRequestCompleteDto();
         public CashReplenimentRequest CashReplenimentRequest { get; set; } = new CashReplenimentRequest();
@@ -27,5 +32,12 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Action { get; set; }
     }
 
-
+    public class UploadBankRecieptDto
+    {
+        public string id { get; set; }
+        public string bankTransactionReference { get; set; }
+        public string filePath { get; set; }
+        public string comment { get; set; }
+        public DateTime ValueDate { get; internal set; }
+    }
 }

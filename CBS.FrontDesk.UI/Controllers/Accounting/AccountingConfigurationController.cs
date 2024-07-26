@@ -225,13 +225,23 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                    Id = item.Id,
                                    AccountNumber = element.AccountNumber.PadRight(6, '0'),
                                    PositionNumber = item.PositionNumber.PadRight(3, '0'),
+                                 
                                    Description = item.Description,
                                    GeneralRepresentation = element.AccountNumber.PadRight(6, '0') + code + item.PositionNumber.PadRight(3, '0')
 
                                }).ToList();
             foreach (var item in listOfItems)
             {
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.Description} - {item.AccountNumber}[BCD]{item.PositionNumber}" });
+                if (item.AccountNumber.Contains("451000"))
+                {
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.Description} - {item.AccountNumber}[BCD][DBCD]" });
+
+                }
+                else
+                {
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.Description} - {item.AccountNumber}[BCD]{item.PositionNumber}" });
+
+                }
             }
             return selectListItems;
         }

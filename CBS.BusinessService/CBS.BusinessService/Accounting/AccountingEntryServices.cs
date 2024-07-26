@@ -164,6 +164,140 @@ namespace CBS.BusinessService
             }
             return ExecutionMessage;
         }
+
+        public async Task<ExecutionMessages> DepositNotificationRequest(DepositNotification model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<DepositNotification>>(APICallHelper.DepositNotificationUrl, model.ConvertToTransferData());
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> DepositNotificationApprovalRequest(Approval model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<DepositNotificationApproval>>(APICallHelper.ApproveDepositNotificationUrl, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> DepositNotificationApprovalRequest(DepositNotificationApproval model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<DepositNotificationApproval>>(APICallHelper.ApproveDepositNotificationUrl, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> UpdateDepositNotificationRequest(DepositNotification model)
+        {
+            try
+            {
+
+                var OperationEvent = await GetDepositNotificationRequest(model.Id);
+                if (OperationEvent != null)
+                {
+
+                    OperationEvent.Amount = model.Amount;
+                    OperationEvent.Message = model.Message;
+            
+                    OperationEvent.Id = model.Id;
+
+                    var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<CashInfusion>>(string.Format(APICallHelper.UpdateCashReplenishmentRequest, model.Id), model);
+                    if (response.IsSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"{model.Id} Transaction was successfull", MessagesResults.Success,
+                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(model, false, $"{model.Id} Transaction failed", MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
         public async Task<List<LiaisonLedgerEntry>> RetrieveLiasonAccountingEntries(SystemQuery model)
         {
             try
@@ -352,6 +486,34 @@ namespace CBS.BusinessService
         }
 
 
+
+        public async Task<List<DepositNotificationDto>> GetAllDepositNotificationRequest()
+        {
+
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<DepositNotificationDto>>>(APICallHelper.GetAllDepositNotificationRequestRequests);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData == null)
+                    {
+                        return new List<DepositNotificationDto>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<DepositNotificationDto>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+
         public async Task<List<CashReplenimentRequestDto>> GetAllCashReplenimentRequest()
         {
       
@@ -432,8 +594,29 @@ namespace CBS.BusinessService
                 throw (ex);
             }
         }
+        
 
-public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
+            public async Task<DepositNotificationDto> GetDepositNotificationRequest(string Id)
+        {
+            try
+            {
+                var ff = string.Format(APICallHelper.GetCashReplenishmentRequestById, Id);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<DepositNotificationDto>>(string.Format(APICallHelper.GetDepositNotificationRequestRequests, Id));
+                if (couApiResponse.IsSuccess)
+                {
+                    var user = await GetUser(couApiResponse.ApiResponseData.Data.IssuedBy);
+                    couApiResponse.ApiResponseData.Data.IssuedBy = user.name + "," + user.phoneNumber + " ";
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new DepositNotificationDto();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+        public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
         {
             try
             {
@@ -537,8 +720,8 @@ public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
                     { "DocumentType", documentRequest.DocumentType },
                     { "ServiceType", documentRequest.ServiceType },
                     { "CallBackBaseUrl",ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString()},
-                    { "CallBackEndPoint", APICallHelper.AttachedReceiptRemotely},
-                    { "RemoteFilePath", $"BankCashOutReciept/{documentRequest.DocumentType}" },
+                    { "CallBackEndPoint", APICallHelper.AttachedDocuments},
+                    { "RemoteFilePath", documentRequest.RemoteFilePath },
                 };
                 List<HttpPostedFileBase>  httpPostedFileBases = new List<HttpPostedFileBase>();
                 httpPostedFileBases.Add(documentRequest.FormFiles);
@@ -586,7 +769,7 @@ public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
                         DocumentId = model.BankTransactionReference,
                         CallBackBaseUrl = "N/A",
                         CallBackEndPoint = "N/A",
-                        RemoteFilePath = APICallHelper.AttachedReceiptRemotely
+                        RemoteFilePath = APICallHelper.AttachedCashOutReceiptRemotely
                     };
                     var modelFile = await UploadFiles(DocModel);
                     if (modelFile.Data == null) 
@@ -616,6 +799,67 @@ public async Task<CashReplenimentRequest> GetCashReplenimentRequest(string Id)
                     
                 }
        
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task<IExecutionMessages> UploadBankDepositTransactionReciept(UploadBankReciept model)
+        {
+            try
+            {
+
+                if (model.UploadedFile == null)
+                {
+                    throw new Exception("No receipt was uploaded, Kindly upload the reciept of the transaction!");
+                }
+                else
+                {
+                    var DocModel = new AddDocumentUploadedCommand
+                    {
+                        FormFiles = model.UploadedFile,
+                        IsSynchronus = true,
+                        OperationID = model.Id,
+                        DocumentType = "BranchBankDeposit",
+                        ServiceType = "AccountingService".ToUpper(),
+                        DocumentId = model.BankTransactionReference,
+                        CallBackBaseUrl = "N/A",
+                        CallBackEndPoint = "N/A",
+                        RemoteFilePath = APICallHelper.AttachedCashInReceiptRemotely
+                    };
+                    var modelFile = await UploadFiles(DocModel);
+                    if (modelFile.Data == null)
+                    {
+                        throw new Exception("File upload failed and response could not be interpreted!");
+                    }
+                    else
+                    {
+                        APICallBackRespose responsed = (APICallBackRespose)modelFile.Data;
+                        model.FileUpload = responsed.data.fullPath;
+                        var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<bool>>(string.Format(APICallHelper.UpdateDepositNotificationCommandUrl,model.Id), model.ConvertToUploadBankRecieptDto());
+                        if (response.IsSuccess)
+                        {
+                            // Successful creation
+                            GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+
+                                ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                            return ExecutionMessage;
+                        }
+                        else
+                        {
+                            // Failed creation
+                            GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                                ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                        }
+                    }
+
+                }
+
             }
             catch (Exception ex)
             {
