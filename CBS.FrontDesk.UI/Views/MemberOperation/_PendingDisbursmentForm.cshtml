@@ -31,6 +31,12 @@
                             <input type="hidden" name="ServiceOption" value="pending_loan_disbursement" id="ServiceOption" />
 
                             <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanDisbumentCommand.IsAlreadyManage, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="isActive">Check if this request must not affect cash</label>
+                                    </div>
+                                </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.AddLoanDisbumentCommand.Status, new SelectList(ViewBag.DisbursmentStatuses, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })

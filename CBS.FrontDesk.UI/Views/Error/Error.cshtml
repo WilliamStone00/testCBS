@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "500-Internal Server Error";
+    Layout = "~/Views/Shared/_ErrorLayout.cshtml";
+}
+
+<h2 class="mb-4">500 - Internal Server Error</h2>
+<p class="lead mb-4">Oops! Something went wrong on our end.</p>
+<p>Please try again later or contact the administrator for assistance.</p>
+<p>ERROR:<br />@ViewBag.ErrorMessage</p>
+<a href="/" class="btn">Go Back to Home</a>

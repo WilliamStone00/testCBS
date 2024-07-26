@@ -31,16 +31,16 @@
 
 
 <fieldset class="fieldset-custom">
-    <legend>Loan Histories</legend>
+    <legend>Loan Portfolio</legend>
     <form method="post" action="/Loan/DownloadFile/">
-        @*<hr />
+        <hr />
         <div class="col-12">
             <div class="form-check">
-                @Html.CheckBoxFor(m => m.InitiateLoanDownloadCommand.IsPDF, new { @class = "form-check-input" })
-                <label class="form-check-label" for="isActive">Check to print in PDF</label>
+                @Html.CheckBoxFor(m => m.InitiateLoanDownloadCommand.IsCompleteRepaid, new { @class = "form-check-input" })
+                <label class="form-check-label" for="isActive">Check to download only repaid loans.</label>
             </div>
         </div>
-        <hr />*@
+        <hr />
         <div class="row g-4">
             <div class="col-md-4">
                 <label for="branchInput">Branch</label>
