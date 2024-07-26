@@ -2961,6 +2961,8 @@
     <Content Include="Views\CashFlowManagement\_CreateCashInfusion.cshtml" />
     <Content Include="Views\CashFlowManagement\CashInfusion.cshtml" />
     <Content Include="Views\CashFlowManagement\_CashTransferData.cshtml" />
+    <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

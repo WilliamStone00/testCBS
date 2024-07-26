@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "404-Resource Not Found";
+    Layout = "~/Views/Shared/_ErrorLayout.cshtml";
+}
+
+<h2 class="mb-4">404 - Resource Not Found</h2>
+<p class="lead mb-4">Oops! We couldn't find the requested resource.</p>
+<p>Please check the URL or contact the administrator for assistance.</p>
+<p>ERROR:<br />@ViewBag.ErrorMessage</p>
+<a href="/" class="btn">Go Back to Home</a>

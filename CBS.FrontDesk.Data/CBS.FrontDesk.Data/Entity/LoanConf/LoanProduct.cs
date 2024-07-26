@@ -386,6 +386,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string Status { get; set; }
         [Required]
         public string Comment { get; set; }
+        public bool IsAlreadyManage { get; set; }
+
     }
     public class LoanProductMaturityPeriodExtension
     {

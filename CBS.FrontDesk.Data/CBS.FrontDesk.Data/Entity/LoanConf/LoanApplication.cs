@@ -286,6 +286,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     {
         public bool IsByBranch { get; set; }
         public string BranchId { get; set; }
+        public bool IsCompleteRepaid { get; set; }
         public string FullName { get; set; }
         public string UserId { get; set; }
         public string BranchName { get; set; }
