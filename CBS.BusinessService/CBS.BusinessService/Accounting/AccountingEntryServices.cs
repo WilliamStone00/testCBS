@@ -172,8 +172,8 @@ namespace CBS.BusinessService
 
                 // Make an API call to create an individual profile
 
-
-                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<DepositNotification>>(APICallHelper.DepositNotificationUrl, model.ConvertToTransferData());
+             
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<DepositNotification>>(APICallHelper.DepositNotificationUrl, model.ConvertToTransferData(this.GetBranchID()));
                 if (response.IsSuccess)
                 {
                     // Successful creation

@@ -144,7 +144,8 @@
                                     </div>
                                     if (Model.DepositNotificationDto.HasBankAccount)
                                     {
-
+                                        @Html.HiddenFor(m => m.DepositNotificationDto.BankAccountId)
+                                        @Html.HiddenFor(m => m.DepositNotificationDto.BankAccountOwner)
                                     }
                                     else
                                     {

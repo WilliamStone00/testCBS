@@ -2970,6 +2970,7 @@
     <Content Include="Views\CashFlowManagement\_uploadBankDepositeReceipt.cshtml" />
     <Content Include="Views\CashFlowManagement\_ViewDepositRequestStatus.cshtml" />
     <Content Include="Views\CashFlowManagement\_ViewBankDepositTransaction.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_DownloadMFIChartOfAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

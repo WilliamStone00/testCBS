@@ -39,11 +39,17 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
         public Denomination CurrencyNotes { get; set; }
 
-        public object ConvertToTransferData()
+        public object ConvertToTransferData(string branchID )
         {
 
 
-            return new { Amount = CurrencyNotes.GetAmountValue(), Message = Message, BankAccountId = "Not Found", BankAccountOwner="XXXXXX" };
+            return new 
+            { 
+                Amount = CurrencyNotes.GetAmountValue(),
+                Message = Message, 
+                BankAccountId = BankAccountId == null ? "XXXXXX" : BankAccountId,
+                BankAccountOwner = BankAccountId==null?"XXXXXX" : branchID,
+            };
             
             
         }
