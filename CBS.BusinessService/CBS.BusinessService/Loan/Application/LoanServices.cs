@@ -100,7 +100,7 @@ namespace CBS.BusinessService
             {
                 DisbursementDate = loan.DisbursementDate.ToString("yyyy-MM-dd, hh:mm:ss"),
                 MaturityDate = loan.MaturityDate.ToString("yyyy-MM-dd"),
-                Principal = loan.Principal,
+                Principal = loan.LoanAmount,
                 InterestRate = loan.InterestRate,
                 AccrualInterest = loan.AccrualInterest,
                 Fee = loan.Fee,
@@ -201,6 +201,27 @@ namespace CBS.BusinessService
                 throw;
             }
         }
+        public async Task<FileDownloadDto> DownloadFile(string fileId)
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<FileDownloadDto>>(string.Format(APICallHelper.DownloadLoanFile, fileId));
+
+                if (couApiResponse.IsSuccess)
+                {
+                    // FileDownloadDto should contain file data and metadata
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new FileDownloadDto { ErrorMessage = couApiResponse.Message};
+
+            }
+            catch (Exception ex)
+            {
+               throw ex;
+            }
+        }
+
+
         public async Task<ExecutionMessages> Delete(string id)
         {
             try
@@ -254,8 +275,8 @@ namespace CBS.BusinessService
                 model.EndDate = GetDateTime(model.StrEndDate);
                 model.UserId = GetUserID();
                 model.FullName = GetUserFullName();
-                model.BranchName = GetBranchName();
-                model.BranchId = GetBranchID();
+                model.BranchName = "N/A";
+                model.BranchId = model.BranchId;
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<FileDownloadInfoLoan>>(APICallHelper.InitiateBulkDownloadLoans, model);
                 if (response.IsSuccess)
                 {

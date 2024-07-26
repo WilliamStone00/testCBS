@@ -195,6 +195,27 @@ namespace CBS.FrontDesk.Helper
     }
 
     // Represents a generic response object with data, errors, and status information.
+    //public class ResponseObject<T> where T : new()
+    //{
+    //    public T Data { get; set; }
+    //    public List<string> Errors { get; set; }
+    //    public int StatusCode { get; set; } = 200;
+    //    public string StatusDescription { get; set; }
+    //    public string Message { get; set; }
+    //    public string Status { get; set; }
+
+    //    // Constructor for creating a response object with optional parameters.
+    //    public ResponseObject(T data = default, int statusCode = 200, string description = null, string message = null, string status = null, List<string> errors = null)
+    //    {
+    //        Data = data;
+    //        StatusCode = statusCode;
+    //        StatusDescription = description;
+    //        Status = status;
+    //        Message = message;
+    //        Errors = errors ?? new List<string>();
+    //    }
+    //}
+
     public class ResponseObject<T> where T : new()
     {
         public T Data { get; set; }
@@ -204,7 +225,6 @@ namespace CBS.FrontDesk.Helper
         public string Message { get; set; }
         public string Status { get; set; }
 
-        // Constructor for creating a response object with optional parameters.
         public ResponseObject(T data = default, int statusCode = 200, string description = null, string message = null, string status = null, List<string> errors = null)
         {
             Data = data;
@@ -215,8 +235,6 @@ namespace CBS.FrontDesk.Helper
             Errors = errors ?? new List<string>();
         }
     }
-
-
 
 
 }

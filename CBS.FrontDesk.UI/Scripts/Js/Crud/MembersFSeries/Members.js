@@ -1,6 +1,6 @@
 ﻿
 $(document).ready(function () {
-    LoadMembers("All");
+    //LoadMembers("All");
 });
 
 function GetMembersData(Key, partialView, divToloadPV, path) {

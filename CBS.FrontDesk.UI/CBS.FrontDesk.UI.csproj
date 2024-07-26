@@ -2920,7 +2920,7 @@
     <Content Include="Views\Loan\_RepaymentSchedle.cshtml" />
     <Content Include="Views\Loan\_FileDownloadData.cshtml" />
     <Content Include="Views\Loan\_SearchBox.cshtml" />
-    <Content Include="Views\Loan\LoanReportGeneration.cshtml" />
+    <Content Include="Views\Loan\DownloadFile.cshtml" />
     <Content Include="Views\AccountingConfiguration\DownloadFile.cshtml" />
     <Content Include="Views\AccountingConfiguration\_FileUploadHistory.cshtml" />
     <Content Include="Views\CashDesk\_ExpenseOtherPaymentDesk.cshtml" />
