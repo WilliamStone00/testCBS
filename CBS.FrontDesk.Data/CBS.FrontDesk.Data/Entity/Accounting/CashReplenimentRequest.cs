@@ -11,8 +11,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         Pending,
         Redirected,
-        Approved,
+        Approve,
         PendingApproval,
+        RedirectToBranch,
         Rejected,
         awaiting_corresponding_entry_posting,
         Completed
@@ -25,6 +26,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     }
     public class CashReplenimentRequest
     {
+        
+                    public string CorrespondingBranch { get; set; }
+        public string BranchOffice { get; set; }
         public string Id { get; set; }
         public string ReferenceId { get; set; }
         public decimal AmountRequested { get; set; }
@@ -48,6 +52,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public bool HasAccount56 { get; set; }
         public string ParentCashReplenishId { get; set; } = "XXXXXXXX";
         public string ApprovalCode { get; set; }
+        public string TempId1 { get; set; } = "Pendding";
+        public string TempId2 { get; set; } = "Pendding";
         public string CashReplishmentRequestStatus { get; set; } = "Pendding";
         public CashApprovalResponse ConvertToCashApprovalResponse(bool Approved)
         { return new CashApprovalResponse { ApprovedMessage =this.ApprovedMessage, IsApproved=Approved,Id= this.Id }; }
@@ -70,6 +76,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 IssuedBy = this.IssuedBy,
                 IssuedDate = this.IssuedDate,
                 ApprovedBy = this.ApprovedBy,
+                TempId1 = this.TempId1,
+                TempId2 = this.TempId2,
                 ApprovedDate = this.ApprovedDate,
                 IsApproved = this.IsApproved,
                 CurrencyCode = this.CurrencyCode,
@@ -78,7 +86,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 IsRejected = false,
                 BranchId = this.BranchId,
                 CashReplishmentRequestStatus = this.CashReplishmentRequestStatus, 
-                CorrespondingBranchId = this.CorrespondingBranchId
+                CorrespondingBranchId = this.CorrespondingBranchId,
+                CorrespondingBranch = this.CorrespondingBranch
             };
         }
     }
@@ -92,13 +101,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
         public string BranchOffice { get; set; }
         public bool IsRejected { get; set; }
-
+ 
         public CashApprovalResponse ConvertToCashApprovalResponse(string BranchCode)
         { 
             return new CashApprovalResponse { 
                 ApprovedMessage = this.ApprovedMessage, 
-                IsApproved = DetermineApprovalStatus(), 
+                IsApproved = this.IsApproved, 
                 Id = this.Id,
+                Status = this.Status,
                 CorrespondingBranchId = this.CorrespondingBranchId,
                 ApprovedAmount = this.AmountApproved,
                 BranchId = this.BranchId,

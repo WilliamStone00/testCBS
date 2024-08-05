@@ -2,8 +2,8 @@
 
     
  
-    LoadCashRequestDataDT("myRequestDataTable")
-    LoadCashReplenishmentDataDT("ListOfCashReplenishmentData")
+    LoadDepositRequestForHO("HeadOfficeDataTable")
+    LoadDepositRequestForBO("BranchOfficeDataTable")
     console.log("Is loaded");
     $(document).on('change', '#BranchID', function () {
  
@@ -102,7 +102,7 @@ function loadBranchCreditingAccount(branchId) {
         }
     });
 }
-function LoadCashRequestDataDT(tableID) {
+function LoadDepositRequestForHO(tableID) {
 
 
     var T = '#' + tableID;
@@ -119,15 +119,17 @@ function LoadCashRequestDataDT(tableID) {
             //        return "<a href='/CashFlowManagement/GetCashReplenimentRequest?KEY=" + data + " class='mr-2' data-toggle='tooltip' data-placement='top' title='View " + data + " detail'> Click to Approve</a>";
             //    }
             //}
+          
         ],
         "columnDefs": [
             /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
-            { "targets": 0, "searchable": true, "orderable": true, "width": "20%" },
-            { "targets": 1, "searchable": true, "orderable": true, "width": "20%" },
-            { "targets": 2, "searchable": true, "orderable": true, "width": "20%" },
-            { "targets": 3, "searchable": true, "orderable": true, "width": "30%" },
-            { "targets": 4, "searchable": true, "orderable": true, "width": "10%" },
-
+            { "targets": 0, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 2, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 3, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 4, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 5, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 6, "searchable": true, "orderable": true, "width": "10%" },
         ],
 
         oLanguage: {
@@ -145,7 +147,49 @@ function LoadCashRequestDataDT(tableID) {
 }
 //
 
+function LoadDepositRequestForBO(tableID) {
 
+
+    var T = '#' + tableID;
+    var dataThumbView = $(T).DataTable({
+        responsive: false,
+        "columns": [
+            //{ "data": "ReferenceId", "name": "ReferenceId", "autoWidth": true },
+            //{ "data": "Amount", "name": "Amount", "autoWidth": true },
+            //{ "data": "RequestMessage", "name": "RequestMessage", "autoWidth": true },
+            //{ "data": "IssuedBy", "name": "IssuedBy", "autoWidth": true },
+            //{ "data": "IssuedDate", "name": "IssuedDate", "autoWidth": true },
+            //{
+            //    "data": "Id", "orderable": "false", "render": function (data) {
+            //        return "<a href='/CashFlowManagement/GetCashReplenimentRequest?KEY=" + data + " class='mr-2' data-toggle='tooltip' data-placement='top' title='View " + data + " detail'> Click to Approve</a>";
+            //    }
+            //}
+
+        ],
+        "columnDefs": [
+            /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
+            { "targets": 0, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 2, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 3, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 4, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 5, "searchable": true, "orderable": true, "width": "10%" },
+            
+        ],
+
+        oLanguage: {
+            sLengthMenu: "_MENU_",
+            sSearch: ""
+        },
+        aLengthMenu: [[10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
+
+
+        order: [[0, "asc"]],
+        bInfo: true,
+        pageLength: 10
+
+    });
+}
 function LoadInfomation(referenceId) {
     console.log(referenceId);
 

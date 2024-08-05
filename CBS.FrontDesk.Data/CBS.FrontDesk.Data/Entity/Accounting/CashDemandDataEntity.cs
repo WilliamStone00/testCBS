@@ -8,7 +8,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 {
     public class CashDemandDataEntity
     {
-  
+        public List<UsersNotification> UsersNotifications { get; set; } = new List<UsersNotification>();
         public CashInfusion CashInfusionModel { get; set; } = new CashInfusion();
         public CashInfusionRequest CashInfusionRequest { get; set; } = new CashInfusionRequest();
         public Approval Approval { get; set; } = new Approval();

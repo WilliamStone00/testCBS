@@ -3,7 +3,8 @@
     ViewBag.Title = "View Cash Replenishment Details";
 
 }
-
+ 
+@Html.Partial("_GeneralErrorDiv")
 <div class="row invoice-preview">
     <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
@@ -64,17 +65,8 @@
                             {
                                 <tr>
                                     <td>Status</td>
-                                    <td class="badge bg-label-success  text-lowercase">
-                                        @Model.CashReplenimentRequestdto.Status
-
-                                        @if (Model.CashReplenimentRequestdto.CorrespondingBranchId == "xxx")
-                                        {
-                                            <div> Authourized for cash out</div>
-                                        }
-                                        else
-                                        {
-                                    <div> Request has been redirected to @Model.CashReplenimentRequestdto.CorrespondingBranchId</div>
-                                        }
+                                    <td class="badge bg-label-success rounded-pill text-uppercase">
+                                        @Model.CashReplenimentRequestdto.Status,but  waiting for action from manager
                                     </td>
                                 </tr>
                                 <tr>
@@ -99,13 +91,7 @@
                                 }
                                 else
                                 {
-                                    <tr>
-                                        <td>Bank Transaction</td>
-                                        <td>
-                                            @*  <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.ReferenceId')" class="mr-2" id="exLargeModal" data-toggle="tooltip" data-placement="top" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>*@
-                                            <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>
-                                        </td>
-                                    </tr>
+
                                 }
 
                             }
@@ -136,7 +122,7 @@
                                         </tr>
                                         <tr>
                                             <td>Approved By </td>
-                                            <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.TempId2 </td>
+                                            <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.ApprovedBy </td>
                                         </tr>
                                         <tr>
                                             <td>Approved Date</td>
@@ -178,8 +164,8 @@
                                         {
                                             <tr>
                                                 <td>Status</td>
-                                                <td class="badge bg-label-warning nav-pills">
-                                                    @Model.CashReplenimentRequestdto.Status awaiting for      @Model.CashReplenimentRequestdto.CorrespondingBranch
+                                                <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                                    @Model.CashReplenimentRequestdto.Status and aborted
                                                 </td>
                                             </tr>
                                             <tr>
@@ -188,7 +174,7 @@
                                             </tr>
                                             <tr>
                                                 <td>Approved By </td>
-                                                <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.TempId2 </td>
+                                                <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.ApprovedBy </td>
                                             </tr>
                                             <tr>
                                                 <td>Approved Date</td>
@@ -204,13 +190,7 @@
 
                             @if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.awaiting_corresponding_entry_posting.ToString()))
                             {
-                                <tr>
-                                    <td>Bank Transaction</td>
-                                    <td>
-                                        @*  <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.ReferenceId')" class="mr-2" id="exLargeModal" data-toggle="tooltip" data-placement="top" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>*@
-                                        <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>
-                                    </td>
-                                </tr>
+
                             }
                             else
                             {
@@ -300,6 +280,6 @@
             </div>
         </div>
 
-        @Html.Partial("_ViewBankTransaction")
+
     </div>
 </div>

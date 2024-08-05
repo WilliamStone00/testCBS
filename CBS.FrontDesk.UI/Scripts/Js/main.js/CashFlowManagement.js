@@ -1,15 +1,15 @@
 ﻿$(document).ready(function () {
 
     
- 
-    LoadCashRequestDataDT("myRequestDataTable")
-    LoadCashReplenishmentDataDT("ListOfCashReplenishmentData")
+    LoadCashRequestDataBranch("CashRequestDataTable")
+    //LoadCashRequestDataHo("myRequestDataTable")
+    LoadCashReplenishmentDataDT("GetAllCashRequestDataTable")
     
     $(document).on('change', '#CorrespondingBranchID', function () {
  
         // Get the selected value
         var selectedValue = $(this).val();
-        if (selectedValue === 'Redirect-To-Branch') {
+        if (selectedValue === 'RedirectToBranch') {
             // Show the element
             $('#hideBranchID').show();
         } else {
@@ -86,50 +86,92 @@ function loadBranchCreditingAccount(branchId) {
         }
     });
 }
-function LoadCashRequestDataDT(tableID) {
+//function LoadCashRequestDataHO(tableID) {
 
 
-    var T = '#' + tableID;
-    var dataThumbView = $(T).DataTable({
-        responsive: false,
-        "columns": [
-            //{ "data": "ReferenceId", "name": "ReferenceId", "autoWidth": true },
-            //{ "data": "Amount", "name": "Amount", "autoWidth": true },
-            //{ "data": "RequestMessage", "name": "RequestMessage", "autoWidth": true },
-            //{ "data": "IssuedBy", "name": "IssuedBy", "autoWidth": true },
-            //{ "data": "IssuedDate", "name": "IssuedDate", "autoWidth": true },
-            //{
-            //    "data": "Id", "orderable": "false", "render": function (data) {
-            //        return "<a href='/CashFlowManagement/GetCashReplenimentRequest?KEY=" + data + " class='mr-2' data-toggle='tooltip' data-placement='top' title='View " + data + " detail'> Click to Approve</a>";
-            //    }
-            //}
-        ],
-        "columnDefs": [
-            /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
-            { "targets": 0, "searchable": true, "orderable": true, "width": "25%" },
-            { "targets": 1, "searchable": true, "orderable": true, "width": "15%" },
-            { "targets": 2, "searchable": true, "orderable": true, "width": "25%" },
-            { "targets": 3, "searchable": true, "orderable": true, "width": "15%" },
-            { "targets": 4, "searchable": true, "orderable": true, "width": "20%" },
+//    var T = '#' + tableID;
+//    var dataThumbView = $(T).DataTable({
+//        responsive: false,
+//        "columns": [
+//            //{ "data": "ReferenceId", "name": "ReferenceId", "autoWidth": true },
+//            //{ "data": "Amount", "name": "Amount", "autoWidth": true },
+//            //{ "data": "RequestMessage", "name": "RequestMessage", "autoWidth": true },
+//            //{ "data": "IssuedBy", "name": "IssuedBy", "autoWidth": true },
+//            //{ "data": "IssuedDate", "name": "IssuedDate", "autoWidth": true },
+//            //{
+//            //    "data": "Id", "orderable": "false", "render": function (data) {
+//            //        return "<a href='/CashFlowManagement/GetCashReplenimentRequest?KEY=" + data + " class='mr-2' data-toggle='tooltip' data-placement='top' title='View " + data + " detail'> Click to Approve</a>";
+//            //    }
+//            //}
+//        ],
+//        "columnDefs": [
+//            /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
+//            { "targets": 0, "searchable": true, "orderable": true, "width": "25%" },
+//            { "targets": 1, "searchable": true, "orderable": true, "width": "15%" },
+//            { "targets": 2, "searchable": true, "orderable": true, "width": "10%" },
+//            { "targets": 3, "searchable": true, "orderable": true, "width": "20%" },
+//            { "targets": 4, "searchable": true, "orderable": true, "width": "20%" },
+//            { "targets": 5, "searchable": true, "orderable": true, "width": "10%" },
 
-        ],
+//        ],
 
-        oLanguage: {
-            sLengthMenu: "_MENU_",
-            sSearch: ""
-        },
-        aLengthMenu: [[10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
-
-
-        order: [[0, "asc"]],
-        bInfo: true,
-        pageLength: 10
-
-    });
-}
-//
+//        oLanguage: {
+//            sLengthMenu: "_MENU_",
+//            sSearch: ""
+//        },
+//        aLengthMenu: [[10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
 
 
+//        order: [[0, "asc"]],
+//        bInfo: true,
+//        pageLength: 10
+
+//    });
+//}
+////
+
+//function LoadCashRequestDataBranch(tableID) {
+
+
+//    var T = '#' + tableID;
+//    var dataThumbView = $(T).DataTable({
+//        responsive: false,
+//        "columns": [
+//            //{ "data": "ReferenceId", "name": "ReferenceId", "autoWidth": true },
+//            //{ "data": "Amount", "name": "Amount", "autoWidth": true },
+//            //{ "data": "RequestMessage", "name": "RequestMessage", "autoWidth": true },
+//            //{ "data": "IssuedBy", "name": "IssuedBy", "autoWidth": true },
+//            //{ "data": "IssuedDate", "name": "IssuedDate", "autoWidth": true },
+//            //{
+//            //    "data": "Id", "orderable": "false", "render": function (data) {
+//            //        return "<a href='/CashFlowManagement/GetCashReplenimentRequest?KEY=" + data + " class='mr-2' data-toggle='tooltip' data-placement='top' title='View " + data + " detail'> Click to Approve</a>";
+//            //    }
+//            //}
+//        ],
+//        "columnDefs": [
+//            /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
+//            { "targets": 0, "searchable": true, "orderable": true, "width": "15%" },
+//            { "targets": 1, "searchable": true, "orderable": true, "width": "15%" },
+//            { "targets": 2, "searchable": true, "orderable": true, "width": "20%" },
+//            { "targets": 3, "searchable": true, "orderable": true, "width": "15%" },
+//            { "targets": 4, "searchable": true, "orderable": true, "width": "25%" },
+//            { "targets": 5, "searchable": true, "orderable": true, "width": "10%" },
+
+//        ],
+
+//        oLanguage: {
+//            sLengthMenu: "_MENU_",
+//            sSearch: ""
+//        },
+//        aLengthMenu: [[10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
+
+
+//        order: [[0, "asc"]],
+//        bInfo: true,
+//        pageLength: 10
+
+//    });
+//}
 function LoadInfomation(referenceId) {
     console.log(referenceId);
 
@@ -275,12 +317,54 @@ function LoadCashReplenishmentDataDT(tableID) {
         ],
         "columnDefs": [
             /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
-            { "targets": 0, "searchable": true, "orderable": true, "width": "20%" },
-            { "targets": 1, "searchable": true, "orderable": true, "width": "25%" },
+            { "targets": 0, "searchable": true, "orderable": true, "width": "25%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 2, "searchable": true, "orderable": true, "width": "10%" },
+            { "targets": 3, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 4, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 5, "searchable": true, "orderable": true, "width": "10%" },
+        ],
+
+        oLanguage: {
+            sLengthMenu: "_MENU_",
+            sSearch: ""
+        },
+        aLengthMenu: [[10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
+
+
+        order: [[0, "asc"]],
+        bInfo: true,
+        pageLength: 10
+
+    });
+}
+
+function LoadCashRequestDataBranch(tableID) {
+
+
+    var T = '#' + tableID;
+    var dataThumbView = $(T).DataTable({
+        responsive: false,
+        "columns": [
+            //{ "data": "ReferenceId", "name": "ReferenceId", "autoWidth": true },
+            //{ "data": "Amount", "name": "Amount", "autoWidth": true },
+            //{ "data": "RequestMessage", "name": "RequestMessage", "autoWidth": true },
+            //{ "data": "IssuedBy", "name": "IssuedBy", "autoWidth": true },
+            //{ "data": "IssuedDate", "name": "IssuedDate", "autoWidth": true },
+            //{
+            //    "data": "Id", "orderable": "false", "render": function (data) {
+            //        return "<a href='/CashFlowManagement/GetCashReplenimentRequest?KEY=" + data + " class='mr-2' data-toggle='tooltip' data-placement='top' title='View " + data + " detail'> Click to Approve</a>";
+            //    }
+            //}
+        ],
+        "columnDefs": [
+            /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
+            { "targets": 0, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "15%" },
             { "targets": 2, "searchable": true, "orderable": true, "width": "20%" },
             { "targets": 3, "searchable": true, "orderable": true, "width": "15%" },
-            { "targets": 4, "searchable": true, "orderable": true, "width": "20%" },
-
+            { "targets": 4, "searchable": true, "orderable": true, "width": "25%" },
+            { "targets": 5, "searchable": true, "orderable": true, "width": "10%" },
         ],
 
         oLanguage: {

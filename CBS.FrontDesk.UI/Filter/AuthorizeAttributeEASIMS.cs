@@ -198,6 +198,7 @@ namespace CBS.FrontDesk.UI
         {
             foreach (var item in menus)
             {
+             
                 string urlx = $"{item.ControllerName}/{item.ActionName}";
                 if (urlx.Contains(url))
                 {

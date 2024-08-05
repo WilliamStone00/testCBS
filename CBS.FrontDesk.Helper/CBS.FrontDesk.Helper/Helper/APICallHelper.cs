@@ -644,7 +644,9 @@
         public static string GetAllDepositNotificationRequestRequests = "/api/v1/BankingOperation/GetAllDepositNotificationQuery";
         public static string GetDepositNotificationRequestRequests = "/api/v1/BankingOperation/GetDepositNotificationQuery/{0}";
         public static string GetAllDepositNotificationRequestQueryAsBranch = "/api/v1/BankingOperation/GetAllCashReplenishmentQueryAsBranch/{0}";
-
+        
+        public static string UserNotificationRequestByIdUrl = "/api/v1/UsersNotification/{0}";
+        public static string UserNotificationRequestUrl = "/api/v1/UsersNotifications";
         public static string GetDepositNotificationRequestById = "/api/v1/BankingOperation/GetDepositNotificationQuery/{0}";
         public static string GetCashReplenishmentRequestIdReference = "/api/v1/BankingOperation/GetCashReplenishmentRequestByRefereceId/{0}";
         public static string TransactionReversalRequest = "/api/v1/BankingOperation/TransactionReversalRequest";

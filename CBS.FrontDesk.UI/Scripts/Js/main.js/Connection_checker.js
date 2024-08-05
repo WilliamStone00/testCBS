@@ -1,7 +1,9 @@
 ﻿$(document).ready(function () {
     let isOffline = false;
 
+ 
     function checkInternetConnection() {
+        $('#loading').hide();
         console.log("Terminal is checking for internet connection");
         if (!navigator.onLine && !isOffline) {
             if ($('#connectionModal').length === 0) {

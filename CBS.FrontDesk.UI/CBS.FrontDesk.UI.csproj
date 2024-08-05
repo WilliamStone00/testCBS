@@ -441,6 +441,7 @@
     <Compile Include="Controllers\Accounting\AccountingStatementsController.cs" />
     <Compile Include="Controllers\Accounting\BankingOperationController.cs" />
     <Compile Include="Controllers\Accounting\CashFlowManagementController.cs" />
+    <Compile Include="Controllers\Accounting\NotificationController.cs" />
     <Compile Include="Controllers\Accounting\OperationEventAttributeController.cs" />
     <Compile Include="Controllers\Accounting\OperationEventController.cs" />
     <Compile Include="Controllers\Accounting\TellerCashDemandController.cs" />
@@ -2391,6 +2392,7 @@
     <Content Include="Scripts\Js\main.js\BankingOperations.js" />
     <Content Include="Scripts\Js\main.js\CashFlowManagement.js" />
     <Content Include="Scripts\Js\main.js\MultipleManualEntry.js" />
+    <Content Include="Scripts\Js\main.js\Notifications.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -2954,7 +2956,7 @@
     <Content Include="Views\CashFlowManagement\GetAllCashReplenimentRequestData.cshtml" />
     <Content Include="Views\CashFlowManagement\_CreateBankCashOutApproval.cshtml" />
     <Content Include="Views\CashFlowManagement\_ViewBankTransaction.cshtml" />
-    <Content Include="Views\CashFlowManagement\GetCashReplenimentRequestDataAwaitingApprovalCompleted.cshtml" />
+    <Content Include="Views\CashFlowManagement\CompleteBankDepositOperation.cshtml" />
     <Content Include="Views\CashFlowManagement\CreateBankCashOut.cshtml" />
     <Content Include="Views\AccountingConfiguration\AccountPolicySetting.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateAccountPolicy.cshtml" />
@@ -2970,6 +2972,20 @@
     <Content Include="Views\CashFlowManagement\_uploadBankDepositeReceipt.cshtml" />
     <Content Include="Views\CashFlowManagement\_ViewDepositRequestStatus.cshtml" />
     <Content Include="Views\CashFlowManagement\_ViewBankDepositTransaction.cshtml" />
+    <Content Include="Views\Notification\Index.cshtml" />
+    <Content Include="Views\Notification\ApproveCashRequest.cshtml" />
+    <Content Include="Views\Notification\_ApproveCashRequest.cshtml" />
+    <Content Include="Views\Notification\_ApproveCashDepositRequest.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_DownloadMFIChartOfAccount.cshtml" />
+    <Content Include="Views\Notification\BranchToBranchTransferRequest.cshtml" />
+    <Content Include="Views\Notification\BranchCashClearingRequest.cshtml" />
+    <Content Include="Views\Notification\_CreateCashInfusion.cshtml" />
+    <Content Include="Views\Notification\_branchToBranchTransfer.cshtml" />
+    <Content Include="Views\Notification\_PendingUserNotifications.cshtml" />
+    <Content Include="Views\Notification\_ViewCashRequestStatus.cshtml" />
+    <Content Include="Views\Notification\BankCashOutRequest.cshtml" />
+    <Content Include="Views\Notification\_CreateBankCashOutApproval.cshtml" />
+    <Content Include="Views\Notification\BankDepositApprovalRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
