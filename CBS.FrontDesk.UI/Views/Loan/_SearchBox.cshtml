@@ -36,8 +36,8 @@
         <hr />
         <div class="col-12">
             <div class="form-check">
-                @Html.CheckBoxFor(m => m.InitiateLoanDownloadCommand.IsCompleteRepaid, new { @class = "form-check-input" })
-                <label class="form-check-label" for="isActive">Check to download only repaid loans.</label>
+                @Html.CheckBoxFor(m => m.InitiateLoanDownloadCommand.IsUnpaidOnly, new { @class = "form-check-input" })
+                <label class="form-check-label" for="isActive">UnChecked to include paid loans.</label>
             </div>
         </div>
         <hr />

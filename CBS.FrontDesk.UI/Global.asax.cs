@@ -114,29 +114,82 @@ namespace CBS.FrontDesk.UI
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
         {
             ProcessAuthenticationCookie("CBS4U");
+            ProcessAuthenticationCookie("CBS4U_MFA");
             ProcessAuthenticationCookie("PWD");
-            ProcessAuthenticationCookie("MFA");
+            ProcessAuthenticationCookie("CHANGE_PWD");
         }
 
         private void ProcessAuthenticationCookie(string cookieName)
         {
-
-
-
-            HttpCookie authCookie = Request.Cookies[cookieName];
-            if (authCookie != null)
+            // Retrieve the boolean value from session, default to false if null or not a boolean
+            bool isMFA = HttpContext.Current.Session?["MFA"] is bool mfaValue ? mfaValue : false;
+            bool isPWD = HttpContext.Current.Session?["PWD"] is bool mfaValuee ? mfaValuee : false;
+            
+            // Use the boolean value
+            if (!isMFA || !isPWD)
             {
-                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                if (!authTicket.Expired)
+                HttpCookie authCookie = Request.Cookies[cookieName];
+                if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
                 {
-                    AddIdentity(authTicket);
-                }
-                else
-                {
-                    InvalidateCookie(cookieName);
+                    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    if (authTicket != null && !authTicket.Expired)
+                    {
+                        AddIdentity(authTicket);
+                    }
+                    else
+                    {
+                        InvalidateCookie(cookieName);
+                    }
                 }
             }
         }
+
+        //private void ProcessAuthenticationCookie(string cookieName)
+        //{
+        //    // Retrieve the boolean value from session, default to false if null or not a boolean
+        //    bool isMFA = HttpContext.Current.Session?["MFA"] is bool mfaValue ? mfaValue : false;
+
+        //    // Use the boolean value
+        //    if (!isMFA)
+        //    {
+        //        // Ensure that Request.Cookies and the specific cookie are not null
+        //        HttpCookie authCookie = Request.Cookies?[cookieName];
+        //        HttpCookie xauthCookie = Request.Cookies[cookieName];
+        //        if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
+        //        {
+        //            try
+        //            {
+        //                // Decrypt the cookie value
+        //                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+
+        //                // Validate the decrypted ticket
+        //                if (authTicket != null && !authTicket.Expired)
+        //                {
+        //                    // Add identity based on the ticket
+        //                    AddIdentity(authTicket);
+        //                }
+        //                else
+        //                {
+        //                    // Invalidate the cookie if the ticket is null or expired
+        //                    InvalidateCookie(cookieName);
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                // Log or handle the exception if decryption fails
+        //                // Optionally, you could invalidate the cookie if there's an issue with decryption
+        //                InvalidateCookie(cookieName);
+        //                // Log the error (ex.Message) for further diagnosis
+        //            }
+        //        }
+        //        else
+        //        {
+        //            // Handle the case where the cookie is not present or has an empty value
+        //            InvalidateCookie(cookieName);
+        //        }
+        //    }
+        //}
+
 
         private void AddIdentity(FormsAuthenticationTicket authTicket)
         {

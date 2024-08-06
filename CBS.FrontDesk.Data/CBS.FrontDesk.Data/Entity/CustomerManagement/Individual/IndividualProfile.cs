@@ -23,6 +23,8 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string PlaceOfBirth { get; set; }
         public string Occupation { get; set; }
         public string VillageOfOrigin { get; set; }
+        public bool IsDailyCollector { get; set; } = false;
+
         public string Address { get; set; }
         public string IDNumber { get; set; }
         public string IDNumberIssueDate { get; set; }

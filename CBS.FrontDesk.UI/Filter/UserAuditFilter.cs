@@ -60,9 +60,9 @@ namespace CBS.FrontDesk.UI.Filters
                 objaudit.RequestMethod = request.HttpMethod; // Capture request method
                 objaudit.UserAgent = request.UserAgent; // Capture user agent
                 objaudit.Referer = request.UrlReferrer?.ToString() ?? "N/A"; // Capture referer
-                if (request.AppRelativeCurrentExecutionFilePath.Contains("UserManagement/FLoginChangePassword") && request.HttpMethod=="GET")
+                if (request.AppRelativeCurrentExecutionFilePath.Contains("UserManagement/FLoginChangePassword") && request.HttpMethod=="GET" || request.AppRelativeCurrentExecutionFilePath.Contains("~/Authentication/Login"))
                 {
-
+                    //~/Authentication/Login
                 }
                 else
                 {

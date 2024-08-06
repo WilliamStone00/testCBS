@@ -118,15 +118,15 @@ namespace CBS.BusinessService.UserManagement
                 var roles = await ApiCallerHelper.GetAsync<ResponseObject<List<UserRoleDto>>>(APICallHelper.GetAllUserRoles);
                 if (IsHeadOffice())
                 {
-                  
+
                     return roles.ApiResponseData.Data;
                 }
                 else
                 {
-                    var rolesx= roles.ApiResponseData.Data.Where(x => x.branchId == GetBranchID());
+                    var rolesx = roles.ApiResponseData.Data.Where(x => x.branchId == GetBranchID());
                     return rolesx;
                 }
-              
+
             }
             catch (Exception ex)
             {
@@ -237,7 +237,7 @@ namespace CBS.BusinessService.UserManagement
                                         Value = a.id.ToString(),
                                     }).ToList();
 
-                   
+
                     return stringValues.ToList();
                 }
                 else
@@ -334,7 +334,7 @@ namespace CBS.BusinessService.UserManagement
                     branches.Add(bracBranches);
                     return branches;
                 }
-         
+
            ;
             }
             catch (Exception ex)
@@ -348,7 +348,7 @@ namespace CBS.BusinessService.UserManagement
             {
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var user = await ApiCallerHelper.GetAsync<ResponseObject<User>>(string.Format(APICallHelper.GetUserByID, ConvertStringToGuid(userid)));
-                if (user.ApiResponseData!=null)
+                if (user.ApiResponseData != null)
                 {
                     return user.ApiResponseData.Data;
                 }
@@ -364,22 +364,44 @@ namespace CBS.BusinessService.UserManagement
             try
             {
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var user = await ApiCallerHelper.GetAsync<ResponseObject<User>>(string.Format(APICallHelper.GetUserByID, userid));
-                if (user.IsSuccess)
+                var userResponse = await ApiCallerHelper.GetAsync<ResponseObject<User>>(string.Format(APICallHelper.GetUserByID, userid));
+                if (userResponse.IsSuccess)
                 {
-                    user.ApiResponseData.Data.name = $"{user.ApiResponseData.Data.firstName} {user.ApiResponseData.Data.lastName}";
-                    user.ApiResponseData.Data.strlastLoginDate = user.ApiResponseData.Data.LastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
-                    user.ApiResponseData.Data.status = user.ApiResponseData.Data.isActive ? "Active" : "In-active";
-                    user.ApiResponseData.Data.ChangePassword.userName = user.ApiResponseData.Data.userName;
-                    user.ApiResponseData.Data.roleID= user.ApiResponseData.Data.userRoles.Select(role => role.roleId).First();
+                    var user = userResponse.ApiResponseData.Data;
+                    user.name = $"{user.firstName} {user.lastName}";
+                    user.strlastLoginDate = user.LastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
+                    user.status = user.isActive ? "Active" : "In-active";
+                    user.ChangePassword.userName = user.userName;
+                    user.roleID = user.userRoles.Select(role => role.roleId).First();
+                    user.MFAActivation = new MFAActivation { Code = null, Email = user.email, Status = user.IsGoogleAuthenticatorEnabled };
+                    return user;
                 }
-                return user.ApiResponseData.Data;
+                return null;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+        public async Task<UserDto> GetUserDto(Guid userid)
+        {
+            try
+            {
+                var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+                var userResponse = await ApiCallerHelper.GetAsync<ResponseObject<UserDto>>(string.Format(APICallHelper.GetUserByID, userid));
+                if (userResponse.IsSuccess)
+                {
+                    var user = userResponse.ApiResponseData.Data;
+                    return user;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        
         public async Task<ExecutionMessages> DeleteUser(Guid userid)
         {
             try
@@ -475,8 +497,8 @@ namespace CBS.BusinessService.UserManagement
         {
             try
             {
-                
-                var resetPassword = new ResetPassword { userName= fLogin.UserName, password=fLogin.Password};
+
+                var resetPassword = new ResetPassword { userName = fLogin.UserName, password = fLogin.Password };
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var reUser = await ApiCallerHelper.PostAsync<ResponseObject<UserDto>>(APICallHelper.FLoginChangePasswordCommand, resetPassword);
                 if (reUser.IsSuccess)
@@ -528,15 +550,78 @@ namespace CBS.BusinessService.UserManagement
             }
             return ExecutionMessage;
         }
+
+        public async Task<ExecutionMessages> EnableMFA(MFAActivation mFAActivation)
+        {
+            try
+            {
+                if (mFAActivation.Code!=null)
+                {
+                    mFAActivation.Status = true;
+                }
+                var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<bool>>(APICallHelper.MFAActivation, mFAActivation);
+                if (reUser.IsSuccess)
+                {
+                    GetExecutionMessages(reUser, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
+                        reUser.Message);
+                    return ExecutionMessage;
+                }
+                GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
+                    reUser.Message);
+
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> MFACodeVerification(MFAActivation mFAActivation)
+        {
+            try
+            {
+
+                var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<bool>>(APICallHelper.MFAVerification, mFAActivation);
+                if (reUser.IsSuccess)
+                {
+                    GetExecutionMessages(reUser, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
+                        reUser.Message);
+                    return ExecutionMessage;
+                }
+                GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
+                    reUser.Message);
+
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<CustomDataTable> GetUsersDataTable(DataTableOptions dataTableOptions)
+
+        {
+            Func<Task<List<User>>> getUsersFunc = async () => (await GetUsers()).ToList();
+            var dataTable = await DatatableHelper.GenerateDataTable<User>(dataTableOptions, getUsersFunc);
+            return dataTable;
+        }
         public async Task<ExecutionMessages> UploadPicture(HttpPostedFileBase user)
         {
             try
             {
                 var additionalParams = new Dictionary<string, string>
-                {
-                    { "UserID", GetUserID() },
-                };
-                List<HttpPostedFileBase> image =new List<HttpPostedFileBase>();
+         {
+             { "UserID", GetUserID() },
+         };
+                List<HttpPostedFileBase> image = new List<HttpPostedFileBase>();
                 image.Add(user);
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var reUser = await ApiCallerHelper.PostFilesAndParamsAsync<ResponseObject<User>>(APICallHelper.UploadProfilePhoto, additionalParams, image);
@@ -559,15 +644,7 @@ namespace CBS.BusinessService.UserManagement
             }
             return ExecutionMessage;
         }
-        public async Task<CustomDataTable> GetUsersDataTable(DataTableOptions dataTableOptions)
-        
-        {
-            Func<Task<List<User>>> getUsersFunc = async () => (await GetUsers()).ToList();
-            var dataTable = await DatatableHelper.GenerateDataTable<User>(dataTableOptions, getUsersFunc);
-            return dataTable;
-        }
 
-      
     }
 
 

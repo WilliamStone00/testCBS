@@ -406,6 +406,7 @@ namespace CBS.BusinessService.CustomerManagement
                 mobileOrOnLineBankingLoginState = a.mobileOrOnLineBankingLoginState,
                 NumberOfKids = a.NumberOfKids,
                 PlaceOfBirth = a.PlaceOfBirth,
+                IsDailyCollector = a.IsDailyCollector,
                 SecretAnswer = a.SecretAnswer,
                 SecretQuestion = a.SecretQuestion,
                 SpouseAddress = a.SpouseAddress,
@@ -664,6 +665,7 @@ namespace CBS.BusinessService.CustomerManagement
                 customer.RegionId = objCustomerProfile.CustomerList.RegionId;
                 customer.TownId = objCustomerProfile.CustomerList.TownId;
                 customer.CountryId = objCustomerProfile.CustomerList.CountryId;
+                customer.IsDailyCollector = objCustomerProfile.CustomerList.IsDailyCollector;
                 customer.DateOfBirth = objCustomerProfile.CustomerList.DateOfBirth;
                 customer.FirstName = objCustomerProfile.CustomerList.FirstName;
                 customer.LastName = objCustomerProfile.CustomerList.LastName;

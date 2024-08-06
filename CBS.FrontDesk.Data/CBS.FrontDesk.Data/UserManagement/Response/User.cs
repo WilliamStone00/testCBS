@@ -25,7 +25,7 @@ namespace CBS.FrontDesk.Data.UserManagement
         [Required]
         [Display(Name = "Last Name")]
         public string lastName { get; set; }
-        
+
         public string password { get; set; }
         public string confirmPassword { get; set; }
         [Display(Name = "Phone number")]
@@ -49,10 +49,11 @@ namespace CBS.FrontDesk.Data.UserManagement
         public string Option { get; set; }
         public int LoginAttempts { get; set; }
         public bool IsGoogleAuthenticatorEnabled { get; set; }
+        public string GoogleAuthenticatorSecretKey { get; set; }
+        public string BarcodeImageUrl { get; set; }
         public bool IsVerified { get; set; }
         public bool IsBlocked { get; set; }
         public bool ChangePasswordOnFirstLogin { get; set; }
-        public string GoogleAuthenticatorSecretKey { get; set; }
         public DateTime CreatedDate { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTime ModifiedDate { get; set; }
@@ -62,7 +63,6 @@ namespace CBS.FrontDesk.Data.UserManagement
         public DateTime LastLoginDate { get; set; }
         public string profilePhoto { get; set; }
         public string provider { get; set; }
-
         public string name { get; set; }
         public string roleName { get; set; }
         public Bank Bank { get; set; }
@@ -73,9 +73,12 @@ namespace CBS.FrontDesk.Data.UserManagement
         public List<UserClaim> userClaims { get; set; }
         public HttpPostedFileBase FileUpload { get; set; }
         public string ImageVirtualPath { get; set; }
+        public MFAActivation MFAActivation { get; set; }
+
         public User()
         {
             isActive = true;
+            MFAActivation = new MFAActivation();
             ImageVirtualPath = "~/Appfiles/Images/p.jpg";
         }
     }
@@ -99,9 +102,31 @@ namespace CBS.FrontDesk.Data.UserManagement
     }
     public class ResetPassword
     {
-        
+
         public string userName { get; set; }
         public string password { get; set; }
-       
+
     }
+
+
+    public class MFAActivation
+    {
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email address.")]
+        public string Email { get; set; }
+
+        public Guid Id { get; set; }
+
+        [Required(ErrorMessage = "Code is required.")]
+        [StringLength(6, MinimumLength = 6, ErrorMessage = "The MFA Code must be 6 characters long.")]
+        [RegularExpression("^[0-9]{6}$", ErrorMessage = "The MFA Code must be a 6-digit number.")]
+        public string Code { get; set; }
+
+        public bool Status { get; set; }
+
+        public string FullName { get; set; }
+
+        public string ReturnUrl { get; set; }
+    }
+
 }

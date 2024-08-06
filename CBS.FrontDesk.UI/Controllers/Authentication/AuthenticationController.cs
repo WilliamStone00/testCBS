@@ -47,36 +47,34 @@ namespace CBS.FrontDesk.UI.Controllers
                     {
                         try
                         {
-
                             if (Data.ChangePasswordOnFirstLogin)
                             {
                                 var user = Data;
-                                CreateToken(user, "PWD", 10);
-                                string url = string.Format("~/UserManagement/FLoginChangePassword?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}"
-                                    , "User", user.id, user.refreshToken, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "internaluserobject:" + user.firstName);
+                                CreateToken(user, "CHANGE_PWD", 10, false, true);
+                                string url = string.Format(
+                                    "~/UserManagement/FLoginChangePassword?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&path={4}&userName={5}",
+                                    "USER", user.id, user.refreshToken, Guid.NewGuid(), user.firstName + "_" + user.lastName, user.userName
+                                );
                                 return RedirectToLocal(url);
                             }
                             else
                             {
                                 if (Data.isMFA)
                                 {
-                                    CreateToken(Data, "MFA", 10);
-                                    string url = string.Format("~/TwoStepaccountverification/MFACodeVerification?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}", "User", Data.id, Data.refreshToken, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "internaluserobject:" + Data.firstName);
+                                    CreateToken(Data, "CBS4U_MFA", 30, true);
+                                    string url = string.Format("~/MFAVerification/Index?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&email={4}&fullname={5}&returnUrl={6}",
+                                        "MFA", Data.id, Data.refreshToken, Guid.NewGuid(), Data.email, Data.firstName, returnUrl);
                                     return Redirect(url);
                                 }
                                 else
                                 {
-                                    CreateToken(Data, "CBS4U", 10);
+                                    CreateToken(Data, "CBS4U", 30);
                                     ViewBag.Success = true;
                                     ViewBag.StartSessionWarning = true;
                                     ViewBag.Message = Messaging.MessageResult(result);
                                     return RedirectToLocal(returnUrl);
-
                                 }
-
                             }
-
-
                         }
                         catch (Exception ex)
                         {
@@ -84,29 +82,97 @@ namespace CBS.FrontDesk.UI.Controllers
                             ViewBag.Message = $"{Messaging.MessageResult(result)}, Error: {ex.Message}";
                             return View("Login", model);
                         }
-                        //if (Data.isAuthenticated)
-                        //{
-
-                        //}
                     }
                     else
                     {
                         var user = (UserDto)result.Data;
-                        string url = string.Format("~/PasswordRecovery/AccountConfirmation?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}", "PasswordRecovery", user.id, user.refreshToken, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "forgotten_password");
+                        string url = string.Format("~/PasswordRecovery/AccountConfirmation?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}",
+                            "PasswordRecovery", user.id, user.refreshToken, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "forgotten_password");
                         return Redirect(url);
-
                     }
                 }
             }
 
-            
             ViewBag.Success = false;
             ViewBag.Message = Messaging.MessageResult(result);
             return View("Login", model);
-
-
         }
-        
+
+        //public async Task<ActionResult> Login(AuthRequest model, string returnUrl = "")
+        //{
+        //    var result = new ExecutionMessages();
+        //    if (ModelState.IsValid)
+        //    {
+        //        result = await _helper.AuthenticateUser(model);
+        //        var Data = new UserDto();
+        //        if (result.Data != null)
+        //        {
+        //            Data = (UserDto)result.Data;
+        //            if (!Data.IsBlocked)
+        //            {
+        //                try
+        //                {
+
+        //                    if (Data.ChangePasswordOnFirstLogin)
+        //                    {
+        //                        var user = Data;
+        //                        CreateToken(user, "PWD", 10);
+        //                        string url = string.Format("~/UserManagement/FLoginChangePassword?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}"
+        //                            , "User", user.id, user.refreshToken, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "internaluserobject:" + user.firstName);
+        //                        return RedirectToLocal(url);
+        //                    }
+        //                    else
+        //                    {
+        //                        if (Data.isMFA)
+        //                        {
+        //                            CreateToken(Data, "CBS4U_MFA", 10);
+        //                            string url = string.Format("~/MFAVerification/Index?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&email={4}&fullname={5}", "MFA", Data.id, Data.refreshToken, Guid.NewGuid(), Data.email, Data.firstName);
+        //                            //string url = string.Format("~/MFAVerification/Index?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&email{4}&fullname{5}","MFA", Data.id, Data.refreshToken, Guid.NewGuid(), Data.email, Data.firstName);
+        //                            return Redirect(url);
+        //                        }
+        //                        else
+        //                        {
+        //                            CreateToken(Data, "CBS4U", 10);
+        //                            ViewBag.Success = true;
+        //                            ViewBag.StartSessionWarning = true;
+        //                            ViewBag.Message = Messaging.MessageResult(result);
+        //                            return RedirectToLocal(returnUrl);
+
+        //                        }
+
+        //                    }
+
+
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    ViewBag.Success = false;
+        //                    ViewBag.Message = $"{Messaging.MessageResult(result)}, Error: {ex.Message}";
+        //                    return View("Login", model);
+        //                }
+        //                //if (Data.isAuthenticated)
+        //                //{
+
+        //                //}
+        //            }
+        //            else
+        //            {
+        //                var user = (UserDto)result.Data;
+        //                string url = string.Format("~/PasswordRecovery/AccountConfirmation?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}", "PasswordRecovery", user.id, user.refreshToken, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "forgotten_password");
+        //                return Redirect(url);
+
+        //            }
+        //        }
+        //    }
+
+
+        //    ViewBag.Success = false;
+        //    ViewBag.Message = Messaging.MessageResult(result);
+        //    return View("Login", model);
+
+
+        //}
+
         //[HttpGet]
         //[AllowAnonymous]
         //public ActionResult Accountverification(string serviceoption = "None", string KEY = "KEY", string secrete = "none", string usersecreteid = "secrete", string path = null,string returnUrl = "")
@@ -151,34 +217,33 @@ namespace CBS.FrontDesk.UI.Controllers
         [AllowAnonymous]
         public ActionResult Logout()
         {
-
+            // Sign out the current user
             FormsAuthentication.SignOut();
-            HttpCookie cookie = new HttpCookie("CBS4U");
-            cookie.Expires = DateTime.Now.AddYears(-1);
-            Response.Cookies.Add(cookie);
+
+            // List of all cookies to clear
+            string[] cookieNames = { "CBS4U", "CBS4U_MFA", "MFA", "PWD", "ASP.NET_SessionId", "Token" };
+
+            foreach (var cookieName in cookieNames)
+            {
+                if (Request.Cookies[cookieName] != null)
+                {
+                    HttpCookie cookie = new HttpCookie(cookieName)
+                    {
+                        Expires = DateTime.Now.AddYears(-1), // Set expiration date in the past
+                        Value = string.Empty // Clear the value
+                    };
+                    Response.Cookies.Add(cookie);
+                }
+            }
+
+            // Abandon the session
             Session.Abandon();
             Session.Clear();
             Session.RemoveAll();
-            //Removing ASP.NET_SessionId Cookie
-            if (Request.Cookies["ASP.NET_SessionId"] != null)
-            {
-                Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
-                Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-10);
-            }
 
-            if (Request.Cookies["Token"] != null)
-            {
-                Response.Cookies["Token"].Value = string.Empty;
-                Response.Cookies["Token"].Expires = DateTime.Now.AddMonths(-10);
-            }
-            if (Request.Cookies["CBS4U"] != null)
-            {
-                Response.Cookies["CBS4U"].Value = string.Empty;
-                Response.Cookies["CBS4U"].Expires = DateTime.Now.AddMonths(-10);
-            }
-            
-
+            // Redirect to login page
             return RedirectToAction("Login");
         }
+
     }
 }

@@ -35,7 +35,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var d in Model.BulkDeposits.Where(x => x.AccountType.ToLower() != "loan").OrderBy(t => t.AccountType))
+                                @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
                                 {
                                     <tr>
                                         <td style="display:none;">@d.AccountNumber</td>
@@ -240,7 +240,7 @@ else if (ViewBag.Operation == "cashout")
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var d in Model.BulkDeposits.Where(x => x.AccountType.ToLower() != "loan").OrderBy(t => t.AccountType))
+                                @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
                                 {
                                     <tr>
                                         <td style="display:none;">@d.AccountNumber</td>
@@ -355,7 +355,7 @@ else if (ViewBag.Operation == "cashoutsws")
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var d in Model.BulkDeposits.Where(x => x.AccountType.ToLower() != "loan").OrderBy(t => t.AccountType))
+                                    @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
                                     {
                                         <tr>
                                             <td style="display:none;">@d.AccountNumber</td>
@@ -463,14 +463,12 @@ else if (ViewBag.Operation == "repayment")
                                         <td>@d.LoanDate.ToString("dd/MM/yy")</td>
                                         <td>@d.LoanAmount.ToString("#,##0.0")</td>
                                         <td>@d.Paid.ToString("#,##0.0")</td>
+                                        <td>@d.Balance.ToString("#,##0.0")</td>
                                         <td>
-                                            <input type="number" class="form-control due-inputxx shadow-input-boxes" readonly="readonly" value="@d.Balance">
+                                            <input type="number" class="form-control amount-input shadow-input-boxes" value="0">
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Balance">
-                                        </td>
-                                        <td>
-                                            <span class="total-span">@d.Balance.ToString("#,##0.0")</span>
+                                            <span class="total-span">0</span>
                                         </td>
                                         <td>
                                             <input type="checkbox" class="form-check-input">

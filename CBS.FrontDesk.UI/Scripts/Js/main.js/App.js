@@ -421,7 +421,7 @@ function LoadDT(tableID, order) {
             aLengthMenu: [[4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
 
 
-            //order: [[0, "desc"]],
+            order: [[order, "desc"]],
             bInfo: true,
             pageLength: 10
 
@@ -446,7 +446,7 @@ function LoadDT(tableID, order) {
             aLengthMenu: [[4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
 
 
-            order: [[0, "asc"]],
+            order: [[order, "asc"]],
             bInfo: true,
             pageLength: 10
 

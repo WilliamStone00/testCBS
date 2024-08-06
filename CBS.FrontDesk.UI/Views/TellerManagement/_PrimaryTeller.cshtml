@@ -68,15 +68,24 @@
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.TellerType, "MobileMoneyMTN", new { id = "MobileMoneyMTN", @class = "form-check-input" })
-                                        <label class="form-check-label" for="MobileMoneyMTN">Virtual Teller (Mobile Money MTN)</label>
+                                        <label class="form-check-label" for="MobileMoneyMTN">V-Teller (Mobile Money MTN)</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        @Html.RadioButtonFor(m => m.Teller.TellerType, "MomocashCollectionMTN", new { id = "MomocashCollectionMTN", @class = "form-check-input" })
+                                        <label class="form-check-label" for="MomocashCollectionMTN">V-Teller Momocash Collection (Mobile Money MTN)</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.TellerType, "MobileMoneyORANGE", new { id = "MobileMoneyORANGE", @class = "form-check-input" })
-                                        <label class="form-check-label" for="MobileMoneyORANGE">Virtual Teller (Orange Money)</label>
+                                        <label class="form-check-label" for="MobileMoneyORANGE">V-Teller (Orange Money)</label>
                                     </div>
                                     <div class="form-check form-check-inline">
+                                        @Html.RadioButtonFor(m => m.Teller.TellerType, "MomocashCollectionOrange", new { id = "MomocashCollectionOrange", @class = "form-check-input" })
+                                        <label class="form-check-label" for="MomocashCollectionOrange">V-Teller Momocash Collection (Orange Money)</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.TellerType, "OtherVirtualTeller", new { id = "OtherVirtualTeller", @class = "form-check-input" })
-                                        <label class="form-check-label" for="OtherVirtualTeller">Other Virtual Teller Services (Like GAV, etc)</label>
+                                        <label class="form-check-label" for="OtherVirtualTeller">Other V-Teller Services (Like GAV, etc)</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.TellerType, "DailyCollector", new { id = "DailyCollector", @class = "form-check-input" })
@@ -129,6 +138,10 @@
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.OperationType, "NoneCash", new { id = "NoneCash", @class = "form-check-input" })
                                         <label class="form-check-label" for="NoneCash">Performs None Cash Operation.</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        @Html.RadioButtonFor(m => m.Teller.OperationType, "Both_Cash_NoneCash", new { id = "NoneCash", @class = "form-check-input" })
+                                        <label class="form-check-label" for="NoneCash">Performs "<b>None Cash</b>" and "<b>Cash</b>" Operations. [Both Operations].</label>
                                     </div>
                                 </div>
                             </div>

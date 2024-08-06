@@ -2325,6 +2325,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
+    <Content Include="Scripts\Js\Crud\CashDesk\MomocashCollection.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\ExpensesCashDesk.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\OtherCashMobileMoney.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\OtherTransactions.js" />
@@ -2454,7 +2455,7 @@
     <Content Include="Views\UserManagement\_UserProfile.cshtml" />
     <Content Include="Views\UserManagement\_ChangePassword.cshtml" />
     <Content Include="Views\UserManagement\_UpdateImage.cshtml" />
-    <Content Include="Views\UserManagement\_MFA.cshtml" />
+    <Content Include="Views\UserManagement\_EnableMFA.cshtml" />
     <Content Include="Views\UserManagement\_ResetPassword.cshtml" />
     <Content Include="Views\Document\Index.cshtml" />
     <Content Include="Views\Document\_Data.cshtml" />
@@ -2972,6 +2973,12 @@
     <Content Include="Views\CashFlowManagement\_ViewBankDepositTransaction.cshtml" />
     <Content Include="Views\Error\Error.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\CashDesk\_MomocashCollectionSearchBox.cshtml" />
+    <Content Include="Views\CashDesk\MomocashCollection.cshtml" />
+    <Content Include="Views\CashDesk\_MomocashCollectionForm.cshtml" />
+    <Content Include="Views\CashDesk\_MomocashCollectionDesk.cshtml" />
+    <Content Include="Views\CashDesk\_MomocashCollectionTabs.cshtml" />
+    <Content Include="Views\MFAVerification\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -1,6 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @{
-    ViewBag.Title = "Cash desk";
+    ViewBag.Title = "Momocash collection";
 }
 <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
 
@@ -19,15 +19,15 @@
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-bank me-2"></i>
                             @*<i class="mdi mdi-cash-bank me-2"></i>*@
-                            <span id="cashDeskOperations">CASH OPERATIONS</span>
+                            <span id="cashDeskOperations">MOMOCASH COLLECTION (NONE-CASH OPERATION)</span>
                         </button>
                     </h2>
-                    <hr />
+                  
                     <div id="collapseDeliveryAddress"
                          data-bs-parent="#collapsibleSection">
                         <div class="accordion-body">
                             <hr style="border: 2px solid blue;" />
-                            @Html.Partial("_SearchBox")
+                            @Html.Partial("_MomocashCollectionSearchBox")
                             <hr style="border: 2px solid blue;" />
                             <div id="datalistingview">
 
@@ -35,6 +35,7 @@
                             </div>
                         </div>
                     </div>
+                  
                 </div>
             </div>
             @*}*@
@@ -49,7 +50,5 @@
 @Html.Partial("_model")
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/Crud/CashDesk/CashDeskOperations.js"></script>
-@*<script src="~/Scripts/Js/Crud/Operation/Operation.js"></script>*@
-
+<script src="~/Scripts/Js/Crud/CashDesk/MomocashCollection.js"></script>
 }
