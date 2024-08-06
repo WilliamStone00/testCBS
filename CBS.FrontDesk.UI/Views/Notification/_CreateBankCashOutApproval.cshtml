@@ -1,15 +1,16 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+﻿
+@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+
+@{
+    ViewBag.Title = "_CreateBankCashOutApproval";
+ 
+}
 
 <div class="card-body">
 
-    @if (Convert.ToBoolean(ViewBag.IsAuthourized) == false)
-    {
-        @Html.Partial("_GeneralErrorDiv")
-    }
 
 
-
-    @using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostBankTransaction(this);", @id = "formValidationExamples" }))
+    @using (Html.BeginForm("AddOrUpdate", "Notification", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostBankTransaction(this);", @id = "formValidationExamples" }))
     {
         <!-- Account Details -->
         @Html.HiddenFor(v => v.BankCashOut.ReferenceId)
@@ -18,7 +19,10 @@
         @Html.HiddenFor(m => m.BankCashOut.Balance)
         @Html.HiddenFor(m => m.BankCashOut.ToAccountId)
 
-
+        if (ViewBag.IsAuthourized==false)
+        {
+            @Html.Partial("_GeneralErrorDiv")
+        }
         <input type="hidden" name="ServiceOption" value="bankCashOutApproval" id="ServiceOption" />
         <fieldset class="fieldset-custom">
             <legend id="select_base">Bank accounts information present</legend>
@@ -36,7 +40,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex flex-column align-items-end text-end">
-                                    <h3 class="mb-3">XAF @Model.BankCashOut.Amount</h3>
+                                    <h3 class="mb-3">XAF @Model.CashReplenimentRequest.AmountApproved</h3>
                                     <p class="mb-0">Amount authorized by @Model.BankCashOut.ApprovedBy</p>
                                     <p class="mb-0">On the @Model.BankCashOut.ApprovedDate</p>
                                 </div>
@@ -212,3 +216,4 @@
 
 
 </div>
+

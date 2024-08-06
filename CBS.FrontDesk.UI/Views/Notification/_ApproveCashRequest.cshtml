@@ -1,0 +1,222 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+@{
+    ViewBag.Title = "View Cash Replenishment Details";
+}
+@if (Convert.ToBoolean(ViewBag.IsAuthourized) == false)
+{
+
+    @Html.Partial("_GeneralErrorDiv")
+}
+
+    <div class="row invoice-preview">
+        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+            <div class="accordion-item active">
+                <h2 class="accordion-header text-body d-flex justify-content-between"
+                    id="accordionPopoutIconThree">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accordionPopoutIcon-3"
+                            aria-expanded="true"
+                            aria-controls="accordionPopoutIcon-3">
+                        <i class="mdi mdi-bank-plus me-2"></i>
+                        Request ReferenceId :@Model.CashReplenimentRequestdto.Id Amount : XFA @Model.CashReplenimentRequestdto.AmountRequested
+                    </button>
+                </h2>
+                <div class="card-body">
+
+                    <br />
+                    <div class="collapse show">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Cash Replenishment Details</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+                                {
+                                    <tr>
+                                        <td>Branch Office</td>
+                                        <td>@Model.CashReplenimentRequestdto.BranchOffice </td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td>Invoice Number</td>
+                                    <td>@Model.CashReplenimentRequestdto.ReferenceId </td>
+                                </tr>
+                                <tr>
+                                    <td>Amount Requested</td>
+                                    <td>XAF @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") </td>
+                                </tr>
+                                <tr>
+                                    <td>Request Message</td>
+                                    <td>@Model.CashReplenimentRequestdto.RequestMessage </td>
+                                </tr>
+                                <tr>
+                                    <td>Requested By </td>
+                                    <td> @Model.CashReplenimentRequestdto.TempId1 </td>
+                                </tr>
+                                <tr>
+                                    <td>Requested Date</td>
+                                    <td>@Model.CashReplenimentRequestdto.IssuedDate </td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    @if (@Model.CashReplenimentRequestdto.IsApproved)
+                                    {
+                                        <td class="badge bg-label-success rounded-pill text-uppercase">
+                                            @Model.CashReplenimentRequestdto.Status
+                                        </td>
+
+                                    }
+                                    else
+                                    {
+                                        if (@Model.CashReplenimentRequestdto.Status.ToUpper().Equals("PENDING"))
+                                        {
+                                            <td class="badge bg-label-primary rounded-pill text-uppercase">
+                                                @Model.CashReplenimentRequestdto.Status
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                                @Model.CashReplenimentRequestdto.Status
+                                            </td>
+                                        }
+
+                                    }
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card card-action mb-5">
+                        <h5 class="card-title">Cash Replenishment Request Status</h5>
+                        <div class="card-body">
+                            <div class="mb-3 col-12 mb-0">
+                                @if (@Model.CashReplenimentRequestdto.IsApproved)
+                                {
+                                    <div class="alert alert-outline-success" role="alert">
+                                        <h6 class="alert-heading mb-1">The cash replenishment request of @Model.CashReplenimentRequestdto.TempId1 is already approved.</h6>
+                                        <p class="mb-0">@Model.CashReplenimentRequestdto.AmountApproved.ToString("N") was replenished</p>
+                                    </div>
+                                }
+                                else
+                                {<div class="alert alert-outline-primary" role="alert">
+                                        <h6 class="alert-heading mb-1">ReferenceId :@Model.CashReplenimentRequestdto.Id  with Amount XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") has not yet been approved</h6>
+                                        <p class="mb-0">Select source account to which the vault will be </p>
+                                    </div>
+                                }
+
+                            </div>
+                            @if (@Model.CashReplenimentRequestdto.IsApproved)
+                            {
+
+                            }
+                            else
+                            {
+                                using (Html.BeginForm("AddOrUpdate", "Notification", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdateValidationDecision(this);", @id = "formValidationExamples" }))
+                                {
+                                    <!-- Account Details -->
+                                    @Html.HiddenFor(v => v.CashReplenimentRequestdto.BranchId)
+                                    @Html.HiddenFor(model => model.CashReplenimentRequestdto.Id)
+                                    <input type="hidden" name="option" value="Status" id="option" />
+                                    <input type="hidden" name="ServiceOption" value="CashRequestApproval" id="ServiceOption" />
+                                    if (Model.CashReplenimentRequestdto.IsApproved)
+                                    {
+                                        <div class="form-check mb-3">
+                                            <div class="form-check">
+                                                @Html.CheckBoxFor(m => m.CashReplenimentRequestdto.IsApproved, new { @class = "form-check-input" })
+                                                <label class="form-check-label" for="isActive">The cash replenishment request of issued by @Model.CashReplenimentRequestdto.TempId1 has been approved by @Model.CashReplenimentRequestdto.TempId2</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary">Already Approved Account Replenishment</button>
+                                        </div>
+
+                                    }
+                                    else
+                                    {
+                                        @*if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+                                            {
+                                                <div class="form-check mb-3">
+                                                    <div class="form-floating form-floating-outline">
+
+                                                        @Html.DropDownListFor(m => m.CashReplenimentRequestdto.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
+                                                        @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.BranchId, "", new { @class = "text-danger" })
+                                                        <label for="Account">Branch Office</label>
+                                                    </div>
+                                                </div>
+                                            }*@
+
+                                        @*<div class="form-check mb-3">
+                                                <div class="form-floating form-floating-outline">
+
+                                                    @Html.DropDownListFor(m => m.CashReplenimentRequestdto.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
+                                                    @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.AccountId, "", new { @class = "text-danger" })
+                                                    <label for="Account">Select debiting account</label>
+                                                </div>
+                                            </div>*@
+                                        <div class="form-check mb-3">
+                                            <div class="form-floating form-floating-outline">
+
+                                                @Html.DropDownListFor(m => m.CashReplenimentRequestdto.TempId2, new SelectList(ViewBag.Decisions == null ? "" : ViewBag.Decisions, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "CorrespondingBranchID" })
+                                                @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.ApprovedBy, "", new { @class = "text-danger" })
+                                                <label for="Account">Make decision</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-check mb-3" id="hideBranchID">
+                                            <div class="form-floating form-floating-outline">
+
+                                                @Html.DropDownListFor(m => m.CashReplenimentRequestdto.CorrespondingBranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.CorrespondingBranchId, "", new { @class = "text-danger" })
+                                                <label for="Account">Select Branch</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-check mb-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.CashReplenimentRequestdto.AmountApproved, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.AmountApproved, "", new { @class = "text-danger" })
+
+                                                <label for="Description"> Approved Amount</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-check mb-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextAreaFor(m => m.CashReplenimentRequestdto.ApprovedMessage, new { @class = "form-control", @style = "height: 200px;" })
+                                                @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.ApprovedMessage, "", new { @class = "text-danger" })
+
+                                                <label for="Description"> Approved Message Description</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-end">
+                                            <button type="submit" class="btn btn-primary me-2">Validate</button>
+                                            <input type="hidden" name="Action" value="insert" id="Action" />
+
+                                        </div>
+
+                                    }
+
+
+
+                                }
+
+                            }
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+

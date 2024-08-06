@@ -53,7 +53,7 @@
                             </tr>
                             <tr>
                                 <td>Requested By </td>
-                                <td> @Model.CashReplenimentRequestdto.IssuedBy </td>
+                                <td> @Model.CashReplenimentRequestdto.TempId1 </td>
                             </tr>
                             <tr>
                                 <td>Requested Date</td>
@@ -96,7 +96,7 @@
                             @if (@Model.CashReplenimentRequestdto.IsApproved)
                             {
                                 <div class="alert alert-outline-success" role="alert">
-                                    <h6 class="alert-heading mb-1">The cash replenishment request of @Model.CashReplenimentRequestdto.IssuedBy is already approved.</h6>
+                                    <h6 class="alert-heading mb-1">The cash replenishment request of @Model.CashReplenimentRequestdto.TempId1 is already approved by @Model.CashReplenimentRequestdto.TempId2 .</h6>
                                     <p class="mb-0">@Model.CashReplenimentRequestdto.AmountApproved.ToString("N") was replenished</p>
                                 </div>
                             }
@@ -126,7 +126,7 @@
                                     <div class="form-check mb-3">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.CashReplenimentRequestdto.IsApproved, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">The cash replenishment request of issued by @Model.CashReplenimentRequestdto.IssuedBy has been approved</label>
+                                            <label class="form-check-label" for="isActive">The cash replenishment request of issued by @Model.CashReplenimentRequestdto.TempId1 has been approved</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -152,8 +152,8 @@
                                     <div class="form-check mb-3">
                                         <div class="form-floating form-floating-outline">
 
-                                            @Html.DropDownListFor(m => m.CashReplenimentRequestdto.ApprovedBy, new SelectList(ViewBag.Decisions == null ? "" : ViewBag.Decisions, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.ApprovedBy, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(m => m.CashReplenimentRequestdto.TempId2, new SelectList(ViewBag.Decisions == null ? "" : ViewBag.Decisions, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.TempId2, "", new { @class = "text-danger" })
                                             <label for="Account">Make decision</label>
                                         </div>
                                     </div>

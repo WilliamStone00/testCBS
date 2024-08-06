@@ -640,6 +640,7 @@ namespace CBS.API.Helper
                                 Message = $"Request failed with status code {(int)response.StatusCode}, Message: The server is requesting authorization token."
                             };
                         }
+                        
                         else if (response.StatusCode == HttpStatusCode.InternalServerError)
                         {
                             return new ApiResponse<T>

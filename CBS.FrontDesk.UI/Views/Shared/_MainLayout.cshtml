@@ -36,6 +36,27 @@
     <link href="~/CBSTemp/ui/assets/css/demo.css" rel="stylesheet" type="text/css" />
     <link href="~/CBSTemp/ui/assets/alertifyjs/css/alertify.min.css" rel="stylesheet" />
     <style>
+        #action_indented {
+            color: #007bff; /* A nicer blue color */
+            text-decoration: none; /* Remove underline */
+            cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+            font-weight: bold; /* Make the font bold */
+            font-family: 'Arial', sans-serif; /* Set a nice font */
+            display: flex;
+            align-items: center;
+        }
+
+            #action_indented::before {
+                content: "🔔"; /* Add a bell emoji before the text */
+                margin-right: 1px; /* Add some space between the emoji and the text */
+                font-size: 0.9em; /* Adjust the emoji size */
+            }
+
+            #action_indented:hover {
+                color: #0056b3; /* Darker blue on hover */
+                text-decoration: underline; /* Underline on hover */
+            }
+
         .error-container {
             text-align: center;
             margin-top: 30px;
@@ -829,6 +850,7 @@
 
     <script src="~/CBSTemp/ui/assets/js/form-layouts.js"></script>
     <script src="~/Scripts/Js/main.js/Connection_checker.js"></script>
+    <script src="~/Scripts/Js/main.js/Notifications.js"></script>
     <script src="~/Scripts/Js/main.js/App.js"></script>
     <script src="~/CBSTemp/ui/assets/js/ui-toasts.js"></script>
     <script src="~/CBSTemp/ui/assets/js/app-logistics-dashboard.js"></script>

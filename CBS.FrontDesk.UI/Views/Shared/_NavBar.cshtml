@@ -169,7 +169,7 @@
             </li>-->
              <!-- Quick links -->
              <!-- Notification -->
-             @*<li class="nav-item dropdown-notifications navbar-dropdown dropdown me-2 me-xl-1">
+             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-2 me-xl-1">
                  <a class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow"
                     href="javascript:void(0);"
                     data-bs-toggle="dropdown"
@@ -183,7 +183,7 @@
                     <li class="dropdown-menu-header border-bottom">
                         <div class="dropdown-header d-flex align-items-center py-3">
                             <h6 class="mb-0 me-auto">Notification</h6>
-                            <span class="badge rounded-pill bg-label-primary">8 New</span>
+                            <span class="badge rounded-pill bg-label-primary" id="totalNotification">0</span>
                         </div>
                     </li>
                     <li class="dropdown-notifications-list scrollable-container">
@@ -193,15 +193,16 @@
                                 <div class="d-flex gap-2">
                                     <div class="flex-shrink-0">
                                         <div class="avatar me-1">
-                                            <span class="avatar-initial rounded-circle bg-label-danger">CF</span>
+                                            <span class="avatar-initial rounded-circle bg-label-danger" id="user_initial">CF</span>
                                         </div>
                                     </div>
                                     <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-200">
-                                        <h6 class="mb-1 text-truncate">Charles Franklin</h6>
-                                        <small class="text-truncate text-body">Accepted your connection</small>
+                                        <h6 class="mb-1 text-truncate" id="userName">Charles Franklin</h6>
+                                        <div class="mb-1 text-truncate" id="branchName">Upstation-Bamenda</div>
+                                        <small class="text-truncate text-body" id="indent_action">Accepted your connection</small>
                                     </div>
                                     <div class="flex-shrink-0 dropdown-notifications-actions">
-                                        <small class="text-muted">12hr ago</small>
+                                        <small class="text-muted" id="vAge_of_notification">12hr ago</small>
                                     </div>
                                 </div>
                             </li>
@@ -209,12 +210,12 @@
                         </ul>
                     </li>
                     <li class="dropdown-menu-footer border-top p-2">
-                        <a href="javascript:void(0);" class="btn btn-primary d-flex justify-content-center">
+                        <a href="/Notification/Index" class="btn btn-primary d-flex justify-content-center" id="simulateNotificationButton">
                             View all notifications
                         </a>
                     </li>
                 </ul>
-            </li>*@
+            </li>
              <!--/ Notification -->
              <!-- User -->
              <li class="nav-item navbar-dropdown dropdown-user dropdown">

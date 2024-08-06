@@ -3,6 +3,43 @@ using System.Web;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
+    public class UsersNotification  
+    {
+        public string Id { get; set; }
+        public string UserId { get; set; }
+        public string BranchName { get; set; }
+        public string Action { get; set; }
+        public string ActionId { get; set; }
+        public string ActionUrl { get; set; }
+        public DateTime CreatedDate { get; set; }
+
+        public string  BranchId { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsSeen { get; set; }
+        public string Timestamp { get; set; }
+        public string UserName { get; set; }
+
+        public UsersNotification()
+        {
+            // Default constructor
+        }
+        public UsersNotification(string action, string actionUrl, string actionId)
+        {
+            Action = action;
+            ActionUrl = actionUrl;
+            ActionId = actionId;
+        }
+        public UsersNotification(string userName, string branchName, string action, DateTime timestamp, string actionUrl)
+        {
+            Id = userName;
+            BranchName = branchName;
+            Action = action;
+
+            ActionUrl = actionUrl;
+        }
+
+      
+    }
     public class DepositNotificationDto
     {
         public string Id { get; set; }
@@ -15,7 +52,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public DateTime IssueDate { get; set; }
         public bool IsApproved { get; set; }
         public bool HasBankAccount { get; set; }
-
+        public string Temp1 { get; set; }
+        public string Temp2 { get; set; }
         public string BankAccountOwner { get; set; }
         public string BankAccountId { get; set; }
         public string ApprovedBy { get; set; }
@@ -39,11 +77,17 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
         public Denomination CurrencyNotes { get; set; }
 
-        public object ConvertToTransferData()
+        public object ConvertToTransferData(string branchID )
         {
 
 
-            return new { Amount = CurrencyNotes.GetAmountValue(), Message = Message, BankAccountId = "Not Found", BankAccountOwner="XXXXXX" };
+            return new 
+            { 
+                Amount = CurrencyNotes.GetAmountValue(),
+                Message = Message, 
+                BankAccountId = BankAccountId == null ? "XXXXXX" : BankAccountId,
+                BankAccountOwner = BankAccountId==null?"XXXXXX" : branchID,
+            };
             
             
         }

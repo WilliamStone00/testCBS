@@ -163,6 +163,7 @@ namespace CBS.BusinessService.Accounting
         }
         public async Task<ExecutionMessages> Update(ChartOfAccount model)
         {
+            ChartOfAccount chartOfAccount = null;
             try
             {
 
@@ -172,7 +173,20 @@ namespace CBS.BusinessService.Accounting
 
                     if (Account!=null)
                     {
+                        if (Account.ParentAccountId==null&& model.AccountNumber.Length>=3)
+                        {
+                            var number = model.AccountNumber.Substring(0,model.AccountNumber.Length - 1);
+                            chartOfAccount = await GetChartOfAccountByAccountNumber(number);
+                            if (chartOfAccount == null) 
+                            {
+                                GetExecutionMessages(model, false, $"{model.AccountNumber + " " + model.LabelEn}", MessagesResults.Failed,
+                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Parent account reference not found");
+                                return ExecutionMessage;
 
+                            }
+                            Account.ParentAccountId = chartOfAccount.Id;
+                            Account.ParentAccountNumber = chartOfAccount.AccountNumber;
+                        }
                         Account.AccountNumber = model.AccountNumber;
                         Account.LabelEn = model.LabelEn;
                         Account.LabelFr = model.LabelFr;
@@ -180,7 +194,13 @@ namespace CBS.BusinessService.Accounting
                         Account.AccountCartegoryId = model.AccountCartegoryId;
                         Account.CanBeNegative= model.CanBeNegative;
                         Account.IsDebit= model.IsDebit;
-
+                        if (chartOfAccount != null)
+                        {
+                            Account.ParentAccountId = chartOfAccount.ParentAccountId;
+                            Account.ParentAccountNumber = chartOfAccount.ParentAccountNumber;
+                        }
+            
+                      
                         var response = await _ConfigApiHelper.PutAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.ChartOfAccount>>(string.Format(APICallHelper.Get_Update_Delete_ChartOfAccount, Account.Id), Account);
                         if (response.IsSuccess)
                         {
@@ -194,6 +214,7 @@ namespace CBS.BusinessService.Accounting
                             // Failed creation
                             GetExecutionMessages(model, false, $"{model.AccountNumber + " " + model.LabelEn}", MessagesResults.Failed,
                                 ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                            return ExecutionMessage;
                         }
                     }
                     else

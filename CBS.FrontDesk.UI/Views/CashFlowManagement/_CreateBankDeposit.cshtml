@@ -6,9 +6,9 @@
 
     @using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostBankTransaction(this);", @id = "formValidationExamples" }))
     {
-        <!-- Account Details -->
+        <!-- Account Details   -->
 
-
+        
         <input type="hidden" name="ServiceOption" value="DepositNotification" id="ServiceOption" />
         if (Model.DepositNotification.HasBankAccount)
         {
@@ -26,18 +26,18 @@
 
 
 
-                    <div class="col-md-6">
-                        <div class="d-flex justify-content-end">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex flex-column align-items-end text-end">
-                                        <h3 class="mb-3">XAF @Model.DepositNotification.Amount</h3>
+                    @*<div class="col-md-6">
+                            <div class="d-flex justify-content-end">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex flex-column align-items-end text-end">
+                                            <h3 class="mb-3">XAF @Model.DepositNotification.Amount</h3>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div>*@
                     <div class="col-md-6" hidden="hidden">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
@@ -53,7 +53,8 @@
         }
         else
         {
-      
+            @Html.HiddenFor(m => m.DepositNotification.BankAccountId, "XXXXXXX")
+            @Html.HiddenFor(m => m.DepositNotification.BankAccountOwner, "XXXXXXX")
         }
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
