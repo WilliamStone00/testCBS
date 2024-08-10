@@ -1434,8 +1434,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     // Call the method to read the Excel file and convert it to a list of Data objects
                                     var dataList = ReadExcelFile(stream);
                                     UploadModel.AccountModelList = dataList;
-                                    //this.HttpContext.Session["account" + this.HttpContext.Session.SessionID] = model;
-
                                     if (_AccountServices.IsHeadOffice() == true)
                                     {
                                         UploadModel.BranchId = model.BranchId;
@@ -1444,11 +1442,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     {
                                         UploadModel.BranchId = _AccountServices.GetBranchID();
                                     }
-                                   
-
                                         var data = await  _AccountServices.Create(UploadModel);
-                                    this.HttpContext.Session["account" + this.HttpContext.Session.SessionID] = data.Data;
-                  
                                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data), Data= data.Data });
                                 }
                             }
@@ -1498,7 +1492,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     foreach (var row in worksheet.RowsUsed().Skip(1)) // Skip header row
                     {
                         if (row.CellsUsed().Count() < 8) continue; // Skip rows with insufficient columns
-
+                        var AccountNumber = row.Cell(1).GetString();
+                        var AccountName = row.Cell(2).GetString();
+                        var   ChartofAccount = row.Cell(1).GetString().Substring(0, Math.Min(6, row.Cell(1).GetString().Length));
+                        var CreatedDate = DateTime.Today.ToString("yyyy-MM-dd");
+                        var    BeginningDebitBalance = decimal.Parse(row.Cell(3).GetString());
+                        var BeginningCreditBalance = decimal.Parse(row.Cell(4).GetString());
+                        var     BookingDirection = decimal.Parse(row.Cell(4).GetString()) == 0 ? "D" : "C";
+                        var MovementDebitBalance = decimal.Parse(row.Cell(5).GetString());
+                        var     MovementCreditBalance = decimal.Parse(row.Cell(6).GetString());
+                        var EndBalanceDebit = decimal.Parse(row.Cell(7).GetString());
+                        var      EndBalanceCredit = decimal.Parse(row.Cell(8).GetString());
                         var data = new AccountModelX
                         {
                             AccountNumber = row.Cell(1).GetString(),

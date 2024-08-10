@@ -685,8 +685,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             var OperationEventAttribute = await _accountingEntryServices.GetDepositNotificationRequest(KEY);
             CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
             cashDemandDataEntity.DepositNotificationDto = OperationEventAttribute;
+            cashDemandDataEntity.UploadBankReciept.Id = OperationEventAttribute.Id;
             cashDemandDataEntity.DepositNotificationDto.BranchOffice = (await branchServices.GetBranches()).Where(po => po.Id.Equals(OperationEventAttribute.BranchId)).FirstOrDefault().Name;
-            if (branchServices.IsHeadOffice() == false)
+            if (branchServices.IsHeadOffice())
             {
                 ViewBag.IsAuthourized = false;
                 ViewBag.Error = _AccountServices.GetUserFullName() + ", You are not authourized to perform this transaction kindly contact the " + (await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name;

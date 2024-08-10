@@ -2986,6 +2986,8 @@
     <Content Include="Views\Notification\BankCashOutRequest.cshtml" />
     <Content Include="Views\Notification\_CreateBankCashOutApproval.cshtml" />
     <Content Include="Views\Notification\BankDepositApprovalRequest.cshtml" />
+    <Content Include="Views\Notification\BankDepositCompletion.cshtml" />
+    <Content Include="Views\Notification\_uploadBankDepositeReceipt.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
