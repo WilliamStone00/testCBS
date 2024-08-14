@@ -315,24 +315,7 @@ function AddEntryRule() {
 
 
 
-function LoadAccountingRuleData(controller, action, divLoader, tableID, serviceoption, KEY, partialView, path, order) {
-    KEY = $('#EntryTempData_Reference').val();
-    $.ajax({
-        type: "GET",
-        url: '/' + controller + '/' + action + '?serviceoption=' + serviceoption + '&KEY=' + KEY + '&partialView=' + partialView + '&path=' + path,
-        success: function (dataResponse) {
-            console.log(dataResponse);
-            $('#' + divLoader).html(dataResponse);
-            LoadDT(tableID, order);
-
-        }, error: function (err) {
-
-            appalert(err.statusText, 1, 3);
-        }
-    });
-
-
-}
+ 
 
 function DeleteAccountingRole(key, controller, action) {
 

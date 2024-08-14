@@ -3002,6 +3002,9 @@
     <Content Include="Views\MemberOrdinaryAccountsF8\DownloadFileF8.cshtml" />
     <Content Include="Views\MemberOrdinaryAccountsF8\_SearchBox.cshtml" />
     <Content Include="Views\MemberOrdinaryAccountsF8\_FileDownloadData.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\MultipleJournalEntryClient.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\MultipleJournalEntryConfiguration.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_MultipleJournalEntryClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
