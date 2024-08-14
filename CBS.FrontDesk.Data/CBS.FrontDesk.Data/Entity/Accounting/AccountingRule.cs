@@ -19,7 +19,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public double Amount { get; set; }
         public string AccountName { get; set; }
     }
-
+    public class AccountingModelRule
+    {
+        public bool HasError { get; set; }
+        public List<AccountingRule> AccountingRule { get; set; }
+    }
     public class AccountingRuleDtos
     {
         public string RuleName { get; set; }

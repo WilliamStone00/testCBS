@@ -731,7 +731,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     }
 
                     worksheet.Columns().AdjustToContents();
-                    return DownloadExcelFile(workbook, "CHARTOFACCOUNT.xlsx");
+                    return DownloadExcelFileSlow(workbook, "CHARTOFACCOUNT.xlsx");
                 }
             }
             catch (Exception ex)
@@ -765,7 +765,7 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
-        public ActionResult DownloadExcelFile(XLWorkbook workbook, string fileName)
+        public ActionResult DownloadExcelFileSlow(XLWorkbook workbook, string fileName)
         {
             try
             {

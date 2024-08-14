@@ -280,6 +280,62 @@ function DownLoadJE(fileType) {
         }
     });
 }
+
+function DownLoadLL(fileType) {
+    var BranchId = $('#selectedBranchId').val();
+    var BranchName = $('#selectedBranchName').val();
+ 
+    console.log(BranchId + " - " + BranchName )
+    $.ajax({
+        url: '/AccountingStatements/GenerateLiaisonLedgerByBranchId',
+        type: 'Get',
+        dataType: 'json',
+        data: { branchId: BranchId, fileType },
+        success: function (data) {
+            console.log(data);
+
+            appalert("Liaison Ledger for :" + BranchName + " was created successfully", 3, 1);
+            if (fileType === "EXCEL") {
+
+                window.open("/Reports/DownloadExcelFile", "_blank");
+
+            } else {
+                window.open("/Reports/DownloadExcelFile", "_blank");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+function LoadLiaionLedgerByBranchID(branchId) {
+    console.log(branchId);
+    $.ajax({
+        url: '/AccountingStatements/LiaisonLedgerPerBranch',
+        type: 'Get',
+        dataType: 'json',
+        data: { branchId: branchId },
+        success: function (data) {
+            /* $('#largeModal').hide();*/
+            $('#LiaisonLedgerHeading').empty();
+            var description = $("#" + branchId + "-Name").text();
+            var names = "Liaison Ledger for " + description + ".";
+            console.log(names);
+            $("#LiaisonLedgerHeading").text(names);
+            // Append text to the modal title
+            //$('#LiaisonLedgerHeading').append(names);
+            var table;
+            initializeDataTableForLiaisonLedger(data);
+
+            $('#selectedBranchId').val(branchId);
+            $('#').val(description);
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
 function loadBranchGeneralLedgerByBranchId(branchId) {
     console.log(branchId);
 
@@ -296,37 +352,10 @@ function loadBranchGeneralLedgerByBranchId(branchId) {
             // Append text to the modal title
             $('#exampleModalLabel3').append('General Ledger For ' + description);
             var table ;
-            /** Populate the table with the fetched data
+            /** Populate the table with the fetched data*/
       
             initializeDataTableForGL(data);
-            //if (data && data.length > 0) {
-            //    // Define columns only if data is available
-            //    table = $('#BranchAccountDataTable').DataTable({
-            //        data: data,
-            //        columns: [
-            //            { data: 'AccountNumber' },
-            //            { data: 'AccountName' },
-            //            { data: 'CurrentBalance' },
-            //            {
-            //                data: null,
-            //                render: function (data, type, row) {
-            //                    var escapedAccountName = '';
-            //                    if (row.AccountName) {
-            //                        escapedAccountName = row.AccountName.replace(/'/g, "\\'");
-            //                    }
-            //                    return '<a href="#" class="btn btn-outline-primary" onclick="loadAccountingEntriesByAccountId(\'' + row.Id + '\')" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#largeModal" title="Select ' + escapedAccountName + ' to journal entry">Download Journal Entry</a>';
-            //                }
-            //            }
-            //        ]
-            //    });
-            //} else {
-            //    // Create an empty DataTable instance without columns
-            //    table = $('#BranchAccountDataTable').DataTable();
-
-            //    // Add a row with the "No data available" message
-            //    //    table.clear().draw();
-            //    //    table.row.add([{ colspan: 4, html: '<td style="text-align: center;">No data available</td>' }]).draw();
-            //}
+    
 
 
        
@@ -448,7 +477,7 @@ data: { branchId: branchId },
             initializeDataTableForLiaisonLedger(data);
 
             $('#selectedBranchId').val(branchId);
-           
+            $('#selectedBranchName').val(description);
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
@@ -557,7 +586,8 @@ function initializeDataTableForJE(data) {
                 { data: 'Description' },
                 { data: 'Debit' },
                 { data: 'Credit' },
-            ]
+            ],
+            lengthMenu: [[5, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [8, 15, 20, 100, 500, 1000, 2000, 5000, 10000, "All"]]
         });
     } else {
         // Create an empty DataTable instance

@@ -1,6 +1,11 @@
-﻿using CBS.FrontDesk.Data.Entity;
+﻿using CBS.BusinessService;
+using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Config;
+using CBS.BusinessService.UserManagement;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Service;
 using CBS.FrontDesk.UI.Filters;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using System;
 using System.Web;
@@ -20,29 +25,16 @@ namespace CBS.FrontDesk.UI
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            GlobalFilters.Filters.Add(new AuthorizeAttribute());
+        
+    
+        
+            GlobalHost.DependencyResolver.Register(typeof(ConnectionHub), () => new ConnectionHub());
+            GlobalFilters.Filters.Add(new System.Web.Mvc.AuthorizeAttribute());
             UnityConfig.RegisterComponents();
             MvcHandler.DisableMvcResponseHeader = true;
             GlobalFilters.Filters.Add(new UserAuditFilter()); // Register UserAuditFilter
 
-            //// Build Autofac container
-            //var builder = new ContainerBuilder();
-
-            //// Register your services
-            //builder.RegisterType<MemberAccountJob>().AsSelf();
-            //builder.RegisterType<SavingProductServices>().AsSelf();
-            //builder.RegisterType<BranchServices>().AsSelf();
-            //builder.RegisterType<ApiCallerHelper>().AsSelf();
-
-            //// Register controllers in the MVC application
-            //builder.RegisterControllers(Assembly.GetExecutingAssembly());
-
-            //// Set the dependency resolver for MVC
-            //var container = builder.Build();
-            //DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
-
-            //// Set up Hangfire to use AutofacJobActivator
-            //GlobalConfiguration.Configuration.UseAutofacActivator(container);
+        ConnectionMonitoringService connectionService = new ConnectionMonitoringService();
         }
 
         protected void Application_EndRequest()

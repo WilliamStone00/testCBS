@@ -400,7 +400,7 @@ namespace CBS.BusinessService.Accounting
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(response, true, $"{list.AccountModelList[0].AccountNumber}", MessagesResults.Failed,
+                        GetExecutionMessages(response, true, $"{response.message}", MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.message);
                     }
                     // Successful creation

@@ -532,7 +532,35 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
 
         }
+        [HttpGet]
+        public async Task<ActionResult> GenerateLiaisonLedgerByBranchId(string branchId, string fileType)
+        {
+            try
+            {
 
+                string fileTitle = $"LiaisonLedger_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
+
+                var account = await _acountServices.GenerateLiaisonLedgerForBranch(branchId);
+                this.HttpContext.Session["rptSource"] = account;
+                string ReportName = $"LiaisonLedger.rpt";
+                if (!account.Any())
+                {
+                    this.HttpContext.Session["rptSource"] = "empty";
+                }
+                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                this.HttpContext.Session["rptType"] = $"{fileType}";
+                this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/LiaisonLedger.rpt";
+                return Json(account, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+
+        }
         [HttpGet]
         public async Task<ActionResult> GenerateJEByBranchId(string branchId, string fileType,DateTime DateFrom,DateTime DateTo)
         {

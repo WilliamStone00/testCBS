@@ -620,7 +620,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var accountAcc = (await _AccountServices.GetAccountByAccountNumber(AccountnumberBB));
                 if (accountAcc.AccountNumberCU == "" && accountAcc.AccountName == null)
                 {
-                    name = $"{acc.AccountNumberCU}:{branch.Name}-{acc.AccountName}>>There is no vault account for {_AccountServices.GetBranchName()}";
+                    name = $"{acc.AccountNumberCU}:{branch.Name}-{acc.AccountName}>>There is no vault account for {_AccountServices.GetBranchName()}.";
+                    ViewBag.AccountNotFound = true;
+        
+                    ViewBag.Error = $"There is no vault account for { _AccountServices.GetBranchName()}.Inorder to procceed, Create the a vault account(571010) for { _AccountServices.GetBranchName()}";
+
                 }
                 else
                 {

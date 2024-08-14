@@ -2,6 +2,8 @@
 using System.Configuration;
 using System.Web.Mvc;
 using CBS.API.Helper;
+using CBS.BusinessService;
+using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.Config.Localization;
@@ -13,6 +15,7 @@ using CBS.FrontDesk.Service;
 using Unity;
 using Unity.AspNet.Mvc;
 using Unity.Injection;
+using Unity.Lifetime;
 
 namespace CBS.FrontDesk.UI
 {
@@ -23,6 +26,9 @@ namespace CBS.FrontDesk.UI
         public static void RegisterComponents()
         {
             var container = new UnityContainer();
+            // Register your hub class
+            container.RegisterType<NotificationHub>(new ContainerControlledLifetimeManager());
+
 
             // Register your dependencies here using container.RegisterType<>()
             container.RegisterType<IAuthenticationServices, AuthenticationServices>();
@@ -32,8 +38,12 @@ namespace CBS.FrontDesk.UI
             
             container.RegisterType<CountryServices, CountryServices>();
             container.RegisterType<RegionServices, RegionServices>();
-            container.RegisterType<DivisionServices, DivisionServices>();
+            container.RegisterType<AccountingServices, AccountingServices>();
+            container.RegisterType<IAccountingEntryServices, AccountingEntryServices>();
+            container.RegisterType<IUserManagementServices, UserManagementServices>();
+           
             container.RegisterType<SubDivisionServices, SubDivisionServices>();
+            container.RegisterType<IBranchServices, BranchServices>();
             container.RegisterType<TownServices, TownServices>();
             container.RegisterType<OrganizationServices, OrganizationServices>();
             container.RegisterType<BankServices, BankServices>();
@@ -50,6 +60,8 @@ namespace CBS.FrontDesk.UI
             container.RegisterType<ApiCallerHelper>(
     new InjectionConstructor(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString()));
 
+            container.RegisterType<ApiCallerHelper>(new InjectionConstructor(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString()));
+    
             // If you're using Unity.MVC, you can register it with the PerRequestLifetimeManager:
             // container.RegisterType<ApiCallerHelper>(
             //     new PerRequestLifetimeManager(),
