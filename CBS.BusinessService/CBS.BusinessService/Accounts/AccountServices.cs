@@ -50,13 +50,13 @@ namespace CBS.BusinessService.Accounts
             _branchServices = branchServices;
             _BranchConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
         }
-        
-        public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string path)
-        {
-            Func<Task<List<CustomerAccountDto>>> getDataFunc = async () => (await GetCustomersAccounts(path)).ToList();
-            var dataTable = await DatatableHelper.GenerateDataTable<CustomerAccountDto>(dataTableOptions, getDataFunc);
-            return dataTable;
-        }
+
+        //public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string path)
+        //{
+        //    Func<Task<List<CustomerAccountDto>>> getDataFunc = async () => (await GetCustomersAccounts(path)).ToList();
+        //    var dataTable = await DatatableHelper.GenerateDataTable<CustomerAccountDto>(dataTableOptions, getDataFunc);
+        //    return dataTable;
+        //}
 
         public async Task<CustomDataTable> GetDataTableSearch(DataTableOptions dataTableOptions, string searchCriterial)
         {
@@ -66,7 +66,11 @@ namespace CBS.BusinessService.Accounts
             var dataTable = await DatatableHelper.GenerateDataTable<CustomerAccountDto>(dataTableOptions, getDataFunc);
             return dataTable;
         }
-        public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccountsForTransfter(string searchCriterial="All")
+
+
+       
+
+        public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccountsForTransfter(string searchCriterial = "All")
         {
             try
             {
@@ -446,7 +450,7 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
-        
+
         public async Task<SavingConfigurationAggregates> GetSavingConfigurationAggregates()
         {
             try
@@ -495,12 +499,12 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var cusResponseObject = await _transactionApiHelper.PostAsync<ResponseObject<Account>>(APICallHelper.GetTellerAccountInfo, getTellerAccountBalanceQuery);
-                if (cusResponseObject.ApiResponseData!=null)
+                if (cusResponseObject.ApiResponseData != null)
                 {
                     return cusResponseObject.ApiResponseData.Data;
 
                 }
-                return new Account { Balance=0,HasError=true, ErrorMessage=$"{cusResponseObject.Message}"};
+                return new Account { Balance = 0, HasError = true, ErrorMessage = $"{cusResponseObject.Message}" };
             }
             catch (Exception ex)
             {
@@ -508,7 +512,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-        
+
         public async Task<List<TransactionHistory>> GetCustomerTransactionsByAccountNumber(string accountNumber)
         {
             try
@@ -909,7 +913,7 @@ namespace CBS.BusinessService.Accounts
                 var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.TransferConfirmation, model);
                 if (response.ApiResponseData != null)
                 {
-                    if (model.Status=="Approved")
+                    if (model.Status == "Approved")
                     {
                         var transaction = response.ApiResponseData.Data;
                         Branch branch = RetrieveBranchFromSession();
@@ -930,7 +934,7 @@ namespace CBS.BusinessService.Accounts
                           ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
-                 
+
                 }
                 else
                 {

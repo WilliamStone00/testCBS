@@ -274,7 +274,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string LoanDurarion { get; set; }
         public IndividualCustomerProfile IndividualCustomer { get; set; }
         public PaginationMetadata PaginationMetadata { get; set; }
-        public List<FileDownloadInfoLoan> FileDownloadInfoLoans { get; set; }
+        public List<FileDownloadInfo> FileDownloadInfoLoans { get; set; }
         public InitiateLoanDownloadCommand InitiateLoanDownloadCommand { get; set; }
         public virtual ICollection<Refund> Refunds { get; set; }
         public virtual ICollection<LoanAmortization> LoanAmortizations { get; set; }
@@ -299,7 +299,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             IsUnpaidOnly = true;
         }
     }
-    public class FileDownloadInfoLoan
+    public class FileDownloadInfo
     {
         public string Id { get; set; }
         public string FileName { get; set; }

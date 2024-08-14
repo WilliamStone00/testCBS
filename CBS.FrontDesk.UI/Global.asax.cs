@@ -3,6 +3,9 @@ using CBS.FrontDesk.Service;
 using CBS.FrontDesk.UI.Filters;
 using Newtonsoft.Json;
 using System;
+using System.Net.Http;
+using System.Security.Principal;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -118,31 +121,76 @@ namespace CBS.FrontDesk.UI
             ProcessAuthenticationCookie("PWD");
             ProcessAuthenticationCookie("CHANGE_PWD");
         }
-
         private void ProcessAuthenticationCookie(string cookieName)
         {
-            // Retrieve the boolean value from session, default to false if null or not a boolean
             bool isMFA = HttpContext.Current.Session?["MFA"] is bool mfaValue ? mfaValue : false;
-            bool isPWD = HttpContext.Current.Session?["PWD"] is bool mfaValuee ? mfaValuee : false;
-            
-            // Use the boolean value
-            if (!isMFA || !isPWD)
+            bool isPWD = HttpContext.Current.Session?["CHANGE_PWD"] is bool pwdValue ? pwdValue : false;
+
+            if (isPWD || isMFA)
             {
-                HttpCookie authCookie = Request.Cookies[cookieName];
-                if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
+                // If CHANGE_PWD is true, invalidate the cookie and redirect to the change password page
+                //InvalidateCookie(cookieName);
+                HttpContext.Current.Response.Redirect("~/Authentication/Login");
+                return;
+            }
+
+            HttpCookie authCookie = Request.Cookies[cookieName];
+            if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
+            {
+                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                if (authTicket != null && !authTicket.Expired)
                 {
-                    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                    if (authTicket != null && !authTicket.Expired)
-                    {
-                        AddIdentity(authTicket);
-                    }
-                    else
-                    {
-                        InvalidateCookie(cookieName);
-                    }
+                    AddIdentity(authTicket);
+                }
+                else
+                {
+                    InvalidateCookie(cookieName);
                 }
             }
         }
+
+        private void InvalidateCookie(string cookieName)
+        {
+            if (Request.Cookies[cookieName] != null)
+            {
+                HttpCookie authCookie = new HttpCookie(cookieName)
+                {
+                    Expires = DateTime.Now.AddDays(-1)
+                };
+                Response.Cookies.Add(authCookie);
+            }
+        }
+
+        //private void AddIdentity(FormsAuthenticationTicket authTicket)
+        //{
+        //    var identity = new FormsIdentity(authTicket);
+        //    var principal = new GenericPrincipal(identity, JsonConvert.DeserializeObject<CustomSerializeModel>(authTicket.UserData).RoleName);
+        //    HttpContext.Current.User = principal;
+        //}
+        //private void ProcessAuthenticationCookie(string cookieName)
+        //{
+        //    // Retrieve the boolean value from session, default to false if null or not a boolean
+        //    bool isMFA = HttpContext.Current.Session?["MFA"] is bool mfaValue ? mfaValue : false;
+        //    bool isPWD = HttpContext.Current.Session?["CHANGE_PWD"] is bool mfaValuee ? mfaValuee : false;
+
+        //    // Use the boolean value
+        //    if (!isMFA || !isPWD)
+        //    {
+        //        HttpCookie authCookie = Request.Cookies[cookieName];
+        //        if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
+        //        {
+        //            FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+        //            if (authTicket != null && !authTicket.Expired)
+        //            {
+        //                AddIdentity(authTicket);
+        //            }
+        //            else
+        //            {
+        //                InvalidateCookie(cookieName);
+        //            }
+        //        }
+        //    }
+        //}
 
         //private void ProcessAuthenticationCookie(string cookieName)
         //{
@@ -208,13 +256,13 @@ namespace CBS.FrontDesk.UI
             HttpContext.Current.User = principal;
         }
 
-        private void InvalidateCookie(string cookieName)
-        {
-            if (Response.Cookies[cookieName] != null)
-            {
-                Response.Cookies[cookieName].Expires = DateTime.Now.AddYears(-1);
-            }
-        }
+        //private void InvalidateCookie(string cookieName)
+        //{
+        //    if (Response.Cookies[cookieName] != null)
+        //    {
+        //        Response.Cookies[cookieName].Expires = DateTime.Now.AddYears(-1);
+        //    }
+        //}
     }
 
 

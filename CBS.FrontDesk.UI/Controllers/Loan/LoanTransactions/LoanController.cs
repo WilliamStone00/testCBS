@@ -100,6 +100,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
             ViewBag.Status = data.Result;
             var downloadInfoLoans = await _LoanServices.GetAllFileDownloadInfoLoanPerUser();
             var Branches = await _branchServices.GetBranches();
+          
             ViewBag.Branches = Branches;
             return View(new Loan { FileDownloadInfoLoans = downloadInfoLoans.ToList() });
         }

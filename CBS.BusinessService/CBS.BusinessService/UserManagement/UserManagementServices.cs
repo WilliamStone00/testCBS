@@ -498,18 +498,14 @@ namespace CBS.BusinessService.UserManagement
             try
             {
 
-                var resetPassword = new ResetPassword { userName = fLogin.UserName, password = fLogin.Password };
+                var password = new ResetPassword { userName = fLogin.UserName, password = fLogin.Password };
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<UserDto>>(APICallHelper.FLoginChangePasswordCommand, resetPassword);
+                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<bool>>(APICallHelper.FLoginChangePasswordCommand, password);
                 if (reUser.IsSuccess)
                 {
-                    var userAuth = reUser.ApiResponseData.Data;
-                    HttpContext.Current.Session["Token"] = userAuth.bearerToken;
-                    HttpContext.Current.Session["BranchObject"] = userAuth.Branch;
-                    userAuth.password = fLogin.Password;
-                    GetExecutionMessages(userAuth, true, fLogin.UserName, MessagesResults.Success,
+                    GetExecutionMessages(null, true, fLogin.UserName, MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
-                        userAuth.refreshToken);
+                        reUser.Message);
                     return ExecutionMessage;
                 }
                 GetExecutionMessages(fLogin, false, fLogin.UserName, MessagesResults.Failed,

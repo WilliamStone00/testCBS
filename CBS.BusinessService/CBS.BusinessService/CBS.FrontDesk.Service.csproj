@@ -203,6 +203,7 @@
     <Compile Include="Accounts\BankingOperationServices.cs" />
     <Compile Include="Accounts\CloseFeeParameterServices.cs" />
     <Compile Include="Accounts\ChargesWaivedServices.cs" />
+    <Compile Include="Accounts\FileDownloadServices.cs" />
     <Compile Include="Accounts\TransactionResversalServices.cs" />
     <Compile Include="Accounts\SubTellerCashReplenishmentServices.cs" />
     <Compile Include="Accounts\PrimaryTellerCashReplenishmentServices.cs" />

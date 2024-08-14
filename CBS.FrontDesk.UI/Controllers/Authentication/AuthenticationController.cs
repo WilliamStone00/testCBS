@@ -51,6 +51,7 @@ namespace CBS.FrontDesk.UI.Controllers
                             {
                                 var user = Data;
                                 CreateToken(user, "CHANGE_PWD", 10, false, true);
+                                //HttpContext.Session["CHANGE_PWD"] = "YES";
                                 string url = string.Format(
                                     "~/UserManagement/FLoginChangePassword?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&path={4}&userName={5}",
                                     "USER", user.id, user.refreshToken, Guid.NewGuid(), user.firstName + "_" + user.lastName, user.userName
@@ -62,12 +63,14 @@ namespace CBS.FrontDesk.UI.Controllers
                                 if (Data.isMFA)
                                 {
                                     CreateToken(Data, "CBS4U_MFA", 30, true);
+                                    //HttpContext.Session["CBS4U_MFA"] = "YES";
                                     string url = string.Format("~/MFAVerification/Index?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&email={4}&fullname={5}&returnUrl={6}",
                                         "MFA", Data.id, Data.refreshToken, Guid.NewGuid(), Data.email, Data.firstName, returnUrl);
                                     return Redirect(url);
                                 }
                                 else
                                 {
+                                    //Normal Passord
                                     CreateToken(Data, "CBS4U", 30);
                                     ViewBag.Success = true;
                                     ViewBag.StartSessionWarning = true;
@@ -98,112 +101,80 @@ namespace CBS.FrontDesk.UI.Controllers
             return View("Login", model);
         }
 
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
         //public async Task<ActionResult> Login(AuthRequest model, string returnUrl = "")
         //{
-        //    var result = new ExecutionMessages();
-        //    if (ModelState.IsValid)
+        //    if (!ModelState.IsValid)
         //    {
-        //        result = await _helper.AuthenticateUser(model);
-        //        var Data = new UserDto();
-        //        if (result.Data != null)
-        //        {
-        //            Data = (UserDto)result.Data;
-        //            if (!Data.IsBlocked)
-        //            {
-        //                try
-        //                {
-
-        //                    if (Data.ChangePasswordOnFirstLogin)
-        //                    {
-        //                        var user = Data;
-        //                        CreateToken(user, "PWD", 10);
-        //                        string url = string.Format("~/UserManagement/FLoginChangePassword?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}"
-        //                            , "User", user.id, user.refreshToken, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "internaluserobject:" + user.firstName);
-        //                        return RedirectToLocal(url);
-        //                    }
-        //                    else
-        //                    {
-        //                        if (Data.isMFA)
-        //                        {
-        //                            CreateToken(Data, "CBS4U_MFA", 10);
-        //                            string url = string.Format("~/MFAVerification/Index?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&email={4}&fullname={5}", "MFA", Data.id, Data.refreshToken, Guid.NewGuid(), Data.email, Data.firstName);
-        //                            //string url = string.Format("~/MFAVerification/Index?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&email{4}&fullname{5}","MFA", Data.id, Data.refreshToken, Guid.NewGuid(), Data.email, Data.firstName);
-        //                            return Redirect(url);
-        //                        }
-        //                        else
-        //                        {
-        //                            CreateToken(Data, "CBS4U", 10);
-        //                            ViewBag.Success = true;
-        //                            ViewBag.StartSessionWarning = true;
-        //                            ViewBag.Message = Messaging.MessageResult(result);
-        //                            return RedirectToLocal(returnUrl);
-
-        //                        }
-
-        //                    }
-
-
-        //                }
-        //                catch (Exception ex)
-        //                {
-        //                    ViewBag.Success = false;
-        //                    ViewBag.Message = $"{Messaging.MessageResult(result)}, Error: {ex.Message}";
-        //                    return View("Login", model);
-        //                }
-        //                //if (Data.isAuthenticated)
-        //                //{
-
-        //                //}
-        //            }
-        //            else
-        //            {
-        //                var user = (UserDto)result.Data;
-        //                string url = string.Format("~/PasswordRecovery/AccountConfirmation?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}", "PasswordRecovery", user.id, user.refreshToken, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "forgotten_password");
-        //                return Redirect(url);
-
-        //            }
-        //        }
+        //        ViewBag.Success = false;
+        //        ViewBag.Message = "Invalid login attempt.";
+        //        return View("Login", model);
         //    }
 
+        //    var result = await _helper.AuthenticateUser(model);
+        //    if (result.Data == null)
+        //    {
+        //        ViewBag.Success = false;
+        //        ViewBag.Message = "Authentication failed.";
+        //        return View("Login", model);
+        //    }
 
-        //    ViewBag.Success = false;
-        //    ViewBag.Message = Messaging.MessageResult(result);
-        //    return View("Login", model);
+        //    var user = (UserDto)result.Data;
 
+        //    if (user.IsBlocked)
+        //    {
+        //        string url = string.Format("~/PasswordRecovery/AccountConfirmation?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete={4}&path={5}",
+        //            "PasswordRecovery", user.id, user.refreshToken, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "forgotten_password");
+        //        return Redirect(url);
+        //    }
 
+        //    try
+        //    {
+        //        if (user.ChangePasswordOnFirstLogin)
+        //        {
+        //            HttpContext.Session["CHANGE_PWD"] = "YES";
+        //            StoreUserSessionData(user);
+        //            string url = string.Format(
+        //                "~/UserManagement/FLoginChangePassword?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&path={4}&userName={5}",
+        //                "USER", user.id, user.refreshToken, Guid.NewGuid(), user.firstName + "_" + user.lastName, user.userName
+        //            );
+        //            return Redirect(url);
+        //        }
+
+        //        if (user.isMFA)
+        //        {
+        //            HttpContext.Session["CBS4U_MFA"] = "YES";
+        //            StoreUserSessionData(user);
+        //            string url = string.Format("~/MFAVerification/Index?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&email={4}&fullname={5}&returnUrl={6}",
+        //                "MFA", user.id, user.refreshToken, Guid.NewGuid(), user.email, user.firstName, returnUrl);
+        //            return Redirect(url);
+        //        }
+
+        //        // Normal Password Scenario
+        //        CreateToken(user, "CBS4U", 30);
+        //        ViewBag.Success = true;
+        //        ViewBag.StartSessionWarning = true;
+        //        ViewBag.Message = Messaging.MessageResult(result);
+        //        return RedirectToLocal(returnUrl);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ViewBag.Success = false;
+        //        ViewBag.Message = $"An error occurred: {ex.Message}";
+        //        return View("Login", model);
+        //    }
         //}
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public ActionResult Accountverification(string serviceoption = "None", string KEY = "KEY", string secrete = "none", string usersecreteid = "secrete", string path = null,string returnUrl = "")
+        //private void StoreUserSessionData(UserDto user)
         //{
-        //    var model = new AuthenticationManagementHelper();
-        //    model._object.OperationOption.KEY = KEY;
-        //    model._object.OperationOption.ServiceOption = serviceoption;
-        //    model._object.OperationOption.Path = "account_verification";
-        //    model._object.OperationOption.ActionType = "Login";
-        //    //account_verification
-        //    _helper = _manager.CRUD(model);
-        //    if (_helper._object.User != null)
-        //    {
-
-        //        var user = _helper._object.User;
-        //        if (user.SessionID!=null)
-        //        {
-        //            if (CreateToken(_helper._object.User, "PWD", 10))
-        //            {
-        //                string url = string.Format("~/UserManagement/ChangePassword?serviceoption={0}&KEY={1}&secrete={2}&usersecreteid={3}&secrete{4}&path{5}"
-        //                , "User", user.UserID, user.Password, Guid.NewGuid(), Guid.NewGuid() + "#" + Guid.NewGuid(), "internaluserobject:" + user.FullName);
-        //                return RedirectToLocal(url);
-        //            }
-        //        }
-
-        //    }
-        //    ViewBag.Success = false;
-        //    ViewBag.Message = Messaging.MessageResult(_helper.ExecutionMessage);
-        //    return View("Login", model);
-
-
+        //    HttpContext.Session["UserId"] = user.id;
+        //    HttpContext.Session["RefreshToken"] = user.refreshToken;
+        //    HttpContext.Session["UserName"] = user.userName;
+        //    HttpContext.Session["FirstName"] = user.firstName;
+        //    HttpContext.Session["LastName"] = user.lastName;
+        //    HttpContext.Session["Email"] = user.email;
         //}
 
         private ActionResult RedirectToLocal(string returnUrl)

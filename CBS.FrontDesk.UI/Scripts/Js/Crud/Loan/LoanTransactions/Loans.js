@@ -59,4 +59,6 @@ function LoadLoans(search) {
         //"order": [[0, "desc"]], // Uncomment to set initial sorting by DisbursementDate in descending order
         //"orderFixed": [[0, "desc"]] // Uncomment to fix sorting by DisbursementDate in descending order
     });
+    $(function () { $('[data-toggle="tooltip"]').tooltip(); });
+
 }

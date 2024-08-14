@@ -169,7 +169,7 @@ namespace CBS.BusinessService.CustomerManagement
 
         public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string searchCriterial, bool isByBranch = true)
         {
-            var customerParam = new CustomerResource
+            var customerParam = new PagginationResource
             {
                 OrderBy = "CustomerId",
                 PageSize = dataTableOptions.pageSize,
@@ -208,7 +208,7 @@ namespace CBS.BusinessService.CustomerManagement
         }
 
 
-        public async Task<IEnumerable<IndividualProfile>> GetMembers(CustomerResource resource)
+        public async Task<IEnumerable<IndividualProfile>> GetMembers(PagginationResource resource)
         {
             try
             {

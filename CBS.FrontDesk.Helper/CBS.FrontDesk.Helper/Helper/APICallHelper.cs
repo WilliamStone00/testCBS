@@ -79,7 +79,9 @@
         public static string GetAllEntryFeeParameter = "/api/v1/EntryFeeParameter";
         public static string CreateEntryFeeParameter = "/api/v1/EntryFeeParameter";
 
+        public static string InitiateBulkDownloadIndividualAccountBalances = "/api/v1/FileDownloadInfo/InitiateBulkDownloadIndividualAccountBalances";
 
+        
         //TransactionReversal
         public static string Delete_GetReversalRequest = "/api/v1/ReversalRequest/{0}";
         public static string GetAllReversalRequest = "/api/v1/ReversalRequest/All";
@@ -162,6 +164,8 @@
         public static string GetAllAccounts = "/api/v1/Account";
         public static string MakeDepoit = "/api/v1/Transaction/Deposit";
         public static string BulkDeposit = "/api/v1/Transaction/BulkDeposit";
+        public static string GetAllMembersPagginatedSummaryAccounts = "/api/v1/Account/Pagginated/MembersAccountSummary";
+        public static string GetAllMembersSummaryAccounts = "/api/v1/Account/MembersAccountSummary";
         //
         public static string MakeWithdrawal = "/api/v1/Transaction/Withdrawal";
         public static string MakeLoanRepayment = "/api/v1/Transaction/LoanRepaymentCommand";

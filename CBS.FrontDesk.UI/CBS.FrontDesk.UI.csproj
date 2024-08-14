@@ -467,6 +467,7 @@
     <Compile Include="Controllers\TransactionManagement\MigrationController.cs" />
     <Compile Include="Controllers\TransactionManagement\OpenningOfDayController.cs" />
     <Compile Include="Controllers\TransactionManagement\PrimaryTellerCashRequisitionController.cs" />
+    <Compile Include="Controllers\TransactionManagement\MemberOrdinaryAccountsF8Controller.cs" />
     <Compile Include="Controllers\TransactionManagement\SavingProductFeeController.cs" />
     <Compile Include="Controllers\TransactionManagement\FeePolicyController.cs" />
     <Compile Include="Controllers\TransactionManagement\OperationFeeController.cs" />
@@ -2338,6 +2339,7 @@
     <Content Include="Scripts\Js\Crud\Groups\Customers\CustomersProfile.js" />
     <Content Include="Scripts\Js\Crud\Groups\Customers\MyCustomers.js" />
     <Content Include="Scripts\Js\Crud\DailyTellerAssignation\DailyTellerAssignation.js" />
+    <Content Include="Scripts\Js\Crud\MemberOrdinaryAccountsF8\MembersAccount.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Pending.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Requests.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\WithdrawalNotification.js" />
@@ -2995,6 +2997,11 @@
     <Content Include="Views\CashDesk\_MomocashCollectionDesk.cshtml" />
     <Content Include="Views\CashDesk\_MomocashCollectionTabs.cshtml" />
     <Content Include="Views\MFAVerification\Index.cshtml" />
+    <Content Include="Views\MemberOrdinaryAccountsF8\Index.cshtml" />
+    <Content Include="Views\MemberOrdinaryAccountsF8\_AccountData.cshtml" />
+    <Content Include="Views\MemberOrdinaryAccountsF8\DownloadFileF8.cshtml" />
+    <Content Include="Views\MemberOrdinaryAccountsF8\_SearchBox.cshtml" />
+    <Content Include="Views\MemberOrdinaryAccountsF8\_FileDownloadData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
