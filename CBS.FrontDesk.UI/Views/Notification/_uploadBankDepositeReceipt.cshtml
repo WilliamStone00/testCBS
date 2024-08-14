@@ -2,13 +2,13 @@
 
 <div class="card-body">
 
-
     @if (Convert.ToBoolean(ViewBag.IsAuthourized) == false)
     {
 
         @Html.Partial("_GeneralErrorDiv")
     }
-    @using (Html.BeginForm("AddOrUpdate", "Notification", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostBankTransaction(this);", @id = "formValidationExamples" }))
+
+    @using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostBankTransaction(this);", @id = "formValidationExamples" }))
     {
         <!-- Account Details -->
 

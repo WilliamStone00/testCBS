@@ -317,8 +317,9 @@ namespace CBS.FrontDesk.UI.Controllers
         };
             return serverResponse.ToList();
         }
-        private List<AccountingRule> GetJournalEntryTestData(string message)
+        private AccountingModelRule GetJournalEntryTestData(string message)
         {
+            AccountingModelRule modelRule = new AccountingModelRule();
           AccountingRule[] serverResponse = new AccountingRule[]
         {
             new AccountingRule { Id = "1", RuleName = $"{message}", Description =  $"{message}", SystemDescription =  $"{message}", System_Id = "SYS001", BookingDirection = "Credit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 1500.00, AccountName =  $"{message}" },
@@ -326,18 +327,19 @@ namespace CBS.FrontDesk.UI.Controllers
             new AccountingRule { Id = "3", RuleName =  $"{message}", Description =  $"{message}", SystemDescription =  $"{message}", System_Id = "SYS003", BookingDirection = "Debit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 500.00, AccountName = $"{message}" },
             new AccountingRule { Id = "4", RuleName =  $"{message}", Description =  $"{message}", SystemDescription =  $"{message}", System_Id = "SYS004", BookingDirection = "Credit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 1200.00, AccountName = $"{message}" }
         };
-            return serverResponse.ToList();
+            modelRule.AccountingRule= serverResponse.ToList();
+            modelRule.HasError= true;
+            return modelRule;
         }
         public async Task<ActionResult> GetAllEntriesForJournalEntryReference(string Id)
         {
-
-
+           
             try
             {
                 var results = (List<PostedEntryX>)this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()];
 
                 var data = results.Find(x => x.Id.Equals(Id)); //<<<await _Service.GetPostedEntryReference(Id);
-
+               
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -348,15 +350,16 @@ namespace CBS.FrontDesk.UI.Controllers
 
         public async Task<ActionResult> GetAccountingEntryEventID(string system_Id)
         {
-
+            AccountingModelRule modelRule = new AccountingModelRule();
 
             try
             {
                 var modelList = await _AccountingRuleServices.GetAccountingRules();
                 var list = modelList.Where(c=>c.System_Id == system_Id).ToList();   
                   list = await RebuildEntryBookAsync(list);
-
-                return Json(list, JsonRequestBehavior.AllowGet);
+                modelRule.AccountingRule = list;
+                modelRule.HasError = true;
+                return Json(modelRule, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

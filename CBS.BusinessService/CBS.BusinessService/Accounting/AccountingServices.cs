@@ -379,7 +379,12 @@ namespace CBS.BusinessService.Accounting
             try
             {
 
-                // Make an API call to create an individual profile
+                if (list.AccountModelList.Count()==0)
+                {
+                    // Failed creation
+                    GetExecutionMessages(list, true, $"NO element was seen in the file", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"NO element was seen in the file");
+                }
 
 
                 var response = await _accountingApiCallerHelper.PostUploadAccountResultResponseAsync(APICallHelper.CreateAccounOnUploadie, list);
@@ -395,7 +400,7 @@ namespace CBS.BusinessService.Accounting
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(response, true, $"{list.AccountModelList[0].AccountNumber}", MessagesResults.Failed,
+                        GetExecutionMessages(response, true, $"{response.message}", MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.message);
                     }
                     // Successful creation

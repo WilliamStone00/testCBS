@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using Microsoft.AspNetCore.Cors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -32,6 +34,7 @@ namespace CBS.FrontDesk.UI
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }
+       
     }
 
 }

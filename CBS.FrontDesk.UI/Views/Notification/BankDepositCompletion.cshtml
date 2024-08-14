@@ -1,4 +1,7 @@
 ﻿
+@{
+    ViewBag.Title = "BankDepositCompletion";
+}
 
 @{
     ViewBag.Title = "Cash Replenishment Request";
@@ -17,33 +20,31 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-bank-plus me-2"></i>
-                BRANCH TO BRANCH CASH TRANSFER 
+                Upload Bank Deposit Reciept
             </button>
         </h2>
-        <div class="demo-inline-spacing text-end" style="padding-right:2em">
-            <a type="button" onclick="LoadDataGen('CashFlowManagement','ListOfCashReplenishmentData','_CashReplenishmentRequestDataWithOutApproval',0,'datalistingview_CashReplenishmentRequest')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-            </a>
-            <a type="button" onclick="AddORUpdateGen(null,'datalistingview_CashReplenishmentRequest','_CreateCashReplenishmentRequest','new','CashFlowManagement')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-            </a>
-        </div>
+  
         <div id="accordionPopoutIcon-3"
              class="accordion-collapse collapse show"
              data-bs-parent="#accordionPopoutIcon">
             <div class="accordion-body">
                 <div id="datalistingview_CashReplenishmentRequest">
-                    @Html.Partial("_CashTransferData")
+                    @Html.Partial("_uploadBankDepositeReceipt")
                 </div>
             </div>
         </div>
     </div>
  
+
 </div>
- 
+
+
+
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/main.js/CashFlowManagement.js"></script>
+<script src="~/Scripts/Js/main.js/CashFlowManagementDeposit.js"></script>
 
 }
+
+
 
 

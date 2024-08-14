@@ -18,7 +18,17 @@
         }
         else
         {
-            <legend id="select_base">Branch To Branch Cash Transfer @Model.BranchToBranchTransfer.Accountinfor</legend>
+            if (ViewBag.AccountNotFound)
+            {
+
+                <legend id="select_base" class="text-bg-danger">Branch To Branch Cash Transfer @Model.BranchToBranchTransfer.Accountinfor</legend>
+            }
+            else
+            {
+
+                <legend id="select_base">Branch To Branch Cash Transfer @Model.BranchToBranchTransfer.Accountinfor</legend>
+            }
+
             <div class="row mt-2 gy-4">
 
                 <div class="col-md-6">

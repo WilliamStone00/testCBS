@@ -108,10 +108,18 @@ function displayResults(response) {
         $('#accountsPresent').text(accountsPresent);
         $('#totalAccounts').text(totalAccounts);
         $('#accountsNotMatching').text(accountsNotMatching);
-             // Update download link
+        // Update download linkDownload non-matching accounts:
+        var message = "";
+        if (accountsPresent === 0) {
+            message = "Download chart of account";
+        } else {
+            message = "Download non-matching accounts";
+        }
+      
         var downloadUrl = filePath;
         //  window.open("", "_blank");
         $('#downloadLink').attr('href', downloadUrl);
+        $('#downloadLink').text(message);
         $('#downloadLink').attr('target', '_blank'); // This opens the link in a new tab/window
         //      window.open("/Reports/PrintAccountLedgerDtoInExcel", "_blank");
         // Add onclick event to trigger download in a new window
@@ -126,7 +134,9 @@ function displayResults(response) {
         // Display success message
         appalert(response.message, 1, 1);
     } else {
-        appalert("An error occurred while processing the file.", 3, 1);
+        console.log(response);
+      
+        appalert(response.message, 3, 1);
     }
 }
 

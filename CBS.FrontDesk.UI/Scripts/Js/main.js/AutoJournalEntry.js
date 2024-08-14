@@ -350,23 +350,32 @@ function openModalWithData(data, yourModalId) {
 
  
 function LoanAccountingEventEntrySystemId(system_Id) {
-    console.log(system_Id);
+ 
     $.ajax({
         url: '/ManuallyJournalEntry/GetAccountingEntryEventID/',
         type: 'Get',
         dataType: 'json',
         data: { system_Id: system_Id },
         success: function (data) {
-            /* $('#largeModal').hide();*/
+            console.log($("#" + system_Id + "-RuleName").text());
             $('#exampleModalLabel3').empty();
-            //var description = $("#" + branchId + "-Name").text();
-            var names = "Accounting Event Entry for " + data[0].RuleName + ".";
-            console.log(data);
-            $("#exampleModalLabel3").text(names);
-            //// Append text to the modal title
-            ////$('#LiaisonLedgerHeading').append(names);
-            var table;
-            InitiliseDataTable(data);
+            //var description = $("#" + branchId + "-RuleName").text();   
+            if (data.HasError == true) {
+                var names = "Your branch is missing some accounts needed to record " + $("#" + system_Id + "-RuleName").text() + " transactions.";
+                $("#exampleModalLabel3").text(names);
+                document.querySelector('#exampleModalLabel3').classList.add('text-danger');
+
+            } else {
+                var names = "Accounting Event Entry for " + $("#" + system_Id + "-RuleName").text() + ".";
+
+                $("#exampleModalLabel3").text(names);
+                var table;
+                InitiliseDataTable(data);
+            }
+         
+ 
+   
+        
 
 
         },
@@ -428,14 +437,9 @@ function collectAndPostData() {
         }
     });
 }
-
-
-// Attach the function to a button click event
 $('#submitButton').on('click', function () {
     submitAccountingEntries();
 });
-
- 
 function submitAccountingEntries() {
     const table = $('#AccountingEventEntriesDataTable').DataTable();
     const dataToSend = [];

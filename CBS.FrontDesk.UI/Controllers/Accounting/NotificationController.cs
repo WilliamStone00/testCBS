@@ -620,7 +620,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var accountAcc = (await _AccountServices.GetAccountByAccountNumber(AccountnumberBB));
                 if (accountAcc.AccountNumberCU == "" && accountAcc.AccountName == null)
                 {
-                    name = $"{acc.AccountNumberCU}:{branch.Name}-{acc.AccountName}>>There is no vault account for {_AccountServices.GetBranchName()}";
+                    name = $"{acc.AccountNumberCU}:{branch.Name}-{acc.AccountName}>>There is no vault account for {_AccountServices.GetBranchName()}.";
+                    ViewBag.AccountNotFound = true;
+        
+                    ViewBag.Error = $"There is no vault account for { _AccountServices.GetBranchName()}.Inorder to procceed, Create the a vault account(571010) for { _AccountServices.GetBranchName()}";
+
                 }
                 else
                 {
@@ -685,8 +689,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             var OperationEventAttribute = await _accountingEntryServices.GetDepositNotificationRequest(KEY);
             CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
             cashDemandDataEntity.DepositNotificationDto = OperationEventAttribute;
+            cashDemandDataEntity.UploadBankReciept.Id = OperationEventAttribute.Id;
             cashDemandDataEntity.DepositNotificationDto.BranchOffice = (await branchServices.GetBranches()).Where(po => po.Id.Equals(OperationEventAttribute.BranchId)).FirstOrDefault().Name;
-            if (branchServices.IsHeadOffice() == false)
+            if (branchServices.IsHeadOffice())
             {
                 ViewBag.IsAuthourized = false;
                 ViewBag.Error = _AccountServices.GetUserFullName() + ", You are not authourized to perform this transaction kindly contact the " + (await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name;
