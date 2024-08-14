@@ -2326,6 +2326,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
+    <Content Include="Scripts\Js\Crud\CashDesk\MomocashCollection.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\ExpensesCashDesk.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\OtherCashMobileMoney.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\OtherTransactions.js" />
@@ -2456,7 +2457,7 @@
     <Content Include="Views\UserManagement\_UserProfile.cshtml" />
     <Content Include="Views\UserManagement\_ChangePassword.cshtml" />
     <Content Include="Views\UserManagement\_UpdateImage.cshtml" />
-    <Content Include="Views\UserManagement\_MFA.cshtml" />
+    <Content Include="Views\UserManagement\_EnableMFA.cshtml" />
     <Content Include="Views\UserManagement\_ResetPassword.cshtml" />
     <Content Include="Views\Document\Index.cshtml" />
     <Content Include="Views\Document\_Data.cshtml" />
@@ -2986,8 +2987,6 @@
     <Content Include="Views\Notification\BankCashOutRequest.cshtml" />
     <Content Include="Views\Notification\_CreateBankCashOutApproval.cshtml" />
     <Content Include="Views\Notification\BankDepositApprovalRequest.cshtml" />
-    <Content Include="Views\Notification\BankDepositCompletion.cshtml" />
-    <Content Include="Views\Notification\_uploadBankDepositeReceipt.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -1,60 +1,83 @@
-﻿using CBS.FrontDesk.Data.Message;
+﻿using Antlr.Runtime;
+using CBS.BusinessService.UserManagement;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.UserManagement;
+using CBS.FrontDesk.Service;
+using DocumentFormat.OpenXml.Bibliography;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.ApplicationServices;
 using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.UserManagement
 {
     public class MFAVerificationController : BaseController
     {
-        // GET: MFAVerification
-        // GET: TwoStepaccountverification
-        //private IUserManagementHelper _helper;
-        //string url = "/";
-        //private readonly IUserManagementUIManager _manager;
-        //public MFAVerificationController(IUserManagementHelper helper, IUserManagementUIManager manager)
-        //{
-        //    _helper = helper;
-        //    _manager = manager;
+        //GET: MFAVerification
+        //GET: TwoStepaccountverification
+        private readonly IUserManagementServices _userManagementServices;
+        private readonly AuthenticationServices _authenticationServices;
+        string url = "/";
+        public MFAVerificationController(IUserManagementServices helper, AuthenticationServices authenticationServices = null)
+        {
+            _userManagementServices = helper;
+            _authenticationServices = authenticationServices;
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult> Index(string serviceoption = "None", string KEY = "KEY", string secrete = "none", string usersecreteid = "secrete", string path = null, string email = "default", string fullName = "None", string returnUrl = "")
+        {
+            if (!VerifyCookies("CBS4U_MFA"))
+            {
+                var data = new MFAActivation { Code = null, Email = email, FullName = fullName, ReturnUrl = returnUrl, Id = Guid.Parse(KEY) };
+                return View(data);
+            }
 
-        //}
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public async Task<ActionResult> MFACodeVerification(string serviceoption = "None", string KEY = "KEY", string secrete = "none", string usersecreteid = "secrete", string path = null)
-        //{
+            return Redirect("~/Authentication/Logout");
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> MFACodeVerification(MFAActivation mFAActivation)
+        {
 
+            if (!VerifyCookies("CBS4U_MFA"))
+            {
+                var executionMessages = await _userManagementServices.MFACodeVerification(mFAActivation);
+                if (executionMessages.Result)
+                {
+                    //var userDto = (UserDto)executionMessages.Data;
+                    RemoveSessionName("MFA");
+                    if (!string.IsNullOrEmpty(mFAActivation.ReturnUrl))
+                    {
+                        return Json(new { success = true, url = mFAActivation.ReturnUrl });
+                    }
+                }
+                return Json(new { success = executionMessages.Result, status = executionMessages.MessageStatus, message = Messaging.MessageResult(executionMessages) });
+            }
 
-        //    if (!VerifyCookies("EASIMS_MFA"))
-        //    {
-        //        await InitializeData(serviceoption, KEY, null, path);
-        //        if (_helper._object.User.Is2faEnabled)
-        //        {
-        //            _helper._object.User.Code = string.Empty;
-        //            return View(_helper);
-        //        }
-        //    }
+            return Json(new { success = false, message = "Session expired.", url = "~/Authentication/Logout" });
+        }
 
-        //    return Redirect("~/Authentication/Logout");
-        //}
         //[HttpPost]
         //[AllowAnonymous]
-        //public async Task<ActionResult> MFACodeVerification(UserManagementHelper model)
+        //public async Task<ActionResult> MFACodeVerification(MFAActivation mFAActivation, string returnUrl = "")
         //{
 
 
 
-        //    if (!VerifyCookies("EASIMS_MFA"))
+        //    if (!VerifyCookies("CBS4U_MFA"))
         //    {
-        //        _helper = await _manager.CRUD(model);
-        //        if (_helper.ExecutionMessage.Result)
+        //        var data = await _userManagementServices.MFACodeVerification(mFAActivation);
+        //        if (data.Result)
         //        {
-        //            CreateToken(_helper._object.User);
-
+        //            return RedirectToLocal(returnUrl);
         //        }
-        //        return Json(new { success = _helper.ExecutionMessage.Result, status = _helper.ExecutionMessage.MessageStatus, message = Messaging.MessageResult(_helper.ExecutionMessage), option = model._object.OperationOption.ServiceOption, optype = model._object.OperationOption.ActionType, reloadDataView = model._object.OperationOption.ReloadDataView, resetForm = model._object.OperationOption.ResetForm, controllerName = model._object.OperationOption.ControllerName, dataLoaderActionName = model._object.OperationOption.DataLoaderActionName, reinitializedActionName = model._object.OperationOption.ReinitializedActionName, divLoaderList = model._object.OperationOption.DivLoaderList, tableName = model._object.OperationOption.TableName, reloadPartialView = model._object.OperationOption.ReloadPartialView, kEY = model._object.OperationOption.KEY, url = url }, JsonRequestBehavior.AllowGet);
+        //        return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
         //    }
         //    url = "~/Authentication/Logout";
@@ -63,11 +86,13 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
 
 
         //}
-        //public async Task<ActionResult> InitializeData(string serviceoption = null, string KEY = null, string ReadOptions = null, string path = null, string group = null)
+        //private ActionResult RedirectToLocal(string returnUrl)
         //{
-        //    ViewBag.KEY = KEY;
-        //    _helper = await _manager.GET(serviceoption, ReadOptions, KEY, path, group);
-        //    return PartialView(_helper.HelperOperation.ViewName, _helper);
+        //    if (Url.IsLocalUrl(returnUrl))
+        //    {
+        //        return Redirect(returnUrl);
+        //    }
+        //    return RedirectToAction("Index", "Home");
         //}
     }
 }

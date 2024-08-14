@@ -34,7 +34,12 @@
             </div>
         </div>
 
-
+        <div class="col-12">
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.CustomerList.IsDailyCollector, new { @class = "form-check-input" })
+                <label class="form-check-label" for="isActive">Check me. I am a daily saving member.</label>
+            </div>
+        </div>
 
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">

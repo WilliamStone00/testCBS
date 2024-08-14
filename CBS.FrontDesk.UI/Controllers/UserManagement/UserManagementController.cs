@@ -133,6 +133,12 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
+            else if (model.Option == "EnableMFA")
+            {
+                var data = await _userManagementServices.EnableMFA(model.MFAActivation);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
             else
             {
                 var data = await _userManagementServices.CreateUser(model);
@@ -174,6 +180,12 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
+            else if (model.Option == "EnableMFA")
+            {
+                var data = await _userManagementServices.EnableMFA(model.MFAActivation);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
             else
             {
                 var data = await _userManagementServices.CreateUser(model);
@@ -183,20 +195,34 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
         }
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> FLoginChangePassword(string serviceoption = "None", string KEY = "KEY", string secrete = "none", string usersecreteid = "secrete", string path = null)
+        public async Task<ActionResult> FLoginChangePassword(string serviceoption = "None", string KEY = "KEY", string secrete = "none", string usersecreteid = "secrete", string path = null, string userName = null)
         {
-            if (!VerifyCookies("PWD"))
+            if (!VerifyCookies("CHANGE_PWD"))
             {
-                var user = await _userManagementServices.GetUser(_userManagementServices.ConvertStringToGuid(KEY));
-                if (user!=null)
+                Guid userId;
+                try
                 {
-                    var Flogin = new FLoginChangePassword { ConfirmPassword = string.Empty, Password = string.Empty, UserName = user.userName, FullName = $"{user.firstName} {user.lastName}", UserId = user.id };
-                    return View(Flogin);
+                    userId = _userManagementServices.ConvertStringToGuid(KEY);
+                }
+                catch
+                {
+                    return Redirect("~/Authentication/Logout"); // Redirect if KEY is not a valid GUID
                 }
 
+                var Flogin = new FLoginChangePassword
+                {
+                    ConfirmPassword = string.Empty,
+                    Password = string.Empty,
+                    UserName = userName,
+                    FullName = path, // Assuming FullName should be set to userName
+                    UserId = userId
+                };
+
+                return View(Flogin);
             }
             return Redirect("~/Authentication/Logout");
         }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult> FLoginChangePassword(FLoginChangePassword model)
@@ -205,15 +231,15 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             // Check if model state is valid
             if (ModelState.IsValid)
             {
+
+
                 // Verify cookies
-                if (!VerifyCookies("PWD"))
+                if (!VerifyCookies("CHANGE_PWD"))
                 {
                     var data = await _userManagementServices.FLoginChangePassword(model);
                     if (data.Result)
                     {
-                        var userDto = (UserDto)data.Data;
-                        CreateToken(userDto, "CBS4U");
-
+                        RemoveSessionName("PWD");
                     }
                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
                 }

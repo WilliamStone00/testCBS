@@ -54,24 +54,20 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         public bool VerifyCookies(string cookiesName = "CBS4U")
         {
-
             HttpCookie authCookie = Request.Cookies[cookiesName];
-            if (authCookie != null)
+            if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
             {
                 FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                if (authTicket.Expired)
+                if (authTicket != null && !authTicket.Expired)
                 {
-                    return true;
+                    return false; // Cookie is valid and not expired
                 }
-
             }
-            else
-            {
-                return true;
-            }
-            return false;
 
+            return true; // Cookie is invalid or expired
         }
+
+
         //protected override void OnActionExecuting(ActionExecutingContext filterContext)
         //{
         //    // Check if the request is going to the login page to avoid redirection loops
@@ -117,6 +113,74 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
+        //public void CreateToken(UserDto reqDto, string cookieName = "CBS4U", int minutesToLive = 30, bool isMFA = false)
+        //{
+        //    // Set MFA session flag
+        //    HttpContext.Session["MFA"] = isMFA;
+
+        //    // Create user data object
+        //    var user = new CustomMembershipUser(reqDto);
+        //    string[] roles = reqDto.Roles.Select(role => role.RoleName).ToArray();
+        //    CustomSerializeModel userModel = new CustomSerializeModel
+        //    {
+        //        Id = user.UserID,
+        //        UserName = reqDto.userName,
+        //        RoleName = roles,
+        //        Phonenumber = user.Phonenumber,
+        //        TokenRefresherID = reqDto.refreshToken,
+        //        Password = reqDto.password,
+        //    };
+
+        //    BuildLocalSession(reqDto);
+
+        //    // Serialize user data
+        //    string userData = JsonConvert.SerializeObject(userModel);
+
+        //    // Create Forms Authentication Ticket
+        //    FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
+        //        1,
+        //        reqDto.email,
+        //        DateTime.Now,
+        //        DateTime.Now.AddMinutes(minutesToLive), // Set expiration
+        //        false,
+        //        userData
+        //    );
+
+        //    // Encrypt ticket
+        //    string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+
+        //    // Create and add the authentication cookie
+        //    HttpCookie faCookie = new HttpCookie(cookieName, encryptedTicket)
+        //    {
+        //        HttpOnly = true,
+        //        Secure = true, // Ensure cookie is sent only over HTTPS
+        //        Expires = DateTime.Now.AddMinutes(minutesToLive) // Set expiration
+        //    };
+        //    Response.Cookies.Add(faCookie);
+
+        //    // Store additional cookies if needed
+        //    if (isMFA)
+        //    {
+        //        HttpCookie mfaCookie = new HttpCookie("CBS4U_MFA", reqDto.bearerToken)
+        //        {
+        //            HttpOnly = true,
+        //            Secure = true,
+        //            Expires = DateTime.Now.AddMinutes(minutesToLive)
+        //        };
+        //        Response.Cookies.Add(mfaCookie);
+        //    }
+
+        //    // Store token and permissions in session
+        //    HttpContext.Session["Token"] = reqDto.bearerToken;
+        //    if (reqDto.Permissions == null)
+        //    {
+        //        HttpContext.Session["menu"] = new List<Permission>(); // Assuming Permission is your type
+        //    }
+        //    else
+        //    {
+        //        HttpContext.Session["menu"] = reqDto.Permissions.ToList();
+        //    }
+        //}
 
         private void InvalidateCookie(string cookieName)
         {
@@ -131,8 +195,11 @@ namespace CBS.FrontDesk.UI.Controllers
                 Session.Clear();
             }
         }
-        public void CreateToken(UserDto reqDto, string cookieName = "CBS4U", int minutes_to_live = 30)
+
+        public void CreateToken(UserDto reqDto, string cookieName = "CBS4U", int minutes_to_live = 30, bool isMFA = false,bool isPWD=false)
         {
+            HttpContext.Session["MFA"] = isMFA;
+            HttpContext.Session["PWD"] = isPWD;
             var user = new CustomMembershipUser(reqDto);
             string[] roles = reqDto.Roles.Select(role => role.RoleName).ToArray();
             CustomSerializeModel userModel = new CustomSerializeModel()
@@ -177,6 +244,19 @@ namespace CBS.FrontDesk.UI.Controllers
 
             Response.Cookies.Add(faCookie);
         }
+        public void RemoveSessionName(string sessionName)
+        {
+            bool isMFA = HttpContext.Session[sessionName] is bool mfaValue ? mfaValue : false;
+            // Check if MFA is enabled
+            if (isMFA)
+            {
+                // Later in the code, when you want to remove the MFA token
+                HttpContext.Session.Remove(sessionName); // Removing the MFA token
+            }
+
+
+        }
+       
 
         public void GetUserSession()
         {

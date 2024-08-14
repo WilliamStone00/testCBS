@@ -6,9 +6,10 @@
         public static  string GetAccountPolicies = "/api/v1/AccountPolicies";
         public static string Get_Update_Delete_AccountPolicy = "/api/v1/AccountPolicy/{0}";
         //Authentication
+        public static string MFAAuthentication = "/api/v1/MFA/MFALogin";
         public static string Authentication = "/api/Authentication/Session/Login";
         public static string RefreshToken = " /api/Authentication/Session/RefreshToken";
-
+        
 
         //CreateMemberAccountActivation
         public static string CreateMemberAccountActivation = "/api/v1/MemberAccountActivation";
@@ -34,6 +35,8 @@
         public static string UpdateUserProfile = "/api/User/profile";
         public static string ChangePassword = "/api/User/changepassword";
         public static string ResetPassword = "/api/User/resetpassword";
+        public static string MFAActivation = "/api/v1/MFA/Enable/Disactivate/MFA";
+        public static string MFAVerification = "/api/v1/MFA/VerifyMFA";
         public static string FLoginChangePasswordCommand = "/api/User/FLoginChangePasswordCommand";
         public static string UploadProfilePhoto = "/api/User/UpdateUserProfilePhoto";
         public static string GetRecentRegisteredUsers = "/api/User/GetRecentlyRegisteredUsers";

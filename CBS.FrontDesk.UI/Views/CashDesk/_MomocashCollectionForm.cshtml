@@ -1,0 +1,232 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@if (ViewBag.Operation == "cashin")
+{
+    <div class="form-wrapper">
+        <fieldset class="fieldset-custom">
+            <legend style="color: green">CASH IN</legend>
+         
+            <div class="change-group">
+                <div class="row mt-2 gy-4">
+                    <hr style="border: 2px solid green;" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                                <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="border: 1px solid green;" />
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-check">
+                                @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.SourceType, "MomocashCollectionMTN", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyMTN" })
+                                <label class="form-check-label shadow-input-boxes" for="MomocashCollectionMTN" style="background-color: yellow; color: black;">Momo Cash Collection Mobile Money MTN</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-check">
+                                @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.SourceType, "MomocashCollectionOrange", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyORANGE" })
+                                <label class="form-check-label shadow-input-boxes" for="MomocashCollectionOrange" style="background-color: orange; color: white;">Momo Cash Collection Mobile Money Orange</label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="border: 1px solid green;" />
+                    <div class="row">
+                        <div class="table-responsive" style="width: 100%;">
+                            <table class="table table-hover" id="myDataTableT">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="display:none;">ProductID</th>
+                                        <th>Ordinary accounts</th>
+                                        <th>Amount</th>
+                                        <th>Fee</th>
+                                        <th>Total</th>
+                                        <th>confirm</th>
+                                        <th>Inc</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
+                                    {
+                                        <tr>
+                                            <td style="display:none;">@d.AccountNumber</td>
+                                            <td>@d.AccountType</td>
+                                            <td>
+                                                <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
+                                            </td>
+                                            <td>
+                                                <span class="total-span">@d.Total</span>
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="form-check-input">
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="form-check-input check-inclussive">
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+                                        <td id="tableTotal">0</td>
+                                        <td></td> <!-- Empty cell to align with the checkbox column -->
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" style="text-align: right;"><strong>Balance:</strong></td>
+                                        <td id="tableBalance">0</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    @*<div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id="Note" })
+                @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Reasons for cashin</label>
+            </div>
+        </div>*@
+                </div>
+                <div class="header-buttons mt-4 float-end">
+                    <input type="hidden" name="OperationType" value="CashInMomocashCollection" id="OperationType" />
+                    <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
+                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashIn()">
+                        <i class="fas fa-money-bill-wave me-1"></i> Cash-In
+                    </button>
+                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
+                        <i class="fas fa-print me-1"></i> Re-print
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary">
+                        <i class="fas fa-sync-alt me-1"></i> Reset
+                    </button>
+                </div>
+            </div>
+            <hr style="border: 2px solid green;" />
+        </fieldset>
+    </div>
+}
+
+
+else if (ViewBag.Operation == "repayment")
+{
+    <div class="form-wrapper">
+        <fieldset class="fieldset-custom">
+            <legend>LOAN REPAYMENT</legend>
+           
+            <div class="change-group">
+                <div class="row mt-2 gy-4">
+                    <hr style="border: 2px solid green;" />
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
+                        </div>
+                    </div>
+                    <hr style="border: 1px solid green;" />
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-check">
+                                @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.SourceType, "MomocashCollectionMTN", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyMTN" })
+                                <label class="form-check-label shadow-input-boxes" for="MomocashCollectionMTN" style="background-color: yellow; color: black;">Momo Cash Collection Mobile Money MTN</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-check">
+                                @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.SourceType, "MomocashCollectionOrange", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyORANGE" })
+                                <label class="form-check-label shadow-input-boxes" for="MomocashCollectionOrange" style="background-color: orange; color: white;">Momo Cash Collection Mobile Money Orange</label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="border: 1px solid green;" />
+                    <div class="table-responsive" style="width: 100%;">
+                        <table class="table table-hover" id="myDataTableT">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="display:none;">LoanId</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Paid</th>
+                                    <th>Balance</th>
+                                    <th>Enter Amount</th>
+                                    <th>Total</th>
+                                    <th>confirm</th> <!-- New column for checkbox -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var d in Model.Loans)
+                                {
+                                    <tr>
+                                        <td style="display:none;">@d.Id</td>
+                                        <td>@d.LoanDate.ToString("dd/MM/yy")</td>
+                                        <td>@d.LoanAmount.ToString("#,##0.0")</td>
+                                        <td>@d.Paid.ToString("#,##0.0")</td>
+                                        <td>@d.Balance.ToString("#,##0.0")</td>
+                                        <td>
+                                            <input type="number" class="form-control amount-input shadow-input-boxes" value="0">
+                                        </td>
+                                        <td>
+                                            <span class="total-span">0</span>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input">
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5" style="text-align: right;"><strong>Total:</strong></td>
+                                    <td id="tableTotal">0</td>
+                                    <td></td> <!-- Empty cell to align with the checkbox column -->
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="text-align: right;"><strong>Balance:</strong></td>
+                                    <td id="tableBalance">0</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    @*<div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id = "Note" })
+                @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
+                <label for="formValidationDob">Repayment note</label>
+            </div>
+        </div>*@
+                </div>
+                <div class="header-buttons mt-4 float-end">
+                    <input type="hidden" name="OperationType" value="LoanRepaymentMomocashCollection" id="OperationType" />
+                    <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
+                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostLoanRepayment()">
+                        <i class="fas fa-money-bill-wave me-1"></i> Re-Pay
+                    </button>
+                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
+                        <i class="fas fa-print me-1"></i> Re-print
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary">
+                        <i class="fas fa-sync-alt me-1"></i> Reset
+                    </button>
+                </div>
+            </div>
+            <hr style="border: 2px solid green;" />
+        </fieldset>
+    </div>
+
+}

@@ -138,8 +138,9 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                     var chartOfAccounts = await _accountingServices.GetChartOfAccounts();
                     ViewBag.ChartOfAccounts = chartOfAccounts;
                     var LoanProduct = await _LoanProductServices.GetLoanProduct(KEY);
-                    //LoanProduct.Penalty.LoanProductId = LoanProduct.Id;
-                    return PartialView(partialView, LoanProduct);
+                    var loanProductObject = new LoanProductObject();
+                    loanProductObject.UpdateLoanProductCommand = _LoanProductServices.ProductMappingToUpdateObject(LoanProduct, "N/A", "N/A");
+                    return PartialView(partialView, loanProductObject);
                 }
                 else
                 {

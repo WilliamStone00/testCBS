@@ -18,6 +18,7 @@ namespace CBS.BusinessService.UserManagement
         Guid ConvertStringToGuid(string input);
         Task<IEnumerable<User>> GetUsers();
         Task<User> GetUser(Guid userid);
+        Task<UserDto> GetUserDto(Guid userid);
         Task<ExecutionMessages> DeleteUser(Guid userid);
         Task<ExecutionMessages> UpdateUserProfile(User user);
         Task<ExecutionMessages> ChangePassword(User user);
@@ -26,6 +27,8 @@ namespace CBS.BusinessService.UserManagement
         Task<CustomDataTable> GetUsersDataTable(DataTableOptions dataTableOptions);
         Task<ExecutionMessages> FLoginChangePassword(FLoginChangePassword fLogin);
         Task<IEnumerable<Branch>> GetBranches();
+        Task<ExecutionMessages> EnableMFA(MFAActivation mFAActivation);
+        Task<ExecutionMessages> MFACodeVerification(MFAActivation mFAActivation);
 
 
 

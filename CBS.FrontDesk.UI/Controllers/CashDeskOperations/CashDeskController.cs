@@ -31,6 +31,11 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             return View();
         }
+        public ActionResult MomocashCollection()
+        {
+            return View();
+        }
+        
         public async Task<ActionResult> OtherCashTransactions()
         {
             ViewBag.Operation = "income_expense";

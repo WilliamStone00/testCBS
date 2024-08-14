@@ -45,7 +45,12 @@
                                     </div>
                                 </div>
 
-
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.IsDailyCollector, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="isActive">Check me. I am a daily saving member.</label>
+                                    </div>
+                                </div>
                                 <div class="col-md-3">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.Gender, new SelectList(ViewBag.genders, "Text", "Value"), "---Select gender---", new { @class = "form-control select2", @search = "true" })

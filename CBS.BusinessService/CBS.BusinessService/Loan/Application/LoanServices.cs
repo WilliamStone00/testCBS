@@ -109,7 +109,7 @@ namespace CBS.BusinessService
                 Penalty = loan.Penalty,
                 DueAmount = loan.DueAmount,
                 Paid = loan.Paid,
-                Balance = loan.Balance,
+                Balance = loan.Principal,
                 LastPayment = loan.LastPayment,
                 LoanStatus = loan.LoanStatus,
                 IsCurrentLoan = loan.IsCurrentLoan,

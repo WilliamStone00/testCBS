@@ -25,7 +25,7 @@ using CBS.BusinessService.Config;
 
 namespace CBS.BusinessService
 {
-    public class AccountingEntryServices:BaseService
+    public class AccountingEntryServices : BaseService, IAccountingEntryServices
     {
         private readonly ApiCallerHelper _accountingApiCallerHelper;
         private readonly ApiCallerHelper _TransactionBaseUrl;
@@ -39,7 +39,7 @@ namespace CBS.BusinessService
             _accountingApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
             _TransactionBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
             _IdentityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-             branchServices = new BranchServices();
+            branchServices = new BranchServices();
         }
         public async Task<List<CashRoot>> GetCashReplenimentCurrentOpenOfDayHistoryRequestId()
         {
@@ -66,8 +66,8 @@ namespace CBS.BusinessService
                 throw (ex);
             }
         }
-    
-        public async Task<ExecutionMessages> CreateManualAccountingEntry( ManualAccountingEntry model)
+
+        public async Task<ExecutionMessages> CreateManualAccountingEntry(ManualAccountingEntry model)
         {
             try
             {
@@ -106,13 +106,13 @@ namespace CBS.BusinessService
                 var OperationEvent = await GetCashReplenimentReferenceRequest(model.Id);
                 if (OperationEvent != null)
                 {
-                   
+
                     OperationEvent.AmountRequested = model.Amount;
                     OperationEvent.RequestMessage = model.RequestMessage;
                     OperationEvent.CurrentOpenOfDayHistoryId = model.CurrentOpenOfDayHistoryId;
-                    OperationEvent.Id= model.Id;
+                    OperationEvent.Id = model.Id;
 
-                     var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<CashInfusion>>(string.Format(APICallHelper.UpdateCashReplenishmentRequest, model.Id), model);
+                    var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<CashInfusion>>(string.Format(APICallHelper.UpdateCashReplenishmentRequest, model.Id), model);
                     if (response.IsSuccess)
                     {
                         // Successful creation
@@ -177,7 +177,7 @@ namespace CBS.BusinessService
 
                 // Make an API call to create an individual profile
 
-             
+
                 var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<DepositNotification>>(APICallHelper.DepositNotificationUrl, model.ConvertToTransferData(this.GetBranchID()));
                 if (response.IsSuccess)
                 {
@@ -274,7 +274,7 @@ namespace CBS.BusinessService
 
                     OperationEvent.Amount = model.Amount;
                     OperationEvent.Message = model.Message;
-            
+
                     OperationEvent.Id = model.Id;
 
                     var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<CashInfusion>>(string.Format(APICallHelper.UpdateCashReplenishmentRequest, model.Id), model);
@@ -325,17 +325,17 @@ namespace CBS.BusinessService
                 // Make an API call to create an individual profile
 
 
-               return await _accountingApiCallerHelper.PostAccountingAsync(APICallHelper.AccountingEntry_Posting_Entries, model);
-                
+                return await _accountingApiCallerHelper.PostAccountingAsync(APICallHelper.AccountingEntry_Posting_Entries, model);
+
             }
             catch (Exception ex)
             {
                 // Log and handle exception
                 GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
                     SystemMessageStatus.Failed.ToString(), ex);
-                throw(ex);
+                throw (ex);
             }
-            
+
         }
 
         public async Task<List<AccountingEntry>> RetrieveAccountingEntries(JEQuery model)
@@ -365,7 +365,7 @@ namespace CBS.BusinessService
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<AccountingEntry>>>(APICallHelper.AccountingEntry_Entries);
                 if (couApiResponse.IsSuccess)
                 {
-                    if (couApiResponse.ApiResponseData==null)
+                    if (couApiResponse.ApiResponseData == null)
                     {
                         return new List<AccountingEntry>();
                     }
@@ -373,14 +373,14 @@ namespace CBS.BusinessService
                     {
                         return couApiResponse.ApiResponseData.Data;
                     }
-             
+
                 }
                 return new List<AccountingEntry>();
             }
             catch (Exception ex)
             {
                 // Log and handle exception
-                throw(ex);
+                throw (ex);
             }
         }
         public async Task<List<AccountingEntry>> GetAccountingEntriesByReferceId(string reference)
@@ -521,13 +521,13 @@ namespace CBS.BusinessService
 
         public async Task<List<CashReplenimentRequestDto>> GetAllCashReplenimentRequest()
         {
-      
+
             try
             {
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<CashReplenimentRequestDto>>>(APICallHelper.GetAllCashReplenishmentRequests);
                 if (couApiResponse.IsSuccess)
                 {
-                    if (couApiResponse.ApiResponseData==null)
+                    if (couApiResponse.ApiResponseData == null)
                     {
                         return new List<CashReplenimentRequestDto>();
                     }
@@ -535,7 +535,7 @@ namespace CBS.BusinessService
                     {
                         return couApiResponse.ApiResponseData.Data;
                     }
-               
+
                 }
                 return new List<CashReplenimentRequestDto>();
             }
@@ -606,14 +606,14 @@ namespace CBS.BusinessService
             {
                 //var ff = string.Format(APICallHelper.UserNotificationRequestByIdUrl, Id);
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<UsersNotification>>>(APICallHelper.UserNotificationRequestUrl);
- 
+
                 if (couApiResponse.IsSuccess)
                 {
                     //var user = await GetUser(couApiResponse.ApiResponseData.Data.IssuedBy);
                     //couApiResponse.ApiResponseData.Data.IssuedBy = user.name + "," + user.phoneNumber + " ";
                     return couApiResponse.ApiResponseData.Data;
                 }
-                return new  List<UsersNotification>();
+                return new List<UsersNotification>();
             }
             catch (Exception ex)
             {
@@ -625,7 +625,7 @@ namespace CBS.BusinessService
         {
             try
             {
-                var endpoint = string.Format(APICallHelper.UserNotificationRequestByIdUrl,branchID);
+                var endpoint = string.Format(APICallHelper.UserNotificationRequestByIdUrl, branchID);
                 //var ff = string.Format(APICallHelper.UserNotificationRequestByIdUrl, Id);
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<UsersNotification>>>(endpoint);
 
@@ -674,14 +674,14 @@ namespace CBS.BusinessService
                 if (couApiResponse.IsSuccess)
                 {
                     var user = await GetUser(couApiResponse.ApiResponseData.Data.IssuedBy);
-                    couApiResponse.ApiResponseData.Data.TempId1 = user.name + "," + user.phoneNumber+ " ";
-                    if (couApiResponse.ApiResponseData.Data.Status!="Pending")
+                    couApiResponse.ApiResponseData.Data.TempId1 = user.name + "," + user.phoneNumber + " ";
+                    if (couApiResponse.ApiResponseData.Data.Status != "Pending")
                     {
                         var userx = await GetUser(couApiResponse.ApiResponseData.Data.ApprovedBy);
                         couApiResponse.ApiResponseData.Data.TempId2 = userx.name + "," + userx.phoneNumber + " ";
-                        if (couApiResponse.ApiResponseData.Data.CorrespondingBranchId!="xxx"&& couApiResponse.ApiResponseData.Data.CorrespondingBranchId != "1")
+                        if (couApiResponse.ApiResponseData.Data.CorrespondingBranchId != "xxx" && couApiResponse.ApiResponseData.Data.CorrespondingBranchId != "1")
                         {
-                            couApiResponse.ApiResponseData.Data.CorrespondingBranch = ( await branchServices.GetBranch(couApiResponse.ApiResponseData.Data.CorrespondingBranchId)).Name;
+                            couApiResponse.ApiResponseData.Data.CorrespondingBranch = (await branchServices.GetBranch(couApiResponse.ApiResponseData.Data.CorrespondingBranchId)).Name;
                         }
                     }
                     return couApiResponse.ApiResponseData.Data;
@@ -718,7 +718,7 @@ namespace CBS.BusinessService
         {
             try
             {
-               
+
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<CashReplenimentRequest>>(string.Format(APICallHelper.GetCashReplenishmentRequestById, Id));
                 if (couApiResponse.IsSuccess)
                 {
@@ -763,7 +763,7 @@ namespace CBS.BusinessService
                 // Check if files are attached
                 if (documentRequest.FormFiles == null)
                 {
-                   // throw new FileLoadException("File not uploaded successfully") ;
+                    // throw new FileLoadException("File not uploaded successfully") ;
                     // Handle case where no files are attached
                     return GetExecutionMessages(documentRequest, false, "File", MessagesResults.Failed,
                   ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
@@ -771,7 +771,7 @@ namespace CBS.BusinessService
                 }
                 var additionalParams = new Dictionary<string, string>
                 {
-                    
+
                      { "IsSynchronus", documentRequest.IsSynchronus.ToString()},
                     { "OperationID", documentRequest.OperationID },
                     { "DocumentId", "N/A" },
@@ -781,10 +781,10 @@ namespace CBS.BusinessService
                     { "CallBackEndPoint", APICallHelper.AttachedDocuments},
                     { "RemoteFilePath", documentRequest.RemoteFilePath },
                 };
-                List<HttpPostedFileBase>  httpPostedFileBases = new List<HttpPostedFileBase>();
+                List<HttpPostedFileBase> httpPostedFileBases = new List<HttpPostedFileBase>();
                 httpPostedFileBases.Add(documentRequest.FormFiles);
-                var response = await _IdentityServerBaseUrl. PostFilesAndParamsAsync(APICallHelper.AttachedDocuments, additionalParams, httpPostedFileBases);
-                if (response.statusCode==200)
+                var response = await _IdentityServerBaseUrl.PostFilesAndParamsAsync(APICallHelper.AttachedDocuments, additionalParams, httpPostedFileBases);
+                if (response.statusCode == 200)
                 {
                     GetExecutionMessages(response, true, null, MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
@@ -796,7 +796,7 @@ namespace CBS.BusinessService
                     GetExecutionMessages(documentRequest, false, null, MessagesResults.Failed,
                   ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "File upload failed");
                 }
-              
+
 
             }
             catch (Exception ex)
@@ -811,7 +811,7 @@ namespace CBS.BusinessService
             try
             {
 
-                if (model.UploadedFile==null)
+                if (model.UploadedFile == null)
                 {
                     throw new Exception("No receipt was uploaded, Kindly upload the reciept of the transaction!");
                 }
@@ -830,15 +830,15 @@ namespace CBS.BusinessService
                         RemoteFilePath = APICallHelper.AttachedCashOutReceiptRemotely
                     };
                     var modelFile = await UploadFiles(DocModel);
-                    if (modelFile.Data == null) 
+                    if (modelFile.Data == null)
                     {
                         throw new Exception("File upload failed and response could not be interpreted!");
                     }
                     else
                     {
-                       APICallBackRespose  responsed =(APICallBackRespose) modelFile.Data;
+                        APICallBackRespose responsed = (APICallBackRespose)modelFile.Data;
                         model.FileUpload = responsed.data.fullPath;
-               
+
                         var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.BankCashOutCommandUrl, model.ConvertToTransferData());
                         if (response.IsSuccess)
                         {
@@ -855,9 +855,9 @@ namespace CBS.BusinessService
                                 ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                         }
                     }
-                    
+
                 }
-       
+
             }
             catch (Exception ex)
             {
@@ -900,7 +900,7 @@ namespace CBS.BusinessService
                     {
                         APICallBackRespose responsed = (APICallBackRespose)modelFile.Data;
                         model.FileUpload = responsed.data.fullPath;
-                        var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<bool>>(string.Format(APICallHelper.UpdateDepositNotificationCommandUrl,model.Id), model.ConvertToUploadBankRecieptDto());
+                        var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<bool>>(string.Format(APICallHelper.UpdateDepositNotificationCommandUrl, model.Id), model.ConvertToUploadBankRecieptDto());
                         if (response.IsSuccess)
                         {
                             // Successful creation
@@ -932,9 +932,9 @@ namespace CBS.BusinessService
         {
             try
             {
-              
-            
-                    var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.BranchToBranchTransferUrl, model.ConvertToTransferData());
+
+
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.BranchToBranchTransferUrl, model.ConvertToTransferData());
                 if (response.IsSuccess)
                 {
                     // Successful creation
@@ -988,7 +988,7 @@ namespace CBS.BusinessService
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> CreateApprovalRequest(CashApprovalResponse model,bool HasError)
+        public async Task<ExecutionMessages> CreateApprovalRequest(CashApprovalResponse model, bool HasError)
         {
             try
             {
@@ -1014,10 +1014,10 @@ namespace CBS.BusinessService
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }
-               
+
             }
             catch (Exception ex)
-            
+
             {
                 // Log and handle exception
                 GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
@@ -1033,8 +1033,8 @@ namespace CBS.BusinessService
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var userLists = await ApiCallerHelper.GetAsync<ResponseObject<List<User>>>(APICallHelper.GetUsers);
                 var newList = new List<User>();
-                
-                if (userLists!=null)
+
+                if (userLists != null)
                 {
                     var braches = await GetBranches();
 
@@ -1044,16 +1044,16 @@ namespace CBS.BusinessService
                         a.name = $"{a.firstName} {a.lastName}";
                         a.strlastLoginDate = a.LastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
                         a.status = a.isActive ? "Active" : "In-active";
-                        if (a.BranchID!=null)
+                        if (a.BranchID != null)
                         {
                             a.Brancch = braches.Where(x => x.Id == a.BranchID).FirstOrDefault();
-                            a.Bank= braches.Where(x => x.Id == a.BranchID).FirstOrDefault().Bank;
-                            if (a.Bank==null)
+                            a.Bank = braches.Where(x => x.Id == a.BranchID).FirstOrDefault().Bank;
+                            if (a.Bank == null)
                             {
                                 a.BankID = null;
                                 a.Bank = new FrontDesk.Data.Entity.Config.Bank();
                             }
-                    
+
                         }
                         else
                         {
@@ -1065,8 +1065,8 @@ namespace CBS.BusinessService
                     return newList;
                 }
 
-               
-                
+
+
                 return userLists.ApiResponseData.Data;
             }
             catch (Exception ex)
@@ -1079,7 +1079,7 @@ namespace CBS.BusinessService
             try
             {
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
-                var branchApiResponse = await ApiCallerHelper.GetAsync<ResponseObject<   FrontDesk.Data.Entity.Config.Bank>>((string.Format(APICallHelper.Get_Update_Delete_Bank, GetBankID())));
+                var branchApiResponse = await ApiCallerHelper.GetAsync<ResponseObject<FrontDesk.Data.Entity.Config.Bank>>((string.Format(APICallHelper.Get_Update_Delete_Bank, GetBankID())));
                 var bracBranches = branchApiResponse.ApiResponseData.Data;
                 var branches = bracBranches.Branches;
                 return branches;
@@ -1153,15 +1153,15 @@ namespace CBS.BusinessService
             }
         }
 
-        public  async Task<bool>  CheckIfTransactionReferenceIdExist(string Id)
+        public async Task<bool> CheckIfTransactionReferenceIdExist(string Id)
         {
             try
             {
                 var url = string.Format(APICallHelper.CheckIfTransactionReversalRequestByReferenceIdExist, Id);
-                var couApiResponse =   await _accountingApiCallerHelper.GetAsync<ResponseObject<bool>>(url);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<bool>>(url);
                 if (couApiResponse.IsSuccess)
                 {
-                    
+
                     return true;
                 }
                 return false;
@@ -1304,7 +1304,7 @@ namespace CBS.BusinessService
                 // Make an API call to create an individual profile
 
 
-                var modelc= await _accountingApiCallerHelper.PostTrialBalance6ColumnAsyncAsync(APICallHelper.AccountingEntry_Generate6ColumnTrialBalance, model);
+                var modelc = await _accountingApiCallerHelper.PostTrialBalance6ColumnAsyncAsync(APICallHelper.AccountingEntry_Generate6ColumnTrialBalance, model);
                 return modelc;
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+    $('#loading').hide();
     checkForNewEvents();
     LoadCashNotificationDataDT("ListOfPendingNotification")
     let notifications = [];
@@ -36,27 +37,26 @@
         loadAccountBalance(selectedValue);
     });
     function checkForNewEvents() {
-        // Hide the loading indicator if it exists
-        const loadingElement = $('#loading');
-        if (loadingElement.length > 0) {
-            loadingElement.hide();
-        }
+         //Ensure the loader is hidden specifically for this function
+        $('#loading').hide();
 
         $.ajax({
             url: '/Notification/GetUserNotificationRequest', // Replace with your API endpoint
             method: 'GET',
+            beforeSend: function () {
+                // Do nothing regarding the loader here, ensuring it's not shown
+            },
             success: function (data) {
                 console.log(data);
-               
-                // Assuming 'data' is an array of notifications
+
                 if (data.length > 0) {
                     $('.dropdown-notifications-list .list-group').empty();
                     $('#simulateNotificationButton').empty();
                     data.forEach(notification => {
                         addNotification(notification, data.length);
                     });
-                  
-                    $('#simulateNotificationButton').text("Pending Request(" + data.length +")");
+
+                    $('#simulateNotificationButton').text("Pending Request(" + data.length + ")");
                 } else {
                     $('.dropdown-notifications-list .list-group').empty();
                     $('#simulateNotificationButton').empty();
@@ -67,12 +67,18 @@
             },
             error: function (error) {
                 console.error('Error fetching notifications:', error);
+            },
+            complete: function () {
+                // Ensure the loader remains hidden after the request
+                $('#loading').hide();
             }
         });
     }
 
     // Start checking for new events every 5 seconds
-    setInterval(checkForNewEvents, 1000*60);
+    //setInterval(checkForNewEvents, 5000);
+
+
     function loadBankAccountForBranch(BranchId) {
 
         $.ajax({

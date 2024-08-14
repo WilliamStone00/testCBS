@@ -13,10 +13,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var d in Model.LoanApplications.OrderBy(app => app.ApplicationDate))
+            @foreach (var d in Model.LoanApplications.OrderByDescending(app => app.ApplicationDate))
             {
                 <tr>
-                    <td style="width:25%">@d.ApplicationDate</td>
+                    <td style="width:25%">@d.ApplicationDate.ToShortDateString()</td>
                     <td style="width:37%">@d.LoanProduct.ProductName</td>
                     <td style="width:10%">@d.Amount.ToString("#,0.00")</td>
                     <td style="width:5%">@d.InterestRate %</td>
@@ -26,7 +26,6 @@
                         }
                         @repaymentCycle
                     </td>
-
                     <td style="width:10%">
                         @if (d.IsApproved)
                         {
