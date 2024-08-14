@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNet.SignalR;
-using Microsoft.AspNetCore.Cors;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
