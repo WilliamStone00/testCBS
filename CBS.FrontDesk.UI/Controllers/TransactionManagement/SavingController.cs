@@ -33,13 +33,13 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         //
 
-        [HttpPost]
-        public async Task<ActionResult> LoadData(string Path)
-        {
-            var dataTable = await _acountServices.GetDataTable(GetDataTableOptions(),Path);
-            return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data });
+        //[HttpPost]
+        //public async Task<ActionResult> LoadData(string Path)
+        //{
+        //    var dataTable = await _acountServices.GetDataTable(GetDataTableOptions(),Pat);
+        //    return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data });
 
-        }
+        //}
 
         [HttpPost]
         public async Task<ActionResult> LoadDataSearch(string search)

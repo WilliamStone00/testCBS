@@ -60,6 +60,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
                 if (authTicket != null && !authTicket.Expired)
                 {
+                    HttpContext.Session["CHANGE_PWD"] = true;
                     return false; // Cookie is valid and not expired
                 }
             }
@@ -67,6 +68,18 @@ namespace CBS.FrontDesk.UI.Controllers
             return true; // Cookie is invalid or expired
         }
 
+        public UserDto GetUserDto()
+        {
+            // Assuming 'UserDto' is your class
+            var userAuth = HttpContext.Session["AuthUser"] as UserDto;
+
+            if (userAuth != null)
+            {
+                return userAuth;
+            }
+            return null;
+
+        }
 
         //protected override void OnActionExecuting(ActionExecutingContext filterContext)
         //{
@@ -198,8 +211,15 @@ namespace CBS.FrontDesk.UI.Controllers
 
         public void CreateToken(UserDto reqDto, string cookieName = "CBS4U", int minutes_to_live = 30, bool isMFA = false,bool isPWD=false)
         {
-            HttpContext.Session["MFA"] = isMFA;
-            HttpContext.Session["PWD"] = isPWD;
+        
+            if (isPWD)
+            {
+                HttpContext.Session["CHANGE_PWD"] = true;
+            }
+            if (isMFA)
+            {
+                HttpContext.Session["MFA"] = true;
+            }
             var user = new CustomMembershipUser(reqDto);
             string[] roles = reqDto.Roles.Select(role => role.RoleName).ToArray();
             CustomSerializeModel userModel = new CustomSerializeModel()

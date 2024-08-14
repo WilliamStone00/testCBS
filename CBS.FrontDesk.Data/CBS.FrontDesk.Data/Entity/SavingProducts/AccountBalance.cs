@@ -96,4 +96,37 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
             IsCloseOfDayPrimaryTeller = isCloseOfDayPrimaryTeller;
         }
     }
+    public class MembersAccountSummary
+    {
+        public string MemberName { get; set; }
+        public string MemberReference { get; set; }
+        public string BranchCode { get; set; }
+        public decimal Saving { get; set; }
+        public decimal PreferenceShare { get; set; }
+        public decimal Share { get; set; }
+        public decimal Deposit { get; set; }
+        public decimal Loan { get; set; }
+        public decimal Gav { get; set; }
+        public decimal DailyCollection { get; set; }
+        public decimal TotalBalance { get; set; }
+        public decimal NetBalance { get; set; }
+        public PaginationMetadata PaginationMetadata { get; set; }
+
+    }
+    public class MembersAccountSummaryDto
+    {
+        public string MemberName { get; set; }
+        public string MemberReference { get; set; }
+        public string BranchCode { get; set; }
+        public decimal Saving { get; set; }
+        public decimal PreferenceShare { get; set; }
+        public decimal Share { get; set; }
+        public decimal Deposit { get; set; }
+        public decimal Loan { get; set; }
+        public decimal Gav { get; set; }
+        public decimal DailyCollection { get; set; }
+        public decimal TotalBalance { get; set; }
+        public decimal NetBalance { get; set; }
+
+    }
 }

@@ -239,7 +239,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                     var data = await _userManagementServices.FLoginChangePassword(model);
                     if (data.Result)
                     {
-                        RemoveSessionName("PWD");
+                        RemoveSessionName("CHANGE_PWD");
                     }
                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
                 }

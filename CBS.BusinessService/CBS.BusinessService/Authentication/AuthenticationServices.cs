@@ -38,6 +38,7 @@ namespace CBS.FrontDesk.Service
                     var userAuth = response.ApiResponseData.Data;
                     HttpContext.Current.Session["Token"] = userAuth.bearerToken;
                     HttpContext.Current.Session["BranchObject"]= userAuth.Branch;
+                    HttpContext.Current.Session["AuthUser"] = userAuth;
                     response.ApiResponseData.Data.Branch = userAuth.Branch;
                     userAuth.password = request.Password;
                     GetExecutionMessages(userAuth, true, request.UserName, MessagesResults.Success,

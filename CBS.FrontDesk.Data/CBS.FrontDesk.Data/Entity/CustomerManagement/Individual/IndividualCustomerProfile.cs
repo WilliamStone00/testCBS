@@ -79,9 +79,9 @@ namespace CBS.FrontDesk.Data.Entity
 
 
     }
-    public class CustomerResource : ResourceParameter
+    public class PagginationResource : ResourceParameter
     {
-        public CustomerResource():base("CustomerId")
+        public PagginationResource():base("CustomerId")
         {
         }
         public string BranchId { get; set; }

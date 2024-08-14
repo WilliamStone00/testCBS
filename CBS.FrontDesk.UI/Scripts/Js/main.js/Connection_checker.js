@@ -3,7 +3,7 @@
 
  
     function checkInternetConnection() {
-        $('#loading').hide();
+        //$('#loading').hide();
         console.log("Terminal is checking for internet connection");
         if (!navigator.onLine && !isOffline) {
             if ($('#connectionModal').length === 0) {

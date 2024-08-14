@@ -167,16 +167,16 @@ namespace CBS.BusinessService
                 throw;
             }
         }
-        public async Task<IEnumerable<FileDownloadInfoLoan>> GetAllFileDownloadInfoLoan()
+        public async Task<IEnumerable<FileDownloadInfo>> GetAllFileDownloadInfoLoan()
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FileDownloadInfoLoan>>>(APICallHelper.GetAllBulkDownloadInfosLoan);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FileDownloadInfo>>>(APICallHelper.GetAllBulkDownloadInfosLoan);
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
                 }
-                return new List<FileDownloadInfoLoan>();
+                return new List<FileDownloadInfo>();
             }
             catch (Exception ex)
             {
@@ -184,16 +184,16 @@ namespace CBS.BusinessService
                 throw;
             }
         }
-        public async Task<IEnumerable<FileDownloadInfoLoan>> GetAllFileDownloadInfoLoanPerUser()
+        public async Task<IEnumerable<FileDownloadInfo>> GetAllFileDownloadInfoLoanPerUser()
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FileDownloadInfoLoan>>>(string.Format(APICallHelper.GetAllBulkDownloadInfosLoanPerUser, GetUserID()));
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FileDownloadInfo>>>(string.Format(APICallHelper.GetAllBulkDownloadInfosLoanPerUser, GetUserID()));
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
                 }
-                return new List<FileDownloadInfoLoan>();
+                return new List<FileDownloadInfo>();
             }
             catch (Exception ex)
             {
@@ -248,11 +248,11 @@ namespace CBS.BusinessService
             }
             return ExecutionMessage;
         }
-        public async Task<FileDownloadInfoLoan> GetFileDownloadInfoLoan(string id)
+        public async Task<FileDownloadInfo> GetFileDownloadInfoLoan(string id)
         {
             try
             {
-                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<FileDownloadInfoLoan>>(string.Format(APICallHelper.BulkDownloadDeleteAndGetLoan, id));
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<FileDownloadInfo>>(string.Format(APICallHelper.BulkDownloadDeleteAndGetLoan, id));
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;
@@ -277,7 +277,7 @@ namespace CBS.BusinessService
                 model.FullName = GetUserFullName();
                 model.BranchName = "N/A";
                 model.BranchId = model.BranchId;
-                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<FileDownloadInfoLoan>>(APICallHelper.InitiateBulkDownloadLoans, model);
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<FileDownloadInfo>>(APICallHelper.InitiateBulkDownloadLoans, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation

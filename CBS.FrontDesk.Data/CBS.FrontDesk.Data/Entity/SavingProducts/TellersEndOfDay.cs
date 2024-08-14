@@ -34,6 +34,62 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string primaryTellerComment { get; set; }
         public string primaryTellerConfirmationStatus { get; set; }
     }
+
+    public class GetTellerOpenningAndClossingQuery
+    {
+        public bool ByBracnch { get; set; }
+        [RequiredIfByBranch]
+        public string BranchId { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Date From")]
+        public string DateFrom { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Date To")]
+        public string DateTo { get; set; }
+    }
+
+    public class RequiredIfByBranchAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var query = (GetTellerOpenningAndClossingQuery)validationContext.ObjectInstance;
+            if (query.ByBracnch && string.IsNullOrWhiteSpace(query.BranchId))
+            {
+                return new ValidationResult("BranchId is required when ByBracnch is true.");
+            }
+            return ValidationResult.Success;
+        }
+    }
+
+    public class OpenningAnclClossingTillDto
+    {
+        public string UserIdInChargeOfThisTeller { get; set; }
+        public string ProvisionedBy { get; set; }
+        public bool IsCashReplenished { get; set; }
+        public decimal ReplenishedAmount { get; set; }
+        public DateTime OpenedDate { get; set; }
+        public DateTime ClossedDate { get; set; } = new DateTime(1900, 1, 1);
+        public decimal OpenOfDayAmount { get; set; } = 0;
+        public decimal AmountReplenished { get; set; }
+        public bool IsRequestedForCashReplenishment { get; set; }
+        public decimal CashAtHand { get; set; } = 0;
+        public decimal EndOfDayAmount { get; set; } = 0;
+        public decimal AccountBalance { get; set; } = 0;
+        public decimal TellerAccountBalance { get; set; } = 0;
+        public decimal LastOPerationAmount { get; set; } = 0;
+        public string LastOperationType { get; set; }
+        public decimal PreviouseBalance { get; set; }
+        public string TellerComment { get; set; }
+        public string PrimaryTeller { get; set; }
+        public string BranchCode { get; set; }
+        public string ClossedStatus { get; set; }
+        public string PrimaryTellerComment { get; set; }
+        public string PrimaryTellerConfirmationStatus { get; set; }
+        public string TellerName { get; set; }
+    }
+
     public class SubTellerProvisioningDto
     {
         public string id { get; set; }
@@ -92,7 +148,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     }
     public class EndOfDaySubTellerCommand
     {
-        public CurrencyNotes currencyNotes { get; set; }=new CurrencyNotes();
+        public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
         [Required]
         public string comment { get; set; }
         [Required]
@@ -108,7 +164,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string primaryTellerConfirmationStatus { get; set; }
         public string subTellerProvioningHistoryID { get; set; }
-     
+
     }
 
     public class PrimaryTellerProvisioningHistory
@@ -167,7 +223,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public EndOfDayBySubTellerIDCommand EndOfDayBySubTellerIDCommand { get; set; } = new EndOfDayBySubTellerIDCommand();
         public EndOfDayPrimaryTellerCommand EndOfDayPrimaryTellerCommand { get; set; } = new EndOfDayPrimaryTellerCommand();
         public EndOfDaySubTellerCommand EndOfDaySubTellerCommand { get; set; } = new EndOfDaySubTellerCommand();
-        public List<PrimaryTellerProvisioningDto> PrimaryTellerProvisioningHistories { get; set; }= new List<PrimaryTellerProvisioningDto>();
+        public List<PrimaryTellerProvisioningDto> PrimaryTellerProvisioningHistories { get; set; } = new List<PrimaryTellerProvisioningDto>();
         public PrimaryTellerProvisioningDto PrimaryTellerProvisioningHistory { get; set; } = new PrimaryTellerProvisioningDto();
         public List<SubTellerProvisioningDto> SubTellerProvioningHistories { get; set; } = new List<SubTellerProvisioningDto>();
         public SubTellerProvisioningDto SubTellerProvioningHistory { get; set; } = new SubTellerProvisioningDto();
@@ -216,7 +272,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal Debit { get; set; }
         public decimal Credit { get; set; }
         public decimal Balance { get; set; }
-       
+
         public string AccountNumber { get; set; }
         public string TransactionType { get; set; }
         public string TransactionRef { get; set; }
@@ -229,7 +285,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
 
 
         public string TellerID { get; set; }
-       
+
         public string BranchId { get; set; }
 
     }

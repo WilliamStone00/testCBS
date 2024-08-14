@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
-    $('#loading').hide();
-    checkForNewEvents();
+    //$('#loading').hide();
+    //checkForNewEvents();
     LoadCashNotificationDataDT("ListOfPendingNotification")
     let notifications = [];
     $('.dropdown-notifications-list .list-group').empty();
@@ -38,7 +38,7 @@
     });
     function checkForNewEvents() {
          //Ensure the loader is hidden specifically for this function
-        $('#loading').hide();
+        //$('#loading').hide();
 
         $.ajax({
             url: '/Notification/GetUserNotificationRequest', // Replace with your API endpoint
@@ -70,7 +70,7 @@
             },
             complete: function () {
                 // Ensure the loader remains hidden after the request
-                $('#loading').hide();
+                //$('#loading').hide();
             }
         });
     }
