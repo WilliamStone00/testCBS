@@ -31,6 +31,7 @@ using CBS.FrontDesk.Data.Entity.Config;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using System.IO.Packaging;
 using ClosedXML.Excel;
+using CBS.API.Helper;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -722,6 +723,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else
                 {
                     model.Account.AccountCategoryId = chartOfAccount.AccountCartegoryId;
+                }
+                model.Account.AccountOwnerId = (await _branchService.GetBranches()).Where(xx => xx.BranchCode.Equals(model.Account.AccountOwnerId)).FirstOrDefault().Id;
+                if (model.Account.AccountNumber == "45100")
+                {
+                    model.Account.AccountCounterPartId = (await _branchService.GetBranches()).Where(xx => xx.BranchCode.Equals(model.Account.AccountCounterPartId)).FirstOrDefault().Id;
+
                 }
                 return () => _AccountServices.Create(model.Account);
             }

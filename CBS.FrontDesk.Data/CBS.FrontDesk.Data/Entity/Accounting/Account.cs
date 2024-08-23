@@ -23,6 +23,7 @@ namespace CBS.FrontDesk.Data
         public string ChartOfAccountManagementPositionId { get; set; }
         public string AccountCategoryId { get; set; }
         public string AccountOwnerId { get; set; }
+        public string AccountCounterPartId { get; set; }
         public string BookingDirection { get; set; }
         public bool CanBeNegative { get; set; }
         public bool IsBalanceSheetAccount { get; set; }

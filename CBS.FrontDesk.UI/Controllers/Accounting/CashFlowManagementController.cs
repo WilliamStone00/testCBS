@@ -275,7 +275,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             List<CashReplenimentRequest> cashReplenimentRequestDtos = new List<CashReplenimentRequest>();
             //CreateBankCashOut
             var Id = _AccountServices.GetBranchID();
-            var datas = (await _accountingEntryServices.GetAllCashReplenimentRequest()).Where(pi => pi.CorrespondingBranchId.Equals(Id) && pi.CashRequisitionType.Equals(CashRequisitionType.ORDER.ToString()));
+            var datas = (await _accountingEntryServices.GetAllCashReplenimentRequest()).Where(pi => pi.CorrespondingBranchId.Equals(Id) && pi.Status.Equals(CashReplishmentRequestStatus.RedirectToBranch.ToString()));
 
             var dataUser = (await _accountingEntryServices.GetUserList()).ToList();
             var result = from request in datas
@@ -817,7 +817,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 mOdelsd.TransferBy = user.firstName + " " + user.lastName + "," + user.phoneNumber;
                 mOdelsd.CreatedDate = entry.FirstOrDefault().CreatedDate;
 
-                cashDemandDataEntity.CashClearing.Description = $"I {_AccountServices.GetUserFullName()} is performing this operation of cash clearing authorized by {cashDemandDataEntity.CashReplenimentRequest.ApprovedBy}";
+                cashDemandDataEntity.CashClearing.Description = $"I {_AccountServices.GetUserFullName()} is performing this operation of cash clearing authorized by {cashDemandDataEntity.CashReplenimentRequest.TempId2}";
 
                 return PartialView(partialView, cashDemandDataEntity);
 

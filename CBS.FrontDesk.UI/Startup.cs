@@ -1,5 +1,7 @@
-﻿using Microsoft.Owin;
+﻿using Microsoft.AspNet.SignalR;
+using Microsoft.Owin;
 using Owin;
+using System;
 
 [assembly: OwinStartupAttribute(typeof(CBS.FrontDesk.UI.Startup))]
 namespace CBS.FrontDesk.UI
@@ -15,9 +17,28 @@ namespace CBS.FrontDesk.UI
             // app.UseHangfireServer();
             // Enable CORS for SignalR hubs
             //app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
-
             // Configure SignalR
-            app.MapSignalR();
+            var hubConfiguration = new HubConfiguration
+            {
+                EnableDetailedErrors = true
+            };
+
+            // Configure SignalR options
+            GlobalHost.Configuration.MaxIncomingWebSocketMessageSize = 32 * 1024; // 32 KB
+
+            // Set DisconnectTimeout first
+            GlobalHost.Configuration.DisconnectTimeout = TimeSpan.FromSeconds(180); // 3 minutes
+
+            // Set ConnectionTimeout (same as DisconnectTimeout or less)
+            GlobalHost.Configuration.ConnectionTimeout = TimeSpan.FromSeconds(180);
+
+            // Set KeepAlive to be at most 1/3 of DisconnectTimeout
+            GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(60); // 1 minute
+
+            // Map SignalR hubs
+            app.MapSignalR("/signalr", hubConfiguration);
+                
+ 
             ConfigureAuth(app);
         }
 

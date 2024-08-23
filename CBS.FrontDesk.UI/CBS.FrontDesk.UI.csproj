@@ -539,7 +539,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Code\Helper\SessionTimeoutFilterAttribute.cs" />
-    <Compile Include="Hub\ChatHub.cs" />
     <Compile Include="Models\AccountUploadModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -2339,6 +2338,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Js\AccountEventConfigurtion\MFIChartOfAccount.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\MomocashCollection.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\ExpensesCashDesk.js" />
@@ -2384,6 +2384,7 @@
     <Content Include="Scripts\Js\Crud\Teller\Teller.js" />
     <Content Include="Scripts\Js\Crud\TransactionConfiguration\SavingProductFeeMapping.js" />
     <Content Include="Scripts\Js\main.js\CashFlowManagementDeposit.js" />
+    <Content Include="Scripts\Js\main.js\ConnectionMonitor.js" />
     <Content Include="Scripts\Js\main.js\Connection_checker.js" />
     <Content Include="Scripts\Js\main.js\AutoJournalEntry.js" />
     <Content Include="Scripts\Js\main.js\Account_Upload.js" />
@@ -2408,7 +2409,9 @@
     <Content Include="Scripts\Js\main.js\BankingOperations.js" />
     <Content Include="Scripts\Js\main.js\CashFlowManagement.js" />
     <Content Include="Scripts\Js\main.js\MultipleManualEntry.js" />
+    <Content Include="Scripts\Js\main.js\NotificationMonitor.js" />
     <Content Include="Scripts\Js\main.js\Notifications.js" />
+    <Content Include="Scripts\Js\main.js\Notification_checker.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -2584,7 +2587,6 @@
     <Content Include="Views\OperationEvent\_Create.cshtml" />
     <Content Include="Views\OperationEvent\_Data.cshtml" />
     <Content Include="Views\OperationEvent\_Update.cshtml" />
-    <Content Include="Views\AccountingConfiguration\Index.cshtml" />
     <Content Include="Views\Shared\_modal.cshtml" />
     <Content Include="Views\AccountingConfiguration\_ChartOfAccountData.cshtml" />
     <Content Include="Views\AccountingConfiguration\_AccountingEntryRuleData.cshtml" />
@@ -3015,6 +3017,10 @@
     <Content Include="Views\MemberOrdinaryAccountsF8\DownloadFileF8.cshtml" />
     <Content Include="Views\MemberOrdinaryAccountsF8\_SearchBox.cshtml" />
     <Content Include="Views\MemberOrdinaryAccountsF8\_FileDownloadData.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\MultipleJournalEntryClient.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\MultipleJournalEntryConfiguration.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_MultipleJournalEntryClient.cshtml" />
+    <Content Include="Views\AccountingConfiguration\Index.cshtml" />
     <Content Include="Views\DailyTellerAssignation\TellerOpenningAndClossingStatus.cshtml" />
     <Content Include="Views\DailyTellerAssignation\_DownloadTellerOpenningAndClossingStatus.cshtml" />
     <Content Include="Views\AccountingDay\_Create.cshtml" />
@@ -3025,6 +3031,7 @@
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\CustomerManagement\MemberActivation\" />
+    <Folder Include="Hub\" />
     <Folder Include="Views\DocumentPack\" />
     <Folder Include="Views\Reports\" />
     <Folder Include="Views\Session\" />

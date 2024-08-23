@@ -1,78 +1,89 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
 
-
-
-@using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
 {
-    <input type="hidden" name="ServiceOption" value="EntryTempData" id="ServiceOption" />
-    <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
-        <div class="col-12">
-            <div class="card">
-                
-                <div class="card-header">
-              
-                    <h5 class="card-title">
-                        ReferenceId: @Html.TextBoxFor(m => m.EntryTempData.Reference, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.EntryTempData.Reference, "", new { @class = "text-danger" })
+    {
+        ViewBag.Error = "Journal Entry at this level can only be passed from branch office terminal. Please kindly contact the branch manager concern";
+    }
 
-                    </h5>
-                </div>
-                <div class="row card-body">
+    @Html.Partial("_GeneralErrorDiv");
+}
+else
+{
+    using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input type="hidden" name="ServiceOption" value="EntryTempData" id="ServiceOption" />
+        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h5 class="card-title">
+                            ReferenceId: @Html.TextBoxFor(m => m.EntryTempData.Reference, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.EntryTempData.Reference, "", new { @class = "text-danger" })
+
+                        </h5>
+                    </div>
+                    <div class="row card-body">
 
 
-                    <div class="row mt-2 gy-4">
+                        <div class="row mt-2 gy-4">
 
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.EntryTempData.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---Select Account---", new { @class = "form-control select2", @search = "true" })
-                                @Html.ValidationMessageFor(m => m.EntryTempData.AccountId, "", new { @class = "text-danger" })
-                                <label>AccountName</label>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(m => m.EntryTempData.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---Select Account---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(m => m.EntryTempData.AccountId, "", new { @class = "text-danger" })
+                                    <label>AccountName</label>
+                                </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.EntryTempData.AccountBalance, new { @class = "form-control account_balance" })
+                                    @Html.HiddenFor(m => m.EntryTempData.AccountName, new { @class = "form-control account_name" })
+                                    @Html.HiddenFor(m => m.EntryTempData.AccountNumber, new { @class = "form-control account_number" })
+                                    <label>Account Balance</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+
+                                    @Html.DropDownListFor(m => m.EntryTempData.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(m => m.EntryTempData.BookingDirection, "", new { @class = "text-danger" })
+                                    <label>BookingDirection</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.HiddenFor(m => m.EntryTempData.Description, new { @class = "form-control booking_direction" })
+                                    @Html.TextBoxFor(m => m.EntryTempData.Amount, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.EntryTempData.Amount, "", new { @class = "text-danger" })
+                                    <label>Amount</label>
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.TextBoxFor(m => m.EntryTempData.AccountBalance, new { @class = "form-control account_balance" })
-                                @Html.HiddenFor(m => m.EntryTempData.AccountName, new { @class = "form-control account_name" })
-                                @Html.HiddenFor(m => m.EntryTempData.AccountNumber, new { @class = "form-control account_number" })
-                                <label>Account Balance</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
+                        <div class="mt-4">
+                            <button type="button" onclick="PostEntries()" class="btn btn-primary">
+                                Add Entries&nbsp; &nbsp; <i class="mdi mdi-plus-box-multiple"></i>
+                            </button>
+                            <input type="hidden" name="Action" value="insert" id="Action" />
 
-                                @Html.DropDownListFor(m => m.EntryTempData.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
-                                @Html.ValidationMessageFor(m => m.EntryTempData.BookingDirection, "", new { @class = "text-danger" })
-                                <label>BookingDirection</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.HiddenFor(m => m.EntryTempData.Description, new { @class = "form-control booking_direction" })
-                                @Html.TextBoxFor(m => m.EntryTempData.Amount, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.EntryTempData.Amount, "", new { @class = "text-danger" })
-                                <label>Amount</label>
-                            </div>
                         </div>
 
                     </div>
-                    <div class="mt-4">
-                        <button type="button" onclick="PostEntries()" class="btn btn-primary" >
-                            Add Entries&nbsp; &nbsp; <i class="mdi mdi-plus-box-multiple"></i>
-                        </button>
-                        <input type="hidden" name="Action" value="insert" id="Action" />
-
-                    </div>
+                    <hr />
 
                 </div>
-                <hr />
-
             </div>
         </div>
-    </div>
 
+    }
 }
 
- 
+
+
+
 
 
 

@@ -14,7 +14,7 @@
                          <div class="form-floating form-floating-outline">
                              @Html.DropDownListFor(m => m.Account.ChartOfAccountManagementPositionId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---Select ChartOfAccount---", new { @class = "form-control select2", @search = "true", @id = "Account_ChartOfAccountManagementPositionId" })
                              @Html.ValidationMessageFor(m => m.Account.ChartOfAccountManagementPositionId, "", new { @class = "text-danger" })
-                             <label>Chart of account management position</label>
+                             <label>Select MFI_ChartOfAccount</label>
                          </div>
                      </div>
                      <div class="col-md-12">
@@ -31,20 +31,20 @@
                              <label>Account Owner</label>
                          </div>
                      </div>
+                
                      <div class="col-md-12">
                          <div class="form-floating form-floating-outline">
                              @Html.TextBoxFor(m => m.Account.AccountNumber, new { @class = "form-control", @id = "AccountNumber" })
                              @Html.ValidationMessageFor(m => m.Account.AccountNumber, "", new { @class = "text-danger" })
                              <label>Chart of account number</label>
                          </div>
-                     </div> 
+                     </div>
                      <div id="LiaisonAccountOwnerToHide">
                          <div class="col-md-12">
-
                              <div class="form-floating form-floating-outline">
-                                 @Html.DropDownListFor(m => m.Account.AccountOwnerId, new SelectList(ViewBag.BranchCode == null ? "" : ViewBag.BranchCode, "Text", "Value"), "---Select AccountOwner---", new { @class = "form-control select2", @search = "true", @id = "LiasonAccountOwnerId" })
-                                 @Html.ValidationMessageFor(m => m.Account.AccountOwnerId, "", new { @class = "text-danger" })
-                                 <label>Select destination liaison Account</label>
+                                 @Html.DropDownListFor(m => m.Account.AccountCounterPartId, new SelectList(ViewBag.BranchCode == null ? "" : ViewBag.BranchCode, "Text", "Value"), "---Select AccountCounterPart---", new { @class = "form-control select2", @search = "true", @id = "AccountCounterPartId" })
+                                 @Html.ValidationMessageFor(m => m.Account.AccountCounterPartId, "", new { @class = "text-danger" })
+                                 <label>Select Liaison Branch</label>
                              </div>
                          </div>
                      </div>

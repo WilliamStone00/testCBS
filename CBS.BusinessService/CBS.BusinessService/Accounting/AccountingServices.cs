@@ -31,7 +31,7 @@ namespace CBS.BusinessService.Accounting
             try
             {
                 model.AccountNumberNetwok = "xxxxx";
-                model.AccountTypeId = "YYYYY";
+                model.AccountTypeId = model.AccountNumber.Equals("45100")? model.AccountCounterPartId:"YYYYYY" ;
                 model.AccountNumberManagementPosition = "0";
               
                 // Make an API call to create an individual profile
@@ -60,33 +60,6 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
-       
-        //public async Task<Account> GetAccount(string id)
-        //{
-        //    try
-        //    {
-        //        var cusResponseObject = await _accountingApiCallerHelper.GetAsync<ResponseObject<Account>>(string.Format(APICallHelper.GetAccount, id));
-        //        if (cusResponseObject.IsSuccess)
-        //        {
-        //            if (cusResponseObject.ApiResponseData == null)
-        //            {
-
-        //            }
-        //            else
-        //            {
-        //                return cusResponseObject.ApiResponseData.Data;
-        //            }
-
-        //        }
-        //        return null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log and handle exception
-        //        throw ex;
-        //    }
-        //}
-
         public async Task<Account> GetAccount(string id)
         {
             try

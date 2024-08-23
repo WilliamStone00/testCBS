@@ -26,8 +26,9 @@ namespace CBS.BusinessService.Accounting
             _timer.Elapsed += TimerElapsed;
             _timer.Start();
         }
-     
+
        
+
         private void TimerElapsed(object sender, ElapsedEventArgs e)
         {
             bool isConnected = CheckInternetConnection();

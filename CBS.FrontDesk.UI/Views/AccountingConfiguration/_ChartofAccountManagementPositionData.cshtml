@@ -1,6 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
 
-    <table class="table table-hover" id="DataTable_ChartOfaccountManagementPosition">
+    <table class="table table-hover" id="DataTablePosition">
         <thead class="table-light">
             <tr>
                 <th>Position</th>
@@ -20,7 +20,7 @@
                     <td style="width:20%">@d.Description</td>
                     <td style="width:20%">
                         <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_ChartOfaccountManagementPosition','_CreateChartOfaccountManagementPosition','update','AccountingConfiguration','chartOfAccountManagementPosition')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.PositionNumber to edit">Edit</a>|
-                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.PositionNumber" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','DataTable_ChartOfaccountManagementPosition','_ChartofAccountManagementPositionData',0,'datalistingview_ChartOfaccountManagementPosition','chartOfAccountManagementPosition')">Delete</a>
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.PositionNumber" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','DataTablePosition','_ChartofAccountManagementPositionData',0,'datalistingview_ChartOfaccountManagementPosition','chartOfAccountManagementPosition')">Delete</a>
                     </td>
                 </tr>
             }
