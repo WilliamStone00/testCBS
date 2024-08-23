@@ -60,33 +60,6 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
-       
-        //public async Task<Account> GetAccount(string id)
-        //{
-        //    try
-        //    {
-        //        var cusResponseObject = await _accountingApiCallerHelper.GetAsync<ResponseObject<Account>>(string.Format(APICallHelper.GetAccount, id));
-        //        if (cusResponseObject.IsSuccess)
-        //        {
-        //            if (cusResponseObject.ApiResponseData == null)
-        //            {
-
-        //            }
-        //            else
-        //            {
-        //                return cusResponseObject.ApiResponseData.Data;
-        //            }
-
-        //        }
-        //        return null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log and handle exception
-        //        throw ex;
-        //    }
-        //}
-
         public async Task<Account> GetAccount(string id)
         {
             try
