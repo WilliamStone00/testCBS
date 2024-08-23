@@ -1,17 +1,86 @@
 ﻿$(document).ready(function () {
 
-    //$('#myDataTable_customer_loan').DataTable();
+    // Trigger the download on button click
     $("#btnData").click(function () {
         DownloadLoans('All');
     });
 
+    // Initial check and setting up event listener for checkbox state changes
+    toggleLoanOverride();
+
+    $('#IsOverRightOldLoanInterestAndBalance').change(function () {
+        toggleLoanOverride();
+    });
+
+    function toggleLoanOverride() {
+        if ($('#IsOverRightOldLoanInterestAndBalance').is(':checked')) {
+            $('#loanoveride').show();
+        } else {
+            $('#loanoveride').hide();
+            // Reset the fields if the checkbox is unchecked
+            $('#NewBalance').val(0);
+            $('#NewInterest').val(0);
+            $('#NewVAT').val(0);
+            $('#NewPenalty').val(0);
+        }
+    }
+
+    // Trigger change event on page load to set the correct initial state
+    $('#IsOverRightOldLoanInterestAndBalance').trigger('change');
+
 });
+
+
 
 function LoanProductsProperties(KEY, path, affectedID) {
     GetLoanApplication(KEY);
     var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
     FillDropDownAjaxCallParam(url, affectedID, "---Select Option---");
 }
+function GetProductByTarget(KEY, affectedID) {
+    path = "target";
+    var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
+    FillDropDownAjaxCallParam(url, affectedID, "---Select Option---");
+}
+//target
+//function LoadRefinancing(KEY, path, affectedID) {
+//    var loandiv = document.getElementById('loandiv');
+//    var showLoanDiv = (KEY === "Refinancing" || KEY === "Reschedule" || KEY === "Restructure");
+//    var dataPath = KEY;
+
+//    if (showLoanDiv) {
+//        KEY = document.getElementById('customerid').value;
+//        loandiv.style.display = "block";
+//        dataPath = "Select loan to " + dataPath;
+//        $('#loanlable').html(dataPath);
+//        var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
+//        FillDropDownAjaxCallParam(url, affectedID, dataPath);
+//    }
+//    else {
+//        loandiv.style.display = "none";
+//    }
+//    toggleInputFields();
+
+//}
+
+//function toggleInputFields() {
+//    var loanApplicationType = document.getElementById('LoanApplicationType').value;
+//    var isReschedule = loanApplicationType === "Reschedule";
+
+//    // List of input fields to toggle
+//    var inputFields = ["NewBalance", /*"NewInterest", "NewVAT", "NewPenalty"*/];
+
+//    // Loop through each field and set the readonly attribute
+//    inputFields.forEach(function (fieldId) {
+//        var field = document.getElementById(fieldId);
+//        if (isReschedule) {
+//            field.setAttribute('readonly', 'readonly');
+//        } else {
+//            field.removeAttribute('readonly');
+//        }
+//    });
+//}
+
 
 function LoadRefinancing(KEY, path, affectedID) {
     var loandiv = document.getElementById('loandiv');
@@ -25,14 +94,90 @@ function LoadRefinancing(KEY, path, affectedID) {
         $('#loanlable').html(dataPath);
         var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
         FillDropDownAjaxCallParam(url, affectedID, dataPath);
-    }
-    else {
+    } else {
         loandiv.style.display = "none";
     }
 
-   
+    // Call function to toggle input fields and divs based on application type
+    toggleInputFields();
 }
 
+function toggleInputFields() {
+    var loanApplicationType = document.getElementById('LoanApplicationType').value;
+    var isReschedule = loanApplicationType === "Reschedule";
+
+    // List of input fields to toggle
+    var inputFields = ["NewBalance", /*"NewInterest", "NewVAT", "NewPenalty"*/];
+
+    // Toggle readonly attribute based on loan application type
+    inputFields.forEach(function (fieldId) {
+        var field = document.getElementById(fieldId);
+        if (isReschedule) {
+            field.setAttribute('readonly', 'readonly');
+        } else {
+            field.removeAttribute('readonly');
+        }
+    });
+
+    // Update the panel title and convert to uppercase
+    var panelTitle = document.getElementById('panelTitle');
+    switch (loanApplicationType) {
+        case "Reschedule":
+            panelTitle.innerHTML = "RESCHEDULELING LOAN APPLICATION FORM".toUpperCase();
+            break;
+        case "Refinancing":
+            panelTitle.innerHTML = "REFINANCING LOAN APPLICATION FORM".toUpperCase();
+            break;
+        case "Restructure":
+            panelTitle.innerHTML = "RESTRUCTURING LOAN APPLICATION FORM".toUpperCase();
+            break;
+        default:
+            panelTitle.innerHTML = "NEW LOAN APPLICATION FORM".toUpperCase();
+            break;
+    }
+
+    // Update the icon based on the loan application type
+    var iconElement = document.querySelector('#accordionPopoutIconThree i');
+    switch (loanApplicationType) {
+        case "Reschedule":
+            iconElement.className = "mdi mdi-calendar-refresh me-2";
+            break;
+        case "Refinancing":
+            iconElement.className = "mdi mdi-cash-refund me-2";
+            break;
+        case "Restructure":
+            iconElement.className = "mdi mdi-account-cog me-2";
+            break;
+        default: // New Loan Application
+            iconElement.className = "mdi mdi-bank me-2"; // Update this line with the new icon class
+            break;
+    }
+
+    // List of div IDs to hide/show based on "Reschedule"
+    var divsToToggle = [
+        "RiskMitigationDiv",
+        "RAmountDiv",
+        "loanTypeDiv",
+        "loanProductDiv",
+        "WaiverDiv",
+        "TargetPopulationDiv",
+        "LoanCategoryDive",
+        "RepaymentDiv",
+        "IncludeChargeDiv",
+        "ApplyInterestWaiverDiv",
+        "purposeAndActivitiesDiv"
+    ];
+
+    // Hide or show divs based on "Reschedule" status
+    divsToToggle.forEach(function (divId) {
+        var divElement = document.getElementById(divId);
+        if (isReschedule) {
+            divElement.style.display = "none";
+        } else {
+            divElement.style.display = "block";
+        }
+    });
+}
 
 
 function LoadProductDetails(KEY) {
@@ -63,6 +208,25 @@ function GetLoanApplication(KEY) {
             //InspectionFee
         }, error: function (err) {
 
+            appalert(err.statusText, 1, 3);
+        }
+    });
+}
+function GetLoan(loanid) {
+    $.ajax({
+        type: "GET",
+        url: '/MemberOperation/GetLoan?Key=' + loanid,
+        success: function (data) {
+            // Assuming 'data' is an object containing the loan details
+            $('#NewBalance').val(data.Balance);
+            $('#NewInterest').val(data.AccrualInterest);
+            $('#NewVAT').val(data.Tax);
+            $('#NewPenalty').val(data.Penalty);
+
+            // Show the loan div if hidden
+            //$('#loandiv').show();
+        },
+        error: function (err) {
             appalert(err.statusText, 1, 3);
         }
     });

@@ -178,6 +178,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountingDayObject\AccountingDayServices.cs" />
     <Compile Include="Accounting\AccountPolicy.cs" />
     <Compile Include="Accounting\AccountUploadServices.cs" />
     <Compile Include="Accounting\ChartOfAccountManagementPosition.cs" />

@@ -68,7 +68,7 @@ namespace CBS.BusinessService.Accounts
         }
 
 
-       
+
 
         public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccountsForTransfter(string searchCriterial = "All")
         {
@@ -494,17 +494,19 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-        public async Task<Account> GetTellerAccount(GetTellerAccountBalanceQuery getTellerAccountBalanceQuery)
+        public async Task<EndOfTheDay> GetTellerAccount(GetTellerAccountBalanceQuery getTellerAccountBalanceQuery, bool isOpen=true)
         {
             try
             {
-                var cusResponseObject = await _transactionApiHelper.PostAsync<ResponseObject<Account>>(APICallHelper.GetTellerAccountInfo, getTellerAccountBalanceQuery);
+                var cusResponseObject = await _transactionApiHelper.PostAsync<ResponseObject<TellerProvioningHistory>>(APICallHelper.GetTellerAccountInfo, getTellerAccountBalanceQuery);
                 if (cusResponseObject.ApiResponseData != null)
                 {
-                    return cusResponseObject.ApiResponseData.Data;
+                    var closeOfDayRequest = Mapper(cusResponseObject.ApiResponseData.Data, false);
+                    var endofDay = new EndOfTheDay { CloseOfDayRequest = closeOfDayRequest, Teller= cusResponseObject.ApiResponseData.Data.Teller, CashAtHand= closeOfDayRequest.CashAtHand, HasError=false, ErrorMessage=null };
+                    return endofDay;
 
                 }
-                return new Account { Balance = 0, HasError = true, ErrorMessage = $"{cusResponseObject.Message}" };
+                return new EndOfTheDay { CashAtHand = 0, HasError = true, ErrorMessage = $"{cusResponseObject.Message}" };
             }
             catch (Exception ex)
             {
@@ -512,7 +514,61 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-
+        public CloseOfDayRequest Mapper(TellerProvioningHistory history, bool isOpen)
+        {
+            if (isOpen)
+            {
+                var data = new CloseOfDayRequest
+                {
+                    Amount = history.CashAtHand,
+                    CashAtHand = history.CashAtHand,
+                    ClossedStatus = history.ClossedStatus,
+                    Comment = history.SubTellerComment,
+                    CurrencyNotes = new CurrencyNotes
+                    {
+                        coin1 = history.OpeningCoin1,
+                        coin10 = history.OpeningCoin10,
+                        coin100 = history.OpeningCoin100,
+                        coin25 = history.OpeningCoin25,
+                        coin5 = history.OpeningCoin5,
+                        coin50 = history.OpeningCoin50,
+                        coin500 = history.OpeningCoin500,
+                        note1000 = history.OpeningNote1000,
+                        note10000 = history.OpeningNote10000,
+                        note2000 = history.OpeningNote2000,
+                        note500 = history.OpeningNote500,
+                        note5000 = history.OpeningNote5000
+                    },
+                };
+                return data;
+            }
+            else
+            {
+                var data = new CloseOfDayRequest
+                {
+                    Amount = history.CashAtHand,
+                    CashAtHand = history.CashAtHand,
+                    ClossedStatus = history.ClossedStatus,
+                    Comment = history.SubTellerComment,
+                    CurrencyNotes = new CurrencyNotes
+                    {
+                        coin1 = history.ClosingCoin1,
+                        coin10 = history.ClosingCoin10,
+                        coin100 = history.ClosingCoin100,
+                        coin25 = history.ClosingCoin25,
+                        coin5 = history.ClosingCoin5,
+                        coin50 = history.ClosingCoin50,
+                        coin500 = history.ClosingCoin500,
+                        note1000 = history.ClosingNote1000,
+                        note10000 = history.ClosingNote10000,
+                        note2000 = history.ClosingNote2000,
+                        note500 = history.ClosingNote500,
+                        note5000 = history.ClosingNote5000
+                    },
+                };
+                return data;
+            }
+        }
         public async Task<List<TransactionHistory>> GetCustomerTransactionsByAccountNumber(string accountNumber)
         {
             try

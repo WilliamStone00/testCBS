@@ -3,21 +3,19 @@
 @if (Model.Loans.Count == 0)
 {
     <div class="text-center my-3">
-        <p>There are no pending loan(s) for disbursement</p>
+        <p class="text-muted">There are no pending loans for disbursement.</p>
     </div>
 }
 else
 {
     <div class="table-responsive mb-3">
-        <table class="table table-hover" id="myDataTable_customer_loan">
+        <table class="table table-hover table-striped" id="myDataTable_customer_loan">
             <thead class="table-light">
                 <tr>
-                    <th>Approved Date</th>
+                    <th>Loan date</th>
                     <th>Member Reference</th>
                     <th>Principal</th>
-                    <th>Interest Rate</th>
                     <th>Fee Paid</th>
-                    <th>Balance</th>
                     <th>Status</th>
                     <th>State</th>
                     <th>Action</th>
@@ -27,44 +25,65 @@ else
                 @foreach (var d in Model.Loans.OrderBy(app => app.LoanDate))
                 {
                     <tr>
-                        <td style="width: 20%">@d.LoanDate</td>
-                        <td style="width: 10%">@d.CustomerId</td>
-                        <td style="width: 10%">@d.Principal.ToString("#,##0.0")</td>
-                        <td style="width: 10%">@d.InterestRate %</td>
-                        <td style="width: 10%">@d.FeePaid.ToString("#,##0.0")</td>
-                        <td style="width: 10%">@d.Balance.ToString("#,##0.0")</td>
-                        <td style="width: 10%">@d.LoanStatus</td>
-                        <td style="width: 10%">
+                        <td>@d.LoanDate</td>
+                        <td>@d.CustomerId</td>
+                        <td>@d.Principal.ToString("#,##0.0")</td>
+                        <td>@d.FeePaid.ToString("#,##0.0")</td>
+                        <td>
+                            <span class="badge bg-success">Approved</span>
+                        </td>
+                        <td>
                             @if (!d.IsLoanDisbursted)
                             {
-                                <span class="badge bg-warning">Awaits Disbursment</span>
+                                <span class="badge bg-warning">Awaits Disbursement</span>
                             }
                             else
-                            { 
+                            {
                                 <span class="badge bg-info">Disbursed</span>
                             }
                         </td>
-                        <td style="width: 10%">
-                            <a href="#" onclick="GetPendingLoans('@d.Id')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select for disbursment">
-                                Disbursed
-                            </a>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="actionDropdown@d.Id" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="actionDropdown@d.Id">
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="GetPendingLoans('@d.Id')">
+                                            <i class="fas fa-check-circle me-2"></i>Disburse
+                                        </a>
+                                    </li>
+                                    @*<li>
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#viewDetailsModal@d.Id">
+                                            <i class="fas fa-info-circle me-2"></i>Details
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="#" onclick="DeleteRecordDataTable('LoanApplications', '@d.Id', 'myDataTable', '_Data', 0, 'datalistingview')">
+                                            <i class="fas fa-trash-alt me-2"></i>Delete
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="ResetStatus('@d.Id')">
+                                            <i class="fas fa-undo me-2"></i>Reset Status
+                                        </a>
+                                    </li>*@
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                 }
             </tbody>
-            <tfoot>
+            <tfoot class="table-light">
                 <tr>
                     <td colspan="1"></td>
-                    <td>Principal:</td>
-                    <td>@Model.Loans.Sum(x => x.Principal).ToString("#,0.00")</td>
-                    <td>Paid:</td>
-                    <td>@Model.Loans.Sum(x => x.Paid).ToString("#,0.00")</td>
-                    <td>Balance:</td>
-                    <td>@Model.Loans.Sum(x => x.Balance).ToString("#,0.00")</td>
-                    <td></td> <!-- Placeholder for the last column -->
+                    <td><strong>Totals:</strong></td>
+                    <td><strong>@Model.Loans.Sum(x => x.Principal).ToString("#,##0.0")</strong></td>
+                    <td><strong>@Model.Loans.Sum(x => x.Paid).ToString("#,##0.0")</strong></td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </tfoot>
         </table>
     </div>
-
 }

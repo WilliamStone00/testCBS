@@ -47,10 +47,10 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 //var primaryTellerProvisionings = await _primaryTellerEndOfDayServices.GetPrimaryTellerHistories();
                 ViewBag.Option = "Primary";
-                var account = await _acountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", true, false, true));
+                var account = await _acountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", true, false, true),false);
                 ViewBag.Error = account.ErrorMessage;
                 ViewBag.HasError = account.HasError;
-                return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest { Amount = account.Balance, CashAtHand = account.Balance, CurrencyNotes = new Data.Entity.SavingProducts.AccountActivation.CurrencyNotes(), ClossedStatus = "Pending", Comment = $"As Primary Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{DateTime.Now}] with a final total balance of {account.Balance.ToString("#,##0")}." } });
+                return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest { Amount = account.CashAtHand, CashAtHand = account.CashAtHand, CurrencyNotes = account.CloseOfDayRequest.CurrencyNotes, ClossedStatus = "Pending", Comment = $"As Primary Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{DateTime.Now}] with a final total.CashAtHand of {account.CashAtHand.ToString("#,##0")}." } });
                 //85,222,000.0
             }
             catch (Exception ex)
@@ -70,17 +70,17 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         public async Task<ActionResult> SubTeller()
         {
             ViewBag.Option = "SubTeller";
-            var account = await _acountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", false));
+            var account = await _acountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", false),false);
             ViewBag.Error = account.ErrorMessage;
             ViewBag.HasError = account.HasError;
-            if (account.Balance == 0 && !account.HasError)
+            if (account.CashAtHand == 0 && !account.HasError)
             {
-                ViewBag.HasNoBalance = true;
-                ViewBag.Error = $"The current balance of Teller {account.AccountName} is 0. Kindly make a cash request";
+                ViewBag.HasN.CashAtHand = true;
+                ViewBag.Error = $"The current CashAtHand of Teller {account.Teller.name} is 0. Kindly make a cash request";
             }
 
 
-            return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest { Amount = account.Balance, CashAtHand = account.Balance, CurrencyNotes = new Data.Entity.SavingProducts.AccountActivation.CurrencyNotes(), ClossedStatus = "Pending", Comment = $"As Sub-Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{DateTime.Now}] with a final total balance of {account.Balance.ToString("#,##0")}." } });
+            return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest { Amount = account.CashAtHand, CashAtHand = account.CashAtHand, CurrencyNotes = account.CloseOfDayRequest.CurrencyNotes,   ClossedStatus = "Pending", Comment = $"As Sub-Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{DateTime.Now}] with a final total.CashAtHand of {account.CashAtHand.ToString("#,##0")}." } });
         }
 
 
@@ -176,6 +176,16 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
             }
             return Json("", JsonRequestBehavior.AllowGet);
+
+        }
+        [HttpPost]
+        public ActionResult GetReportReport()
+        {
+            this.HttpContext.Session["rptType"] = "ReportParameterLess";
+            this.HttpContext.Session["ReportName"] = $"OpenAndClossingOfTill.rpt";
+            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/Tellers/OpenAndClossingOfTill.rpt";
+            this.HttpContext.Session["rpttitle"] = $"TillStatus";
+            return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
 
         }
 

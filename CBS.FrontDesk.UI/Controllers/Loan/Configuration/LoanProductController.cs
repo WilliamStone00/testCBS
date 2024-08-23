@@ -83,6 +83,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                 if (model.ServiceOption== "product")
                 {
                     model.UpdateLoanProductCommand.ProductCode = model.AddLoanProductCommand.ProductCode;
+                    model.UpdateLoanProductCommand.TargetType = model.AddLoanProductCommand.TargetType;
                     model.UpdateLoanProductCommand.ProductName = model.AddLoanProductCommand.ProductName;
                     model.UpdateLoanProductCommand.Id = model.AddLoanProductCommand.Id;
                     model.UpdateLoanProductCommand.Description = model.AddLoanProductCommand.Description;

@@ -7,6 +7,7 @@ using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml;
 using Microsoft.Owin;
@@ -64,6 +65,109 @@ namespace CBS.BusinessService.Accounts
         }
 
         //
+        //public async Task<IEnumerable<OpenningAnclClossingTillDto>> TellerOpenningAndClossingOfDay(GetTellerOpenningAndClossingQuery getTellerOpenning)
+        //{
+        //    try
+        //    {
+        //        var apiUrl = APICallHelper.TellerOpenningAndClossingQuery;
+
+        //        var couApiResponse = await _transactionBaseConfigApiHelper.PostAsync<ResponseObject<List<OpenningAnclClossingTillDto>>>(apiUrl, getTellerOpenning);
+
+        //        if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData!=null)
+        //        {
+                    
+
+        //            if (getTellerOpenning.ByBracnch)
+        //            {
+        //                var branch = _branchServices.GetBranch(getTellerOpenning.BranchId);
+        //                return couApiResponse.ApiResponseData.Data;
+        //            }
+        //            else
+        //            {
+        //                var branches = _branchServices.GetBranches();
+        //                return couApiResponse.ApiResponseData.Data;
+        //            }
+                   
+        //        }
+        //        else
+        //        {
+        //            return Enumerable.Empty<OpenningAnclClossingTillDto>();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //}
+
+        public async Task<IEnumerable<OpenningAnclClossingTillDto>> TellerOpenningAndClossingOfDay(GetTellerOpenningAndClossingQuery getTellerOpenning)
+        {
+            try
+            {
+                var apiUrl = APICallHelper.TellerOpenningAndClossingQuery;
+                if (getTellerOpenning.BranchId==null)
+                {
+                    getTellerOpenning.BranchId = "N/A";
+                }
+
+                var couApiResponse = await _transactionBaseConfigApiHelper.PostAsync<ResponseObject<List<OpenningAnclClossingTillDto>>>(apiUrl, getTellerOpenning);
+
+                if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+                {
+                    // Initialize branch details
+                    var branches = new Dictionary<string, Branch>();
+
+                    // Fetch branch information based on the query
+                    if (getTellerOpenning.ByBracnch)
+                    {
+                        // Fetch details for a single branch
+                        var branch = await _branchServices.GetBranch(getTellerOpenning.BranchId);
+                        branches[branch.Id] = branch;
+                    }
+                    else
+                    {
+                        // Fetch details for all branches
+                        var allBranches = await _branchServices.GetBranches();
+                        foreach (var branch in allBranches)
+                        {
+                            branches[branch.Id] = branch;
+                        }
+                    }
+
+                    var dtos = couApiResponse.ApiResponseData.Data;
+
+                    // Map branch details to each DTO
+                    foreach (var dto in dtos)
+                    {
+                        if (branches.TryGetValue(dto.BranchCode, out var branch))
+                        {
+                            dto.BranchName = branch.Name;
+                            dto.BranchCode = branch.BranchCode;
+                            dto.BranchAddress = branch.Address;
+                            dto.BranchTelephone = branch.Telephone;
+                            dto.HeadOfficeName = branch.Bank.Name;
+                            dto.HeadOfficeAddress = branch.Bank.Address;
+                            dto.HeadOfficeTelephone = branch.Bank.Telephone;
+                            dto.HeadOfficeEmail = branch.Bank.Email;
+                            dto.HeadOfficeWebSite = branch.Bank.WebSite;
+                            dto.HeadOfficeInitial = branch.Bank.BankInitial;
+                            dto.HeadOfficeCode = branch.Bank.BankCode;
+                        }
+                    }
+
+                    return dtos;
+                }
+                else
+                {
+                    return Enumerable.Empty<OpenningAnclClossingTillDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as needed
+                throw;
+            }
+        }
 
         public async Task<IEnumerable<StringValues>> LoadDailyUsers()
         {

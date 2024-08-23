@@ -53,9 +53,57 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         //public async Task<ActionResult> GetReport(DailyTeller request)
         //{
-           
-        //}
 
+        //}
+        public async Task<ActionResult> TellerOpenningAndClossingStatusDownload(DailyTeller request)
+        {
+            // Call your service to get the data
+            var response = await _services.TellerOpenningAndClossingOfDay(request.GetTellerOpenningAndClossingQuery);
+            var Data = response.ToList(); // Convert to list if needed
+            if (request.GetTellerOpenningAndClossingQuery.ByBracnch)
+            {
+                if (Data.Any())
+                {
+                    this.HttpContext.Session["RPTBranchName"] = Data.FirstOrDefault().BranchName;
+
+                }
+            }
+            else
+            {
+                this.HttpContext.Session["RPTBranchName"] = "All Branches";
+            }
+            // Get the referrer URL
+            string currentUrl = "/DailyTellerAssignation/TellerOpenningAndClossingStatus";
+            if (Data == null || !Data.Any())
+            {
+                // Handle empty data scenario
+                ViewBag.UrlToOpen = string.Empty;
+                ViewBag.CurrentUrl = currentUrl;
+                ViewBag.ErrorMessage = "No data available for the selected criteria.";
+            }
+            else
+            {
+
+                this.HttpContext.Session["rptSource"] = Data;
+                this.HttpContext.Session["param_size"] = "3";
+                this.HttpContext.Session["DateFrom"] = request.GetTellerOpenningAndClossingQuery.DateFrom;
+                this.HttpContext.Session["DateTo"] = request.GetTellerOpenningAndClossingQuery.DateTo;
+                this.HttpContext.Session["rptType"] = "ReportWithParameter";
+                this.HttpContext.Session["ReportName"] = "OpeningAndClossingOfTellersRPT.rpt";
+                this.HttpContext.Session["rptpath"] = "~/AppFiles/Reporting/Transactions/Tellers/OpeningAndClossingOfTellersRPT.rpt";
+                this.HttpContext.Session["rpttitle"] = "AccountStatementTeller";
+
+                // Construct the URL to redirect to the PDF
+                string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller name if different
+
+                // Set the ViewBag variables
+                ViewBag.UrlToOpen = url;
+                ViewBag.CurrentUrl = currentUrl;
+                ViewBag.ErrorMessage = string.Empty;
+            }
+
+            return View("OpenInNewWindow");
+        }
         public async Task<ActionResult> DownloadTellerOperationsToExcel(DailyTeller request)
         {
             // Call your service to get the data
@@ -234,6 +282,12 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         public async Task<ActionResult> DownloadTellerOperations()
         {
             await LoadDropdowns();
+            return View();
+        }
+        public async Task<ActionResult> TellerOpenningAndClossingStatus()
+        {
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.Branches = Branches;
             return View();
         }
 

@@ -1,6 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
 @{
-    ViewBag.Title = "Loan panel";
+    ViewBag.Title = "Loan Application Panel";
 }
 
 
@@ -23,18 +23,8 @@
                 <h4 class="group-title">
                     MEMBER STATUS
                     <hr />
-                    @if (Model.Customer.MembershipApprovalStatus == "Approved")
-                    {
-                        <small>Approved BY:  @Model.Customer.MembershipApprovalBy</small><br />
-                        <small>Approved Date:  @Model.Customer.MembershipApprovedDate</small><br />
-                        <small>Status: <span class="highlight-text">@Model.Customer.MembershipApprovalStatus.ToUpper()</span></small>
-                    }
-                    else
-                    {
-                        <small>Status: <span class="highlight-text">@Model.Customer.MembershipApprovalStatus</span></small>
-                    }
-                    <br />
-                    <small>Registration Date: @Model.Customer.MembershipApplicantDate</small>
+                    <small>Status: <span class="highlight-text">@Model.Customer.MembershipApprovalStatus</span></small>
+
                 </h4>
             </div>
         </div>
@@ -123,9 +113,9 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-application-cog me-2"></i>
+                            <i class="mdi mdi-bank me-2"></i>
                             <div class="d-flex justify-content-center">
-                                <div class="fw-bold fs-4">Loan Application</div>
+                                <div class="fw-bold fs-4" id="panelTitle">NEW LOAN APPLICATION FORM</div>
                             </div>
                         </button>
                     </h2>

@@ -11,15 +11,23 @@ using System.Collections.Generic;
 using CBS.FrontDesk.Data.UserManagement;
 using System.Web;
 using System.Linq;
+using CBS.FrontDesk.Data.ReportDataSetDto;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
+using CBS.FrontDesk.Data.Entity.Config;
+using CBS.BusinessService.Config;
 
 namespace CBS.BusinessService.Accounts
 {
     public class PrimaryTellerEndOfDayServices : BaseService
     {
+        private readonly BranchServices _brancheServices;
+        private readonly TellerProvissioningServices _tellerProvissioningServices;
         private readonly ApiCallerHelper _transactionApiHelper;
-        public PrimaryTellerEndOfDayServices()
+        public PrimaryTellerEndOfDayServices(BranchServices brancheServices, TellerProvissioningServices tellerProvissioningServices)
         {
             _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
+            _brancheServices = brancheServices;
+            _tellerProvissioningServices = tellerProvissioningServices;
         }
         public bool IsCurrencySumValid(CurrencyNotes currencyNotes, int amount)
         {
@@ -43,16 +51,18 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 model.Amount = ComputeDenomination(model.CurrencyNotes);
-                if (model.Amount <= 0)
+                if (model.Amount < 0)
                 {
                     GetExecutionMessages(model, false, $"{model.Amount}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered must be greater than 0");
                     return ExecutionMessage;
                 }
                 model.ClossedStatus = "CLOSED";
-                var response = await _transactionApiHelper.PostAsync<ServiceResponse<SubTellerProvioningHistory>>(APICallHelper.PrimaryTellerEndOfDay, model);
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<TellerProvioningHistory>>(APICallHelper.PrimaryTellerEndOfDay, model);
                 if (response.IsSuccess)
                 {
+                    await _tellerProvissioningServices.MapToTillOpenAndClossingDS(response.ApiResponseData.Data);
+
                     GetExecutionMessages(response, true, $"{model.CashAtHand}", MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
@@ -74,12 +84,13 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
+
         public async Task<ExecutionMessages> EndTheDayAccountant(EndOfDayAccountantCommand model)
         {
             try
             {
              
-                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<SubTellerProvioningHistory>>(APICallHelper.EndOfDayAccountant, model);
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<TellerProvioningHistory>>(APICallHelper.EndOfDayAccountant, model);
                     if (response.IsSuccess)
                     {
 
@@ -108,7 +119,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var response = await _transactionApiHelper.PostAsync<ServiceResponse<SubTellerProvioningHistory>>(APICallHelper.EndOfDaySubTellerBYPrimaryTeller, model);
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<TellerProvioningHistory>>(APICallHelper.EndOfDaySubTellerBYPrimaryTeller, model);
                 if (response.IsSuccess)
                 {
 
@@ -132,6 +143,7 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
+        //TellerOpenningAndClossingQuery
         public async Task<IEnumerable<PrimaryTellerProvisioningDto>> GetPrimaryTellerHistories()
         {
             try
@@ -154,6 +166,7 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
+       
         public async Task<IEnumerable<PrimaryTellerProvisioningDto>> GetPrimaryTellerHistoriesByBranchID()
         {
             try

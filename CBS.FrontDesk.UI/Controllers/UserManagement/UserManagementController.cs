@@ -197,7 +197,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
         [AllowAnonymous]
         public async Task<ActionResult> FLoginChangePassword(string serviceoption = "None", string KEY = "KEY", string secrete = "none", string usersecreteid = "secrete", string path = null, string userName = null)
         {
-            if (!VerifyCookies("CHANGE_PWD"))
+            if (VerifyIfSessionExist("PWD"))
             {
                 Guid userId;
                 try
@@ -234,12 +234,12 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
 
 
                 // Verify cookies
-                if (!VerifyCookies("CHANGE_PWD"))
+                if (VerifyIfSessionExist("PWD"))
                 {
                     var data = await _userManagementServices.FLoginChangePassword(model);
                     if (data.Result)
                     {
-                        RemoveSessionName("CHANGE_PWD");
+                        RemoveSessionName("PWD");
                     }
                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
                 }

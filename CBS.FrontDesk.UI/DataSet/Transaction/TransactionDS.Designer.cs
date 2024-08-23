@@ -30,6 +30,10 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
         
         private TellerOperationGLDataTable tableTellerOperationGL;
         
+        private OpeningClossingOfDayDataTable tableOpeningClossingOfDay;
+        
+        private OpenAndCloseOfTillDataTable tableOpenAndCloseOfTill;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -66,6 +70,12 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 }
                 if ((ds.Tables["TellerOperationGL"] != null)) {
                     base.Tables.Add(new TellerOperationGLDataTable(ds.Tables["TellerOperationGL"]));
+                }
+                if ((ds.Tables["OpeningClossingOfDay"] != null)) {
+                    base.Tables.Add(new OpeningClossingOfDayDataTable(ds.Tables["OpeningClossingOfDay"]));
+                }
+                if ((ds.Tables["OpenAndCloseOfTill"] != null)) {
+                    base.Tables.Add(new OpenAndCloseOfTillDataTable(ds.Tables["OpenAndCloseOfTill"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -112,6 +122,26 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
         public TellerOperationGLDataTable TellerOperationGL {
             get {
                 return this.tableTellerOperationGL;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public OpeningClossingOfDayDataTable OpeningClossingOfDay {
+            get {
+                return this.tableOpeningClossingOfDay;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public OpenAndCloseOfTillDataTable OpenAndCloseOfTill {
+            get {
+                return this.tableOpenAndCloseOfTill;
             }
         }
         
@@ -191,6 +221,12 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 if ((ds.Tables["TellerOperationGL"] != null)) {
                     base.Tables.Add(new TellerOperationGLDataTable(ds.Tables["TellerOperationGL"]));
                 }
+                if ((ds.Tables["OpeningClossingOfDay"] != null)) {
+                    base.Tables.Add(new OpeningClossingOfDayDataTable(ds.Tables["OpeningClossingOfDay"]));
+                }
+                if ((ds.Tables["OpenAndCloseOfTill"] != null)) {
+                    base.Tables.Add(new OpenAndCloseOfTillDataTable(ds.Tables["OpenAndCloseOfTill"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -242,6 +278,18 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                     this.tableTellerOperationGL.InitVars();
                 }
             }
+            this.tableOpeningClossingOfDay = ((OpeningClossingOfDayDataTable)(base.Tables["OpeningClossingOfDay"]));
+            if ((initTable == true)) {
+                if ((this.tableOpeningClossingOfDay != null)) {
+                    this.tableOpeningClossingOfDay.InitVars();
+                }
+            }
+            this.tableOpenAndCloseOfTill = ((OpenAndCloseOfTillDataTable)(base.Tables["OpenAndCloseOfTill"]));
+            if ((initTable == true)) {
+                if ((this.tableOpenAndCloseOfTill != null)) {
+                    this.tableOpenAndCloseOfTill.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -258,6 +306,10 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             base.Tables.Add(this.tableOtherTransactions);
             this.tableTellerOperationGL = new TellerOperationGLDataTable();
             base.Tables.Add(this.tableTellerOperationGL);
+            this.tableOpeningClossingOfDay = new OpeningClossingOfDayDataTable();
+            base.Tables.Add(this.tableOpeningClossingOfDay);
+            this.tableOpenAndCloseOfTill = new OpenAndCloseOfTillDataTable();
+            base.Tables.Add(this.tableOpenAndCloseOfTill);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -275,6 +327,18 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private bool ShouldSerializeTellerOperationGL() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        private bool ShouldSerializeOpeningClossingOfDay() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        private bool ShouldSerializeOpenAndCloseOfTill() {
             return false;
         }
         
@@ -341,6 +405,12 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         public delegate void TellerOperationGLRowChangeEventHandler(object sender, TellerOperationGLRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public delegate void OpeningClossingOfDayRowChangeEventHandler(object sender, OpeningClossingOfDayRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public delegate void OpenAndCloseOfTillRowChangeEventHandler(object sender, OpenAndCloseOfTillRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -3048,6 +3118,1852 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "TellerOperationGLDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class OpeningClossingOfDayDataTable : global::System.Data.TypedTableBase<OpeningClossingOfDayRow> {
+            
+            private global::System.Data.DataColumn columnUserIdInChargeOfThisTeller;
+            
+            private global::System.Data.DataColumn columnProvisionedBy;
+            
+            private global::System.Data.DataColumn columnOpeningReference;
+            
+            private global::System.Data.DataColumn columnTellerType;
+            
+            private global::System.Data.DataColumn columnIsPrimary;
+            
+            private global::System.Data.DataColumn columnClossingReference;
+            
+            private global::System.Data.DataColumn columnTellerComment;
+            
+            private global::System.Data.DataColumn columnBranchCode;
+            
+            private global::System.Data.DataColumn columnClossedStatus;
+            
+            private global::System.Data.DataColumn columnPrimaryTellerComment;
+            
+            private global::System.Data.DataColumn columnPrimaryTellerConfirmationStatus;
+            
+            private global::System.Data.DataColumn columnTellerName;
+            
+            private global::System.Data.DataColumn columnReplenishedAmount;
+            
+            private global::System.Data.DataColumn columnOpenedDate;
+            
+            private global::System.Data.DataColumn columnClossedDate;
+            
+            private global::System.Data.DataColumn columnOpenOfDayAmount;
+            
+            private global::System.Data.DataColumn columnAmountReplenished;
+            
+            private global::System.Data.DataColumn columnIsRequestedForCashReplenishment;
+            
+            private global::System.Data.DataColumn columnCashAtHand;
+            
+            private global::System.Data.DataColumn columnEndOfDayAmount;
+            
+            private global::System.Data.DataColumn columnAccountBalance;
+            
+            private global::System.Data.DataColumn columnPreviouseBalance;
+            
+            private global::System.Data.DataColumn columnLogo;
+            
+            private global::System.Data.DataColumn columnBranchName;
+            
+            private global::System.Data.DataColumn columnBranchAddress;
+            
+            private global::System.Data.DataColumn columnBranchTelephone;
+            
+            private global::System.Data.DataColumn columnHeadOfficeName;
+            
+            private global::System.Data.DataColumn columnHeadOfficeAddress;
+            
+            private global::System.Data.DataColumn columnHeadOfficeTelephone;
+            
+            private global::System.Data.DataColumn columnHeadOfficeEmail;
+            
+            private global::System.Data.DataColumn columnHeadOfficeWebSite;
+            
+            private global::System.Data.DataColumn columnHeadOfficeInitial;
+            
+            private global::System.Data.DataColumn columnHeadOfficeCode;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public OpeningClossingOfDayDataTable() {
+                this.TableName = "OpeningClossingOfDay";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal OpeningClossingOfDayDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected OpeningClossingOfDayDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn UserIdInChargeOfThisTellerColumn {
+                get {
+                    return this.columnUserIdInChargeOfThisTeller;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ProvisionedByColumn {
+                get {
+                    return this.columnProvisionedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpeningReferenceColumn {
+                get {
+                    return this.columnOpeningReference;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TellerTypeColumn {
+                get {
+                    return this.columnTellerType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn IsPrimaryColumn {
+                get {
+                    return this.columnIsPrimary;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClossingReferenceColumn {
+                get {
+                    return this.columnClossingReference;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TellerCommentColumn {
+                get {
+                    return this.columnTellerComment;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchCodeColumn {
+                get {
+                    return this.columnBranchCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClossedStatusColumn {
+                get {
+                    return this.columnClossedStatus;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PrimaryTellerCommentColumn {
+                get {
+                    return this.columnPrimaryTellerComment;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PrimaryTellerConfirmationStatusColumn {
+                get {
+                    return this.columnPrimaryTellerConfirmationStatus;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TellerNameColumn {
+                get {
+                    return this.columnTellerName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ReplenishedAmountColumn {
+                get {
+                    return this.columnReplenishedAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpenedDateColumn {
+                get {
+                    return this.columnOpenedDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClossedDateColumn {
+                get {
+                    return this.columnClossedDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpenOfDayAmountColumn {
+                get {
+                    return this.columnOpenOfDayAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn AmountReplenishedColumn {
+                get {
+                    return this.columnAmountReplenished;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn IsRequestedForCashReplenishmentColumn {
+                get {
+                    return this.columnIsRequestedForCashReplenishment;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CashAtHandColumn {
+                get {
+                    return this.columnCashAtHand;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn EndOfDayAmountColumn {
+                get {
+                    return this.columnEndOfDayAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn AccountBalanceColumn {
+                get {
+                    return this.columnAccountBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PreviouseBalanceColumn {
+                get {
+                    return this.columnPreviouseBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LogoColumn {
+                get {
+                    return this.columnLogo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchNameColumn {
+                get {
+                    return this.columnBranchName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchAddressColumn {
+                get {
+                    return this.columnBranchAddress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchTelephoneColumn {
+                get {
+                    return this.columnBranchTelephone;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeNameColumn {
+                get {
+                    return this.columnHeadOfficeName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeAddressColumn {
+                get {
+                    return this.columnHeadOfficeAddress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeTelephoneColumn {
+                get {
+                    return this.columnHeadOfficeTelephone;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeEmailColumn {
+                get {
+                    return this.columnHeadOfficeEmail;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeWebSiteColumn {
+                get {
+                    return this.columnHeadOfficeWebSite;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeInitialColumn {
+                get {
+                    return this.columnHeadOfficeInitial;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeCodeColumn {
+                get {
+                    return this.columnHeadOfficeCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public OpeningClossingOfDayRow this[int index] {
+                get {
+                    return ((OpeningClossingOfDayRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event OpeningClossingOfDayRowChangeEventHandler OpeningClossingOfDayRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event OpeningClossingOfDayRowChangeEventHandler OpeningClossingOfDayRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event OpeningClossingOfDayRowChangeEventHandler OpeningClossingOfDayRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event OpeningClossingOfDayRowChangeEventHandler OpeningClossingOfDayRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void AddOpeningClossingOfDayRow(OpeningClossingOfDayRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public OpeningClossingOfDayRow AddOpeningClossingOfDayRow(
+                        string UserIdInChargeOfThisTeller, 
+                        string ProvisionedBy, 
+                        string OpeningReference, 
+                        string TellerType, 
+                        string IsPrimary, 
+                        string ClossingReference, 
+                        string TellerComment, 
+                        string BranchCode, 
+                        string ClossedStatus, 
+                        string PrimaryTellerComment, 
+                        string PrimaryTellerConfirmationStatus, 
+                        string TellerName, 
+                        decimal ReplenishedAmount, 
+                        System.DateTime OpenedDate, 
+                        System.DateTime ClossedDate, 
+                        decimal OpenOfDayAmount, 
+                        decimal AmountReplenished, 
+                        bool IsRequestedForCashReplenishment, 
+                        decimal CashAtHand, 
+                        double EndOfDayAmount, 
+                        decimal AccountBalance, 
+                        decimal PreviouseBalance, 
+                        string Logo, 
+                        string BranchName, 
+                        string BranchAddress, 
+                        string BranchTelephone, 
+                        string HeadOfficeName, 
+                        string HeadOfficeAddress, 
+                        string HeadOfficeTelephone, 
+                        string HeadOfficeEmail, 
+                        string HeadOfficeWebSite, 
+                        string HeadOfficeInitial, 
+                        string HeadOfficeCode) {
+                OpeningClossingOfDayRow rowOpeningClossingOfDayRow = ((OpeningClossingOfDayRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        UserIdInChargeOfThisTeller,
+                        ProvisionedBy,
+                        OpeningReference,
+                        TellerType,
+                        IsPrimary,
+                        ClossingReference,
+                        TellerComment,
+                        BranchCode,
+                        ClossedStatus,
+                        PrimaryTellerComment,
+                        PrimaryTellerConfirmationStatus,
+                        TellerName,
+                        ReplenishedAmount,
+                        OpenedDate,
+                        ClossedDate,
+                        OpenOfDayAmount,
+                        AmountReplenished,
+                        IsRequestedForCashReplenishment,
+                        CashAtHand,
+                        EndOfDayAmount,
+                        AccountBalance,
+                        PreviouseBalance,
+                        Logo,
+                        BranchName,
+                        BranchAddress,
+                        BranchTelephone,
+                        HeadOfficeName,
+                        HeadOfficeAddress,
+                        HeadOfficeTelephone,
+                        HeadOfficeEmail,
+                        HeadOfficeWebSite,
+                        HeadOfficeInitial,
+                        HeadOfficeCode};
+                rowOpeningClossingOfDayRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowOpeningClossingOfDayRow);
+                return rowOpeningClossingOfDayRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                OpeningClossingOfDayDataTable cln = ((OpeningClossingOfDayDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new OpeningClossingOfDayDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal void InitVars() {
+                this.columnUserIdInChargeOfThisTeller = base.Columns["UserIdInChargeOfThisTeller"];
+                this.columnProvisionedBy = base.Columns["ProvisionedBy"];
+                this.columnOpeningReference = base.Columns["OpeningReference"];
+                this.columnTellerType = base.Columns["TellerType"];
+                this.columnIsPrimary = base.Columns["IsPrimary"];
+                this.columnClossingReference = base.Columns["ClossingReference"];
+                this.columnTellerComment = base.Columns["TellerComment"];
+                this.columnBranchCode = base.Columns["BranchCode"];
+                this.columnClossedStatus = base.Columns["ClossedStatus"];
+                this.columnPrimaryTellerComment = base.Columns["PrimaryTellerComment"];
+                this.columnPrimaryTellerConfirmationStatus = base.Columns["PrimaryTellerConfirmationStatus"];
+                this.columnTellerName = base.Columns["TellerName"];
+                this.columnReplenishedAmount = base.Columns["ReplenishedAmount"];
+                this.columnOpenedDate = base.Columns["OpenedDate"];
+                this.columnClossedDate = base.Columns["ClossedDate"];
+                this.columnOpenOfDayAmount = base.Columns["OpenOfDayAmount"];
+                this.columnAmountReplenished = base.Columns["AmountReplenished"];
+                this.columnIsRequestedForCashReplenishment = base.Columns["IsRequestedForCashReplenishment"];
+                this.columnCashAtHand = base.Columns["CashAtHand"];
+                this.columnEndOfDayAmount = base.Columns["EndOfDayAmount"];
+                this.columnAccountBalance = base.Columns["AccountBalance"];
+                this.columnPreviouseBalance = base.Columns["PreviouseBalance"];
+                this.columnLogo = base.Columns["Logo"];
+                this.columnBranchName = base.Columns["BranchName"];
+                this.columnBranchAddress = base.Columns["BranchAddress"];
+                this.columnBranchTelephone = base.Columns["BranchTelephone"];
+                this.columnHeadOfficeName = base.Columns["HeadOfficeName"];
+                this.columnHeadOfficeAddress = base.Columns["HeadOfficeAddress"];
+                this.columnHeadOfficeTelephone = base.Columns["HeadOfficeTelephone"];
+                this.columnHeadOfficeEmail = base.Columns["HeadOfficeEmail"];
+                this.columnHeadOfficeWebSite = base.Columns["HeadOfficeWebSite"];
+                this.columnHeadOfficeInitial = base.Columns["HeadOfficeInitial"];
+                this.columnHeadOfficeCode = base.Columns["HeadOfficeCode"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            private void InitClass() {
+                this.columnUserIdInChargeOfThisTeller = new global::System.Data.DataColumn("UserIdInChargeOfThisTeller", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnUserIdInChargeOfThisTeller);
+                this.columnProvisionedBy = new global::System.Data.DataColumn("ProvisionedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnProvisionedBy);
+                this.columnOpeningReference = new global::System.Data.DataColumn("OpeningReference", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningReference);
+                this.columnTellerType = new global::System.Data.DataColumn("TellerType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTellerType);
+                this.columnIsPrimary = new global::System.Data.DataColumn("IsPrimary", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIsPrimary);
+                this.columnClossingReference = new global::System.Data.DataColumn("ClossingReference", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClossingReference);
+                this.columnTellerComment = new global::System.Data.DataColumn("TellerComment", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTellerComment);
+                this.columnBranchCode = new global::System.Data.DataColumn("BranchCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchCode);
+                this.columnClossedStatus = new global::System.Data.DataColumn("ClossedStatus", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClossedStatus);
+                this.columnPrimaryTellerComment = new global::System.Data.DataColumn("PrimaryTellerComment", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPrimaryTellerComment);
+                this.columnPrimaryTellerConfirmationStatus = new global::System.Data.DataColumn("PrimaryTellerConfirmationStatus", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPrimaryTellerConfirmationStatus);
+                this.columnTellerName = new global::System.Data.DataColumn("TellerName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTellerName);
+                this.columnReplenishedAmount = new global::System.Data.DataColumn("ReplenishedAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReplenishedAmount);
+                this.columnOpenedDate = new global::System.Data.DataColumn("OpenedDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpenedDate);
+                this.columnClossedDate = new global::System.Data.DataColumn("ClossedDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClossedDate);
+                this.columnOpenOfDayAmount = new global::System.Data.DataColumn("OpenOfDayAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpenOfDayAmount);
+                this.columnAmountReplenished = new global::System.Data.DataColumn("AmountReplenished", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAmountReplenished);
+                this.columnIsRequestedForCashReplenishment = new global::System.Data.DataColumn("IsRequestedForCashReplenishment", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIsRequestedForCashReplenishment);
+                this.columnCashAtHand = new global::System.Data.DataColumn("CashAtHand", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCashAtHand);
+                this.columnEndOfDayAmount = new global::System.Data.DataColumn("EndOfDayAmount", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEndOfDayAmount);
+                this.columnAccountBalance = new global::System.Data.DataColumn("AccountBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAccountBalance);
+                this.columnPreviouseBalance = new global::System.Data.DataColumn("PreviouseBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPreviouseBalance);
+                this.columnLogo = new global::System.Data.DataColumn("Logo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLogo);
+                this.columnBranchName = new global::System.Data.DataColumn("BranchName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchName);
+                this.columnBranchAddress = new global::System.Data.DataColumn("BranchAddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchAddress);
+                this.columnBranchTelephone = new global::System.Data.DataColumn("BranchTelephone", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchTelephone);
+                this.columnHeadOfficeName = new global::System.Data.DataColumn("HeadOfficeName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeName);
+                this.columnHeadOfficeAddress = new global::System.Data.DataColumn("HeadOfficeAddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeAddress);
+                this.columnHeadOfficeTelephone = new global::System.Data.DataColumn("HeadOfficeTelephone", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeTelephone);
+                this.columnHeadOfficeEmail = new global::System.Data.DataColumn("HeadOfficeEmail", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeEmail);
+                this.columnHeadOfficeWebSite = new global::System.Data.DataColumn("HeadOfficeWebSite", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeWebSite);
+                this.columnHeadOfficeInitial = new global::System.Data.DataColumn("HeadOfficeInitial", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeInitial);
+                this.columnHeadOfficeCode = new global::System.Data.DataColumn("HeadOfficeCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeCode);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public OpeningClossingOfDayRow NewOpeningClossingOfDayRow() {
+                return ((OpeningClossingOfDayRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new OpeningClossingOfDayRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(OpeningClossingOfDayRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.OpeningClossingOfDayRowChanged != null)) {
+                    this.OpeningClossingOfDayRowChanged(this, new OpeningClossingOfDayRowChangeEvent(((OpeningClossingOfDayRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.OpeningClossingOfDayRowChanging != null)) {
+                    this.OpeningClossingOfDayRowChanging(this, new OpeningClossingOfDayRowChangeEvent(((OpeningClossingOfDayRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.OpeningClossingOfDayRowDeleted != null)) {
+                    this.OpeningClossingOfDayRowDeleted(this, new OpeningClossingOfDayRowChangeEvent(((OpeningClossingOfDayRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.OpeningClossingOfDayRowDeleting != null)) {
+                    this.OpeningClossingOfDayRowDeleting(this, new OpeningClossingOfDayRowChangeEvent(((OpeningClossingOfDayRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void RemoveOpeningClossingOfDayRow(OpeningClossingOfDayRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                Transactions ds = new Transactions();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "OpeningClossingOfDayDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class OpenAndCloseOfTillDataTable : global::System.Data.TypedTableBase<OpenAndCloseOfTillRow> {
+            
+            private global::System.Data.DataColumn columnUserIdInChargeOfThisTeller;
+            
+            private global::System.Data.DataColumn columnProvisionedBy;
+            
+            private global::System.Data.DataColumn columnIsCashReplenished;
+            
+            private global::System.Data.DataColumn columnReplenishedAmount;
+            
+            private global::System.Data.DataColumn columnOpenedDate;
+            
+            private global::System.Data.DataColumn columnClossedDate;
+            
+            private global::System.Data.DataColumn columnOpenOfDayAmount;
+            
+            private global::System.Data.DataColumn columnReferenceId;
+            
+            private global::System.Data.DataColumn columnCloseOfReferenceId;
+            
+            private global::System.Data.DataColumn columnIsRequestedForCashReplenishment;
+            
+            private global::System.Data.DataColumn columnCashAtHand;
+            
+            private global::System.Data.DataColumn columnEndOfDayAmount;
+            
+            private global::System.Data.DataColumn columnAccountBalance;
+            
+            private global::System.Data.DataColumn columnLastOPerationAmount;
+            
+            private global::System.Data.DataColumn columnLastOperationType;
+            
+            private global::System.Data.DataColumn columnPreviouseBalance;
+            
+            private global::System.Data.DataColumn columnSubTellerComment;
+            
+            private global::System.Data.DataColumn columnNote;
+            
+            private global::System.Data.DataColumn columnClossedStatus;
+            
+            private global::System.Data.DataColumn columnTillName;
+            
+            private global::System.Data.DataColumn columnInitialPrinting;
+            
+            private global::System.Data.DataColumn columnOpeningNote10000;
+            
+            private global::System.Data.DataColumn columnOpeningNote5000;
+            
+            private global::System.Data.DataColumn columnOpeningNote2000;
+            
+            private global::System.Data.DataColumn columnOpeningNote1000;
+            
+            private global::System.Data.DataColumn columnOpeningNote500;
+            
+            private global::System.Data.DataColumn columnOpeningCoin500;
+            
+            private global::System.Data.DataColumn columnOpeningCoin100;
+            
+            private global::System.Data.DataColumn columnOpeningCoin50;
+            
+            private global::System.Data.DataColumn columnOpeningCoin25;
+            
+            private global::System.Data.DataColumn columnOpeningCoin10;
+            
+            private global::System.Data.DataColumn columnOpeningCoin5;
+            
+            private global::System.Data.DataColumn columnOpeningCoin1;
+            
+            private global::System.Data.DataColumn columnClosingNote10000;
+            
+            private global::System.Data.DataColumn columnClosingNote5000;
+            
+            private global::System.Data.DataColumn columnClosingNote2000;
+            
+            private global::System.Data.DataColumn columnClosingNote1000;
+            
+            private global::System.Data.DataColumn columnClosingNote500;
+            
+            private global::System.Data.DataColumn columnClosingCoin500;
+            
+            private global::System.Data.DataColumn columnClosingCoin100;
+            
+            private global::System.Data.DataColumn columnClosingCoin50;
+            
+            private global::System.Data.DataColumn columnClosingCoin25;
+            
+            private global::System.Data.DataColumn columnClosingCoin10;
+            
+            private global::System.Data.DataColumn columnClosingCoin5;
+            
+            private global::System.Data.DataColumn columnClosingCoin1;
+            
+            private global::System.Data.DataColumn columnTotalOpeningAmount;
+            
+            private global::System.Data.DataColumn columnTotalClosingAmount;
+            
+            private global::System.Data.DataColumn columnLogo;
+            
+            private global::System.Data.DataColumn columnBranchName;
+            
+            private global::System.Data.DataColumn columnBranchCode;
+            
+            private global::System.Data.DataColumn columnBranchAddress;
+            
+            private global::System.Data.DataColumn columnBranchTelephone;
+            
+            private global::System.Data.DataColumn columnHeadOfficeName;
+            
+            private global::System.Data.DataColumn columnHeadOfficeAddress;
+            
+            private global::System.Data.DataColumn columnHeadOfficeTelephone;
+            
+            private global::System.Data.DataColumn columnHeadOfficeEmail;
+            
+            private global::System.Data.DataColumn columnHeadOfficeWebSite;
+            
+            private global::System.Data.DataColumn columnHeadOfficeInitial;
+            
+            private global::System.Data.DataColumn columnHeadOfficeCode;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public OpenAndCloseOfTillDataTable() {
+                this.TableName = "OpenAndCloseOfTill";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal OpenAndCloseOfTillDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected OpenAndCloseOfTillDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn UserIdInChargeOfThisTellerColumn {
+                get {
+                    return this.columnUserIdInChargeOfThisTeller;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ProvisionedByColumn {
+                get {
+                    return this.columnProvisionedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn IsCashReplenishedColumn {
+                get {
+                    return this.columnIsCashReplenished;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ReplenishedAmountColumn {
+                get {
+                    return this.columnReplenishedAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpenedDateColumn {
+                get {
+                    return this.columnOpenedDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClossedDateColumn {
+                get {
+                    return this.columnClossedDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpenOfDayAmountColumn {
+                get {
+                    return this.columnOpenOfDayAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ReferenceIdColumn {
+                get {
+                    return this.columnReferenceId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CloseOfReferenceIdColumn {
+                get {
+                    return this.columnCloseOfReferenceId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn IsRequestedForCashReplenishmentColumn {
+                get {
+                    return this.columnIsRequestedForCashReplenishment;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CashAtHandColumn {
+                get {
+                    return this.columnCashAtHand;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn EndOfDayAmountColumn {
+                get {
+                    return this.columnEndOfDayAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn AccountBalanceColumn {
+                get {
+                    return this.columnAccountBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LastOPerationAmountColumn {
+                get {
+                    return this.columnLastOPerationAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LastOperationTypeColumn {
+                get {
+                    return this.columnLastOperationType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PreviouseBalanceColumn {
+                get {
+                    return this.columnPreviouseBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn SubTellerCommentColumn {
+                get {
+                    return this.columnSubTellerComment;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn NoteColumn {
+                get {
+                    return this.columnNote;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClossedStatusColumn {
+                get {
+                    return this.columnClossedStatus;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TillNameColumn {
+                get {
+                    return this.columnTillName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn InitialPrintingColumn {
+                get {
+                    return this.columnInitialPrinting;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpeningNote10000Column {
+                get {
+                    return this.columnOpeningNote10000;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpeningNote5000Column {
+                get {
+                    return this.columnOpeningNote5000;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpeningNote2000Column {
+                get {
+                    return this.columnOpeningNote2000;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpeningNote1000Column {
+                get {
+                    return this.columnOpeningNote1000;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpeningNote500Column {
+                get {
+                    return this.columnOpeningNote500;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpeningCoin500Column {
+                get {
+                    return this.columnOpeningCoin500;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpeningCoin100Column {
+                get {
+                    return this.columnOpeningCoin100;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpeningCoin50Column {
+                get {
+                    return this.columnOpeningCoin50;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpeningCoin25Column {
+                get {
+                    return this.columnOpeningCoin25;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpeningCoin10Column {
+                get {
+                    return this.columnOpeningCoin10;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpeningCoin5Column {
+                get {
+                    return this.columnOpeningCoin5;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpeningCoin1Column {
+                get {
+                    return this.columnOpeningCoin1;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClosingNote10000Column {
+                get {
+                    return this.columnClosingNote10000;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClosingNote5000Column {
+                get {
+                    return this.columnClosingNote5000;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClosingNote2000Column {
+                get {
+                    return this.columnClosingNote2000;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClosingNote1000Column {
+                get {
+                    return this.columnClosingNote1000;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClosingNote500Column {
+                get {
+                    return this.columnClosingNote500;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClosingCoin500Column {
+                get {
+                    return this.columnClosingCoin500;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClosingCoin100Column {
+                get {
+                    return this.columnClosingCoin100;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClosingCoin50Column {
+                get {
+                    return this.columnClosingCoin50;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClosingCoin25Column {
+                get {
+                    return this.columnClosingCoin25;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClosingCoin10Column {
+                get {
+                    return this.columnClosingCoin10;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClosingCoin5Column {
+                get {
+                    return this.columnClosingCoin5;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClosingCoin1Column {
+                get {
+                    return this.columnClosingCoin1;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalOpeningAmountColumn {
+                get {
+                    return this.columnTotalOpeningAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalClosingAmountColumn {
+                get {
+                    return this.columnTotalClosingAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LogoColumn {
+                get {
+                    return this.columnLogo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchNameColumn {
+                get {
+                    return this.columnBranchName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchCodeColumn {
+                get {
+                    return this.columnBranchCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchAddressColumn {
+                get {
+                    return this.columnBranchAddress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchTelephoneColumn {
+                get {
+                    return this.columnBranchTelephone;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeNameColumn {
+                get {
+                    return this.columnHeadOfficeName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeAddressColumn {
+                get {
+                    return this.columnHeadOfficeAddress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeTelephoneColumn {
+                get {
+                    return this.columnHeadOfficeTelephone;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeEmailColumn {
+                get {
+                    return this.columnHeadOfficeEmail;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeWebSiteColumn {
+                get {
+                    return this.columnHeadOfficeWebSite;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeInitialColumn {
+                get {
+                    return this.columnHeadOfficeInitial;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeCodeColumn {
+                get {
+                    return this.columnHeadOfficeCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public OpenAndCloseOfTillRow this[int index] {
+                get {
+                    return ((OpenAndCloseOfTillRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event OpenAndCloseOfTillRowChangeEventHandler OpenAndCloseOfTillRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event OpenAndCloseOfTillRowChangeEventHandler OpenAndCloseOfTillRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event OpenAndCloseOfTillRowChangeEventHandler OpenAndCloseOfTillRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event OpenAndCloseOfTillRowChangeEventHandler OpenAndCloseOfTillRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void AddOpenAndCloseOfTillRow(OpenAndCloseOfTillRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public OpenAndCloseOfTillRow AddOpenAndCloseOfTillRow(
+                        string UserIdInChargeOfThisTeller, 
+                        string ProvisionedBy, 
+                        bool IsCashReplenished, 
+                        decimal ReplenishedAmount, 
+                        System.DateTime OpenedDate, 
+                        System.DateTime ClossedDate, 
+                        decimal OpenOfDayAmount, 
+                        string ReferenceId, 
+                        string CloseOfReferenceId, 
+                        bool IsRequestedForCashReplenishment, 
+                        decimal CashAtHand, 
+                        decimal EndOfDayAmount, 
+                        decimal AccountBalance, 
+                        decimal LastOPerationAmount, 
+                        string LastOperationType, 
+                        decimal PreviouseBalance, 
+                        string SubTellerComment, 
+                        string Note, 
+                        string ClossedStatus, 
+                        string TillName, 
+                        string InitialPrinting, 
+                        decimal OpeningNote10000, 
+                        decimal OpeningNote5000, 
+                        decimal OpeningNote2000, 
+                        decimal OpeningNote1000, 
+                        decimal OpeningNote500, 
+                        decimal OpeningCoin500, 
+                        decimal OpeningCoin100, 
+                        decimal OpeningCoin50, 
+                        decimal OpeningCoin25, 
+                        decimal OpeningCoin10, 
+                        decimal OpeningCoin5, 
+                        decimal OpeningCoin1, 
+                        decimal ClosingNote10000, 
+                        decimal ClosingNote5000, 
+                        decimal ClosingNote2000, 
+                        decimal ClosingNote1000, 
+                        decimal ClosingNote500, 
+                        decimal ClosingCoin500, 
+                        decimal ClosingCoin100, 
+                        decimal ClosingCoin50, 
+                        decimal ClosingCoin25, 
+                        decimal ClosingCoin10, 
+                        decimal ClosingCoin5, 
+                        decimal ClosingCoin1, 
+                        decimal TotalOpeningAmount, 
+                        decimal TotalClosingAmount, 
+                        string Logo, 
+                        string BranchName, 
+                        string BranchCode, 
+                        string BranchAddress, 
+                        string BranchTelephone, 
+                        string HeadOfficeName, 
+                        string HeadOfficeAddress, 
+                        string HeadOfficeTelephone, 
+                        string HeadOfficeEmail, 
+                        string HeadOfficeWebSite, 
+                        string HeadOfficeInitial, 
+                        string HeadOfficeCode) {
+                OpenAndCloseOfTillRow rowOpenAndCloseOfTillRow = ((OpenAndCloseOfTillRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        UserIdInChargeOfThisTeller,
+                        ProvisionedBy,
+                        IsCashReplenished,
+                        ReplenishedAmount,
+                        OpenedDate,
+                        ClossedDate,
+                        OpenOfDayAmount,
+                        ReferenceId,
+                        CloseOfReferenceId,
+                        IsRequestedForCashReplenishment,
+                        CashAtHand,
+                        EndOfDayAmount,
+                        AccountBalance,
+                        LastOPerationAmount,
+                        LastOperationType,
+                        PreviouseBalance,
+                        SubTellerComment,
+                        Note,
+                        ClossedStatus,
+                        TillName,
+                        InitialPrinting,
+                        OpeningNote10000,
+                        OpeningNote5000,
+                        OpeningNote2000,
+                        OpeningNote1000,
+                        OpeningNote500,
+                        OpeningCoin500,
+                        OpeningCoin100,
+                        OpeningCoin50,
+                        OpeningCoin25,
+                        OpeningCoin10,
+                        OpeningCoin5,
+                        OpeningCoin1,
+                        ClosingNote10000,
+                        ClosingNote5000,
+                        ClosingNote2000,
+                        ClosingNote1000,
+                        ClosingNote500,
+                        ClosingCoin500,
+                        ClosingCoin100,
+                        ClosingCoin50,
+                        ClosingCoin25,
+                        ClosingCoin10,
+                        ClosingCoin5,
+                        ClosingCoin1,
+                        TotalOpeningAmount,
+                        TotalClosingAmount,
+                        Logo,
+                        BranchName,
+                        BranchCode,
+                        BranchAddress,
+                        BranchTelephone,
+                        HeadOfficeName,
+                        HeadOfficeAddress,
+                        HeadOfficeTelephone,
+                        HeadOfficeEmail,
+                        HeadOfficeWebSite,
+                        HeadOfficeInitial,
+                        HeadOfficeCode};
+                rowOpenAndCloseOfTillRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowOpenAndCloseOfTillRow);
+                return rowOpenAndCloseOfTillRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                OpenAndCloseOfTillDataTable cln = ((OpenAndCloseOfTillDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new OpenAndCloseOfTillDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal void InitVars() {
+                this.columnUserIdInChargeOfThisTeller = base.Columns["UserIdInChargeOfThisTeller"];
+                this.columnProvisionedBy = base.Columns["ProvisionedBy"];
+                this.columnIsCashReplenished = base.Columns["IsCashReplenished"];
+                this.columnReplenishedAmount = base.Columns["ReplenishedAmount"];
+                this.columnOpenedDate = base.Columns["OpenedDate"];
+                this.columnClossedDate = base.Columns["ClossedDate"];
+                this.columnOpenOfDayAmount = base.Columns["OpenOfDayAmount"];
+                this.columnReferenceId = base.Columns["ReferenceId"];
+                this.columnCloseOfReferenceId = base.Columns["CloseOfReferenceId"];
+                this.columnIsRequestedForCashReplenishment = base.Columns["IsRequestedForCashReplenishment"];
+                this.columnCashAtHand = base.Columns["CashAtHand"];
+                this.columnEndOfDayAmount = base.Columns["EndOfDayAmount"];
+                this.columnAccountBalance = base.Columns["AccountBalance"];
+                this.columnLastOPerationAmount = base.Columns["LastOPerationAmount"];
+                this.columnLastOperationType = base.Columns["LastOperationType"];
+                this.columnPreviouseBalance = base.Columns["PreviouseBalance"];
+                this.columnSubTellerComment = base.Columns["SubTellerComment"];
+                this.columnNote = base.Columns["Note"];
+                this.columnClossedStatus = base.Columns["ClossedStatus"];
+                this.columnTillName = base.Columns["TillName"];
+                this.columnInitialPrinting = base.Columns["InitialPrinting"];
+                this.columnOpeningNote10000 = base.Columns["OpeningNote10000"];
+                this.columnOpeningNote5000 = base.Columns["OpeningNote5000"];
+                this.columnOpeningNote2000 = base.Columns["OpeningNote2000"];
+                this.columnOpeningNote1000 = base.Columns["OpeningNote1000"];
+                this.columnOpeningNote500 = base.Columns["OpeningNote500"];
+                this.columnOpeningCoin500 = base.Columns["OpeningCoin500"];
+                this.columnOpeningCoin100 = base.Columns["OpeningCoin100"];
+                this.columnOpeningCoin50 = base.Columns["OpeningCoin50"];
+                this.columnOpeningCoin25 = base.Columns["OpeningCoin25"];
+                this.columnOpeningCoin10 = base.Columns["OpeningCoin10"];
+                this.columnOpeningCoin5 = base.Columns["OpeningCoin5"];
+                this.columnOpeningCoin1 = base.Columns["OpeningCoin1"];
+                this.columnClosingNote10000 = base.Columns["ClosingNote10000"];
+                this.columnClosingNote5000 = base.Columns["ClosingNote5000"];
+                this.columnClosingNote2000 = base.Columns["ClosingNote2000"];
+                this.columnClosingNote1000 = base.Columns["ClosingNote1000"];
+                this.columnClosingNote500 = base.Columns["ClosingNote500"];
+                this.columnClosingCoin500 = base.Columns["ClosingCoin500"];
+                this.columnClosingCoin100 = base.Columns["ClosingCoin100"];
+                this.columnClosingCoin50 = base.Columns["ClosingCoin50"];
+                this.columnClosingCoin25 = base.Columns["ClosingCoin25"];
+                this.columnClosingCoin10 = base.Columns["ClosingCoin10"];
+                this.columnClosingCoin5 = base.Columns["ClosingCoin5"];
+                this.columnClosingCoin1 = base.Columns["ClosingCoin1"];
+                this.columnTotalOpeningAmount = base.Columns["TotalOpeningAmount"];
+                this.columnTotalClosingAmount = base.Columns["TotalClosingAmount"];
+                this.columnLogo = base.Columns["Logo"];
+                this.columnBranchName = base.Columns["BranchName"];
+                this.columnBranchCode = base.Columns["BranchCode"];
+                this.columnBranchAddress = base.Columns["BranchAddress"];
+                this.columnBranchTelephone = base.Columns["BranchTelephone"];
+                this.columnHeadOfficeName = base.Columns["HeadOfficeName"];
+                this.columnHeadOfficeAddress = base.Columns["HeadOfficeAddress"];
+                this.columnHeadOfficeTelephone = base.Columns["HeadOfficeTelephone"];
+                this.columnHeadOfficeEmail = base.Columns["HeadOfficeEmail"];
+                this.columnHeadOfficeWebSite = base.Columns["HeadOfficeWebSite"];
+                this.columnHeadOfficeInitial = base.Columns["HeadOfficeInitial"];
+                this.columnHeadOfficeCode = base.Columns["HeadOfficeCode"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            private void InitClass() {
+                this.columnUserIdInChargeOfThisTeller = new global::System.Data.DataColumn("UserIdInChargeOfThisTeller", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnUserIdInChargeOfThisTeller);
+                this.columnProvisionedBy = new global::System.Data.DataColumn("ProvisionedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnProvisionedBy);
+                this.columnIsCashReplenished = new global::System.Data.DataColumn("IsCashReplenished", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIsCashReplenished);
+                this.columnReplenishedAmount = new global::System.Data.DataColumn("ReplenishedAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReplenishedAmount);
+                this.columnOpenedDate = new global::System.Data.DataColumn("OpenedDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpenedDate);
+                this.columnClossedDate = new global::System.Data.DataColumn("ClossedDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClossedDate);
+                this.columnOpenOfDayAmount = new global::System.Data.DataColumn("OpenOfDayAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpenOfDayAmount);
+                this.columnReferenceId = new global::System.Data.DataColumn("ReferenceId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReferenceId);
+                this.columnCloseOfReferenceId = new global::System.Data.DataColumn("CloseOfReferenceId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCloseOfReferenceId);
+                this.columnIsRequestedForCashReplenishment = new global::System.Data.DataColumn("IsRequestedForCashReplenishment", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIsRequestedForCashReplenishment);
+                this.columnCashAtHand = new global::System.Data.DataColumn("CashAtHand", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCashAtHand);
+                this.columnEndOfDayAmount = new global::System.Data.DataColumn("EndOfDayAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEndOfDayAmount);
+                this.columnAccountBalance = new global::System.Data.DataColumn("AccountBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAccountBalance);
+                this.columnLastOPerationAmount = new global::System.Data.DataColumn("LastOPerationAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLastOPerationAmount);
+                this.columnLastOperationType = new global::System.Data.DataColumn("LastOperationType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLastOperationType);
+                this.columnPreviouseBalance = new global::System.Data.DataColumn("PreviouseBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPreviouseBalance);
+                this.columnSubTellerComment = new global::System.Data.DataColumn("SubTellerComment", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSubTellerComment);
+                this.columnNote = new global::System.Data.DataColumn("Note", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNote);
+                this.columnClossedStatus = new global::System.Data.DataColumn("ClossedStatus", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClossedStatus);
+                this.columnTillName = new global::System.Data.DataColumn("TillName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTillName);
+                this.columnInitialPrinting = new global::System.Data.DataColumn("InitialPrinting", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInitialPrinting);
+                this.columnOpeningNote10000 = new global::System.Data.DataColumn("OpeningNote10000", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningNote10000);
+                this.columnOpeningNote5000 = new global::System.Data.DataColumn("OpeningNote5000", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningNote5000);
+                this.columnOpeningNote2000 = new global::System.Data.DataColumn("OpeningNote2000", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningNote2000);
+                this.columnOpeningNote1000 = new global::System.Data.DataColumn("OpeningNote1000", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningNote1000);
+                this.columnOpeningNote500 = new global::System.Data.DataColumn("OpeningNote500", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningNote500);
+                this.columnOpeningCoin500 = new global::System.Data.DataColumn("OpeningCoin500", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningCoin500);
+                this.columnOpeningCoin100 = new global::System.Data.DataColumn("OpeningCoin100", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningCoin100);
+                this.columnOpeningCoin50 = new global::System.Data.DataColumn("OpeningCoin50", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningCoin50);
+                this.columnOpeningCoin25 = new global::System.Data.DataColumn("OpeningCoin25", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningCoin25);
+                this.columnOpeningCoin10 = new global::System.Data.DataColumn("OpeningCoin10", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningCoin10);
+                this.columnOpeningCoin5 = new global::System.Data.DataColumn("OpeningCoin5", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningCoin5);
+                this.columnOpeningCoin1 = new global::System.Data.DataColumn("OpeningCoin1", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningCoin1);
+                this.columnClosingNote10000 = new global::System.Data.DataColumn("ClosingNote10000", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClosingNote10000);
+                this.columnClosingNote5000 = new global::System.Data.DataColumn("ClosingNote5000", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClosingNote5000);
+                this.columnClosingNote2000 = new global::System.Data.DataColumn("ClosingNote2000", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClosingNote2000);
+                this.columnClosingNote1000 = new global::System.Data.DataColumn("ClosingNote1000", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClosingNote1000);
+                this.columnClosingNote500 = new global::System.Data.DataColumn("ClosingNote500", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClosingNote500);
+                this.columnClosingCoin500 = new global::System.Data.DataColumn("ClosingCoin500", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClosingCoin500);
+                this.columnClosingCoin100 = new global::System.Data.DataColumn("ClosingCoin100", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClosingCoin100);
+                this.columnClosingCoin50 = new global::System.Data.DataColumn("ClosingCoin50", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClosingCoin50);
+                this.columnClosingCoin25 = new global::System.Data.DataColumn("ClosingCoin25", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClosingCoin25);
+                this.columnClosingCoin10 = new global::System.Data.DataColumn("ClosingCoin10", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClosingCoin10);
+                this.columnClosingCoin5 = new global::System.Data.DataColumn("ClosingCoin5", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClosingCoin5);
+                this.columnClosingCoin1 = new global::System.Data.DataColumn("ClosingCoin1", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClosingCoin1);
+                this.columnTotalOpeningAmount = new global::System.Data.DataColumn("TotalOpeningAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalOpeningAmount);
+                this.columnTotalClosingAmount = new global::System.Data.DataColumn("TotalClosingAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalClosingAmount);
+                this.columnLogo = new global::System.Data.DataColumn("Logo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLogo);
+                this.columnBranchName = new global::System.Data.DataColumn("BranchName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchName);
+                this.columnBranchCode = new global::System.Data.DataColumn("BranchCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchCode);
+                this.columnBranchAddress = new global::System.Data.DataColumn("BranchAddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchAddress);
+                this.columnBranchTelephone = new global::System.Data.DataColumn("BranchTelephone", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchTelephone);
+                this.columnHeadOfficeName = new global::System.Data.DataColumn("HeadOfficeName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeName);
+                this.columnHeadOfficeAddress = new global::System.Data.DataColumn("HeadOfficeAddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeAddress);
+                this.columnHeadOfficeTelephone = new global::System.Data.DataColumn("HeadOfficeTelephone", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeTelephone);
+                this.columnHeadOfficeEmail = new global::System.Data.DataColumn("HeadOfficeEmail", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeEmail);
+                this.columnHeadOfficeWebSite = new global::System.Data.DataColumn("HeadOfficeWebSite", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeWebSite);
+                this.columnHeadOfficeInitial = new global::System.Data.DataColumn("HeadOfficeInitial", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeInitial);
+                this.columnHeadOfficeCode = new global::System.Data.DataColumn("HeadOfficeCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeCode);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public OpenAndCloseOfTillRow NewOpenAndCloseOfTillRow() {
+                return ((OpenAndCloseOfTillRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new OpenAndCloseOfTillRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(OpenAndCloseOfTillRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.OpenAndCloseOfTillRowChanged != null)) {
+                    this.OpenAndCloseOfTillRowChanged(this, new OpenAndCloseOfTillRowChangeEvent(((OpenAndCloseOfTillRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.OpenAndCloseOfTillRowChanging != null)) {
+                    this.OpenAndCloseOfTillRowChanging(this, new OpenAndCloseOfTillRowChangeEvent(((OpenAndCloseOfTillRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.OpenAndCloseOfTillRowDeleted != null)) {
+                    this.OpenAndCloseOfTillRowDeleted(this, new OpenAndCloseOfTillRowChangeEvent(((OpenAndCloseOfTillRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.OpenAndCloseOfTillRowDeleting != null)) {
+                    this.OpenAndCloseOfTillRowDeleting(this, new OpenAndCloseOfTillRowChangeEvent(((OpenAndCloseOfTillRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void RemoveOpenAndCloseOfTillRow(OpenAndCloseOfTillRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                Transactions ds = new Transactions();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "OpenAndCloseOfTillDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -6766,6 +8682,2641 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class OpeningClossingOfDayRow : global::System.Data.DataRow {
+            
+            private OpeningClossingOfDayDataTable tableOpeningClossingOfDay;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal OpeningClossingOfDayRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableOpeningClossingOfDay = ((OpeningClossingOfDayDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string UserIdInChargeOfThisTeller {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.UserIdInChargeOfThisTellerColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'UserIdInChargeOfThisTeller\' in table \'OpeningClossingOfDay\'" +
+                                " is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.UserIdInChargeOfThisTellerColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ProvisionedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.ProvisionedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ProvisionedBy\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.ProvisionedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string OpeningReference {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.OpeningReferenceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningReference\' in table \'OpeningClossingOfDay\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.OpeningReferenceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string TellerType {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.TellerTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TellerType\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.TellerTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string IsPrimary {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.IsPrimaryColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IsPrimary\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.IsPrimaryColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ClossingReference {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.ClossingReferenceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClossingReference\' in table \'OpeningClossingOfDay\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.ClossingReferenceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string TellerComment {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.TellerCommentColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TellerComment\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.TellerCommentColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.BranchCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchCode\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.BranchCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ClossedStatus {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.ClossedStatusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClossedStatus\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.ClossedStatusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string PrimaryTellerComment {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.PrimaryTellerCommentColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PrimaryTellerComment\' in table \'OpeningClossingOfDay\' is DB" +
+                                "Null.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.PrimaryTellerCommentColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string PrimaryTellerConfirmationStatus {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.PrimaryTellerConfirmationStatusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PrimaryTellerConfirmationStatus\' in table \'OpeningClossingO" +
+                                "fDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.PrimaryTellerConfirmationStatusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string TellerName {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.TellerNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TellerName\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.TellerNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ReplenishedAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpeningClossingOfDay.ReplenishedAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReplenishedAmount\' in table \'OpeningClossingOfDay\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.ReplenishedAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime OpenedDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableOpeningClossingOfDay.OpenedDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpenedDate\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.OpenedDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime ClossedDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableOpeningClossingOfDay.ClossedDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClossedDate\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.ClossedDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpenOfDayAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpeningClossingOfDay.OpenOfDayAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpenOfDayAmount\' in table \'OpeningClossingOfDay\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.OpenOfDayAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal AmountReplenished {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpeningClossingOfDay.AmountReplenishedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AmountReplenished\' in table \'OpeningClossingOfDay\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.AmountReplenishedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsRequestedForCashReplenishment {
+                get {
+                    try {
+                        return ((bool)(this[this.tableOpeningClossingOfDay.IsRequestedForCashReplenishmentColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IsRequestedForCashReplenishment\' in table \'OpeningClossingO" +
+                                "fDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.IsRequestedForCashReplenishmentColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CashAtHand {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpeningClossingOfDay.CashAtHandColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CashAtHand\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.CashAtHandColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public double EndOfDayAmount {
+                get {
+                    try {
+                        return ((double)(this[this.tableOpeningClossingOfDay.EndOfDayAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EndOfDayAmount\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.EndOfDayAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal AccountBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpeningClossingOfDay.AccountBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AccountBalance\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.AccountBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PreviouseBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpeningClossingOfDay.PreviouseBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PreviouseBalance\' in table \'OpeningClossingOfDay\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.PreviouseBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Logo {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.LogoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Logo\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.LogoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchName {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.BranchNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchName\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.BranchNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchAddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.BranchAddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchAddress\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.BranchAddressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchTelephone {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.BranchTelephoneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchTelephone\' in table \'OpeningClossingOfDay\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.BranchTelephoneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeName {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.HeadOfficeNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeName\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.HeadOfficeNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeAddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.HeadOfficeAddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeAddress\' in table \'OpeningClossingOfDay\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.HeadOfficeAddressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeTelephone {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.HeadOfficeTelephoneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeTelephone\' in table \'OpeningClossingOfDay\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.HeadOfficeTelephoneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeEmail {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.HeadOfficeEmailColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeEmail\' in table \'OpeningClossingOfDay\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.HeadOfficeEmailColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeWebSite {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.HeadOfficeWebSiteColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeWebSite\' in table \'OpeningClossingOfDay\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.HeadOfficeWebSiteColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeInitial {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.HeadOfficeInitialColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeInitial\' in table \'OpeningClossingOfDay\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.HeadOfficeInitialColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpeningClossingOfDay.HeadOfficeCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeCode\' in table \'OpeningClossingOfDay\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpeningClossingOfDay.HeadOfficeCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsUserIdInChargeOfThisTellerNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.UserIdInChargeOfThisTellerColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetUserIdInChargeOfThisTellerNull() {
+                this[this.tableOpeningClossingOfDay.UserIdInChargeOfThisTellerColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsProvisionedByNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.ProvisionedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetProvisionedByNull() {
+                this[this.tableOpeningClossingOfDay.ProvisionedByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpeningReferenceNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.OpeningReferenceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpeningReferenceNull() {
+                this[this.tableOpeningClossingOfDay.OpeningReferenceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTellerTypeNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.TellerTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTellerTypeNull() {
+                this[this.tableOpeningClossingOfDay.TellerTypeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsIsPrimaryNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.IsPrimaryColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetIsPrimaryNull() {
+                this[this.tableOpeningClossingOfDay.IsPrimaryColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClossingReferenceNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.ClossingReferenceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClossingReferenceNull() {
+                this[this.tableOpeningClossingOfDay.ClossingReferenceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTellerCommentNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.TellerCommentColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTellerCommentNull() {
+                this[this.tableOpeningClossingOfDay.TellerCommentColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchCodeNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.BranchCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchCodeNull() {
+                this[this.tableOpeningClossingOfDay.BranchCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClossedStatusNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.ClossedStatusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClossedStatusNull() {
+                this[this.tableOpeningClossingOfDay.ClossedStatusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPrimaryTellerCommentNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.PrimaryTellerCommentColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPrimaryTellerCommentNull() {
+                this[this.tableOpeningClossingOfDay.PrimaryTellerCommentColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPrimaryTellerConfirmationStatusNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.PrimaryTellerConfirmationStatusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPrimaryTellerConfirmationStatusNull() {
+                this[this.tableOpeningClossingOfDay.PrimaryTellerConfirmationStatusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTellerNameNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.TellerNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTellerNameNull() {
+                this[this.tableOpeningClossingOfDay.TellerNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsReplenishedAmountNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.ReplenishedAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetReplenishedAmountNull() {
+                this[this.tableOpeningClossingOfDay.ReplenishedAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpenedDateNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.OpenedDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpenedDateNull() {
+                this[this.tableOpeningClossingOfDay.OpenedDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClossedDateNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.ClossedDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClossedDateNull() {
+                this[this.tableOpeningClossingOfDay.ClossedDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpenOfDayAmountNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.OpenOfDayAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpenOfDayAmountNull() {
+                this[this.tableOpeningClossingOfDay.OpenOfDayAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsAmountReplenishedNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.AmountReplenishedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetAmountReplenishedNull() {
+                this[this.tableOpeningClossingOfDay.AmountReplenishedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsIsRequestedForCashReplenishmentNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.IsRequestedForCashReplenishmentColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetIsRequestedForCashReplenishmentNull() {
+                this[this.tableOpeningClossingOfDay.IsRequestedForCashReplenishmentColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCashAtHandNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.CashAtHandColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCashAtHandNull() {
+                this[this.tableOpeningClossingOfDay.CashAtHandColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsEndOfDayAmountNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.EndOfDayAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetEndOfDayAmountNull() {
+                this[this.tableOpeningClossingOfDay.EndOfDayAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsAccountBalanceNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.AccountBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetAccountBalanceNull() {
+                this[this.tableOpeningClossingOfDay.AccountBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPreviouseBalanceNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.PreviouseBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPreviouseBalanceNull() {
+                this[this.tableOpeningClossingOfDay.PreviouseBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLogoNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.LogoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLogoNull() {
+                this[this.tableOpeningClossingOfDay.LogoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchNameNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.BranchNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchNameNull() {
+                this[this.tableOpeningClossingOfDay.BranchNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchAddressNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.BranchAddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchAddressNull() {
+                this[this.tableOpeningClossingOfDay.BranchAddressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchTelephoneNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.BranchTelephoneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchTelephoneNull() {
+                this[this.tableOpeningClossingOfDay.BranchTelephoneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeNameNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.HeadOfficeNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeNameNull() {
+                this[this.tableOpeningClossingOfDay.HeadOfficeNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeAddressNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.HeadOfficeAddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeAddressNull() {
+                this[this.tableOpeningClossingOfDay.HeadOfficeAddressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeTelephoneNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.HeadOfficeTelephoneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeTelephoneNull() {
+                this[this.tableOpeningClossingOfDay.HeadOfficeTelephoneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeEmailNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.HeadOfficeEmailColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeEmailNull() {
+                this[this.tableOpeningClossingOfDay.HeadOfficeEmailColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeWebSiteNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.HeadOfficeWebSiteColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeWebSiteNull() {
+                this[this.tableOpeningClossingOfDay.HeadOfficeWebSiteColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeInitialNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.HeadOfficeInitialColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeInitialNull() {
+                this[this.tableOpeningClossingOfDay.HeadOfficeInitialColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeCodeNull() {
+                return this.IsNull(this.tableOpeningClossingOfDay.HeadOfficeCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeCodeNull() {
+                this[this.tableOpeningClossingOfDay.HeadOfficeCodeColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class OpenAndCloseOfTillRow : global::System.Data.DataRow {
+            
+            private OpenAndCloseOfTillDataTable tableOpenAndCloseOfTill;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal OpenAndCloseOfTillRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableOpenAndCloseOfTill = ((OpenAndCloseOfTillDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string UserIdInChargeOfThisTeller {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.UserIdInChargeOfThisTellerColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'UserIdInChargeOfThisTeller\' in table \'OpenAndCloseOfTill\' i" +
+                                "s DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.UserIdInChargeOfThisTellerColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ProvisionedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.ProvisionedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ProvisionedBy\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ProvisionedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCashReplenished {
+                get {
+                    try {
+                        return ((bool)(this[this.tableOpenAndCloseOfTill.IsCashReplenishedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IsCashReplenished\' in table \'OpenAndCloseOfTill\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.IsCashReplenishedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ReplenishedAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.ReplenishedAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReplenishedAmount\' in table \'OpenAndCloseOfTill\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ReplenishedAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime OpenedDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableOpenAndCloseOfTill.OpenedDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpenedDate\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.OpenedDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime ClossedDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableOpenAndCloseOfTill.ClossedDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClossedDate\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ClossedDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpenOfDayAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.OpenOfDayAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpenOfDayAmount\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.OpenOfDayAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ReferenceId {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.ReferenceIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReferenceId\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ReferenceIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string CloseOfReferenceId {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.CloseOfReferenceIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CloseOfReferenceId\' in table \'OpenAndCloseOfTill\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.CloseOfReferenceIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsRequestedForCashReplenishment {
+                get {
+                    try {
+                        return ((bool)(this[this.tableOpenAndCloseOfTill.IsRequestedForCashReplenishmentColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IsRequestedForCashReplenishment\' in table \'OpenAndCloseOfTi" +
+                                "ll\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.IsRequestedForCashReplenishmentColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CashAtHand {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.CashAtHandColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CashAtHand\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.CashAtHandColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal EndOfDayAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.EndOfDayAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EndOfDayAmount\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.EndOfDayAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal AccountBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.AccountBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AccountBalance\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.AccountBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal LastOPerationAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.LastOPerationAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LastOPerationAmount\' in table \'OpenAndCloseOfTill\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.LastOPerationAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string LastOperationType {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.LastOperationTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LastOperationType\' in table \'OpenAndCloseOfTill\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.LastOperationTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PreviouseBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.PreviouseBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PreviouseBalance\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.PreviouseBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string SubTellerComment {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.SubTellerCommentColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SubTellerComment\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.SubTellerCommentColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Note {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.NoteColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Note\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.NoteColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ClossedStatus {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.ClossedStatusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClossedStatus\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ClossedStatusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string TillName {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.TillNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TillName\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.TillNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string InitialPrinting {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.InitialPrintingColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'InitialPrinting\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.InitialPrintingColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpeningNote10000 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.OpeningNote10000Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningNote10000\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.OpeningNote10000Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpeningNote5000 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.OpeningNote5000Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningNote5000\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.OpeningNote5000Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpeningNote2000 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.OpeningNote2000Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningNote2000\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.OpeningNote2000Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpeningNote1000 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.OpeningNote1000Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningNote1000\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.OpeningNote1000Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpeningNote500 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.OpeningNote500Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningNote500\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.OpeningNote500Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpeningCoin500 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.OpeningCoin500Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningCoin500\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.OpeningCoin500Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpeningCoin100 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.OpeningCoin100Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningCoin100\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.OpeningCoin100Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpeningCoin50 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.OpeningCoin50Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningCoin50\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.OpeningCoin50Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpeningCoin25 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.OpeningCoin25Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningCoin25\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.OpeningCoin25Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpeningCoin10 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.OpeningCoin10Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningCoin10\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.OpeningCoin10Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpeningCoin5 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.OpeningCoin5Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningCoin5\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.OpeningCoin5Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpeningCoin1 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.OpeningCoin1Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningCoin1\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.OpeningCoin1Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ClosingNote10000 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.ClosingNote10000Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClosingNote10000\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ClosingNote10000Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ClosingNote5000 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.ClosingNote5000Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClosingNote5000\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ClosingNote5000Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ClosingNote2000 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.ClosingNote2000Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClosingNote2000\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ClosingNote2000Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ClosingNote1000 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.ClosingNote1000Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClosingNote1000\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ClosingNote1000Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ClosingNote500 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.ClosingNote500Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClosingNote500\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ClosingNote500Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ClosingCoin500 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.ClosingCoin500Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClosingCoin500\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ClosingCoin500Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ClosingCoin100 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.ClosingCoin100Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClosingCoin100\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ClosingCoin100Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ClosingCoin50 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.ClosingCoin50Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClosingCoin50\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ClosingCoin50Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ClosingCoin25 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.ClosingCoin25Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClosingCoin25\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ClosingCoin25Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ClosingCoin10 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.ClosingCoin10Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClosingCoin10\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ClosingCoin10Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ClosingCoin5 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.ClosingCoin5Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClosingCoin5\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ClosingCoin5Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ClosingCoin1 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.ClosingCoin1Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClosingCoin1\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.ClosingCoin1Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalOpeningAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.TotalOpeningAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalOpeningAmount\' in table \'OpenAndCloseOfTill\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.TotalOpeningAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalClosingAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOpenAndCloseOfTill.TotalClosingAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalClosingAmount\' in table \'OpenAndCloseOfTill\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.TotalClosingAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Logo {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.LogoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Logo\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.LogoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchName {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.BranchNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchName\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.BranchNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.BranchCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchCode\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.BranchCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchAddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.BranchAddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchAddress\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.BranchAddressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchTelephone {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.BranchTelephoneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchTelephone\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.BranchTelephoneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeName {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.HeadOfficeNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeName\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.HeadOfficeNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeAddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.HeadOfficeAddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeAddress\' in table \'OpenAndCloseOfTill\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.HeadOfficeAddressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeTelephone {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.HeadOfficeTelephoneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeTelephone\' in table \'OpenAndCloseOfTill\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.HeadOfficeTelephoneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeEmail {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.HeadOfficeEmailColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeEmail\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.HeadOfficeEmailColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeWebSite {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.HeadOfficeWebSiteColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeWebSite\' in table \'OpenAndCloseOfTill\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.HeadOfficeWebSiteColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeInitial {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.HeadOfficeInitialColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeInitial\' in table \'OpenAndCloseOfTill\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.HeadOfficeInitialColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.HeadOfficeCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeCode\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.HeadOfficeCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsUserIdInChargeOfThisTellerNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.UserIdInChargeOfThisTellerColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetUserIdInChargeOfThisTellerNull() {
+                this[this.tableOpenAndCloseOfTill.UserIdInChargeOfThisTellerColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsProvisionedByNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ProvisionedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetProvisionedByNull() {
+                this[this.tableOpenAndCloseOfTill.ProvisionedByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsIsCashReplenishedNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.IsCashReplenishedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetIsCashReplenishedNull() {
+                this[this.tableOpenAndCloseOfTill.IsCashReplenishedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsReplenishedAmountNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ReplenishedAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetReplenishedAmountNull() {
+                this[this.tableOpenAndCloseOfTill.ReplenishedAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpenedDateNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.OpenedDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpenedDateNull() {
+                this[this.tableOpenAndCloseOfTill.OpenedDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClossedDateNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ClossedDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClossedDateNull() {
+                this[this.tableOpenAndCloseOfTill.ClossedDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpenOfDayAmountNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.OpenOfDayAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpenOfDayAmountNull() {
+                this[this.tableOpenAndCloseOfTill.OpenOfDayAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsReferenceIdNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ReferenceIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetReferenceIdNull() {
+                this[this.tableOpenAndCloseOfTill.ReferenceIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCloseOfReferenceIdNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.CloseOfReferenceIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCloseOfReferenceIdNull() {
+                this[this.tableOpenAndCloseOfTill.CloseOfReferenceIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsIsRequestedForCashReplenishmentNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.IsRequestedForCashReplenishmentColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetIsRequestedForCashReplenishmentNull() {
+                this[this.tableOpenAndCloseOfTill.IsRequestedForCashReplenishmentColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCashAtHandNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.CashAtHandColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCashAtHandNull() {
+                this[this.tableOpenAndCloseOfTill.CashAtHandColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsEndOfDayAmountNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.EndOfDayAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetEndOfDayAmountNull() {
+                this[this.tableOpenAndCloseOfTill.EndOfDayAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsAccountBalanceNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.AccountBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetAccountBalanceNull() {
+                this[this.tableOpenAndCloseOfTill.AccountBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLastOPerationAmountNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.LastOPerationAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLastOPerationAmountNull() {
+                this[this.tableOpenAndCloseOfTill.LastOPerationAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLastOperationTypeNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.LastOperationTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLastOperationTypeNull() {
+                this[this.tableOpenAndCloseOfTill.LastOperationTypeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPreviouseBalanceNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.PreviouseBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPreviouseBalanceNull() {
+                this[this.tableOpenAndCloseOfTill.PreviouseBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsSubTellerCommentNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.SubTellerCommentColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetSubTellerCommentNull() {
+                this[this.tableOpenAndCloseOfTill.SubTellerCommentColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsNoteNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.NoteColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetNoteNull() {
+                this[this.tableOpenAndCloseOfTill.NoteColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClossedStatusNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ClossedStatusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClossedStatusNull() {
+                this[this.tableOpenAndCloseOfTill.ClossedStatusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTillNameNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.TillNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTillNameNull() {
+                this[this.tableOpenAndCloseOfTill.TillNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsInitialPrintingNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.InitialPrintingColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetInitialPrintingNull() {
+                this[this.tableOpenAndCloseOfTill.InitialPrintingColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpeningNote10000Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.OpeningNote10000Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpeningNote10000Null() {
+                this[this.tableOpenAndCloseOfTill.OpeningNote10000Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpeningNote5000Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.OpeningNote5000Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpeningNote5000Null() {
+                this[this.tableOpenAndCloseOfTill.OpeningNote5000Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpeningNote2000Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.OpeningNote2000Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpeningNote2000Null() {
+                this[this.tableOpenAndCloseOfTill.OpeningNote2000Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpeningNote1000Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.OpeningNote1000Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpeningNote1000Null() {
+                this[this.tableOpenAndCloseOfTill.OpeningNote1000Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpeningNote500Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.OpeningNote500Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpeningNote500Null() {
+                this[this.tableOpenAndCloseOfTill.OpeningNote500Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpeningCoin500Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.OpeningCoin500Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpeningCoin500Null() {
+                this[this.tableOpenAndCloseOfTill.OpeningCoin500Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpeningCoin100Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.OpeningCoin100Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpeningCoin100Null() {
+                this[this.tableOpenAndCloseOfTill.OpeningCoin100Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpeningCoin50Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.OpeningCoin50Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpeningCoin50Null() {
+                this[this.tableOpenAndCloseOfTill.OpeningCoin50Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpeningCoin25Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.OpeningCoin25Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpeningCoin25Null() {
+                this[this.tableOpenAndCloseOfTill.OpeningCoin25Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpeningCoin10Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.OpeningCoin10Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpeningCoin10Null() {
+                this[this.tableOpenAndCloseOfTill.OpeningCoin10Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpeningCoin5Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.OpeningCoin5Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpeningCoin5Null() {
+                this[this.tableOpenAndCloseOfTill.OpeningCoin5Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpeningCoin1Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.OpeningCoin1Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpeningCoin1Null() {
+                this[this.tableOpenAndCloseOfTill.OpeningCoin1Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClosingNote10000Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ClosingNote10000Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClosingNote10000Null() {
+                this[this.tableOpenAndCloseOfTill.ClosingNote10000Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClosingNote5000Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ClosingNote5000Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClosingNote5000Null() {
+                this[this.tableOpenAndCloseOfTill.ClosingNote5000Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClosingNote2000Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ClosingNote2000Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClosingNote2000Null() {
+                this[this.tableOpenAndCloseOfTill.ClosingNote2000Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClosingNote1000Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ClosingNote1000Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClosingNote1000Null() {
+                this[this.tableOpenAndCloseOfTill.ClosingNote1000Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClosingNote500Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ClosingNote500Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClosingNote500Null() {
+                this[this.tableOpenAndCloseOfTill.ClosingNote500Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClosingCoin500Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ClosingCoin500Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClosingCoin500Null() {
+                this[this.tableOpenAndCloseOfTill.ClosingCoin500Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClosingCoin100Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ClosingCoin100Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClosingCoin100Null() {
+                this[this.tableOpenAndCloseOfTill.ClosingCoin100Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClosingCoin50Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ClosingCoin50Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClosingCoin50Null() {
+                this[this.tableOpenAndCloseOfTill.ClosingCoin50Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClosingCoin25Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ClosingCoin25Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClosingCoin25Null() {
+                this[this.tableOpenAndCloseOfTill.ClosingCoin25Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClosingCoin10Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ClosingCoin10Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClosingCoin10Null() {
+                this[this.tableOpenAndCloseOfTill.ClosingCoin10Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClosingCoin5Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ClosingCoin5Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClosingCoin5Null() {
+                this[this.tableOpenAndCloseOfTill.ClosingCoin5Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClosingCoin1Null() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.ClosingCoin1Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClosingCoin1Null() {
+                this[this.tableOpenAndCloseOfTill.ClosingCoin1Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalOpeningAmountNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.TotalOpeningAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalOpeningAmountNull() {
+                this[this.tableOpenAndCloseOfTill.TotalOpeningAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalClosingAmountNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.TotalClosingAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalClosingAmountNull() {
+                this[this.tableOpenAndCloseOfTill.TotalClosingAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLogoNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.LogoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLogoNull() {
+                this[this.tableOpenAndCloseOfTill.LogoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchNameNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.BranchNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchNameNull() {
+                this[this.tableOpenAndCloseOfTill.BranchNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchCodeNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.BranchCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchCodeNull() {
+                this[this.tableOpenAndCloseOfTill.BranchCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchAddressNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.BranchAddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchAddressNull() {
+                this[this.tableOpenAndCloseOfTill.BranchAddressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchTelephoneNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.BranchTelephoneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchTelephoneNull() {
+                this[this.tableOpenAndCloseOfTill.BranchTelephoneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeNameNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.HeadOfficeNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeNameNull() {
+                this[this.tableOpenAndCloseOfTill.HeadOfficeNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeAddressNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.HeadOfficeAddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeAddressNull() {
+                this[this.tableOpenAndCloseOfTill.HeadOfficeAddressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeTelephoneNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.HeadOfficeTelephoneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeTelephoneNull() {
+                this[this.tableOpenAndCloseOfTill.HeadOfficeTelephoneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeEmailNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.HeadOfficeEmailColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeEmailNull() {
+                this[this.tableOpenAndCloseOfTill.HeadOfficeEmailColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeWebSiteNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.HeadOfficeWebSiteColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeWebSiteNull() {
+                this[this.tableOpenAndCloseOfTill.HeadOfficeWebSiteColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeInitialNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.HeadOfficeInitialColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeInitialNull() {
+                this[this.tableOpenAndCloseOfTill.HeadOfficeInitialColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeCodeNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.HeadOfficeCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeCodeNull() {
+                this[this.tableOpenAndCloseOfTill.HeadOfficeCodeColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
@@ -6853,6 +11404,74 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public TellerOperationGLRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public class OpeningClossingOfDayRowChangeEvent : global::System.EventArgs {
+            
+            private OpeningClossingOfDayRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public OpeningClossingOfDayRowChangeEvent(OpeningClossingOfDayRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public OpeningClossingOfDayRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public class OpenAndCloseOfTillRowChangeEvent : global::System.EventArgs {
+            
+            private OpenAndCloseOfTillRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public OpenAndCloseOfTillRowChangeEvent(OpenAndCloseOfTillRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public OpenAndCloseOfTillRow Row {
                 get {
                     return this.eventRow;
                 }

@@ -1,4 +1,5 @@
-﻿using CBS.BusinessService;
+﻿using CBS.API.Helper;
+using CBS.BusinessService;
 using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.UserManagement;
@@ -8,9 +9,13 @@ using CBS.FrontDesk.UI.Filters;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -28,9 +33,6 @@ namespace CBS.FrontDesk.UI
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-        
-    
-        
             GlobalHost.DependencyResolver.Register(typeof(ConnectionHub), () => new ConnectionHub());
             GlobalFilters.Filters.Add(new System.Web.Mvc.AuthorizeAttribute());
             UnityConfig.RegisterComponents();
@@ -39,26 +41,41 @@ namespace CBS.FrontDesk.UI
 
         ConnectionMonitoringService connectionService = new ConnectionMonitoringService();
         }
-
+       
+      
         protected void Application_EndRequest()
         {
-            if (Context.Items["AjaxPermissionDenied"] is bool ajaxPermissionDenied && ajaxPermissionDenied)
+            if (HttpContext.Current.Response.StatusCode == 401)
             {
-                Context.Response.StatusCode = 401;
-                Context.Response.End();
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.Redirect("~/Authentication/Logout");
             }
         }
+
         protected void Application_PreSendRequestHeaders()
         {
+            // Remove server version details and set custom server name
             Response.Headers.Remove("Server");
             Response.Headers.Remove("X-AspNet-Version");
+            Response.Headers.Remove("X-Powered-By");
+            Response.Headers.Add("Server", "Flux Server TBS");
+            Response.Headers.Add("X-Powered-By", "Flux");
             Response.Headers.Add("X-Content-Type-Options", "nosniff");
             Response.Headers.Add("X-Frame-Options", "DENY");
             Response.Headers.Add("X-XSS-Protection", "1; mode=block");
-            //Response.Headers.Add("Content-Security-Policy", "default-src 'self'; script-src 'self';");
             Response.Headers.Add("Referrer-Policy", "no-referrer");
+            Response.Headers.Add("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+            Response.Headers.Add("Permissions-Policy", "geolocation=(), microphone=(), camera=(), payment=()");
 
+            // Set secure cookie attributes
+            foreach (var cookieKey in Response.Cookies.AllKeys)
+            {
+                Response.Cookies[cookieKey].Secure = true; // Requires HTTPS
+                Response.Cookies[cookieKey].HttpOnly = true; // Helps mitigate XSS attacks
+                Response.Cookies[cookieKey].SameSite = SameSiteMode.Strict; // Prevents CSRF attacks
+            }
         }
+
         protected void Application_Error(object sender, EventArgs e)
         {
             var exception = Server.GetLastError();
@@ -105,249 +122,92 @@ namespace CBS.FrontDesk.UI
             }
         }
 
-
-        protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
+        private void SetupUserPrincipal(JwtSecurityToken jwtToken)
         {
-            ProcessAuthenticationCookie("CBS4U");
-            ProcessAuthenticationCookie("CBS4U_MFA");
-            ProcessAuthenticationCookie("PWD");
-            ProcessAuthenticationCookie("CHANGE_PWD");
+            var claims = jwtToken.Claims.ToList();
+            var identity = new ClaimsIdentity(claims, "Jwt");
+            var principal = new ClaimsPrincipal(identity);
+
+            HttpContext.Current.User = principal;
+            Thread.CurrentPrincipal = principal;
         }
-        private void ProcessAuthenticationCookie(string cookieName)
+
+        protected void Application_AcquireRequestState(Object sender, EventArgs e)
         {
-            bool isMFA = HttpContext.Current.Session?["MFA"] is bool mfaValue ? mfaValue : false;
-            bool isPWD = HttpContext.Current.Session?["CHANGE_PWD"] is bool pwdValue ? pwdValue : false;
+            var context = HttpContext.Current;
 
-            if (isPWD || isMFA)
+            if (context != null && context.Session != null)
             {
-                // If CHANGE_PWD is true, invalidate the cookie and redirect to the change password page
-                //InvalidateCookie(cookieName);
-                HttpContext.Current.Response.Redirect("~/Authentication/Login");
-                return;
-            }
+                var encryptedToken = context.Session["EncryptedJWToken"] as string;
 
-            HttpCookie authCookie = Request.Cookies[cookieName];
-            if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
-            {
-                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                if (authTicket != null && !authTicket.Expired)
+                // Check if the encrypted token is null or empty
+                if (string.IsNullOrEmpty(encryptedToken))
                 {
-                    AddIdentity(authTicket);
+                    // Redirect to login if not MFA or Change Password
+                    if (context.Request.Url.AbsolutePath != FormsAuthentication.LoginUrl)
+                    {
+                        FormsAuthentication.SignOut();
+                        context.Session.Clear();
+                        context.Session.Abandon();
+                        context.Response.Clear(); // Clear any existing content
+                        context.Response.Redirect(FormsAuthentication.LoginUrl, false); // Set endResponse to false
+                        context.ApplicationInstance.CompleteRequest(); // Complete the request without aborting the thread
+                        return;
+                    }
                 }
                 else
                 {
-                    InvalidateCookie(cookieName);
+                    try
+                    {
+                        // Decrypt and validate the token
+                        var token = TokenEncryptionHelper.DecryptToken(encryptedToken);
+                        var handler = new JwtSecurityTokenHandler();
+                        var jwtToken = handler.ReadJwtToken(token);
+
+                        if (jwtToken.ValidTo > DateTime.UtcNow)
+                        {
+                            // Set up the user principal with the JWT claims
+                            SetupUserPrincipal(jwtToken);
+
+                            context.Session.Timeout = (int)(jwtToken.ValidTo - DateTime.UtcNow).TotalMinutes;
+                        }
+                        else
+                        {
+                            // Token expired, remove session and redirect to login
+                            context.Session.Remove("EncryptedJWToken");
+                            FormsAuthentication.SignOut();
+                            context.Session.Clear();
+                            context.Session.Abandon();
+                            if (context.Request.Url.AbsolutePath != FormsAuthentication.LoginUrl)
+                            {
+                                context.Response.Clear(); // Clear any existing content
+                                context.Response.Redirect(FormsAuthentication.LoginUrl, false); // Set endResponse to false
+                                context.ApplicationInstance.CompleteRequest(); // Complete the request without aborting the thread
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle exception, clean up session, and redirect to login
+                        context.Session.Remove("EncryptedJWToken");
+                        FormsAuthentication.SignOut();
+                        context.Session.Clear();
+                        context.Session.Abandon();
+                        if (context.Request.Url.AbsolutePath != FormsAuthentication.LoginUrl)
+                        {
+                            context.Response.Clear(); // Clear any existing content
+                            context.Response.Redirect(FormsAuthentication.LoginUrl, false); // Set endResponse to false
+                            context.ApplicationInstance.CompleteRequest(); // Complete the request without aborting the thread
+                        }
+                    }
                 }
             }
         }
 
-        private void InvalidateCookie(string cookieName)
-        {
-            if (Request.Cookies[cookieName] != null)
-            {
-                HttpCookie authCookie = new HttpCookie(cookieName)
-                {
-                    Expires = DateTime.Now.AddDays(-1)
-                };
-                Response.Cookies.Add(authCookie);
-            }
-        }
-
-        //private void AddIdentity(FormsAuthenticationTicket authTicket)
-        //{
-        //    var identity = new FormsIdentity(authTicket);
-        //    var principal = new GenericPrincipal(identity, JsonConvert.DeserializeObject<CustomSerializeModel>(authTicket.UserData).RoleName);
-        //    HttpContext.Current.User = principal;
-        //}
-        //private void ProcessAuthenticationCookie(string cookieName)
-        //{
-        //    // Retrieve the boolean value from session, default to false if null or not a boolean
-        //    bool isMFA = HttpContext.Current.Session?["MFA"] is bool mfaValue ? mfaValue : false;
-        //    bool isPWD = HttpContext.Current.Session?["CHANGE_PWD"] is bool mfaValuee ? mfaValuee : false;
-
-        //    // Use the boolean value
-        //    if (!isMFA || !isPWD)
-        //    {
-        //        HttpCookie authCookie = Request.Cookies[cookieName];
-        //        if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
-        //        {
-        //            FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-        //            if (authTicket != null && !authTicket.Expired)
-        //            {
-        //                AddIdentity(authTicket);
-        //            }
-        //            else
-        //            {
-        //                InvalidateCookie(cookieName);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private void ProcessAuthenticationCookie(string cookieName)
-        //{
-        //    // Retrieve the boolean value from session, default to false if null or not a boolean
-        //    bool isMFA = HttpContext.Current.Session?["MFA"] is bool mfaValue ? mfaValue : false;
-
-        //    // Use the boolean value
-        //    if (!isMFA)
-        //    {
-        //        // Ensure that Request.Cookies and the specific cookie are not null
-        //        HttpCookie authCookie = Request.Cookies?[cookieName];
-        //        HttpCookie xauthCookie = Request.Cookies[cookieName];
-        //        if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
-        //        {
-        //            try
-        //            {
-        //                // Decrypt the cookie value
-        //                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-
-        //                // Validate the decrypted ticket
-        //                if (authTicket != null && !authTicket.Expired)
-        //                {
-        //                    // Add identity based on the ticket
-        //                    AddIdentity(authTicket);
-        //                }
-        //                else
-        //                {
-        //                    // Invalidate the cookie if the ticket is null or expired
-        //                    InvalidateCookie(cookieName);
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                // Log or handle the exception if decryption fails
-        //                // Optionally, you could invalidate the cookie if there's an issue with decryption
-        //                InvalidateCookie(cookieName);
-        //                // Log the error (ex.Message) for further diagnosis
-        //            }
-        //        }
-        //        else
-        //        {
-        //            // Handle the case where the cookie is not present or has an empty value
-        //            InvalidateCookie(cookieName);
-        //        }
-        //    }
-        //}
 
 
-        private void AddIdentity(FormsAuthenticationTicket authTicket)
-        {
-            var user = JsonConvert.DeserializeObject<CustomSerializeModel>(authTicket.UserData);
-            CustomPrincipal principal = new CustomPrincipal(authTicket.Name)
-            {
-                UserId = user.Id,
-                UserName = user.UserName,
-                Roles = user.RoleName,
-                SessionID = user.TokenRefresherID,
-                Phonenumber = user.Phonenumber,
-                RefresherID = user.TokenRefresherID,
-                Token = user.Token,
-                Password = user.Password,
-            };
-            HttpContext.Current.User = principal;
-        }
 
-        //private void InvalidateCookie(string cookieName)
-        //{
-        //    if (Response.Cookies[cookieName] != null)
-        //    {
-        //        Response.Cookies[cookieName].Expires = DateTime.Now.AddYears(-1);
-        //    }
-        //}
+
+
     }
-
-
-    //public class MvcApplication : System.Web.HttpApplication
-    //{
-    //    protected void Application_Start()
-    //    {
-    //        AreaRegistration.RegisterAllAreas();
-    //        FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-    //        RouteConfig.RegisterRoutes(RouteTable.Routes);
-    //        BundleConfig.RegisterBundles(BundleTable.Bundles);
-    //        GlobalFilters.Filters.Add(new AuthorizeAttribute());
-    //        UnityConfig.RegisterComponents();
-    //    }
-    //    protected void Application_EndRequest()
-    //    {
-    //        if (Context.Items["AjaxPermissionDenied"] is bool)
-    //        {
-    //            Context.Response.StatusCode = 401;
-    //            Context.Response.End();
-    //        }
-
-    //    }
-
-    //    protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
-    //    {
-    //        HttpCookie authCookie1 = Request.Cookies["CBS4U"];
-    //        HttpCookie authCookie2 = Request.Cookies["PWD"];
-    //        HttpCookie authCookie3 = Request.Cookies["MFA"];
-    //        if (authCookie1 != null || authCookie2 != null || authCookie3 != null)
-    //        {
-    //            if (authCookie1 != null)
-    //            {
-    //                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie1.Value);
-    //                if (!authTicket.Expired)
-    //                {
-    //                    AddIdentity(authCookie1);
-    //                }
-    //                else
-    //                {
-    //                    Response.Cookies["CBS4U"].Expires = DateTime.Now.AddYears(-1);
-
-    //                }
-    //            }
-    //            else if (authCookie2 != null)
-    //            {
-
-    //                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie2.Value);
-    //                if (!authTicket.Expired)
-    //                {
-    //                    AddIdentity(authCookie2);
-    //                }
-    //                else
-    //                {
-    //                    Response.Cookies["PWD"].Expires = DateTime.Now.AddYears(-1);
-
-    //                }
-    //            }
-    //            else if (authCookie3 != null)
-    //            {
-    //                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie3.Value);
-    //                if (!authTicket.Expired)
-    //                {
-    //                    AddIdentity(authCookie3);
-    //                }
-    //                else
-    //                {
-    //                    Response.Cookies["MFA"].Expires = DateTime.Now.AddYears(-1);
-
-    //                }
-    //            }
-
-    //        }
-
-    //    }
-
-    //    public void AddIdentity(HttpCookie authCookie)
-    //    {
-    //        FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-    //        if (!authTicket.Expired)
-    //        {
-    //            var user = JsonConvert.DeserializeObject<CustomSerializeModel>(authTicket.UserData);
-    //            CustomPrincipal principal = new CustomPrincipal(authTicket.Name);
-    //            principal.UserId = user.Id;
-    //            principal.FullName = user.FullName;
-    //            principal.UserName = user.UserName;
-    //            principal.Roles = user.RoleName;
-    //            principal.SessionID = user.TokenRefresherID;
-    //            principal.Email = user.Email;
-    //            principal.Phonenumber = user.Phonenumber;
-    //            HttpContext.Current.User = principal;
-    //        }
-    //    }
-    //}
-
 }

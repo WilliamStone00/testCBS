@@ -10,15 +10,23 @@ using CBS.FrontDesk.Helper;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
+using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.ReportDataSetDto;
 
 namespace CBS.BusinessService.Accounts
 {
     public class SubTellerEndOfDayServices : BaseService
     {
+        private readonly BranchServices _brancheServices;
+        private readonly TellerProvissioningServices _tellerProvissioningServices;
         private readonly ApiCallerHelper _transactionApiHelper;
-        public SubTellerEndOfDayServices()
+        public SubTellerEndOfDayServices(BranchServices brancheServices, TellerProvissioningServices tellerProvissioningServices)
         {
             _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
+            _brancheServices = brancheServices;
+            _tellerProvissioningServices = tellerProvissioningServices;
         }
         public bool IsCurrencySumValid(CurrencyNotes currencyNotes, int amount)
         {
@@ -42,15 +50,17 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 model.Amount = ComputeDenomination(model.CurrencyNotes);
-                if (model.Amount <= 0)
+                if (model.Amount < 0)
                 {
                     GetExecutionMessages(model, false, $"{model.Amount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered must be greater than 0");
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered must not be less than 0");
                     return ExecutionMessage;
                 }
-                var response = await _transactionApiHelper.PostAsync<ServiceResponse<SubTellerProvioningHistory>>(APICallHelper.SubTellerEndOfDay, model);
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<TellerProvioningHistory>>(APICallHelper.SubTellerEndOfDay, model);
                 if (response.IsSuccess)
                 {
+                   await _tellerProvissioningServices.MapToTillOpenAndClossingDS(response.ApiResponseData.Data);
+             
 
                     GetExecutionMessages(response, true, $"{model.CashAtHand}", MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
@@ -73,6 +83,73 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
+        public TillOpenAndClossingDS MapToTillOpenAndClossingDS(Branch branch, TellerProvioningHistory tellerProvisioningHistory)
+        {
+            var tillDs = new TillOpenAndClossingDS
+            {
+                UserIdInChargeOfThisTeller = tellerProvisioningHistory.UserIdInChargeOfThisTeller,
+                ProvisionedBy = tellerProvisioningHistory.ProvisionedBy,
+                IsCashReplenished = tellerProvisioningHistory.IsCashReplenished,
+                ReplenishedAmount = tellerProvisioningHistory.ReplenishedAmount,
+                OpenedDate = tellerProvisioningHistory.OpenedDate.GetValueOrDefault(),
+                ClossedDate = tellerProvisioningHistory.ClossedDate.GetValueOrDefault(),
+                OpenOfDayAmount = tellerProvisioningHistory.OpenOfDayAmount,
+                ReferenceId = tellerProvisioningHistory.ReferenceId,
+                CloseOfReferenceId = tellerProvisioningHistory.CloseOfReferenceId,
+                IsRequestedForCashReplenishment = tellerProvisioningHistory.IsRequestedForCashReplenishment,
+                CashAtHand = tellerProvisioningHistory.CashAtHand,
+                EndOfDayAmount = tellerProvisioningHistory.EndOfDayAmount,
+                AccountBalance = tellerProvisioningHistory.AccountBalance,
+                LastOPerationAmount = tellerProvisioningHistory.LastOPerationAmount,
+                LastOperationType = tellerProvisioningHistory.LastOperationType,
+                PreviouseBalance = tellerProvisioningHistory.PreviouseBalance,
+                SubTellerComment = tellerProvisioningHistory.SubTellerComment,
+                Note = tellerProvisioningHistory.Note,
+                ClossedStatus = tellerProvisioningHistory.ClossedStatus,
+                TillName = tellerProvisioningHistory.Teller.name, // Assuming you have a TillName property in the Branch object
+                InitialPrinting = tellerProvisioningHistory.InitialPrinting,
+                OpeningNote10000 = tellerProvisioningHistory.OpeningNote10000,
+                OpeningNote5000 = tellerProvisioningHistory.OpeningNote5000,
+                OpeningNote2000 = tellerProvisioningHistory.OpeningNote2000,
+                OpeningNote1000 = tellerProvisioningHistory.OpeningNote1000,
+                OpeningNote500 = tellerProvisioningHistory.OpeningNote500,
+                OpeningCoin500 = tellerProvisioningHistory.OpeningCoin500,
+                OpeningCoin100 = tellerProvisioningHistory.OpeningCoin100,
+                OpeningCoin50 = tellerProvisioningHistory.OpeningCoin50,
+                OpeningCoin25 = tellerProvisioningHistory.OpeningCoin25,
+                OpeningCoin10 = tellerProvisioningHistory.OpeningCoin10,
+                OpeningCoin5 = tellerProvisioningHistory.OpeningCoin5,
+                OpeningCoin1 = tellerProvisioningHistory.OpeningCoin1,
+                ClosingNote10000 = tellerProvisioningHistory.ClosingNote10000,
+                ClosingNote5000 = tellerProvisioningHistory.ClosingNote5000,
+                ClosingNote2000 = tellerProvisioningHistory.ClosingNote2000,
+                ClosingNote1000 = tellerProvisioningHistory.ClosingNote1000,
+                ClosingNote500 = tellerProvisioningHistory.ClosingNote500,
+                ClosingCoin500 = tellerProvisioningHistory.ClosingCoin500,
+                ClosingCoin100 = tellerProvisioningHistory.ClosingCoin100,
+                ClosingCoin50 = tellerProvisioningHistory.ClosingCoin50,
+                ClosingCoin25 = tellerProvisioningHistory.ClosingCoin25,
+                ClosingCoin10 = tellerProvisioningHistory.ClosingCoin10,
+                ClosingCoin5 = tellerProvisioningHistory.ClosingCoin5,
+                ClosingCoin1 = tellerProvisioningHistory.ClosingCoin1,
+                TotalOpeningAmount = tellerProvisioningHistory.TotalOpeningAmount,
+                TotalClosingAmount = tellerProvisioningHistory.TotalClosingAmount,
+                Logo = branch.Bank.LogoUrl,
+                BranchName = branch.Name,
+                BranchCode = branch.BranchCode,
+                BranchAddress = branch.Address,
+                BranchTelephone = branch.Telephone,
+                HeadOfficeName = branch.Bank.Name,
+                HeadOfficeAddress = branch.Bank.Address,
+                HeadOfficeTelephone = branch.Bank.Telephone,
+                HeadOfficeEmail = branch.Bank.Email,
+                HeadOfficeWebSite = branch.Bank.WebSite,
+                HeadOfficeInitial = branch.Bank.BankInitial,
+                HeadOfficeCode = branch.Bank.BankCode
+            };
+            return tillDs;
+        }
+
         public async Task<IEnumerable<SubTellerProvisioningDto>> GetSubTellerHistories()
         {
             try

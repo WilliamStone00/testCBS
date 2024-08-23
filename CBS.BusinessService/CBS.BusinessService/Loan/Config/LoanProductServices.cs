@@ -18,6 +18,7 @@ using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using System.Web.Mvc;
 using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace CBS.BusinessService.Config
 {
@@ -81,12 +82,12 @@ namespace CBS.BusinessService.Config
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProduct);
-                if (couApiResponse.IsSuccess)
-                {
-                    var data = couApiResponse.ApiResponseData.Data.Select(x => new StringValues { Text = $"{x.ProductName}, Loan Range [Min: {x.LoanMinimumAmount.ToString("#,##0.0")}]", Value = x.Id }).ToList();
-                    return data;
-                }
+                //var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProduct);
+                //if (couApiResponse.IsSuccess)
+                //{
+                //    var data = couApiResponse.ApiResponseData.Data.Select(x => new StringValues { Text = $"{x.ProductName}, [Min: {x.LoanMinimumAmount.ToString("#,##0.0")} : Max: {x.LoanMaximumAmount.ToString("#,##0.0")}]", Value = x.Id }).ToList();
+                //    return data;
+                //}
                 return new List<StringValues>();
             }
             catch (Exception ex)
@@ -96,6 +97,50 @@ namespace CBS.BusinessService.Config
             }
         }
 
+        public async Task<SelectList> GetLoanProductsDropDown(string targetType)
+        {
+            try
+            {
+                // Fetch data from API
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProduct);
+
+                // Check if the response is successful and contains data
+                if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData?.Data != null)
+                {
+                    // Filter and map the data to the list of SelectListItem
+                    var values = couApiResponse.ApiResponseData.Data
+                        .Where(x => x.TargetType == targetType)
+                        .Select(x => new SelectListItem
+                        {
+                            Text = $"{x.ProductName}, [Min: {x.LoanMinimumAmount.ToString("#,##0.0")} : Max: {x.LoanMaximumAmount.ToString("#,##0.0")}]",
+                            Value = x.Id
+                        })
+                        .ToList();
+
+                    // Default selected value (adjust as per your needs)
+                    var defaultSelectedValue = "default-value";
+
+                    // Return the SelectList
+                    return new SelectList(values, "Value", "Text", defaultSelectedValue);
+                }
+
+                // Return an empty SelectList with a default "No options available" option
+                return new SelectList(new List<SelectListItem>
+        {
+            new SelectListItem { Text = "No options available", Value = string.Empty }
+        }, "Value", "Text");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // _logger.LogError(ex, "An error occurred while getting the loan products dropdown.");
+
+                // Handle the exception accordingly
+                throw; // Re-throw the exception after logging
+            }
+        }
+
+       
         public async Task<IEnumerable<StringValues>> GetFees()
         {
             try
@@ -179,6 +224,8 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+
+       
         private SelectList ProcessApiResponseResponse(List<Loan> loans)
         {
             var values = loans.Select(a => new StringValues
@@ -190,6 +237,7 @@ namespace CBS.BusinessService.Config
             return new SelectList(values.ToList(), "Value", "Text", defaultSelectedValue);
 
         }
+       
         private SelectList ProcessApiResponseResponse(LoanProduct product, string path)
         {
             var values = product.LoanProductRepaymentCycles.Select(a => new StringValues
@@ -201,6 +249,8 @@ namespace CBS.BusinessService.Config
             return new SelectList(values.ToList(), "Value", "Text", defaultSelectedValue);
 
         }
+
+       
 
         public async Task<LoanProductEnumAgregates> GetLoanProductEnumAggregates()
         {
@@ -256,6 +306,8 @@ namespace CBS.BusinessService.Config
                 {
                     Id = product.Id,
                     ProductCode = product.ProductCode,
+                    TargetType = product.TargetType,
+                    LoanMaximumAmount = product.LoanMaximumAmount,
                     ProductName = product.ProductName,
                     LoanInterestPeriod = product.LoanInterestPeriod,
                     MinimumInterestRate = product.MinimumInterestRate,
@@ -342,6 +394,7 @@ namespace CBS.BusinessService.Config
                         LoanProduct.ProductName = model.ProductName;
                         LoanProduct.ActiveStatus = model.ActiveStatus;
                         LoanProduct.Description = model.Description;
+                        LoanProduct.TargetType = model.TargetType;
                     }
                     else if (model.ServiceOption == "gurantee")
                     {
@@ -366,6 +419,8 @@ namespace CBS.BusinessService.Config
                     {
                         LoanProduct.LoanMinimumAmount = model.LoanMinimumAmount;
                         LoanProduct.MinimumDownPaymentPercentage = model.MinimumDownPaymentPercentage;
+                        LoanProduct.LoanMaximumAmount = model.LoanMaximumAmount;
+                        LoanProduct.TargetType = model.TargetType;
 
                     }
                     else if (model.ServiceOption == "topup")

@@ -9,6 +9,13 @@
     {
         <fieldset class="fieldset-custom">
             <div class="row g-4">
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.AddLoanProductCommand.TargetType, new SelectList(ViewBag.LoanTargets, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.AddLoanProductCommand.TargetType, "", new { @class = "text-danger " })
+                        <label>Target</label>
+                    </div>
+                </div>
                 <div class="col-md-3">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AddLoanProductCommand.ProductCode, new { @class = "form-control" })

@@ -74,8 +74,8 @@
     </style>
     <style>
 
-         
- 
+
+
         #superposedModal {
             z-index: 1200; /* Make sure it has a higher z-index than other modals */
             pointer-events: auto;
@@ -697,14 +697,68 @@
     </style>
 
 
-    @*<style>
-            /* Navbar text */
-            .navbar-nav label {
-                font-size: 16px; /* Adjust the font size as needed */
-                font-weight: bold; /* Make the text bold */
-                color: #fff; /* White text color */
+    <style>
+        /* Add this CSS to your stylesheet */
+
+        .card {
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+        }
+
+        .nav-tabs .nav-link {
+            border-radius: 0.375rem 0.375rem 0 0;
+            font-size: 1rem;
+        }
+
+            .nav-tabs .nav-link.active {
+                color: #495057;
+                background-color: #f8f9fa;
+                border-color: #dee2e6 #dee2e6 transparent;
             }
-        </style>*@
+
+        .tab-content {
+            border-top: 1px solid #dee2e6;
+        }
+
+        .accordion-button {
+            font-size: 1rem;
+            background-color: #f8f9fa;
+            color: #495057;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+        }
+
+            .accordion-button:not(.collapsed) {
+                color: #0056b3;
+                background-color: #e9ecef;
+                border-color: #dee2e6 #dee2e6 transparent;
+            }
+
+        .accordion-item {
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+        }
+
+        .accordion-header {
+            margin-bottom: 0;
+        }
+
+        .accordion-body {
+            padding: 1rem;
+        }
+
+        .accordion-item.shadow-sm {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        h5.fw-bold {
+            font-weight: 700;
+        }
+
+        i.mdi {
+            font-size: 1.2rem;
+        }
+    </style>
 
 
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -884,22 +938,34 @@
 
 
     <script>
-        $(document).ajaxComplete(function (event, xhr, settings) {
-            if (xhr.status === 401) {
-                alert("Your session has expired. Please log in again.");
-                // Optionally, you can redirect the user to the login page
-                // window.location.href = "/Account/Login";
-                window.location.href = "/Authentication/Login";
-            }
+        //$(document).ajaxComplete(function (event, xhr, settings) {
+        //    if (xhr.status === 401) {
+        //        alert("Your session has expired. Please log in again.");
+        //        // Optionally, you can redirect the user to the login page
+        //        // window.location.href = "/Account/Login";
+        //        window.location.href = "/Authentication/Login";
+        //    }
+        //});
+
+        //$(document).ajaxError(function (event, jqxhr, settings, exception) {
+        //    if (jqxhr.status === 401) {
+        //        alert("Your session has expired. Please log in again.");
+        //        // Optionally, you can redirect the user to the login page
+        //        window.location.href = "/Authentication/Login";
+        //    }
+        //});
+        $(document).ready(function () {
+            $.ajaxSetup({
+                complete: function (xhr) {
+                    if (xhr.status === 401) { // Unauthorized
+                        // Redirect to login page
+                        alert("Your session has expired. Please log in again.");
+                        window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+                    }
+                }
+            });
         });
 
-        $(document).ajaxError(function (event, jqxhr, settings, exception) {
-            if (jqxhr.status === 401) {
-                alert("Your session has expired. Please log in again.");
-                // Optionally, you can redirect the user to the login page
-                window.location.href = "/Authentication/Login";
-            }
-        });
     </script>
 
     @RenderSection("scripts", required: false)

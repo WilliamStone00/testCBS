@@ -422,6 +422,18 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Tellers\OpenAndClossingOfTill.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OpenAndClossingOfTill.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Tellers\OpeningAndClossingOfTellersRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OpeningAndClossingOfTellersRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -463,6 +475,7 @@
     <Compile Include="Controllers\CustomerManagement\Policy\MemberAccountActivationPolicyController.cs" />
     <Compile Include="Controllers\Loan\Configuration\LoanDeliquencyConfigurationController.cs" />
     <Compile Include="Controllers\TransactionManagement\ChargesWaivedController.cs" />
+    <Compile Include="Controllers\TransactionManagement\AccountingDayController.cs" />
     <Compile Include="Controllers\TransactionManagement\DailyTellerAssignationController.cs" />
     <Compile Include="Controllers\TransactionManagement\MigrationController.cs" />
     <Compile Include="Controllers\TransactionManagement\OpenningOfDayController.cs" />
@@ -3002,6 +3015,10 @@
     <Content Include="Views\MemberOrdinaryAccountsF8\DownloadFileF8.cshtml" />
     <Content Include="Views\MemberOrdinaryAccountsF8\_SearchBox.cshtml" />
     <Content Include="Views\MemberOrdinaryAccountsF8\_FileDownloadData.cshtml" />
+    <Content Include="Views\DailyTellerAssignation\TellerOpenningAndClossingStatus.cshtml" />
+    <Content Include="Views\DailyTellerAssignation\_DownloadTellerOpenningAndClossingStatus.cshtml" />
+    <Content Include="Views\AccountingDay\_Create.cshtml" />
+    <Content Include="Views\AccountingDay\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -3106,6 +3123,14 @@
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\Statement\IAccountStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>IAccountStatement.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Tellers\OpenAndClossingOfTill.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>OpenAndClossingOfTill.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Tellers\OpeningAndClossingOfTellersRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>OpeningAndClossingOfTellersRPT.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

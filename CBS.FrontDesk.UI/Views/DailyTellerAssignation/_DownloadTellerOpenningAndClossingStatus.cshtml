@@ -1,0 +1,64 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.DailyTeller
+
+<fieldset class="fieldset-custom">
+    <legend>Opening and Clossing Status for Tellers</legend>
+    <form method="get" action="/DailyTellerAssignation/TellerOpenningAndClossingStatusDownload/">
+        <hr />
+        <div class="col-12">
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.GetTellerOpenningAndClossingQuery.ByBracnch, new { @class = "form-check-input", @id = "byBranchCheckbox" })
+                <label class="form-check-label" for="byBranchCheckbox">Check to print By Branch</label>
+            </div>
+        </div>
+        <hr />
+        <div class="row g-4">
+            <div class="col-md-4">
+                <label for="branchInput">Branch</label>
+                @Html.DropDownListFor(m => m.GetTellerOpenningAndClossingQuery.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
+            </div>
+            <div class="col-md-8">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label for="dateFromInput">Date From</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.GetTellerOpenningAndClossingQuery.DateFrom, new { @class = "form-control shadow-box date-picker", @placeholder = "Date From" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="dateToInput">Date To</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.GetTellerOpenningAndClossingQuery.DateTo, new { @class = "form-control shadow-box date-picker", @placeholder = "Date To" })
+                            <button type="submit" class="btn btn-default btn-sm">Print</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</fieldset>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var byBranchCheckbox = document.getElementById('byBranchCheckbox');
+        var branchInput = document.getElementById('branchInput');
+
+        // Function to toggle the enabled state of the branch dropdown
+        function toggleBranchDropdown() {
+            if (byBranchCheckbox.checked) {
+                branchInput.disabled = false;
+                branchInput.classList.remove('disabled');
+            } else {
+                branchInput.disabled = true;
+                branchInput.classList.add('disabled');
+            }
+        }
+
+        // Initial check on page load
+        toggleBranchDropdown();
+
+        // Add event listener to checkbox to handle changes
+        byBranchCheckbox.addEventListener('change', toggleBranchDropdown);
+    });
+</script>
+
+

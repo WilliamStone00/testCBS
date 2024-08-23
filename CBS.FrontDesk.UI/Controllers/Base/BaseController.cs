@@ -16,6 +16,7 @@ using CBS.FrontDesk.Helper;
 using CBS.API.Helper;
 using System.IdentityModel.Tokens.Jwt;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using DocumentFormat.OpenXml.EMMA;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -32,13 +33,86 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 var request = filterContext.HttpContext.Request;
 
+                // Get the controller, action, and URL
+                var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+                var actionName = filterContext.ActionDescriptor.ActionName;
+                var url = request.RawUrl;
+
+                // Log or use the controller, action, and URL as needed
+                // For example:
+                // Log($"Controller: {controllerName}, Action: {actionName}, URL: {url}");
+
                 // Check if the request is not for the login page and the user is not authenticated
-                if (!request.RawUrl.StartsWith("/Authentication/Login", StringComparison.OrdinalIgnoreCase) && Session["UserID"] == null)
+                if (!url.StartsWith("/Authentication/Login", StringComparison.OrdinalIgnoreCase) && Session["UserID"] == null)
                 {
                     // Redirect to the login page
                     filterContext.Result = new RedirectResult("~/Authentication/Login");
                     return;
                 }
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (VerifyIfSessionExist("MFA"))
+                    {
+                        if (!url.Contains("/MFAVerification?serviceoption=MFA"))
+                        {
+                            if (url== "/Authentication/Logout")
+                            {
+
+                            }
+                            else if (url == "/MFAVerification/MFACodeVerification")
+                            {
+
+                            }
+                            else
+                            {
+                                string mfaurl = Session["MFAUrl"].ToString();
+                                filterContext.Result = new RedirectResult(mfaurl);
+                                return;
+                            }
+                
+                        }
+             
+                    }
+
+                    if (VerifyIfSessionExist("PWD"))
+                    {
+                        if (!url.Contains("/UserManagement/FLoginChangePassword?serviceoption=USER"))
+                        {
+                            if (url == "/Authentication/Logout")
+                            {
+
+                            }
+                            else if (url == "/UserManagement/FLoginChangePassword")
+                            {
+
+                            }
+                            else
+                            {
+                                string PWDUrl = Session["CHPWDUrl"].ToString();
+                                filterContext.Result = new RedirectResult(PWDUrl);
+                                return;
+                            }
+                       
+                        }
+                    }
+                }
+
+                var userIp = Request.UserHostAddress;
+                if (Session["UserIP"] != null && Session["UserIP"].ToString() != userIp)
+                {
+                    // Possible session hijacking attempt
+                    Session.Abandon();
+                    Session.RemoveAll();
+                    Response.Redirect("~/Authentication/Logout");
+                    return;
+
+                }
+                else
+                {
+                    Session["UserIP"] = userIp;
+                }
+
 
                 // User is authenticated, proceed with getting the user session
                 GetUserSession();
@@ -52,21 +126,38 @@ namespace CBS.FrontDesk.UI.Controllers
                 throw;
             }
         }
-        public bool VerifyCookies(string cookiesName = "CBS4U")
+        protected JsonResult JsonValidationErrorResponse()
         {
-            HttpCookie authCookie = Request.Cookies[cookiesName];
-            if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
+            // Get all the validation errors from ModelState
+            var errors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+
+            // Combine all the errors into a single string
+            var errorMessage = string.Join("; ", errors);
+
+            // Return the JSON response with the combined error message
+            return Json(new { success = false, status = false, message = errorMessage });
+        }
+        public bool VerifyIfSessionExist(string sessionName)
+        {
+            if (Session == null || string.IsNullOrEmpty(sessionName))
             {
-                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                if (authTicket != null && !authTicket.Expired)
-                {
-                    HttpContext.Session["CHANGE_PWD"] = true;
-                    return false; // Cookie is valid and not expired
-                }
+                return false; // Session or session name is null
             }
 
-            return true; // Cookie is invalid or expired
+            var sessionValue = Session[sessionName];
+
+            if (sessionValue != null)
+            {
+                return true; // Session exists
+            }
+
+            return false; // Session does not exist
         }
+
+       
 
         public UserDto GetUserDto()
         {
@@ -209,49 +300,16 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
-        public void CreateToken(UserDto reqDto, string cookieName = "CBS4U", int minutes_to_live = 30, bool isMFA = false,bool isPWD=false)
+        public void CreateToken(UserDto reqDto, int minutes_to_live = 30)
         {
-        
-            if (isPWD)
-            {
-                HttpContext.Session["CHANGE_PWD"] = true;
-            }
-            if (isMFA)
-            {
-                HttpContext.Session["MFA"] = true;
-            }
-            var user = new CustomMembershipUser(reqDto);
-            string[] roles = reqDto.Roles.Select(role => role.RoleName).ToArray();
-            CustomSerializeModel userModel = new CustomSerializeModel()
-            {
-                Id = user.UserID,
-                UserName = reqDto.userName,
-                RoleName = roles,
-                //FullName = user.FullName,
-                //Email = user.Email,
-                Phonenumber = user.Phonenumber,
-                TokenRefresherID = reqDto.refreshToken,
-                //Token = reqDto.bearerToken,
-                Password = reqDto.password,
-            };
+            FormsAuthentication.SetAuthCookie(reqDto.userName, false);
+            var encryptedToken = TokenEncryptionHelper.EncryptToken(reqDto.bearerToken);
+            Session["EncryptedJWToken"] = encryptedToken;
+            Session["BranchObject"] = reqDto.Branch;
+            Session["AuthUser"] = reqDto;
+            Session["UserIP"] = Request.UserHostAddress;
             BuildLocalSession(reqDto);
-            string userData = JsonConvert.SerializeObject(userModel);
-            FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
-                1,
-                reqDto.email,
-                DateTime.Now,
-                cookieName == "CBS4U" ? DateTime.Now.AddMinutes(Convert.ToInt32(timetoExpire)) : DateTime.Now.AddMinutes(Convert.ToInt32(minutes_to_live)),
-                false,
-                userData
-            );
-            authTicket.Expiration.AddMinutes(Convert.ToInt32(timetoExpire));
-            authTicket.IssueDate.AddSeconds(0);
-            string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-            HttpCookie faCookie = new HttpCookie(cookieName, encryptedTicket);
-            faCookie.HttpOnly = true;
-            faCookie.Secure = true;
-            Session.Timeout = 30;
-            HttpContext.Session["Token"] = reqDto.bearerToken;
+            Session.Timeout = minutes_to_live;
             if (reqDto.Permissions == null)
             {
                 HttpContext.Session["menu"] = new List<Permission>(); // Assuming Permission is your type
@@ -260,19 +318,144 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 HttpContext.Session["menu"] = reqDto.Permissions.ToList();
             }
-
-
-            Response.Cookies.Add(faCookie);
         }
+
+        //public void CreateToken(UserDto reqDto, string cookieName = "CBS4U", int minutes_to_live = 30, bool isMFA = false, bool isPWD = false)
+        //{
+        //    // Set authentication cookie
+        //    FormsAuthentication.SetAuthCookie(reqDto.userName, false);
+
+        //    //// Set session variables for password change and MFA
+        //    //if (isPWD)
+        //    //{
+        //    //    HttpContext.Session["CHANGE_PWD"] = true;
+        //    //}
+        //    //if (isMFA)
+        //    //{
+        //    //    HttpContext.Session["MFA"] = true;
+        //    //}
+
+        //    //// Create custom user model
+        //    //var user = new CustomMembershipUser(reqDto);
+        //    //string[] roles = reqDto.Roles.Select(role => role.RoleName).ToArray();
+        //    //CustomSerializeModel userModel = new CustomSerializeModel()
+        //    //{
+        //    //    Id = user.UserID,
+        //    //    UserName = reqDto.userName,
+        //    //    RoleName = roles,
+        //    //    Phonenumber = user.Phonenumber,
+        //    //    TokenRefresherID = reqDto.refreshToken,
+        //    //    Password = reqDto.password,
+        //    //};
+
+        //    // Build local session
+        //    BuildLocalSession(reqDto);
+
+        //    //// Serialize user data into JSON
+        //    //string userData = JsonConvert.SerializeObject(userModel);
+
+        //    //// Create the authentication ticket
+        //    //FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
+        //    //    1,
+        //    //    reqDto.email,
+        //    //    DateTime.Now,
+        //    //    DateTime.Now.AddMinutes(minutes_to_live), // Token expiration time
+        //    //    false,
+        //    //    userData
+        //    //);
+
+        //    //// Encrypt the ticket
+        //    //string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+
+        //    //// Create and configure the authentication cookie
+        //    //HttpCookie faCookie = new HttpCookie(cookieName, encryptedTicket)
+        //    //{
+        //    //    HttpOnly = true,
+        //    //    Secure = true // Ensure the cookie is only sent over HTTPS
+        //    //};
+
+        //    //// Add the authentication cookie to the response
+        //    //Response.Cookies.Add(faCookie);
+
+        //    // Set the session timeout to match the token's expiration time
+        //    Session.Timeout = minutes_to_live;
+        //    if (reqDto.Permissions == null)
+        //    {
+        //        HttpContext.Session["menu"] = new List<Permission>(); // Assuming Permission is your type
+        //    }
+        //    else
+        //    {
+        //        HttpContext.Session["menu"] = reqDto.Permissions.ToList();
+        //    }
+        //}
+
+
+        //public void CreateToken(UserDto reqDto, string cookieName = "CBS4U", int minutes_to_live = 30, bool isMFA = false, bool isPWD = false)
+        //{
+
+
+        //    // Set authentication cookie
+        //    FormsAuthentication.SetAuthCookie(reqDto.userName, false);
+
+
+
+        //    if (isPWD)
+        //    {
+        //        HttpContext.Session["CHANGE_PWD"] = true;
+        //    }
+        //    if (isMFA)
+        //    {
+        //        HttpContext.Session["MFA"] = true;
+        //    }
+        //    var user = new CustomMembershipUser(reqDto);
+        //    string[] roles = reqDto.Roles.Select(role => role.RoleName).ToArray();
+        //    CustomSerializeModel userModel = new CustomSerializeModel()
+        //    {
+        //        Id = user.UserID,
+        //        UserName = reqDto.userName,
+        //        RoleName = roles,
+        //        Phonenumber = user.Phonenumber,
+        //        TokenRefresherID = reqDto.refreshToken,
+        //        Password = reqDto.password,
+        //    };
+        //    BuildLocalSession(reqDto);
+        //    string userData = JsonConvert.SerializeObject(userModel);
+        //    FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
+        //        1,
+        //        reqDto.email,
+        //        DateTime.Now,
+        //        cookieName == "CBS4U" ? DateTime.Now.AddMinutes(Convert.ToInt32(timetoExpire)) : DateTime.Now.AddMinutes(Convert.ToInt32(minutes_to_live)),
+        //        false,
+        //        userData
+        //    );
+        //    authTicket.Expiration.AddMinutes(Convert.ToInt32(timetoExpire));
+        //    authTicket.IssueDate.AddSeconds(0);
+        //    string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+        //    HttpCookie faCookie = new HttpCookie(cookieName, encryptedTicket);
+        //    faCookie.HttpOnly = true;
+        //    faCookie.Secure = true;
+        //    Response.Cookies[".AspNet.ApplicationCookie"].HttpOnly = true;
+        //    Response.Cookies[".AspNet.ApplicationCookie"].Secure = true;
+
+        //    FormsAuthentication.SetAuthCookie(reqDto.userName, false);
+        //    var encryptedToken = TokenEncryptionHelper.EncryptToken(reqDto.bearerToken);
+        //    Session["EncryptedJWToken"] = encryptedToken;
+        //    Session["BranchObject"] = reqDto.Branch;
+        //    Session["AuthUser"] = reqDto;
+        //    if (reqDto.Permissions == null)
+        //    {
+        //        HttpContext.Session["menu"] = new List<Permission>(); // Assuming Permission is your type
+        //    }
+        //    else
+        //    {
+        //        HttpContext.Session["menu"] = reqDto.Permissions.ToList();
+        //    }
+
+        //    //Response.Cookies.Add(faCookie);
+        //}
         public void RemoveSessionName(string sessionName)
         {
-            bool isMFA = HttpContext.Session[sessionName] is bool mfaValue ? mfaValue : false;
-            // Check if MFA is enabled
-            if (isMFA)
-            {
-                // Later in the code, when you want to remove the MFA token
-                HttpContext.Session.Remove(sessionName); // Removing the MFA token
-            }
+            HttpContext.Session.Remove(sessionName); // Removing the MFA token
 
 
         }
@@ -282,6 +465,15 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+                if (VerifyIfSessionExist("MFA"))
+                {
+
+                }
+                if (VerifyIfSessionExist("PWD"))
+                {
+
+                }
+
                 GetMenus();
                 //ProcessAuthenticationCookie("CBS4U");
             }
@@ -312,20 +504,20 @@ namespace CBS.FrontDesk.UI.Controllers
                 }
             }
         }
-        private void RefreshToken(AuthRequest authRequest)
-        {
-            var _identityServer = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-            var response = _identityServer.Post<UserDto>(APICallHelper.Authentication, authRequest);
-            if (response.IsSuccess)
-            {
-                response.ApiResponseData.password = authRequest.Password;
-                if (Request.Cookies["CBS4U"] != null)
-                {
-                    InvalidateCookie("CBS4U");
-                }
-                CreateToken(response.ApiResponseData, "CBS4U");
-            }
-        }
+        //private void RefreshToken(AuthRequest authRequest)
+        //{
+        //    var _identityServer = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+        //    var response = _identityServer.Post<UserDto>(APICallHelper.Authentication, authRequest);
+        //    if (response.IsSuccess)
+        //    {
+        //        response.ApiResponseData.password = authRequest.Password;
+        //        if (Request.Cookies["CBS4U"] != null)
+        //        {
+        //            InvalidateCookie("CBS4U");
+        //        }
+        //        CreateToken(response.ApiResponseData, "CBS4U");
+        //    }
+        //}
 
         public List<DatabaseMenus> GetMenus()
         {

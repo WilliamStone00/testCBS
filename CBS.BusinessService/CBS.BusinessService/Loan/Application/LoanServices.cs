@@ -109,7 +109,7 @@ namespace CBS.BusinessService
                 Penalty = loan.Penalty,
                 DueAmount = loan.DueAmount,
                 Paid = loan.Paid,
-                Balance = loan.Principal,
+                Balance = loan.Balance,
                 LastPayment = loan.LastPayment,
                 LoanStatus = loan.LoanStatus,
                 IsCurrentLoan = loan.IsCurrentLoan,
@@ -353,7 +353,7 @@ namespace CBS.BusinessService
         {
             var values = loans.Select(a => new StringValues
             {
-                Text = $"[Loan Date: {a.LoanDate}][Amount: {a.LoanAmount}][Paid: {a.Paid}][Balance: {a.Balance}]",
+                Text = $"[Date: {a.LoanDate.ToString("dd MM yyyy")}][Amount: {CurrencyFormatter(a.LoanAmount)}][A.Int: {CurrencyFormatter(a.AccrualInterest)}][Balance: {CurrencyFormatter(a.Balance)}][D.Amt: {CurrencyFormatter(a.DueAmount)}]",
                 Value = a.Id
             });
             var defaultSelectedValue = "default-value";

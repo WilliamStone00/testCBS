@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
     public class HomeController : BaseController
     {
         public ActionResult Index()
