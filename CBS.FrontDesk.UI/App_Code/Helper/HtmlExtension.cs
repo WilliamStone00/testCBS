@@ -21,7 +21,6 @@ namespace CBS.FrontDesk.UI.App_Code.Helper
 
             StringBuilder breadcrumb = new StringBuilder("<ol class='breadcrumb'><li>").Append(helper.ActionLink("Home", "Index", "Home").ToHtmlString()).Append("</li>");
 
-
             breadcrumb.Append("<li>");
             breadcrumb.Append(helper.ActionLink(helper.ViewContext.RouteData.Values["controller"].ToString(),
                 "Index",

@@ -117,7 +117,7 @@
         console.log("Selected text:", selectedText);
         console.log("Chart number:", chartNumber);
 
-        if (chartNumber === "451000") {
+        if (chartNumber === "4510") {
             $('#LiaisonAccountOwnerToHide').show();
             console.log("Showing Liaison Account Owner element");
         } else {
@@ -135,10 +135,11 @@
         $('#AccountNumberCU').val(accNumber);
         $('#BranchCode').val(selectedValue);
     });
-    $(document).on('change', '#LiasonAccountOwnerId', function () {
+    $(document).on('change', '#AccountCounterPartId', function () {
         var selectedValue = $(this).val();
         var accNumber = $('#AccountNumberCU').val();
-        accNumber = replaceLastThreeChars($('#AccountNumberCU').val(), selectedValue);
+        accNumber = accNumber.replace('[DBCD]', selectedValue);
+        accNumber = replaceLastFourChars($('#AccountNumberCU').val(), selectedValue);
         $('#AccountNumberCU').val(accNumber);
     });
     $('#AccountNumber').on('input', function () {
@@ -186,6 +187,15 @@ function replaceLastThreeChars(inputString, replacement) {
 
     // Remove the last 3 characters and append the replacement
     return inputString.slice(0, -3) + replacement;
+}
+function replaceLastFourChars(inputString, replacement) {
+    // Check if the string is at least 3 characters long
+    if (inputString.length < 6) {
+        return inputString; // Return the original string if it's too short
+    }
+
+    // Remove the last 3 characters and append the replacement
+    return inputString.slice(0, -6) + replacement;
 }
 function updateProgressBar(progress) {
     var progressBar = $('.progress-bar');
@@ -421,33 +431,7 @@ function EntryRule() {
     };
     return formData;
 }
-//function initializeDataTableForAccountUpload(data) {
-//    if ($.fn.DataTable.isDataTable('#myDataTable_AccountUploadData')) {
-//        // If the DataTable instance already exists, destroy it
-//        table.destroy();
-//    }
-//    console.log(data);
-//    if (data && data.length > 0) {
-//        // Create a new DataTable instance with the provided data
-//        table = $('#myDataTable_AccountUploadData').DataTable({
-//            data: data,
-//            columns: [
-//                { data: 'AccountNumber' },
-//                { data: 'AccountName' },
-//                { data: 'ChartofAccount' },
-//                { data: 'CreatedDate' },
-//                { data: 'CurrentBalance' },
-//                { data: 'BeginningBalance' },
-//                { data: 'BranchCode' },
 
-//            ]
-//        });
-//    } else {
-//        // Create an empty DataTable instance
-//        table = $('#myDataTable_AccountUploadData').DataTable();
-//        table.clear().draw();
-//    }
-//}
 
 function initializeDataTableAccountingRuleData(data) {
     // Get the table element
@@ -511,10 +495,19 @@ function loadAccountCategoryByChartNumber(number) {
         success: function (data) {
             // Clear existing options in the OperationEventAttributeId combo
             $('#Account_AccountCategoryId').empty();
-
+            console.log(data.AccountNumber);
             $('#AccountNumber').val(data.AccountNumber);
             $('#AccountName').val(data.description);
-            var accNumber = padNumberDigits(data.AccountNumber, 6) + "[BCD]" + "000"
+            var accNumber = "";
+            if (data.AccountNumber === "45100")
+            {
+                $('#LiaisonAccountOwnerToHide').show();
+                accNumber = padNumberDigits(data.AccountNumber, 6) + "[BCD]" + "[DBCD]"
+            } else {
+                accNumber = padNumberDigits(data.AccountNumber, 6) + "[BCD]" + "000"
+                $('#LiaisonAccountOwnerToHide').hide();
+            }
+            
             $('#AccountNumberCU').val(accNumber);
             // Add new options based on the fetched data
             $.each(data.accountCategoryList, function (index, item) {

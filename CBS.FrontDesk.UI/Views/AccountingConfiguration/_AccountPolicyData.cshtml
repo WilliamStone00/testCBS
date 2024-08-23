@@ -1,6 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
 
-@if (true)
+@if (Convert.ToBoolean(Session["IsHeadOffice"]))
 {
     <table class="table table-hover" id="myDataTable_AccountPolicyData">
         <thead class="table-light">

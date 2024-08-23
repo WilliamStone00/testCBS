@@ -777,7 +777,9 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div id="connectionModal" style="display:none; background-color: red; color: white; padding: 20px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; text-align: center; font-size: 36px;">
+                            <span id="connectionMessage"></span>
+                        </div>
                         <!-- #endregion -->
 
 
@@ -849,9 +851,10 @@
     @*<script src="~/CBSTemp/ui/assets/js/form-validation.js"></script>*@
     <script src="~/CBSTemp/ui/assets/js/form-layouts.js"></script>
     <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
-    <script src="~/signalr/hubs"></script>
     <script src="~/Scripts/Js/main.js/ConnectionMonitor.js"></script>
     @*<script src="~/Scripts/Js/main.js/NotificationMonitor.js"></script>*@
+
+    <script src="~/signalr/hubs"></script>
     <script src="~/Scripts/Js/main.js/App.js"></script>
     <script src="~/CBSTemp/ui/assets/js/ui-toasts.js"></script>
     <script src="~/CBSTemp/ui/assets/js/app-logistics-dashboard.js"></script>

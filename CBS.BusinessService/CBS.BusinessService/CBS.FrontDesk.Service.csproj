@@ -184,6 +184,7 @@
     <Compile Include="Accounting\ConnectionHub.cs" />
     <Compile Include="Accounting\ConnectionMonitoringService.cs" />
     <Compile Include="Accounting\IAccountingEntryServices.cs" />
+    <Compile Include="Accounting\INotificationServices.cs" />
     <Compile Include="Accounting\NotificationHub.cs" />
     <Compile Include="Accounting\NotificationServices.cs" />
     <Compile Include="Accounting\TrialBalanceReferenceServices.cs" />

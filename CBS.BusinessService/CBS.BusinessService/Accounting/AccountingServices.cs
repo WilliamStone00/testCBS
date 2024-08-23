@@ -31,7 +31,7 @@ namespace CBS.BusinessService.Accounting
             try
             {
                 model.AccountNumberNetwok = "xxxxx";
-                model.AccountTypeId = "YYYYY";
+                model.AccountTypeId = model.AccountNumber.Equals("45100")? model.AccountCounterPartId:"YYYYYY" ;
                 model.AccountNumberManagementPosition = "0";
               
                 // Make an API call to create an individual profile

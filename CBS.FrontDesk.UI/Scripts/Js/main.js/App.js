@@ -405,6 +405,7 @@ function LoadDT(tableID, order) {
 
     if (order === "desc") {
         var T = '#' + tableID;
+        console.log(T);
         var dataThumbView = $(T).DataTable({
             responsive: false,
             columnDefs: [
@@ -1040,9 +1041,7 @@ function AjaxPostAndUpdate(form) {
 
 
 }
-
-
-
+ 
 function AjaxPostAndUpdateValidationDecision(form) {
 
     $.validator.unobtrusive.parse(form);
@@ -1093,6 +1092,7 @@ function EditResetModal(KEY, modalBodyID, ModalcontentID, controller, actionMeth
         }
     });
 }
+
 
 function LoadDataGen(controller, tableID, partialView, order, datalistingview, KEY, serviceOption, path = 'list') {
     LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, path, datalistingview, serviceOption);
@@ -1288,9 +1288,7 @@ function ExportFile(controller, serviceOption, action, KEY, ReadOptions, path, r
         appalert(err.statusText, 1, 3);
     });
 }
-
-
-function LoadDataTableNew(controller, tableID, action, KEY, partialView, order, path, diveToloadtheData, serviceOption) {
+function LoadDataTableSp(controller, tableID, action, KEY, partialView, order, path, diveToloadtheData, serviceOption) {
     var encodedURL = '/' + controller + '/' + action +
         '?KEY=' + encodeURIComponent(KEY) +
         '&partialView=' + encodeURIComponent(partialView) +
@@ -1302,6 +1300,50 @@ function LoadDataTableNew(controller, tableID, action, KEY, partialView, order, 
         url: encodedURL,
         success: function (data) {
             $('#' + diveToloadtheData).html(data);
+            LoadDT(tableID, order);
+        },
+        error: function (err) {
+            appalert(err.statusText, 1, 3);
+        }
+    });
+}
+
+function LoadDataTableNewVersion(controller, tableID, action, KEY, partialView, path, diveToloadtheData, serviceOption) {
+    var encodedURL = '/' + controller + '/' + action +
+        '?KEY=' + encodeURIComponent(KEY) +
+        '&partialView=' + encodeURIComponent(partialView) +
+        '&serviceOption=' + encodeURIComponent(serviceOption) +
+        '&path=' + encodeURIComponent(path);
+    console.log(encodedURL + " tableId= " + tableID + " divloader:" + diveToloadtheData );
+
+    $.ajax({
+        type: "GET",
+        url: encodedURL,
+        success: function (data) {
+            $('#' + diveToloadtheData).html(data);
+            console.log($('#'+tableID).length);
+            LoadDGVT(tableID);
+        },
+        error: function (err) {
+            appalert(err.statusText, 1, 3);
+        }
+    });
+}
+function LoadDataTableNew(controller, tableID, action, KEY, partialView, order, path, diveToloadtheData, serviceOption)
+{
+    var encodedURL = '/' + controller + '/' + action +
+        '?KEY=' + encodeURIComponent(KEY) +
+        '&partialView=' + encodeURIComponent(partialView) +
+        '&serviceOption=' + encodeURIComponent(serviceOption) +
+        '&path=' + encodeURIComponent(path);
+    console.log(encodedURL + " tableId= " + tableID + " divloader:" + diveToloadtheData + " order:" + order);
+
+    $.ajax({
+        type: "GET",
+        url: encodedURL,
+        success: function (data) {
+            $('#' + diveToloadtheData).html(data);
+            console.log($('#DataTablePosition').length); 
             LoadDT(tableID, order);
         },
         error: function (err) {

@@ -31,9 +31,10 @@
                             <div class="accordion-body">
                                 <div class="row justify-content-end">
                                     <div class="demo-inline-spacing text-end">
-                                        <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_OperationEvent','_OperationEventData','desc','datalistingview_OperationEvent',0,'operationEvent','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_OperationEvent','_OperationEventData','datalistingview_OperationEvent',0,'operationEvent','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                             <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                         </a>
+                                        
                                         <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEvent','_CreateOperationEvent','new','AccountingConfiguration','operationEvent')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
                                             <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                         </a>
@@ -64,7 +65,7 @@
                             <div class="accordion-body">
                                 <div class="row justify-content-end">
                                     <div class="demo-inline-spacing text-end">
-                                        <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_OperationEventAttribute','_OperationEventAttributeData','desc','datalistingview_OperationEventAttribute',0,'operationEventAttribute','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_OperationEventAttribute','_OperationEventAttributeData','datalistingview_OperationEventAttribute',0,'operationEventAttribute','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                             <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                         </a>
                                         <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEventAttribute','_CreateOperationEventAttribute','new','AccountingConfiguration','operationEventAttribute')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
@@ -98,7 +99,7 @@
                             <div class="accordion-body">
                                 <div class="row justify-content-end">
                                     <div class="demo-inline-spacing text-end">
-                                        <a type="button" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountingEntryRule','_AccountingEntryRuleData','desc','datalistingview_AccountingEntryRule',0,'accountingEntryRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_AccountingEntryRule','_AccountingEntryRuleData','datalistingview_AccountingEntryRule',0,'accountingEntryRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                             <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                         </a>
                                         <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountingEntryRule','_CreateAccountingEntryRule','new','AccountingConfiguration','accountingEntryRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
@@ -125,7 +126,7 @@
 
                                 <div class="row justify-content-end">
                                     <div class="demo-inline-spacing text-end">
-                                        <button type="submit" onclick="LoadDataGen('AccountingConfiguration','myDataTable_AccountingRule','_AccountingRuleData','desc','datalistingview_AccountingRule',0,'accountingRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <button type="submit" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_AccountingRule','_AccountingRuleData','datalistingview_AccountingRule',0,'accountingRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                             <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                         </button>
                                         <button type="submit" onclick="AddORUpdateGen(null,'datalistingview_AccountingRule','_CreateAccountingRule','new','AccountingConfiguration','accountingRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
@@ -160,7 +161,7 @@
 
 
     @section Scripts {@Scripts.Render("~/bundles/jqueryval")
-
+<script src="~/Scripts/Js/AccountEventConfigurtion/MFIChartOfAccount.js"></script>
     <script src="~/Scripts/Js/main.js/Account.js"></script>
 
     }
