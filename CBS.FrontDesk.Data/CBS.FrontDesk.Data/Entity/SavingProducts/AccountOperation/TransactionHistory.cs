@@ -120,8 +120,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public string PrimaryTellerConfirmationStatus { get; set; }
         public string DailyTellerId { get; set; }
         public virtual Teller Teller { get; set; }
-        public string InitialPrinting { get; set; } = "Initial Printing";
-
+        public string InitialPrinting { get; set; }
+        public bool IsPrimaryTeller { get; set; }
         // Opening Notes and Coins Counts
         public int OpeningNote10000 { get; set; }
         public int OpeningNote5000 { get; set; }

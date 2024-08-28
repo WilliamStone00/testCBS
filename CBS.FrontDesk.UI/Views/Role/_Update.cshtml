@@ -3,32 +3,35 @@
 
     @using (Html.BeginForm("Update", "Role", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {@Html.HiddenFor(model => model.Role.Id)
-    <div class="row mt-2 gy-4">
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.Role.Name, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.Role.Name, "", new { @class = "text-danger" })
-                <label>Name</label>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.TextAreaFor(m => m.Role.Description, new { @class = "form-control", @style = "height: 200px;" })
-                @Html.ValidationMessageFor(m => m.Role.Description, "", new { @class = "text-danger" })
-                <label>Description</label>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="form-check">
-                @Html.CheckBoxFor(m => m.Role.IsTeller, new { @class = "form-check-input" })
-                <label class="form-check-label">Is this role teller?</label>
-            </div>
-        </div>
-    </div>
-    <div class="mt-4">
+    <fieldset class="fieldset-custom">
 
-        <button type="submit" class="btn btn-primary me-2">Update</button>
+        <div class="row mt-2 gy-4">
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.Role.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Role.Name, "", new { @class = "text-danger" })
+                    <label>Name</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextAreaFor(m => m.Role.Description, new { @class = "form-control", @style = "height: 200px;" })
+                    @Html.ValidationMessageFor(m => m.Role.Description, "", new { @class = "text-danger" })
+                    <label>Description</label>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.Role.IsTeller, new { @class = "form-check-input" })
+                    <label class="form-check-label">Is this role teller?</label>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
 
-    </div>
+            <button type="submit" class="btn btn-primary me-2">Update</button>
+
+        </div>
+    </fieldset>
 }
 </div>

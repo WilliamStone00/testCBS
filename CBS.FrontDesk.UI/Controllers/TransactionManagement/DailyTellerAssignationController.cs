@@ -1,11 +1,13 @@
 ﻿using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using ClosedXML.Excel;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Mapping;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -103,6 +105,96 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             }
 
             return View("OpenInNewWindow");
+        }
+        public async Task<ActionResult> TellerOpenningAndClossingStatus()
+        {
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.Branches = Branches;
+            return View();
+        }
+        public async Task<ActionResult> TillCashStatusDownload(GetTillStatusQuery request)
+        {
+            // Clear ModelState errors for properties you don't want to validate
+            ModelState.Clear();
+
+            // Manually add the validation errors for `GetTillStatusQuery`
+            TryValidateModel(request, nameof(request));
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select((e, index) => $"{index + 1}. {e.ErrorMessage}")
+                    .ToList();
+
+                string error = string.Join("<br/>", errors);
+                return Json(new { success = false, message = error });
+            }
+
+            if (request.ByBranch)
+            {
+                request.QueryParameter = request.BranchId;
+            }
+            else
+            {
+                request.QueryParameter = request.TellerId;
+            }
+
+            // Call your service to get the data
+            var response = await _services.TillCashStatus(request);
+            var data = response.ToList(); // Convert to list if needed
+
+            // Set session variables based on the request
+            if (request.ByBranch)
+            {
+                if (data.Any())
+                {
+                    this.HttpContext.Session["RPTBranchName"] = data.FirstOrDefault()?.BranchName;
+                }
+            }
+            else
+            {
+                this.HttpContext.Session["RPTBranchName"] = "For All Branches";
+            }
+
+            // Check if data is available
+            if (data == null || !data.Any())
+            {
+                return Json(new { success = false, message = "No data available for the selected query criteria." });
+
+            }
+            // If data is available, proceed with setting session variables and redirecting to the report
+            this.HttpContext.Session["rptSource"] = data;
+            this.HttpContext.Session["param_size"] = "5";
+            this.HttpContext.Session["DateFrom"] = request.DateFrom;
+            this.HttpContext.Session["DateTo"] = request.DateTo;
+            this.HttpContext.Session["PrintedBy"] = Session["FullName"].ToString();
+            this.HttpContext.Session["rptType"] = "ReportWithParameter";
+            this.HttpContext.Session["ReportName"] = "AllOpenAndClossingOfTillRpt.rpt";
+            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/Tellers/AllOpenAndClossingOfTillRpt.rpt";
+            this.HttpContext.Session["rpttitle"] = $"TillStatus";
+
+            // Construct the URL to redirect to the PDF
+            string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller name if different
+
+            // Set the ViewBag variables for the URL to open the report
+            ViewBag.UrlToOpen = url;
+            ViewBag.CurrentUrl = "/DailyTellerAssignation/TillCashStatus"; // The current URL
+            ViewBag.ErrorMessage = string.Empty;
+
+            // Return the view that opens the report in a new window
+            return Json(new { success = true, message = "Success." });
+        }
+
+
+        public async Task<ActionResult> TillCashStatus()
+        {
+            var Branches = await _branchServices.GetBranches();
+            var Tellers = await _tellerServices.GetTellersStringValuesAsync();
+            ViewBag.HasError = false;
+            ViewBag.Branches = Branches;
+            ViewBag.Tellers = Tellers;
+            return View();
         }
         public async Task<ActionResult> DownloadTellerOperationsToExcel(DailyTeller request)
         {
@@ -284,12 +376,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             await LoadDropdowns();
             return View();
         }
-        public async Task<ActionResult> TellerOpenningAndClossingStatus()
-        {
-            var Branches = await _branchServices.GetBranches();
-            ViewBag.Branches = Branches;
-            return View();
-        }
+       
 
         [HttpPost]
         public async Task<ActionResult> Update(DailyTeller model)
@@ -349,17 +436,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             ViewBag.Users = Users;
             ViewBag.Tellers = Tellers;
         }
-        //public async Task<ActionResult> Loa(string Key)
-        //{
-        //    var Users = await _services.LoadDailyUsers();
-        //    var Tellers = await _tellerServices.GetTellersStringValuesAsync();
-        //    var Branches = await _branchServices.GetBranches();
-        //    ViewBag.Users = Users;
-        //    ViewBag.Tellers = Tellers;
-        //    ViewBag.Branches = Branches;
-
-        //    return Json(data, JsonRequestBehavior.AllowGet);
-        //}
+      
     }
 
 }

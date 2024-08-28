@@ -3,86 +3,87 @@
 <div id="modalContent" class="table-responsive">
 
 </div>
-
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead class="bg-light">
-            <tr>
-                <th colspan="2" class="text-center">
-                    <h5 class="card-title mb-0">Profile</h5>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><strong>User Name:</strong></td>
-                <td>@Model.userName</td>
-            </tr>
-            <tr>
-                <td><strong>Full Name:</strong></td>
-                <td>@Model.firstName @Model.lastName</td>
-            </tr>
-            <tr>
-                <td><strong>Email:</strong></td>
-                <td>@Model.email</td>
-            </tr>
-            <tr>
-                <td><strong>Telephone:</strong></td>
-                <td>@Model.phoneNumber</td>
-            </tr>
-            <tr>
-                <td><strong>Role:</strong></td>
-                <td>@Model.roleName</td>
-            </tr>
-            <tr>
-                <td><strong>MFA Enabled:</strong></td>
-                <td>@Model.IsGoogleAuthenticatorEnabled</td>
-            </tr>
-            <tr>
-                <td><strong>Status:</strong></td>
-                <td>@Model.status</td>
-            </tr>
-            <tr>
-                <td><strong>IP Address:</strong></td>
-                <td>@Model.allowedIP</td>
-            </tr>
-            <tr>
-                <td><strong>Date of Creation:</strong></td>
-                <td>@Model.CreatedDate</td>
-            </tr>
-            <tr>
-                <td><strong>Authentication Key:</strong></td>
-                <td>@Model.GoogleAuthenticatorSecretKey</td>
-            </tr>
-            <tr>
-                <td><strong>Branch:</strong></td>
-                <td>@Model.Brancch.Name, Code: @Model.Brancch.BranchCode</td>
-            </tr>
-        </tbody>
-        <thead class="bg-light">
-            <tr>
-                <th colspan="2" class="text-center">
-                    <h5 class="card-title mb-0">Activities</h5>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><strong>Last Login Date:</strong></td>
-                <td>@Model.LastLoginDate</td>
-            </tr>
-            <tr>
-                <td><strong>Number of Login Attempts:</strong></td>
-                <td>@Model.LoginAttempts</td>
-            </tr>
-            <tr>
-                <td><strong>Login Account Status:</strong></td>
-                <td>@Model.IsBlocked</td>
-            </tr>
-            <tr>
-                <td><strong>Account Verification Status:</strong></td>
-                <td>@Model.IsVerified</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<fieldset class="fieldset-custom">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="myDataTable">
+            <thead class="bg-light">
+                <tr>
+                    <th colspan="2" class="text-center">
+                        <h5 class="card-title mb-0">Profile</h5>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>User Name:</strong></td>
+                    <td>@Model.userName</td>
+                </tr>
+                <tr>
+                    <td><strong>Full Name:</strong></td>
+                    <td>@Model.firstName @Model.lastName</td>
+                </tr>
+                <tr>
+                    <td><strong>Email:</strong></td>
+                    <td>@Model.email</td>
+                </tr>
+                <tr>
+                    <td><strong>Telephone:</strong></td>
+                    <td>@Model.phoneNumber</td>
+                </tr>
+                <tr>
+                    <td><strong>Role:</strong></td>
+                    <td>@Model.roleName</td>
+                </tr>
+                <tr>
+                    <td><strong>MFA Enabled:</strong></td>
+                    <td>@Model.IsGoogleAuthenticatorEnabled</td>
+                </tr>
+                <tr>
+                    <td><strong>Status:</strong></td>
+                    <td>@Model.status</td>
+                </tr>
+                <tr>
+                    <td><strong>IP Address:</strong></td>
+                    <td>@Model.allowedIP</td>
+                </tr>
+                <tr>
+                    <td><strong>Date of Creation:</strong></td>
+                    <td>@Model.CreatedDate</td>
+                </tr>
+                <tr>
+                    <td><strong>Authentication Key:</strong></td>
+                    <td>@Model.GoogleAuthenticatorSecretKey</td>
+                </tr>
+                <tr>
+                    <td><strong>Branch:</strong></td>
+                    <td>@Model.Brancch.Name, Code: @Model.Brancch.BranchCode</td>
+                </tr>
+            </tbody>
+            <thead class="bg-light">
+                <tr>
+                    <th colspan="2" class="text-center">
+                        <h5 class="card-title mb-0">Activities</h5>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Last Login Date:</strong></td>
+                    <td>@Model.LastLoginDate</td>
+                </tr>
+                <tr>
+                    <td><strong>Number of Login Attempts:</strong></td>
+                    <td>@Model.LoginAttempts</td>
+                </tr>
+                <tr>
+                    <td><strong>Login Account Status:</strong></td>
+                    <td>@Model.IsBlocked</td>
+                </tr>
+                <tr>
+                    <td><strong>Account Verification Status:</strong></td>
+                    <td>@Model.IsVerified</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </fieldset>

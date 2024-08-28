@@ -149,7 +149,7 @@ function toggleInputFields() {
             iconElement.className = "mdi mdi-account-cog me-2";
             break;
         default: // New Loan Application
-            iconElement.className = "mdi mdi-bank me-2"; // Update this line with the new icon class
+            iconElement.className = "mdi mdi-file me-2"; // Update this line with the new icon class
             break;
     }
 

@@ -32,121 +32,123 @@ By carefully selecting the appropriate loan product and terms in this section, y
                      data-bs-parent="#collapsibleSection">
                     <br />
                     <div class="accordion-body">
-                        <div class="row g-4">
-                            <div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanApplicationType, new SelectList(ViewBag.LoanApplicationTypes, "Value", "Text"), "---Select loan application types---", new { @class = "form-control select2", @search = "true", @id = "LoanApplicationType", @onchange = "LoadRefinancing(this.value,'loanapplicationtype','loanid')" })
-                                    <label>Application type</label>
-                                </div>
-                            </div>
-                            <div class="col-12" id="LoanCategoryDive">
-                                <div class="form-check form-check-inline" id="accountType">
-                                    @Html.RadioButtonFor(m => m.AddLoanApplicationCommand.LoanCategory, "Main_Loan", new { id = "MainLoan", @class = "form-check-input" })
-                                    <label class="form-check-label" for="MainLoan">Main Loan</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    @Html.RadioButtonFor(m => m.AddLoanApplicationCommand.LoanCategory, "Special_Saving_Facility_Loan", new { id = "SpecialSavingFacilityLoan", @class = "form-check-input" })
-                                    <label class="form-check-label" for="SpecialSavingFacilityLoan">Special Saving Facility</label>
-                                </div>
-                            </div>
-                            <div class="col-md-12" id="TargetPopulationDiv">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTarget, new SelectList(ViewBag.LoanTargets, "Value", "Text"), "---Select loan category---", new { @class = "form-control select2", @search = "true", @onchange = "GetProductByTarget(this.value,'loan_productid')" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanTarget, "", new { @class = "text-danger " })
-                                    <label>Targeted population</label>
-                                </div>
-                            </div>
-                            <!-- Adjusted row -->
-                            <div id="loandiv" style="display:none;">
-                                <label id="loanlable"></label>
-                                <hr />
-                                <div class="col-md-12 mb-4">
+                        <fieldset class="fieldset-custom">
+                            <div class="row g-4">
+                                <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanId, new SelectList(ViewBag.MembersLoan, "Value", "Text"), "---Select loan---", new { @class = "form-control select2", @search = "true", @id = "loanid", @onchange = "GetLoan(this.value)" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanId, "", new { @class = "text-danger" })
-                                        <label>Member current loans</label>
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanApplicationType, new SelectList(ViewBag.LoanApplicationTypes, "Value", "Text"), "---Select loan application types---", new { @class = "form-control select2", @search = "true", @id = "LoanApplicationType", @onchange = "LoadRefinancing(this.value,'loanapplicationtype','loanid')" })
+                                        <label>Application type</label>
                                     </div>
                                 </div>
-                                <!-- Balance, Interest, VAT, Penalty inputs -->
-                                <div class="col-md-12 mb-4">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsOverRightOldLoanInterestAndBalance, new { @class = "form-check-input", @id = "IsOverRightOldLoanInterestAndBalance" })
-                                        <label class="form-check-label" for="IsOverRightOldLoanInterestAndBalance">Check me to override selected loan information</label>
+                                <div class="col-12" id="LoanCategoryDive">
+                                    <div class="form-check form-check-inline" id="accountType">
+                                        @Html.RadioButtonFor(m => m.AddLoanApplicationCommand.LoanCategory, "Main_Loan", new { id = "MainLoan", @class = "form-check-input" })
+                                        <label class="form-check-label" for="MainLoan">Main Loan</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        @Html.RadioButtonFor(m => m.AddLoanApplicationCommand.LoanCategory, "Special_Saving_Facility_Loan", new { id = "SpecialSavingFacilityLoan", @class = "form-check-input" })
+                                        <label class="form-check-label" for="SpecialSavingFacilityLoan">Special Saving Facility</label>
                                     </div>
                                 </div>
-                                <div class="row" id="loanoveride" style="display:none;">
-                                    <div class="col-md-3">
+                                <div class="col-md-12" id="TargetPopulationDiv">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTarget, new SelectList(ViewBag.LoanTargets, "Value", "Text"), "---Select loan category---", new { @class = "form-control select2", @search = "true", @onchange = "GetProductByTarget(this.value,'loan_productid')" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanTarget, "", new { @class = "text-danger " })
+                                        <label>Targeted population</label>
+                                    </div>
+                                </div>
+                                <!-- Adjusted row -->
+                                <div id="loandiv" style="display:none;">
+                                    <label id="loanlable"></label>
+                                    <hr />
+                                    <div class="col-md-12 mb-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewBalance, new { @class = "form-control", @id = "NewBalance" })
-                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewBalance, "", new { @class = "text-danger" })
-                                            <label for="NewBalance">Override Balance</label>
+                                            @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanId, new SelectList(ViewBag.MembersLoan, "Value", "Text"), "---Select loan---", new { @class = "form-control select2", @search = "true", @id = "loanid", @onchange = "GetLoan(this.value)" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanId, "", new { @class = "text-danger" })
+                                            <label>Member current loans</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewInterest, new { @class = "form-control", @id = "NewInterest" })
-                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewInterest, "", new { @class = "text-danger" })
-                                            <label for="NewInterest">Override Interest</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewVAT, new { @class = "form-control", @id = "NewVAT" })
-                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewVAT, "", new { @class = "text-danger" })
-                                            <label for="NewVAT">Override VAT</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewPenalty, new { @class = "form-control", @id = "NewPenalty" })
-                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewPenalty, "", new { @class = "text-danger" })
-                                            <label for="NewPenalty">Override Penalty</label>
-                                        </div>
-                                    </div>
+                                    <!-- Balance, Interest, VAT, Penalty inputs -->
                                     <div class="col-md-12 mb-4">
                                         <div class="form-check">
-                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.StopInterestCalculation, new { @class = "form-check-input", @id = "StopInterestCalculation" })
-                                            <label class="form-check-label" for="StopInterestCalculation">Check me to stop interest calculation for this loan.</label>
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsOverRightOldLoanInterestAndBalance, new { @class = "form-check-input", @id = "IsOverRightOldLoanInterestAndBalance" })
+                                            <label class="form-check-label" for="IsOverRightOldLoanInterestAndBalance">Check me to override selected loan information</label>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="loanoveride" style="display:none;">
+                                        <div class="col-md-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewBalance, new { @class = "form-control", @id = "NewBalance" })
+                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewBalance, "", new { @class = "text-danger" })
+                                                <label for="NewBalance">Override Balance</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewInterest, new { @class = "form-control", @id = "NewInterest" })
+                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewInterest, "", new { @class = "text-danger" })
+                                                <label for="NewInterest">Override Interest</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewVAT, new { @class = "form-control", @id = "NewVAT" })
+                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewVAT, "", new { @class = "text-danger" })
+                                                <label for="NewVAT">Override VAT</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewPenalty, new { @class = "form-control", @id = "NewPenalty" })
+                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewPenalty, "", new { @class = "text-danger" })
+                                                <label for="NewPenalty">Override Penalty</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mb-4">
+                                            <div class="form-check">
+                                                @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.StopInterestCalculation, new { @class = "form-check-input", @id = "StopInterestCalculation" })
+                                                <label class="form-check-label" for="StopInterestCalculation">Check me to stop interest calculation for this loan.</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12" id="loanProductDiv">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductId, new SelectList(ViewBag.LoanProducts, "Value", "Text"), "---Select loan product---", new { @class = "form-control select2", @search = "true", @onchange = "LoanProductsProperties(this.value,'loanrepayment_cycles','RepaymentCircle')", @id = "loan_productid" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanProductId, "", new { @class = "text-danger " })
-                                    <label>Loan product</label>
+                                <div class="col-md-12" id="loanProductDiv">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductId, new SelectList(ViewBag.LoanProducts, "Value", "Text"), "---Select loan product---", new { @class = "form-control select2", @search = "true", @onchange = "LoanProductsProperties(this.value,'loanrepayment_cycles','RepaymentCircle')", @id = "loan_productid" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanProductId, "", new { @class = "text-danger " })
+                                        <label>Loan product</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12" id="loanTypeDiv">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanType, new SelectList(ViewBag.LoanTypes, "Value", "Text"), "---Select loan type---", new { @class = "form-control select2", @search = "true" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanType, "", new { @class = "text-danger " })
-                                    <label>Select loan type</label>
+                                <div class="col-md-12" id="loanTypeDiv">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanType, new SelectList(ViewBag.LoanTypes, "Value", "Text"), "---Select loan type---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanType, "", new { @class = "text-danger " })
+                                        <label>Select loan type</label>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-12" id="RAmountDiv">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.Amount, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.Amount, "", new { @class = "text-danger" })
-                                    <label id="amount">Amount</label>
+                                <div class="col-md-12" id="RAmountDiv">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.Amount, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.Amount, "", new { @class = "text-danger" })
+                                        <label id="amount">Amount</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.LoanDuration, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanDuration, "", new { @class = "text-danger" })
+                                        <label id="loanduration">Loan duration</label>
+                                    </div>
+                                </div>
+                                <div class="col-12" id="IncludeChargeDiv">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsChargesInclussive, new { @class = "form-check-input", @id = "IsChargesInclussive" })
+                                        <label class="form-check-label" for="IsChargesInclussive">Check me to include charges to my loan. I don't have money to pay at the cash desk.</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.LoanDuration, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanDuration, "", new { @class = "text-danger" })
-                                    <label id="loanduration">Loan duration</label>
-                                </div>
-                            </div>
-                            <div class="col-12" id="IncludeChargeDiv">
-                                <div class="form-check">
-                                    @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsChargesInclussive, new { @class = "form-check-input", @id = "IsChargesInclussive" })
-                                    <label class="form-check-label" for="IsChargesInclussive">Check me to include charges to my loan. I don't have money to pay at the cash desk.</label>
-                                </div>
-                            </div>
-                        </div>
+                        </fieldset>
                     </div>
                 </div>
             </div>
@@ -177,89 +179,89 @@ By carefully considering and implementing appropriate risk mitigation measures i
                     <br />
 
                     <div class="accordion-body">
+                        <fieldset class="fieldset-custom">
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.RequiredDownPaymentCoverageRate, new { @class = "form-check-input" })
+                                        <label id="downpaymentrate" class="form-check-label" for="isActive">Does this application require down payment?</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsThereGuarantor, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="isActive">Have member provided guarantor Or Co-Obligator?</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsThereCollateral, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="isActive">Have member provided collateral?</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPreferenceShareAccountCoverageAmount, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="isActive">Place preference share as guarantee</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsDepositAccountCoverageAmount, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="isActive">Place deposit as guarantee</label>
+                                    </div>
+                                </div>
+                                @*<div class="col-6">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsTermDeposiAccountCoverageAmount, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">Place temp deposit as guarantee</label>
+                                        </div>
+                                    </div>*@
 
-                        <div class="row g-4">
-                            <div class="col-12">
-                                <div class="form-check">
-                                    @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.RequiredDownPaymentCoverageRate, new { @class = "form-check-input" })
-                                    <label id="downpaymentrate" class="form-check-label" for="isActive">Does this application require down payment?</label>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.DepositAccountCoverageAmount, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.DepositAccountCoverageAmount, "", new { @class = "text-danger" })
+                                        <label>Deposit coverage amount</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount, "", new { @class = "text-danger" })
+                                        <label>Preference coverage amount</label>
+                                    </div>
+                                </div>
+                                @*<div class="col-md-4">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.TermDeposiAccountCoverageAmount, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.TermDeposiAccountCoverageAmount, "", new { @class = "text-danger" })
+                                            <label>Temp account coverage amount</label>
+                                        </div>
+                                    </div>*@
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.ShareAccountCoverageAmount, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.ShareAccountCoverageAmount, "", new { @class = "text-danger" })
+                                        <label id="share">Share account coverage amount</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.SavingAccountCoverageRate, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.SavingAccountCoverageRate, "", new { @class = "text-danger" })
+                                        <label id="saving">Saving account coverage rate</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.SalaryAccountCoverageRate, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.SalaryAccountCoverageRate, "", new { @class = "text-danger" })
+                                        <label id="salary">Salary account coverage rate</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <div class="form-check">
-                                    @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsThereGuarantor, new { @class = "form-check-input" })
-                                    <label class="form-check-label" for="isActive">Have member provided guarantor Or Co-Obligator?</label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-check">
-                                    @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsThereCollateral, new { @class = "form-check-input" })
-                                    <label class="form-check-label" for="isActive">Have member provided collateral?</label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-check">
-                                    @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPreferenceShareAccountCoverageAmount, new { @class = "form-check-input" })
-                                    <label class="form-check-label" for="isActive">Place preference share as guarantee</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-check">
-                                    @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsDepositAccountCoverageAmount, new { @class = "form-check-input" })
-                                    <label class="form-check-label" for="isActive">Place deposit as guarantee</label>
-                                </div>
-                            </div>
-                            @*<div class="col-6">
-                    <div class="form-check">
-                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsTermDeposiAccountCoverageAmount, new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">Place temp deposit as guarantee</label>
-                    </div>
-                </div>*@
-
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.DepositAccountCoverageAmount, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.DepositAccountCoverageAmount, "", new { @class = "text-danger" })
-                                    <label>Deposit coverage amount</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount, "", new { @class = "text-danger" })
-                                    <label>Preference coverage amount</label>
-                                </div>
-                            </div>
-                            @*<div class="col-md-4">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.TermDeposiAccountCoverageAmount, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.TermDeposiAccountCoverageAmount, "", new { @class = "text-danger" })
-                        <label>Temp account coverage amount</label>
-                    </div>
-                </div>*@
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.ShareAccountCoverageAmount, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.ShareAccountCoverageAmount, "", new { @class = "text-danger" })
-                                    <label id="share">Share account coverage amount</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.SavingAccountCoverageRate, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.SavingAccountCoverageRate, "", new { @class = "text-danger" })
-                                    <label id="saving">Saving account coverage rate</label>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.SalaryAccountCoverageRate, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.SalaryAccountCoverageRate, "", new { @class = "text-danger" })
-                                    <label id="salary">Salary account coverage rate</label>
-                                </div>
-                            </div>
-                        </div>
-
+                        </fieldset>
                     </div>
                 </div>
             </div>
@@ -291,22 +293,24 @@ By specifying these parameters accurately, you can ensure clarity regarding char
                     <br />
 
                     <div class="accordion-body">
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
-                                    <label>Prefered first payment date (in Month e.g 1 or 2 or 3)</label>
+                        <fieldset class="fieldset-custom">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
+                                        <label>Prefered first payment date (in Month e.g 1 or 2 or 3)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.GracePeriodAfterMaturityDate, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
+                                        <label>Enter grace period after entire loan is overdure (in days)</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.GracePeriodAfterMaturityDate, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
-                                    <label>Enter grace period after entire loan is overdure (in days)</label>
-                                </div>
-                            </div>
-                        </div>
+                        </fieldset>
                     </div>
                 </div>
             </div>
@@ -336,36 +340,38 @@ By accurately specifying these details, you can ensure transparency and clarity 
                     <br />
 
                     <div class="accordion-body">
-                        <div class="row g-4">
-                            @*<div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.AmortizationType, new SelectList(ViewBag.AmortizationTypes, "Value", "Text"), "---Select loan type---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.AmortizationType, "", new { @class = "text-danger " })
-                        <label>Select amortization type</label>
-                    </div>
-                </div>*@
-                            <div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.InterestRate, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.InterestRate, "", new { @class = "text-danger" })
-                                    <label id="interest">Interest in rate</label>
+                        <fieldset class="fieldset-custom">
+                            <div class="row g-4">
+                                @*<div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.AddLoanApplicationCommand.AmortizationType, new SelectList(ViewBag.AmortizationTypes, "Value", "Text"), "---Select loan type---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.AmortizationType, "", new { @class = "text-danger " })
+                                            <label>Select amortization type</label>
+                                        </div>
+                                    </div>*@
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.InterestRate, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.InterestRate, "", new { @class = "text-danger" })
+                                        <label id="interest">Interest in rate</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" id="ApplyInterestWaiverDiv">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsInterestWaiverApplied, new { @class = "form-check-input" })
+                                        @*@Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.IsChargesApplied, "", new { @class = "text-danger" })*@
+                                        <label class="form-check-label" for="isActive">Apply interest waiver to this application ?</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" id="WaiverDiv">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.InterestWaiverPercentage, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.InterestWaiverPercentage, "", new { @class = "text-danger" })
+                                        <label id="waiverranges">waiver rate (%)</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-12"id="ApplyInterestWaiverDiv">
-                                <div class="form-check">
-                                    @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsInterestWaiverApplied, new { @class = "form-check-input" })
-                                    @*@Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.IsChargesApplied, "", new { @class = "text-danger" })*@
-                                    <label class="form-check-label" for="isActive">Apply interest waiver to this application ?</label>
-                                </div>
-                            </div>
-                            <div class="col-md-12" id="WaiverDiv">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.InterestWaiverPercentage, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.InterestWaiverPercentage, "", new { @class = "text-danger" })
-                                    <label id="waiverranges">waiver rate (%)</label>
-                                </div>
-                            </div>
-                        </div>
+                        </fieldset>
                     </div>
                 </div>
             </div>
@@ -393,22 +399,24 @@ By accurately specifying these details, you can establish clear repayment terms 
                     <br />
 
                     <div class="accordion-body">
-                        <div class="row g-4">
-                            <div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.AddLoanApplicationCommand.RepaymentCircle, new SelectList(ViewBag.RepaymentCycles, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", @id = "RepaymentCircle" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.RepaymentCircle, "", new { @class = "text-danger " })
-                                    <label>Repayment cycle</label>
+                        <fieldset class="fieldset-custom">
+                            <div class="row g-4">
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.RepaymentCircle, new SelectList(ViewBag.RepaymentCycles, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", @id = "RepaymentCircle" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.RepaymentCircle, "", new { @class = "text-danger " })
+                                        <label>Repayment cycle</label>
+                                    </div>
                                 </div>
+                                @*<div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NumberOfRepayment, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NumberOfRepayment, "", new { @class = "text-danger" })
+                                            <label id="installment">Number of repayments</label>
+                                        </div>
+                                    </div>*@
                             </div>
-                            @*<div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NumberOfRepayment, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NumberOfRepayment, "", new { @class = "text-danger" })
-                        <label id="installment">Number of repayments</label>
-                    </div>
-                </div>*@
-                        </div>
+                        </fieldset>
                     </div>
                 </div>
             </div>
@@ -436,17 +444,19 @@ By providing transparent information on fees, you ensure clarity for both the bo
                     <br />
 
                     <div class="accordion-body">
-                        <div class="row g-4">
+                        <fieldset class="fieldset-custom">
+                            <div class="row g-4">
 
-                            <div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.ListBoxFor(m => m.AddLoanApplicationCommand.FeeIds, new MultiSelectList(ViewBag.LoanFees, "Value", "Text"), new { @class = "form-control select2", @search = "true" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.FeeIds, "", new { @class = "text-danger " })
-                                    <label>Select loan fees</label>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.ListBoxFor(m => m.AddLoanApplicationCommand.FeeIds, new MultiSelectList(ViewBag.LoanFees, "Value", "Text"), new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.FeeIds, "", new { @class = "text-danger " })
+                                        <label>Select loan fees</label>
+                                    </div>
                                 </div>
-                            </div>
 
-                        </div>
+                            </div>
+                        </fieldset>
                     </div>
                 </div>
             </div>
@@ -473,22 +483,24 @@ By accurately defining the purpose and activities, you ensure alignment between 
                      data-bs-parent="#collapsibleSection">
                     <br />
                     <div class="accordion-body">
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanPurposeId, new SelectList(ViewBag.LoanPurposes, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanPurposeId, "", new { @class = "text-danger " })
-                                    <label>Purpose of taken loan</label>
+                        <fieldset class="fieldset-custom">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanPurposeId, new SelectList(ViewBag.LoanPurposes, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanPurposeId, "", new { @class = "text-danger " })
+                                        <label>Purpose of taken loan</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.EconomicActivityId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.EconomicActivityId, "", new { @class = "text-danger " })
+                                        <label>Economic activity</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.AddLoanApplicationCommand.EconomicActivityId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.EconomicActivityId, "", new { @class = "text-danger " })
-                                    <label>Economic activity</label>
-                                </div>
-                            </div>
-                        </div>
+                        </fieldset>
                     </div>
 
                 </div>
@@ -514,13 +526,15 @@ By accurately defining the purpose and activities, you ensure alignment between 
                     <br />
 
                     <div class="accordion-body">
-                        <div class="row g-4">
-                            <div class="mt-4">
+                        <fieldset class="fieldset-custom">
+                            <div class="row g-4">
+                                <div class="mt-4">
 
-                                <button type="submit" class="btn btn-primary me-2">Save</button>
+                                    <button type="submit" class="btn btn-primary me-2">Save</button>
 
+                                </div>
                             </div>
-                        </div>
+                        </fieldset>
                     </div>
 
                 </div>

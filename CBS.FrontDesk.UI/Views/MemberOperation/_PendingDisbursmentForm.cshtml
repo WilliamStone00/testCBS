@@ -24,47 +24,48 @@
                         {
                             @Html.HiddenFor(m => m.AddLoanDisbumentCommand.LoanId)
                             <input type="hidden" name="ServiceOption" value="pending_loan_disbursement" id="ServiceOption" />
+                            <fieldset class="fieldset-custom">
+                                <div class="row g-4">
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanDisbumentCommand.IsAlreadyManage, new { @class = "form-check-input", id = "isAlreadyManage" })
+                                            <label class="form-check-label" for="isAlreadyManage">
+                                                Check if this request must not affect cash
+                                            </label>
+                                        </div>
+                                    </div>
 
-                            <div class="row g-4">
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanDisbumentCommand.IsAlreadyManage, new { @class = "form-check-input", id = "isAlreadyManage" })
-                                        <label class="form-check-label" for="isAlreadyManage">
-                                            Check if this request must not affect cash
-                                        </label>
+                                    <div class="col-md-12">
+                                        <div class="form-floating">
+                                            @Html.DropDownListFor(m => m.AddLoanDisbumentCommand.Status, new SelectList(ViewBag.DisbursmentStatuses, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", id = "statusDropdown" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanDisbumentCommand.Status, "", new { @class = "text-danger" })
+                                            <label for="statusDropdown">Select disbursed status</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-floating">
+                                            @Html.DropDownListFor(m => m.AddLoanDisbumentCommand.AccountNumber, new SelectList(ViewBag.CustomerAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", id = "accountDropdown" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanDisbumentCommand.AccountNumber, "", new { @class = "text-danger" })
+                                            <label for="accountDropdown">Select account (Deposit/Current Or Saving) to receive disbursed amount</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-floating">
+                                            @Html.TextAreaFor(m => m.AddLoanDisbumentCommand.Comment, new { @class = "form-control", style = "height: 200px;", id = "commentTextArea" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanDisbumentCommand.Comment, "", new { @class = "text-danger" })
+                                            <label for="commentTextArea">Comment</label>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
-                                    <div class="form-floating">
-                                        @Html.DropDownListFor(m => m.AddLoanDisbumentCommand.Status, new SelectList(ViewBag.DisbursmentStatuses, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", id = "statusDropdown" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanDisbumentCommand.Status, "", new { @class = "text-danger" })
-                                        <label for="statusDropdown">Select disbursed status</label>
-                                    </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        Disburse
+                                    </button>
                                 </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-floating">
-                                        @Html.DropDownListFor(m => m.AddLoanDisbumentCommand.AccountNumber, new SelectList(ViewBag.CustomerAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", id = "accountDropdown" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanDisbumentCommand.AccountNumber, "", new { @class = "text-danger" })
-                                        <label for="accountDropdown">Select account (Deposit/Current Or Saving) to receive disbursed amount</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-floating">
-                                        @Html.TextAreaFor(m => m.AddLoanDisbumentCommand.Comment, new { @class = "form-control", style = "height: 200px;", id = "commentTextArea" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanDisbumentCommand.Comment, "", new { @class = "text-danger" })
-                                        <label for="commentTextArea">Comment</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Disburse
-                                </button>
-                            </div>
+                            </fieldset>
                         }
                     </div>
                 </div>

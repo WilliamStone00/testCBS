@@ -27,6 +27,88 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string DateTo { get; set; }
     }
 
+
+
+
+    public class GetTillStatusQuery : IValidatableObject
+    {
+        public bool ByBranch { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Date From")]
+        public string DateFrom { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Date To")]
+        public string DateTo { get; set; }
+
+        public bool ByTeller { get; set; }
+
+        public string BranchId { get; set; }
+  
+        public string TellerId { get; set; }
+        public string QueryParameter { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            return PerformValidation();
+        }
+
+        private IEnumerable<ValidationResult> PerformValidation()
+        {
+            var validationResults = new List<ValidationResult>();
+
+            
+
+            // Validate DateFrom and DateTo are equal
+            DateTime fromDate;
+            DateTime toDate;
+
+            if (DateTime.TryParse(DateFrom, out fromDate) && DateTime.TryParse(DateTo, out toDate))
+            {
+                if (fromDate != toDate)
+                {
+                    validationResults.Add(new ValidationResult(
+                        "The DateFrom must be equal to DateTo.",
+                        new[] { nameof(DateFrom), nameof(DateTo) }));
+                }
+            }
+            else
+            {
+                validationResults.Add(new ValidationResult(
+                    "Invalid date format for DateFrom or DateTo.",
+                    new[] { nameof(DateFrom), nameof(DateTo) }));
+            }
+
+            // Validate BranchId and TellerId based on ByBranch and ByTeller
+            if (ByBranch)
+            {
+                if (string.IsNullOrEmpty(BranchId))
+                {
+                    validationResults.Add(new ValidationResult(
+                        "Branch is required when ByBranch is selected.",
+                        new[] { nameof(BranchId) }));
+                }
+            }
+            else if (ByTeller)
+            {
+                if (string.IsNullOrEmpty(TellerId))
+                {
+                    validationResults.Add(new ValidationResult(
+                        "Till is required when Till is selected.",
+                        new[] { nameof(TellerId) }));
+                }
+            }
+
+            return validationResults;
+        }
+
+    }
+
+
+
     public class RequiredIfByBranchAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -207,6 +289,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public Teller Teller { get; set; }
         public GetAllTellerOperationsQuery GetAllTellerOperationsQuery { get; set; } = new GetAllTellerOperationsQuery();
         public GetTellerOpenningAndClossingQuery GetTellerOpenningAndClossingQuery { get; set; } = new GetTellerOpenningAndClossingQuery();
+        public GetTillStatusQuery GetTillStatusQuery { get; set; } = new GetTillStatusQuery();
+
         public Branch Branch { get; set; }
         public List<Branch> Branches { get; set; }
         public List<PrimaryTellerProvisioningHistory> PrimaryTellerProvisioningHistories { get; set; }

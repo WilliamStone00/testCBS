@@ -5,172 +5,157 @@
 
 
 <div class="row invoice-preview">
+    <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconThree">
+        <button type="button"
+                class="accordion-button"
+                data-bs-toggle="collapse"
+                data-bs-target="#accordionPopoutIcon-3"
+                aria-expanded="true"
+                aria-controls="accordionPopoutIcon-3">
+            <i class="mdi mdi-file me-2"></i>
+            <div class="d-flex justify-content-center">
+                <div class="fw-bold fs-4" id="panelTitle">NEW LOAN APPLICATION FORM</div>
+            </div>
+        </button>
+    </h2>
+    <br />
+    <hr />
     <div class="col-xl-3 col-md-4 col-12 invoice-actions">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="group-title">
-                    MEMBER REFERENCE # <span class="highlight-text">@Model.Customer.CustomerId</span><br />
-                    <hr />
-                    <small>Member code: Last 4 digits</small><br />
-                    <small>Bank Code: @Session["BankCode"].ToString()</small><br />
-                    <small>Branch Code: @Session["BranchCode"].ToString()</small>
-                </h4>
-            </div>
-        </div>
-        <br />
-        <div class="card">
-            <div class="card-body">
-                <h4 class="group-title">
-                    MEMBER STATUS
-                    <hr />
-                    <small>Status: <span class="highlight-text">@Model.Customer.MembershipApprovalStatus</span></small>
-
-                </h4>
-            </div>
-        </div>
-
-
-        <div class="card mt-3">
-            <div class="card-body">
-                <!-- Aligning the card title and Member text in the same row -->
-                <div class="d-flex justify-content-between align-items-center">
-                    <!-- Card title aligned to the left -->
-                    <h5 class="card-title text-left mb-0">Member: @Model.Customer.name</h5>
-                    <hr />
-                    <!-- Member name aligned to the right -->
-                    <!--<span class="text-end"></span>-->
+        <fieldset class="fieldset-custom">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="group-title">
+                        MEMBER REFERENCE # <span class="highlight-text">@Model.Customer.CustomerId</span><br />
+                        <hr />
+                        <small>Member code: Last 4 digits</small><br />
+                        <small>Bank Code: @Session["BankCode"].ToString()</small><br />
+                        <small>Branch Code: @Session["BranchCode"].ToString()</small>
+                    </h4>
                 </div>
-                <div class="image-upload-container">
-                    <!-- Image for picture -->
-                    @if (Model.Customer.photoUrl != null)
-                    {
-                        <!-- Clickable photo for preview -->
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
-                            <img src="@Model.Customer.photoUrl" class="img-fluid preview-image" alt="Uploaded Image">
-                        </a>
-                        <!-- Modal for photo preview -->
-                        <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <img src="@Model.Customer.photoUrl" class="img-fluid" alt="Uploaded Image">
+            </div>
+            <br />
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="group-title">
+                        MEMBER STATUS
+                        <hr />
+                        <small>Status: <span class="highlight-text">@Model.Customer.MembershipApprovalStatus</span></small>
+
+                    </h4>
+                </div>
+            </div>
+
+
+            <div class="card mt-3">
+                <div class="card-body">
+                    <!-- Aligning the card title and Member text in the same row -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Card title aligned to the left -->
+                        <h5 class="card-title text-left mb-0">Member: @Model.Customer.name</h5>
+                        <hr />
+                        <!-- Member name aligned to the right -->
+                        <!--<span class="text-end"></span>-->
+                    </div>
+                    <div class="image-upload-container">
+                        <!-- Image for picture -->
+                        @if (Model.Customer.photoUrl != null)
+                        {
+                            <!-- Clickable photo for preview -->
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
+                                <img src="@Model.Customer.photoUrl" class="img-fluid preview-image" alt="Uploaded Image">
+                            </a>
+                            <!-- Modal for photo preview -->
+                            <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <img src="@Model.Customer.photoUrl" class="img-fluid" alt="Uploaded Image">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <img src="@Url.Content(Model.Customer.ImageNoVirtualPath)" class="img-fluid preview-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+                        }
+                        else
+                        {
+                            <img src="@Url.Content(Model.Customer.ImageNoVirtualPath)" class="img-fluid preview-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
 
-                    }
-                    <!-- ... Other content ... -->
+                        }
+                        <!-- ... Other content ... -->
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card mt-3">
-            <div class="card-body">
-                <h5 class="card-title">Signature</h5>
-                <div class="image-upload-container">
-                    <!-- Image for signature -->
-                    @if (Model.Customer.signatureUrl != null)
-                    {
-                        <!-- Clickable signature for preview -->
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#signaturePreviewModal">
-                            <img src="@Model.Customer.signatureUrl" class="img-fluid preview-image" alt="Uploaded Signature">
-                        </a>
-                        <!-- Modal for signature preview -->
-                        <div class="modal fade" id="signaturePreviewModal" tabindex="-1" aria-labelledby="signaturePreviewModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <img src="@Model.Customer.signatureUrl" class="img-fluid" alt="Uploaded Signature">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Signature</h5>
+                    <div class="image-upload-container">
+                        <!-- Image for signature -->
+                        @if (Model.Customer.signatureUrl != null)
+                        {
+                            <!-- Clickable signature for preview -->
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#signaturePreviewModal">
+                                <img src="@Model.Customer.signatureUrl" class="img-fluid preview-image" alt="Uploaded Signature">
+                            </a>
+                            <!-- Modal for signature preview -->
+                            <div class="modal fade" id="signaturePreviewModal" tabindex="-1" aria-labelledby="signaturePreviewModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <img src="@Model.Customer.signatureUrl" class="img-fluid" alt="Uploaded Signature">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <img src="@Url.Content(Model.Customer.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+                        }
+                        else
+                        {
+                            <img src="@Url.Content(Model.Customer.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
 
-                    }
-                    <!-- ... Other content ... -->
+                        }
+                        <!-- ... Other content ... -->
+                    </div>
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
+
+
+
+
     <div class="col-xl-9 col-lg-8 col-md-8 order-0 order-md-1">
+        <fieldset class="fieldset-custom">
+            <div class="card">
+                <div class="card-body d-sm-flex d-block">
+                    <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
 
-        <div class="card">
-            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
-                <div class="accordion-item active">
-                    <h2 class="accordion-header text-body d-flex justify-content-between"
-                        id="accordionPopoutIconThree">
-                        <button type="button"
-                                class="accordion-button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#accordionPopoutIcon-3"
-                                aria-expanded="true"
-                                aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-bank me-2"></i>
-                            <div class="d-flex justify-content-center">
-                                <div class="fw-bold fs-4" id="panelTitle">NEW LOAN APPLICATION FORM</div>
-                            </div>
-                        </button>
-                    </h2>
-                    <div id="accordionPopoutIcon-3"
-                         class="accordion-collapse collapse show"
-                         data-bs-parent="#accordionPopoutIcon">
-                        <div class="accordion-body">
-                            <div id="mainviewChange">
-                                <div class="change-group">
-                                    <div class="card mb-4">
-                                        <div class="card-body d-sm-flex d-block">
-                                            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                                @*<div>
-                                                        <button type="button" class="btn btn-primary" onclick="AddORUpdateGen('@Model.Customer.customerId','datalistingview','_LoanApplication','loanapplication','MemberOperation',null)">Apply for a Loan</button>
-                                                    </div>
-                                                    <div class="ms-3">
-                                                        <a href="" type="button" class="btn btn-primary">View Loans</a>
-                                                    </div>
-                                                    <div class="ms-3">
-                                                        <button type="button" class="btn btn-primary" onclick="LoadDataGen('MemberOperation','myDataTable','_MemberLoanApplicationData',0,'datalistingview','@Model.Customer.customerId','applications','list_of_members_loan_application')">Applications</button>
-                                                    </div>
-                                                    <div class="ms-3">
-                                                        <button type="button" class="btn btn-primary" onclick="AddORUpdateGen(null,'datalistingview','_MakeLoanSimulation','create_loan_simulation','MemberOperation','applications')">Simulate amortization schedule</button>
-                                                    </div>*@
-                                                <div class="ms-3">
-                                                    <a href="/MemberOperation/OperationPanel?KEY=@Model.Customer.CustomerId" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Apply for a new loan">
-                                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                                    </a>
-                                                </div>
-                                                <div class="ms-3">
-                                                    <a type="button" onclick="LoadDataGen('MemberOperation','myDataTable','_MemberLoanApplicationData',0,'datalistingview','@Model.Customer.CustomerId','applications','list_of_members_loan_application')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View listing of loan applications">
-                                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                                    </a>
-                                                </div>
-                                                <div class="ms-3">
-                                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_MakeLoanSimulation','create_loan_simulation','MemberOperation','applications')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Peform loan simuation">
-                                                        <span class="tf-icons mdi mdi-calculator mdi-18px"></span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <fieldset class="fieldset-custom">
-
-                                        <div id="datalistingview">
-                                            @Html.Partial("_LoanApplication")
-                                        </div>
-                                    </fieldset>
-                                </div>
-                            </div>
+                        <div class="ms-3">
+                            <a href="/MemberOperation/OperationPanel?KEY=@Model.Customer.CustomerId" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Apply for a new loan">
+                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                            </a>
+                        </div>
+                        <div class="ms-3">
+                            <a type="button" onclick="LoadDataGen('MemberOperation','myDataTable','_MemberLoanApplicationData',0,'datalistingview','@Model.Customer.CustomerId','applications','list_of_members_loan_application')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View listing of loan applications">
+                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                            </a>
+                        </div>
+                        <div class="ms-3">
+                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_MakeLoanSimulation','create_loan_simulation','MemberOperation','applications')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Peform loan simuation">
+                                <span class="tf-icons mdi mdi-calculator mdi-18px"></span>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </fieldset>
+
+
+        <fieldset class="fieldset-custom">
+            <div id="datalistingview">
+                @Html.Partial("_LoanApplication")
+            </div>
+        </fieldset>
+
+
+
 
     </div>
 </div>

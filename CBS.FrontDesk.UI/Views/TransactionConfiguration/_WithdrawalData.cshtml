@@ -10,7 +10,7 @@
     else
     {
         <div class="table-responsive mb-3">
-            <table class="table table-hover" id="myDataTable_Withdrawal">
+            <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
                         <th>Product name</th>
@@ -43,7 +43,7 @@
                             </td>
                             <td style="width:15%">
                                 <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Withdrawal','_WithdrawalConfig','get','TransactionConfiguration','withdrawallimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Product.Name @d.WithdrawalType to edit">Edit</a> |
-                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Product.Name @d.WithdrawalType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','myDataTable_Withdrawal','_WithdrawalData',0,'datalistingview_Withdrawal')">Delete</a>
+                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Product.Name @d.WithdrawalType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','myDataTable','_WithdrawalData',0,'datalistingview_Withdrawal')">Delete</a>
                             </td>
                         </tr>
                     }

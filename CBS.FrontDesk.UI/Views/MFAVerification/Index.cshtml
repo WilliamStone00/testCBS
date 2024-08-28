@@ -89,23 +89,24 @@
             <hr />
 
             @using (Html.BeginForm("MFACodeVerification", "MFAVerification", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateChangePassword(this);" }))
-            {
-                @Html.HiddenFor(m => m.Email)
-                @Html.HiddenFor(m => m.ReturnUrl)
-                <!-- MFA Code Input -->
-                <div class="form-floating form-floating-outline mb-3">
-                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @placeholder = "Enter MFA Code", @autocomplete = "off" })
-                    @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
-                    <label for="Code">MFA Code</label>
-                </div>
+            {<fieldset class="fieldset-custom">
+                    @Html.HiddenFor(m => m.Email)
+                    @Html.HiddenFor(m => m.ReturnUrl)
+                    <!-- MFA Code Input -->
+                    <div class="form-floating form-floating-outline mb-3">
+                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @placeholder = "Enter MFA Code", @autocomplete = "off" })
+                        @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                        <label for="Code">MFA Code</label>
+                    </div>
 
-                <!-- Submit Button -->
-                <button class="btn btn-primary d-grid w-100">Submit</button>
+                    <!-- Submit Button -->
+                    <button class="btn btn-primary d-grid w-100">Submit</button>
 
-                <!-- Back to Login Button -->
-                <div class="button-spacing">
-                    <a href="~/Authentication/Logout" class="btn btn-secondary d-grid w-100">Back to Login</a>
-                </div>
+                    <!-- Back to Login Button -->
+                    <div class="button-spacing">
+                        <a href="~/Authentication/Logout" class="btn btn-secondary d-grid w-100">Back to Login</a>
+                    </div>
+                </fieldset>
             }
 
             @Html.Partial("_Alert")

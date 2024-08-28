@@ -10,6 +10,10 @@ using CBS.API.Helper;
 using System.Threading.Tasks;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.Entity;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -28,13 +32,15 @@ namespace CBS.FrontDesk.UI.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-
+        
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(AuthRequest model, string returnUrl = "")
         {
             var result = new ExecutionMessages();
+            var Geo=await GetGeoLocation();
+            model.GeoLocationResponse = Geo;
             if (ModelState.IsValid)
             {
                 result = await _helper.AuthenticateUser(model);
@@ -66,7 +72,7 @@ namespace CBS.FrontDesk.UI.Controllers
                                 if (userDto.isMFA)
                                 {
                                     Session["MFA"] = "MFA";
-                                    CreateToken(userDto,userDto.expirationTime);
+                                    CreateToken(userDto, userDto.expirationTime);
                                     var url = Url.Action("Index", "MFAVerification", new
                                     {
                                         serviceoption = "MFA",
@@ -122,7 +128,19 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+        [AllowAnonymous]
+        public async Task<GeoLocationResponse> GetGeoLocation()
+        {
+            using (var client = new HttpClient())
+            {
+                // Set the Accept header to "application/json"
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.GetStringAsync($"https://ipinfo.io/geo");
+                var locationData = JsonConvert.DeserializeObject<GeoLocationResponse>(response);
+                return locationData;
 
+            }
+        }
         [AllowAnonymous]
         public ActionResult Logout()
         {

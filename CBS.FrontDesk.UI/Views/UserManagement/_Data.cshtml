@@ -67,82 +67,84 @@
     .dropdown-menu li:first-child::before {
         display: none;
     }
-
 </style>
-@if (!Model.Any())
-{
-    <div class="alert alert-info text-center my-4" role="alert">
-        <p>No users have been created yet.</p>
-    </div>
-}
-else
-{
-    <div class="table-responsive mb-4">
-        <table class="table table-hover table-striped align-middle" id="myDataTable">
-            <thead class="table-light text-center">
-                <tr>
-                    <th>Name</th>
-                    <th>Username</th>
-                    <th>Status</th>
-                    <th>Branch</th>
-                    <th>Last Login</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Model)
-                {
+<fieldset class="fieldset-custom">
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center my-4" role="alert">
+            <p>No users have been created yet.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mb-4">
+            <table class="table table-hover table-striped align-middle" id="myDataTable">
+                <thead class="table-light text-center">
                     <tr>
-                        <td>@user.name</td>
-                        <td>@user.userName</td>
-                        <td class="text-center">
-                            @if (user.status == "Active")
-                            {
-                                <span class="badge rounded-pill bg-success fs-6">@user.status</span>
-                            }
-                            else
-                            {
-                                <span class="badge rounded-pill bg-danger fs-6">Blocked</span>
-                            }
-                        </td>
-                        <td>@(user.Brancch?.Name ?? "N/A")</td>
-                        <td>@user.strlastLoginDate</td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-cogs"></i> <!-- Icon representing actions -->
-                                </button>
-                                <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="actionDropdown">
-                                    <li>
-                                        <a class="dropdown-item" href="/UserManagement/UserProfile?KEY=@user.id">
-                                            <i class="fas fa-edit me-2"></i>Edit
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-danger" href="#" onclick="DeleteRecordDataTable('UserManagement','@user.id','myDataTable','_Data',0,'datalistingview')">
-                                            <i class="fas fa-trash-alt me-2"></i>Delete
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#" onclick="UserDetail('@user.id')">
-                                            <i class="fas fa-info-circle me-2"></i>Details
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-success" href="#" onclick="ActivateUser('@user.id')">
-                                            <i class="fas fa-check-circle me-2"></i>Activate
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-warning" href="#" onclick="ResetPin('@user.id')">
-                                            <i class="fas fa-key me-2"></i>Reset Pin
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Status</th>
+                        <th>Branch</th>
+                        <th>Last Login</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.name</td>
+                            <td>@user.userName</td>
+                            <td class="text-center">
+                                @if (user.status == "Active")
+                                {
+                                    <span class="badge rounded-pill bg-success fs-6">@user.status</span>
+                                }
+                                else
+                                {
+                                    <span class="badge rounded-pill bg-danger fs-6">Blocked</span>
+                                }
+                            </td>
+                            <td>@(user.Brancch?.Name ?? "N/A")</td>
+                            <td>@user.strlastLoginDate</td>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-cogs"></i> <!-- Icon representing actions -->
+                                    </button>
+                                    <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="actionDropdown">
+                                        <li>
+                                            <a class="dropdown-item" href="/UserManagement/UserProfile?KEY=@user.id">
+                                                <i class="fas fa-edit me-2"></i>Edit
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-danger" href="#" onclick="DeleteRecordDataTable('UserManagement','@user.id','myDataTable','_Data',0,'datalistingview')">
+                                                <i class="fas fa-trash-alt me-2"></i>Delete
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#" onclick="UserDetail('@user.id')">
+                                                <i class="fas fa-info-circle me-2"></i>Details
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-success" href="#" onclick="ActivateUser('@user.id')">
+                                                <i class="fas fa-check-circle me-2"></i>Activate
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-warning" href="#" onclick="ResetPin('@user.id')">
+                                                <i class="fas fa-key me-2"></i>Reset Pin
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    </fieldset>

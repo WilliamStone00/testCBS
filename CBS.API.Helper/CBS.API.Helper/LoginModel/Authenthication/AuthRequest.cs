@@ -121,7 +121,7 @@ namespace CBS.API.Helper
     public class AuthRequest
     {
         [Required(ErrorMessage = "Username is required.")]
-        [StringLength(100, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 100 characters.")]
+        [StringLength(17, MinimumLength = 3, ErrorMessage = "Username must be between 6 and 17 characters.")]
         // Updated RegularExpression to allow alphabets, digits, underscores, and dots
         [RegularExpression(@"^[a-zA-Z0-9_.@]+$", ErrorMessage = "Username can only contain alphanumeric characters, underscores, @ and dots.")]
         public string UserName { get; set; }
@@ -129,8 +129,19 @@ namespace CBS.API.Helper
         [Required(ErrorMessage = "Password is required.")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters.")]
         public string Password { get; set; }
+        public GeoLocationResponse GeoLocationResponse { get; set; }
     }
-
+    public class GeoLocationResponse
+    {
+        public string Ip { get; set; }
+        public string City { get; set; }
+        public string Region { get; set; }
+        public string Country { get; set; }
+        public string Loc { get; set; }
+        public string Org { get; set; }
+        public string Timezone { get; set; }
+        public string Readme { get; set; }
+    }
     public class FLoginChangePassword
     {
         [Required(ErrorMessage = "Password is required.")]

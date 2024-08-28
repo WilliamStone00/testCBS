@@ -1,0 +1,73 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingDayObject.GetAccountingDayQuery
+
+<div class="container">
+    <div class="card-body">
+        <div class="row">
+            <!-- Opened Information -->
+            <div class="col-md-6 border-right">
+                <h5 class="text-success mb-3">Opened Information</h5>
+                <hr />
+                <p><strong>Opened by:</strong> @Model.AccountingDay.OpenedBy</p>
+                <p><strong>Branch:</strong> @Model.AccountingDay.BranchName</p>
+                <p><strong>Branch code:</strong> @Model.AccountingDay.BranchCode</p>
+                <p><strong>Accounting day:</strong> @Model.AccountingDay.Date</p>
+                <p><strong>Open time:</strong> @Model.AccountingDay.OpenedAt</p>
+            </div>
+
+            <!-- Closed Information -->
+            <div class="col-md-6">
+                <h5 class="text-warning mb-3">Closed Information</h5>
+                <hr />
+                <p><strong>Closed by:</strong> @Model.AccountingDay.ClosedBy</p>
+                <p><strong>Close time:</strong> @Model.AccountingDay.ClosedAt</p>
+                <p><strong>Reopen date:</strong> @Model.AccountingDay.ReOpenedDate</p>
+                <p>
+                    <strong>Status:</strong>
+                    @if (@Model.AccountingDay.IsClosed)
+                    {
+                        <span class="badge bg-warning">Closed</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Open</span>
+                    }
+                </p>
+                <p>
+                    <strong>Centralise Status:</strong>
+                    @if (@Model.AccountingDay.IsCentralized)
+                    {
+                        <span class="badge bg-success">Centralized</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Decentralized</span>
+                    }
+                </p>
+            </div>
+        </div>
+       
+        <div class="text-center my-3">
+            <p><strong>Note:</strong> @Model.AccountingDay.Note</p>
+        </div>
+        <hr />
+        <div class="row mt-4">
+            <div class="col-md-12 text-center">
+                @if (Model.AccountingDay.IsClosed)
+                {
+                    <button type="button" class="btn btn-success" onclick="reopenAccountingDay('@Model.AccountingDay.Id')">
+                        <i class="fas fa-redo-alt me-2"></i> Reopen
+                    </button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-warning" onclick="closeAccountingDay('@Model.AccountingDay.Id')">
+                        <i class="fas fa-lock me-2"></i> Close
+                    </button>
+                }
+                <button type="button" class="btn btn-danger ml-2" onclick="removeAccountingDay('@Model.AccountingDay.Id')">
+                    <i class="fas fa-trash-alt me-2"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

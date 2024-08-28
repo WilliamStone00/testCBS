@@ -50,7 +50,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                             RemoveSessionName("MFA");
                             if (!string.IsNullOrEmpty(mFAActivation.ReturnUrl))
                             {
-                                return Json(new { success = true, url = mFAActivation.ReturnUrl });
+                                return Json(new { success = true, url = mFAActivation.ReturnUrl,message= Messaging.MessageResult(executionMessages) });
                             }
                         }
                         return Json(new { success = executionMessages.Result, status = executionMessages.MessageStatus, message = Messaging.MessageResult(executionMessages) });

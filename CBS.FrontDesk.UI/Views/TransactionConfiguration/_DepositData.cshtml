@@ -9,7 +9,7 @@
     }
     else
     { <div class="table-responsive mb-3">
-            <table class="table table-hover" id="myDataTable_Deposit">
+            <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
                         <th>Product name</th>
@@ -26,7 +26,7 @@
                             <td style="width:15%">@d.DepositType</td>
                             <td style="width:20%">@d.MinAmount.ToString("#,##0.0")-@d.MaxAmount.ToString("#,##0.0")</td>
                             <td style="width:15%">
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Deposit','_DepositConfig','get','TransactionConfiguration','depositlimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Product.Name @d.DepositType to edit">Edit</a> |
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','myDataTable','_DepositConfig','get','TransactionConfiguration','depositlimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Product.Name @d.DepositType to edit">Edit</a> |
                                 <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Product.Name @d.DepositType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit')">Delete</a>
                             </td>
                         </tr>

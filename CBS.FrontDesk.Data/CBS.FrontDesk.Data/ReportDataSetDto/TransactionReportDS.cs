@@ -176,8 +176,9 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public string Note { get; set; }
         public string ClossedStatus { get; set; }
         public string TillName { get; set; }
-        public string InitialPrinting { get; set; } = "Initial Printing";
-
+        public string InitialPrinting { get; set; }
+        public bool IsPrimaryTeller { get; set; }
+        public string TellerType { get; set; }
         // Opening Notes and Coins Counts
         public int OpeningNote10000 { get; set; }
         public int OpeningNote5000 { get; set; }
@@ -206,6 +207,21 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public int ClosingCoin1 { get; set; }
         public decimal TotalOpeningAmount { get; set; }
         public decimal TotalClosingAmount { get; set; }
+
+    }
+    public class AccountingDayDS: HeadOffice
+    {
+        public string Id { get; set; }
+        public string BranchId { get; set; }
+        public DateTime Date { get; set; }
+        public bool IsClosed { get; set; }
+        public string ClosedBy { get; set; }
+        public string OpenedBy { get; set; }
+        public string Note { get; set; }
+        public DateTime ReOpenedDate { get; set; }
+        public DateTime ClosedAt { get; set; }
+        public DateTime OpenedAt { get; set; }
+        public bool IsCentralized { get; set; }
 
     }
 

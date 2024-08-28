@@ -5,21 +5,6 @@
 }
 
 <style>
-    /*.authentication-inner {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .authentication-image {
-        width: 100%;
-        max-width: 100%;
-        height: auto;
-    }
-
-    .authentication-bg {
-        background-color: #f8f9fa;*/ /* Choose your desired background color */
-    /*border-radius: 10px;
-    }*/
 
     .authentication-text {
         color: #007bff; /* Choose your desired text color */
@@ -125,7 +110,15 @@
                     </div>
                 </div>
 
-
+                <!-- Hidden fields for geolocation data -->
+                @Html.HiddenFor(m => m.GeoLocationResponse.Ip, new { id = "GeoLocationResponse_Ip" })
+                @Html.HiddenFor(m => m.GeoLocationResponse.City, new { id = "GeoLocationResponse_City" })
+                @Html.HiddenFor(m => m.GeoLocationResponse.Region, new { id = "GeoLocationResponse_Region" })
+                @Html.HiddenFor(m => m.GeoLocationResponse.Country, new { id = "GeoLocationResponse_Country" })
+                @Html.HiddenFor(m => m.GeoLocationResponse.Loc, new { id = "GeoLocationResponse_Loc" })
+                @Html.HiddenFor(m => m.GeoLocationResponse.Org, new { id = "GeoLocationResponse_Org" })
+                @Html.HiddenFor(m => m.GeoLocationResponse.Timezone, new { id = "GeoLocationResponse_Timezone" })
+                @Html.HiddenFor(m => m.GeoLocationResponse.Readme, new { id = "GeoLocationResponse_Readme" })
 
                 <!-- Login Button -->
                 <button type="submit" class="btn btn-primary d-grid w-100">Login</button>
@@ -141,6 +134,10 @@
                     <label>3. If you forget your password, contact your administrator.</label>
                 </div>
             </div>
+            @*<div id="location-prompt">
+                <p>We need to access your location to provide a better user experience. Please allow location access when prompted.</p>
+            </div>
+            <button id="retry-location" onclick="getLocation()">Retry Location Access</button>*@
 
 
         </div>
@@ -149,5 +146,85 @@
 </div>
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
+@*<script>
+    function getLocationAndIP() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                // Get device location
+                const deviceLatitude = position.coords.latitude;
+                const deviceLongitude = position.coords.longitude;
+                //ipinfo.io / 102.244.155.13 ? token = 554c46283a9441
+                // Fetch IP-based geolocation
+                fetch('https://ipinfo.io/json?token=554c46283a9441')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Combine both location and IP information
+                        const geoLocationData = {
+                            Ip: data.ip,
+                            City: data.city,
+                            Region: data.region,
+                            Country: data.country,
+                            Loc: deviceLatitude + ',' + deviceLongitude,
+                            Org: data.org,
+                            Timezone: data.timezone,
+                            Readme: data.readme
+                        };
 
+                        // Send the combined data to the server
+                        fetch('/Authentication/SaveLocation', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': $('input[name="__RequestVerificationToken"]').val() // Add the anti-forgery token
+                            },
+                            body: JSON.stringify(geoLocationData)
+                        }).then(response => {
+                            if (response.ok) {
+                                console.log("Location data sent successfully.");
+                            } else {
+                                console.error("Failed to send location data.");
+                            }
+                        }).catch(error => console.error('Error:', error));
+                    });
+            }, showError);
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function showError(error) {
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                alert("Location access denied. Certain features may not be available.");
+                // Optionally, use IP-based location as a fallback
+                fetchIPBasedLocation();
+                break;
+            case error.POSITION_UNAVAILABLE:
+                alert("Location information is unavailable.");
+                break;
+            case error.TIMEOUT:
+                alert("The request to get user location timed out.");
+                break;
+            case error.UNKNOWN_ERROR:
+                alert("An unknown error occurred.");
+                break;
+        }
+    }
+
+    function fetchIPBasedLocation() {
+        fetch('https://ipinfo.io/json?token=554c46283a9441')
+            .then(response => response.json())
+            .then(data => {
+                // Process the IP-based location
+                console.log("IP-based location: ", data);
+                // Send or handle the data as required
+            })
+            .catch(error => console.error('Error fetching IP-based location:', error));
+    }
+
+    // Call the function when the page loads
+    document.addEventListener("DOMContentLoaded", function () {
+        getLocationAndIP();
+    });*@
+</script>
 }

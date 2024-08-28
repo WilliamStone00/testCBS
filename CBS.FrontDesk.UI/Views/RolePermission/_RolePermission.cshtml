@@ -1,28 +1,29 @@
 ﻿@model CBS.FrontDesk.Data.Entity.PermissionMenuLoaderDto
 
-
-<div class="row mt-2 gy-4">
+<fieldset class="fieldset-custom">
     <div class="row mt-2 gy-4">
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.roleID, new SelectList(ViewBag.Roles, "Value", "Text"), "---Select role---", new { @class = "form-control select2", @search = "true", @id = "roleID" })
-                @Html.ValidationMessageFor(m => m.roleID, "", new { @class = "text-danger" })
-                <label>Select Role/Rights</label>
+        <div class="row mt-2 gy-4">
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.roleID, new SelectList(ViewBag.Roles, "Value", "Text"), "---Select role---", new { @class = "form-control select2", @search = "true", @id = "roleID" })
+                    @Html.ValidationMessageFor(m => m.roleID, "", new { @class = "text-danger" })
+                    <label>Select Role/Rights</label>
+                </div>
             </div>
-        </div>
-        <h4 class="mb-2">
-            <i class="mdi mdi-lock-outline me-2"></i>
-            PERMISSIONS
-        </h4>
+            <h4 class="mb-2">
+                <i class="mdi mdi-lock-outline me-2"></i>
+                PERMISSIONS
+            </h4>
 
-        <div class="col-md-12">
-            <div id="datalistingview_add">
-                @Html.Partial("_AddRolePermission")
+            <div class="col-md-12">
+                <div id="datalistingview_add">
+                    @Html.Partial("_AddRolePermission")
+                </div>
+
             </div>
-
         </div>
     </div>
-</div>
-<div class="mt-4">
-    <button type="submit" id="submitBtn" class="btn btn-primary me-2">Save</button>
-</div>
+    <div class="mt-4">
+        <button type="submit" id="submitBtn" class="btn btn-primary me-2">Save</button>
+    </div>
+    </fieldset>

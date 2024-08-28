@@ -65,7 +65,9 @@
     function AjaxPostAndUpdateOpenCloseOfDay(form) {
         console.log("Form Action:", form.action);
         console.log("Form Method:", form.method);
-
+        if (!validateDate()) {
+            return false;
+        }
         var formData = new FormData(form);
         for (var pair of formData.entries()) {
             console.log(pair[0] + ', ' + pair[1]);
@@ -134,6 +136,7 @@
     }
 
     $(document).ready(function () {
+       
         updateBranchesVisibility();
         toggleBranchSelection();
 
@@ -177,7 +180,25 @@
             $('#branchSearchWrapper, #branchesSelection .branch-list, #checkAllBranchesWrapper').toggle(!isCentralized);
         }
     });
-   
+    function validateDate() {
+        var dateInput = document.getElementById("dateInput").value;
+        var selectedDate = new Date(dateInput);
+
+        // Normalize both dates to the start of the day (midnight)
+        selectedDate.setHours(0, 0, 0, 0);
+
+        var currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+
+        if (selectedDate > currentDate) {
+            appalert("The Date cannot be greater than today's date.", 2, 1);
+            return false;
+        }
+
+        return true;
+    }
+
+
 </script>
 }
 

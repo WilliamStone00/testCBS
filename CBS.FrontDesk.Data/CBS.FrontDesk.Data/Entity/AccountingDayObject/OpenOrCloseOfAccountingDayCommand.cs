@@ -8,14 +8,17 @@ using System.Threading.Tasks;
 namespace CBS.FrontDesk.Data.Entity.AccountingDayObject
 {
 
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
     public class OpenOrCloseOfAccountingDayCommand
     {
         [Required(ErrorMessage = "The Date is required.")]
         [DataType(DataType.Date)]
+        [FutureDateValidation(ErrorMessage = "The Date cannot be greater than today's date.")]
         public DateTime Date { get; set; }
 
         [Required(ErrorMessage = "At least one branch must be specified.")]
-        //[MinLength(1, ErrorMessage = "The Branches list must contain at least one branch.")]
         public List<BranchListing> Branches { get; set; }
 
         [Required(ErrorMessage = "IsCentraliseOpening is required.")]
@@ -25,6 +28,24 @@ namespace CBS.FrontDesk.Data.Entity.AccountingDayObject
         [RegularExpression("Open|Close", ErrorMessage = "The action must be either 'Open' or 'Close'.")]
         public string OpenOrCloseAccountingDay { get; set; }
     }
+
+    public class FutureDateValidationAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if (value is DateTime date)
+            {
+                if (date > DateTime.Now)
+                {
+                    return new ValidationResult(ErrorMessage ?? "The Date cannot be in the future.");
+                }
+            }
+
+            return ValidationResult.Success;
+        }
+    }
+
+
 
 
 

@@ -58,7 +58,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.DateOfEstablishment, new { @class = "form-control date-picker" })
+                                            @Html.TextBoxFor(m => m.DateOfEstablishment, new { @class = "form-control", @type = "date" })
                                             @Html.ValidationMessageFor(m => m.DateOfEstablishment, "", new { @class = "text-danger" })
                                             <label>Date of establishment</label>
                                         </div>
@@ -79,7 +79,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.IDNumberIssueDate, new { @class = "form-control date-picker" })
+                                            @Html.TextBoxFor(m => m.IDNumberIssueDate, new { @class = "form-control", @type = "date" })
                                             @Html.ValidationMessageFor(m => m.IDNumberIssueDate, "", new { @class = "text-danger" })
                                             <label>Date issued</label>
                                         </div>

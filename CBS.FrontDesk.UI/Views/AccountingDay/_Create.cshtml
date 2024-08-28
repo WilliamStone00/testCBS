@@ -16,9 +16,9 @@
                 <!-- Date Input -->
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline border p-3 rounded">
-                        @Html.TextBoxFor(m => m.Date, new { @class = "form-control datetimepicker", @type = "date", placeholder = "Select Date and Time" })
+                        @Html.TextBoxFor(m => m.Date, new { @class = "form-control datetimepicker", @type = "datetime-local", placeholder = "Select Date and Time", id = "dateInput" })
                         @Html.ValidationMessageFor(m => m.Date, "", new { @class = "text-danger" })
-                        <label for="Date">Date and Time</label>
+                        <label for="dateInput">Date and Time</label>
                     </div>
                 </div>
 

@@ -23,54 +23,54 @@
                     <hr style="border: 2px solid green;" />
                     <div class="table-responsive" style="width: 100%;">
                         <table class="table table-hover" id="myDataTableT">
-                            <thead class="table-light">
-                                <tr>
-                                    <th style="display:none;">ProductID</th>
-                                    <th>Ordinary accounts</th>
-                                    <th>Amount</th>
-                                    <th>Fee</th>
-                                    <th>Total</th>
-                                    <th>confirm</th>
-                                    <th>Inc</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
-                                {
+                                <thead class="table-light">
                                     <tr>
-                                        <td style="display:none;">@d.AccountNumber</td>
-                                        <td>@d.AccountType</td>
-                                        <td>
-                                            <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
-                                        </td>
-                                        <td>
-                                            <span class="total-span">@d.Total</span>
-                                        </td>
-                                        <td>
-                                            <input type="checkbox" class="form-check-input">
-                                        </td>
-                                        <td>
-                                            <input type="checkbox" class="form-check-input check-inclussive">
-                                        </td>
+                                        <th style="display:none;">ProductID</th>
+                                        <th>Ordinary accounts</th>
+                                        <th>Amount</th>
+                                        <th>Fee</th>
+                                        <th>Total</th>
+                                        <th>confirm</th>
+                                        <th>Inc</th>
                                     </tr>
-                                }
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
-                                    <td id="tableTotal">0</td>
-                                    <td></td> <!-- Empty cell to align with the checkbox column -->
-                                </tr>
-                                <tr>
-                                    <td colspan="4" style="text-align: right;"><strong>Balance:</strong></td>
-                                    <td id="tableBalance">0</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
+                                    {
+                                        <tr>
+                                            <td style="display:none;">@d.AccountNumber</td>
+                                            <td>@d.AccountType</td>
+                                            <td>
+                                                <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
+                                            </td>
+                                            <td>
+                                                <span class="total-span">@d.Total</span>
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="form-check-input">
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="form-check-input check-inclussive">
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+                                        <td id="tableTotal">0</td>
+                                        <td></td> <!-- Empty cell to align with the checkbox column -->
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" style="text-align: right;"><strong>Balance:</strong></td>
+                                        <td id="tableBalance">0</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+</div>
                     @*<div class="col-md-12">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id="Note" })

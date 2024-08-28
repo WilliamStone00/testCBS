@@ -4011,6 +4011,10 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             private global::System.Data.DataColumn columnHeadOfficeCode;
             
+            private global::System.Data.DataColumn columnIsPrimaryTeller;
+            
+            private global::System.Data.DataColumn columnTellerType;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public OpenAndCloseOfTillDataTable() {
@@ -4518,6 +4522,22 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn IsPrimaryTellerColumn {
+                get {
+                    return this.columnIsPrimaryTeller;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TellerTypeColumn {
+                get {
+                    return this.columnTellerType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -4612,7 +4632,9 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         string HeadOfficeEmail, 
                         string HeadOfficeWebSite, 
                         string HeadOfficeInitial, 
-                        string HeadOfficeCode) {
+                        string HeadOfficeCode, 
+                        bool IsPrimaryTeller, 
+                        string TellerType) {
                 OpenAndCloseOfTillRow rowOpenAndCloseOfTillRow = ((OpenAndCloseOfTillRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         UserIdInChargeOfThisTeller,
@@ -4673,7 +4695,9 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         HeadOfficeEmail,
                         HeadOfficeWebSite,
                         HeadOfficeInitial,
-                        HeadOfficeCode};
+                        HeadOfficeCode,
+                        IsPrimaryTeller,
+                        TellerType};
                 rowOpenAndCloseOfTillRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowOpenAndCloseOfTillRow);
                 return rowOpenAndCloseOfTillRow;
@@ -4755,6 +4779,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 this.columnHeadOfficeWebSite = base.Columns["HeadOfficeWebSite"];
                 this.columnHeadOfficeInitial = base.Columns["HeadOfficeInitial"];
                 this.columnHeadOfficeCode = base.Columns["HeadOfficeCode"];
+                this.columnIsPrimaryTeller = base.Columns["IsPrimaryTeller"];
+                this.columnTellerType = base.Columns["TellerType"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4878,6 +4904,10 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 base.Columns.Add(this.columnHeadOfficeInitial);
                 this.columnHeadOfficeCode = new global::System.Data.DataColumn("HeadOfficeCode", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnHeadOfficeCode);
+                this.columnIsPrimaryTeller = new global::System.Data.DataColumn("IsPrimaryTeller", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIsPrimaryTeller);
+                this.columnTellerType = new global::System.Data.DataColumn("TellerType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTellerType);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -10609,6 +10639,38 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPrimaryTeller {
+                get {
+                    try {
+                        return ((bool)(this[this.tableOpenAndCloseOfTill.IsPrimaryTellerColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IsPrimaryTeller\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.IsPrimaryTellerColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string TellerType {
+                get {
+                    try {
+                        return ((string)(this[this.tableOpenAndCloseOfTill.TellerTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TellerType\' in table \'OpenAndCloseOfTill\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOpenAndCloseOfTill.TellerTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsUserIdInChargeOfThisTellerNull() {
                 return this.IsNull(this.tableOpenAndCloseOfTill.UserIdInChargeOfThisTellerColumn);
             }
@@ -11313,6 +11375,30 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetHeadOfficeCodeNull() {
                 this[this.tableOpenAndCloseOfTill.HeadOfficeCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsIsPrimaryTellerNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.IsPrimaryTellerColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetIsPrimaryTellerNull() {
+                this[this.tableOpenAndCloseOfTill.IsPrimaryTellerColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTellerTypeNull() {
+                return this.IsNull(this.tableOpenAndCloseOfTill.TellerTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTellerTypeNull() {
+                this[this.tableOpenAndCloseOfTill.TellerTypeColumn] = global::System.Convert.DBNull;
             }
         }
         

@@ -46,15 +46,15 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.BulkDeposit.OtherTransaction.Name, new { @class = "form-control", @id = "Name" })
-                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.Name, "", new { @class = "text-danger " })
+                            @Html.TextBoxFor(m => m.BulkDeposit.OtherTransaction.MemberName, new { @class = "form-control", @id = "Name" })
+                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.MemberName, "", new { @class = "text-danger " })
                             <label for="formValidationDob">Enter individual name</label>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextAreaFor(m => m.BulkDeposit.OtherTransaction.Naration, new { @class = "form-control", @style = "height: 80px;", @id = "Naration" })
-                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.Naration, "", new { @class = "text-danger " })
+                            @Html.TextAreaFor(m => m.BulkDeposit.OtherTransaction.Narration, new { @class = "form-control", @style = "height: 80px;", @id = "Naration" })
+                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.Narration, "", new { @class = "text-danger " })
                             <label for="formValidationDob">Naration or Description</label>
                         </div>
                     </div>

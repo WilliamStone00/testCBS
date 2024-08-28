@@ -195,6 +195,7 @@
         public static string OpenningOfDaySubTeller = "/api/v1/Teller/SubTeller/OpenningOfTheDay";
         public static string GetTellerDailyOperations = "/api/v1/TellerOperations/DailyOperations";
         public static string TellerOpenningAndClossingQuery = "/api/v1/Teller/TellerOpenningAndClossingQuery";
+        public static string GetTillCashStatus = "/api/v1/Teller/TillStatus";
 
 
         //
@@ -239,8 +240,10 @@
         public static string CloseOfAccountingDay = "/api/v1/AccountingDay/Close";
         public static string GetAllOpenedAccountingDays = "/api/v1/AccountingDay/GetAllOpenAccountingDays";
         public static string GetCurrentAccountingDay = "/api/v1/AccountingDay/GetCurrentDay/{0}";
+        public static string GetAccountingDayById = "/api/v1/AccountingDay/{0}";
         public static string DeleteAccountingDay = "/api/v1/AccountingDay/Delete";
-        
+        public static string AccountingDayActionsCommand = "/api/v1/AccountingDay/AccountingDayActionsCommand";
+
         //PrimaryTellerCashReplenishment
         public static string Get_Update_Delete_PrimaryTellerCashReplenishment = "/api/v1/PrimaryTellerCashReplenishment/{0}";
         public static string GetAllPrimaryTellerCashReplenishment = "/api/v1/PrimaryTellerCashReplenishment/GetAllRequest";
