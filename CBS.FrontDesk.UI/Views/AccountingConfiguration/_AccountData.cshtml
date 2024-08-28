@@ -15,13 +15,13 @@
             @foreach (var d in Model.Accounts)
             {
                 <tr>
-                    <td style="width:20%">@d.AccountNumberNetwok</td>
+                    <td style="width:20%">@d.AccountNumberCU</td>
                     <td style="width:60%">@d.AccountName</td>
                   
                     <td style="width:25%">
                         <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Account','_AccountDetails','details','AccountingConfiguration','account')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountName to edit">Details</a>|
-                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Account','_CreateAccount','update','AccountingConfiguration','account')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountName to edit">Edit</a>|
-                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountName" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_Account','_AccountData',0,'datalistingview_Account','account')">Delete</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Account','_CreateAccount','update','AccountingConfiguration','account')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountName to edit">Edit</a>
+                        @*<a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountName" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_Account','_AccountData',0,'datalistingview_Account','account')">Delete</a>*@
                     </td>
                 </tr>
             }
