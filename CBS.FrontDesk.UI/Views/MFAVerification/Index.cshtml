@@ -4,23 +4,9 @@
     ViewBag.Title = "Two Step Account Verification";
 }
 
+
 <style>
-    /*.authentication-inner {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .authentication-image {
-        width: 100%;
-        max-width: 100%;
-        height: auto;
-    }
-
-    .authentication-bg {
-        background-color: #f8f9fa;*/ /* Choose your desired background color */
-    /*border-radius: 10px;
-    }*/
-
+    /* Existing styles */
     .authentication-text {
         color: #007bff; /* Choose your desired text color */
     }
@@ -79,6 +65,10 @@
     .alert {
         margin-top: 20px;
     }
+
+    .button-spacing {
+        margin-top: 10px;
+    }
 </style>
 
 <div class="authentication-inner row m-0">
@@ -99,18 +89,24 @@
             <hr />
 
             @using (Html.BeginForm("MFACodeVerification", "MFAVerification", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateChangePassword(this);" }))
-            {
-                @Html.HiddenFor(m => m.Email)
-                @Html.HiddenFor(m => m.ReturnUrl)
-                <!-- MFA Code Input -->
-                <!-- MFA Code Input -->
-                <div class="form-floating form-floating-outline mb-3">
-                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @placeholder = "Enter MFA Code", @autocomplete = "off" })
-                    @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
-                    <label for="Code">MFA Code</label>
-                </div>
+            {<fieldset class="fieldset-custom">
+                    @Html.HiddenFor(m => m.Email)
+                    @Html.HiddenFor(m => m.ReturnUrl)
+                    <!-- MFA Code Input -->
+                    <div class="form-floating form-floating-outline mb-3">
+                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @placeholder = "Enter MFA Code", @autocomplete = "off" })
+                        @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                        <label for="Code">MFA Code</label>
+                    </div>
 
-                <button class="btn btn-primary d-grid w-100">Submit</button>
+                    <!-- Submit Button -->
+                    <button class="btn btn-primary d-grid w-100">Submit</button>
+
+                    <!-- Back to Login Button -->
+                    <div class="button-spacing">
+                        <a href="~/Authentication/Logout" class="btn btn-secondary d-grid w-100">Back to Login</a>
+                    </div>
+                </fieldset>
             }
 
             @Html.Partial("_Alert")
@@ -137,8 +133,48 @@
     </div>
     <!-- /Login Section -->
 </div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @*<script>
+            function AjaxPostAndUpdateChangePassword(form) {
+                $.validator.unobtrusive.parse(form);
+                if ($(form).valid()) {
+                    var ajaxConfig = {
+                        type: 'POST',
+                        url: form.action,
+                        data: new FormData(form),
+                        success: function (response) {
+                            if (response.success) {
+                                appalert(response.message, 1, 1);
+                                // Redirect based on the URL provided by the server
+                                window.location.href = response.url || '/'; // Default to home if no URL provided
+                            } else {
+                                if (response.state === "Exist") {
+                                    appalert(response.message, 3, 1);
+                                } else if (response.state === "Expired") {
+                                    appalert(response.message, 2, 1);
+                                    window.location.href = response.url || '/Authentication/Logout'; // Default to logout if no URL provided
+                                } else {
+                                    appalert(response.message, 2, 1);
+                                }
+                            }
+                        },
+                        error: function (err) {
+                            appalert(err.statusText, 0, 1);
+                        }
+                    };
+
+                    if ($(form).attr('enctype') === "multipart/form-data") {
+                        ajaxConfig["contentType"] = false;
+                        ajaxConfig["processData"] = false;
+                    }
+                    $.ajax(ajaxConfig);
+                }
+                return false;
+            }
+        </script>*@
+
     <script>
         function AjaxPostAndUpdateChangePassword(form) {
             $.validator.unobtrusive.parse(form);
@@ -177,4 +213,5 @@
             return false;
         }
     </script>
+
 }

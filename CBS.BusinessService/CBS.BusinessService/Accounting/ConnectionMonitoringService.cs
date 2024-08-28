@@ -22,7 +22,7 @@ namespace CBS.BusinessService.Accounting
             _context = GlobalHost.ConnectionManager.GetHubContext("ConnectionHub");
 
             // Check connection status every 5 seconds
-            _timer = new Timer(5000);
+            _timer = new Timer(500000);
             _timer.Elapsed += TimerElapsed;
             _timer.Start();
         }

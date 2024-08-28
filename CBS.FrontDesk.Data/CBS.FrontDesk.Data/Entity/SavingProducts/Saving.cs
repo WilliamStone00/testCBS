@@ -235,7 +235,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string BranchId { get; set; }
         public string MemberAccountActivationPolicyId { get; set; }
 
-       
+
         public bool NotifyBeforeWithdrawal { get; set; }
 
 
@@ -386,52 +386,101 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string BankId { get; set; }
         public SavingProduct Product { get; set; }
     }
-    public class Teller
+
+
+public class Teller
     {
+        [Required]
         public string id { get; set; }
+
+        [Required]
         public bool isPrimary { get; set; }
+
         [Required]
+        [StringLength(100, MinimumLength = 2, ErrorMessage = "Name must be between 2 and 100 characters.")]
         public string name { get; set; }
+
         [Required]
+        [StringLength(10, MinimumLength = 2, ErrorMessage = "Code must be between 2 and 10 characters.")]
         public string code { get; set; }
+
         [Required]
+        [RegularExpression(@"^[A-Za-z0-9\-]+$", ErrorMessage = "Bank ID can only contain alphanumeric characters and hyphens.")]
         public string bankId { get; set; }
+
         [Required]
+        [RegularExpression(@"^[A-Za-z0-9\-]+$", ErrorMessage = "Branch ID can only contain alphanumeric characters and hyphens.")]
         public string branchId { get; set; }
+
         [Required]
-        public string TellerType { get; set; }//VirtualTeller,PhysicalTeller,DailyCollectorTeller,NoneCashTeller
+        [StringLength(50, ErrorMessage = "TellerType cannot exceed 50 characters.")]
+        public string TellerType { get; set; } // VirtualTeller, PhysicalTeller, DailyCollectorTeller, NoneCashTeller
+
         public bool PerformCashIn { get; set; }
+
         public bool PerformCashOut { get; set; }
+
         [Required]
+        [RegularExpression(@"^[A-Za-z0-9\-]+$", ErrorMessage = "Event Code can only contain alphanumeric characters and hyphens.")]
         public string EventCode { get; set; }
 
         public bool PerformTransfer { get; set; }
+
         [Required]
-        public string OperationType { get; set; }//Cash, NoneCash
+        [StringLength(20, ErrorMessage = "OperationType cannot exceed 20 characters.")]
+        public string OperationType { get; set; } // Cash, NoneCash
+
+        [Required]
+        [Range(0, double.MaxValue, ErrorMessage = "MinimumAmountToManage must be a positive number.")]
         public decimal MinimumAmountToManage { get; set; } = 0m;
+
+        [Required]
+        [Range(0, double.MaxValue, ErrorMessage = "MaximumAmountToManage must be a positive number.")]
         public decimal MaximumAmountToManage { get; set; } = 0m;
+
+        [Required]
+        [Range(0, double.MaxValue, ErrorMessage = "MinimumDepositAmount must be a positive number.")]
         public decimal MinimumDepositAmount { get; set; } = 0m;
+
+        [Required]
+        [Range(0, double.MaxValue, ErrorMessage = "MaximumDepositAmount must be a positive number.")]
         public decimal MaximumDepositAmount { get; set; } = 0m;
+
+        [Required]
+        [Range(0, double.MaxValue, ErrorMessage = "MinimumWithdrawalAmount must be a positive number.")]
         public decimal MinimumWithdrawalAmount { get; set; } = 0m;
+
+        [Required]
+        [Range(0, double.MaxValue, ErrorMessage = "MaximumWithdrawalAmount must be a positive number.")]
         public decimal MaximumWithdrawalAmount { get; set; } = 0m;
+
+        [Required]
+        [Range(0, double.MaxValue, ErrorMessage = "MinimumTransferAmount must be a positive number.")]
         public decimal MinimumTransferAmount { get; set; } = 0m;
+
+        [Required]
+        [Range(0, double.MaxValue, ErrorMessage = "MaximumTransferAmount must be a positive number.")]
         public decimal MaximumTransferAmount { get; set; } = 0m;
+
         public Branch Branch { get; set; }
+
         public bool inUseStatus { get; set; }
+
         public bool activeStatus { get; set; }
+
         public List<TransactionHistory> Transactions { get; set; }
 
         // Constructor
         public Teller()
         {
             MinimumAmountToManage = 0m;
-            MaximumAmountToManage = 0m;
+            MaximumAmountToManage = 1;
             MinimumDepositAmount = 0m;
-            MaximumDepositAmount = 0m;
+            MaximumDepositAmount = 1;
             MinimumWithdrawalAmount = 0m;
-            MaximumWithdrawalAmount = 0m;
+            MaximumWithdrawalAmount = 1;
             MinimumTransferAmount = 0m;
-            MaximumTransferAmount = 0m;
+            MaximumTransferAmount = 1;
         }
     }
     public class OpeningOfTheDay
@@ -444,7 +493,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
 
         public OpenningOfDayRequest OpenningOfDayRequest { get; set; } = new OpenningOfDayRequest();
         public CloseOfDayRequest CloseOfDayRequest { get; set; } = new CloseOfDayRequest();
-
+        public TellerProvioningHistory TellerProvioningHistory { get; set; } = new TellerProvioningHistory();
+        public List<TellerProvioningHistory> TellerProvioningHistories { get; set; } = new List<TellerProvioningHistory>();
 
         public string Option { get; set; }
 
@@ -667,7 +717,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
 
     }
 
-public class MemberAccountUpload
+    public class MemberAccountUpload
     {
         [Required]
         public string BranchId { get; set; }
@@ -715,7 +765,7 @@ public class MemberAccountUpload
         public string TelephoneNumber { get; set; }
 
     }
-    
+
     public class TransactionReversal
     {
         public List<TransactionHistory> Transactions { get; set; }

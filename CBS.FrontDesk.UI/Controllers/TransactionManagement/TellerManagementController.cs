@@ -38,9 +38,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         public async Task<ActionResult> AddOrUpdate(SavingConfiguration model)
         {
             Func<Task<ExecutionMessages>> serviceAction = null;
-
             if (model.Action == "insert")
             {
+
                 serviceAction = GetInsertServiceAction(model.ServiceOption, model);
             }
             else

@@ -392,6 +392,12 @@
       <DependentUpon>LiaisonLedger.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\AccountingDay\AccountingDayrpt.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingDayrpt.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\Reciepts\OtherTransactionReciept.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -421,6 +427,24 @@
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Tellers\AllOpenAndClossingOfTillRpt.cs">
+      <DependentUpon>AllOpenAndClossingOfTillRpt.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Tellers\OpenAndClossingOfTill.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OpenAndClossingOfTill.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Tellers\OpeningAndClossingOfTellersRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OpeningAndClossingOfTellersRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -463,6 +487,7 @@
     <Compile Include="Controllers\CustomerManagement\Policy\MemberAccountActivationPolicyController.cs" />
     <Compile Include="Controllers\Loan\Configuration\LoanDeliquencyConfigurationController.cs" />
     <Compile Include="Controllers\TransactionManagement\ChargesWaivedController.cs" />
+    <Compile Include="Controllers\TransactionManagement\AccountingDayController.cs" />
     <Compile Include="Controllers\TransactionManagement\DailyTellerAssignationController.cs" />
     <Compile Include="Controllers\TransactionManagement\MigrationController.cs" />
     <Compile Include="Controllers\TransactionManagement\OpenningOfDayController.cs" />
@@ -2299,7 +2324,7 @@
     <None Include="DataSet\Transaction\TransactionDS.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>TransactionDS.Designer.cs</LastGenOutput>
+      <LastGenOutput>TransactionDS1.Designer.cs</LastGenOutput>
     </None>
     <Content Include="DataSet\Transaction\TransactionDS.xss">
       <DependentUpon>TransactionDS.xsd</DependentUpon>
@@ -2327,6 +2352,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\AccountEventConfigurtion\MFIChartOfAccount.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
+    <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\MomocashCollection.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\ExpensesCashDesk.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\OtherCashMobileMoney.js" />
@@ -3008,6 +3034,16 @@
     <Content Include="Views\ManuallyJournalEntry\MultipleJournalEntryConfiguration.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\_MultipleJournalEntryClient.cshtml" />
     <Content Include="Views\AccountingConfiguration\Index.cshtml" />
+    <Content Include="Views\DailyTellerAssignation\TellerOpenningAndClossingStatus.cshtml" />
+    <Content Include="Views\DailyTellerAssignation\_DownloadTellerOpenningAndClossingStatus.cshtml" />
+    <Content Include="Views\AccountingDay\_Create.cshtml" />
+    <Content Include="Views\AccountingDay\Index.cshtml" />
+    <Content Include="Views\DailyTellerAssignation\_TillCashStatusDownload.cshtml" />
+    <Content Include="Views\DailyTellerAssignation\TillCashStatus.cshtml" />
+    <Content Include="Views\AccountingDay\Status.cshtml" />
+    <Content Include="Views\AccountingDay\_StatusQuery.cshtml" />
+    <Content Include="Views\AccountingDay\_StatusData.cshtml" />
+    <Content Include="Views\AccountingDay\_AccountingDayDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -3086,6 +3122,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TrialBalance8Column.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\AccountingDay\AccountingDayrpt.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AccountingDayrpt.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\OtherTransactionReciept.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>OtherTransactionReciept.cs</LastGenOutput>
@@ -3113,6 +3153,18 @@
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\Statement\IAccountStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>IAccountStatement.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Tellers\AllOpenAndClossingOfTillRpt.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AllOpenAndClossingOfTillRpt.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Tellers\OpenAndClossingOfTill.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>OpenAndClossingOfTill.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Tellers\OpeningAndClossingOfTellersRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>OpeningAndClossingOfTellersRPT.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

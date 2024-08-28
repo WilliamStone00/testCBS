@@ -1,83 +1,85 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
 
-
-<div class="col">
-
+<div class="col-12">
     <div class="row my-4">
         <div class="accordion" id="collapsibleSection">
+
+            <!-- Loan Application Approval Section -->
             <div class="card accordion-item mb-3">
-                <h2 class="accordion-header" id="headingDeliveryAddress">
+                <h2 class="accordion-header" id="headingLoanApproval">
                     <button type="button"
                             class="accordion-button"
                             data-bs-toggle="collapse"
-                            data-bs-target="#collapseDeliveryAddress"
+                            data-bs-target="#collapseLoanApproval"
                             aria-expanded="true"
-                            aria-controls="collapseDeliveryAddress">
-                        Loan application validation
-
+                            aria-controls="collapseLoanApproval">
+                        Loan Application Approval
                     </button>
                 </h2>
 
-                <div id="collapseDeliveryAddress"
+                <div id="collapseLoanApproval"
                      class="accordion-collapse collapse show"
                      data-bs-parent="#collapsibleSection">
-                  
-
-
                     <div class="accordion-body">
                         <hr />
                         @Html.Partial("_SendOTP")
                         <hr />
                         @using (Html.BeginForm("Update", "MemberOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-                        {@Html.HiddenFor(m => m.UpdateLoanApplicationStatus.Id)
-                        @Html.HiddenFor(m => m.LoanApplication.Id)
-                        <div class="row g-4">
-                            <div class="col-md-3">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.UpdateLoanApplicationStatus.OTPCode, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.OTPCode, "", new { @class = "text-danger" })
-                                    <label>Enter OTP code from @Model.Customer.name</label>
+                        {
+                            @Html.HiddenFor(m => m.UpdateLoanApplicationStatus.Id)
+                            @Html.HiddenFor(m => m.LoanApplication.Id)
+
+                            <div class="row g-4">
+                                <div class="col-md-12">
+                                    <div class="form-floating">
+                                        @Html.TextBoxFor(m => m.UpdateLoanApplicationStatus.OTPCode, new { @class = "form-control", placeholder = "Enter OTP code" })
+                                        @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.OTPCode, "", new { @class = "text-danger" })
+                                        <label for="UpdateLoanApplicationStatus_OTPCode">Enter OTP code from @Model.Customer.name</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-floating">
+                                        @Html.DropDownListFor(m => m.UpdateLoanApplicationStatus.ApprovalStatus, new SelectList(ViewBag.LoanApplicationStatus, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", placeholder = "Select approval status" })
+                                        @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalStatus, "", new { @class = "text-danger" })
+                                        <label for="UpdateLoanApplicationStatus_ApprovalStatus">Select approval status</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-floating">
+                                        @Html.TextAreaFor(m => m.UpdateLoanApplicationStatus.ApprovalComment, new { @class = "form-control", style = "height: 200px;", placeholder = "Add a comment" })
+                                        @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalComment, "", new { @class = "text-danger" })
+                                        <label for="UpdateLoanApplicationStatus_ApprovalComment">Comment</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-9">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.UpdateLoanApplicationStatus.ApprovalStatus, new SelectList(ViewBag.LoanApplicationStatus, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                    @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalStatus, "", new { @class = "text-danger " })
-                                    <label>Select approval status</label>
-                                </div>
+
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Submit
+                                </button>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextAreaFor(m => m.UpdateLoanApplicationStatus.ApprovalComment, new { @class = "form-control", @style = "height: 200px;" })
-                                    @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalComment, "", new { @class = "text-danger" })
-                                    <label>Comment</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <button type="submit" class="btn btn-primary me-2">Submit</button>
-                        </div>
-                    }
+                        }
                     </div>
-
-
                 </div>
             </div>
 
+            <!-- Committee Actions Section -->
             <div class="card accordion-item mb-3">
-                <h2 class="accordion-header" id="headingPaymentMethod3">
+                <h2 class="accordion-header" id="headingCommiteeActions">
                     <button type="button"
                             class="accordion-button collapsed"
                             data-bs-toggle="collapse"
-                            data-bs-target="#collapsePaymentMethod3"
+                            data-bs-target="#collapseCommiteeActions"
                             aria-expanded="false"
-                            aria-controls="collapsePaymentMethod3">
-                        Commitee actions
+                            aria-controls="collapseCommiteeActions">
+                        Committee Actions
                     </button>
                 </h2>
-                <div id="collapsePaymentMethod3"
+                <div id="collapseCommiteeActions"
                      class="accordion-collapse collapse"
-                     aria-labelledby="headingPaymentMethod3"
+                     aria-labelledby="headingCommiteeActions"
                      data-bs-parent="#collapsibleSection">
                     <div class="accordion-body">
                         <div class="row g-4">
@@ -86,12 +88,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
-
     </div>
-
-
 </div>
-
-
-

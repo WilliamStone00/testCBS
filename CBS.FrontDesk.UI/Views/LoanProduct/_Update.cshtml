@@ -28,6 +28,13 @@ Key Points:
                             <fieldset class="fieldset-custom">
                                 <legend>Minimum-Payment Settings</legend>
                                 <div class="row g-4">
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.TargetType, new SelectList(ViewBag.LoanTargets, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", @readonly = true })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.TargetType, "", new { @class = "text-danger " })
+                                            <label>Target</label>
+                                        </div>
+                                    </div>
                                     <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.ProductCode, new { @class = "form-control", @readonly = true })
@@ -50,14 +57,21 @@ Key Points:
                                             <label>Description</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.LoanMinimumAmount, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.LoanMinimumAmount, "", new { @class = "text-danger" })
                                             <label>Minimum loan amount</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.LoanMaximumAmount, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.LoanMaximumAmount, "", new { @class = "text-danger" })
+                                            <label>Maximum loan amount</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumDownPaymentPercentage, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumDownPaymentPercentage, "", new { @class = "text-danger" })

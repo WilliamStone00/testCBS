@@ -746,7 +746,8 @@ namespace CBS.API.Helper
                     {
                         if (response.StatusCode == HttpStatusCode.Unauthorized)
                         {
-                            message = "Unauthorized";
+                            jsonResponse = JObject.Parse(responseData);
+                            message = jsonResponse["message"]?.ToString();
                             return new ApiResponse<T>
                             {
                                 IsSuccess = false,
@@ -1344,28 +1345,29 @@ namespace CBS.API.Helper
 
         private static void AddAuthorizationHeader(HttpClient client)
         {
-            string token = HttpContext.Current.Session["Token"] as string;
+            string encryptedtoken = HttpContext.Current.Session["EncryptedJWToken"] as string;
 
             // Check if token exists in the session
-            if (!string.IsNullOrEmpty(token))
+            if (!string.IsNullOrEmpty(encryptedtoken))
             {
                 if (client.DefaultRequestHeaders.Authorization != null)
                 {
                     // Parse the existing token if present
-                    var jwtHandler = new JwtSecurityTokenHandler();
-                    var existingTokenData = jwtHandler.ReadToken(client.DefaultRequestHeaders.Authorization.Parameter) as JwtSecurityToken;
+                    //var jwtHandler = new JwtSecurityTokenHandler();
+                    //var existingTokenData = jwtHandler.ReadToken(TokenEncryptionHelper.DecryptToken(client.DefaultRequestHeaders.Authorization.Parameter)) as JwtSecurityToken;
 
-                    if (existingTokenData != null && existingTokenData.ValidTo < DateTime.UtcNow)
-                    {
-                        // Replace the token if it's expired
-                        client.DefaultRequestHeaders.Remove("Authorization");
-                        client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                    }
+                    //if (existingTokenData != null && existingTokenData.ValidTo < DateTime.UtcNow)
+                    //{
+                    //    // Replace the token if it's expired
+                    //    client.DefaultRequestHeaders.Remove("Authorization");
+                    //    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                    //}
                 }
                 else
                 {
+                    string tokendecrypted = TokenEncryptionHelper.DecryptToken(encryptedtoken);
                     // Add the token to the request headers
-                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + tokendecrypted);
                 }
             }
 

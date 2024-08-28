@@ -16,7 +16,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cash-multiple me-2"></i>
-                            PRIMARY-TELLER CLOSE OF DAY.
+                            PRIMARY-TLL CLOSE OF DAY.
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -46,6 +46,12 @@
 
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script>
+    function Reprint() {
+        ReportView("EndOfDayOperation", null, "GetReportReport", null, null, null,"ReportParameterLess");
+
+    }
+    </script>
 }
 
 

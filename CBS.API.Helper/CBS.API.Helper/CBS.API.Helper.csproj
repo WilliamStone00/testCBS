@@ -102,6 +102,7 @@
     <Compile Include="APICallHelper\ApiCallerHelper.cs" />
     <Compile Include="APICallHelper\ApiException.cs" />
     <Compile Include="APICallHelper\Class1.cs" />
+    <Compile Include="APICallHelper\TokenEncryptionHelper.cs" />
     <Compile Include="BarCodeHelper.cs" />
     <Compile Include="LoginModel\Authenthication\AuthRequest.cs" />
     <Compile Include="LoginModel\Authenthication\AuthResponse.cs" />

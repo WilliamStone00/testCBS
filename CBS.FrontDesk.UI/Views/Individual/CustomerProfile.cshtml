@@ -8,466 +8,472 @@
 
 <div class="row invoice-preview">
     <div class="col-xl-3 col-md-4 col-12 invoice-actions">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="group-title">
-                    MEMBER REFERENCE # <span class="highlight-text">@Model.CustomerList.CustomerId</span><br />
-                    <hr />
-                    <small>Member code: Last 4 digits</small><br />
-                    <small>Bank Code: @Session["BankCode"].ToString()</small><br />
-                    <small>Branch Code: @Session["BranchCode"].ToString()</small>
-                </h4>
-            </div>
-        </div>
-        <br />
-        <div class="card">
-            <div class="card-body">
-                <h4 class="group-title">
-                    MEMBER STATUS
-                    <hr />
-                    @if (Model.CustomerList.MembershipApprovalStatus == "Approved")
-                    {
-                        <small>Approved BY:  @Model.CustomerList.MembershipApprovalBy</small><br />
-                        <small>Approved Date:  @Model.CustomerList.MembershipApprovedDate</small><br />
-                        <small>Status: <span class="highlight-text">@Model.CustomerList.MembershipApprovalStatus.ToUpper()</span></small>
-                    }
-                    else
-                    {
-                        <small>Status: <span class="highlight-text">@Model.CustomerList.MembershipApprovalStatus</span></small>
-                    }
-                    <br />
-                    <small>Registration Date: @Model.CustomerList.MembershipApplicantDate</small>
-                </h4>
-            </div>
-        </div>
-
-
-        <div class="card mt-3">
-            <div class="card-body">
-                <!-- Aligning the card title and Member text in the same row -->
-                <div class="d-flex justify-content-between align-items-center">
-                    <!-- Card title aligned to the left -->
-                    <h5 class="card-title text-left mb-0">Member: @Model.CustomerList.name</h5>
-                    <hr />
-                    <!-- Member name aligned to the right -->
-                    <!--<span class="text-end"></span>-->
+        <fieldset class="fieldset-custom">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="group-title">
+                        MEMBER REFERENCE # <span class="highlight-text">@Model.CustomerList.CustomerId</span><br />
+                        <hr />
+                        <small>Member code: Last 4 digits</small><br />
+                        <small>Bank Code: @Session["BankCode"].ToString()</small><br />
+                        <small>Branch Code: @Session["BranchCode"].ToString()</small>
+                    </h4>
                 </div>
-                <div class="image-upload-container">
-                    <!-- Image for picture -->
-                    @if (Model.CustomerList.photoUrl != null)
-                    {
-                        <!-- Clickable photo for preview -->
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
-                            <img src="@Model.CustomerList.photoUrl" class="img-fluid preview-image" alt="Uploaded Image">
-                        </a>
-                        <!-- Modal for photo preview -->
-                        <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <img src="@Model.CustomerList.photoUrl" class="img-fluid" alt="Uploaded Image">
+            </div>
+            <br />
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="group-title">
+                        MEMBER STATUS
+                        <hr />
+                        @if (Model.CustomerList.MembershipApprovalStatus == "Approved")
+                        {
+                            <small>Approved BY:  @Model.CustomerList.MembershipApprovalBy</small><br />
+                            <small>Approved Date:  @Model.CustomerList.MembershipApprovedDate</small><br />
+                            <small>Status: <span class="highlight-text">@Model.CustomerList.MembershipApprovalStatus.ToUpper()</span></small>
+                        }
+                        else
+                        {
+                            <small>Status: <span class="highlight-text">@Model.CustomerList.MembershipApprovalStatus</span></small>
+                        }
+                        <br />
+                        <small>Registration Date: @Model.CustomerList.MembershipApplicantDate</small>
+                    </h4>
+                </div>
+            </div>
+
+
+            <div class="card mt-3">
+                <div class="card-body">
+                    <!-- Aligning the card title and Member text in the same row -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Card title aligned to the left -->
+                        <h5 class="card-title text-left mb-0">Member: @Model.CustomerList.name</h5>
+                        <hr />
+                        <!-- Member name aligned to the right -->
+                        <!--<span class="text-end"></span>-->
+                    </div>
+                    <div class="image-upload-container">
+                        <!-- Image for picture -->
+                        @if (Model.CustomerList.photoUrl != null)
+                        {
+                            <!-- Clickable photo for preview -->
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
+                                <img src="@Model.CustomerList.photoUrl" class="img-fluid preview-image" alt="Uploaded Image">
+                            </a>
+                            <!-- Modal for photo preview -->
+                            <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <img src="@Model.CustomerList.photoUrl" class="img-fluid" alt="Uploaded Image">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <img src="@Url.Content(Model.CustomerList.ImageNoVirtualPath)" class="img-fluid preview-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+                        }
+                        else
+                        {
+                            <img src="@Url.Content(Model.CustomerList.ImageNoVirtualPath)" class="img-fluid preview-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
 
-                    }
-                    <!-- ... Other content ... -->
+                        }
+                        <!-- ... Other content ... -->
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card mt-3">
-            <div class="card-body">
-                <h5 class="card-title">Signature</h5>
-                <div class="image-upload-container">
-                    <!-- Image for signature -->
-                    @if (Model.CustomerList.signatureUrl != null)
-                    {
-                        <!-- Clickable signature for preview -->
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#signaturePreviewModal">
-                            <img src="@Model.CustomerList.signatureUrl" class="img-fluid preview-image" alt="Uploaded Signature">
-                        </a>
-                        <!-- Modal for signature preview -->
-                        <div class="modal fade" id="signaturePreviewModal" tabindex="-1" aria-labelledby="signaturePreviewModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <img src="@Model.CustomerList.signatureUrl" class="img-fluid" alt="Uploaded Signature">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Signature</h5>
+                    <div class="image-upload-container">
+                        <!-- Image for signature -->
+                        @if (Model.CustomerList.signatureUrl != null)
+                        {
+                            <!-- Clickable signature for preview -->
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#signaturePreviewModal">
+                                <img src="@Model.CustomerList.signatureUrl" class="img-fluid preview-image" alt="Uploaded Signature">
+                            </a>
+                            <!-- Modal for signature preview -->
+                            <div class="modal fade" id="signaturePreviewModal" tabindex="-1" aria-labelledby="signaturePreviewModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <img src="@Model.CustomerList.signatureUrl" class="img-fluid" alt="Uploaded Signature">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <img src="@Url.Content(Model.CustomerList.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+                        }
+                        else
+                        {
+                            <img src="@Url.Content(Model.CustomerList.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
 
-                    }
-                    <!-- ... Other content ... -->
+                        }
+                        <!-- ... Other content ... -->
+                    </div>
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
     <div class="col-xl-9 col-md-8 col-12 mb-md-0 mb-4">
-        <div class="card mb-4">
-            <div class="card-header p-0">
-                <div class="nav-align-top">
-                    <ul class="nav nav-tabs nav-fill" role="tablist">
-                        <li class="nav-item">
-                            <button type="button"
-                                    class="nav-link active"
-                                    role="tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#navs-justified-profile"
-                                    aria-controls="navs-justified-profile"
-                                    aria-selected="true">
-                                <i class="tf-icons mdi mdi-account-outline me-1"></i> Profile
-                                @*<span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">3</span>*@
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button"
-                                    class="nav-link"
-                                    role="tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#navs-justified-security"
-                                    aria-controls="navs-justified-security"
-                                    aria-selected="false">
-                                <i class="tf-icons mdi mdi-security me-1"></i> Security
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button"
-                                    class="nav-link"
-                                    role="tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#navs-justified-document"
-                                    aria-controls="navs-justified-document"
-                                    aria-selected="false">
-                                <i class="tf-icons mdi mdi-file-document-alert-outline me-1"></i> Documents
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button"
-                                    class="nav-link"
-                                    role="tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#navs-justified-account"
-                                    aria-controls="navs-justified-account"
-                                    aria-selected="false">
-                                <i class="tf-icons mdi mdi-account me-1"></i> Account
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button"
-                                    class="nav-link"
-                                    role="tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#navs-justified-nextofking"
-                                    aria-controls="navs-justified-nextofking"
-                                    aria-selected="false">
-                                <i class="tf-icons mdi mdi-account me-1"></i> Next of king
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button"
-                                    class="nav-link"
-                                    role="tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#navs-justified-cardsignature"
-                                    aria-controls="navs-justified-cardsignature"
-                                    aria-selected="false">
-                                <i class="tf-icons mdi mdi-account me-1"></i> Signatories
-                            </button>
-                        </li>
+        <fieldset class="fieldset-custom">
+            <div class="card mb-4">
+                <div class="card-header p-0">
+                    <div class="nav-align-top">
+                        <ul class="nav nav-tabs nav-fill" role="tablist">
+                            <li class="nav-item">
+                                <button type="button"
+                                        class="nav-link active"
+                                        role="tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#navs-justified-profile"
+                                        aria-controls="navs-justified-profile"
+                                        aria-selected="true">
+                                    <i class="tf-icons mdi mdi-account-outline me-1"></i> Profile
+                                    @*<span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">3</span>*@
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button type="button"
+                                        class="nav-link"
+                                        role="tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#navs-justified-security"
+                                        aria-controls="navs-justified-security"
+                                        aria-selected="false">
+                                    <i class="tf-icons mdi mdi-security me-1"></i> Security
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button type="button"
+                                        class="nav-link"
+                                        role="tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#navs-justified-document"
+                                        aria-controls="navs-justified-document"
+                                        aria-selected="false">
+                                    <i class="tf-icons mdi mdi-file-document-alert-outline me-1"></i> Documents
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button type="button"
+                                        class="nav-link"
+                                        role="tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#navs-justified-account"
+                                        aria-controls="navs-justified-account"
+                                        aria-selected="false">
+                                    <i class="tf-icons mdi mdi-account me-1"></i> Account
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button type="button"
+                                        class="nav-link"
+                                        role="tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#navs-justified-nextofking"
+                                        aria-controls="navs-justified-nextofking"
+                                        aria-selected="false">
+                                    <i class="tf-icons mdi mdi-account me-1"></i> Next of king
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button type="button"
+                                        class="nav-link"
+                                        role="tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#navs-justified-cardsignature"
+                                        aria-controls="navs-justified-cardsignature"
+                                        aria-selected="false">
+                                    <i class="tf-icons mdi mdi-account me-1"></i> Signatories
+                                </button>
+                            </li>
 
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="tab-content p-0">
-                    <div class="tab-pane fade show active" id="navs-justified-profile" role="tabpanel">
+                <div class="card-body">
+                    <div class="tab-content p-0">
+                        <div class="tab-pane fade show active" id="navs-justified-profile" role="tabpanel">
 
-                        <div class="col-lg-12 col-md-8 col-12">
-                            <div class="tab-content p-0">
-                                <div class="tab-pane fade show active" id="payment" role="tabpanel">
-                                    <div id="accordionPayment" class="accordion">
-                                        <div class="accordion-item active">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button"
-                                                        type="button"
-                                                        data-bs-toggle="collapse"
-                                                        aria-expanded="true"
-                                                        data-bs-target="#accordionPayment-1"
-                                                        aria-controls="accordionPayment-1">
-                                                    Photo and Signature
-                                                </button>
-                                            </h2>
+                            <div class="col-lg-12 col-md-8 col-12">
+                                <div class="tab-content p-0">
+                                    <div class="tab-pane fade show active" id="payment" role="tabpanel">
+                                        <div id="accordionPayment" class="accordion">
+                                            <div class="accordion-item active">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            aria-expanded="true"
+                                                            data-bs-target="#accordionPayment-1"
+                                                            aria-controls="accordionPayment-1">
+                                                        Photo and Signature
+                                                    </button>
+                                                </h2>
 
-                                            <div id="accordionPayment-1" class="accordion-collapse collapse show">
-                                                <div class="accordion-body">
-                                                    <div class="row">
-                                                        <div class="col-xl-6 col-md-6 col-12">
-                                                            @Html.Partial("_ImageUploader") <!-- Place ImageUploader in the left column -->
-                                                        </div>
-                                                        <div class="col-xl-6 col-md-6 col-12">
-                                                            @Html.Partial("_SignatureUploader") <!-- Place SignatureUploader in the right column -->
+                                                <div id="accordionPayment-1" class="accordion-collapse collapse show">
+                                                    <div class="accordion-body">
+                                                        <div class="row">
+                                                            <div class="col-xl-6 col-md-6 col-12">
+                                                                @Html.Partial("_ImageUploader") <!-- Place ImageUploader in the left column -->
+                                                            </div>
+                                                            <div class="col-xl-6 col-md-6 col-12">
+                                                                @Html.Partial("_SignatureUploader") <!-- Place SignatureUploader in the right column -->
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed"
-                                                        type="button"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#accordionPayment-2"
-                                                        aria-controls="accordionPayment-2">
-                                                    Personal information
-                                                </button>
-                                            </h2>
-                                            <div id="accordionPayment-2" class="accordion-collapse collapse">
-                                                <div class="accordion-body">
-                                                    @Html.Partial("_UpdateProfile")
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#accordionPayment-2"
+                                                            aria-controls="accordionPayment-2">
+                                                        Personal information
+                                                    </button>
+                                                </h2>
+                                                <div id="accordionPayment-2" class="accordion-collapse collapse">
+                                                    <div class="accordion-body">
+                                                        @Html.Partial("_UpdateProfile")
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed"
-                                                        type="button"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#accordionPayment-3"
-                                                        aria-controls="accordionPayment-3">
-                                                    Marital status
-                                                </button>
-                                            </h2>
-                                            <div id="accordionPayment-3" class="accordion-collapse collapse">
-                                                <div class="accordion-body">
-                                                    @Html.Partial("_MaritalStatus")
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#accordionPayment-3"
+                                                            aria-controls="accordionPayment-3">
+                                                        Marital status
+                                                    </button>
+                                                </h2>
+                                                <div id="accordionPayment-3" class="accordion-collapse collapse">
+                                                    <div class="accordion-body">
+                                                        @Html.Partial("_MaritalStatus")
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed"
-                                                        type="button"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#accordionPayment-4"
-                                                        aria-controls="accordionPayment-4">
-                                                    Employment status
-                                                </button>
-                                            </h2>
-                                            <div id="accordionPayment-4" class="accordion-collapse collapse">
-                                                <div class="accordion-body">
-                                                    @Html.Partial("_EmploymentDetails")
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#accordionPayment-4"
+                                                            aria-controls="accordionPayment-4">
+                                                        Employment status
+                                                    </button>
+                                                </h2>
+                                                <div id="accordionPayment-4" class="accordion-collapse collapse">
+                                                    <div class="accordion-body">
+                                                        @Html.Partial("_EmploymentDetails")
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed"
-                                                        type="button"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#accordionPayment-5"
-                                                        aria-controls="accordionPayment-5">
-                                                    Bank Informations
-                                                </button>
-                                            </h2>
-                                            <div id="accordionPayment-5" class="accordion-collapse collapse">
-                                                <div class="accordion-body">
-                                                    @Html.Partial("_BankInformation")
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#accordionPayment-5"
+                                                            aria-controls="accordionPayment-5">
+                                                        Bank Informations
+                                                    </button>
+                                                </h2>
+                                                <div id="accordionPayment-5" class="accordion-collapse collapse">
+                                                    <div class="accordion-body">
+                                                        @Html.Partial("_BankInformation")
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed"
-                                                        type="button"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#membershipstatus"
-                                                        aria-controls="membershipstatus">
-                                                    Membership status
-                                                </button>
-                                            </h2>
-                                            <div id="membershipstatus" class="accordion-collapse collapse">
-                                                <div class="accordion-body">
-                                                    @Html.Partial("_MembershipStatus")
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#membershipstatus"
+                                                            aria-controls="membershipstatus">
+                                                        Membership status
+                                                    </button>
+                                                </h2>
+                                                <div id="membershipstatus" class="accordion-collapse collapse">
+                                                    <div class="accordion-body">
+                                                        @Html.Partial("_MembershipStatus")
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed"
-                                                        type="button"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#legalstaus"
-                                                        aria-controls="legalstaus">
-                                                    Legal status
-                                                </button>
-                                            </h2>
-                                            <div id="legalstaus" class="accordion-collapse collapse">
-                                                <div class="accordion-body">
-                                                    @Html.Partial("_LegalSector")
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#legalstaus"
+                                                            aria-controls="legalstaus">
+                                                        Legal status
+                                                    </button>
+                                                </h2>
+                                                <div id="legalstaus" class="accordion-collapse collapse">
+                                                    <div class="accordion-body">
+                                                        @Html.Partial("_LegalSector")
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="navs-justified-security" role="tabpanel">
-                        <div class="tab-pane fade show active" id="payment" role="tabpanel">
-                            <div id="accordionPayment" class="accordion">
-                                <div class="accordion-item active">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button"
-                                                type="button"
-                                                data-bs-toggle="collapse"
-                                                aria-expanded="true"
-                                                data-bs-target="#accordionPayment-1"
-                                                aria-controls="accordionPayment-1">
-                                            Security question and answer
-                                        </button>
-                                    </h2>
-
-                                    <div id="accordionPayment-1" class="accordion-collapse collapse show">
-                                        <div class="accordion-body">
-                                            @Html.Partial("_SecurityQuestionAndAnswer")
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed"
-                                                type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#accordionPayment-2"
-                                                aria-controls="accordionPayment-2">
-                                            Pin Reset
-                                        </button>
-                                    </h2>
-                                    <div id="accordionPayment-2" class="accordion-collapse collapse">
-                                        <div class="accordion-body">
-                                            @Html.Partial("_ResetPin")
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="tab-pane fade" id="navs-justified-security" role="tabpanel">
+                            <div class="tab-pane fade show active" id="payment" role="tabpanel">
+                                <div id="accordionPayment" class="accordion">
+                                    <div class="accordion-item active">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button"
+                                                    type="button"
+                                                    data-bs-toggle="collapse"
+                                                    aria-expanded="true"
+                                                    data-bs-target="#accordionPayment-1"
+                                                    aria-controls="accordionPayment-1">
+                                                Security question and answer
+                                            </button>
+                                        </h2>
 
-
-                    </div>
-                    <div class="tab-pane fade" id="navs-justified-document" role="tabpanel">
-                        @Html.Partial("_FilesUploader")
-                    </div>
-                    <div class="tab-pane fade" id="navs-justified-account" role="tabpanel">
-                        @Html.Partial("_AccountBalance")
-                    </div>
-                    <div class="tab-pane fade" id="navs-justified-nextofking" role="tabpanel">
-                        <div class="tab-pane fade show active" id="payment" role="tabpanel">
-                            <div id="accordionPayment" class="accordion">
-                                <div class="accordion-item active">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button"
-                                                type="button"
-                                                data-bs-toggle="collapse"
-                                                aria-expanded="true"
-                                                data-bs-target="#accordionPayment-1"
-                                                aria-controls="accordionPayment-1">
-                                            Add next of kings
-                                        </button>
-                                    </h2>
-
-                                    <div id="accordionPayment-1" class="accordion-collapse collapse show">
-                                        <div class="accordion-body">
-                                            @Html.Partial("_AddMembershipNextOfKingsMember")
+                                        <div id="accordionPayment-1" class="accordion-collapse collapse show">
+                                            <div class="accordion-body">
+                                                @Html.Partial("_SecurityQuestionAndAnswer")
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed"
-                                                type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#accordionPayment-2"
-                                                aria-controls="accordionPayment-2">
-                                            Next of king Listing
-                                        </button>
-                                    </h2>
-                                    <div id="accordionPayment-2" class="accordion-collapse collapse">
-                                        <div class="accordion-body">
-                                            @Html.Partial("_AddMembershipNextOfKingsMemberData")
-
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed"
+                                                    type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#accordionPayment-2"
+                                                    aria-controls="accordionPayment-2">
+                                                Pin Reset
+                                            </button>
+                                        </h2>
+                                        <div id="accordionPayment-2" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                @Html.Partial("_ResetPin")
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+
                         </div>
+                        <div class="tab-pane fade" id="navs-justified-document" role="tabpanel">
+                            @Html.Partial("_FilesUploader")
+                        </div>
+                        <div class="tab-pane fade" id="navs-justified-account" role="tabpanel">
+                            @Html.Partial("_AccountBalance")
+                        </div>
+                        <div class="tab-pane fade" id="navs-justified-nextofking" role="tabpanel">
+                            <div class="tab-pane fade show active" id="payment" role="tabpanel">
+                                <div id="accordionPayment" class="accordion">
+                                    <div class="accordion-item active">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button"
+                                                    type="button"
+                                                    data-bs-toggle="collapse"
+                                                    aria-expanded="true"
+                                                    data-bs-target="#accordionPayment-1"
+                                                    aria-controls="accordionPayment-1">
+                                                Add next of kings
+                                            </button>
+                                        </h2>
 
-
-                    </div>
-                    <div class="tab-pane fade" id="navs-justified-cardsignature" role="tabpanel">
-                        <div class="tab-pane fade show active" id="payment" role="tabpanel">
-                            <div id="accordionPayment" class="accordion">
-                                <div class="accordion-item active">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button"
-                                                type="button"
-                                                data-bs-toggle="collapse"
-                                                aria-expanded="true"
-                                                data-bs-target="#accordionPayment-1"
-                                                aria-controls="accordionPayment-1">
-                                            Add account signatories
-                                        </button>
-                                    </h2>
-
-                                    <div id="accordionPayment-1" class="accordion-collapse collapse show">
-                                        <div class="accordion-body">
-                                            @Html.Partial("_AddCardSignatureSpecimen")
+                                        <div id="accordionPayment-1" class="accordion-collapse collapse show">
+                                            <div class="accordion-body">
+                                                @Html.Partial("_AddMembershipNextOfKingsMember")
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed"
-                                                type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#accordionPayment-2"
-                                                aria-controls="accordionPayment-2">
-                                            Accounts signatories
-                                        </button>
-                                    </h2>
-                                    <div id="accordionPayment-2" class="accordion-collapse collapse">
-                                        <div class="accordion-body">
-                                            @Html.Partial("_AddCardSignatureSpecimenData")
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed"
+                                                    type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#accordionPayment-2"
+                                                    aria-controls="accordionPayment-2">
+                                                Next of king Listing
+                                            </button>
+                                        </h2>
+                                        <div id="accordionPayment-2" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                @Html.Partial("_AddMembershipNextOfKingsMemberData")
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+
+                        </div>
+                        <div class="tab-pane fade" id="navs-justified-cardsignature" role="tabpanel">
+                            <div class="tab-pane fade show active" id="payment" role="tabpanel">
+                                <div id="accordionPayment" class="accordion">
+                                    <div class="accordion-item active">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button"
+                                                    type="button"
+                                                    data-bs-toggle="collapse"
+                                                    aria-expanded="true"
+                                                    data-bs-target="#accordionPayment-1"
+                                                    aria-controls="accordionPayment-1">
+                                                Add account signatories
+                                            </button>
+                                        </h2>
+
+                                        <div id="accordionPayment-1" class="accordion-collapse collapse show">
+                                            <div class="accordion-body">
+                                                @Html.Partial("_AddCardSignatureSpecimen")
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed"
+                                                    type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#accordionPayment-2"
+                                                    aria-controls="accordionPayment-2">
+                                                Accounts signatories
+                                            </button>
+                                        </h2>
+                                        <div id="accordionPayment-2" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                @Html.Partial("_AddCardSignatureSpecimenData")
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
 
-
                     </div>
-
                 </div>
-            </div>        </div>
+            </div>
+        </fieldset>
     </div>
+
 </div>
 
 <!-- Modal -->

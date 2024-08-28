@@ -16,6 +16,9 @@ using CBS.FrontDesk.Data.UserManagement;
 using CBS.BusinessService.UserManagement;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
+using CBS.FrontDesk.Data.ReportDataSetDto;
+using System.Web;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -40,17 +43,17 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 model.Amount = ComputeDenomination(model.CurrencyNotes);
-                if (model.Amount <= 0)
+                if (model.Amount < 0)
                 {
                     GetExecutionMessages(model, false, $"{model.Amount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered must be greater than 0");
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered must not be less than 0");
                     return ExecutionMessage;
                 }
 
-                var response = await _transactionApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.OpenningOfDayPrimaryTeller, model);
-                if (response.IsSuccess)
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<TellerProvioningHistory>>(APICallHelper.OpenningOfDayPrimaryTeller, model);
+                if (response.IsSuccess && response.ApiResponseData != null)
                 {
-
+                    await MapToTillOpenAndClossingDS(response.ApiResponseData.Data);
                     GetExecutionMessages(response, true, $"{model.Amount}", MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
@@ -73,6 +76,165 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
+        public async Task MapToTillOpenAndClossingDS(TellerProvioningHistory tellerProvisioningHistory)
+        {
+            var branch = await _brancheServices.GetBranch(GetBranchID());
+
+
+
+            var tillDs = new TillOpenAndClossingDS
+            {
+                UserIdInChargeOfThisTeller = tellerProvisioningHistory.UserIdInChargeOfThisTeller,
+                ProvisionedBy = tellerProvisioningHistory.ProvisionedBy,
+                IsCashReplenished = tellerProvisioningHistory.IsCashReplenished,
+                ReplenishedAmount = tellerProvisioningHistory.ReplenishedAmount,
+                OpenedDate = tellerProvisioningHistory.OpenedDate.GetValueOrDefault(),
+                ClossedDate = tellerProvisioningHistory.ClossedDate.GetValueOrDefault(),
+                OpenOfDayAmount = tellerProvisioningHistory.OpenOfDayAmount,
+                ReferenceId = tellerProvisioningHistory.ReferenceId,
+                CloseOfReferenceId = tellerProvisioningHistory.CloseOfReferenceId,
+                IsRequestedForCashReplenishment = tellerProvisioningHistory.IsRequestedForCashReplenishment,
+                CashAtHand = tellerProvisioningHistory.CashAtHand,
+                EndOfDayAmount = tellerProvisioningHistory.EndOfDayAmount,
+                AccountBalance = tellerProvisioningHistory.AccountBalance,
+                LastOPerationAmount = tellerProvisioningHistory.LastOPerationAmount,
+                LastOperationType = tellerProvisioningHistory.LastOperationType,
+                PreviouseBalance = tellerProvisioningHistory.PreviouseBalance,
+                SubTellerComment = tellerProvisioningHistory.SubTellerComment,
+                Note = tellerProvisioningHistory.Note,
+                ClossedStatus = tellerProvisioningHistory.ClossedStatus,
+                TillName = tellerProvisioningHistory.Teller.name, // Assuming you have a TillName property in the Branch object
+                InitialPrinting = tellerProvisioningHistory.InitialPrinting,
+                OpeningNote10000 = tellerProvisioningHistory.OpeningNote10000,
+                OpeningNote5000 = tellerProvisioningHistory.OpeningNote5000,
+                OpeningNote2000 = tellerProvisioningHistory.OpeningNote2000,
+                OpeningNote1000 = tellerProvisioningHistory.OpeningNote1000,
+                OpeningNote500 = tellerProvisioningHistory.OpeningNote500,
+                OpeningCoin500 = tellerProvisioningHistory.OpeningCoin500,
+                OpeningCoin100 = tellerProvisioningHistory.OpeningCoin100,
+                OpeningCoin50 = tellerProvisioningHistory.OpeningCoin50,
+                OpeningCoin25 = tellerProvisioningHistory.OpeningCoin25,
+                OpeningCoin10 = tellerProvisioningHistory.OpeningCoin10,
+                OpeningCoin5 = tellerProvisioningHistory.OpeningCoin5,
+                OpeningCoin1 = tellerProvisioningHistory.OpeningCoin1,
+                ClosingNote10000 = tellerProvisioningHistory.ClosingNote10000,
+                ClosingNote5000 = tellerProvisioningHistory.ClosingNote5000,
+                ClosingNote2000 = tellerProvisioningHistory.ClosingNote2000,
+                ClosingNote1000 = tellerProvisioningHistory.ClosingNote1000,
+                ClosingNote500 = tellerProvisioningHistory.ClosingNote500,
+                ClosingCoin500 = tellerProvisioningHistory.ClosingCoin500,
+                ClosingCoin100 = tellerProvisioningHistory.ClosingCoin100,
+                ClosingCoin50 = tellerProvisioningHistory.ClosingCoin50,
+                ClosingCoin25 = tellerProvisioningHistory.ClosingCoin25,
+                ClosingCoin10 = tellerProvisioningHistory.ClosingCoin10,
+                ClosingCoin5 = tellerProvisioningHistory.ClosingCoin5,
+                ClosingCoin1 = tellerProvisioningHistory.ClosingCoin1,
+                TotalOpeningAmount = tellerProvisioningHistory.TotalOpeningAmount,
+                TotalClosingAmount = tellerProvisioningHistory.TotalClosingAmount,
+                Logo = branch.Bank.LogoUrl,
+                BranchName = branch.Name,
+                BranchCode = branch.BranchCode,
+                BranchAddress = branch.Address,
+                BranchTelephone = branch.Telephone,
+                HeadOfficeName = branch.Bank.Name,
+                HeadOfficeAddress = branch.Bank.Address,
+                HeadOfficeTelephone = branch.Bank.Telephone,
+                HeadOfficeEmail = branch.Bank.Email,
+                HeadOfficeWebSite = branch.Bank.WebSite,
+                HeadOfficeInitial = branch.Bank.BankInitial,
+                HeadOfficeCode = branch.Bank.BankCode
+            };
+            // Convert the single instance to a list
+            var tillDsList = new List<TillOpenAndClossingDS> { tillDs };
+            HttpContext.Current.Session["rptSource"] = tillDsList;
+        }
+        public List<TillOpenAndClossingDS> MapToTillOpenAndClossingDS(List<TellerProvioningHistory> tellerProvisioningHistoryList, List<Branch> branches)
+        {
+            var tillDsList = new List<TillOpenAndClossingDS>();
+
+            foreach (var tellerProvisioningHistory in tellerProvisioningHistoryList)
+            {
+                var branch = branches.FirstOrDefault(b => b.Id == tellerProvisioningHistory.BranchId);
+
+                if (branch == null)
+                {
+                    // Handle the case where the branch is not found
+                    continue;
+                }
+
+                var tillDs = new TillOpenAndClossingDS
+                {
+                    UserIdInChargeOfThisTeller = tellerProvisioningHistory.UserIdInChargeOfThisTeller,
+                    ProvisionedBy = tellerProvisioningHistory.ProvisionedBy,
+                    IsCashReplenished = tellerProvisioningHistory.IsCashReplenished,
+                    ReplenishedAmount = tellerProvisioningHistory.ReplenishedAmount,
+                    OpenedDate = tellerProvisioningHistory.OpenedDate.GetValueOrDefault(),
+                    ClossedDate = tellerProvisioningHistory.ClossedDate.GetValueOrDefault(),
+                    OpenOfDayAmount = tellerProvisioningHistory.OpenOfDayAmount,
+                    ReferenceId = tellerProvisioningHistory.ReferenceId,
+                    CloseOfReferenceId = tellerProvisioningHistory.CloseOfReferenceId,
+                    IsRequestedForCashReplenishment = tellerProvisioningHistory.IsRequestedForCashReplenishment,
+                    CashAtHand = tellerProvisioningHistory.CashAtHand,
+                    EndOfDayAmount = tellerProvisioningHistory.EndOfDayAmount,
+                    AccountBalance = tellerProvisioningHistory.AccountBalance,
+                    LastOPerationAmount = tellerProvisioningHistory.LastOPerationAmount,
+                    LastOperationType = tellerProvisioningHistory.LastOperationType,
+                    PreviouseBalance = tellerProvisioningHistory.PreviouseBalance,
+                    SubTellerComment = tellerProvisioningHistory.SubTellerComment,
+                    Note = tellerProvisioningHistory.Note,
+                    ClossedStatus = tellerProvisioningHistory.ClossedStatus,
+                    TillName = tellerProvisioningHistory.Teller?.name ?? "Unknown",
+                    IsPrimaryTeller = tellerProvisioningHistory.Teller.isPrimary,
+                    TellerType = tellerProvisioningHistory.Teller?.isPrimary == true ? "Primary-Till" : "Sub-Till",
+                    InitialPrinting = tellerProvisioningHistory.InitialPrinting,
+                    OpeningNote10000 = tellerProvisioningHistory.OpeningNote10000,
+                    OpeningNote5000 = tellerProvisioningHistory.OpeningNote5000,
+                    OpeningNote2000 = tellerProvisioningHistory.OpeningNote2000,
+                    OpeningNote1000 = tellerProvisioningHistory.OpeningNote1000,
+                    OpeningNote500 = tellerProvisioningHistory.OpeningNote500,
+                    OpeningCoin500 = tellerProvisioningHistory.OpeningCoin500,
+                    OpeningCoin100 = tellerProvisioningHistory.OpeningCoin100,
+                    OpeningCoin50 = tellerProvisioningHistory.OpeningCoin50,
+                    OpeningCoin25 = tellerProvisioningHistory.OpeningCoin25,
+                    OpeningCoin10 = tellerProvisioningHistory.OpeningCoin10,
+                    OpeningCoin5 = tellerProvisioningHistory.OpeningCoin5,
+                    OpeningCoin1 = tellerProvisioningHistory.OpeningCoin1,
+                    ClosingNote10000 = tellerProvisioningHistory.ClosingNote10000,
+                    ClosingNote5000 = tellerProvisioningHistory.ClosingNote5000,
+                    ClosingNote2000 = tellerProvisioningHistory.ClosingNote2000,
+                    ClosingNote1000 = tellerProvisioningHistory.ClosingNote1000,
+                    ClosingNote500 = tellerProvisioningHistory.ClosingNote500,
+                    ClosingCoin500 = tellerProvisioningHistory.ClosingCoin500,
+                    ClosingCoin100 = tellerProvisioningHistory.ClosingCoin100,
+                    ClosingCoin50 = tellerProvisioningHistory.ClosingCoin50,
+                    ClosingCoin25 = tellerProvisioningHistory.ClosingCoin25,
+                    ClosingCoin10 = tellerProvisioningHistory.ClosingCoin10,
+                    ClosingCoin5 = tellerProvisioningHistory.ClosingCoin5,
+                    ClosingCoin1 = tellerProvisioningHistory.ClosingCoin1,
+                    TotalOpeningAmount = tellerProvisioningHistory.TotalOpeningAmount,
+                    TotalClosingAmount = tellerProvisioningHistory.TotalClosingAmount,
+                    Logo = branch.Bank?.LogoUrl,
+                    BranchName = branch.Name,
+                    BranchCode = branch.BranchCode,
+                    BranchAddress = branch.Address,
+                    BranchTelephone = branch.Telephone,
+                    HeadOfficeName = branch.Bank?.Name,
+                    HeadOfficeAddress = branch.Bank?.Address,
+                    HeadOfficeTelephone = branch.Bank?.Telephone,
+                    HeadOfficeEmail = branch.Bank?.Email,
+                    HeadOfficeWebSite = branch.Bank?.WebSite,
+                    HeadOfficeInitial = branch.Bank?.BankInitial,
+                    HeadOfficeCode = branch.Bank?.BankCode
+                };
+
+                tillDsList.Add(tillDs);
+            }
+
+            // Store the list in the session
+            HttpContext.Current.Session["rptSource"] = tillDsList;
+            return tillDsList;
+        }
+
         public async Task<ExecutionMessages> SubTellerProvision(OpenningOfDayRequest model)
         {
             try
@@ -84,9 +246,10 @@ namespace CBS.BusinessService.Accounts
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered be greater than 0");
                     return ExecutionMessage;
                 }
-                var response = await _transactionApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.OpenningOfDaySubTeller, model);
-                if (response.IsSuccess)
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<TellerProvioningHistory>>(APICallHelper.OpenningOfDaySubTeller, model);
+                if (response.IsSuccess && response.ApiResponseData != null)
                 {
+                    await MapToTillOpenAndClossingDS(response.ApiResponseData.Data);
                     GetExecutionMessages(response, true, $"{model.InitialAmount}", MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
@@ -271,28 +434,28 @@ namespace CBS.BusinessService.Accounts
                     // Get all user roles and filter for tellers
                     var userRoles = await _userManagementServices.GetUSerRoles();
                     var branches = await _brancheServices.GetBranches();
-                     stringValues = (from a in userRoles
-                                join b in branches on a.branchId equals b.Id
-                                where a.IsTeller
-                                select new StringValues
-                                {
-                                    Text = $"[{a.RoleName}]-[{a.FirstName} {a.LastName}] [{b.Name}]",
-                                    Value = $"{a.UserId}@{a.FirstName} {a.LastName}",
-                                }).ToList();
+                    stringValues = (from a in userRoles
+                                    join b in branches on a.branchId equals b.Id
+                                    where a.IsTeller
+                                    select new StringValues
+                                    {
+                                        Text = $"[{a.RoleName}]-[{a.FirstName} {a.LastName}] [{b.Name}]",
+                                        Value = $"{a.UserId}@{a.FirstName} {a.LastName}",
+                                    }).ToList();
 
-                    
+
                 }
                 else
                 {
                     // Get user roles for the current branch and filter for tellers
                     var userRoles = await _userManagementServices.GetUSerRoles();
                     stringValues = (from a in userRoles
-                                where a.IsTeller && a.branchId == GetBranchID()
-                                select new StringValues
-                                {
-                                    Text = $"[{a.RoleName}]-[{a.FirstName} {a.LastName}]",
-                                    Value = $"{a.UserId}@{a.FirstName} {a.LastName}",
-                                }).ToList();
+                                    where a.IsTeller && a.branchId == GetBranchID()
+                                    select new StringValues
+                                    {
+                                        Text = $"[{a.RoleName}]-[{a.FirstName} {a.LastName}]",
+                                        Value = $"{a.UserId}@{a.FirstName} {a.LastName}",
+                                    }).ToList();
                 }
 
                 return stringValues;

@@ -2,20 +2,20 @@
 {
     public abstract class APICallHelper
     {
-        public static  string CreateAccountPolicy = "/api/v1/AccountPolicy";
-        public static  string GetAccountPolicies = "/api/v1/AccountPolicies";
+        public static string CreateAccountPolicy = "/api/v1/AccountPolicy";
+        public static string GetAccountPolicies = "/api/v1/AccountPolicies";
         public static string Get_Update_Delete_AccountPolicy = "/api/v1/AccountPolicy/{0}";
         //Authentication
         public static string MFAAuthentication = "/api/v1/MFA/MFALogin";
         public static string Authentication = "/api/Authentication/Session/Login";
         public static string RefreshToken = " /api/Authentication/Session/RefreshToken";
-        
+
 
         //CreateMemberAccountActivation
         public static string CreateMemberAccountActivation = "/api/v1/MemberAccountActivation";
         public static string Get_Update_Delete_MemberAccountActivation = "/api/v1/MemberAccountActivation/{0}";
-        public static string GetAllMemberAccountActivation= "/api/v1/MemberAccountActivation";
-        public static string GetMemberAccountActivationByCustomerID= "/api/v1/MemberAccountActivation/GetCustomerMemberAccountActivation/{0}";
+        public static string GetAllMemberAccountActivation = "/api/v1/MemberAccountActivation";
+        public static string GetMemberAccountActivationByCustomerID = "/api/v1/MemberAccountActivation/GetCustomerMemberAccountActivation/{0}";
 
         //CreateMemberAccountActivationPolicy
         public static string CreateMemberAccountActivationPolicy = "/api/v1/MemberAccountActivationPolicy";
@@ -62,7 +62,7 @@
         public static string GetRolePermissions = "/api/RolePermission/Role/{0}";
         public static string DeleteRolePermisions = "/api/RolePermission/Delete";
 
-        
+
         //MenuMaster
         public static string Get_Update_Delete_MenuMaster = "/api/MenuMaster/{0}";
         public static string GetAllMenuMaster = "/api/MenuMasters";
@@ -81,7 +81,7 @@
 
         public static string InitiateBulkDownloadIndividualAccountBalances = "/api/v1/FileDownloadInfo/InitiateBulkDownloadIndividualAccountBalances";
 
-        
+
         //TransactionReversal
         public static string Delete_GetReversalRequest = "/api/v1/ReversalRequest/{0}";
         public static string GetAllReversalRequest = "/api/v1/ReversalRequest/All";
@@ -89,10 +89,10 @@
         public static string ValidateReversalRequest = "/api/v1/ReversalRequest/Validate";
         public static string ApprovedReversalRequest = "/api/v1/ReversalRequest/Approved";
         public static string TreatRequestReversalRequest = "/api/v1/ReversalRequest/TreatRequest";
-    
 
-    //ManagementFeeParameter
-    public static string Get_Update_Delete_ManagementFeeParameter = "/api/v1/ManagementFeeParameter/{0}";
+
+        //ManagementFeeParameter
+        public static string Get_Update_Delete_ManagementFeeParameter = "/api/v1/ManagementFeeParameter/{0}";
         public static string GetAllManagementFeeParameter = "/api/v1/ManagementFeeParameter";
         public static string CreateManagementFeeParameter = "/api/v1/ManagementFeeParameter";
         //Get_Update_Delete_WithdrawalNotification
@@ -181,7 +181,7 @@
         public static string GetTransactionHistoryByCustomerNumber = "/api/v1/Transaction/Customer/{0}";
         public static string GetAllTransactionsByDatesAndCustomerIDQuery = "/api/v1/Transaction/GetAllTransactionsByDatesAndCustomerIDQuery";
         public static string AccountMigration = "/api/v1/Account/AccountMigration";
-        
+
         public static string GetAllTransactions = "/api/v1/Transaction";
         public static string GetTransaction = "/api/v1/Transaction/{0}";
         //Teller
@@ -194,6 +194,8 @@
         public static string OpenningOfDayPrimaryTeller = "/api/v1/Teller/Primary/OpenningOfTheDay";
         public static string OpenningOfDaySubTeller = "/api/v1/Teller/SubTeller/OpenningOfTheDay";
         public static string GetTellerDailyOperations = "/api/v1/TellerOperations/DailyOperations";
+        public static string TellerOpenningAndClossingQuery = "/api/v1/Teller/TellerOpenningAndClossingQuery";
+        public static string GetTillCashStatus = "/api/v1/Teller/TillStatus";
 
 
         //
@@ -211,10 +213,10 @@
         public static string EndOfDaySubTellerBYPrimaryTeller = "/api/v1/Teller/EndOfDaySubTellerBYPrimaryTeller";
         public static string GetPrimaryTellerProvisioningHistoryByBranchIDQuery = "/api/v1/Teller/GetPrimaryTellerProvisioningHistoryByBranchIDQuery/{0}";
         public static string GetCustomersByBranchID = "/api/v1/Customers/{0}";
-        
+
         ///api/v1/Teller/SubTellerEndOfDay
         //GetPrimaryTellerProvisioningHistoryByBranchIDQuery
-        public static string  TellerCashReplenishmentRequest = "/api/v1/CashReplenishment";
+        public static string TellerCashReplenishmentRequest = "/api/v1/CashReplenishment";
         public static string TellerCashReplenishmentRequestApproval = "/api/v1/CashReplenishment/{0}";
         //Account
         public static string AddCustomerSavingAccount = "/api/v1/Account";
@@ -229,6 +231,18 @@
         public static string GetAllDailyTeller = "/api/v1/DailyTeller/All";
         public static string GetAllDailyTellerByBranch = "/api/v1/DailyTeller/Branch";
         public static string CreateDailyTeller = "/api/v1/DailyTeller";
+
+
+        //Accounting Day
+
+
+        public static string OpenOfAccountingDay = "/api/v1/AccountingDay/Open";
+        public static string CloseOfAccountingDay = "/api/v1/AccountingDay/Close";
+        public static string GetAllOpenedAccountingDays = "/api/v1/AccountingDay/GetAllOpenAccountingDays";
+        public static string GetCurrentAccountingDay = "/api/v1/AccountingDay/GetCurrentDay/{0}";
+        public static string GetAccountingDayById = "/api/v1/AccountingDay/{0}";
+        public static string DeleteAccountingDay = "/api/v1/AccountingDay/Delete";
+        public static string AccountingDayActionsCommand = "/api/v1/AccountingDay/AccountingDayActionsCommand";
 
         //PrimaryTellerCashReplenishment
         public static string Get_Update_Delete_PrimaryTellerCashReplenishment = "/api/v1/PrimaryTellerCashReplenishment/{0}";
@@ -384,12 +398,12 @@
         public static string GelLoansSearchByAnyCriterialQuery = "/api/v1/Loan/SearchByAnyCriterialQuery";
         public static string GetAllBulkDownloadInfosLoanPerUser = "/api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{0}";
         public static string DownloadLoanFile = "/api/v1/FileDownloadInfos/download/{0}";
-        
-        
-    
-    ///api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{userid}
-    ///api/v1/Loan/SearchByAnyCriterialQuery
-    public static string GetAllLoanByBranchIdQuery = "/api/v1/Loan/GetAllLoanByBranchIdQuery/{id}";
+
+
+
+        ///api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{userid}
+        ///api/v1/Loan/SearchByAnyCriterialQuery
+        public static string GetAllLoanByBranchIdQuery = "/api/v1/Loan/GetAllLoanByBranchIdQuery/{id}";
 
         //LOAN Amortization
         public static string GetLoanAmortizationByID = "/api/LoanAmortization/GetLoanAmortization/{0}";
@@ -418,7 +432,7 @@
         public static string GetAllLoanProductCollateral = "/api/v1/LoanProductCollaterals";
         public static string CreateLoanProductCollateral = "/api/v1/LoanProductCollateral";
         public static string GetAllLaonApplicationCollateralByApplicationIdQuery = "/api/v1/GetAllLaonApplicationCollateralByApplicationIdQuery/{0}";
-        
+
         //LoanCommentry
         public static string Get_Update_Delete_LoanCommentry = "/api/v1/LoanCommentry/{0}";
         public static string GetAllLoanCommentry = "/api/v1/LoanCommentrys";
@@ -551,7 +565,7 @@
         public static string GetAllChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPositions";
         public static string DownloadChartOfAccountManagementPositionUrl = "/api/v1/ChartOfAccountManagementPositions/DownloadQuery";
         public static string CreateChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition";
-         
+
         //Statementmodel
         //Get,Update,Delete AccountCategory By Id api/v1/StatementModel/
         public static string Get_Update_Delete_Statementmodel = "api/v1/StatementModel/{0}";
@@ -578,7 +592,7 @@
         public static string GetAllChartOfAccountManagementPositionByChart = "api/v1/ChartOfAccountManagementPosition/GetAllChartOfAccounts";
         public static string Get_ChartOfAccount_By_AccountNumber = "/api/v1/ChartOfAccount/GetChartOfAccountByAccountNumber/{0}";
         //Get All ChartOfAccount
- 
+
         public static string GetOperationEventAttributes = "/api/v1/AccountType/GetOperationEventAttributes/{0}";
         public static string GetAllOperationEventAttributes = "/api/v1/OperationEventAttributes";
         ///api/v1/OperationEventAttributes
@@ -594,16 +608,16 @@
         //Credit a specifique Account record AddCashInfusionCommand   
         public static string CashInfusion = "/api/v1/AccountingEntry/AddCashInfusionCommand";
         public static string GetAccountByReference = "/api/v1/Account/GetAccountByReference/{0}";
- 
+
         public static string GetAccountByAccountType = "/api/v1/Account/GetAccountByAccountType/{0}";
         public static string GetAccount = "/api/v1/Account/{0}";
         public static string Delete_Account = "/api/v1/Account/{0}";
         public static string GetAccountByAccountNumberUrl = "/api/v1/Account/GetAccountByAccountNumber/{0}";
-   
-    public static string GetAlAccounts = "/api/v1/Accounts";
+
+        public static string GetAlAccounts = "/api/v1/Accounts";
         public static string GetAllLiaisonAccount = "/api/v1/Accounts/LiaisonAccount";
         public static string GetAllAccountByBranch = "/api/v1/Accounts/{0}";
-        public static string GetAllBranchAccountUsedToCreditCashFlow= "/api/v1/Account/GetAccountByMFIBankAccountNumberQuery/{0}";
+        public static string GetAllBranchAccountUsedToCreditCashFlow = "/api/v1/Account/GetAccountByMFIBankAccountNumberQuery/{0}";
         public static string CreateAccount = "/api/v1/Account";
         public static string GetAccountUploadFiles = "/api/v1/Accounts/UploadFiles/{0}";
         public static string PutAccount = "/api/v1/Account/{0}";
@@ -622,7 +636,7 @@
         public static string AccountingEntry_Generate4ColumnTrialBalance = "api/v1/AccountingEntries/Generate4ColumnTrialBalance";
         public static string AccountingEntry_Generate6ColumnTrialBalance = "api/v1/AccountingEntries/Generate6ColumnTrialBalance";
         public static string AccountingEntry_BalanceSheetColumn = "api/v1/AccountingEntries/GenerateCOBACBalanceSheet";
-        
+
         public static string AccountingEntry_BranchLiaisonEntries = "api/v1/AccountingEntries/BranchLiaisonEntries";
         public static string AccountingEntry_LiaisonEntries = "/api/v1/AccountingEntries/LiaisonEntries";
         public static string AccountingEntry_Get_Update_delete = "/api/v1/AccountingEntry/{0}";
@@ -636,22 +650,22 @@
         public static string CashReplenishmentRequest = "/api/v1/BankingOperation/RequestForCashReplenishment";
         public static string DepositNotificationUrl = "/api/v1/BankingOperation/AddDepositNotificationCommand";
         public static string ApproveDepositNotificationUrl = "/api/v1/BankingOperation/AddDepositApprovalCommand";
-      
+
         public static string UpdateCashReplenishmentRequest = "/api/v1/BankingOperation/UpdateRequestForCashReplenishment/{0}";
-    public static string CashReplenishmentResponse = "/api/v1/BankingOperation/ResponseToCashReplenishment";
+        public static string CashReplenishmentResponse = "/api/v1/BankingOperation/ResponseToCashReplenishment";
         public static string GetAllCashReplenishmentRequests = "/api/v1/BankingOperation/GetAllCashReplenishmentRequests";
         public static string GetAllCashReplenishmentQueryAsBranch = "/api/v1/BankingOperation/GetAllCashReplenishmentQueryAsBranch/{0}";
         public static string GetAllCashRequestApprovalQuery = "/api/v1/BankingOperation/GetAllCashRequestApprovalQuery";
         public static string BranchToBranchTransferUrl = "/api/v1/AccountingEntry/BranchToBranchTransferCommand";
         public static string CashClearingTransferUrl = "/api/v1/AccountingEntry/CashClearingTransferCommand";
         public static string GetCashReplenishmentRequestByBranchId = "/api/v1/BankingOperation/GetCashReplenishmentRequestByBranchId/{0}";
-        public static string GetBankTransactionQueryByIdURL  = "/api/v1/BankingOperation/GetBankTransactionQueryById/{0}";
+        public static string GetBankTransactionQueryByIdURL = "/api/v1/BankingOperation/GetBankTransactionQueryById/{0}";
         public static string GetBankTransactionQueryByReferenceIdURL = "/api/v1/BankingOperation/GetBankTransactionQueryByReferenceId/{0}";
         public static string GetCashReplenishmentRequestById = "/api/v1/BankingOperation/GetCashReplenishmentRequestById/{0}";
         public static string GetAllDepositNotificationRequestRequests = "/api/v1/BankingOperation/GetAllDepositNotificationQuery";
         public static string GetDepositNotificationRequestRequests = "/api/v1/BankingOperation/GetDepositNotificationQuery/{0}";
         public static string GetAllDepositNotificationRequestQueryAsBranch = "/api/v1/BankingOperation/GetAllCashReplenishmentQueryAsBranch/{0}";
-        
+
         public static string UserNotificationRequestByIdUrl = "/api/v1/UsersNotification/{0}";
         public static string UserNotificationRequestUrl = "/api/v1/UsersNotifications";
         public static string GetDepositNotificationRequestById = "/api/v1/BankingOperation/GetDepositNotificationQuery/{0}";
@@ -669,9 +683,9 @@
         public static string CheckIfTransactionReversalRequestByReferenceIdExist = "/api/v1/BankingOperation/CheckIfTransactionReversalRequestByReferenceIdExist/{0}";
 
         public static string Create_EntryTempData = "/api/v1/EntryTempData";
-     
-        public static string Url_Get_Update_delete_EntryTempData =     "/api/v1/EntryTempData/{0}";
-        public static string Url_Get_RefereceId= "api/v1/EntryTempDatas/{0}";
+
+        public static string Url_Get_Update_delete_EntryTempData = "/api/v1/EntryTempData/{0}";
+        public static string Url_Get_RefereceId = "api/v1/EntryTempDatas/{0}";
         public static string Post_AccountingEntry_Entries = "/api/v1/EntryTempData/PostManualEntries";
         //public static string Create_EntryTempData = "/api/v1/EntryTempData";
         public static string Url_Get_AllPostedEntries = "/api/v1/EntryTempDatas/PostedEntry";

@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
-<table class="table table-hover" id="myDataTable_Deposit">
+<table class="table table-hover" id="myDataTable">
     <thead class="table-light">
         <tr>
             <th>Product name</th>
@@ -17,7 +17,7 @@
                 <td style="width:10%">@d.entryFeeRate %</td>
                 <td style="width:20%">
                     <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview_EntryFeeConfig','_EntryFeeConfig','get','TransactionConfiguration','EntryFeeParameter')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.product.name to edit">Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.product.name" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable_Deposit','EntryFeeConfigData',0,'datalistingview_EntryFeeConfig')">Delete</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.product.name" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable','EntryFeeConfigData',0,'datalistingview_EntryFeeConfig')">Delete</a>
                 </td>
             </tr>
         }

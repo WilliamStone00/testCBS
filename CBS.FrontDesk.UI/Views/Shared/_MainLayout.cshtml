@@ -74,8 +74,8 @@
     </style>
     <style>
 
-         
- 
+
+
         #superposedModal {
             z-index: 1200; /* Make sure it has a higher z-index than other modals */
             pointer-events: auto;
@@ -697,14 +697,215 @@
     </style>
 
 
-    @*<style>
-            /* Navbar text */
-            .navbar-nav label {
-                font-size: 16px; /* Adjust the font size as needed */
-                font-weight: bold; /* Make the text bold */
-                color: #fff; /* White text color */
+    <style>
+        /* Add this CSS to your stylesheet */
+
+        .card {
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+        }
+
+        .nav-tabs .nav-link {
+            border-radius: 0.375rem 0.375rem 0 0;
+            font-size: 1rem;
+        }
+
+            .nav-tabs .nav-link.active {
+                color: #495057;
+                background-color: #f8f9fa;
+                border-color: #dee2e6 #dee2e6 transparent;
             }
-        </style>*@
+
+        .tab-content {
+            border-top: 1px solid #dee2e6;
+        }
+
+        .accordion-button {
+            font-size: 1rem;
+            background-color: #f8f9fa;
+            color: #495057;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+        }
+
+            .accordion-button:not(.collapsed) {
+                color: #0056b3;
+                background-color: #e9ecef;
+                border-color: #dee2e6 #dee2e6 transparent;
+            }
+
+        .accordion-item {
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+        }
+
+        .accordion-header {
+            margin-bottom: 0;
+        }
+
+        .accordion-body {
+            padding: 1rem;
+        }
+
+        .accordion-item.shadow-sm {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        h5.fw-bold {
+            font-weight: 700;
+        }
+
+        i.mdi {
+            font-size: 1.2rem;
+        }
+    </style>
+
+    <style>
+        .bg-green {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+
+        .bg-orange {
+            background-color: #fd7e14;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+
+        .badge {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+        .modal-header {
+            background-color: Background;
+            color: white;
+            border-bottom: none;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .modal-title {
+            font-weight: bold;
+        }
+
+        .close {
+            color: white;
+            opacity: 1;
+        }
+
+            .close:hover {
+                color: #ff6b6b;
+            }
+
+        .modal-body {
+            padding: 20px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .modal-footer {
+            border-top: none;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .btn-secondary {
+            background-color: #343a40;
+            border-color: #343a40;
+        }
+
+            .btn-secondary:hover {
+                background-color: #495057;
+                border-color: #495057;
+            }
+
+
+
+        .fieldset-custom {
+            border: 2px solid #007bff; /* Custom border color */
+            border-radius: 5px; /* Rounded corners */
+            padding: 15px;
+            background-color: #f8f9fa; /* Light background color */
+        }
+
+        .table {
+            margin-bottom: 0; /* Remove bottom margin */
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f2f2f2; /* Alternating row colors */
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #e9ecef; /* Hover color */
+        }
+
+        .table-bordered th, .table-bordered td {
+            border: 1px solid #dee2e6; /* Border color */
+        }
+
+        thead th {
+            background-color: #343a40; /* Dark background for header */
+            color: #ffffff; /* White text color */
+            text-align: center; /* Center align text */
+        }
+
+        tbody td {
+            vertical-align: middle; /* Center align content vertically */
+        }
+
+        .alert {
+            margin-bottom: 0; /* Remove bottom margin for alerts */
+        }
+    </style>
+    <style>
+        /* Styling for table with ID 'myDataTable' */
+        #myDataTable, #myDataTableT {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+            #myDataTable th, #myDataTable td,
+            #myDataTableT th, #myDataTableT td {
+                border: 1px solid black; /* Thin border */
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Smoky effect */
+                padding: 8px;
+                text-align: left;
+            }
+
+            #myDataTable thead, #myDataTableT thead {
+                background-color: #f8f9fa;
+            }
+
+        /* Custom fieldset styling */
+        .fieldset-custom {
+            border: 1px solid blue; /* Thin blue outline */
+            border-radius: 8px; /* Rounded corners */
+            padding: 20px; /* Space inside the fieldset */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Smoky shadow effect */
+            background-color: #f9f9f9; /* Light background color */
+            margin-bottom: 20px; /* Space below the fieldset */
+        }
+
+            .fieldset-custom legend {
+                font-size: 16px; /* Adjust the font size for the legend */
+                font-weight: bold; /* Bold text */
+                padding: 0; /* Remove padding around the text */
+                border: none; /* Remove any border around the legend */
+                color: #333; /* Dark text color */
+                margin-bottom: 10px; /* Space below the legend */
+            }
+    </style>
 
 
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -887,22 +1088,34 @@
 
 
     <script>
-        $(document).ajaxComplete(function (event, xhr, settings) {
-            if (xhr.status === 401) {
-                alert("Your session has expired. Please log in again.");
-                // Optionally, you can redirect the user to the login page
-                // window.location.href = "/Account/Login";
-                window.location.href = "/Authentication/Login";
-            }
+        //$(document).ajaxComplete(function (event, xhr, settings) {
+        //    if (xhr.status === 401) {
+        //        alert("Your session has expired. Please log in again.");
+        //        // Optionally, you can redirect the user to the login page
+        //        // window.location.href = "/Account/Login";
+        //        window.location.href = "/Authentication/Login";
+        //    }
+        //});
+
+        //$(document).ajaxError(function (event, jqxhr, settings, exception) {
+        //    if (jqxhr.status === 401) {
+        //        alert("Your session has expired. Please log in again.");
+        //        // Optionally, you can redirect the user to the login page
+        //        window.location.href = "/Authentication/Login";
+        //    }
+        //});
+        $(document).ready(function () {
+            $.ajaxSetup({
+                complete: function (xhr) {
+                    if (xhr.status === 401) { // Unauthorized
+                        // Redirect to login page
+                        alert("Your session has expired. Please log in again.");
+                        window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+                    }
+                }
+            });
         });
 
-        $(document).ajaxError(function (event, jqxhr, settings, exception) {
-            if (jqxhr.status === 401) {
-                alert("Your session has expired. Please log in again.");
-                // Optionally, you can redirect the user to the login page
-                window.location.href = "/Authentication/Login";
-            }
-        });
     </script>
 
     @RenderSection("scripts", required: false)

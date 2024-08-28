@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-2">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.PrimaryTellerProvissioning.currencyNotes.note5000, new { @class = "form-control", @id = "Notes_note5000", @oninput = "calculateBalance()" })
+                    @Html.TextBoxFor(m => m.PrimaryTellerProvissioning.currencyNotes.note5000, new { @class = "form-control", @id = "Notes_note5000" , @oninput = "calculateBalance()" })
                     @Html.ValidationMessageFor(m => m.PrimaryTellerProvissioning.currencyNotes.note5000, "", new { @class = "text-danger " })
                     <label>N5,000</label>
                 </div>

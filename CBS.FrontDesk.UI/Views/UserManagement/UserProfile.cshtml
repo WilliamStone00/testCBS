@@ -1,167 +1,116 @@
 ﻿@model CBS.FrontDesk.Data.UserManagement.User
 @{
-    ViewBag.Title = "User profile";
+    ViewBag.Title = "User Profile";
 }
-
-<div class="col-xl-12">
-    <div class="card mb-4">
+<div class="container mt-4">
+    <div class="card mb-4 shadow-sm">
         <div class="card-header p-0">
-            <div class="nav-align-top">
-                <ul class="nav nav-tabs nav-fill" role="tablist">
-                    <li class="nav-item">
-                        <button type="button"
-                                class="nav-link active"
-                                role="tab"
-                                data-bs-toggle="tab"
-                                data-bs-target="#navs-justified-Profile"
-                                aria-controls="navs-justified-Profile"
-                                aria-selected="true">
-                            <i class="tf-icons mdi mdi-home-outline me-1"></i> Profile
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button type="button"
-                                class="nav-link"
-                                role="tab"
-                                data-bs-toggle="tab"
-                                data-bs-target="#navs-justified-image"
-                                aria-controls="navs-justified-image"
-                                aria-selected="false">
-                            <i class="tf-icons mdi mdi-account-outline me-1"></i> Image uploading
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button type="button"
-                                class="nav-link"
-                                role="tab"
-                                data-bs-toggle="tab"
-                                data-bs-target="#navs-justified-security"
-                                aria-controls="navs-justified-security"
-                                aria-selected="false">
-                            <i class="tf-icons mdi mdi-security me-1"></i> Security
-                        </button>
-                    </li>
-                </ul>
-            </div>
+            <ul class="nav nav-tabs nav-fill" role="tablist">
+                <li class="nav-item">
+                    <button type="button"
+                            class="nav-link active"
+                            role="tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#profileTab"
+                            aria-controls="profileTab"
+                            aria-selected="true">
+                        <i class="tf-icons mdi mdi-home-outline me-2"></i> Profile
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button"
+                            class="nav-link"
+                            role="tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#imageTab"
+                            aria-controls="imageTab"
+                            aria-selected="false">
+                        <i class="tf-icons mdi mdi-image-outline me-2"></i> Image Upload
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button"
+                            class="nav-link"
+                            role="tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#securityTab"
+                            aria-controls="securityTab"
+                            aria-selected="false">
+                        <i class="tf-icons mdi mdi-security me-2"></i> Security
+                    </button>
+                </li>
+            </ul>
         </div>
         <div class="card-body">
-            <div class="tab-content p-0">
-                <div class="tab-pane fade show active" id="navs-justified-Profile" role="tabpanel">
-                    <p>
-                        Profile
-                    </p>
-                    <div id="mainviewProfile">
-                        @Html.Partial("_UserProfile")
+            <div class="tab-content p-3">
+                <div class="tab-pane fade show active" id="profileTab" role="tabpanel">
+                    <div class="my-3">
+                        <h5 class="fw-bold">Profile Details</h5>
+                        <p>View and edit your profile information here.</p>
+                        <div id="mainviewProfile">
+                            @Html.Partial("_UserProfile")
+                        </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="navs-justified-image" role="tabpanel">
-                    <p>
-                        Image
-                    </p>
-                    <div id="mainviewUpload">
-                        @Html.Partial("_UpdateImage")
+                <div class="tab-pane fade" id="imageTab" role="tabpanel">
+                    <div class="my-3">
+                        <h5 class="fw-bold">Upload Image</h5>
+                        <p>Update your profile image here.</p>
+                        <div id="mainviewUpload">
+                            @Html.Partial("_UpdateImage")
+                        </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="navs-justified-security" role="tabpanel">
-                    <p>
-                        Security
-                    </p>
-
-  
-                    <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
-                        
-                        <div class="accordion-item active">
-                            <h2 class="accordion-header text-body d-flex justify-content-between"
-                                id="accordionPopoutIconThree">
-                                <button type="button"
-                                        class="accordion-button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#accordionPopoutIcon-3"
-                                        aria-expanded="true"
-                                        aria-controls="accordionPopoutIcon-3">
-                                    <i class="mdi mdi-lock-outline me-2"></i>
-                                    Change password
-                                </button>
-                            </h2>
-                            <div id="accordionPopoutIcon-3"
-                                 class="accordion-collapse collapse show"
-                                 data-bs-parent="#accordionPopoutIcon">
-                                <div class="accordion-body">
-                                    <div id="mainviewChange">
-                                        <div class="change-group">
+                <div class="tab-pane fade" id="securityTab" role="tabpanel">
+                    <div class="my-3">
+                        <h5 class="fw-bold">Security Settings</h5>
+                        <p>Manage your security settings below.</p>
+                        <div class="accordion" id="accordionSecurity">
+                            <div class="accordion-item shadow-sm mb-2">
+                                <h2 class="accordion-header" id="headingChangePassword">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChangePassword" aria-expanded="true" aria-controls="collapseChangePassword">
+                                        <i class="mdi mdi-lock-outline me-2"></i> Change Password
+                                    </button>
+                                </h2>
+                                <div id="collapseChangePassword" class="accordion-collapse collapse show" aria-labelledby="headingChangePassword" data-bs-parent="#accordionSecurity">
+                                    <div class="accordion-body">
+                                        <div id="mainviewChange">
                                             @Html.Partial("_ChangePassword")
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-
-                        <div class="accordion-item">
-                            <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconTwo">
-                                <button type="button"
-                                        class="accordion-button collapsed"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#accordionPopoutIcon-2"
-                                        aria-controls="accordionPopoutIcon-2">
-                                    <i class="mdi mdi-lock-alert me-2"></i>
-                                    Reset Password
-                                </button>
-                            </h2>
-                            <div id="accordionPopoutIcon-2"
-                                 class="accordion-collapse collapse"
-                                 data-bs-parent="#accordionPopoutIcon">
-                                <div class="accordion-body">
-                                    <div id="mainviewReset">
-                                        <div class="reset-group">
+                            <div class="accordion-item shadow-sm mb-2">
+                                <h2 class="accordion-header" id="headingResetPassword">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseResetPassword" aria-controls="collapseResetPassword">
+                                        <i class="mdi mdi-lock-alert me-2"></i> Reset Password
+                                    </button>
+                                </h2>
+                                <div id="collapseResetPassword" class="accordion-collapse collapse" aria-labelledby="headingResetPassword" data-bs-parent="#accordionSecurity">
+                                    <div class="accordion-body">
+                                        <div id="mainviewReset">
                                             @Html.Partial("_ResetPassword")
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="accordion-item">
-                            <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconOne">
-                                <button
-                                    type="button"
-                                    class="accordion-button collapsed"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#accordionPopoutIcon-1"
-                                    aria-controls="accordionPopoutIcon-1">
-                                    <i class="mdi mdi-two-factor-authentication me-2"></i>
-                                    MFA
-                                </button>
-                            </h2>
-
-                            <div
-                                id="accordionPopoutIcon-1"
-                                class="accordion-collapse collapse"
-                                data-bs-parent="#accordionPopoutIcon">
-                                <div class="accordion-body">
-                                    <div id="mainview_mfa">
-                                        <div class="reset-group">
+                            <div class="accordion-item shadow-sm">
+                                <h2 class="accordion-header" id="headingMFA">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMFA" aria-controls="collapseMFA">
+                                        <i class="mdi mdi-two-factor-authentication me-2"></i> Multi-Factor Authentication (MFA)
+                                    </button>
+                                </h2>
+                                <div id="collapseMFA" class="accordion-collapse collapse" aria-labelledby="headingMFA" data-bs-parent="#accordionSecurity">
+                                    <div class="accordion-body">
+                                        <div id="mainview_mfa">
                                             @Html.Partial("_EnableMFA")
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
-
-
-
                 </div>
-                @*<div class="tab-pane fade" id="navs-justified-changepassword" role="tabpanel">
-                        <p>
-                            Change password
-                        </p>
-                        <div id="mainviewChange">
-                            @Html.Partial("_ChangePassword")
-                        </div>
-                    </div>*@
-
             </div>
         </div>
     </div>

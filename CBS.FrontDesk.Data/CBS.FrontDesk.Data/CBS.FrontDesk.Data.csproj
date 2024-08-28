@@ -65,6 +65,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CurrencyMapper.cs" />
+    <Compile Include="Entity\AccountingDayObject\AccountingDay.cs" />
+    <Compile Include="Entity\AccountingDayObject\BranchListing.cs" />
+    <Compile Include="Entity\AccountingDayObject\DeleteAccountingDayCommand.cs" />
+    <Compile Include="Entity\AccountingDayObject\OpenOrCloseOfAccountingDayCommand.cs" />
+    <Compile Include="Entity\AccountingDayObject\OpenOrCloseOfAccountingDayResultDto.cs" />
+    <Compile Include="Entity\AccountingDayObject\GetAccountingDayQuery.cs" />
     <Compile Include="Entity\Accounting\Account.cs" />
     <Compile Include="Entity\Accounting\AccountCategory.cs" />
     <Compile Include="Entity\Accounting\AccountClass.cs" />

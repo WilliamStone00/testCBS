@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 var account = await _accountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", true));
                 ViewBag.Error = account.ErrorMessage;
                 ViewBag.HasError = account.HasError;
-                return View(new OpeningOfTheDay { OpenningOfDayRequest = new OpenningOfDayRequest { Comment = $"As Primary Teller, {Session["FullName"].ToString()} is commencing operations for the day on [{DateTime.Now}] with a total balance of {account.Balance.ToString("#,##0")}.", Amount = account.Balance, InitialAmount = account.Balance, CurrencyNotes = new Data.Entity.SavingProducts.AccountActivation.CurrencyNotes() } });
+                return View(new OpeningOfTheDay { OpenningOfDayRequest = new OpenningOfDayRequest { Comment = $"As Primary Teller, {Session["FullName"].ToString()} is commencing operations for the day on [{DateTime.Now}] with a total balance of {account.CashAtHand.ToString("#,##0")}.", Amount = account.CashAtHand, InitialAmount = account.CashAtHand, CurrencyNotes = account.CloseOfDayRequest.CurrencyNotes } });
 
             }
             catch (Exception ex)
@@ -53,17 +53,17 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         public async Task<ActionResult> SubTeller()
         {
             ViewBag.Option = "SubTeller";
-            var account = await _accountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", false));
-            ViewBag.Error = account.ErrorMessage;
-            ViewBag.HasError = account.HasError;
-            if (account.Balance==0 && !account.HasError)
+            var tellerProvioningHistory = await _accountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", false));
+            ViewBag.Error = tellerProvioningHistory.ErrorMessage;
+            ViewBag.HasError = tellerProvioningHistory.HasError;
+            if (tellerProvioningHistory.CashAtHand==0 && !tellerProvioningHistory.HasError)
             {
                 ViewBag.HasNoBalance = true;
-                ViewBag.Error = $"The current balance of Teller {account.AccountName} is 0. Kindly make a cash request";
+                ViewBag.Error = $"The current balance of Teller {tellerProvioningHistory.Teller.name} is 0. Kindly make a cash request";
             }
             
 
-            return View(new OpeningOfTheDay { OpenningOfDayRequest = new OpenningOfDayRequest { Amount = account.Balance, InitialAmount = account.Balance, CurrencyNotes = new Data.Entity.SavingProducts.AccountActivation.CurrencyNotes(), Comment = $"As Sub-Teller {Session["FullName"].ToString()}, I hereby commence today's operations on [{DateTime.Now}] with an opening balance of {account.Balance.ToString("#,##0")}." }
+            return View(new OpeningOfTheDay { OpenningOfDayRequest = new OpenningOfDayRequest { Amount = tellerProvioningHistory.CashAtHand, InitialAmount = tellerProvioningHistory.CashAtHand, CurrencyNotes = tellerProvioningHistory.CloseOfDayRequest.CurrencyNotes, Comment = $"As Sub-Teller {Session["FullName"].ToString()}, I hereby commence today's operations on [{DateTime.Now}] with an opening balance of {tellerProvioningHistory.CashAtHand.ToString("#,##0")}." }
         });
         }
 
@@ -105,7 +105,16 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             }
             return Json(null, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public ActionResult GetReportReport()
+        {
+            this.HttpContext.Session["rptType"] = "ReportParameterLess";
+            this.HttpContext.Session["ReportName"] = $"OpenAndClossingOfTill.rpt";
+            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/Tellers/OpenAndClossingOfTill.rpt";
+            this.HttpContext.Session["rpttitle"] = $"TillStatus";
+            return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
 
+        }
         public async Task<bool> GetList()
         {
             var TellerRoles = await _services.GetUserTellerRole();

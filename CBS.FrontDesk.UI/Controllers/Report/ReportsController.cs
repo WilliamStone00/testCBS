@@ -93,9 +93,9 @@ namespace CBS.FrontDesk.UI.Controllers
                 // Retrieve session values
 
 
-                string path = System.Web.HttpContext.Current.Session["param_size"]?.ToString() ?? "N/A";
+                string parameters = System.Web.HttpContext.Current.Session["param_size"]?.ToString() ?? "N/A";
 
-                if (path == "4")
+                if (parameters == "4")
                 {
                     string strReportName = System.Web.HttpContext.Current.Session["ReportName"]?.ToString();
                     var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
@@ -103,6 +103,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"]?.ToString() ?? "N/A";
                     string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? "N/A";
                     string strDatePrinted = System.Web.HttpContext.Current.Session["DatePrinted"]?.ToString() ?? "N/A";
+                    //string strBrnachName = System.Web.HttpContext.Current.Session["BranchName"]?.ToString() ?? "N/A";
                     string strPrintedBy = System.Web.HttpContext.Current.Session["FullName"]?.ToString() ?? "N/A";
                     string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
                     // Validate if the report name is present
@@ -129,7 +130,144 @@ namespace CBS.FrontDesk.UI.Controllers
                         SetReportParameter(rd, "DateTo", strToDate);
                         SetReportParameter(rd, "PrintedBy", strPrintedBy);
                         SetReportParameter(rd, "DateNow", strDatePrinted);
+                        //SetReportParameter(rd, "BranchName", strBrnachName);
 
+                        // Export the report to PDF
+                        string SavedFileName = $"{strtitle}-{DateTime.UtcNow.ToString("dd_MM_yyyy_HHmmss")}";
+                        rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+
+                        // Clean up the report document
+                        CleanReport(rd);
+                    }
+                    else
+                    {
+                        Response.Write("<H2>Nothing Found; No Report name found</H2>");
+                    }
+                }
+                else if (parameters == "3")
+                {
+                    string strReportName = System.Web.HttpContext.Current.Session["ReportName"]?.ToString();
+                    var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+                    string rptpath = System.Web.HttpContext.Current.Session["rptpath"]?.ToString();
+                    string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"]?.ToString() ?? "N/A";
+                    string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? "N/A";
+                    string strBrnachName = System.Web.HttpContext.Current.Session["RPTBranchName"]?.ToString() ?? "N/A";
+                    string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
+                    // Validate if the report name is present
+                    if (string.IsNullOrEmpty(strReportName))
+                    {
+                        isValid = false;
+                    }
+
+                    if (isValid)
+                    {
+                        // Load and configure the report document
+                        ReportDocument rd = new ReportDocument();
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+
+                        // Set data source if available
+                        if (rptSource != null && rptSource.GetType().ToString() != "System.String")
+                        {
+                            rd.SetDataSource(rptSource);
+                        }
+
+                        // Set report parameters
+                        SetReportParameter(rd, "DateFrom", strFromDate);
+                        SetReportParameter(rd, "DateTo", strToDate);
+                        SetReportParameter(rd, "BranchName", strBrnachName);
+
+                        // Export the report to PDF
+                        string SavedFileName = $"{strtitle}-{DateTime.UtcNow.ToString("dd_MM_yyyy_HHmmss")}";
+                        rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+
+                        // Clean up the report document
+                        CleanReport(rd);
+                    }
+                    else
+                    {
+                        Response.Write("<H2>Nothing Found; No Report name found</H2>");
+                    }
+                }
+
+                else if (parameters == "5")
+                {
+                    string strReportName = System.Web.HttpContext.Current.Session["ReportName"]?.ToString();
+                    var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+                    string rptpath = System.Web.HttpContext.Current.Session["rptpath"]?.ToString();
+                    string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"]?.ToString() ?? "N/A";
+                    string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? "N/A";
+                    string strBrnachName = System.Web.HttpContext.Current.Session["RPTBranchName"]?.ToString() ?? "N/A";
+                    string strPrintedBy = System.Web.HttpContext.Current.Session["PrintedBy"]?.ToString() ?? "N/A";
+                    string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
+                    // Validate if the report name is present
+                    if (string.IsNullOrEmpty(strReportName))
+                    {
+                        isValid = false;
+                    }
+
+                    if (isValid)
+                    {
+                        // Load and configure the report document
+                        ReportDocument rd = new ReportDocument();
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+
+                        // Set data source if available
+                        if (rptSource != null && rptSource.GetType().ToString() != "System.String")
+                        {
+                            rd.SetDataSource(rptSource);
+                        }
+
+                        // Set report parameters
+                        SetReportParameter(rd, "DateFrom", strFromDate);
+                        SetReportParameter(rd, "DateTo", strToDate);
+                        SetReportParameter(rd, "BranchName", strBrnachName);
+                        SetReportParameter(rd, "PrintedBy", strPrintedBy);
+                        // Export the report to PDF
+                        string SavedFileName = $"{strtitle}-{DateTime.UtcNow.ToString("dd_MM_yyyy_HHmmss")}";
+                        rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+
+                        // Clean up the report document
+                        CleanReport(rd);
+                    }
+                    else
+                    {
+                        Response.Write("<H2>Nothing Found; No Report name found</H2>");
+                    }
+                }
+                else if (parameters == "6")
+                {
+                    string strReportName = System.Web.HttpContext.Current.Session["ReportName"]?.ToString();
+                    var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+                    string rptpath = System.Web.HttpContext.Current.Session["rptpath"]?.ToString();
+                    string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"]?.ToString() ?? "N/A";
+                    string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? "N/A";
+                    string strPrintedBy = System.Web.HttpContext.Current.Session["PrintedBy"]?.ToString() ?? "N/A";
+                    string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
+                    // Validate if the report name is present
+                    if (string.IsNullOrEmpty(strReportName))
+                    {
+                        isValid = false;
+                    }
+
+                    if (isValid)
+                    {
+                        // Load and configure the report document
+                        ReportDocument rd = new ReportDocument();
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+
+                        // Set data source if available
+                        if (rptSource != null && rptSource.GetType().ToString() != "System.String")
+                        {
+                            rd.SetDataSource(rptSource);
+                        }
+
+                        // Set report parameters
+                        SetReportParameter(rd, "DateFrom", strFromDate);
+                        SetReportParameter(rd, "DateTo", strToDate);
+                        SetReportParameter(rd, "PrintedBy", strPrintedBy);
                         // Export the report to PDF
                         string SavedFileName = $"{strtitle}-{DateTime.UtcNow.ToString("dd_MM_yyyy_HHmmss")}";
                         rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);

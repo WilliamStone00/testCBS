@@ -109,6 +109,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public double MaximumCollateralPercentage { get; set; }
 
         public double DefaultCollateralPercentage { get; set; }
+        public string TargetType { get; set; }
 
         public bool ActiveStatus { get; set; }
 
@@ -150,7 +151,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string ChartOfAccountIdForWriteOffPrincipal { get; set; }
         public string ChartOfAccountIdForProvisionOnPrincipal { get; set; }
         public Penalty Penalty { get; set; }
-       
+
 
         public Tax Tax { get; set; }
 
@@ -182,10 +183,10 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             MinimumNumberOfRepayment = 0;
             MaximumNumberOfRepayment = 0;
             DefaultNumberOfRepayment = 0;
-          
+
             LoanMinimumAmount = 0;
             LoanMaximumAmount = 0;
-            MinimumProcessingFeeRate=0;
+            MinimumProcessingFeeRate = 0;
             DefaultProcessingFeeRate = 0;
             MaximumProcessingFeeRate = 0;
             DefaultLoanAmount = 0;
@@ -241,6 +242,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public int MinimumNumberOfRepayment { get; set; }
         public string Description { get; set; }
         public decimal LoanMinimumAmount { get; set; }
+        public decimal LoanMaximumAmount { get; set; }
+        public string TargetType { get; set; }
+
         public decimal MinimumCollateralPercentage { get; set; }
         public bool IsRequiredShareAccount { get; set; }
         public bool IsRequiredSalaryccount { get; set; }
@@ -298,19 +302,32 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             Penalty = new Penalty();
             Penalties = new List<Penalty>();
             LoanProducts = new List<LoanProduct>();
-    }
+        }
     }
     public class AddLoanProductCommand
     {
         public string Id { get; set; }
+
         [Required]
+        [StringLength(10, ErrorMessage = "Product code cannot be longer than 10 characters.")]
+        [RegularExpression(@"^[A-Z0-9]+$", ErrorMessage = "Product code must be uppercase letters and numbers only.")]
         public string ProductCode { get; set; }
+
         [Required]
+        [StringLength(50, ErrorMessage = "Product name cannot be longer than 50 characters.")]
         public string ProductName { get; set; }
+
         [Required]
+        [StringLength(200, ErrorMessage = "Description cannot be longer than 200 characters.")]
         public string Description { get; set; }
+
+        [Required]
+        [RegularExpression(@"^(Individual|Corporate|Employee|Government)$", ErrorMessage = "Target Type must be either 'Individual', 'Corporate', 'Employee', or 'Government'.")]
+        public string TargetType { get; set; }
+
         public bool ActiveStatus { get; set; }
     }
+
     public class UpdateLoanProductCommand
     {
         public string Id { get; set; }
@@ -318,6 +335,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string ProductName { get; set; }
         public string LoanInterestPeriod { get; set; }//Per Day, Per Week, Per Month, Per Year
         public decimal MinimumInterestRate { get; set; }
+        public decimal LoanMaximumAmount { get; set; }
+        public string TargetType { get; set; }
+
         public decimal MaximumInterestRate { get; set; }
         public string LoanDurationPeriod { get; set; }//Days, Weeks, Months, Years
         public int MinimumDurationPeriod { get; set; }
@@ -449,15 +469,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
     public class LoanProductConfigurationAgregates
     {
-        public List<Tax> Taxes { get; set; }=new List<Tax>();
-        public List<Fee> Fees { get; set; }=new List<Fee>();
-        public List<Penalty> Penalties { get; set; }= new List<Penalty>();
+        public List<Tax> Taxes { get; set; } = new List<Tax>();
+        public List<Fee> Fees { get; set; } = new List<Fee>();
+        public List<Penalty> Penalties { get; set; } = new List<Penalty>();
         public List<GurantiPack> GuranteePackes { get; set; } = new List<GurantiPack>();
         public List<DocumentPack> DocumentPackes { get; set; } = new List<DocumentPack>();
         public List<FundingLine> FundingLines { get; set; } = new List<FundingLine>();
-        public List<InstallmentType> InstallmentTypes { get; set; }= new List<InstallmentType>();
+        public List<InstallmentType> InstallmentTypes { get; set; } = new List<InstallmentType>();
         public List<FeeRange> FeeRanges { get; set; } = new List<FeeRange>();
-        
+
     }
     public class LoanProductEnumAgregates
     {

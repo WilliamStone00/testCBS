@@ -69,7 +69,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
 
 
         }
-        
+
         public async Task<ActionResult> OperationPanel(string KEY = null, string ReadOptions = null, string path = null, string group = null)
         {
             ViewBag.KEY = KEY;
@@ -118,7 +118,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         {
             //var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
             //ViewBag.LoanApplicationStatus = productEnumAgregates.LoanStatuses;
-            var loanApplications = await _loanApplicationServices.GetLoanApplications("Approval");
+            var loanApplications = await _loanApplicationServices.GetLoanApplications("Validated");
             return View(new MemberOperationPanel { LoanApplications = loanApplications.ToList() });
         }
         public async Task<ActionResult> LoanApplicationForCommitees(string KEY = null, string ReadOptions = null, string path = null, string group = null)
@@ -129,7 +129,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             var loanApplications = await _loanApplicationServices.GetLoanApplications("Pending");
             return View(new MemberOperationPanel { LoanApplications = loanApplications.ToList() });
         }
-        
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string serviceOption = null, string path = null)
         {
             ViewBag.KEY = KEY;
@@ -143,7 +143,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                 ViewBag.KEY = KEY;
                 await PopulateAggregatesInViewBag();
                 //var customer = await InitializeCustomerData(KEY);
-                return PartialView(partialView, new MemberOperationPanel { LoanApplication = new LoanApplication { CustomerId= KEY }, AddLoanApplicationCommand=new AddLoanApplicationCommand { CustomerId=KEY} });
+                return PartialView(partialView, new MemberOperationPanel { LoanApplication = new LoanApplication { CustomerId = KEY }, AddLoanApplicationCommand = new AddLoanApplicationCommand { CustomerId = KEY } });
 
             }
             else
@@ -166,12 +166,15 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         ViewBag.DisbursmentStatuses = productEnumAgregates.DisbursmentStatuses;
                         var loand = new AddLoanDisbumentCommand
                         {
-                             AccountNumber= Accounts.FirstOrDefault().accountNumber, Comment= $"Loan successfully disbursed to Customer number: [{loan.CustomerId}] and Account number: [{Accounts.FirstOrDefault().accountNumber}]. Documentation updated. For inquiries, contact Loan Manager {loan.LoanManager}.", LoanId=loan.Id, Status="Disbursed"
+                            AccountNumber = Accounts.FirstOrDefault().accountNumber,
+                            Comment = $"Loan successfully disbursed to Customer number: [{loan.CustomerId}] and Account number: [{Accounts.FirstOrDefault().accountNumber}]. Documentation updated. For inquiries, contact Loan Manager {loan.LoanManager}.",
+                            LoanId = loan.Id,
+                            Status = "Disbursed"
                         };
                         var collaterals = await _loanProductCollateralServices.GetAllLaonApplicationCollateralByApplicationIdQuery(KEY);
                         var attachedDoc = new DocumentAttachedToLoan { LoanApplicationId = loanApplication.Id };
                         var loanCommiteeValidationHistories = loanApplication.LoanCommiteeValidations;
-                        return PartialView(partialView, new MemberOperationPanel { AddLoanDisbumentCommand=loand, LoanCommiteeValidationHistory = new Data.Entity.LoanCommitee.LoanCommiteeValidationHistory { LoanApplicationId = loanApplication.Id }, LoanCommiteeValidationHistories = loanCommiteeValidationHistories.ToList(), LoanCollateras = collaterals.ToList(), DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
+                        return PartialView(partialView, new MemberOperationPanel { AddLoanDisbumentCommand = loand, LoanCommiteeValidationHistory = new Data.Entity.LoanCommitee.LoanCommiteeValidationHistory { LoanApplicationId = loanApplication.Id }, LoanCommiteeValidationHistories = loanCommiteeValidationHistories.ToList(), LoanCollateras = collaterals.ToList(), DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
                     }
                     else if (path == "perding_disbursement")
                     {
@@ -190,7 +193,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         ViewBag.DocumentTypes = await _documentServices.GetDocumentDropDown();
                         var documentAttachedToLoans = loanApplication.DocumentAttachedToLoans;
                         var attachedDoc = new DocumentAttachedToLoan { LoanApplicationId = loanApplication.Id };
-                        return PartialView(partialView, new MemberOperationPanel { DocumentAttachedToLoans= documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, LoanCollatera = collateral, LoanGuarantor= guarantor, Customer= customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus=new UpdateLoanApplicationStatusCommand { Id=loanApplication.Id} });
+                        return PartialView(partialView, new MemberOperationPanel { DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
                     }
                     else if (path == "upload_document")
                     {
@@ -199,8 +202,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         var loanApplication = await _loanApplicationServices.GetLoanApplication(KEY);
                         ViewBag.DocumentTypes = await _documentServices.GetDocumentDropDown();
                         var documentAttachedToLoans = loanApplication.DocumentAttachedToLoans;
-                        var attachedDoc =new DocumentAttachedToLoan { LoanApplicationId = loanApplication.Id};
-                        return PartialView(partialView, new MemberOperationPanel { DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, LoanApplication= loanApplication});
+                        var attachedDoc = new DocumentAttachedToLoan { LoanApplicationId = loanApplication.Id };
+                        return PartialView(partialView, new MemberOperationPanel { DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, LoanApplication = loanApplication });
                     }
                     else if (path == "get_collateral_listing")
                     {
@@ -288,7 +291,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         var collaterals = await _loanProductCollateralServices.GetAllLaonApplicationCollateralByApplicationIdQuery(KEY);
                         var attachedDoc = new DocumentAttachedToLoan { LoanApplicationId = loanApplication.Id };
                         var loanCommiteeValidationHistories = loanApplication.LoanCommiteeValidations;
-                        return PartialView(partialView, new MemberOperationPanel {LoanParameter=amortization, LoanCommiteeValidationHistory=new Data.Entity.LoanCommitee.LoanCommiteeValidationHistory { LoanApplicationId = loanApplication.Id }, LoanCommiteeValidationHistories = loanCommiteeValidationHistories.ToList(),LoanCollateras = collaterals.ToList(), DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
+                        return PartialView(partialView, new MemberOperationPanel { LoanParameter = amortization, LoanCommiteeValidationHistory = new Data.Entity.LoanCommitee.LoanCommiteeValidationHistory { LoanApplicationId = loanApplication.Id }, LoanCommiteeValidationHistories = loanCommiteeValidationHistories.ToList(), LoanCollateras = collaterals.ToList(), DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
                     }
                     else if (path == "create_loan_simulation")
                     {
@@ -319,7 +322,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         ViewBag.DocumentTypes = await _documentServices.GetDocumentDropDown();
                         var documentAttachedToLoans = loanApplication.DocumentAttachedToLoans;
                         var attachedDoc = new DocumentAttachedToLoan { LoanApplicationId = loanApplication.Id };
-                        return PartialView(partialView, new MemberOperationPanel {LoanAmortizations = loanAmortizations.ToList(), DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id }, SelectLoans = loanList.ToList() });
+                        return PartialView(partialView, new MemberOperationPanel { LoanAmortizations = loanAmortizations.ToList(), DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id }, SelectLoans = loanList.ToList() });
                     }
                     else if (path == "loan_schedule")
                     {
@@ -333,9 +336,9 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                             loanSchedule = (List<LoanAmortization>)loanScheduleData;
 
                         }
-                     
 
-                        return PartialView(partialView, new MemberOperationPanel { LoanAmortizations = loanSchedule.ToList()});
+
+                        return PartialView(partialView, new MemberOperationPanel { LoanAmortizations = loanSchedule.ToList() });
                     }
                 }
                 else
@@ -377,13 +380,13 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         [HttpPost]
         public async Task<ActionResult> Create(MemberOperationPanel model)
         {
-            if (model.ServiceOption== "loan_schedule")
+            if (model.ServiceOption == "loan_schedule")
             {
                 var data = await _loanAmortizationServices.GenerateLoanAmortizationSchedule(model.LoanParameter);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
-            else if(model.ServiceOption == "loan_commitee_validation_history")
+            else if (model.ServiceOption == "loan_commitee_validation_history")
             {
                 var data = await _loanCommiteeValidationHistoryServices.Create(model.LoanCommiteeValidationHistory);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
@@ -404,7 +407,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             }
             else if (model.ServiceOption == "guarantor")
             {
-                if (model.Path=="update")
+                if (model.Path == "update")
                 {
                     var data = await _loanGuarantorServices.Update(model.LoanGuarantor);
                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
@@ -436,16 +439,43 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             }
             else
             {
-                
-                var data = await _loanApplicationServices.Create(model.AddLoanApplicationCommand);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+                if (model.AddLoanApplicationCommand.LoanApplicationType == "Reschedule")
+                {
+                    var loan = await _loanServices.GetLoan(model.AddLoanApplicationCommand.LoanId);
+                    model.AddLoanApplicationCommand.AmortizationType = loan.LoanApplication.AmortizationType;
+                    model.AddLoanApplicationCommand.LoanCategory = loan.LoanApplication.LoanCategory;
+                    model.AddLoanApplicationCommand.EconomicActivityId = loan.LoanApplication.EconomicActivityId;
+                    model.AddLoanApplicationCommand.LoanProductId = loan.LoanApplication.LoanProductId;
+                    model.AddLoanApplicationCommand.RepaymentCircle = loan.LoanApplication.RepaymentCircle;
+                    model.AddLoanApplicationCommand.LoanPurposeId = loan.LoanApplication.LoanPurposeId;
+                    model.AddLoanApplicationCommand.LoanTarget = loan.LoanApplication.LoanTarget;
+                    model.AddLoanApplicationCommand.LoanType = loan.LoanApplication.LoanType;
+                    model.AddLoanApplicationCommand.Amount = model.AddLoanApplicationCommand.NewBalance + model.AddLoanApplicationCommand.NewVAT + model.AddLoanApplicationCommand.NewInterest + model.AddLoanApplicationCommand.NewPenalty;
+                    var data = await _loanApplicationServices.Create(model.AddLoanApplicationCommand);
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
+                else
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        return JsonValidationErrorResponse();
+
+                    }
+
+                    // Proceed with processing the valid command
+                    var data = await _loanApplicationServices.Create(model.AddLoanApplicationCommand);
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
+
+
 
             }
         }
 
         private async Task<IndividualCustomerProfile> InitializeCustomerData(string KEY)
         {
-           
+
             var results = await _individualProfileServices.GetCustomerLight(KEY);
             return results;
         }
@@ -500,17 +530,23 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         }
         public async Task<ActionResult> Ajaxloader(string Key, string path)
         {
-            if (Key!=null)
+            if (Key != null)
             {
-                if (path== "loanrepayment_cycles")
+                if (path == "loanrepayment_cycles")
                 {
                     var listing = await _loanProductServices.GetLoanProductRepayments(Key, path);
                     return Json(listing, JsonRequestBehavior.AllowGet);
                 }
+                else if (path == "target")
+                {
+                    var listing = await _loanProductServices.GetLoanProductsDropDown(Key);
+                    return Json(listing, JsonRequestBehavior.AllowGet);
+
+                }
                 else
                 {
                     var loans = await _loanservices.GetAllMembersCurrents(Key);
-                    var listing= _loanservices.GetAllMembersCurrentsDropdown(loans).ToList();
+                    var listing = _loanservices.GetAllMembersCurrentsDropdown(loans).ToList();
                     return Json(listing, JsonRequestBehavior.AllowGet);
 
                 }
@@ -520,6 +556,11 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         public async Task<ActionResult> GetLoanProduct(string Key)
         {
             var data = await _loanProductServices.GetLoanProduct(Key);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        public async Task<ActionResult> GetLoan(string Key)
+        {
+            var data = await _loanservices.GetLoan(Key);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         public async Task<ActionResult> GetObject(string Key)

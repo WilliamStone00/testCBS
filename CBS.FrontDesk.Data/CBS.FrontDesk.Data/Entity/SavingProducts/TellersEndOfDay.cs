@@ -11,29 +11,6 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.SavingProducts
 {
-    public class SubTellerProvioningHistory
-    {
-        public string id { get; set; }
-        public string tellerId { get; set; }
-        public string userIdInChargeOfThisTeller { get; set; }
-        public string provisionedBy { get; set; }
-        public DateTime openedDate { get; set; }
-        public DateTime clossedDate { get; set; } = new DateTime(1900, 1, 1);
-        public decimal openOfDayAmount { get; set; } = 0;
-        public decimal cashAtHand { get; set; } = 0;
-        public decimal endOfDayAmount { get; set; } = 0;
-        public decimal accountBalance { get; set; } = 0;
-        public decimal previouseBalance { get; set; }
-        public string lastUserID { get; set; }
-        public string subTellerComment { get; set; }
-        public string primaryTellerID { get; set; }
-        public string bankId { get; set; }
-        public string branchId { get; set; }
-        public string startOfDayCurrencyNoteId { get; set; }
-        public string clossedStatus { get; set; }
-        public string primaryTellerComment { get; set; }
-        public string primaryTellerConfirmationStatus { get; set; }
-    }
 
     public class GetTellerOpenningAndClossingQuery
     {
@@ -50,6 +27,88 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string DateTo { get; set; }
     }
 
+
+
+
+    public class GetTillStatusQuery : IValidatableObject
+    {
+        public bool ByBranch { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Date From")]
+        public string DateFrom { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Date To")]
+        public string DateTo { get; set; }
+
+        public bool ByTeller { get; set; }
+
+        public string BranchId { get; set; }
+  
+        public string TellerId { get; set; }
+        public string QueryParameter { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            return PerformValidation();
+        }
+
+        private IEnumerable<ValidationResult> PerformValidation()
+        {
+            var validationResults = new List<ValidationResult>();
+
+            
+
+            // Validate DateFrom and DateTo are equal
+            DateTime fromDate;
+            DateTime toDate;
+
+            if (DateTime.TryParse(DateFrom, out fromDate) && DateTime.TryParse(DateTo, out toDate))
+            {
+                if (fromDate != toDate)
+                {
+                    validationResults.Add(new ValidationResult(
+                        "The DateFrom must be equal to DateTo.",
+                        new[] { nameof(DateFrom), nameof(DateTo) }));
+                }
+            }
+            else
+            {
+                validationResults.Add(new ValidationResult(
+                    "Invalid date format for DateFrom or DateTo.",
+                    new[] { nameof(DateFrom), nameof(DateTo) }));
+            }
+
+            // Validate BranchId and TellerId based on ByBranch and ByTeller
+            if (ByBranch)
+            {
+                if (string.IsNullOrEmpty(BranchId))
+                {
+                    validationResults.Add(new ValidationResult(
+                        "Branch is required when ByBranch is selected.",
+                        new[] { nameof(BranchId) }));
+                }
+            }
+            else if (ByTeller)
+            {
+                if (string.IsNullOrEmpty(TellerId))
+                {
+                    validationResults.Add(new ValidationResult(
+                        "Till is required when Till is selected.",
+                        new[] { nameof(TellerId) }));
+                }
+            }
+
+            return validationResults;
+        }
+
+    }
+
+
+
     public class RequiredIfByBranchAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -63,32 +122,6 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         }
     }
 
-    public class OpenningAnclClossingTillDto
-    {
-        public string UserIdInChargeOfThisTeller { get; set; }
-        public string ProvisionedBy { get; set; }
-        public bool IsCashReplenished { get; set; }
-        public decimal ReplenishedAmount { get; set; }
-        public DateTime OpenedDate { get; set; }
-        public DateTime ClossedDate { get; set; } = new DateTime(1900, 1, 1);
-        public decimal OpenOfDayAmount { get; set; } = 0;
-        public decimal AmountReplenished { get; set; }
-        public bool IsRequestedForCashReplenishment { get; set; }
-        public decimal CashAtHand { get; set; } = 0;
-        public decimal EndOfDayAmount { get; set; } = 0;
-        public decimal AccountBalance { get; set; } = 0;
-        public decimal TellerAccountBalance { get; set; } = 0;
-        public decimal LastOPerationAmount { get; set; } = 0;
-        public string LastOperationType { get; set; }
-        public decimal PreviouseBalance { get; set; }
-        public string TellerComment { get; set; }
-        public string PrimaryTeller { get; set; }
-        public string BranchCode { get; set; }
-        public string ClossedStatus { get; set; }
-        public string PrimaryTellerComment { get; set; }
-        public string PrimaryTellerConfirmationStatus { get; set; }
-        public string TellerName { get; set; }
-    }
 
     public class SubTellerProvisioningDto
     {
@@ -229,6 +262,10 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public SubTellerProvisioningDto SubTellerProvioningHistory { get; set; } = new SubTellerProvisioningDto();
         public List<TransactionHistory> TransactionHistories { get; set; } = new List<TransactionHistory>();
         public string Option { get; set; }
+        public bool HasError { get; set; }
+        public string ErrorMessage { get; set; }
+        public decimal CashAtHand { get; set; }
+        public Teller Teller { get; set; }
     }
     public class DailyTeller
     {
@@ -251,10 +288,13 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal MaximumCeilin { get; set; }
         public Teller Teller { get; set; }
         public GetAllTellerOperationsQuery GetAllTellerOperationsQuery { get; set; } = new GetAllTellerOperationsQuery();
+        public GetTellerOpenningAndClossingQuery GetTellerOpenningAndClossingQuery { get; set; } = new GetTellerOpenningAndClossingQuery();
+        public GetTillStatusQuery GetTillStatusQuery { get; set; } = new GetTillStatusQuery();
+
         public Branch Branch { get; set; }
         public List<Branch> Branches { get; set; }
         public List<PrimaryTellerProvisioningHistory> PrimaryTellerProvisioningHistories { get; set; }
-        public List<SubTellerProvioningHistory> SubTellerProvioningHistories { get; set; }
+        public List<TellerProvioningHistory> SubTellerProvioningHistories { get; set; }
 
     }
     public class QueryParamWithDates

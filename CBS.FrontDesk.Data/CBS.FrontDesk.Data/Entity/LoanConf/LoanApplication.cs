@@ -44,6 +44,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     public class LoanApplication
     {
         public bool IsChargesInclussive { get; set; }
+        public bool IsOverRightOldLoanInterestAndBalance { get; set; }
+        public bool StopInterestCalculation { get; set; }
+        public DateTime? DateInterestCalaculationWasStoped { get; set; }
+        public string StopedBy { get; set; }
+
+        public decimal NewInterest { get; set; }
+        public decimal NewBalance { get; set; }
+        public decimal NewVAT { get; set; }
+        public decimal NewPenalty { get; set; }
 
         public string Id { get; set; }
         [Required]
@@ -112,7 +121,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             // Initialize double properties to 0
             Amount = 0;
             InterestRate = 0;
-            VatRate= 0;
+            VatRate = 0;
             CollateralCoverageRate = 0;
             ShareAccountCoverageAmount = 0;
             SavingAccountCoverageRate = 0;
@@ -125,67 +134,164 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         }
     }
 
+
+
     public class AddLoanApplicationCommand
     {
-        [Required]
-        public string LoanTarget { get; set; }//Employee, Government, Group, Company, Individual etc
-        [Required]
-        public string LoanCategory { get; set; }//Main_Loan OR Special_Saving_Facilities
-        [Required]
+        public bool StopInterestCalculation { get; set; }
+
+        [Required(ErrorMessage = "Loan target is required.")]
+        [StringLength(50, ErrorMessage = "Loan target must be less than 50 characters.")]
+        public string LoanTarget { get; set; } //Employee, Government, Group, Company, Individual, etc.
+
+        [Required(ErrorMessage = "Loan category is required.")]
+        [StringLength(50, ErrorMessage = "Loan category must be less than 50 characters.")]
+        public string LoanCategory { get; set; } //Main_Loan OR Special_Saving_Facilities
+
+        [Required(ErrorMessage = "Fee IDs are required.")]
+        //[MinLength(1, ErrorMessage = "At least one Fee ID is required.")]
         public List<string> FeeIds { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Loan product ID is required.")]
+        [StringLength(50, ErrorMessage = "Loan product ID must be less than 50 characters.")]
         public string LoanProductId { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Amount is required.")]
+        [Range(0.00, double.MaxValue, ErrorMessage = "Amount must be zero or greater.")]
+        [ValidateAmount]
         public decimal Amount { get; set; }
+
+        public bool IsOverRightOldLoanInterestAndBalance { get; set; }
+
+        [Required(ErrorMessage = "New Overide Interest amount is required.")]
+        [Range(0, double.MaxValue, ErrorMessage = "New balance must be zero or greater.")]
+        public decimal NewBalance { get; set; }
+
+        [Required(ErrorMessage = "New Overide Interest amount is required.")]
+        [Range(0, double.MaxValue, ErrorMessage = "New interest must be zero or greater.")]
+        public decimal NewInterest { get; set; }
+
+        [Required(ErrorMessage = "New Overide Vat amount is required.")]
+        [Range(0, double.MaxValue, ErrorMessage = "New VAT must be zero or greater.")]
+        public decimal NewVAT { get; set; }
+        [Required(ErrorMessage = "New Overide Penalty amount is required.")]
+        [Range(0, double.MaxValue, ErrorMessage = "New penalty must be zero or greater.")]
+        public decimal NewPenalty { get; set; }
+
         public bool IsThereGuarantor { get; set; }
-        public bool IsChargesInclussive { get; set; }
+
+        public bool IsChargesInclusive { get; set; }
 
         public bool IsThereCollateral { get; set; }
+
+        [Range(0, 100, ErrorMessage = "Interest rate must be between 0 and 100.")]
         public decimal InterestRate { get; set; }
+
         public bool IsInterestPaidUpFront { get; set; } = true;
-        [Required]
+
+        [Required(ErrorMessage = "Repayment cycle is required.")]
+        [StringLength(50, ErrorMessage = "Repayment cycle must be less than 50 characters.")]
         public string RepaymentCircle { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Loan type is required.")]
+        [StringLength(50, ErrorMessage = "Loan type must be less than 50 characters.")]
         public string LoanType { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Loan duration is required.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Loan duration must be at least 1 Month.")]
         public int LoanDuration { get; set; }
-        [Required]
-        public DateTime FirstInstallmentDate { get; set; }
-        [Required]
+        public bool IsChargesInclussive { get; set; }
+
+        //[Required(ErrorMessage = "First installment date is required.")]
+        //[DataType(DataType.Date, ErrorMessage = "Invalid date format.")]
+        //[FutureDate(ErrorMessage = "First installment date must be in the future.")]
+        //public DateTime FirstInstallmentDate { get; set; }
+
+        [Required(ErrorMessage = "Customer ID is required.")]
+        [StringLength(50, ErrorMessage = "Customer ID must be less than 50 characters.")]
         public string CustomerId { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Economic activity ID is required.")]
+        [StringLength(50, ErrorMessage = "Economic activity ID must be less than 50 characters.")]
         public string EconomicActivityId { get; set; }
-        public string AmortizationType { get; set; }
-        public int GracePeriodBeforeFirstPayment { get; set; }
-        [Required]
-        public int GracePeriodAfterMaturityDate { get; set; }
+
+        [StringLength(50, ErrorMessage = "Amortization type must be less than 50 characters.")]
+        public string AmortizationType { get; set; } = "Constant_Amortization";
+
+        [Range(0, int.MaxValue, ErrorMessage = "Grace period before the first payment must be a non-negative number.")]
+        public int GracePeriodBeforeFirstPayment { get; set; } = 1;
+
+        [Required(ErrorMessage = "Grace period after maturity date is required.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Grace period after maturity date must be at least 1 Month.")]
+        public int GracePeriodAfterMaturityDate { get; set; } = 15;
+
         public bool RequiredDownPaymentCoverageRate { get; set; }
-        [Required]
-        public string LoanApplicationType { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Loan application type is required.")]
+        [StringLength(50, ErrorMessage = "Loan application type must be less than 50 characters.")]
+        public string LoanApplicationType { get; set; } = "Normal";
+
+        [ValidateLoanId]
         public string LoanId { get; set; }
-        public decimal CollateralCoverageRate { get; set; }
-        public decimal ShareAccountCoverageAmount { get; set; }
-        public decimal PreferenceShareAccountCoverageAmount { get; set; }
-        public decimal DepositAccountCoverageAmount { get; set; }
-        public decimal SalaryAccountCoverageAmount { get; set; }
-        public decimal TermDeposiAccountCoverageAmount { get; set; }
+
+        [Range(0, 100, ErrorMessage = "Collateral coverage rate must be between 0 and 100.")]
+        public decimal CollateralCoverageRate { get; set; } = 0;
+
+        [Range(0, double.MaxValue, ErrorMessage = "Share account coverage amount must be a non-negative number.")]
+        public decimal ShareAccountCoverageAmount { get; set; } = 0;
+
+        [Range(0, double.MaxValue, ErrorMessage = "Preference share account coverage amount must be a non-negative number.")]
+        public decimal PreferenceShareAccountCoverageAmount { get; set; } = 0;
+
+        [Range(0, double.MaxValue, ErrorMessage = "Deposit account coverage amount must be a non-negative number.")]
+        public decimal DepositAccountCoverageAmount { get; set; } = 0;
+
+        [Range(0, double.MaxValue, ErrorMessage = "Salary account coverage amount must be a non-negative number.")]
+        public decimal SalaryAccountCoverageAmount { get; set; } = 0;
+
+        [Range(0, double.MaxValue, ErrorMessage = "Term deposit account coverage amount must be a non-negative number.")]
+        public decimal TermDeposiAccountCoverageAmount { get; set; } = 0;
+
         public bool IsPreferenceShareAccountCoverageAmount { get; set; }
+
         public bool IsDepositAccountCoverageAmount { get; set; }
+
         public bool IsTermDeposiAccountCoverageAmount { get; set; }
-        public decimal SavingAccountCoverageRate { get; set; }
-        public decimal SalaryAccountCoverageRate { get; set; }
-        public decimal GuaratorSavingAccountCoverageRate { get; set; }
-        [Required]
+
+        [Range(0, 100, ErrorMessage = "Saving account coverage rate must be between 0 and 100.")]
+        public decimal SavingAccountCoverageRate { get; set; } = 0;
+
+        [Range(0, 100, ErrorMessage = "Salary account coverage rate must be between 0 and 100.")]
+        public decimal SalaryAccountCoverageRate { get; set; } = 0;
+
+        [Range(0, 100, ErrorMessage = "Guarantor saving account coverage rate must be between 0 and 100.")]
+        public decimal GuaratorSavingAccountCoverageRate { get; set; } = 0;
+
+        [Required(ErrorMessage = "Loan purpose ID is required.")]
+        [StringLength(50, ErrorMessage = "Loan purpose ID must be less than 50 characters.")]
         public string LoanPurposeId { get; set; }
-        public decimal DownPaymentCoverageAmountProvided { get; set; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "Down payment coverage amount provided must be a non-negative number.")]
+        public decimal DownPaymentCoverageAmountProvided { get; set; } = 0;
+
+        [StringLength(50, ErrorMessage = "Branch ID must be less than 50 characters.")]
         public string BranchId { get; set; }
+
         public bool IsInterestWaiverApplied { get; set; }
+
+        [Range(0, 100, ErrorMessage = "Interest waiver percentage must be between 0 and 100.")]
         public decimal InterestWaiverPercentage { get; set; }
+
         public bool ApplyInterestToThisLoan { get; set; }
+
         public bool ApplyFeeToThisLoan { get; set; }
+
+        [Range(0, 100, ErrorMessage = "Charges percentage must be between 0 and 100.")]
         public decimal ChargesPercentage { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "Number of days to apply charges must be a non-negative number.")]
         public int NumberOfDaysToApplyCharges { get; set; }
+
         public AddLoanApplicationCommand()
         {
             Amount = 0;
@@ -199,6 +305,73 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             AmortizationType = "Constant_Amortization";
             LoanApplicationType = "Normal";
             LoanCategory = "Main_Loan";
+        }
+    }
+    // Custom Validation Attributes
+    public class ValidateAmountAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var command = (AddLoanApplicationCommand)validationContext.ObjectInstance;
+            var amount = (decimal)value;
+
+            // Check if 'IsOverRightOldLoanInterestAndBalance' is not checked and the amount is zero
+            if (!command.IsOverRightOldLoanInterestAndBalance && amount == 0)
+            {
+                return new ValidationResult("Amount cannot be zero if 'Override' is not checked.");
+            }
+
+            // Check if 'LoanApplicationType' is Refinance and 'IsOverRightOldLoanInterestAndBalance' is checked, and the amount is zero
+            if (command.LoanApplicationType == "Refinancing" && command.IsOverRightOldLoanInterestAndBalance && amount == 0)
+            {
+                return new ValidationResult("Please Enter Amount. Amount cannot be zero if 'Loan Application Type' is Refinancing and 'Override' is checked.");
+            }
+
+            return ValidationResult.Success;
+        }
+    }
+
+
+    public class RequiredIfOverRightOldLoanAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var command = (AddLoanApplicationCommand)validationContext.ObjectInstance;
+            if (command.IsOverRightOldLoanInterestAndBalance && (decimal)value == 0)
+            {
+                return new ValidationResult("This field is required if 'Override' is checked.");
+            }
+            return ValidationResult.Success;
+        }
+    }
+    public class FutureDateAttribute : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            if (value is DateTime dateTime)
+            {
+                return dateTime > DateTime.Now;
+            }
+            return false;
+        }
+    }
+    public class ValidateLoanIdAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var command = (AddLoanApplicationCommand)validationContext.ObjectInstance;
+
+            if (command.LoanApplicationType == "Refinancing" ||
+                command.LoanApplicationType == "Rescheduling" ||
+                command.LoanApplicationType == "Restructuring")
+            {
+                if (string.IsNullOrEmpty(command.LoanId) || command.LoanId=="0")
+                {
+                    return new ValidationResult("LoanId is required when LoanApplicationType is Refinancing, Rescheduling, or Restructuring.");
+                }
+            }
+
+            return ValidationResult.Success;
         }
     }
     public class GetAllLoanQuery
@@ -372,7 +545,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public Loan Loan { get; set; }
     }
 
-   
+
 
     public class Refund
     {

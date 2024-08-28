@@ -6,7 +6,9 @@ using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml;
 using Microsoft.Owin;
@@ -17,6 +19,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -24,14 +27,14 @@ namespace CBS.BusinessService.Accounts
     {
         private readonly ApiCallerHelper _transactionBaseConfigApiHelper;
         private readonly BranchServices _branchServices;
-        private readonly TellerProvissioningServices _userManagementServices;
+        private readonly TellerProvissioningServices _tellerProvissioningServices;
         private readonly TellerServices _tellerServices;
 
         public DailyTellerServices(TellerProvissioningServices userManagementServices = null, TellerServices tellerServices = null)
         {
             _transactionBaseConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
             _branchServices = new BranchServices();
-            _userManagementServices = userManagementServices;
+            _tellerProvissioningServices = userManagementServices;
             _tellerServices = tellerServices;
         }
 
@@ -64,12 +67,161 @@ namespace CBS.BusinessService.Accounts
         }
 
         //
+        //public async Task<IEnumerable<OpenningAnclClossingTillDto>> TellerOpenningAndClossingOfDay(GetTellerOpenningAndClossingQuery getTellerOpenning)
+        //{
+        //    try
+        //    {
+        //        var apiUrl = APICallHelper.TellerOpenningAndClossingQuery;
+
+        //        var couApiResponse = await _transactionBaseConfigApiHelper.PostAsync<ResponseObject<List<OpenningAnclClossingTillDto>>>(apiUrl, getTellerOpenning);
+
+        //        if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData!=null)
+        //        {
+                    
+
+        //            if (getTellerOpenning.ByBracnch)
+        //            {
+        //                var branch = _branchServices.GetBranch(getTellerOpenning.BranchId);
+        //                return couApiResponse.ApiResponseData.Data;
+        //            }
+        //            else
+        //            {
+        //                var branches = _branchServices.GetBranches();
+        //                return couApiResponse.ApiResponseData.Data;
+        //            }
+                   
+        //        }
+        //        else
+        //        {
+        //            return Enumerable.Empty<OpenningAnclClossingTillDto>();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //}
+
+        public async Task<IEnumerable<OpenningAnclClossingTillDto>> TellerOpenningAndClossingOfDay(GetTellerOpenningAndClossingQuery getTellerOpenning)
+        {
+            try
+            {
+                var apiUrl = APICallHelper.TellerOpenningAndClossingQuery;
+                if (getTellerOpenning.BranchId==null)
+                {
+                    getTellerOpenning.BranchId = "N/A";
+                }
+
+                var couApiResponse = await _transactionBaseConfigApiHelper.PostAsync<ResponseObject<List<OpenningAnclClossingTillDto>>>(apiUrl, getTellerOpenning);
+
+                if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+                {
+                    // Initialize branch details
+                    var branches = new Dictionary<string, Branch>();
+
+                    // Fetch branch information based on the query
+                    if (getTellerOpenning.ByBracnch)
+                    {
+                        // Fetch details for a single branch
+                        var branch = await _branchServices.GetBranch(getTellerOpenning.BranchId);
+                        branches[branch.Id] = branch;
+                    }
+                    else
+                    {
+                        // Fetch details for all branches
+                        var allBranches = await _branchServices.GetBranches();
+                        foreach (var branch in allBranches)
+                        {
+                            branches[branch.Id] = branch;
+                        }
+                    }
+
+                    var dtos = couApiResponse.ApiResponseData.Data;
+
+                    // Map branch details to each DTO
+                    foreach (var dto in dtos)
+                    {
+                        if (branches.TryGetValue(dto.BranchCode, out var branch))
+                        {
+                            dto.BranchName = branch.Name;
+                            dto.BranchCode = branch.BranchCode;
+                            dto.BranchAddress = branch.Address;
+                            dto.BranchTelephone = branch.Telephone;
+                            dto.HeadOfficeName = branch.Bank.Name;
+                            dto.HeadOfficeAddress = branch.Bank.Address;
+                            dto.HeadOfficeTelephone = branch.Bank.Telephone;
+                            dto.HeadOfficeEmail = branch.Bank.Email;
+                            dto.HeadOfficeWebSite = branch.Bank.WebSite;
+                            dto.HeadOfficeInitial = branch.Bank.BankInitial;
+                            dto.HeadOfficeCode = branch.Bank.BankCode;
+                        }
+                    }
+
+                    return dtos;
+                }
+                else
+                {
+                    return Enumerable.Empty<OpenningAnclClossingTillDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as needed
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<TillOpenAndClossingDS>> TillCashStatus(GetTillStatusQuery getTellerOpenning)
+        {
+            try
+            {
+                var apiUrl = APICallHelper.GetTillCashStatus;
+                if (getTellerOpenning.QueryParameter == null)
+                {
+                    getTellerOpenning.QueryParameter = "N/A";
+                }
+                var couApiResponse = await _transactionBaseConfigApiHelper.PostAsync<ResponseObject<List<TellerProvioningHistory>>>(apiUrl, getTellerOpenning);
+                if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+                {
+                    // Initialize branch details
+                    List<Branch> branches = new List<Branch>();
+
+                    // Fetch branch information based on the query
+                    if (getTellerOpenning.ByBranch)
+                    {
+                        // Fetch details for a single branch
+                        var branch = await _branchServices.GetBranch(getTellerOpenning.QueryParameter);
+                        branches.Add(branch);
+                    }
+                    else
+                    {
+                        // Fetch details for all branches
+                        var allBranches = await _branchServices.GetBranches();
+                        branches = allBranches.ToList();
+                    }
+
+                    var tellerProvioningHistories = couApiResponse.ApiResponseData.Data;
+                    var tillOpenAndClossingDs = _tellerProvissioningServices.MapToTillOpenAndClossingDS(tellerProvioningHistories,branches);
+                    return tillOpenAndClossingDs;
+                }
+                else
+                {
+                    HttpContext.Current.Session["ErrorMessage"] = couApiResponse.Message;
+                    return Enumerable.Empty<TillOpenAndClossingDS>();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as needed
+                throw;
+            }
+        }
 
         public async Task<IEnumerable<StringValues>> LoadDailyUsers()
         {
             try
             {
-                var users = await _userManagementServices.GetUserTellerRoleDropDown();
+                var users = await _tellerProvissioningServices.GetUserTellerRoleDropDown();
                 return users;
             }
             catch (Exception ex)

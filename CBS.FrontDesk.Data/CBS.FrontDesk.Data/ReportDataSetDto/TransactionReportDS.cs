@@ -127,5 +127,117 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public string ReceiptTitle { get; set; }
 
     }
+    public class OpenningAnclClossingTillDto: HeadOffice
+    {
+        public string UserIdInChargeOfThisTeller { get; set; }
+        public string ProvisionedBy { get; set; }
+        public string OpeningReference { get; set; }
+        public bool IsCashReplenished { get; set; }
+        public string TellerType { get; set; }
+        public string IsPrimary { get; set; }
+        public string ClossingReference { get; set; }
+        public decimal ReplenishedAmount { get; set; }
+        public DateTime OpenedDate { get; set; }
+        public DateTime ClossedDate { get; set; } = new DateTime(1900, 1, 1);
+        public decimal OpenOfDayAmount { get; set; } = 0;
+        public decimal AmountReplenished { get; set; }
+        public bool IsRequestedForCashReplenishment { get; set; }
+        public decimal CashAtHand { get; set; } = 0;
+        public decimal EndOfDayAmount { get; set; } = 0;
+        public decimal AccountBalance { get; set; } = 0;
+        public decimal LastOPerationAmount { get; set; } = 0;
+        public string LastOperationType { get; set; }
+        public decimal PreviouseBalance { get; set; }
+        public string TellerComment { get; set; }
+        public string ClossedStatus { get; set; }
+        public string PrimaryTellerComment { get; set; }
+        public string PrimaryTellerConfirmationStatus { get; set; }
+        public string TellerName { get; set; }
+    }
+    public class TillOpenAndClossingDS: HeadOffice
+    {
+        public string UserIdInChargeOfThisTeller { get; set; }
+        public string ProvisionedBy { get; set; }
+        public bool IsCashReplenished { get; set; }
+        public decimal ReplenishedAmount { get; set; }
+        public DateTime OpenedDate { get; set; }
+        public DateTime ClossedDate { get; set; }
+        public decimal OpenOfDayAmount { get; set; } = 0;
+        public string ReferenceId { get; set; }
+        public string CloseOfReferenceId { get; set; }
+        public bool IsRequestedForCashReplenishment { get; set; }
+        public decimal CashAtHand { get; set; } = 0;
+        public decimal EndOfDayAmount { get; set; } = 0;
+        public decimal AccountBalance { get; set; } = 0;
+        public decimal LastOPerationAmount { get; set; } = 0;
+        public string LastOperationType { get; set; }
+        public decimal PreviouseBalance { get; set; }
+        public string SubTellerComment { get; set; }
+        public string Note { get; set; }
+        public string ClossedStatus { get; set; }
+        public string TillName { get; set; }
+        public string InitialPrinting { get; set; }
+        public bool IsPrimaryTeller { get; set; }
+        public string TellerType { get; set; }
+        // Opening Notes and Coins Counts
+        public int OpeningNote10000 { get; set; }
+        public int OpeningNote5000 { get; set; }
+        public int OpeningNote2000 { get; set; }
+        public int OpeningNote1000 { get; set; }
+        public int OpeningNote500 { get; set; }
+        public int OpeningCoin500 { get; set; }
+        public int OpeningCoin100 { get; set; }
+        public int OpeningCoin50 { get; set; }
+        public int OpeningCoin25 { get; set; }
+        public int OpeningCoin10 { get; set; }
+        public int OpeningCoin5 { get; set; }
+        public int OpeningCoin1 { get; set; }
+        // Closing Notes and Coins Counts
+        public int ClosingNote10000 { get; set; }
+        public int ClosingNote5000 { get; set; }
+        public int ClosingNote2000 { get; set; }
+        public int ClosingNote1000 { get; set; }
+        public int ClosingNote500 { get; set; }
+        public int ClosingCoin500 { get; set; }
+        public int ClosingCoin100 { get; set; }
+        public int ClosingCoin50 { get; set; }
+        public int ClosingCoin25 { get; set; }
+        public int ClosingCoin10 { get; set; }
+        public int ClosingCoin5 { get; set; }
+        public int ClosingCoin1 { get; set; }
+        public decimal TotalOpeningAmount { get; set; }
+        public decimal TotalClosingAmount { get; set; }
 
+    }
+    public class AccountingDayDS: HeadOffice
+    {
+        public string Id { get; set; }
+        public string BranchId { get; set; }
+        public DateTime Date { get; set; }
+        public bool IsClosed { get; set; }
+        public string ClosedBy { get; set; }
+        public string OpenedBy { get; set; }
+        public string Note { get; set; }
+        public DateTime ReOpenedDate { get; set; }
+        public DateTime ClosedAt { get; set; }
+        public DateTime OpenedAt { get; set; }
+        public bool IsCentralized { get; set; }
+
+    }
+
+    public class HeadOffice
+    {
+        public string Logo { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchAddress { get; set; }
+        public string BranchTelephone { get; set; }
+        public string HeadOfficeName { get; set; }
+        public string HeadOfficeAddress { get; set; }
+        public string HeadOfficeTelephone { get; set; }
+        public string HeadOfficeEmail { get; set; }
+        public string HeadOfficeWebSite { get; set; }
+        public string HeadOfficeInitial { get; set; }
+        public string HeadOfficeCode { get; set; }
+    }
 }

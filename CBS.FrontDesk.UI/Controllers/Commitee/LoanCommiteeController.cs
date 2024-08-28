@@ -166,9 +166,9 @@ namespace CBS.FrontDesk.UI.Controllers.Commitee
             
             return null;
         }
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete(string KEY)
         {
-            var data = await _loanCommiteeMember.Delete(id);
+            var data = await _loanCommiteeMember.Delete(KEY);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
         public async Task<bool> GetList()

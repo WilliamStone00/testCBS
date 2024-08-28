@@ -1,4 +1,43 @@
 ﻿'use strict';
+document.querySelectorAll('input[type="number"]').forEach(input => {
+    input.addEventListener('input', function () {
+        if (this.value < 0) {
+            this.value = Math.abs(this.value); // Convert to positive if negative
+        }
+    });
+});
+$(document).ready(function () {
+    // Validate on form submission
+    $('form').submit(function () {
+        var isValid = true;
+
+        // Validate each decimal field
+        $('input[type="text"].decimal').each(function () {
+            var value = $(this).val();
+
+            // Check if value is not a number or less than 0
+            if (isNaN(value) || parseFloat(value) < 0) {
+                isValid = false;
+                $(this).addClass('is-invalid');
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+
+        // If any invalid field is found, prevent form submission
+        return isValid;
+    });
+
+    // Real-time validation
+    $('input[type="text"].decimal').on('input', function () {
+        var value = $(this).val();
+        if (isNaN(value) || parseFloat(value) < 0) {
+            $(this).addClass('is-invalid');
+        } else {
+            $(this).removeClass('is-invalid');
+        }
+    });
+});
 
 (function () {
     const phoneMaskList = document.querySelectorAll('.phone-mask'),
@@ -277,29 +316,6 @@ function DownloadFile(url) {
 
 
 //}
-//function calculateBalance() {
-//    // Get the total amount of currency notes and coins
-//    var note10000 = parseInt(document.getElementById('Notes_note10000').value) || 0;
-//    var note5000 = parseInt(document.getElementById('Notes_note5000').value) || 0;
-//    var note2000 = parseInt(document.getElementById('Notes_note2000').value) || 0;
-//    var note1000 = parseInt(document.getElementById('Notes_note1000').value) || 0;
-//    var note500 = parseInt(document.getElementById('Notes_note500').value) || 0;
-//    var coin500 = parseInt(document.getElementById('Notes_coin500').value) || 0;
-//    var coin100 = parseInt(document.getElementById('Notes_coin100').value) || 0;
-//    var coin50 = parseInt(document.getElementById('Notes_coin50').value) || 0;
-//    var coin25 = parseInt(document.getElementById('Notes_coin25').value) || 0;
-//    var coin10 = parseInt(document.getElementById('Notes_coin10').value) || 0;
-//    var coin5 = parseInt(document.getElementById('Notes_coin5').value) || 0;
-//    var coin1 = parseInt(document.getElementById('Notes_coin1').value) || 0;
-
-//    // Calculate total amount
-//    var totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
-//        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
-
-//    // Update the DepositRequest_amount input field with the total amount
-//    document.getElementById("DepositRequest_amount").value = totalAmount.toFixed(2);
-
-//}
 function calculateBalance() {
     // Get the total amount of currency notes and coins
     var note10000 = parseInt(document.getElementById('Notes_note10000').value) || 0;
@@ -319,54 +335,139 @@ function calculateBalance() {
     var totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
         (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
 
+    // Update the DepositRequest_amount input field with the total amount
+    document.getElementById("DepositRequest_amount").value = totalAmount.toFixed(2);
+
+}
+
+function calculateBalance() {
+    const elements = [
+        'Notes_note10000', 'Notes_note5000', 'Notes_note2000', 'Notes_note1000',
+        'Notes_note500', 'Notes_coin500', 'Notes_coin100', 'Notes_coin50',
+        'Notes_coin25', 'Notes_coin10', 'Notes_coin5', 'Notes_coin1'
+    ];
+
+    let totalAmount = 0;
+
+    elements.forEach(id => {
+        const element = document.getElementById(id);
+        const value = parseInt(element.value, 10);
+
+        // Validate the input
+        if (isNaN(value) || value < 0) {
+            element.value = 0;
+            appalert("Please enter a positive integer value.", 0);
+            return;
+        }
+    });
+
+    var note10000 = parseInt(document.getElementById('Notes_note10000').value) || 0;
+    var note5000 = parseInt(document.getElementById('Notes_note5000').value) || 0;
+    var note2000 = parseInt(document.getElementById('Notes_note2000').value) || 0;
+    var note1000 = parseInt(document.getElementById('Notes_note1000').value) || 0;
+    var note500 = parseInt(document.getElementById('Notes_note500').value) || 0;
+    var coin500 = parseInt(document.getElementById('Notes_coin500').value) || 0;
+    var coin100 = parseInt(document.getElementById('Notes_coin100').value) || 0;
+    var coin50 = parseInt(document.getElementById('Notes_coin50').value) || 0;
+    var coin25 = parseInt(document.getElementById('Notes_coin25').value) || 0;
+    var coin10 = parseInt(document.getElementById('Notes_coin10').value) || 0;
+    var coin5 = parseInt(document.getElementById('Notes_coin5').value) || 0;
+    var coin1 = parseInt(document.getElementById('Notes_coin1').value) || 0;
+
+    // Calculate total amount
+    totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
+        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
+
+
     // Format total amount as currency
-    var formattedTotalAmount = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
-    $("#totalNoteAmount").val(totalAmount);
-    // Update the lblDepositRequest_amount span with the formatted total amount
+    const formattedTotalAmount = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
+    document.getElementById("totalNoteAmount").value = totalAmount;
     document.getElementById("lblDepositRequest_amount").textContent = "Total Amount: " + formattedTotalAmount;
 
+    //Primary teller calculations
+    const totalProvision = parseFloat(document.getElementById("totalProvision").value) || 0;
+    const balance = totalProvision - totalAmount;
 
+    const formattedBalance = balance.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const balanceLabel = document.getElementById("lblBalance");
+    balanceLabel.innerText = "Balance: " + formattedBalance;
 
-    //Primary teller
-
-    // Get total note amount
-    var totalNoteAmount = parseFloat(document.getElementById("totalNoteAmount").value);
-    var totalProvision = parseFloat(document.getElementById("totalProvision").value);
-    // Calculate balance
-    var balance = totalProvision-totalNoteAmount;
-
-    // Format balance with commas and one decimal place
-    var formattedBalance = balance.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-
-    // Display balance
-    document.getElementById("lblBalance").innerText = "Balance: " + formattedBalance;
-
-    // Check if balance is 0 and enable/disable the save button accordingly
-    var btnSave = document.getElementById("btnSave");
-    if (balance === 0) {
-        btnSave.disabled = false; // Enable save button
-    } else {
-        btnSave.disabled = true; // Disable save button
-    }
+    // Enable/Disable save button
+    const btnSave = document.getElementById("btnSave");
+    btnSave.disabled = balance !== 0;
 
     // Change balance color based on condition
-    if (totalNoteAmount !== totalProvision) {
-        document.getElementById("lblBalance").style.color = "red"; // Set red color for balance
-    } else {
-        document.getElementById("lblBalance").style.color = "black"; // Set default color for balance
-    }
-    // Change balance color only if balance is not zero and differs from provision amount
-    if (balance !== totalProvision) {
-        document.getElementById("lblBalance").style.color = "red"; // Set red color for balance
-    } else {
-        document.getElementById("lblBalance").style.color = "black"; // Set black color for balance
-    }
-
-    if (totalNoteAmount == 0 || totalNoteAmount == totalProvision) {
-        document.getElementById("lblBalance").style.color = "black"; // Set black color for balance 
-        
-    }
+    balanceLabel.style.color = balance !== 0 ? "red" : "black";
 }
+
+
+//function calculateBalance() {
+//    // Get the total amount of currency notes and coins
+//    var note10000 = parseInt(document.getElementById('Notes_note10000').value) || 0;
+//    var note5000 = parseInt(document.getElementById('Notes_note5000').value) || 0;
+//    var note2000 = parseInt(document.getElementById('Notes_note2000').value) || 0;
+//    var note1000 = parseInt(document.getElementById('Notes_note1000').value) || 0;
+//    var note500 = parseInt(document.getElementById('Notes_note500').value) || 0;
+//    var coin500 = parseInt(document.getElementById('Notes_coin500').value) || 0;
+//    var coin100 = parseInt(document.getElementById('Notes_coin100').value) || 0;
+//    var coin50 = parseInt(document.getElementById('Notes_coin50').value) || 0;
+//    var coin25 = parseInt(document.getElementById('Notes_coin25').value) || 0;
+//    var coin10 = parseInt(document.getElementById('Notes_coin10').value) || 0;
+//    var coin5 = parseInt(document.getElementById('Notes_coin5').value) || 0;
+//    var coin1 = parseInt(document.getElementById('Notes_coin1').value) || 0;
+
+//    // Calculate total amount
+//    var totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
+//        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
+
+//    // Format total amount as currency
+//    var formattedTotalAmount = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
+//    $("#totalNoteAmount").val(totalAmount);
+//    // Update the lblDepositRequest_amount span with the formatted total amount
+//    document.getElementById("lblDepositRequest_amount").textContent = "Total Amount: " + formattedTotalAmount;
+
+
+
+//    //Primary teller
+
+//    // Get total note amount
+//    var totalNoteAmount = parseFloat(document.getElementById("totalNoteAmount").value);
+//    var totalProvision = parseFloat(document.getElementById("totalProvision").value);
+//    // Calculate balance
+//    var balance = totalProvision-totalNoteAmount;
+
+//    // Format balance with commas and one decimal place
+//    var formattedBalance = balance.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+//    // Display balance
+//    document.getElementById("lblBalance").innerText = "Balance: " + formattedBalance;
+
+//    // Check if balance is 0 and enable/disable the save button accordingly
+//    var btnSave = document.getElementById("btnSave");
+//    if (balance === 0) {
+//        btnSave.disabled = false; // Enable save button
+//    } else {
+//        btnSave.disabled = true; // Disable save button
+//    }
+
+//    // Change balance color based on condition
+//    if (totalNoteAmount !== totalProvision) {
+//        document.getElementById("lblBalance").style.color = "red"; // Set red color for balance
+//    } else {
+//        document.getElementById("lblBalance").style.color = "black"; // Set default color for balance
+//    }
+//    // Change balance color only if balance is not zero and differs from provision amount
+//    if (balance !== totalProvision) {
+//        document.getElementById("lblBalance").style.color = "red"; // Set red color for balance
+//    } else {
+//        document.getElementById("lblBalance").style.color = "black"; // Set black color for balance
+//    }
+
+//    if (totalNoteAmount == 0 || totalNoteAmount == totalProvision) {
+//        document.getElementById("lblBalance").style.color = "black"; // Set black color for balance 
+        
+//    }
+//}
 function PrintSingleObject(controller, objectID, path, rptType) {
     var url = "/" + controller + "/GetReport?KEY=" + objectID + "&path=" + path;
     $.ajax({
@@ -424,7 +525,7 @@ function LoadDT(tableID, order) {
 
             order: [[order, "desc"]],
             bInfo: true,
-            pageLength: 10
+            pageLength: 4
 
         });
     }
@@ -449,7 +550,7 @@ function LoadDT(tableID, order) {
 
             order: [[order, "asc"]],
             bInfo: true,
-            pageLength: 10
+            pageLength: 4
 
         });
     }
@@ -968,23 +1069,27 @@ function PageReload() {
     location.reload();
 }
 
-function AjaxPostAndUpdate(form) {
 
+
+function AjaxPostAndUpdate(form) {
+    console.log("Form Action:", form.action);
+    console.log("Form Method:", form.method);
+
+    var formData = new FormData(form);
+    for (var pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
 
     $.validator.unobtrusive.parse(form);
     if ($(form).valid()) {
-
-
-        alertify.confirm("Confirmation", "Are you sure you want to perform this action! ",
+        alertify.confirm("Confirmation", "Are you sure you want to perform this action? ",
             function () {
-
-
                 var ajaxConfig = {
                     type: 'POST',
                     url: form.action,
                     data: new FormData(form),
                     success: function (response) {
-
+                        console.log("Response:", response);
                         if (response.success) {
                             if (response.status === "Exist") {
                                 appalert(response.message, 3, 1);
@@ -994,8 +1099,8 @@ function AjaxPostAndUpdate(form) {
                             }
                             else {
                                 appalert(response.message, 1, 1);
-
                             }
+
                             if (response.option === 'Update' && response.reloadDataView === "Yes") {
                                 LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
                             }
@@ -1005,41 +1110,40 @@ function AjaxPostAndUpdate(form) {
                             else if (response.reloadDataView === "Yes") {
                                 LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
                             }
-                        }
-                        else {
+                        } else {
                             if (response.Status === "Exist") {
                                 appalert(response.message, 3, 1);
-                            }
-                            else {
+                            } else {
                                 appalert(response.message, 2, 1);
                             }
-
                         }
+                    },
+                    error: function (err) {
+                        console.log("Error:", err);
 
-                    }
-                    , error: function (err) {
-                        console.log(err.statusText);
-                        appalert(err.statusText, 0, 1);
+                        if (err.status === 401) { // Unauthorized
+                            // Session has expired, redirect to the login page
+                            window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+                        } else {
+                            appalert(err.statusText, 0, 1);
+                        }
                     }
                 };
 
                 if ($(form).attr('enctype') === "multipart/form-data") {
-                    ajaxConfig["contentType"] = false;
-                    ajaxConfig["processData"] = false;
+                    ajaxConfig.contentType = false;
+                    ajaxConfig.processData = false;
                 }
-                console.log(ajaxConfig);
+
+                console.log("AJAX Config:", ajaxConfig);
                 $.ajax(ajaxConfig);
             },
             function () {
                 appalert('Transaction cancelled', 3, 1);
-
             }
-
         );
     }
     return false;
-
-
 }
  
 function AjaxPostAndUpdateValidationDecision(form) {
@@ -1063,7 +1167,14 @@ function AjaxPostAndUpdateValidationDecision(form) {
 
             }
             , error: function (err) {
-                appalert(err.statusText, 0, 1);
+                console.log("Error:", err);
+
+                if (err.status === 401) { // Unauthorized
+                    // Session has expired, redirect to the login page
+                    window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+                } else {
+                    appalert(err.statusText, 0, 1);
+                }
             }
         };
 
@@ -1088,8 +1199,16 @@ function EditResetModal(KEY, modalBodyID, ModalcontentID, controller, actionMeth
             $('#' + ModalcontentID).html(data);
             $('#' + modalBodyID).modal('show');
         }, error: function (err) {
-            appalert(err.statusText, 3, 0);
+            console.log("Error:", err);
+
+            if (err.status === 401) { // Unauthorized
+                // Session has expired, redirect to the login page
+                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+            } else {
+                appalert(err.statusText, 0, 1);
+            }
         }
+        
     });
 }
 
@@ -1132,7 +1251,14 @@ function EditResetMain(KEY, partialView, divID, controller, action, div1, path, 
             $('.select2').select2();
         },
         error: function (err) {
-            appalert(err.statusText, 3, 0);
+            console.log("Error:", err);
+
+            if (err.status === 401) { // Unauthorized
+                // Session has expired, redirect to the login page
+                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+            } else {
+                appalert(err.statusText, 0, 1);
+            }
         }
     });
 }
@@ -1236,8 +1362,14 @@ function LoadDataNoSelect(controller, option, divLoader, tableID, action, KEY, R
             $('#' + divLoader).html(data);
             LoadDT(tableID);
         }, error: function (err) {
+            console.log("Error:", err);
 
-            appalert(err.statusText, 3);
+            if (err.status === 401) { // Unauthorized
+                // Session has expired, redirect to the login page
+                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+            } else {
+                appalert(err.statusText, 0, 1);
+            }
         }
     });
 
@@ -1253,8 +1385,14 @@ function LoadDataNoSelectAutodebit(controller, option, divLoader, tableID, actio
             LoadDT(tableID);
             LoadCustomerStatistics(controller, option, KEY, ReadOptions, datefrom, dateto, statpath);
         }, error: function (err) {
+            console.log("Error:", err);
 
-            appalert(err.statusText, 3);
+            if (err.status === 401) { // Unauthorized
+                // Session has expired, redirect to the login page
+                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+            } else {
+                appalert(err.statusText, 0, 1);
+            }
         }
     });
 
@@ -1303,7 +1441,14 @@ function LoadDataTableSp(controller, tableID, action, KEY, partialView, order, p
             LoadDT(tableID, order);
         },
         error: function (err) {
-            appalert(err.statusText, 1, 3);
+            console.log("Error:", err);
+
+            if (err.status === 401) { // Unauthorized
+                // Session has expired, redirect to the login page
+                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+            } else {
+                appalert(err.statusText, 0, 1);
+            }
         }
     });
 }
@@ -1362,8 +1507,14 @@ function LoadDataMain(controller, option, divLoader, tableID, action, KEY, ReadO
             LoadDT(tableID, order);
             //LoadCustomerStatistics(controller, option, divLoader, tableID, action, KEY, ReadOptions, path, group, datefrom, dateto, startpath);
         }, error: function (err) {
+            console.log("Error:", err);
 
-            appalert(err.statusText, 1, 3);
+            if (err.status === 401) { // Unauthorized
+                // Session has expired, redirect to the login page
+                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+            } else {
+                appalert(err.statusText, 0, 1);
+            }
         }
     });
 
@@ -1380,8 +1531,14 @@ function LoadCustomerTransaction(controller, option, divLoader, tableID, action,
             LoadDT(tableID);
             LoadCustomerStatistics(controller, option, KEY, ReadOptions, null, null, null, path);
         }, error: function (err) {
+            console.log("Error:", err);
 
-            appalert(err.statusText, 1, 3);
+            if (err.status === 401) { // Unauthorized
+                // Session has expired, redirect to the login page
+                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+            } else {
+                appalert(err.statusText, 0, 1);
+            }
         }
     });
 
@@ -1513,8 +1670,14 @@ function AdvancedSearchData(advancedsearch, controller, divLoader, tableID, acti
             }
 
         }, error: function (err) {
+            console.log("Error:", err);
 
-            appalert(err.statusText, 3);
+            if (err.status === 401) { // Unauthorized
+                // Session has expired, redirect to the login page
+                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+            } else {
+                appalert(err.statusText, 0, 1);
+            }
         }
     });
 }
@@ -1527,8 +1690,14 @@ function LoadDataMainWithSelect(controller, option, divLoader, tableID, action, 
             $('#' + divLoader).html(data);
             LoadDTSelect(tableID);
         }, error: function (err) {
+            console.log("Error:", err);
 
-            appalert(err.statusText, 3);
+            if (err.status === 401) { // Unauthorized
+                // Session has expired, redirect to the login page
+                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+            } else {
+                appalert(err.statusText, 0, 1);
+            }
         }
     });
 
@@ -1542,8 +1711,14 @@ function LoadDataWithMultipleSelect(controller, option, divLoader, tableID, acti
             $('#' + divLoader).html(data);
             MultiSelectDT(tableID);
         }, error: function (err) {
+            console.log("Error:", err);
 
-            appalert(err.statusText, 3);
+            if (err.status === 401) { // Unauthorized
+                // Session has expired, redirect to the login page
+                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+            } else {
+                appalert(err.statusText, 0, 1);
+            }
         }
     });
 
@@ -1637,8 +1812,14 @@ function UploadFile(inputField, url) {
             }
 
         }, error: function (err) {
+            console.log("Error:", err);
 
-            appalert(err.statusText, 3);
+            if (err.status === 401) { // Unauthorized
+                // Session has expired, redirect to the login page
+                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+            } else {
+                appalert(err.statusText, 0, 1);
+            }
         }
         //success: function (message) {
         //    alert(message);
@@ -1673,7 +1854,14 @@ function AjaxPostAndUpdateMFA(form) {
 
             }
             , error: function (err) {
-                appalert(err.statusText, 0, 1);
+                console.log("Error:", err);
+
+                if (err.status === 401) { // Unauthorized
+                    // Session has expired, redirect to the login page
+                    window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+                } else {
+                    appalert(err.statusText, 0, 1);
+                }
             }
         };
 
@@ -1712,7 +1900,14 @@ function AjaxPostAndUpdateChangePassword(form) {
 
             }
             , error: function (err) {
-                alert("Your session is expired." + err.statusText);
+                console.log("Error:", err);
+
+                if (err.status === 401) { // Unauthorized
+                    // Session has expired, redirect to the login page
+                    window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+                } else {
+                    appalert(err.statusText, 0, 1);
+                }
             }
         };
 

@@ -6,29 +6,30 @@
     @using (Html.BeginForm("UpdateUser", "UserManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
         <input type="hidden" name="Option" value="PhotoUpload" id="Option" />
-
-        <div class="row mt-2 gy-4">
-            <div class="col-md-12">
-                @if (Model.profilePhoto != string.Empty)
-                {
-                    <img src="@Model.profilePhoto" alt="Remote Image" id="previewimage" class="img-fluid" width="100px" />
-                    <input type="file" name="FileUpload" accept="image/jpeg,image/png,image/JPG" id="imageupload" onchange="ShowImagePreview(this, document.getElementById('previewimage'))" />
-
-
-                }
-                else
-                {
-
-                    <img src="@Url.Content(Model.ImageVirtualPath)" alt="No image Found" id="previewimage" class="img-fluid" width="100px" />
-                    <input type="file" name="FileUpload" accept="image/jpeg,image/png,image/JPG" id="imageupload" onchange="ShowImagePreview(this, document.getElementById('previewimage'))" />
+        <fieldset class="fieldset-custom">
+            <div class="row mt-2 gy-4">
+                <div class="col-md-12">
+                    @if (Model.profilePhoto != string.Empty)
+                    {
+                        <img src="@Model.profilePhoto" alt="Remote Image" id="previewimage" class="img-fluid" width="100px" />
+                        <input type="file" name="FileUpload" accept="image/jpeg,image/png,image/JPG" id="imageupload" onchange="ShowImagePreview(this, document.getElementById('previewimage'))" />
 
 
-                }
+                    }
+                    else
+                    {
+
+                        <img src="@Url.Content(Model.ImageVirtualPath)" alt="No image Found" id="previewimage" class="img-fluid" width="100px" />
+                        <input type="file" name="FileUpload" accept="image/jpeg,image/png,image/JPG" id="imageupload" onchange="ShowImagePreview(this, document.getElementById('previewimage'))" />
+
+
+                    }
+                </div>
+
             </div>
-
-        </div>
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary me-2">Upload</button>
-        </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary me-2">Upload</button>
+            </div>
+        </fieldset>
     }
 </div>

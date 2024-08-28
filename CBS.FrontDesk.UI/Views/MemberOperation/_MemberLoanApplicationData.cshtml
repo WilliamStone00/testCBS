@@ -1,13 +1,11 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
 <div class="table-responsive mb-3">
-    <table class="table table-hover" id="myDataTable">
+    <table class="table table-hover table-striped" id="myDataTable">
         <thead class="table-light">
             <tr>
                 <th>Date</th>
-                <th>Product</th>
+                <th>Loan Type</th>
                 <th>Amount</th>
-                <th>Interest rate</th>
-                <th>Repayment cycle</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -16,29 +14,34 @@
             @foreach (var d in Model.LoanApplications.OrderByDescending(app => app.ApplicationDate))
             {
                 <tr>
-                    <td style="width:25%">@d.ApplicationDate.ToShortDateString()</td>
-                    <td style="width:37%">@d.LoanProduct.ProductName</td>
-                    <td style="width:10%">@d.Amount.ToString("#,0.00")</td>
-                    <td style="width:5%">@d.InterestRate %</td>
-                    <td style="width:8%">
-                        @{
-                            var repaymentCycle = d.LoanProduct?.LoanProductRepaymentCycles?.FirstOrDefault(x => x.Id == d.RepaymentCircle)?.RepaymentCycle ?? "N/A";
-                        }
-                        @repaymentCycle
+                    <td>@d.ApplicationDate.ToString("dd/MM/yy hh:mm:ss")</td>
+                    <td>
+                        @d.LoanApplicationType
                     </td>
-                    <td style="width:10%">
+                    <td>
+                        @{
+                            var amountFormatted = d.Amount.ToString("#,##0");
+                        }
+                        @amountFormatted
+                    </td>
+                    <td>
                         @if (d.IsApproved)
                         {
-                            <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@d.ApprovalStatus</span>
+                            <span class="badge bg-success text-white">@d.ApprovalStatus</span>
                         }
                         else
                         {
-                            <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@d.ApprovalStatus</span>
+                            <span class="badge bg-danger text-white">@d.ApprovalStatus</span>
                         }
                     </td>
-                    <td style="width:10%">
-                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_MemberLoanApplicationDetail','application_detail','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.LoanType for detail">
-                            Detail
+                    <td>
+                        <a href="#"
+                           onclick="AddORUpdateGen('@d.Id','datalistingview','_MemberLoanApplicationDetail','application_detail','MemberOperation','applications')"
+                           class="btn btn-info btn-sm"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="View details of @d.LoanType">
+                            <i class="fas fa-info-circle me-1"></i> Detail
                         </a>
                     </td>
                 </tr>

@@ -1,31 +1,32 @@
 ﻿@model CBS.FrontDesk.Data.Entity.PermissionMenuLoaderDto
 
-
-<form id="menuForm">
-    <div class="table-responsive">
-        <table class="table table-hover" id="myDataTable">
-            <thead class="table-light">
-                <tr>
-                    <th>MenuText</th>
-                    <th>Parent</th>
-                    <th>Description</th>
-                    <th> <label><input type="checkbox" id="selectAll"></label></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var d in Model.PermissionMenuLoaders)
-                {
+<fieldset class="fieldset-custom">
+    <form id="menuForm">
+        <div class="table-responsive">
+            <table class="table table-hover" id="myDataTable">
+                <thead class="table-light">
                     <tr>
-                        <td style="width:20%">@d.MenuText</td>
-                        <td style="width:20%">@d.ParentName</td>
-                        <td style="width:50%">@d.Description</td>
-                        <td style="width:5%">
-                            <input type="checkbox" name="selectedMenus" value="@d.MenuMasterId" />
-                        </td>
+                        <th>MenuText</th>
+                        <th>Parent</th>
+                        <th>Description</th>
+                        <th> <label><input type="checkbox" id="selectAll"></label></th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</form>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.PermissionMenuLoaders)
+                    {
+                        <tr>
+                            <td style="width:20%">@d.MenuText</td>
+                            <td style="width:20%">@d.ParentName</td>
+                            <td style="width:50%">@d.Description</td>
+                            <td style="width:5%">
+                                <input type="checkbox" name="selectedMenus" value="@d.MenuMasterId" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </form>
 
+</fieldset>

@@ -8,6 +8,9 @@ using CBS.FrontDesk.Data.Message;
 using System.Web;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.UserManagement;
+using DocumentFormat.OpenXml.EMMA;
+using Irony.Parsing;
+using System.Web.Security;
 
 namespace CBS.FrontDesk.Service
 {
@@ -35,10 +38,12 @@ namespace CBS.FrontDesk.Service
                 var response = await _identityServer.PostAsync<ResponseObject<UserDto>>(APICallHelper.Authentication, request);
                 if (response.IsSuccess)
                 {
+
                     var userAuth = response.ApiResponseData.Data;
-                    HttpContext.Current.Session["Token"] = userAuth.bearerToken;
-                    HttpContext.Current.Session["BranchObject"]= userAuth.Branch;
-                    HttpContext.Current.Session["AuthUser"] = userAuth;
+
+
+
+
                     response.ApiResponseData.Data.Branch = userAuth.Branch;
                     userAuth.password = request.Password;
                     GetExecutionMessages(userAuth, true, request.UserName, MessagesResults.Success,

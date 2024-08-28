@@ -1039,6 +1039,31 @@ namespace BusinessServices
 
             return str;
         }
+        public string CurrencyFormatter(decimal amount, int decimalplace = 0, string currency = "")
+        {
+            string str = null;
+            if (currency.Equals(string.Empty))
+            {
+                str = amount.ToString("#,##0.0");
+            }
+            else
+            {
+                if (decimalplace.Equals(1))
+                {
+                    str = amount.ToString("#,##0.0 " + currency);
+                }
+                else if (decimalplace.Equals(2))
+                {
+                    str = amount.ToString("#,##0.00 " + currency);
+                }
+                else
+                {
+                    str = amount.ToString("#,##0 " + currency);
+                }
+            }
+
+            return str;
+        }
         public string PercentageFormater(double wholeValue, double quetion)
         {
             string str = null;

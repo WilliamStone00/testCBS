@@ -13,7 +13,7 @@ else
     <fieldset class="fieldset-custom">
         <legend>Ordinary account listings</legend>
         <div class="table-responsive mb-3">
-            <table class="table table-hover" id="myDataTable_product">
+            <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
                         <th>Code</th>
@@ -46,7 +46,7 @@ else
                                 @if (!d.IsUsedForTellerProvisioning)
                                 {
                                     <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_ProductConfig','get','TransactionConfiguration','savingproduct')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit |</a>
-                                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','myDataTable_product','_ProductData',0,'datalistingview_product')">Delete</a>
+                                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','myDataTable_product','_ProductData',0,'myDataTable')">Delete</a>
                                 }
                                 else
                                 {
