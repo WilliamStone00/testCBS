@@ -21,6 +21,8 @@ using System.IO;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.BusinessService.Config;
+using CBS.BusinessService.Accounts;
+using CBS.BusinessService.Accounting;
 
 
 namespace CBS.BusinessService
@@ -30,7 +32,7 @@ namespace CBS.BusinessService
         private readonly ApiCallerHelper _accountingApiCallerHelper;
         private readonly ApiCallerHelper _TransactionBaseUrl;
         private readonly ApiCallerHelper _IdentityServerBaseUrl;
-
+        private AccountingServices _accountServices;
         public BranchServices branchServices { get; private set; }
 
         //private List<Currency> _currencies;
@@ -40,6 +42,7 @@ namespace CBS.BusinessService
             _TransactionBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
             _IdentityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
             branchServices = new BranchServices();
+            _accountServices = new AccountingServices();
         }
         public async Task<List<CashRoot>> GetCashReplenimentCurrentOpenOfDayHistoryRequestId()
         {
@@ -999,20 +1002,32 @@ namespace CBS.BusinessService
                 }
                 else
                 {
-                    var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<CashApprovalResponse>>(APICallHelper.CashReplenishmentResponse, model);
-                    if (response.IsSuccess)
+                    var listOfAccounts = await _accountServices.GetAllBranchAccountUsedToCreditCashFlow(this.GetBranchID());
+                    if (model.IsApproved==true && listOfAccounts.Count==0)
                     {
-                        // Successful creation
-                        GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
-                            ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
-                        return ExecutionMessage;
+                        GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                                     SystemMessageStatus.Failed.ToString(), new Exception("There no bank account placed under the management of this branch, Please kindly contact system administrator"));
+
                     }
                     else
                     {
-                        // Failed creation
-                        GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
-                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                        var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<CashApprovalResponse>>(APICallHelper.CashReplenishmentResponse, model);
+                        if (response.IsSuccess)
+                        {
+                            // Successful creation
+                            GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+                                ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                            return ExecutionMessage;
+                        }
+                        else
+                        {
+                            // Failed creation
+                            GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                                ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                        }
                     }
+
+                   
                 }
 
             }
