@@ -229,8 +229,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                     chartofAccountInfos.AddRange(await ProcessCASHINLiaisonAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount));
                     chartofAccountInfos.AddRange(await ProcessCASHOutAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount));
                     chartofAccountInfos.AddRange(await ProcessCASHOutLiaisonAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount));
-                    //chartofAccountInfos.AddRange(await ProcessInterestExpenseAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount));
-
+      
                 }
                 else
                 {
