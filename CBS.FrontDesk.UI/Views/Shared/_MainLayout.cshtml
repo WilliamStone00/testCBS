@@ -36,6 +36,16 @@
     <link href="~/CBSTemp/ui/assets/css/demo.css" rel="stylesheet" type="text/css" />
     <link href="~/CBSTemp/ui/assets/alertifyjs/css/alertify.min.css" rel="stylesheet" />
     <style>
+        /* Ensure the image inside .text-center is responsive */
+        .text-center {
+            width: 100%; /* Ensure the parent div fills its container */
+            overflow: hidden; /* Hide any overflow to prevent unwanted scrollbars */
+        }
+
+        .faq-image {
+            max-width: 100%; /* Ensure the image does not exceed the width of its container */
+            height: auto; /* Maintain aspect ratio */
+        }
         #action_indented {
             color: #007bff; /* A nicer blue color */
             text-decoration: none; /* Remove underline */

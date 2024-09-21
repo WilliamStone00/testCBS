@@ -149,13 +149,13 @@
                     <div class="accordion-body">
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
-                                <a onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_Statementmodel','_statementModelData','datalistingview_Statementmodel',0,'statementmodel','list')"
+                                <a onclick="LoadDataGeneration('AccountingConfiguration','DataTable_DocumentReference','_DocumentReferenceCodeData','datalistingview_DocumentReferenceCode',0,'documentReferenceCode','list')"
                                    class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
                                    data-bs-toggle="tooltip"
                                    title="View List">
                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                 </a>
-                                <a onclick="AddOrUpdateGen(null,'datalistingview_Statementmodel','_CreateStatementModel','new','AccountingConfiguration','statementmodel')"
+                                <a onclick="AddORUpdateGen(null,'datalistingview_DocumentReferenceCode','_CreateDocumentReferenceCode','new','AccountingConfiguration','documentReferenceCode')"
                                    class="btn btn-icon btn-label-secondary btn-sm btn-fab demo"
                                    data-bs-toggle="tooltip"
                                    title="Add new">
@@ -164,8 +164,8 @@
                             </div>
                         </div>
                         <br />
-                        <div id="datalistingview_Statementmodel">
-                            @Html.Partial("_CreateStatementModel")
+                        <div id="datalistingview_DocumentReferenceCode">
+                            @Html.Partial("_CreateDocumentReferenceCode")
                         </div>
                     </div>
                 </div>

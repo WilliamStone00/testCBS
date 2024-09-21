@@ -20,6 +20,20 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public bool IsHeadOfficeAccount { get; set; }
     }
 
+
+    public class ChartofAccountInfo
+    {
+        public string OperationPeriod { get; set; }
+        public string OperationType { get; set; }
+        public string Id { get; set; }
+
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public string Amount { get; set; }
+        public string BookingDirection { get; set; }
+
+    }
+
     public class ChartofAccountMFI
     {
 

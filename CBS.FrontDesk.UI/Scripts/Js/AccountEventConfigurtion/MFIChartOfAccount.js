@@ -1,6 +1,30 @@
 ﻿$(document).ready(function () {
 
- 
+    $('#document').change(function () {
+        var selectedValue = $(this).val();
+        console.log(selectedValue);
+        $.ajax({
+            url: '/AccountingConfiguration/GetDocumentType',
+            type: 'GET',
+            dataType: 'json',
+            data: { DocumentId: selectedValue },
+            success: function (data) {
+
+                IdModel = "#documentType";
+                $(IdModel).empty();
+                // Add new options based on the fetched data
+                $.each(data, function (index, item) {
+                    $('#documentType').append($('<option>').text(item.Value).attr('value', item.Text));
+                });
+
+
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+
+    });
 });
 
 

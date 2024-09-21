@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounting\ProductAccountingBook.cs" />
     <Compile Include="CurrencyMapper.cs" />
     <Compile Include="Entity\AccountingDayObject\AccountingDay.cs" />
     <Compile Include="Entity\AccountingDayObject\BranchListing.cs" />
@@ -95,7 +96,7 @@
     <Compile Include="Entity\Accounting\DepositNotificationDto.cs" />
     <Compile Include="Entity\Accounting\DocumentUpload.cs" />
     <Compile Include="Entity\Accounting\PostedEntry.cs" />
-    <Compile Include="Entity\Accounting\IncomeStatement.cs" />
+    <Compile Include="Entity\Accounting\DocumentReferenceCode.cs" />
     <Compile Include="Entity\Accounting\ModelIncomeExpenses.cs" />
     <Compile Include="Entity\Accounting\ModelBalanceSheetAssets.cs" />
     <Compile Include="Entity\Accounting\TrailBalanceUploud.cs" />

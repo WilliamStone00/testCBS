@@ -1,0 +1,507 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+
+@{
+    ViewBag.Title = "Accouning entry booking";
+
+}
+<div class="container bg-icon-right">
+    <h6 class="text-center fw-semibold d-flex justify-content-center align-items-center mb-4">
+        <img src="~/AppFiles/Images/Icon.ico" alt="section title icon" class="me-2">
+
+        <span class="text-uppercase"></span>
+    </h6>
+    <h3 class="text-center mb-2">Accounting entries for <span class="fw-bold"> @ViewBag.ProductName</span> service. </h3>
+    <div class="row gy-5">
+        <div class="col-lg-5">
+            <div class="text-center">
+
+                <img src="~/AppFiles/Images/BG2.png" class="faq-image" />
+            </div>
+        </div>
+        @if (ViewBag.ProductType == "Saving_Product")
+        {
+            <div class="col-lg-7">
+                <div class="accordion" id="accordionFront">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-One">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="false" aria-controls="accordionOne">
+                                Local Cash Deposit Operation:
+                            </button>
+                        </h2>
+
+                        <div id="accordionOne" class="accordion-collapse collapse" data-bs-parent="#accordionFront" aria-labelledby="accordionOne" style="">
+                            <div class="accordion-body">
+
+                                @if (Model.SavingDepositProductIsChargable)
+                                {
+                                    <p>
+                                        This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold"> For Instance:</span>
+                                    </p>
+
+                                    <p>
+                                        A member wants to deposit 10000Frs and needs to pay deposit fee of 200Frs.
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p>
+                                        This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold"> For Instance:</span>
+                                    </p>
+
+                                    <p>
+                                        A member wants to deposit 10000Frs.
+                                    </p>
+                                }
+                                <div class="table-responsive mb-3">
+                                    <table class="table table-hover" id="myDataTable_AccountData">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Accout Number</th>
+                                                <th>Account Label</th>
+                                                <th>Debit</th>
+                                                <th>Credit</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+
+                                                var localDepositEntries = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "DEPOSIT");
+
+                                                foreach (var item in localDepositEntries)
+                                                {
+                                                    <tr>
+                                                        <td style="width:30%">@item.AccountNumber</td>
+                                                        <td style="width:30%">@item.AccountName</td>
+                                                        @if (item.BookingDirection == "DEBIT")
+                                                        {
+                                                            <td style="width:20%">@item.Amount</td>
+                                                            <td style="width:20%">0</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td style="width:20%">0</td>
+                                                            <td style="width:20%">@item.Amount </td>
+
+                                                        }
+
+                                                    </tr>
+                                                }
+
+                                            }
+                                        </tbody>
+                                        <thead class="table-light">
+                                            <tr>
+
+                                                <th colspan="2">Total debit</th>
+                                                @{
+
+                                                    var localDepositEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "DEPOSIT");
+                                                    var sumDebit = localDepositEntri.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+                                                    var sumCredit = localDepositEntri.Where(x => x.BookingDirection != "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+
+                                                    <th>@sumDebit</th>
+                                                    <th>@sumCredit</th>
+                                                }
+                                            </tr>
+                                        </thead>
+
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Two">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">
+                                Remote branch cash deposit Operation:
+                            </button>
+                        </h2>
+                        <div id="accordionTwo" class="accordion-collapse collapse" aria-labelledby="accordionTwo" data-bs-parent="#accordionFront" style="">
+                            <div class="accordion-body">
+
+                                @if (Model.SavingDepositProductIsChargable)
+                                {
+                                    <p>
+                                        This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold"> For Instance:</span>
+                                    </p>
+
+                                    <p>
+                                        A member wants to deposit 10000Frs and needs to pay deposit fee of 200Frs.
+                                    </p>
+                                }
+                                else
+                                {
+                                    <div class="text-center mb-2">
+                                        This table below show the accounting entries for a local branch deposit operation for a member in his  <span class="fw-bold"> @ViewBag.ProductName</span> account.
+                                        <span class="fw-bold">
+                                            For Instance:
+                                        </span><br>
+                                        A member wants to deposit 10000Frs.
+                                    </div>
+                                }
+
+
+
+                                <div class="table-responsive mb-3">
+                                    <table class="table table-hover" id="myDataTable_AccountData">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Accout Number</th>
+                                                <th>Account Label</th>
+                                                <th>Debit</th>
+                                                <th>Credit</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+
+                                                var RemoteDepositEntries = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "DEPOSIT_REMOTE");
+
+                                                foreach (var item in RemoteDepositEntries)
+                                                {
+                                                    <tr>
+                                                        <td style="width:30%">@item.AccountNumber</td>
+                                                        <td style="width:30%">@item.AccountName</td>
+                                                        @if (item.BookingDirection == "DEBIT")
+                                                        {
+                                                            <td style="width:20%">@item.Amount</td>
+                                                            <td style="width:20%">0</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td style="width:20%">0</td>
+                                                            <td style="width:20%">@item.Amount </td>
+
+                                                        }
+
+                                                    </tr>
+                                                }
+
+                                            }
+                                        </tbody>
+                                        <thead class="table-light">
+                                            <tr>
+
+                                                <th colspan="2">Total debit</th>
+                                                @{
+
+                                                    var RemoteDepositEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "DEPOSIT_REMOTE");
+                                                    var sumDebitRd = RemoteDepositEntri.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+                                                    var sumCreditRd = RemoteDepositEntri.Where(x => x.BookingDirection == "CREDIT").Sum(x => Convert.ToDouble(x.Amount));
+
+                                                    <th>@sumDebitRd</th>
+                                                    <th>@sumCreditRd</th>
+                                                }
+                                            </tr>
+                                        </thead>
+
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Three">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionThree" aria-expanded="false" aria-controls="accordionThree">
+                                Local Cash Out Operation:
+                            </button>
+                        </h2>
+                        <div id="accordionThree" class="accordion-collapse collapse" aria-labelledby="accordionThree" data-bs-parent="#accordionFront" style="">
+                            <div class="accordion-body">
+                                @if (Model.SavingWithdrwalProductIsChargable)
+                                {
+                                    <p>
+                                        This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold"> For Instance:</span>
+                                    </p>
+
+                                    <p>
+                                        A member wants to withdraw 10000Frs and needs to pay a fine of 200Frs.
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p>
+                                        This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold"> For Instance:</span>
+                                    </p>
+
+                                    <p>
+                                        A member wants to withdraw 10000Frs.
+                                    </p>
+                                }
+                                <div class="table-responsive mb-3">
+                                    <table class="table table-hover" id="myDataTable_AccountData">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Accout Number</th>
+                                                <th>Account Label</th>
+                                                <th>Debit</th>
+                                                <th>Credit</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+
+                                                var localCashOutEntries = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "CASHOUT");
+
+                                                foreach (var item in localCashOutEntries)
+                                                {
+                                                    <tr>
+                                                        <td style="width:30%">@item.AccountNumber</td>
+                                                        <td style="width:30%">@item.AccountName</td>
+                                                        @if (item.BookingDirection == "DEBIT")
+                                                        {
+                                                            <td style="width:20%">@item.Amount</td>
+                                                            <td style="width:20%">0</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td style="width:20%">0</td>
+                                                            <td style="width:20%">@item.Amount </td>
+
+                                                        }
+
+                                                    </tr>
+                                                }
+
+                                            }
+                                        </tbody>
+                                        <thead class="table-light">
+                                            <tr>
+
+                                                <th colspan="2">Total debit</th>
+                                                @{
+
+                                                    var localCashOutEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "CASHOUT");
+                                                    var sumDebitCO = localCashOutEntri.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+                                                    var sumCreditCO = localCashOutEntri.Where(x => x.BookingDirection != "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+
+                                                    <th>@sumDebitCO</th>
+                                                    <th>@sumCreditCO</th>
+                                                }
+                                            </tr>
+                                        </thead>
+
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Four">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFour" aria-expanded="false" aria-controls="accordionFour">
+                                Remote Cash Out Operation:
+                            </button>
+                        </h2>
+                        <div id="accordionFour" class="accordion-collapse collapse" aria-labelledby="accordionFour" data-bs-parent="#accordionFront" style="">
+                            <div class="accordion-body">
+                                @if (Model.SavingWithdrwalProductIsChargable)
+                                {
+                                    <p>
+                                        This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold"> For Instance:</span>
+                                    </p>
+
+                                    <p>
+                                        A member wants to withdraw 10000Frs and needs to pay a fine of 200Frs.
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p>
+                                        This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold"> For Instance:</span>
+                                    </p>
+
+                                    <p>
+                                        A member wants to withdraw 10000Frs.
+                                    </p>
+                                }
+                                <div class="table-responsive mb-3">
+                                    <table class="table table-hover" id="myDataTable_AccountData">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Accout Number</th>
+                                                <th>Account Label</th>
+                                                <th>Debit</th>
+                                                <th>Credit</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+
+                                                var RemoteCashOutEntries = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "CASHOUT_REMOTE");
+
+                                                foreach (var item in RemoteCashOutEntries)
+                                                {
+                                                    <tr>
+                                                        <td style="width:30%">@item.AccountNumber</td>
+                                                        <td style="width:30%">@item.AccountName</td>
+                                                        @if (item.BookingDirection == "DEBIT")
+                                                        {
+                                                            <td style="width:20%">@item.Amount</td>
+                                                            <td style="width:20%">0</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td style="width:20%">0</td>
+                                                            <td style="width:20%">@item.Amount </td>
+
+                                                        }
+
+                                                    </tr>
+                                                }
+
+                                            }
+                                        </tbody>
+                                        <thead class="table-light">
+                                            <tr>
+
+                                                <th colspan="2">Total debit</th>
+                                                @{
+
+                                                    var RemoteCashOutEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "CASHOUT_REMOTE");
+                                                    var sumDebitRCO = RemoteCashOutEntri.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+                                                    var sumCreditRCO = RemoteCashOutEntri.Where(x => x.BookingDirection != "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+
+                                                    <th>@sumDebitRCO</th>
+                                                    <th>@sumCreditRCO</th>
+                                                }
+                                            </tr>
+                                        </thead>
+
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Five">
+                            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionFive" aria-expanded="true" aria-controls="accordionFive">
+                                Interest expense to members
+                            </button>
+                        </h2>
+                        <div id="accordionFive" class="accordion-collapse collapse show" aria-labelledby="accordionFive" data-bs-parent="#accordionFront" style="">
+                            <div class="accordion-body">
+                                @{ 
+                                    var modelch = Model.chartofAccountInfos.Where(x => x.OperationType == "INTEREST_EXPENSE").FirstOrDefault();
+                                        }
+                                The determinant account @modelch.AccountNumber - @modelch.AccountName has been set but the default counterpart cannot be evaluated
+                                due to missen configuration.                           
+                            </div>
+                        </div>
+                    </div>
+              
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-lg-7">
+                <div class="accordion" id="accordionFront">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-One">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="false" aria-controls="accordionOne">
+                                Do you charge for each upgrade?
+                            </button>
+                        </h2>
+
+                        <div id="accordionOne" class="accordion-collapse collapse" data-bs-parent="#accordionFront" aria-labelledby="accordionOne" style="">
+                            <div class="accordion-body">
+                                Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. Sesame snaps icing
+                                marzipan gummi bears macaroon dragée danish caramels powder. Bear claw dragée pastry topping
+                                soufflé. Wafer gummi bears marshmallow pastry pie.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Two">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">
+                                Do I need to purchase a license for each website?
+                            </button>
+                        </h2>
+                        <div id="accordionTwo" class="accordion-collapse collapse" aria-labelledby="accordionTwo" data-bs-parent="#accordionFront" style="">
+                            <div class="accordion-body">
+                                Dessert ice cream donut oat cake jelly-o pie sugar plum cheesecake. Bear claw dragée oat cake
+                                dragée ice cream halvah tootsie roll. Danish cake oat cake pie macaroon tart donut gummies. Jelly
+                                beans candy canes carrot cake. Fruitcake chocolate chupa chups.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Three">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionThree" aria-expanded="false" aria-controls="accordionThree">
+                                What is regular license?
+                            </button>
+                        </h2>
+                        <div id="accordionThree" class="accordion-collapse collapse" aria-labelledby="accordionThree" data-bs-parent="#accordionFront" style="">
+                            <div class="accordion-body">
+                                Regular license can be used for end products that do not charge users for access or service(access
+                                is free and there will be no monthly subscription fee). Single regular license can be used for
+                                single end product and end product can be used by you or your client. If you want to sell end
+                                product to multiple clients then you will need to purchase separate license for each client. The
+                                same rule applies if you want to use the same end product on multiple domains(unique setup). For
+                                more info on regular license you can check official description.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Four">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFour" aria-expanded="false" aria-controls="accordionFour">
+                                What is extended license?
+                            </button>
+                        </h2>
+                        <div id="accordionFour" class="accordion-collapse collapse" aria-labelledby="accordionFour" data-bs-parent="#accordionFront" style="">
+                            <div class="accordion-body">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis et aliquid quaerat possimus maxime!
+                                Mollitia reprehenderit neque repellat deleniti delectus architecto dolorum maxime, blanditiis
+                                earum ea, incidunt quam possimus cumque.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item active">
+                        <h2 class="accordion-header" id="head-Five">
+                            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionFive" aria-expanded="true" aria-controls="accordionFive">
+                                Which license is applicable for SASS application?
+                            </button>
+                        </h2>
+                        <div id="accordionFive" class="accordion-collapse collapse show" aria-labelledby="accordionFive" data-bs-parent="#accordionFront" style="">
+                            <div class="accordion-body">
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi molestias exercitationem ab cum
+                                nemo facere voluptates veritatis quia, eveniet veniam at et repudiandae mollitia ipsam quasi
+                                labore enim architecto non!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

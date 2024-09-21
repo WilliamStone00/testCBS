@@ -346,6 +346,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 if (Request.IsAjaxRequest())
                 {
+                    model.SystemQuery.BranchId = _accountingServices.IsHeadOffice() ? model.SystemQuery.BranchId : _accountingServices.GetBranchID();
+
                     // Process the data
                     // Generate the report or prepare the data
                     switch (model.SystemQuery.ReportType)
@@ -430,7 +432,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             break;
                         case "TB6":
                             {
-                                string fileTitle = $"TB6C{model.SystemQuery.FromDate.Date.ToString("yyyyMMddhhmmss")}";
+                                   string fileTitle = $"TB6C{model.SystemQuery.FromDate.Date.ToString("yyyyMMddhhmmss")}";
                                 string ReportName = $"TrialBalance8Column.rpt";
                                 var account = await _acountServices.GenerateTrialBalance_6column(model.SystemQuery);
                                 if (model.SystemQuery.FileType == "PDF")
@@ -459,13 +461,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         case "BS":
                             {
                                 string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
-                                var account = await _acountServices.GenerateBalanceSheet(model.SystemQuery);
+                                var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, Date = model.SystemQuery.ToDate, DocumentId = "DOC298781794326" };
+                                var account = await _acountServices.GenerateBalanceSheet(modelx);
                                 this.HttpContext.Session["rptSource"] = account;
-                                if (!account.Any())
+                                string ReportName = $"BalanceSheet.rpt";
+                                if (account==null)
                                 {
                                     this.HttpContext.Session["rptSource"] = "empty";
+                                  
                                 }
                                 this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                                this.HttpContext.Session["dtoPasser"] = modelx;
+                                this.HttpContext.Session["rptType"] = model.SystemQuery.FileType;
+                                this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
+
                             }
                             break;
                         case "PANDL":
@@ -619,5 +629,37 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return Json("", JsonRequestBehavior.AllowGet);
 
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GenerateBalanceSheet(string branchId, string fileType, DateTime DateFrom, DateTime DateTo)
+        {
+            try
+            {
+                var branch= await _branchServices.GetBranch(branchId);
+                string fileTitle = $"BalanceSheet_{branch.Name}_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
+
+                var account = await _acountServices.GenerateBalanceSheet(new BSQuery { BranchId = branchId,Date = DateTo, DocumentId = "DOC298781794326" });
+                this.HttpContext.Session["rptSource"] = account;
+                string ReportName = $"Balance Sheet.rpt";
+                if (account!=null)
+                {
+                    this.HttpContext.Session["rptSource"] = "empty";
+                }
+                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                this.HttpContext.Session["rptType"] = $"{fileType}";
+                this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/Balance Sheet.rpt";
+                return Json(account, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+
+        }
+
+
     }
 }

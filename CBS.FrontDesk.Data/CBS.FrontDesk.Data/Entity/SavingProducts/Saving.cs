@@ -43,7 +43,11 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<SystemConfigForSaving> SystemConfigForSavings { get; set; } = new List<SystemConfigForSaving>();
         public List<SavingProductFee> SavingProductFees { get; set; } = new List<SavingProductFee>();
         public SavingProductFee SavingProductFee { get; set; } = new SavingProductFee();
+        public List<ChartofAccountInfo> chartofAccountInfos { get; set; } = new List<ChartofAccountInfo>();
 
+        public List<AccountingRuleEntry> AccountingRuleEntries { get; set; } = new List<AccountingRuleEntry>();
+        public bool SavingDepositProductIsChargable { get; set; }
+        public bool SavingWithdrwalProductIsChargable { get; set; }
         public string ServiceOption { get; set; }
         public string Action { get; set; }
         public string KEY { get; set; } = "KEY";

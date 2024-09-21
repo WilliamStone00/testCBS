@@ -21,7 +21,8 @@ using CBS.FrontDesk.Data.Entity.Accounting;
 using System.Net.Sockets;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data;
- 
+using System.Threading;
+
 namespace CBS.API.Helper
 {
     public class ApiCallerHelper : IDisposable
@@ -345,9 +346,64 @@ namespace CBS.API.Helper
             // You can use different conversion methods based on your server's requirements
             return byteArray.Select(b => b.ToString()).ToArray();
         }
+        public async Task<ServiceResponseXX<T>> PostAsync<T>(string apiUrl, object data, CancellationToken cancellationToken, int timeoutSeconds = 120)
+        {
+            // Create a linked cancellation token source that combines the passed token and a timeout token
+            using (var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(timeoutSeconds)))
+            using (var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutCts.Token))
+            {
+                try
+                {
+                    apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+                    string jsonData = JsonConvert.SerializeObject(data);
+                    StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                    AddAuthorizationHeader(_httpClient);
+
+                    // Use the linked cancellation token for the PostAsync call
+                    HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content, linkedCts.Token);
+
+                    // Handle the response
+                    return await HandleResponsed<T>(response);
+                }
+                catch (OperationCanceledException ex)
+                {
+                    if (timeoutCts.IsCancellationRequested)
+                    {
+                        // If the timeout token triggered the cancellation
+                        return new ServiceResponseXX<T>
+                        {
+                            Status = false,
+                            Message = $"The request timed out after {timeoutSeconds} seconds.",
+                            StatusCode = System.Net.HttpStatusCode.RequestTimeout
+                        };
+                    }
+                    else
+                    {
+                        // If the cancellation was triggered by the passed token
+                        return new ServiceResponseXX<T>
+                        {
+                            Status = false,
+                            Message = "The request was cancelled.",
+                            StatusCode = System.Net.HttpStatusCode.BadRequest
+                        };
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle other exceptions
+                    return new ServiceResponseXX<T>
+                    {
+                        Status = false,
+                        Message = $"An error occurred: {ex.Message}",
+                        StatusCode = System.Net.HttpStatusCode.InternalServerError
+                    };
+                }
+            }
+        }
 
         public async Task<ApiResponse<T>> PostAsync<T>(string apiUrl, object data)
         {
+             
             try
             {
                 apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
@@ -360,7 +416,26 @@ namespace CBS.API.Helper
             catch (Exception EX)
             {
 
-                throw(EX);
+                throw (EX);
+            }
+        }
+
+        public async Task<ApiResponse<T>> PostAsync<T>(string apiUrl, object data, int timeoutSeconds = 120)
+        {
+            _httpClient.Timeout = TimeSpan.FromSeconds(timeoutSeconds);
+            try
+            {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+                string jsonData = JsonConvert.SerializeObject(data);
+                StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                AddAuthorizationHeader(_httpClient);
+                HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+                return await HandleResponse<T>(response);
+            }
+            catch (Exception EX)
+            {
+
+                throw (EX);
             }
         }
         public async Task<List<AccountingEntry>> PostAccountingAsync(string apiUrl, object data)
@@ -523,7 +598,7 @@ namespace CBS.API.Helper
             }
         }
 
-       
+
 
         //private async Task<ApiResponse<T>> HandleResponse<T>(HttpResponseMessage response)
         //{
@@ -615,7 +690,7 @@ namespace CBS.API.Helper
                 throw (ex);
             }
         }
-        
+
         private async Task<ApiResponse<T>> HandleResponse<T>(HttpResponseMessage response)
         {
             string message = null;
@@ -640,7 +715,7 @@ namespace CBS.API.Helper
                                 Message = $"Request failed with status code {(int)response.StatusCode}, Message: The server is requesting authorization token."
                             };
                         }
-                        
+
                         else if (response.StatusCode == HttpStatusCode.InternalServerError)
                         {
                             return new ApiResponse<T>
@@ -938,6 +1013,8 @@ namespace CBS.API.Helper
             }
         }
 
+
+
         private async Task<APICallBackRespose> HandleResponseCallBackRespose(HttpResponseMessage response)
         {
 
@@ -1026,7 +1103,7 @@ namespace CBS.API.Helper
             {
                 if (response.Content != null)
                 {
-                      responseData = await response.Content.ReadAsStringAsync();
+                    responseData = await response.Content.ReadAsStringAsync();
 
                     entries = JsonConvert.DeserializeObject<UploadAccountResultServiceResponse>(responseData);
                 }
@@ -1132,7 +1209,7 @@ namespace CBS.API.Helper
                             message = "Unauthorized";
                             return new ServiceResponseXX<T>
                             {
-                                StatusCode = 401,
+                                StatusCode = HttpStatusCode.Unauthorized,
                                 Message = $"Request failed with status code {(int)response.StatusCode}, Message: The server is requesting authorization token."
                             };
                         }
@@ -1140,7 +1217,7 @@ namespace CBS.API.Helper
                         {
                             return new ServiceResponseXX<T>
                             {
-                                StatusCode = 500,
+                                StatusCode = HttpStatusCode.InternalServerError,
                                 Message = "InternalServerError upexpected error"
                             };
                         }
@@ -1148,7 +1225,7 @@ namespace CBS.API.Helper
                         {
                             return new ServiceResponseXX<T>
                             {
-                                StatusCode = 200,
+                                StatusCode = HttpStatusCode.BadRequest,
                                 Message = "Empty response data received"
                             };
                         }
@@ -1166,7 +1243,7 @@ namespace CBS.API.Helper
                         {
                             return new ServiceResponseXX<T>
                             {
-                                StatusCode = 200,
+                                StatusCode = HttpStatusCode.OK,
                                 Data = data
                             };
                         }
@@ -1186,7 +1263,7 @@ namespace CBS.API.Helper
 
                                 return new ServiceResponseXX<T>
                                 {
-                                    StatusCode = 200,
+                                    StatusCode = HttpStatusCode.OK,
                                     Data = data,
                                     Message = $"Operation completed successfully"
                                 };
@@ -1199,7 +1276,7 @@ namespace CBS.API.Helper
                                 statusDescription = jsonResponse["statusDescription"]?.ToString();
                                 return new ServiceResponseXX<T>
                                 {
-                                    StatusCode = 200,
+                                    StatusCode = HttpStatusCode.OK,
                                     Data = data,
                                     Message = $"Success: {message}, Description: {statusDescription}"
                                 };
@@ -1215,7 +1292,7 @@ namespace CBS.API.Helper
                             message = "Unauthorized";
                             return new ServiceResponseXX<T>
                             {
-                                StatusCode = 401,
+                                StatusCode = HttpStatusCode.Unauthorized,
                                 Message = $"Request failed with status code {(int)response.StatusCode}, Message: {message}"
                             };
                         }
@@ -1223,7 +1300,7 @@ namespace CBS.API.Helper
                         {
                             return new ServiceResponseXX<T>
                             {
-                                StatusCode = (int)response.StatusCode,
+                                StatusCode = HttpStatusCode.ServiceUnavailable,
                                 Message = $"Request failed with status code {(int)response.StatusCode}, Message: The server {_baseURL} is temporally unavailable/unreachable."
                             };
 
@@ -1237,7 +1314,7 @@ namespace CBS.API.Helper
                             //List<string> errorMessages = JsonConvert.DeserializeObject<List<string>>(responseData);
                             return new ServiceResponseXX<T>
                             {
-                                StatusCode = (int)response.StatusCode,
+                                StatusCode = response.StatusCode == HttpStatusCode.Conflict ? HttpStatusCode.Conflict : response.StatusCode == HttpStatusCode.NotFound ? HttpStatusCode.NotFound : HttpStatusCode.Ambiguous,
                                 Message = $"Request failed with status code {(int)response.StatusCode}, Message: {message}, Description: {statusDescription}"
                             };
 
@@ -1261,7 +1338,7 @@ namespace CBS.API.Helper
 
                                     return new ServiceResponseXX<T>
                                     {
-                                        StatusCode = (int)response.StatusCode,
+                                        StatusCode = HttpStatusCode.NotAcceptable,
                                         Message = string.IsNullOrEmpty(errorMessage) ? "Validation error occurred" : errorMessage
                                     };
                                 }
@@ -1269,7 +1346,7 @@ namespace CBS.API.Helper
                                 // If the error structure doesn't match the expected format or errors object not found
                                 return new ServiceResponseXX<T>
                                 {
-                                    StatusCode = (int)response.StatusCode,
+                                    StatusCode = HttpStatusCode.BadRequest,
                                     Message = "Error in request" // Set a generic error message
                                 };
                             }
@@ -1277,7 +1354,7 @@ namespace CBS.API.Helper
                             {
                                 return new ServiceResponseXX<T>
                                 {
-                                    StatusCode = (int)response.StatusCode,
+                                    StatusCode = HttpStatusCode.BadRequest,
                                     Message = $"Error in handling response: {ex.Message}"
                                 };
                             }
@@ -1290,7 +1367,7 @@ namespace CBS.API.Helper
                             string errorMessage = jsonResponse["message"]?.ToString() ?? "An unexpected fault happened.";
                             return new ServiceResponseXX<T>
                             {
-                                StatusCode = (int)response.StatusCode,
+                                StatusCode = HttpStatusCode.InternalServerError,
 
                                 Message = errorMessage
                             };
@@ -1299,7 +1376,8 @@ namespace CBS.API.Helper
                         {
                             return new ServiceResponseXX<T>
                             {
-                                StatusCode = (int)response.StatusCode,
+                                StatusCode = HttpStatusCode.InternalServerError,
+
                                 Message = $"Request failed with status code {(int)response.StatusCode}, Message: {message}, Description: {statusDescription}"
                             };
                         }
@@ -1310,7 +1388,8 @@ namespace CBS.API.Helper
                             {
                                 return new ServiceResponseXX<T>
                                 {
-                                    StatusCode = (int)response.StatusCode,
+                                    StatusCode = HttpStatusCode.InternalServerError,
+
                                     Message = $"Request failed with status code {(int)response.StatusCode}. Error: {string.Join(", ", errorMessages)}"
                                 };
                             }
@@ -1318,7 +1397,8 @@ namespace CBS.API.Helper
 
                         return new ServiceResponseXX<T>
                         {
-                            StatusCode = (int)response.StatusCode,
+                            StatusCode = HttpStatusCode.InternalServerError,
+
                             Message = $"Request failed with status code {(int)response.StatusCode}"
                         };
                     }
@@ -1327,7 +1407,8 @@ namespace CBS.API.Helper
                 {
                     return new ServiceResponseXX<T>
                     {
-                        StatusCode = (int)response.StatusCode,
+                        StatusCode = HttpStatusCode.NoContent,
+
                         Message = "No content in the response"
                     };
                 }
@@ -1336,7 +1417,7 @@ namespace CBS.API.Helper
             {
                 return new ServiceResponseXX<T>
                 {
-                    StatusCode = (int)response.StatusCode,
+                    StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Error in handling response: {ex.Message}"
                 };
             }

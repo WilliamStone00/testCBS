@@ -2,6 +2,7 @@
 using CBS.BusinessService.Accounts;
 using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.Service;
@@ -88,7 +89,24 @@ namespace CBS.BusinessService.Accounting
                 throw;
             }
         }
+        public async Task<List<ProductAccountingBook>> GetProductAccountingBook(string id)
+        {
+            try
+            {
 
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<List<ProductAccountingBook>>>(string.Format(APICallHelper.GetProductAccountingBookUrl,id));// await _savingConfigApiHelper.GetAsync<ResponseObject<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, id));
+                if (cusResponseObject.IsSuccess)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
         public async Task<IEnumerable<ChartofAccountManagementPosition>> GetChartOfAccountManagementPositions()
         {
             try
@@ -221,9 +239,9 @@ namespace CBS.BusinessService.Accounting
             }
         }
 
-        public async Task<Account> GetChartOfAccountManagementPositionServiceByIdandBranchIDAsync(string mFI_ChartOfAccountId, string AccountOwnerId)
+        public async Task<CBS.FrontDesk.Data.Account> GetChartOfAccountManagementPositionServiceByIdandBranchIDAsync(string mFI_ChartOfAccountId, string AccountOwnerId)
         {
-            Account account= new Account();
+            CBS.FrontDesk.Data.Account account = new CBS.FrontDesk.Data.Account();
             var modelist =await _accountingServices.GetAllAccountForABranch(AccountOwnerId);
             if (modelist == null)
             {

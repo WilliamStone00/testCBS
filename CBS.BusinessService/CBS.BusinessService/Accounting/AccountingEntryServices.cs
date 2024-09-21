@@ -23,6 +23,9 @@ using CBS.FrontDesk.Data.Entity.Config;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Accounting;
+using System.Threading;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 
 namespace CBS.BusinessService
@@ -320,6 +323,7 @@ namespace CBS.BusinessService
                 throw (ex);
             }
         }
+        //
         public async Task<List<AccountingEntry>> RetrieveAccountingEntries(SystemQuery model)
         {
             try
@@ -339,6 +343,50 @@ namespace CBS.BusinessService
                 throw (ex);
             }
 
+        }
+ 
+        public async Task<BalanceSheetData> GetBalanceSheetDataEntries(BSQuery model)
+        {
+            //Task<ServiceResponseXX<BalanceSheetData>> apiCallTask = null;
+            BalanceSheetData balanceSheetData = new BalanceSheetData();
+            using (var cts = new CancellationTokenSource())
+            {
+                try
+                {
+                    // Create a task for the API call
+                    var apiCallTask = await _accountingApiCallerHelper.PostAsync<ResponseObject<BalanceSheetData>>(APICallHelper.BalanceSheet_EntriesUrl,model, 300);
+                    if (apiCallTask.IsSuccess)
+                    {
+                        if (apiCallTask.ApiResponseData != null)
+                        {
+                            return apiCallTask.ApiResponseData.Data;
+                        }
+
+                    }
+
+                }
+                catch (OperationCanceledException)
+                {
+                    // This could happen if the timeout occurs and the API call is cancelled
+                    balanceSheetData = new BalanceSheetData
+                    {
+                        //ErrorMessage = "The request was cancelled due to a timeout."
+                    };
+                }
+                catch (Exception ex)
+                {
+                    // Log and handle exception
+                    GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                        SystemMessageStatus.Failed.ToString(), ex);
+
+                    balanceSheetData = new BalanceSheetData
+                    {
+                        //ErrorMessage = "An error occurred while processing the request."
+                    };
+                }
+            }
+
+            return balanceSheetData;
         }
 
         public async Task<List<AccountingEntry>> RetrieveAccountingEntries(JEQuery model)

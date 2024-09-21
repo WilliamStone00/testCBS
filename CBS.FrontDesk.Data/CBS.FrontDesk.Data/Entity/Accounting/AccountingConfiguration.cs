@@ -30,10 +30,13 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<ChartOfAccount> ChartOfAccounts { get; set; } = new List<ChartOfAccount>();
         public List<AccountType> AccountTypes { get; set; } = new List<AccountType>();
         public List<TrailBalanceUploud> TBuploadHistories { get; set; } = new List<TrailBalanceUploud>();
-        public StatementModel IncomeStatement { get; set; } = new StatementModel();
-        public List<StatementModel> IncomeStatements { get; set; } = new List<StatementModel>();
-        public TrialBalanceReference TrialBalanceReference { get; set; } = new TrialBalanceReference();
-        public List<TrialBalanceReference> TrialBalanceReferences { get; set; } = new List<TrialBalanceReference>();
+        public DocumentReferenceCode DocumentReferenceCode { get; set; } = new DocumentReferenceCode();
+        public List<DocumentReferenceCodeDto> DocumentReferenceCodeDataDtos { get; set; } = new List<DocumentReferenceCodeDto>();
+        public DocumentReferenceCodeDto DocumentReferenceCodeDto { get; set; } = new DocumentReferenceCodeDto();
+        public CorrespondingMappingDto CorrespondingMappingDto { get; set; } = new CorrespondingMappingDto();
+        public CorrespondingMapping CorrespondingMapping { get; set; } = new CorrespondingMapping();
+        public List<CorrespondingMappingDto> CorrespondingMappingDataDto { get; set; } = new List<CorrespondingMappingDto>();
+        public List<CorrespondingMappingExceptionDto> CorrespondingMappingExceptionDataDto { get; set; } = new List<CorrespondingMappingExceptionDto>();
         public List<AccountHoDto> AccountHoDtos { get; set; } = new List<AccountHoDto>();
         public List<AccountTreeNode> AccountTreeNodes { get; set; } = new List<AccountTreeNode>();
         public List<OperationEvent> OperationEvents { get; set; } = new List<OperationEvent>();

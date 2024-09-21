@@ -366,6 +366,7 @@
     <Content Include="AppFiles\Images\BG2.png" />
     <Content Include="AppFiles\Images\BG3.jpeg" />
     <Content Include="AppFiles\Images\BG3.png" />
+    <Content Include="AppFiles\Images\CaptureBG.png" />
     <Content Include="AppFiles\Images\Logog2.jpeg" />
     <Content Include="AppFiles\Images\Logog2X.jpeg" />
     <Content Include="AppFiles\Images\Logog2XI.png" />
@@ -374,10 +375,40 @@
     <Content Include="AppFiles\Images\SideImageHeader_login.png" />
     <Content Include="AppFiles\Images\BG4.jpeg" />
     <Content Include="App_Code\Helper\HtmlExtension.cs" />
+    <Compile Include="AppFiles\Reporting\Accounting\BalanceSheet.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BalanceSheet.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\Expense Report.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Expense Report.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\GeneralLedger.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GeneralLedger.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\Income and expense summary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Income and expense summary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\Income and Expense.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Income and Expense.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\Income.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Income.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\JournalEntries.cs">
@@ -535,6 +566,9 @@
     <Compile Include="Controllers\TransactionManagement\TransactionConfigurationController.cs" />
     <Compile Include="Controllers\UserManagement\MFAVerificationController.cs" />
     <Compile Include="Controllers\UserManagement\UserManagementController.cs" />
+    <Compile Include="DataSet\Accounting\AccountingDataSet.cs">
+      <DependentUpon>AccountingDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet\Accounting\AccountingDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2810,11 +2844,10 @@
     <Content Include="Views\UserManagement\_UserDetails.cshtml" />
     <Content Include="Views\AccountingConfiguration\_AccountUploud.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateIncomeStatementStructure.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_CreateStatementModel.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateDocumentReferenceCode.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateStatementModelBS.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_CreateTrialBalanceReference.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_statementModelData.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_statementModelDetails.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateCorrespondingMapping.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_DocumentReferenceCodeData.cshtml" />
     <Content Include="Views\AccountingConfiguration\_UpdateStatementModel.cshtml" />
     <Content Include="Views\AccountingStatements\GeneralLedger.cshtml" />
     <Content Include="Views\AccountingStatements\_JournalEntries.cshtml" />
@@ -3044,6 +3077,8 @@
     <Content Include="Views\AccountingDay\_StatusQuery.cshtml" />
     <Content Include="Views\AccountingDay\_StatusData.cshtml" />
     <Content Include="Views\AccountingDay\_AccountingDayDetails.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_DocumentReferenceCodeDetails.cshtml" />
+    <Content Include="Views\TransactionConfiguration\AccountMappingInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -3102,9 +3137,29 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\BalanceSheet.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BalanceSheet.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\Expense Report.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Expense Report.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\GeneralLedger.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GeneralLedger.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\Income and expense summary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Income and expense summary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\Income and Expense.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Income and Expense.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\Income.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Income.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\JournalEntries.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

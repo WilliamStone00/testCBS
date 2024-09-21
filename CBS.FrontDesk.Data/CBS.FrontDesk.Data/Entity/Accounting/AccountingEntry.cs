@@ -111,7 +111,12 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string BranchId { get; set; }
     }
 
+    public static class BSCartegory
+    {
 
+        public static string Assets = "Assets";
+        public static string LIABILITIES = "LIABILITIES AND EQUITY";
+    }
     public class GLQuery
     {
 
@@ -124,6 +129,12 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public DateTime FromDate { get; set; }
         public string FileType { get; set; }
         public string BranchId { get; set; }
+    }
+    public class BSQuery
+    {
+        public string BranchId { get; set; }
+        public DateTime Date { get; set; }
+        public string DocumentId { get; set; }
     }
     public class TrialBalance4Column
     {

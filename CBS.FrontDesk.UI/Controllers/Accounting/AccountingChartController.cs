@@ -153,7 +153,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                 return PartialView(partialView, OperationEventAttribute);
             }else if (path == "Cartegory")
-            {
+                {
                 var treeData = await _AccountCategoryServices.GetAccountClassCategory(KEY);
 
                 return Json(treeData, JsonRequestBehavior.AllowGet);
