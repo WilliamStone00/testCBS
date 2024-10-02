@@ -1,5 +1,6 @@
 using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
+using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
@@ -36,9 +37,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private readonly SavingProductFeeServices _savingProductFeeServices;
         private readonly AccountingEntryRuleService _accountingEntryRuleService;
         private readonly ChartOfAccountManagementPositionService _accountConfiServices;
-        private  bool SavingDepositProductIsPayable=false;
+        private bool SavingDepositProductIsPayable = false;
         private bool SavingWithdrawalProductIsPayable = false;
-        private   List<ChartofAccountManagementPosition> ListOfChartOfAccount = new List<ChartofAccountManagementPosition>();
+        private List<ChartofAccountManagementPosition> ListOfChartOfAccount = new List<ChartofAccountManagementPosition>();
         public TransactionConfigurationController(SavingProductServices savingProductServices, ChartOfAccountServicesAnnex accountingServices, TellerServices tellerServices, DepositLimitServices depositLimitServices, TransferLimitServices transferLimitServices, WithdrawalLimitServices withdrawalLimitServices, AccountingEntryRuleService accountingEntryRuleService, ChartOfAccountManagementPositionService accountServices, ManagementFeeParameterServices managementFeeParameterServices = null, ReopenFeeParameterServices reopenFeeParameterServices = null, CloseFeeParameterServices closeFeeParameterServices = null, EntryFeeParameterServices entryFeeParameterServices = null, OperationFeeServices operationFeeServices = null, SavingProductFeeServices savingProductFeeServices = null)
         {
             _savingProductServices = savingProductServices;
@@ -90,41 +91,141 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
 
         }
- 
+
         public async Task<ActionResult> AccountMappingInfo(string key)
         {
-               SavingDepositProductIsPayable = false;
-           SavingWithdrawalProductIsPayable = false;
-        List<ChartofAccountInfo> chartofAccountInfos = new List<ChartofAccountInfo>();
+            SavingDepositProductIsPayable = false;
+            SavingWithdrawalProductIsPayable = false;
+            List<ChartofAccountInfo> chartofAccountInfos = new List<ChartofAccountInfo>();
             var savingProduct = await _savingProductServices.GetSavingProduct(key);
-                ViewBag.ProductName = $"{savingProduct.Name} Product";
-             
-
-                var accountingRuleEntries = await GetFilteredAccountingRuleEntries(key);
-                var accountingConfigList = await _accountConfiServices.GetChartOfAccountManagementPositions();
-            ListOfChartOfAccount= accountingConfigList.ToList();
-           var rootAccount = accountingConfigList.FirstOrDefault(c => c.Description == "ROOT ACCOUNT");
-                var physicalTellerAccount = await GetPhysicalTellerAccount();
-            var productBook =await _accountConfiServices.GetProductAccountingBook(key);
+            ViewBag.ProductName = $"{savingProduct.Name} Product";
+            ViewBag.IsMobileMoney = savingProduct.Name.Contains("Mobile Money");
+            ViewBag.ProductName = $"{savingProduct.Name}";
+            var accountingRuleEntries = await GetFilteredAccountingRuleEntries(key);
+            var accountingConfigList = await _accountConfiServices.GetChartOfAccountManagementPositions();
+            ListOfChartOfAccount = accountingConfigList.ToList();
+            var rootAccount = accountingConfigList.FirstOrDefault(c => c.Description == "ROOT ACCOUNT");
+            var physicalTellerAccount = await GetPhysicalTellerAccount();
+            var productBook = await _accountConfiServices.GetProductAccountingBook(key);
             if (productBook.Any())
             {
-                if (productBook.FirstOrDefault().ProductType.Equals("Saving_Product"))
+                if (savingProduct.Name.Equals("Daily Savings"))
                 {
-                    ViewBag.ProductType = $"{productBook.FirstOrDefault().ProductType}";
-                    chartofAccountInfos = await ProcessCASHINAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount);
-                    chartofAccountInfos.AddRange(await ProcessCASHINLiaisonAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount));
-                    chartofAccountInfos.AddRange(await ProcessCASHOutAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount));
-                    chartofAccountInfos.AddRange(await ProcessCASHOutLiaisonAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount));
-      
+                    ViewBag.ProductName = savingProduct.Name;
+                    chartofAccountInfos  = await ProcessOfDailyCASHCollectionAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, await GetVirtualDailyCollectorAccount());
+                    chartofAccountInfos.AddRange(await ProcessOfReturningTheDailyCASHCollectedCashToPrimaryTellAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, await GetVirtualDailyCollectorAccount()));
+                    var Entryrule = accountingRuleEntries.Where(e => e.EventCode.Equals(key + "@Commission_Account")).FirstOrDefault();
+                    var account = ListOfChartOfAccount.Find(x => x.Id.Equals(Entryrule.DeterminationAccountId));
+                    chartofAccountInfos.Add(CreateChartOfAccountEntry(account, "COMMISION COLLECTION", "CREDIT", "20000"));
+                    var Entryrulec = accountingRuleEntries.Where(e => e.EventCode.Equals(key + "@Principal_Saving_Account")).FirstOrDefault();
+                    var accountcom = ListOfChartOfAccount.Find(x => x.Id.Equals(Entryrulec.DeterminationAccountId));
+                    chartofAccountInfos.Add(CreateChartOfAccountEntry(account, "COMMISION COLLECTION", "DEBIT", "20000"));
+                    chartofAccountInfos.AddRange(await ProcessMOMOKASHCollectionAccountList(accountcom, ListOfChartOfAccount));
+                    /// EXPENSE PAYABLE to be created 
+                    //var EntryrulEx = accountingRuleEntries.Where(e => e.EventCode.Equals(key + "@Principal_Saving_Account")).FirstOrDefault();
+                    //var accountEx = ListOfChartOfAccount.Find(x => x.Id.Equals(Entryrulec.DeterminationAccountId));
+                    //chartofAccountInfos.Add(CreateChartOfAccountEntry(account, "COMMISION COLLECTION", "DEBIT", "20000"));
+                    //chartofAccountInfos.AddRange(await ProcessMOMOKASHCollectionAccountList(accountcom, ListOfChartOfAccount));
                 }
                 else
                 {
+                    if (productBook.FirstOrDefault().ProductType.Equals("Saving_Product"))
+                    {
+                        ViewBag.ProductType = $"{productBook.FirstOrDefault().ProductType}";
+                        ViewBag.ProductName = productBook.FirstOrDefault().ProductType;
+                        chartofAccountInfos = await ProcessCASHINAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount);
+                        chartofAccountInfos.AddRange(await ProcessCASHINLiaisonAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount));
+                        chartofAccountInfos.AddRange(await ProcessCASHOutAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount));
+                        chartofAccountInfos.AddRange(await ProcessCASHOutLiaisonAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount));
+
+                    }
+                }
+
+
+            }
+            else
+            {
+                if (savingProduct.Name.Contains("Mobile Money"))
+                {
+                    ViewBag.ProductName = "Mobile Money";
+                    if (savingProduct.Name.Contains("Orange"))
+                    {
+                        var OmTellerAccount = await GetVirtualOrangeTellerAccount();
+                        var MobileMoneyAccount = ListOfChartOfAccount.Find(x => x.Id.Equals(OmTellerAccount.DeterminationAccountId));
+                        var TellerAccount = ListOfChartOfAccount.Find(x => x.Id.Equals(physicalTellerAccount.DeterminationAccountId));
+                        chartofAccountInfos = await ProcessCASHINMobileMoneyAccountList(MobileMoneyAccount, TellerAccount);
+                        chartofAccountInfos.AddRange(await ProcessCASHOUTMobileMoneyAccountList(MobileMoneyAccount, TellerAccount));
+
+                    }
+                    else
+                    {
+                        var OmTellerAccount = await GetVirtualMTNTellerAccount();
+                        var MobileMoneyAccount = ListOfChartOfAccount.Find(x => x.Id.Equals(OmTellerAccount.DeterminationAccountId));
+                        var TellerAccount = ListOfChartOfAccount.Find(x => x.Id.Equals(physicalTellerAccount.DeterminationAccountId));
+                        chartofAccountInfos = await ProcessCASHINMobileMoneyAccountList(MobileMoneyAccount, TellerAccount);
+                        chartofAccountInfos.AddRange(await ProcessCASHOUTMobileMoneyAccountList(MobileMoneyAccount, TellerAccount));
+
+
+                    }
+                }
+                else
+                {
+                    if (savingProduct.Name.Equals("Momo cash"))
+                    {
+                        ViewBag.ProductName = "Momo cash";
+                        var OmTellerAccount = await GetVirtualMOMOCASHTellerAccount();
+                        var MobileMoneyAccount = ListOfChartOfAccount.Find(x => x.Id.Equals(OmTellerAccount.DeterminationAccountId));
+                        chartofAccountInfos.Add(CreateChartOfAccountEntry(MobileMoneyAccount, "MOMOKASH COLLECTION", "DEBIT", "101000"));
+                        var Entryrule = accountingRuleEntries.Where(e => e.EventCode.Equals(key + "@Commission_Account")).FirstOrDefault();
+                        var account = ListOfChartOfAccount.Find(x => x.Id.Equals(Entryrule.DeterminationAccountId));
+                        chartofAccountInfos.Add(CreateChartOfAccountEntry(MobileMoneyAccount, "MOMOKASH COLLECTION", "CREDIT", "1000"));
+
+                        chartofAccountInfos.AddRange(await ProcessMOMOKASHCollectionAccountList(MobileMoneyAccount, ListOfChartOfAccount));
+                        //   95600340
+                    }
 
                 }
             }
-             
-            return View(new SavingConfiguration { chartofAccountInfos= chartofAccountInfos, AccountingRuleEntries = accountingRuleEntries ,SavingDepositProductIsChargable= SavingDepositProductIsPayable,SavingWithdrwalProductIsChargable= SavingWithdrawalProductIsPayable });
-         
+
+            return View(new SavingConfiguration { chartofAccountInfos = chartofAccountInfos, AccountingRuleEntries = accountingRuleEntries, SavingDepositProductIsChargable = SavingDepositProductIsPayable, SavingWithdrwalProductIsChargable = SavingWithdrawalProductIsPayable });
+
+        }
+
+        private async Task<IEnumerable<ChartofAccountInfo>> ProcessOfReturningTheDailyCASHCollectedCashToPrimaryTellAccountList(string key, List<AccountingRuleEntry> accountingRuleEntries, List<ChartofAccountManagementPosition> chartofAccountManagementPositions, ChartofAccountManagementPosition rootAccount, AccountingRuleEntry accountingRuleEntry)
+        {
+            var chartOfAccounts = new List<ChartofAccountInfo>();
+            var accphy = await GetPhysicalTellerAccount();
+            var accountPhy = chartofAccountManagementPositions.Where(  e => e.Id.Equals(accphy.DeterminationAccountId)).FirstOrDefault();
+            chartOfAccounts.Add(CreateChartOfAccountEntry(accountPhy, "DAILY COLLECTION", "DEBIT", "10000.0"));
+            var accDailyCollector = await GetVirtualDailyCollectorAccount();
+            var DailyCollectorAccount= chartofAccountManagementPositions.Where(e => e.Id.Equals(accDailyCollector.DeterminationAccountId)).FirstOrDefault();
+            chartOfAccounts.Add(CreateChartOfAccountEntry(DailyCollectorAccount, "DAILY COLLECTION", "CREDIT", "10000.0"));
+
+
+            return chartOfAccounts;
+        }
+        private async Task<IEnumerable<ChartofAccountInfo>> ProcessDailyCASHCollectionCommissiontList(string key, List<AccountingRuleEntry> accountingRuleEntries, List<ChartofAccountManagementPosition> chartofAccountManagementPositions, ChartofAccountManagementPosition rootAccount, AccountingRuleEntry accountingRuleEntry)
+        {
+            var chartOfAccounts = new List<ChartofAccountInfo>();
+            var accphy = await GetPhysicalTellerAccount();
+            var accountPhy = chartofAccountManagementPositions.Where(e => e.Id.Equals(accphy.DeterminationAccountId)).FirstOrDefault();
+            chartOfAccounts.Add(CreateChartOfAccountEntry(accountPhy, "DAILY COLLECTION", "DEBIT", "10000.0"));
+            var accDailyCollector = await GetVirtualDailyCollectorAccount();
+            var DailyCollectorAccount = chartofAccountManagementPositions.Where(e => e.Id.Equals(accDailyCollector.DeterminationAccountId)).FirstOrDefault();
+            chartOfAccounts.Add(CreateChartOfAccountEntry(DailyCollectorAccount, "DAILY COLLECTION", "CREDIT", "10000.0"));
+
+
+            return chartOfAccounts;
+        }
+        private async Task<List<ChartofAccountInfo>> ProcessMOMOKASHCollectionAccountList(ChartofAccountManagementPosition mobileMoneyAccount, List<ChartofAccountManagementPosition> listOfChartOfAccount)
+        {
+            List<ChartofAccountInfo> listOfAccounts = new List<ChartofAccountInfo>();
+            foreach (var item in GetAccountIds())
+            {
+                var account = listOfChartOfAccount.Where(id => id.Equals(item)).FirstOrDefault();
+                listOfAccounts.Add(CreateChartOfAccountEntry(account, "MOMOKASH COLLECTION", "CREDIT", "25000"));
+            }
+            return listOfAccounts;
         }
 
         private async Task<List<AccountingRuleEntry>> GetFilteredAccountingRuleEntries(string key)
@@ -133,12 +234,37 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             return data.Where(x => x.EventCode.Contains(key)).ToList();
         }
 
+        private List<string> GetAccountIds()
+        {
+
+            return new List<string> { "CMP8789317766", "CMP1896099658", "CMP3458647794", "CMP4736030114" };
+        }
+
         private async Task<AccountingRuleEntry> GetPhysicalTellerAccount()
         {
             var data = await _accountingEntryRuleService.GetAccountingEntryRules();
             return data.FirstOrDefault(e => e.EventCode.Equals("Physical_Teller"));
         }
-
+        private async Task<AccountingRuleEntry> GetVirtualDailyCollectorAccount()
+        {
+            var data = await _accountingEntryRuleService.GetAccountingEntryRules();
+            return data.FirstOrDefault(e => e.EventCode.Equals("DailyCollector"));
+        }
+        private async Task<AccountingRuleEntry> GetVirtualMOMOCASHTellerAccount()
+        {
+            var data = await _accountingEntryRuleService.GetAccountingEntryRules();
+            return data.FirstOrDefault(e => e.EventCode.Equals("Virtual_Teller_Momo_cash_Collection"));
+        }
+        private async Task<AccountingRuleEntry> GetVirtualMTNTellerAccount()
+        {
+            var data = await _accountingEntryRuleService.GetAccountingEntryRules();
+            return data.FirstOrDefault(e => e.EventCode.Equals("Virtual_Teller_MTN"));
+        }
+        private async Task<AccountingRuleEntry> GetVirtualOrangeTellerAccount()
+        {
+            var data = await _accountingEntryRuleService.GetAccountingEntryRules();
+            return data.FirstOrDefault(e => e.EventCode.Equals("Virtual_Teller_Orange"));
+        }
 
         private async Task<List<ChartofAccountInfo>> ProcessCASHOutAccountList(
          string key,
@@ -156,11 +282,11 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 var sourceAccount = accountingConfigList.Find(x => x.Id.Equals(physicalTellerAccount.DeterminationAccountId));
                 if (item.EventCode.Contains("Principal_Saving_Account"))
                 {
-                    chartOfAccounts.Add(CreateChartOfAccountInfo(item, account, rootAccount, "CASHOUT", "DEBIT", CheckCommissionOnWithdrawTransaction(accountList.ToList(), rootAccount)? "10200.0" : "10000.0"));
+                    chartOfAccounts.Add(CreateChartOfAccountInfo(item, account, rootAccount, "CASHOUT", "DEBIT", CheckCommissionOnWithdrawTransaction(accountList.ToList(), rootAccount) ? "10200.0" : "10000.0"));
                     chartOfAccounts.Add(CreateChartOfAccountInfo(item, sourceAccount, rootAccount, "CASHOUT", "CREDIT", CheckCommissionOnWithdrawTransaction(accountList.ToList(), rootAccount) ? "10000.0" : "10000.0"));
                 }
-                
-                else if ( item.EventCode.Contains("Withdrawal_Fee_Account") && CheckCommissionOnWithdrawTransaction(accountList.ToList(), rootAccount) )
+
+                else if (item.EventCode.Contains("Withdrawal_Fee_Account") && CheckCommissionOnWithdrawTransaction(accountList.ToList(), rootAccount))
                 {
                     SavingWithdrawalProductIsPayable = true;
                     chartOfAccounts.Add(CreateChartOfAccountInfo(item, account, rootAccount, "CASHOUT", "CREDIT", "200.0"));
@@ -169,6 +295,36 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
             return chartOfAccounts;
         }
+
+
+
+        private async Task<List<ChartofAccountInfo>> ProcessOfDailyCASHCollectionAccountList(
+         string key,
+         List<AccountingRuleEntry> accountingRuleEntries,
+         List<ChartofAccountManagementPosition> accountingConfigList,
+         ChartofAccountManagementPosition rootAccount,
+         AccountingRuleEntry physicalTellerAccount)
+        {
+            var chartOfAccounts = new List<ChartofAccountInfo>();
+            var accountList = accountingRuleEntries.Where(e => e.EventCode.Contains(key));
+
+            foreach (var item in accountList)
+            {
+                var account = accountingConfigList.Find(x => x.Id.Equals(item.DeterminationAccountId));
+                var sourceAccount = accountingConfigList.Find(x => x.Id.Equals(physicalTellerAccount.DeterminationAccountId));
+                if (item.EventCode.Contains("Principal_Saving_Account"))
+                {
+                  chartOfAccounts.Add(CreateChartOfAccountInfo(item, sourceAccount, rootAccount, "DAILY COLLECTION", "DEBIT", "10000.0"));
+                }
+
+            }
+
+            return chartOfAccounts;
+        }
+
+ 
+
+
         private async Task<List<ChartofAccountInfo>> ProcessCASHOutLiaisonAccountList(string key, List<AccountingRuleEntry> accountingRuleEntries, List<ChartofAccountManagementPosition> accountingConfigList, ChartofAccountManagementPosition rootAccount, AccountingRuleEntry physicalTellerAccount)
         {
             var chartOfAccounts = new List<ChartofAccountInfo>();
@@ -211,7 +367,27 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             return chartOfAccounts;
         }
 
-        private async Task<List<ChartofAccountInfo>> ProcessCASHINAccountList(string key,        List<AccountingRuleEntry> accountingRuleEntries,     List<ChartofAccountManagementPosition> accountingConfigList,      ChartofAccountManagementPosition rootAccount,        AccountingRuleEntry physicalTellerAccount)
+        private async Task<List<ChartofAccountInfo>> ProcessCASHOUTMobileMoneyAccountList(ChartofAccountManagementPosition sourceAccount, ChartofAccountManagementPosition destinationAccount)
+        {
+            var chartOfAccounts = new List<ChartofAccountInfo>();
+
+
+            chartOfAccounts.Add(CreateChartOfAccountEntry(destinationAccount, "MOMOCASHOUT", "CREDIT", "10000"));
+            chartOfAccounts.Add(CreateChartOfAccountEntry(sourceAccount, "MOMOCASHOUT", "DEBIT", "10000"));
+
+            return chartOfAccounts;
+        }
+        private async Task<List<ChartofAccountInfo>> ProcessCASHINMobileMoneyAccountList(ChartofAccountManagementPosition sourceAccount, ChartofAccountManagementPosition destinationAccount)
+        {
+            var chartOfAccounts = new List<ChartofAccountInfo>();
+
+
+            chartOfAccounts.Add(CreateChartOfAccountEntry(destinationAccount, "MOMODEPOSIT", "DEBIT", "10000"));
+            chartOfAccounts.Add(CreateChartOfAccountEntry(sourceAccount, "MOMODEPOSIT", "CREDIT", "10000"));
+
+            return chartOfAccounts;
+        }
+        private async Task<List<ChartofAccountInfo>> ProcessCASHINAccountList(string key, List<AccountingRuleEntry> accountingRuleEntries, List<ChartofAccountManagementPosition> accountingConfigList, ChartofAccountManagementPosition rootAccount, AccountingRuleEntry physicalTellerAccount)
         {
             var chartOfAccounts = new List<ChartofAccountInfo>();
             var accountList = accountingRuleEntries.Where(e => e.EventCode.Contains(key));
@@ -221,42 +397,41 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 var account = accountingConfigList.Find(x => x.Id.Equals(item.DeterminationAccountId));
                 var sourceAccount = accountingConfigList.Find(x => x.Id.Equals(physicalTellerAccount.DeterminationAccountId));
 
-                if (item.EventCode.Contains("Commission_Account")&&CheckCommissionOnDepositTransaction(accountList.ToList(),rootAccount))
+                if (item.EventCode.Contains("Commission_Account") && CheckCommissionOnDepositTransaction(accountList.ToList(), rootAccount))
                 {
-           
+
                     chartOfAccounts.Add(CreateChartOfAccountInfo(item, account, rootAccount, "DEPOSIT", "CREDIT", "200"));
-                } 
+                }
                 else if (item.EventCode.Contains("Principal_Saving_Account"))
                 {
                     chartOfAccounts.Add(CreateChartOfAccountInfo(item, account, rootAccount, "DEPOSIT", "CREDIT", CheckCommissionOnDepositTransaction(accountList.ToList(), rootAccount) ? "10000" : "10000"));
                     chartOfAccounts.Add(CreateChartOfAccountInfo(item, sourceAccount, rootAccount, "DEPOSIT", "DEBIT", CheckCommissionOnDepositTransaction(accountList.ToList(), rootAccount) ? "10200" : "10000"));
                 }
-              
+
             }
-          SavingDepositProductIsPayable = CheckCommissionOnDepositTransaction(accountList.ToList(), rootAccount);
+            SavingDepositProductIsPayable = CheckCommissionOnDepositTransaction(accountList.ToList(), rootAccount);
             return chartOfAccounts;
         }
 
         private async Task<List<ChartofAccountInfo>> ProcessInterestExpenseAccountList(string key, List<AccountingRuleEntry> accountingRuleEntries, List<ChartofAccountManagementPosition> accountingConfigList, ChartofAccountManagementPosition rootAccount, AccountingRuleEntry physicalTellerAccount)
         {
             var chartOfAccounts = new List<ChartofAccountInfo>();
-            var account = accountingRuleEntries.Where(e => e.EventCode.Equals(key+ "@Saving_Interest_Expense_Account")).FirstOrDefault();
+            var account = accountingRuleEntries.Where(e => e.EventCode.Equals(key + "@Saving_Interest_Expense_Account")).FirstOrDefault();
 
-            
-                var model = ListOfChartOfAccount.Find(x=>x.Id==account.DeterminationAccountId);
-                chartOfAccounts.Add(CreateChartOfAccountInfo(account, model, rootAccount, "INTEREST_EXPENSE", "CREDIT", "10000"));
-            
+
+            var model = ListOfChartOfAccount.Find(x => x.Id == account.DeterminationAccountId);
+            chartOfAccounts.Add(CreateChartOfAccountInfo(account, model, rootAccount, "INTEREST_EXPENSE", "CREDIT", "10000"));
+
 
             return chartOfAccounts;
         }
 
-
-        private async Task<List<ChartofAccountInfo>> ProcessCASHINLiaisonAccountList(  string key,  List<AccountingRuleEntry> accountingRuleEntries,   List<ChartofAccountManagementPosition> accountingConfigList,   ChartofAccountManagementPosition rootAccount,  AccountingRuleEntry physicalTellerAccount)
+        private async Task<List<ChartofAccountInfo>> ProcessMOMOCASHCollectionAccountList(string key, List<AccountingRuleEntry> accountingRuleEntries, List<ChartofAccountManagementPosition> accountingConfigList, ChartofAccountManagementPosition rootAccount, AccountingRuleEntry physicalTellerAccount)
         {
             var chartOfAccounts = new List<ChartofAccountInfo>();
             var accountList = accountingRuleEntries.Where(e => e.EventCode.Contains(key));
 
-             
+
 
             foreach (var item in accountList)
             {
@@ -265,17 +440,17 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 var sourceAccount = accountingConfigList.Find(x => x.Id.Equals(physicalTellerAccount.DeterminationAccountId));
                 if (item.EventCode.Contains("Principal_Saving_Account"))
                 {
-                    var ruleEntry = accountingRuleEntries.Where(e => e.EventCode.Equals(key+"@Liasson_Account"));
+                    var ruleEntry = accountingRuleEntries.Where(e => e.EventCode.Equals(key + "@Liasson_Account"));
                     var liaisonAccount = accountingConfigList.Find(x => x.Id.Equals(ruleEntry.FirstOrDefault().DeterminationAccountId));
                     var modelc = CreateChartOfAccountInfo(item, sourceAccount, rootAccount, "DEPOSIT_REMOTE", "DEBIT", CheckCommissionOnDepositTransaction(accountList.ToList(), rootAccount) ? "10200" : "10000");
                     chartOfAccounts.Add(modelc);
                     var modelb = CreateChartOfAccountInfo(item, liaisonAccount, rootAccount, "DEPOSIT_REMOTE", "CREDIT", CheckCommissionOnDepositTransaction(accountList.ToList(), rootAccount) ? "10200" : "10000", true);
                     chartOfAccounts.Add(modelb);
                 }
-                else if (item.EventCode.Contains("Commission_Account")  ||
+                else if (item.EventCode.Contains("Commission_Account") ||
                         item.EventCode.Contains("Transfer_Fee_Account"))
                 {
-          
+
                     chartOfAccounts.Add(CreateChartOfAccountInfo(item, account, rootAccount, "DEPOSIT_REMOTE", "CREDIT", "200"));
                 }
                 else if (item.EventCode.Contains("Liasson_Account"))
@@ -283,8 +458,49 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                     var ruleEntry = accountingRuleEntries.Where(e => e.EventCode.Equals(key + "@Principal_Saving_Account"));
                     var principalAccount = accountingConfigList.Find(x => x.Id.Equals(ruleEntry.FirstOrDefault().DeterminationAccountId));
                     chartOfAccounts.Add(CreateChartOfAccountInfo(item, principalAccount, rootAccount, "DEPOSIT_REMOTE", "CREDIT", "10000"));
-                 
-                    chartOfAccounts.Add(CreateChartOfAccountInfo(item, account, rootAccount, "DEPOSIT_REMOTE", "DEBIT", CheckCommissionOnDepositTransaction(accountList.ToList(), rootAccount) ? "10200" : "10000",true));
+
+                    chartOfAccounts.Add(CreateChartOfAccountInfo(item, account, rootAccount, "DEPOSIT_REMOTE", "DEBIT", CheckCommissionOnDepositTransaction(accountList.ToList(), rootAccount) ? "10200" : "10000", true));
+                }
+            }
+            SavingDepositProductIsPayable = CheckCommissionOnDepositTransaction(accountList.ToList(), rootAccount);
+
+            return chartOfAccounts;
+        }
+
+        private async Task<List<ChartofAccountInfo>> ProcessCASHINLiaisonAccountList(string key, List<AccountingRuleEntry> accountingRuleEntries, List<ChartofAccountManagementPosition> accountingConfigList, ChartofAccountManagementPosition rootAccount, AccountingRuleEntry physicalTellerAccount)
+        {
+            var chartOfAccounts = new List<ChartofAccountInfo>();
+            var accountList = accountingRuleEntries.Where(e => e.EventCode.Contains(key));
+
+
+
+            foreach (var item in accountList)
+            {
+                var account = accountingConfigList.Find(x => x.Id.Equals(item.DeterminationAccountId));
+
+                var sourceAccount = accountingConfigList.Find(x => x.Id.Equals(physicalTellerAccount.DeterminationAccountId));
+                if (item.EventCode.Contains("Principal_Saving_Account"))
+                {
+                    var ruleEntry = accountingRuleEntries.Where(e => e.EventCode.Equals(key + "@Liasson_Account"));
+                    var liaisonAccount = accountingConfigList.Find(x => x.Id.Equals(ruleEntry.FirstOrDefault().DeterminationAccountId));
+                    var modelc = CreateChartOfAccountInfo(item, sourceAccount, rootAccount, "DEPOSIT_REMOTE", "DEBIT", CheckCommissionOnDepositTransaction(accountList.ToList(), rootAccount) ? "10200" : "10000");
+                    chartOfAccounts.Add(modelc);
+                    var modelb = CreateChartOfAccountInfo(item, liaisonAccount, rootAccount, "DEPOSIT_REMOTE", "CREDIT", CheckCommissionOnDepositTransaction(accountList.ToList(), rootAccount) ? "10200" : "10000", true);
+                    chartOfAccounts.Add(modelb);
+                }
+                else if (item.EventCode.Contains("Commission_Account") ||
+                        item.EventCode.Contains("Transfer_Fee_Account"))
+                {
+
+                    chartOfAccounts.Add(CreateChartOfAccountInfo(item, account, rootAccount, "DEPOSIT_REMOTE", "CREDIT", "200"));
+                }
+                else if (item.EventCode.Contains("Liasson_Account"))
+                {
+                    var ruleEntry = accountingRuleEntries.Where(e => e.EventCode.Equals(key + "@Principal_Saving_Account"));
+                    var principalAccount = accountingConfigList.Find(x => x.Id.Equals(ruleEntry.FirstOrDefault().DeterminationAccountId));
+                    chartOfAccounts.Add(CreateChartOfAccountInfo(item, principalAccount, rootAccount, "DEPOSIT_REMOTE", "CREDIT", "10000"));
+
+                    chartOfAccounts.Add(CreateChartOfAccountInfo(item, account, rootAccount, "DEPOSIT_REMOTE", "DEBIT", CheckCommissionOnDepositTransaction(accountList.ToList(), rootAccount) ? "10200" : "10000", true));
                 }
             }
             SavingDepositProductIsPayable = CheckCommissionOnDepositTransaction(accountList.ToList(), rootAccount);
@@ -294,15 +510,15 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         private bool CheckCommissionOnDepositTransaction(List<AccountingRuleEntry> accountList, ChartofAccountManagementPosition rootAccount)
         {
-            bool IsPresent =false;
-  
-            foreach (var item in accountList) 
+            bool IsPresent = false;
+
+            foreach (var item in accountList)
             {
                 if (item.EventCode.Contains("Commission_Account"))
                 {
                     var model = ListOfChartOfAccount.Find(x => x.Id.Equals(item.DeterminationAccountId));
-                    IsPresent= model.Id!=rootAccount.Id;
-             
+                    IsPresent = model.Id != rootAccount.Id;
+
                 }
 
             }
@@ -313,16 +529,16 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             bool IsPresent = false;
             foreach (var item in accountList)
             {
-                if (item.EventCode.Contains("Withdrawal_Fee_Account") )
+                if (item.EventCode.Contains("Withdrawal_Fee_Account"))
                 {
                     var model = ListOfChartOfAccount.Find(x => x.Id.Equals(item.DeterminationAccountId));
-                    IsPresent = model.Id != rootAccount.Id; 
+                    IsPresent = model.Id != rootAccount.Id;
                 }
 
             }
             return IsPresent;
         }
-        private ChartofAccountInfo CreateChartOfAccountInfo(   AccountingRuleEntry item,     ChartofAccountManagementPosition account, ChartofAccountManagementPosition rootAccount, string operationType,   string bookingDirection,  string amount,   bool isLiassonAccount = false)
+        private ChartofAccountInfo CreateChartOfAccountInfo(AccountingRuleEntry item, ChartofAccountManagementPosition account, ChartofAccountManagementPosition rootAccount, string operationType, string bookingDirection, string amount, bool isLiassonAccount = false)
         {
             if (item.DeterminationAccountId == rootAccount.Id)
             {
@@ -339,12 +555,12 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             }
 
             string accountNumber = isLiassonAccount
-                ? $"{account.AccountNumber.PadRight(6,'0')}[SourceBranchCode][DestinationBranchCode]"
+                ? $"{account.AccountNumber.PadRight(6, '0')}[SourceBranchCode][DestinationBranchCode]"
                 : $"{account.AccountNumber.PadRight(6, '0')}[BranchCode]{account.PositionNumber}";
 
             return new ChartofAccountInfo
             {
-                OperationPeriod = isLiassonAccount?"LIAISON":"LOCAL",
+                OperationPeriod = isLiassonAccount ? "LIAISON" : "LOCAL",
                 OperationType = operationType,
                 Id = item.DeterminationAccountId,
                 AccountName = account.Description,
@@ -353,6 +569,24 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 Amount = amount
             };
         }
+
+        private ChartofAccountInfo CreateChartOfAccountEntry(ChartofAccountManagementPosition account, string operationType, string bookingDirection, string amount)
+        {
+
+            string accountNumber = $"{account.AccountNumber.PadRight(6, '0')}[BranchCode]{account.PositionNumber}";
+
+            return new ChartofAccountInfo
+            {
+                OperationPeriod = "LOCAL",
+                OperationType = operationType,
+                Id = account.Id,
+                AccountName = account.Description,
+                AccountNumber = accountNumber,
+                BookingDirection = bookingDirection,
+                Amount = amount
+            };
+        }
+
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(SavingConfiguration model)
         {
