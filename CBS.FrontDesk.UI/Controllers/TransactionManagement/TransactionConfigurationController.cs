@@ -109,7 +109,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var productBook = await _accountConfiServices.GetProductAccountingBook(key);
             if (productBook.Any())
             {
-                if (savingProduct.Name.Equals("Daily Savings"))
+                var data = savingProduct.Name.Trim().ToLower();
+                if (data.Equals("daily savings"))
                 {
                     ViewBag.ProductName = savingProduct.Name;
                     chartofAccountInfos  = await ProcessOfDailyCASHCollectionAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, await GetVirtualDailyCollectorAccount());
@@ -219,8 +220,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         }
         private async Task<List<ChartofAccountInfo>> ProcessMOMOKASHCollectionAccountList(ChartofAccountManagementPosition mobileMoneyAccount, List<ChartofAccountManagementPosition> listOfChartOfAccount)
         {
+            var list = GetAccountIds();
             List<ChartofAccountInfo> listOfAccounts = new List<ChartofAccountInfo>();
-            foreach (var item in GetAccountIds())
+            foreach (var item in list)
             {
                 var account = listOfChartOfAccount.Where(id => id.Equals(item)).FirstOrDefault();
                 listOfAccounts.Add(CreateChartOfAccountEntry(account, "MOMOKASH COLLECTION", "CREDIT", "25000"));
@@ -248,7 +250,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private async Task<AccountingRuleEntry> GetVirtualDailyCollectorAccount()
         {
             var data = await _accountingEntryRuleService.GetAccountingEntryRules();
-            return data.FirstOrDefault(e => e.EventCode.Equals("DailyCollector"));
+            var data1 = data.FirstOrDefault(e => e.EventCode.Equals("Daily_Collector"));
+            return data1;
         }
         private async Task<AccountingRuleEntry> GetVirtualMOMOCASHTellerAccount()
         {

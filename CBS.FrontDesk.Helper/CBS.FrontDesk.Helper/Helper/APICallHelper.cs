@@ -5,6 +5,31 @@ namespace CBS.FrontDesk.Helper
 {
     public abstract class APICallHelper
     {
+        /// <summary>
+        /// CashMovementTracker
+        /// </summary>
+                //Get,Update,Delete AccountClass By Id
+        public static string Get_CashMovementTracker = "/api/v1/CashMovementTracker/GetCashMovementTrackerQuery/{0}";
+        //Get All AccountClass
+        public static string Update_CashMovementTracker = "/api/v1/CashMovementTracker/UpdateCashMovementTrackerCommand/{0}";
+        public static string Delete_CashMovementTracker = "/api/v1/CashMovementTracker/{0}";
+
+        public static string GetAllCashMovementTracker = "/api/v1/CashMovementTracker/GetAllCashMovementTrackerQuery";
+        // POST  Create a AccountClass
+        public static string CreateCashMovementTracker = "/api/v1/CashMovementTracker/AddCashMovementTrackerCommand";
+        /// <summary>
+        /// CashMovementTrackerConfiguration
+        /// </summary>
+        //Get,Update,Delete AccountClass By Id
+        public static string Get_CashMovementTrackerConfiguration = "/api/v1//CashMovementTrackingConfiguration/GetCashMovementTrackingConfigurationQuery/{0}";
+        //Get All AccountClass
+        public static string Update_CashMovementTrackerConfiguration = "/api/v1/CashMovementTrackingConfiguration/UpdateCashMovementTrackingConfigurationCommand/{0}";
+        public static string Delete_CashMovementTrackerConfiguration = "/api/v1/CashMovementTrackingConfiguration/{0}";
+
+        public static string GetAllCashMovementTrackerConfiguration = "/api/v1/CashMovementTrackingConfiguration/GetAllCashMovementTrackingConfigurationQuery";
+        // POST  Create a AccountClass
+        public static string CreateCashMovementTrackerConfiguration = "/api/v1/CashMovementTrackingConfiguration/AddCashMovementTrackingConfigurationCommand";
+
         public static string CreateAccountPolicy = "/api/v1/AccountPolicy";
         public static string GetAccountPolicies = "/api/v1/AccountPolicies";
         public static string Get_Update_Delete_AccountPolicy = "/api/v1/AccountPolicy/{0}";

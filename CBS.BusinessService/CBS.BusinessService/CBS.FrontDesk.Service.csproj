@@ -185,7 +185,9 @@
     <Compile Include="AccountingDayObject\AccountingDayServices.cs" />
     <Compile Include="Accounting\AccountPolicyServices.cs" />
     <Compile Include="Accounting\AccountUploadServices.cs" />
-    <Compile Include="Accounting\ChartOfAccountManagementPosition.cs" />
+    <Compile Include="Accounting\CashMovementTrackerServices.cs" />
+    <Compile Include="Accounting\CashMovementTrackingConfigurationServices.cs" />
+    <Compile Include="Accounting\ChartOfAccountManagementPositionService.cs" />
     <Compile Include="Accounting\Class1.cs" />
     <Compile Include="Accounting\ConnectionHub.cs" />
     <Compile Include="Accounting\ConnectionMonitoringService.cs" />

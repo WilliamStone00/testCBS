@@ -488,6 +488,8 @@
     <Compile Include="Controllers\Accounting\AccountEntry.cs" />
     <Compile Include="Controllers\Accounting\AccountingChartController.cs" />
     <Compile Include="Controllers\Accounting\BranchAccountJournalEntriesQueryObject.cs" />
+    <Compile Include="Controllers\Accounting\CashMovementTrackerConfigurationController.cs" />
+    <Compile Include="Controllers\Accounting\CashMovementTrackerController.cs" />
     <Compile Include="Controllers\Accounting\ManagementSelectionOption.cs" />
     <Compile Include="Controllers\Accounting\ManuallyJournalEntryController.cs" />
     <Compile Include="Controllers\Accounting\AccountingConfigurationController.cs" />
@@ -2386,6 +2388,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\AccountEventConfigurtion\MFIChartOfAccount.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
+    <Content Include="Scripts\Js\CashMovementTracker\CashMovementTracker.js" />
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\MomocashCollection.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\ExpensesCashDesk.js" />
@@ -3079,6 +3082,10 @@
     <Content Include="Views\AccountingDay\_AccountingDayDetails.cshtml" />
     <Content Include="Views\AccountingConfiguration\_DocumentReferenceCodeDetails.cshtml" />
     <Content Include="Views\TransactionConfiguration\AccountMappingInfo.cshtml" />
+    <Content Include="Views\CashMovementTracker\Index.cshtml" />
+    <Content Include="Views\CashMovementTrackerConfiguration\Index.cshtml" />
+    <Content Include="Views\CashMovementTrackerConfiguration\_CreateCashMovementTrackerConfiguration.cshtml" />
+    <Content Include="Views\CashMovementTrackerConfiguration\_CashMovementTrackerConfigurationData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -3246,7 +3253,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52456</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44388/</IISUrl>
+          <IISUrl>https://localhost:44345/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

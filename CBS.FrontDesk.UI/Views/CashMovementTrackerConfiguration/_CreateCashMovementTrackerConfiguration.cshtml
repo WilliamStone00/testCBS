@@ -1,0 +1,102 @@
+﻿@model CBS.FrontDesk.Data.Entity.CashMovementTracker.CashMovementConfiguration
+
+<div class="row">
+    <!-- Context Menu -->
+    <div class="col-12 card-body">
+        <div class="card mb-12">
+
+            <div class="card-body">
+                @using (Html.BeginForm("AddOrUpdate", "CashMovementTrackerConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                {
+                    <input type="hidden" name="ServiceOption" value="cashMovementTrackerConfiguration" id="ServiceOption" />
+                    <div class="row mt-2 gy-4">
+                        <div class="col-md-6">
+                             
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.Duration, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.Duration, "", new { @class = "text-danger" })
+                                <label>Duration for Movement (In minutes)</label>
+
+                            </div>
+                             
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.MovementType, new SelectList(ViewBag.MovementTypes == null ? "" : ViewBag.MovementTypes, "Text", "Value"), "---Select Account---", new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.MovementType, "", new { @class = "text-danger" })
+                                <label>Movement Type</label>
+                            </div>
+                        </div>
+                        <input type="hidden" name="MovementTypeOption" value="" id="MovementTypeOption" />
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.From, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.From, "", new { @class = "text-danger" })
+                                <label>Select Source Branch</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.To, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.To, "", new { @class = "text-danger" })
+                                <label>Select Destination Branch</label>
+                            </div>
+                        </div>
+                
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.AlertTimeBefore, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.AlertTimeBefore, "", new { @class = "text-danger" })
+                                <label>Alert time before timespan elapse's </label>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.AlertTimeAfter, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.AlertTimeAfter, "", new { @class = "text-danger" })
+                                <label>Alert time after timespan elapse's </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+
+                                @Html.TextAreaFor(m => m.CashMovementTrackingConfiguration.MessageBeforeAlertTime, new { @class = "form-control", @style = "height: 200px;" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.MessageBeforeAlertTime, "", new { @class = "text-danger" })
+                                <label>Sample Message to be send before timespan elapse's</label>
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+
+                                @Html.TextAreaFor(m => m.CashMovementTrackingConfiguration.MessageAfterAlertTime, new { @class = "form-control", @style = "height: 200px;" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.MessageAfterAlertTime, "", new { @class = "text-danger" })
+                                <label>Sample Message to be send after timespan elapse's</label>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mt-4">
+                        @if (Model.CashMovementTrackingConfiguration.Id == null)
+                        {
+                            <button type="submit" class="btn btn-primary me-2">Save</button>
+                            <input type="hidden" name="Action" value="insert" id="Action" />
+                        }
+                        else
+                        { <button type="submit" class="btn btn-primary me-2">Update</button>
+                            @Html.HiddenFor(m => m.CashMovementTrackingConfiguration.Id)
+                            <input type="hidden" name="Action" value="update" id="Action" />
+                        }
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -75,7 +75,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string BankAccountId { get; set; }
         public string Message { get; set; }
 
-        public Denomination CurrencyNotes { get; set; }
+        public CurrencyNotesRequest CurrencyNotes { get; set; }
 
         public object ConvertToTransferData(string branchID )
         {
