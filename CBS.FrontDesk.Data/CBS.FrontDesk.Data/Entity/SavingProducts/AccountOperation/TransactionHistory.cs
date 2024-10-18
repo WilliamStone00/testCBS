@@ -1,4 +1,5 @@
-﻿using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
+﻿using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,18 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
 {
+    public class GetAllTransactionsByDatesAndBranchQuery
+    {
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+        public string BranchID { get; set; }
+        public string TellerId { get; set; }
+        public bool IsByDate { get; set; }
+        public bool ByBranchId { get; set; }
+        public bool ByTellerId { get; set; }
+        public bool UseAccountingDate { get; set; }
+
+    }
     public class TransactionHistory
     {
         public string Id { get; set; }
@@ -62,12 +75,78 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public string CreatedBy { get; set; }
         public virtual ICollection<TellerOperation> TellerOperations { get; set; }
         public virtual Teller Teller { get; set; }
+        public virtual DailyTeller DailyTeller { get; set; }
+        public virtual Branch Branch { get; set; }
         public virtual Account Account { get; set; }
         public DateTime CreatedDate { get; set; }
+        public DateTime AccountingDate { get; set; }
+
         public List<CurrencyNotesDto> currencyNotes { get; set; }
         public CurrencyNotes currencyNote { get; set; }
-
+        public PaymentReceipt PaymentReceipt { get; set; }
     }
+    public class PaymentReceipt
+    {
+        public string Id { get; set; }
+        public string MemberName { get; set; }
+        public string MemberReference { get; set; }
+        public string DepositorName { get; set; }
+        public string DepositorPhone { get; set; }
+        public string DepositorCNI { get; set; }
+
+        public decimal Amount { get; set; }
+        public decimal Charges { get; set; }
+        public decimal TotalAmount { get; set; }
+        public string AmountInWord { get; set; }
+        public string ReceiptTitle { get; set; }
+        public string CashierName { get; set; }
+        public string TillName { get; set; }
+        public string TellerId { get; set; }
+        public string ServiceType { get; set; }//Loan_Disburstment, Loan_Repayment, Cash_In, Cash_Out, Transfer, Other_CashIn, Other_Payments, Momo_Cash_Collection
+        public string OperationType { get; set; }//Cash_Operation, None_Cash_Operation
+        public string OperationTypeGrouping { get; set; }//Cash_In, Cash_Out, Transfer, Others
+        public DateTime AccountingDay { get; set; }
+        public DateTime Date { get; set; }
+        public string InternalReferenceNumber { get; set; }
+        public string ExternalReferenceNumber { get; set; }
+        public string SourceOfRequest { get; set; }//Daily_Collection_Service, GAV, C_Money, Teller, BackOffice
+        public string PortalUsed { get; set; }
+        public string BranchId { get; set; }
+        public string BankId { get; set; }
+        public int Note10000 { get; set; } = 0;
+        public int Note5000 { get; set; } = 0;
+        public int Note2000 { get; set; } = 0;
+        public int Note1000 { get; set; } = 0;
+        public int Note500 { get; set; } = 0;
+        public int Coin500 { get; set; } = 0;
+        public int Coin100 { get; set; } = 0;
+        public int Coin50 { get; set; } = 0;
+        public int Coin25 { get; set; } = 0;
+        public int Coin10 { get; set; } = 0;
+        public int Coin5 { get; set; } = 0;
+        public int Coin1 { get; set; } = 0;
+        public virtual ICollection<PaymentDetail> PaymentDetails { get; set; }
+    }
+    public class PaymentDetail
+    {
+        public string Id { get; set; }
+        public string MemberName { get; set; }
+        public string MemberReference { get; set; }
+        public string PaymentReceiptId { get; set; }
+        public string SericeName { get; set; }
+        public decimal Amount { get; set; } = 0;
+        public decimal Fee { get; set; } = 0;
+        public decimal LoanCapital { get; set; } = 0;
+        public decimal Interest { get; set; } = 0;
+        public decimal VAT { get; set; } = 0;
+        public string AccountNumber { get; set; }
+        public string BranchId { get; set; }
+        public string BankId { get; set; }
+        public DateTime AccountingDay { get; set; }
+        public DateTime Date { get; set; }
+        public virtual PaymentReceipt PaymentReceipt { get; set; }
+    }
+
     public class TellerOperation
     {
         public string Id { get; set; }
@@ -293,37 +372,31 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
 
     public class TransactionHistoryExport
     {
-        public string accountHolderName { get; set; }
-        public string accountNumber { get; set; }
-        public string customerReferenceNumber { get; set; }
+        public string MemberName { get; set; }
+        public string AccountNumber { get; set; }
+        public string CustomerReference { get; set; }
         public DateTime Date { get; set; }
-        public decimal originalAmount { get; set; }
-        public decimal fee { get; set; }
-        public decimal newAmount { get; set; }
-        public decimal previousBalance { get; set; }
-        public decimal balance { get; set; }
-
+        public DateTime AccountingDate { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Fee { get; set; }
+        public decimal Balance { get; set; }
+        public decimal NewBalance { get; set; }
+        public string Reference { get; set; }
+        public string TellerName { get; set; }
+        public string AccountType { get; set; }
+        public string TellerBranchName { get; set; }
+        public string Note { get; set; }
+        public string ThirdPartyName { get; set; }
         public string Operation { get; set; }
-        public string feeType { get; set; }
-        public decimal credit { get; set; }
-        public decimal debit { get; set; }
-        public string transactionType { get; set; }
-        public string operationDirection { get; set; }
-        public string transactionRef { get; set; }
-        public string note { get; set; }
-        public string senderAccountId { get; set; }
-        public string receiverAccountId { get; set; }
-        public string depositorIdNumber { get; set; }
-        public string depositorName { get; set; }
-        public string depositorIdIssueDate { get; set; }
-        public string depositorIdExpiryDate { get; set; }
-        public string productName { get; set; }
-        public string teller { get; set; }
-        public string InterBrachOperation { get; set; }
-        public string SourceBranch { get; set; }
-        public string DestinationBranch { get; set; }
-        public decimal SourceShare { get; set; }
-        public decimal DestinationShare { get; set; }
+        public decimal WithdrawalFormCharge { get; set; }
+        public decimal OperationCharge { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+        public string InterBranch { get; set; }
+        public string BankName { get; set; }
+        public string BranchCode { get; set; }
+        public string BrnachName { get; set; }
+        public string BranchTel { get; set; }
     }
 
 }

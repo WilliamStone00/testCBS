@@ -174,7 +174,9 @@
     <Reference Include="SixLabors.Fonts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
       <HintPath>..\packages\SixLabors.Fonts.1.0.0\lib\netstandard2.0\SixLabors.Fonts.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
+    <Reference Include="System">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
+    </Reference>
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
@@ -392,10 +394,46 @@
       <DependentUpon>LiaisonLedger.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Members\MembersListing\Membersrpt.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Membersrpt.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\AccountingDay\AccountingDayrpt.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingDayrpt.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Payment\Loan\MainReportLoan.cs">
+      <DependentUpon>MainReportLoan.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Payment\MainReport.cs">
+      <DependentUpon>MainReport.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Payment\DenominationSubReport.cs">
+      <DependentUpon>DenominationSubReport.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Payment\Loan\PaymentDetailSubReportLoan.cs">
+      <DependentUpon>PaymentDetailSubReportLoan.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Payment\PaymentDetailSubReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PaymentDetailSubReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\Reciepts\OtherTransactionReciept.cs">
@@ -496,6 +534,7 @@
     <Compile Include="Controllers\TransactionManagement\SavingProductFeeController.cs" />
     <Compile Include="Controllers\TransactionManagement\FeePolicyController.cs" />
     <Compile Include="Controllers\TransactionManagement\OperationFeeController.cs" />
+    <Compile Include="Controllers\TransactionManagement\MobileMoneyCashTopupController.cs" />
     <Compile Include="Controllers\TransactionManagement\SubTellerCashRequisitionController.cs" />
     <Compile Include="Controllers\TransactionManagement\TransactionReversalController.cs" />
     <Compile Include="Controllers\TransactionManagement\WithdrawalNotificationController.cs" />
@@ -539,6 +578,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet\Transaction\MembersDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MembersDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet\Transaction\ReceiptDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReceiptDS.xsd</DependentUpon>
     </Compile>
     <Compile Include="DataSet\Transaction\TransactionDS.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -2321,6 +2370,28 @@
     <Content Include="DataSet\Accounting\AccountingDataSet.xss">
       <DependentUpon>AccountingDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="DataSet\Transaction\ReceiptDS.xsc">
+      <DependentUpon>ReceiptDS.xsd</DependentUpon>
+    </Content>
+    <Content Include="DataSet\Transaction\MembersDS.xsc">
+      <DependentUpon>MembersDS.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet\Transaction\MembersDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>MembersDS.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="DataSet\Transaction\MembersDS.xss">
+      <DependentUpon>MembersDS.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet\Transaction\ReceiptDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ReceiptDS.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="DataSet\Transaction\ReceiptDS.xss">
+      <DependentUpon>ReceiptDS.xsd</DependentUpon>
+    </Content>
     <None Include="DataSet\Transaction\TransactionDS.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -2637,7 +2708,6 @@
     <Content Include="Views\Shared\_LoginMainCover.cshtml" />
     <Content Include="Views\Authentication\Login.cshtml" />
     <Content Include="Views\Operation\_Depositer.cshtml" />
-    <Content Include="Views\EndOfDayOperation\_Primary.cshtml" />
     <Content Include="Views\EndOfDayOperation\_SubTeller.cshtml" />
     <Content Include="Views\EndOfDayOperation\PrimaryX.cshtml" />
     <Content Include="Views\EndOfDayOperation\SubTellerX.cshtml" />
@@ -3044,6 +3114,33 @@
     <Content Include="Views\AccountingDay\_StatusQuery.cshtml" />
     <Content Include="Views\AccountingDay\_StatusData.cshtml" />
     <Content Include="Views\AccountingDay\_AccountingDayDetails.cshtml" />
+    <Content Include="Views\CashDesk\_OtherCashMobileMoneyDesk.cshtml" />
+    <Content Include="Views\CashDesk\_OtherCashMobileMoneyForm.cshtml" />
+    <Content Include="Views\CashDesk\OtherCashMobileMoney.cshtml" />
+    <Content Include="Views\CashFlowManagement\BankDepositTracking.cshtml" />
+    <Content Include="Views\BankingOperations\Failed_RequestApproval_View.cshtml" />
+    <Content Include="Views\BankingOperations\Failed_Request_View.cshtml" />
+    <Content Include="Views\BankingOperations\GetAllTransasctionReversalRequest.cshtml" />
+    <Content Include="Views\BankingOperations\GetTransactionReversalRequest.cshtml" />
+    <Content Include="Views\BankingOperations\Successfull_RequestApproval_View.cshtml" />
+    <Content Include="Views\BankingOperations\Successfull_Request_View.cshtml" />
+    <Content Include="Views\Notification\_uploadBankDepositeReceipt.cshtml" />
+    <Content Include="Views\Notification\BankDepositCompletion.cshtml" />
+    <Content Include="Views\Individual\_MembersReportingDownload.cshtml" />
+    <Content Include="Views\Individual\MembersReporting.cshtml" />
+    <Content Include="Views\MobileMoneyCashTopup\_PendingRequestForValidation.cshtml" />
+    <Content Include="Views\MobileMoneyCashTopup\_CashReplenishmentSubTellerData.cshtml" />
+    <Content Include="Views\MobileMoneyCashTopup\_Request.cshtml" />
+    <Content Include="Views\MobileMoneyCashTopup\_RequestValidation.cshtml" />
+    <Content Include="Views\MobileMoneyCashTopup\_SearchBox.cshtml" />
+    <Content Include="Views\MobileMoneyCashTopup\Index.cshtml" />
+    <Content Include="Views\MobileMoneyCashTopup\PendingRequest.cshtml" />
+    <Content Include="Views\MobileMoneyCashTopup\Request.cshtml" />
+    <Content Include="Views\MobileMoneyCashTopup\RequestValidation.cshtml" />
+    <Content Include="Views\TellerManagement\MMConfiguration.cshtml" />
+    <Content Include="Views\TellerManagement\_MMConfiguration.cshtml" />
+    <Content Include="Views\MobileMoneyCashTopup\AllRequests.cshtml" />
+    <Content Include="Views\MobileMoneyCashTopup\_AllRequestData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -3122,9 +3219,33 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TrialBalance8Column.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Members\MembersListing\Membersrpt.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Membersrpt.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\AccountingDay\AccountingDayrpt.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AccountingDayrpt.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Payment\Loan\MainReportLoan.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>MainReportLoan.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Payment\MainReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>MainReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Payment\DenominationSubReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DenominationSubReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Payment\Loan\PaymentDetailSubReportLoan.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PaymentDetailSubReportLoan.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Payment\PaymentDetailSubReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PaymentDetailSubReport.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\OtherTransactionReciept.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -3191,7 +3312,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52456</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44388/</IISUrl>
+          <IISUrl>https://localhost:44385/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

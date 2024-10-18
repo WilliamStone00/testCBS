@@ -8,13 +8,13 @@
             <div class="change-group">
                 <div class="row mt-2 gy-4">
 
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
@@ -23,54 +23,57 @@
                     <hr style="border: 2px solid green;" />
                     <div class="table-responsive" style="width: 100%;">
                         <table class="table table-hover" id="myDataTableT">
-                                <thead class="table-light">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="display:none;">ProductID</th>
+                                    <th>Accounts</th>
+                                    <th>Balance</th>
+                                    <th>Amount</th>
+                                    <th>Fee</th>
+                                    <th>Total</th>
+                                    <th>Conf</th>
+                                    <th>Inc</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
+                                {
                                     <tr>
-                                        <th style="display:none;">ProductID</th>
-                                        <th>Ordinary accounts</th>
-                                        <th>Amount</th>
-                                        <th>Fee</th>
-                                        <th>Total</th>
-                                        <th>confirm</th>
-                                        <th>Inc</th>
+                                        <td style="display:none;">@d.AccountNumber</td>
+                                        <td>@d.AccountType</td>
+                                        <td>@d.Balance.ToString("#,##0.0")</td>
+                                        <td>
+                                            <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
+                                        </td>
+                                        <td>
+                                            <span class="total-span">@d.Total</span>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input">
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input check-inclussive" disabled>
+                                        </td>
+
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
-                                    {
-                                        <tr>
-                                            <td style="display:none;">@d.AccountNumber</td>
-                                            <td>@d.AccountType</td>
-                                            <td>
-                                                <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
-                                            </td>
-                                            <td>
-                                                <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
-                                            </td>
-                                            <td>
-                                                <span class="total-span">@d.Total</span>
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" class="form-check-input">
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" class="form-check-input check-inclussive">
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
-                                        <td id="tableTotal">0</td>
-                                        <td></td> <!-- Empty cell to align with the checkbox column -->
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4" style="text-align: right;"><strong>Balance:</strong></td>
-                                        <td id="tableBalance">0</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-</div>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+                                    <td id="tableTotal">0</td>
+                                    <td></td> <!-- Empty cell to align with the checkbox column -->
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="text-align: right;"><strong>Balance:</strong></td>
+                                    <td id="tableBalance">0</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                     @*<div class="col-md-12">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id="Note" })
@@ -105,13 +108,13 @@ else if (ViewBag.Operation == "withdrawalnotification")
             <hr style="border: 2px solid red;" />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
@@ -138,7 +141,7 @@ else if (ViewBag.Operation == "withdrawalnotification")
                                         <th>IDW</th>
                                         <th>Grace</th>
                                         <th>Total</th>
-                                        <th>confirm</th>
+                                        <th>Conf</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -213,13 +216,13 @@ else if (ViewBag.Operation == "cashout")
             <hr style="border: 2px solid red;" />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
@@ -232,10 +235,11 @@ else if (ViewBag.Operation == "cashout")
                                 <tr>
                                     <th style="display:none;">ProductID</th>
                                     <th>Ordinary accounts</th>
+                                    <th>Balance</th>
                                     <th>Amount</th>
                                     <th>Fee/Charges</th>
                                     <th>Total</th>
-                                    <th>confirm</th>
+                                    <th>Conf</th>
                                     <th>Inc</th>
                                 </tr>
                             </thead>
@@ -245,6 +249,7 @@ else if (ViewBag.Operation == "cashout")
                                     <tr>
                                         <td style="display:none;">@d.AccountNumber</td>
                                         <td>@d.AccountType</td>
+                                        <td>@d.Balance.ToString("#,##0.0")</td>
                                         <td>
                                             <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
                                         </td>
@@ -265,7 +270,7 @@ else if (ViewBag.Operation == "cashout")
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+                                    <td colspan="4" style="text-align: right;"><strong>Total:</strong></td>
                                     <td id="tableTotal">0</td>
                                     <td></td> <!-- Empty cell to align with the checkbox column -->
                                 </tr>
@@ -311,12 +316,12 @@ else if (ViewBag.Operation == "cashoutsws")
             <hr style="border: 2px solid red;" />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
@@ -347,10 +352,11 @@ else if (ViewBag.Operation == "cashoutsws")
                                     <tr>
                                         <th style="display:none;">ProductID</th>
                                         <th>Ordinary accounts</th>
+                                        <th>Balance</th>
                                         <th>Amount</th>
                                         <th>Fee/Charges</th>
                                         <th>Total</th>
-                                        <th>confirm</th>
+                                        <th>Conf</th>
                                         <th>Inc</th>
                                     </tr>
                                 </thead>
@@ -360,6 +366,7 @@ else if (ViewBag.Operation == "cashoutsws")
                                         <tr>
                                             <td style="display:none;">@d.AccountNumber</td>
                                             <td>@d.AccountType</td>
+                                            <td>@d.Balance.ToString("#,##0.0")</td>
                                             <td>
                                                 <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
                                             </td>
@@ -385,7 +392,7 @@ else if (ViewBag.Operation == "cashoutsws")
                                         <td></td> <!-- Empty cell to align with the checkbox column -->
                                     </tr>
                                     <tr>
-                                        <td colspan="4" style="text-align: right;"><strong>Balance:</strong></td>
+                                        <td colspan="3" style="text-align: right;"><strong>Balance:</strong></td>
                                         <td id="tableBalance">0</td>
                                     </tr>
                                 </tfoot>
@@ -394,12 +401,12 @@ else if (ViewBag.Operation == "cashoutsws")
                         </div>
                     </div>
                     @*<div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id = "Note" })
-                @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Reasons for cash out</label>
-            </div>
-        </div>*@
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id = "Note" })
+                                @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
+                                <label for="formValidationDob">Reasons for cash out</label>
+                            </div>
+                        </div>*@
                 </div>
                 <div class="header-buttons mt-4 float-end">
                     <input type="hidden" name="OperationType" value="WithdrawalSWS" id="OperationType" />
@@ -420,7 +427,6 @@ else if (ViewBag.Operation == "cashoutsws")
     </div>
 
 }
-
 else if (ViewBag.Operation == "repayment")
 {
     <div class="form-wrapper">
@@ -429,16 +435,17 @@ else if (ViewBag.Operation == "repayment")
             <hr style="border: 2px solid green;" />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
+                            <input type="hidden" class="form-control vat-input shadow-input-boxes" id="vatRate" value="0"> <!-- Ensure the vatRate is set dynamically -->
                         </div>
                     </div>
                     <div class="table-responsive" style="width: 100%;">
@@ -447,55 +454,317 @@ else if (ViewBag.Operation == "repayment")
                                 <tr>
                                     <th style="display:none;">LoanId</th>
                                     <th>Date</th>
-                                    <th>Amount</th>
-                                    <th>Paid</th>
+                                    <th style="display:none;">Amount</th> <!-- Hide Amount column -->
                                     <th>Balance</th>
-                                    <th>Enter Amount</th>
+                                    <th>Int</th>
+                                    <th style="display:none;">V.Rate</th> <!-- Hide V.Rate column -->
+                                    <th style="display:none;">Due A</th> <!-- Hide Due A column -->
+                                    <th>Enter Capital</th>
+                                    <th>Enter Interest</th>
+                                    <th>Enter Penalty</th> <!-- Added Penalty input column -->
                                     <th>Total</th>
-                                    <th>confirm</th> <!-- New column for checkbox -->
+                                    <th>Conf</th>
+                                    <!--<th>Action</th>--> <!-- New Action column -->
+                                    <th>Details</th> <!-- New Details column -->
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var d in Model.Loans)
                                 {
-                                    <tr>
+                                    <tr id="row-@d.Id">
                                         <td style="display:none;">@d.Id</td>
                                         <td>@d.LoanDate.ToString("dd/MM/yy")</td>
-                                        <td>@d.LoanAmount.ToString("#,##0.0")</td>
-                                        <td>@d.Paid.ToString("#,##0.0")</td>
+                                        <td style="display:none;">@d.LoanAmount.ToString("#,##0.0")</td> <!-- Hide Amount column -->
                                         <td>@d.Balance.ToString("#,##0.0")</td>
+                                        <td>@d.AccrualInterest.ToString("#,##0.0")</td>
+                                        <td style="display:none;">@d.VatRate.ToString("#,##0.00")</td> <!-- Hide V.Rate column -->
+                                        <td style="display:none;">@d.DueAmount.ToString("#,##0.0")</td> <!-- Hide Due A column -->
                                         <td>
-                                            <input type="number" class="form-control amount-input shadow-input-boxes" value="0">
+                                            <input type="number" class="form-control amount-input shadow-input-boxes" id="capital-@d.Id" value="0">
                                         </td>
                                         <td>
-                                            <span class="total-span">0</span>
+                                            <input type="number" class="form-control interest-input shadow-input-boxes" id="interest-@d.Id" value="0" oninput="calculateVat(this, @d.VatRate)">
+                                        </td>
+                                        <td>
+                                            <!-- Penalty input field -->
+                                            <input type="number" class="form-control penalty-input shadow-input-boxes" id="penalty-@d.Id" value="0">
+                                        </td>
+                                        <td>
+                                            <span class="total-span" id="total-@d.Id">0</span>
                                         </td>
                                         <td>
                                             <input type="checkbox" class="form-check-input">
+                                        </td>
+                                        @*<td>
+                                <button type="button" class="btn btn-primary" onclick="openPaymentModal('@d.Id', @d.AccrualInterest, @d.Balance)">Pay</button>
+                            </td>*@
+                                        <td>
+                                            <!-- Details Button -->
+                                            <button type="button" class="btn btn-info btn-sm" onclick='showLoanDetails(@Html.Raw(Json.Encode(d)))'>Details</button>
                                         </td>
                                     </tr>
                                 }
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="5" style="text-align: right;"><strong>Total:</strong></td>
+                                    <td colspan="6" style="text-align: right;"><strong>Total:</strong></td>
                                     <td id="tableTotal">0</td>
-                                    <td></td> <!-- Empty cell to align with the checkbox column -->
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="text-align: right;"><strong>Balance:</strong></td>
                                     <td id="tableBalance">0</td>
                                 </tr>
+                                <tr>
+                                    <td colspan="6" style="text-align: right;"><strong>Calculated VAT:</strong></td>
+                                    <td id="calculatedVat">0</td> <!-- This will display the calculated VAT -->
+                                </tr>
                             </tfoot>
                         </table>
                     </div>
-                    @*<div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id = "Note" })
-                                @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
-                                <label for="formValidationDob">Repayment note</label>
+
+                    <!-- Loan Details Modal -->
+                    <div class="modal fade" id="loanDetailsModal" tabindex="-1" role="dialog" aria-labelledby="loanDetailsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content shadow-lg border-0">
+                                <div class="modal-header bg-info text-white">
+                                    <h5 class="modal-title" id="loanDetailsModalLabel">📋 Loan Details</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body p-4">
+                                    <!-- Loan Details Section -->
+                                    <div class="row mb-4">
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">Loan Date</h6>
+                                                    <h4 class="card-text text-dark" id="detailLoanDate">N/A</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">Amount</h6>
+                                                    <h4 class="card-text text-dark" id="detailLoanAmount">XAF 0</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">Balance</h6>
+                                                    <h4 class="card-text text-dark" id="detailBalance">XAF 0</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">Interest</h6>
+                                                    <h4 class="card-text text-dark" id="detailInterest">XAF 0</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">Due Amount</h6>
+                                                    <h4 class="card-text text-dark" id="detailDueAmount">XAF 0</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">Penalty</h6>
+                                                    <h4 class="card-text text-dark" id="detailPenalty">XAF 0</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">VAT</h6>
+                                                    <h4 class="card-text text-dark" id="vatRate">0 %</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">Interest Rate</h6>
+                                                    <h4 class="card-text text-dark" id="interestRate">0 %</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-between">
+                                    <button type="button" class="btn btn-secondary btn-lg shadow-sm" data-bs-dismiss="modal">
+                                        <i class="bi bi-x-circle"></i> Close
+                                    </button>
+                                </div>
                             </div>
-                        </div>*@
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
+                        <input type="hidden" id="modalLoanId">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content shadow-lg border-0">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title" id="paymentModalLabel">💵 Payment Details</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body p-4">
+                                    <!-- Loan Information Section (Due Amount and Balance) -->
+                                    <div class="row mb-4">
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">Accrual Interest</h6>
+                                                    <h4 class="card-text text-dark" id="modalAccrualInterest">XAF 0</h4> <!-- Dynamically populated -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">Balance</h6>
+                                                    <h4 class="card-text text-dark" id="modalBalance">XAF 0</h4> <!-- Dynamically populated -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Capital Input Group -->
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text bg-primary text-white">
+                                            <i class="bi bi-cash-stack"></i> Capital
+                                        </span>
+                                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalAmount" placeholder="Enter capital amount" oninput="updateTotal()">
+                                    </div>
+
+                                    <!-- Interest Input Group -->
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text bg-primary text-white">
+                                            <i class="bi bi-piggy-bank"></i> Interest
+                                        </span>
+                                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalInterest" placeholder="Enter interest" oninput="updateTotal()">
+                                    </div>
+
+                                    <!-- Penalty Input Group -->
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text bg-primary text-white">
+                                            <i class="bi bi-exclamation-triangle"></i> Penalty
+                                        </span>
+                                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalPenalty" placeholder="Enter penalty" oninput="updateTotal()">
+                                    </div>
+
+                                    <!-- Total Amount Display -->
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text bg-primary text-white">
+                                            <i class="bi bi-calculator"></i> Total Entered
+                                        </span>
+                                        <input type="text" class="form-control form-control-lg shadow-sm" id="modalTotalAmount" readonly value="XAF 0">
+                                    </div>
+                                </div>
+
+                                <!-- Modal Footer -->
+                                <div class="modal-footer d-flex justify-content-between">
+                                    <button type="button" class="btn btn-secondary btn-lg shadow-sm" data-bs-dismiss="modal">
+                                        <i class="bi bi-x-circle"></i> Cancel
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-lg shadow-sm" onclick="applyPayment()">
+                                        <i class="bi bi-check-circle"></i> Confirm
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <!-- Add Bootstrap Icons in case they are not loaded -->
+                    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+                    <style>
+                        /* Custom modal content styling */
+                        .modal-content {
+                            border-radius: 12px;
+                            overflow: hidden;
+                        }
+
+                        .modal-header {
+                            padding: 1rem 1.5rem;
+                            border-bottom: none;
+                        }
+
+                        .modal-body {
+                            background-color: #f9fafb;
+                        }
+
+                        .modal-footer {
+                            border-top: none;
+                            padding: 1rem 1.5rem;
+                        }
+
+                        /* Card styling for Loan Details */
+                        .card {
+                            border: none;
+                            border-radius: 8px;
+                            padding: 10px;
+                        }
+
+                        .card-body {
+                            padding: 1rem;
+                        }
+
+                        .card-title {
+                            font-size: 0.9rem;
+                        }
+
+                        .card-text {
+                            font-size: 1.4rem;
+                        }
+
+                        /* Shadow effects for form controls */
+                        .form-control-lg {
+                            border-radius: 8px;
+                            font-size: 1.2rem;
+                        }
+
+                        /* Input group text styling */
+                        .input-group-text {
+                            border: none;
+                            border-radius: 8px 0 0 8px;
+                            font-size: 1.1rem;
+                        }
+
+                        .input-group {
+                            border-radius: 12px;
+                            overflow: hidden;
+                        }
+
+                        /* Modal button styling */
+                        .btn-lg {
+                            padding: 0.75rem 1.5rem;
+                            font-size: 1.2rem;
+                        }
+
+                        .shadow-sm {
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        }
+                    </style>
+
                 </div>
                 <div class="header-buttons mt-4 float-end">
                     <input type="hidden" name="OperationType" value="LoanRepayment" id="OperationType" />
@@ -503,16 +772,17 @@ else if (ViewBag.Operation == "repayment")
                     <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostLoanRepayment()">
                         <i class="fas fa-money-bill-wave me-1"></i> Re-Pay
                     </button>
-                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
+                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="ReprintLoan()">
                         <i class="fas fa-print me-1"></i> Re-print
                     </button>
                     <button type="reset" class="btn btn-outline-secondary">
                         <i class="fas fa-sync-alt me-1"></i> Reset
                     </button>
                 </div>
+                <hr style="border: 2px solid green;" />
             </div>
-            <hr style="border: 2px solid green;" />
         </fieldset>
+
     </div>
 
 }
@@ -524,12 +794,12 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
             <hr style="border: 2px solid green;" />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
@@ -546,6 +816,7 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
                 }
                 else
                 {
+                    var GTotal = 0;
                     <table class="table table-hover" id="myDataTableT">
                         <thead class="table-light">
                             <tr>
@@ -556,12 +827,13 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
                                 <th>Amount</th>
                                 <th style="display:none;">Fee/Charges</th>
                                 <th>Total</th>
-                                <th>Confirm</th>
+                                <th>Conf</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var d in Model.LoanApplicationFees.GroupBy(fee => fee.Period))
                             {
+                                
                                 decimal periodTotal = 0;
                                 <tr class="period-group">
                                     <td colspan="8"><strong>@d.Key</strong></td>
@@ -594,8 +866,8 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
                                 }
                                 <tr class="period-total">
                                     <td colspan="2" style="text-align: right;"><strong>Total:</strong></td>
-                                    <td>@periodTotal</td>
-                                    <td></td> <!-- Empty cell to align with the checkbox column -->
+                                    <td style="color:blue"><b>@periodTotal.ToString("#,##0.0")</b></td>
+                                    <td></td>
                                 </tr>
                             }
                         </tbody>
@@ -603,10 +875,10 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
                             <tr>
                                 <td colspan="2" style="text-align: right;"><strong>Total:</strong></td>
                                 <td id="tableTotal">0</td>
-                                <td></td> <!-- Empty cell to align with the checkbox column -->
+                                <td style="color:blue"><b>G.T: @Model.LoanApplicationFees.Sum(x => x.FeeAmount).ToString("#,##0.0")</b></td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="text-align: right;"><strong>Balance:</strong></td>
+                                <td colspan="2" style="text-align: right;"><strong>Balance:</strong></td>
                                 <td id="tableBalance">0</td>
                             </tr>
                         </tfoot>
@@ -634,13 +906,13 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
 }
 
 
-<input type="hidden" id="totalProvision" value="0" />
+@*<input type="hidden" id="totalProvision" value="0" />
 
-<div class="col-md-12" style="display:none">
-    <div class="form-floating form-floating-outline">
-        <span class="formatted-amount shadow-box" id="lblBalance">Balance: 0</span>
-    </div>
-    <button type="submit" id="btnSave" class="btn btn-secondary me-2" onclick="Reprint()">
-        <i class="fas fa-print me-1"></i> Re-print
-    </button>
-</div>
+    <div class="col-md-12" style="display:none">
+        <div class="form-floating form-floating-outline">
+            <span class="formatted-amount shadow-box" id="lblBalance">Balance: 0</span>
+        </div>
+        <button type="submit" id="btnSave" class="btn btn-secondary me-2" onclick="Reprint()">
+            <i class="fas fa-print me-1"></i> Re-print
+        </button>
+    </div>*@

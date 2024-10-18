@@ -1,5 +1,13 @@
 ﻿
 $(document).ready(function () {
+    // Event listener for dropdown change
+
+
+    // Call this on page load if you want to load the default loans
+    //$(document).ready(function () {
+    //    applyFilter(); // Load default on page load
+    //});
+
     $('#openModalButton').click(function () {
         $('#searchModal').modal('show'); // Show the modal
     });
@@ -44,7 +52,7 @@ function ExportIndividaulReport(customerId, path) {
         success: function (response) {
             if (response.success) {
                 appalert("Plaese wait, downloading file", 1);
-                window.open("/Reports/ReportWithParameter","_blank")
+                window.open("/Reports/ReportWithParameter", "_blank")
             } else {
                 if (response.message === undefined) {
                     alert("Your session is expired.");
@@ -59,6 +67,96 @@ function ExportIndividaulReport(customerId, path) {
         }
     });
 }
+// Function to fetch and load loans based on the selected filter
+function loadLoans(memberId) {
+    var filter = $('#loanFilterDropdown').val();
+
+    console.log('Filter:', filter, 'Member ID:', memberId);
+
+    $.ajax({
+        url: '/MembersFSeries/GetFilteredLoans',
+        type: 'GET',
+        data: { filter: filter, memberId: memberId },
+        success: function (response) {
+            console.log('Response:', response);
+
+            $('#myDataTable tbody').empty();  // Clear the table rows
+
+            // Check if response has loans
+            if (Array.isArray(response) && response.length > 0) {
+                // Show the table and hide the "no loans" message
+                $('#loansTableContainer').show();
+                $('#noLoansMessage').hide();
+
+                var totalPaid = 0;
+                var totalBalance = 0;
+
+                // Loop through the loans and append to the table
+                response.forEach(function (loan) {
+                    var loanDate = loan.LoanDate || 'N/A';
+                    var principal = typeof loan.Principal === 'number' ? loan.Principal.toLocaleString() : '0';
+                    var interestRate = loan.InterestRate || '0';
+                    var accrualInterest = typeof loan.AccrualInterest === 'number' ? loan.AccrualInterest.toLocaleString() : '0';
+                    var penalty = typeof loan.Penalty === 'number' ? loan.Penalty.toLocaleString() : '0';
+                    var tax = typeof loan.Tax === 'number' ? loan.Tax.toLocaleString() : '0';
+                    var paid = typeof loan.Paid === 'number' ? loan.Paid.toLocaleString() : '0';
+                    var balance = typeof loan.Balance === 'number' ? loan.Balance.toLocaleString() : '0';
+                    var loanAmount = typeof loan.LoanAmount === 'number' ? loan.LoanAmount.toLocaleString() : '0';
+                    var dueAmount = typeof loan.DueAmount === 'number' ? loan.DueAmount.toLocaleString() : '0';
+
+                    var row = `
+                        <tr>
+                            <td>${loanDate}</td>
+                            <td>${loanAmount}</td>
+                            <td>${principal}</td>
+                            <td>${interestRate}</td>
+                            <td>${accrualInterest}</td>
+                            <td>${penalty}</td>
+                            <td>${tax}</td>
+                            <td>${paid}</td>
+                            <td>${balance}</td>
+                            <td>${dueAmount}</td>
+                            <td><a href="/Loan/Details?KEY=${loan.Id}" target="_blank">Details</a></td>
+                        </tr>`;
+
+                    $('#myDataTable tbody').append(row);
+
+                    totalPaid += loan.Paid || 0;
+                    totalBalance += loan.Balance || 0;
+                });
+
+                // Update totals
+                $('#totalPaid').text(totalPaid.toLocaleString());
+                $('#totalBalance').text(totalBalance.toLocaleString());
+            } else {
+                // If no loans, hide the table and show the message
+                $('#loansTableContainer').hide();
+                $('#noLoansMessage').show();
+            }
+
+            //// Reinitialize the DataTable only if there is data
+            //if ($.fn.DataTable.isDataTable('#myDataTable')) {
+            //    $('#myDataTable').DataTable().clear().destroy();
+            //}
+            //// Initialize DataTable
+            //if (response.length > 0) {
+            //    $('#myDataTable').DataTable({
+            //        "paging": true,
+            //        "ordering": true,
+            //        "info": true,
+            //        "searching": true,
+            //        "autoWidth": false
+            //    });
+            //}
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching data:', xhr.responseText, 'Status:', status, 'Error:', error);
+            $('#loansTableContainer').hide();
+            $('#noLoansMessage').text('Error fetching data').show();  // Show error message
+        }
+    });
+}
+
 function printAccountsSection() {
     // Get the HTML content of the desired section
     var accountsSection = document.getElementById('accountsSection').innerHTML;
@@ -145,7 +243,7 @@ function calculateLoanTotals() {
     let totalPaid = 0;
     let totalBalance = 0;
 
-    $('#myDataTableLoan tbody tr').each(function () {
+    $('#myDataTable tbody tr').each(function () {
         // Parse values from each row
         let paid = parseFloat($(this).find('td:nth-child(7)').text().replace(/,/g, ''));
         let balance = parseFloat($(this).find('td:nth-child(8)').text().replace(/,/g, ''));

@@ -231,7 +231,9 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
-        public OtherTransactionDto MapToDto(Branch branch, OtherTransaction otherTransaction)
+
+
+    public OtherTransactionDto MapToDto(Branch branch, OtherTransaction otherTransaction)
         {
             return new OtherTransactionDto
             {
@@ -312,16 +314,12 @@ namespace CBS.BusinessService.Accounts
                 if (bulkDeposits.FirstOrDefault().OperationType == "Withdrawal")
                 {
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Withdrawal" };
-                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.MakeWithdrawal, BulkOperation);
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.MakeWithdrawal, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
                         var transaction = response.ApiResponseData.Data;
                         Branch branch = RetrieveBranchFromSession();
-                        IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                        User user = await RetrieveUserFromSession(transaction.CreatedBy);
-                        var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
-                        var rptSource = new List<TransactionReportDS>();
-                        rptSource.Add(rpt);
+                        var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
                         HttpContext.Current.Session["rptSource"] = rptSource;
                         GetExecutionMessages(response, true, null, MessagesResults.Success,
                             ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
@@ -338,16 +336,12 @@ namespace CBS.BusinessService.Accounts
                 else if (bulkDeposits.FirstOrDefault().OperationType == "WithdrawalSWS")
                 {
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Withdrawal" };
-                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.MakeWithdrawal, BulkOperation);
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.MakeWithdrawal, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
                         var transaction = response.ApiResponseData.Data;
                         Branch branch = RetrieveBranchFromSession();
-                        IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                        User user = await RetrieveUserFromSession(transaction.CreatedBy);
-                        var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
-                        var rptSource = new List<TransactionReportDS>();
-                        rptSource.Add(rpt);
+                        var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
                         HttpContext.Current.Session["rptSource"] = rptSource;
                         GetExecutionMessages(response, true, null, MessagesResults.Success,
                             ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
@@ -363,16 +357,12 @@ namespace CBS.BusinessService.Accounts
                 else if (bulkDeposits.FirstOrDefault().OperationType == "SavingWithdrawalFormFee")
                 {
                     var cash = new CashDeskWithdrawalNotificationCommand { Id = bulkDeposits.FirstOrDefault().AccountNumber };
-                    var response = await _transactionApiHelper.PutAsync<ServiceResponse<TransactionHistory>>(string.Format(APICallHelper.PayinSavingWithdrawalNotification, cash.Id), cash);
+                    var response = await _transactionApiHelper.PutAsync<ServiceResponse<PaymentReceipt>>(string.Format(APICallHelper.PayinSavingWithdrawalNotification, cash.Id), cash);
                     if (response.ApiResponseData != null)
                     {
                         var transaction = response.ApiResponseData.Data;
                         Branch branch = RetrieveBranchFromSession();
-                        IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                        User user = await RetrieveUserFromSession(transaction.CreatedBy);
-                        var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
-                        var rptSource = new List<TransactionReportDS>();
-                        rptSource.Add(rpt);
+                        var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
                         HttpContext.Current.Session["rptSource"] = rptSource;
                         GetExecutionMessages(response, true, null, MessagesResults.Success,
                             ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
@@ -389,16 +379,12 @@ namespace CBS.BusinessService.Accounts
                 else if (bulkDeposits.FirstOrDefault().OperationType == "CashIn")
                 {
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Deposit" };
-                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.BulkDeposit, BulkOperation);
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
                         var transaction = response.ApiResponseData.Data;
                         Branch branch = RetrieveBranchFromSession();
-                        IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                        User user = await RetrieveUserFromSession(transaction.CreatedBy);
-                        var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
-                        var rptSource = new List<TransactionReportDS>();
-                        rptSource.Add(rpt);
+                        var rptSource=PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
                         HttpContext.Current.Session["rptSource"] = rptSource;
                         GetExecutionMessages(response, true, null, MessagesResults.Success,
                             ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
@@ -414,16 +400,12 @@ namespace CBS.BusinessService.Accounts
                 else if (bulkDeposits.FirstOrDefault().OperationType == "CashInMomocashCollection")
                 {
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = false, OperationType = "Deposit",DepositType= "CashInMomocashCollection" };
-                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.BulkDeposit, BulkOperation);
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
                         var transaction = response.ApiResponseData.Data;
                         Branch branch = RetrieveBranchFromSession();
-                        IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                        User user = await RetrieveUserFromSession(transaction.CreatedBy);
-                        var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
-                        var rptSource = new List<TransactionReportDS>();
-                        rptSource.Add(rpt);
+                        var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
                         HttpContext.Current.Session["rptSource"] = rptSource;
                         GetExecutionMessages(response, true, null, MessagesResults.Success,
                             ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
@@ -440,16 +422,12 @@ namespace CBS.BusinessService.Accounts
                 {
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepaymentMomocashCollection", IsCashOperation = false, OperationType = "Deposit" };
 
-                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.BulkDeposit, BulkOperation);
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
                         var transaction = response.ApiResponseData.Data;
                         Branch branch = RetrieveBranchFromSession();
-                        IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                        User user = await RetrieveUserFromSession(transaction.CreatedBy);
-                        var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
-                        var rptSource = new List<TransactionReportDS>();
-                        rptSource.Add(rpt);
+                        var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
                         HttpContext.Current.Session["rptSource"] = rptSource;
                         GetExecutionMessages(response, true, null, MessagesResults.Success,
                             ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
@@ -464,18 +442,14 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepayment")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepayment", IsCashOperation = true, OperationType = "Deposit" };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepayment", IsCashOperation = true, OperationType = "Deposit", };
 
-                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.BulkDeposit, BulkOperation);
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
                         var transaction = response.ApiResponseData.Data;
                         Branch branch = RetrieveBranchFromSession();
-                        IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                        User user = await RetrieveUserFromSession(transaction.CreatedBy);
-                        var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
-                        var rptSource = new List<TransactionReportDS>();
-                        rptSource.Add(rpt);
+                        var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
                         HttpContext.Current.Session["rptSource"] = rptSource;
                         GetExecutionMessages(response, true, null, MessagesResults.Success,
                             ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
@@ -493,16 +467,12 @@ namespace CBS.BusinessService.Accounts
                     if (IsSinglePeriodKind(bulkDeposits))
                     {
                         var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanFeePayment", Period = bulkDeposits.FirstOrDefault().Period, IsCashOperation = true, OperationType = "Deposit" };
-                        var response = await _transactionApiHelper.PostAsync<ServiceResponse<TransactionHistory>>(APICallHelper.BulkDeposit, BulkOperation);
+                        var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                         if (response.ApiResponseData != null)
                         {
                             var transaction = response.ApiResponseData.Data;
                             Branch branch = RetrieveBranchFromSession();
-                            IndividualProfile profile = await RetrieveCustomerFromSession(transaction.Account.CustomerId);
-                            User user = await RetrieveUserFromSession(transaction.CreatedBy);
-                            var rpt = MaprptSource(response.ApiResponseData.Data, branch, user, profile);
-                            var rptSource = new List<TransactionReportDS>();
-                            rptSource.Add(rpt);
+                            var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
                             HttpContext.Current.Session["rptSource"] = rptSource;
                             GetExecutionMessages(response, true, null, MessagesResults.Success,
                                 ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
@@ -742,15 +712,15 @@ namespace CBS.BusinessService.Accounts
                 if (cusResponseObject.Any())
                 {
                     var Accounts = cusResponseObject;
-                    var customer = await GetCustomer(customerId);
-                    var branch = await _branchServices.GetBranch(customer.BranchId);
+                    var customer = new IndividualProfile();
+                    var branch = await _branchServices.GetBranch(Accounts.FirstOrDefault().branchId);
                     var loans = new List<Loan>();
                     var WithdrawalNotifications = new List<WithdrawalNotification>();
                     var loanApplicationFees = new List<LoanApplicationFee>();
                     decimal amountRequested = 0;
                     if (path == "F5")
                     {
-                        loans = (from a in await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = "Open" }) select a).ToList();
+                        //loans = (from a in await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = "Open" }) select a).ToList();
 
                     }
                     else if (path == "repayment")
@@ -781,12 +751,50 @@ namespace CBS.BusinessService.Accounts
                         amountRequested = Accounts.FirstOrDefault(x => x.accountType == "Saving")?.WithdrawalNotifications.FirstOrDefault(x => x.IsNotificationPaid)?.AmountRequired ?? 0;
 
                     }
-                    customer.name = $"{customer.FirstName} {customer.LastName}";
+                    customer.name = $"{Accounts.FirstOrDefault().customerName}";
+                    customer.CustomerId = customerId;
                     var cashDesk = new CashDesk { Branch = branch, Accounts = Accounts, BulkDeposit = new BulkDeposit { Amount = amountRequested, CheckNumber = "N/A", CheckName = "N/A" }, BulkDeposits = BuidObject(Accounts), Customer = customer, LoanId = null, CustomerId = customerId, Loans = loans.ToList(), WithdrawalNotifications = WithdrawalNotifications, LoanApplicationFees = loanApplicationFees };
                     return cashDesk;
                 }
 
                 return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<List<MembersLoanDto>> GetMembersLoans(string customerId, string queryParameter)
+        {
+            try
+            {
+
+               var loans = (from loan in await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = queryParameter }) select new MembersLoanDto {
+                   Id = loan.Id,
+                   LoanApplicationId = loan.LoanApplicationId,
+                   Principal = loan.Principal,
+                   LoanAmount = loan.LoanAmount,
+                   InterestRate = loan.InterestRate,
+                   Paid = loan.Paid,
+                   Balance = loan.Balance,
+                   AccrualInterest = loan.AccrualInterest,
+                   Tax = loan.Tax,
+                   Penalty = loan.Penalty,
+                   LoanDate = loan.LoanDate.ToString("dd/MM/yyyy hh:mm:ss"),
+                   IsLoanDisbursed = loan.IsLoanDisbursted,
+                   CustomerId = loan.CustomerId, DueAmount=loan.DueAmount,
+                   LoanStatus = loan.LoanStatus,
+                   BranchCode = loan.BranchCode,
+                   CustomerName = loan.CustomerName,
+                   MaturityDate = loan.MaturityDate.ToString("dd/MM/yyyy hh:mm:ss"),
+                   NumberOfInstallments = loan.NumberOfInstallments,
+                   LoanType = loan.LoanType,
+                   RepaymentCycle = loan.RepaymentCycle
+
+               }).ToList();
+
+                return loans;
             }
             catch (Exception ex)
             {
@@ -847,7 +855,7 @@ namespace CBS.BusinessService.Accounts
                 var selected = accounts.Select(a => new BulkDeposit
                 {
                     AccountNumber = a.accountNumber,
-                    AccountType = a == null ? "N/A" : a.product.Name,
+                    AccountType = a.product.Name,
                     Amount = 0,
                     Balance = a == null ? 0 : a.balance,
                     currencyNotes = new CurrencyNotes(),

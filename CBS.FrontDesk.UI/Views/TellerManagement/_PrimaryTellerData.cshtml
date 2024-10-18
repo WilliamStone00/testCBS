@@ -3,7 +3,7 @@
     <legend>Teller Data</legend>
     @if (Model.Tellers.Any())
     {
-        <table class="table table-hover table-responsive" id="myDataTable">
+        <table class="table table-hover table-responsive table-auto" id="myDataTable">
             <thead class="table-light">
                 <tr>
                     <th>Teller</th>
@@ -19,12 +19,12 @@
                 @foreach (var d in Model.Tellers)
                 {
                     <tr>
-                        <td style="width:20%">@d.name</td>
-                        <td style="width:5%">@d.code</td>
-                        <td style="width:20%">
+                        <td>@d.name</td>
+                        <td>@d.code</td>
+                        <td>
                             @d.MinimumAmountToManage.ToString("#,##0.0") - @d.MaximumAmountToManage.ToString("#,##0.0")
                         </td>
-                        <td style="width:10%">
+                        <td>
                             @if (d.isPrimary)
                             {
                                 <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Primary</span></label>
@@ -34,7 +34,7 @@
                                 <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">-</span></label>
                             }
                         </td>
-                        <td style="width:10%">
+                        <td>
                             @if (d.activeStatus)
                             {
                                 <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Active</span></label>
@@ -44,9 +44,13 @@
                                 <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">In-Active</span></label>
                             }
                         </td>
-                        <td style="width:25%">@d.Branch.Name</td>
-                        <td style="width:10%">
+                        <td>@d.Branch.Name</td>
+                        <td>
                             <a href="#" onclick="AddORUpdateGen('@d.id','datalistingview','_PrimaryTeller','get','TellerManagement',null)" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit |</a>
+                            @if (d.TellerType == "MobileMoneyMTN" || d.TellerType == "MomocashCollectionMTN" || d.TellerType == "MomocashCollectionOrange" || d.TellerType == "MobileMoneyORANGE")
+                            {
+                                <a href="/TellerManagement/MMConfiguration?key=@d.id" target="_parent" class="mr-2" data-toggle="tooltip" data-placement="top" title="Configure @d.TellerType">MMConfig |</a>
+                            }
                             <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('TellerManagement','@d.id','myDataTable','_PrimaryTellerData',0,'datalistingview')">Delete</a>
                         </td>
                     </tr>
@@ -63,5 +67,4 @@
             </a>
         </div>
     }
-
 </fieldset>

@@ -9,67 +9,130 @@
 }
 
 <div class="card-body">
-    <div class="row gy-3">
-       
-        <div class="col-lg-12 col-sm-6">
-            <div class="card-header">
-                <h5 class="card-title">Balance</h5>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center flex-wrap gap-2">
-                        <div class="card-info">
+    <div class="row gy-4">
 
-                            <div class="d-flex align-items-center">
-                                <h4 class="mb-0">@Model.AccountBalance.totalBalance</h4>
-                            </div>
-                            @if (status)
-                            {
-                                <small>Total account balance</small>
-                            }
-                            else
-                            {
-                                @comment;
-                            }
-                        </div>
-                    </div>
-                </div>
+        <!-- Account Balance Section -->
+        <div class="card-header">
+            <h5 class="card-title">Account Balance</h5>
+        </div>
+        <div class="card-body">
+            <div class="balance-info">
+                <h3 class="mb-0 text-primary">@Model.AccountBalance.totalBalance</h3>
+                <small class="text-muted">
+                    @if (status) // Fixing the missing Model context
+                    {
+                        <small>Total account balance</small>
+                    }
+                </small>
             </div>
         </div>
-        <div class="card card-action mb-5">
-            @Html.Partial("_AddCustomerAccount")
-        </div>
-        <div class="card-header">
-            <h5 class="card-title">ACCOUNTS</h5>
-        </div>
-        @foreach (var account in Model.CustomerAccounts)
+
+        <!-- Customer Accounts Section -->
+        @if (Model.CustomerAccounts != null && Model.CustomerAccounts.Any())
         {
-            <div class="col-lg-6 col-sm-6">
+            <div class="col-lg-12">
                 <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Accounts Overview</h5>
+                    </div>
                     <div class="card-body">
-                        <div class="d-flex align-items-center flex-wrap gap-2">
-                            <div class="card-info">
-                                <div class="d-flex align-items-center">
-                                    <h5 class="mb-0">Balance: @account.balance</h5>
+                        <div class="row gy-4">
+                            @foreach (var account in Model.CustomerAccounts)
+                            {
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="account-details">
+                                                    <h6 class="mb-1">Balance: <span class="text-success">@account.balance.ToString("#,##0.00")</span></h6> <!-- Proper currency formatting -->
+                                                    <small>Account Name: <b>@account.product.Name</b></small><br />
+                                                    <small>Account Number: <b>@account.accountNumber</b></small><br />
+                                                </div>
+                                                <div class="action-links">
+                                                    @*<a class="btn btn-outline-secondary btn-sm" href="#" data-bs-toggle="modal" data-bs-target="#accountDetailsModal" onclick="loadAccountDetails('@account.id')">
+                                                        <i class="mdi mdi-information me-1"></i> Detail
+                                                    </a>*@
+                                                    <a class="btn btn-outline-secondary btn-sm" href="#">
+                                                        <i class="mdi mdi-information me-1"></i> Detail
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <small>Account Number: <b>@account.accountNumber</b></small><br />
-                                <small class="mb-0">Account Name: <b>@account.product.Name</b></small><br />
-                                <small class="mb-0">Account Status: <b>@account.status</b></small><br />
-                                <small class="mb-0">Date created: <b>@account.createdDate</b></small>
-                                <a class="nav-link" href="#"><i class="mdi mdi-history mdi-20px me-1"></i>View transactions</a>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
         }
-        <div class="card card-action mb-5">
-            @Html.Partial("_MemberAccountActivation")
+        else
+        {
+            <!-- No Accounts Alert -->
+            <div class="col-lg-12">
+                <div class="alert alert-warning text-center" role="alert">
+                    <h5 class="alert-heading"><i class="mdi mdi-alert"></i> No Accounts Found</h5>
+                    <p>@Model.CustomerList.name does not have any accounts associated with his/her profile.</p>
+                    <hr>
+                    <p class="mb-0">Please add new accounts to start managing financial transactions.</p>
+                </div>
+            </div>
+        }
+
+        <!-- Add New Customer Account Section -->
+        <div class="col-lg-12">
+            <div class="card card-action shadow-sm">
+                <div class="card-body">
+                    @Html.Partial("_AddCustomerAccount")
+                </div>
+            </div>
         </div>
 
-        <div class="card card-action mb-5">
-            @Html.Partial("_DeleteProfile")
+        <!-- Delete Profile Section -->
+        <div class="col-lg-12">
+            <div class="card card-action shadow-sm">
+                <div class="card-body">
+                    @Html.Partial("_DeleteProfile")
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Account Details Modal (ensure you include this modal code) -->
+<div class="modal fade" id="accountDetailsModal" tabindex="-1" aria-labelledby="accountDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="accountDetailsModalLabel">Account Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent">
+                    <p class="text-center">Loading details...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to load account details into the modal
+    function loadAccountDetails(accountId) {
+        $.ajax({
+            url: '@Url.Action("GetAccountDetails", "Individual")', // Ensure this controller action is implemented
+            type: 'GET',
+            data: { id: accountId },
+            success: function (response) {
+                $('#modalContent').html(response);
+            },
+            error: function () {
+                $('#modalContent').html('<p class="text-danger">Failed to load account details.</p>');
+            }
+        });
+    }
+</script>
 

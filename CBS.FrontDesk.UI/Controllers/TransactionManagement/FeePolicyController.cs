@@ -1,4 +1,6 @@
 ﻿
+using CBS.BusinessService;
+using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
@@ -20,17 +22,23 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         // GET: FeePolicy
         private readonly FeePolicyServices _services;
         private readonly OperationFeeServices _feeServices;
-        public FeePolicyController(FeePolicyServices services, OperationFeeServices feeServices = null)
+        private readonly BankServices _bankServices;
+        private readonly BranchServices _branchServices;
+        private readonly ChartOfAccountServicesAnnex _accountingServices;
+
+        public FeePolicyController(FeePolicyServices services, OperationFeeServices feeServices = null, BankServices bankServices = null, BranchServices branchServices = null, ChartOfAccountServicesAnnex accountingServices = null)
         {
             _services = services;
             _feeServices = feeServices;
+            _bankServices = bankServices;
+            _branchServices = branchServices;
+            _accountingServices = accountingServices;
         }
 
         public async Task<ActionResult> Index()
         {
-            var fees = await _feeServices.GetFees();
-            ViewBag.Fees = fees;
-            return View();
+            await GetEventNames("FEE");
+            return View(new FeePolicy());
         }
         [HttpPost]
         public async Task<ActionResult> Create(FeePolicy model)
@@ -52,7 +60,18 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var data = await _services.Update(model);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
         }
+        private async Task GetEventNames(string operationType)
+        {
+            var fees = await _feeServices.GetFees();
+            var Banks = await _bankServices.GetBanks();
+            var branches = await _branchServices.GetBranches();
+            ViewBag.Fees = fees;
+            ViewBag.Banks = Banks;
+            ViewBag.Branches = branches;
 
+            ViewBag.EventCodes = await _accountingServices.GetEventNames(operationType);
+
+        }
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
             if (path == "list")
@@ -63,19 +82,18 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
             else if (path == "new")
             {
-                var fees = await _feeServices.GetFees();
-                ViewBag.Fees = fees;
+                await GetEventNames("FEE");
                 return PartialView(partialView, new FeePolicy());
             }
             else
             {
+                await GetEventNames("FEE");
+
                 ViewBag.Key = KEY;
-                var fees = await _feeServices.GetFees();
-                ViewBag.Fees = fees;
-       
-                var Guaranty = await _services.GetFeePolicy(KEY);
-                ViewBag.Base = Guaranty.Fee.FeeType;
-                return PartialView(partialView, Guaranty);
+                var feePolicy = await _services.GetFeePolicy(KEY);
+                ViewBag.Base = feePolicy.Fee.FeeType;
+                ViewBag.MemberShip = feePolicy.Fee.OperationFeeType;
+                return PartialView(partialView, feePolicy);
 
             }
         }
@@ -89,6 +107,16 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {
             var data = await _feeServices.GetFee(Key);
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        public async Task<ActionResult> Ajaxloader(string Key, string path)
+        {
+            if (Key != null)
+            {
+                var listing = await _branchServices.GetBranchesByBankId(Key);
+                return Json(listing, JsonRequestBehavior.AllowGet);
+
+            }
+            return Json(null, JsonRequestBehavior.AllowGet);
         }
     }
 

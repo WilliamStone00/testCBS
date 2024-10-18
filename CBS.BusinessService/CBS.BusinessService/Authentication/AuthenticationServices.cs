@@ -17,6 +17,7 @@ namespace CBS.FrontDesk.Service
     public interface IAuthenticationServices
     {
         Task<ExecutionMessages> AuthenticateUser(AuthRequest request);
+        Task<ExecutionMessages> Logout();
     }
 
     public class AuthenticationServices : BaseService, IAuthenticationServices
@@ -63,6 +64,36 @@ namespace CBS.FrontDesk.Service
 
             }
             GetExecutionMessages(null, false, request.UserName, MessagesResults.Failed,
+                ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
+                errormessage);
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> Logout()
+        {
+            string errormessage = null;
+            try
+            {
+                var logoutSessionCommand = new AddLogoutSessionCommand { UserId = ConvertStringToGuid(GetUserID()) };
+                var response = await _identityServer.PostAsync<ResponseObject<bool>>(APICallHelper.SessionLogout, logoutSessionCommand);
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(null, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.LoginSuccessful, SystemMessageStatus.Success.ToString(), null,
+                        response.Message);
+                    return ExecutionMessage;
+
+                }
+
+                errormessage = response.Message;
+            }
+            catch (Exception ex)
+            {
+
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+
+            }
+            GetExecutionMessages(null, false, null, MessagesResults.Failed,
                 ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
                 errormessage);
             return ExecutionMessage;

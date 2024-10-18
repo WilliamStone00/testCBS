@@ -75,14 +75,9 @@
             if (byBranchCheckbox.checked) {
                 branchDiv.style.display = 'block';
                 tellerDiv.style.display = 'none';
-                byTellerCheckbox.checked = false; // Uncheck the Teller checkbox
             } else if (byTellerCheckbox.checked) {
                 tellerDiv.style.display = 'block';
                 branchDiv.style.display = 'none';
-                byBranchCheckbox.checked = false; // Uncheck the Branch checkbox
-            } else {
-                branchDiv.style.display = 'block';
-                tellerDiv.style.display = 'block';
             }
         }
 
@@ -97,6 +92,8 @@
         byBranchCheckbox.addEventListener('change', function () {
             if (byBranchCheckbox.checked) {
                 byTellerCheckbox.checked = false;
+            } else {
+                byTellerCheckbox.checked = true; // Ensure the other is checked if unchecked
             }
             toggleDivs();
         });
@@ -104,6 +101,8 @@
         byTellerCheckbox.addEventListener('change', function () {
             if (byTellerCheckbox.checked) {
                 byBranchCheckbox.checked = false;
+            } else {
+                byBranchCheckbox.checked = true; // Ensure the other is checked if unchecked
             }
             toggleDivs();
         });

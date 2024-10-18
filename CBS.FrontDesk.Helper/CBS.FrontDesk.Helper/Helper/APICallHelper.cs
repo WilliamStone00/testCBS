@@ -9,7 +9,7 @@
         public static string MFAAuthentication = "/api/v1/MFA/MFALogin";
         public static string Authentication = "/api/Authentication/Session/Login";
         public static string RefreshToken = " /api/Authentication/Session/RefreshToken";
-
+        public static string SessionLogout = "/api/UserSession/Logout";
 
         //CreateMemberAccountActivation
         public static string CreateMemberAccountActivation = "/api/v1/MemberAccountActivation";
@@ -41,9 +41,12 @@
         public static string UploadProfilePhoto = "/api/User/UpdateUserProfilePhoto";
         public static string GetRecentRegisteredUsers = "/api/User/GetRecentlyRegisteredUsers";
         public static string UpdateUser = "/api/User/{0}";
-        //FLoginChangePasswordCommand
-        //Role
-        public static string Get_Update_Delete_Role = "/api/Role/{0}";
+        public static string GetUserSessions = "/api/UserSession/GetUser/Sessions/{0}";
+        
+    
+    //FLoginChangePasswordCommand
+    //Role
+    public static string Get_Update_Delete_Role = "/api/Role/{0}";
         public static string GetAllRoles = "/api/Role";
         public static string CreateRole = "/api/Role";
         //
@@ -118,6 +121,8 @@
         ///api/v1/Customers/{BranchId}
         public static string CreateIndividualProfile = "/api/v1/Customer";
         public static string SearchByAnyCriterialQuery = "/api/v1/Customers/SearchByAnyCriterialQuery";
+        public static string GetAllByParameters = "/api/v1/Customer/GetAllByParameters";
+
         public static string AllCustomers = "/api/v1/Customers";
         public static string GetAllIndividualProfileByBranch = "/api/v1/Customers/{0}";
         public static string SubcriptionAggregates = "/api/v1/SubcriptionAggregates";
@@ -182,7 +187,7 @@
         public static string GetAllTransactionsByDatesAndCustomerIDQuery = "/api/v1/Transaction/GetAllTransactionsByDatesAndCustomerIDQuery";
         public static string AccountMigration = "/api/v1/Account/AccountMigration";
 
-        public static string GetAllTransactions = "/api/v1/Transaction";
+        public static string GetTransactionsByQueryParameters = "/api/v1/Transaction/GetTransactionsByQueryParameters";
         public static string GetTransaction = "/api/v1/Transaction/{0}";
         //Teller
         public static string PrimaryTellerProvisioning = "/api/v1/Teller/Dinomination/Provisioning/PrimaryTeller";
@@ -224,6 +229,7 @@
 
         //Teller
         public static string Get_Update_Delete_Teller = "/api/v1/Teller/{0}";
+        public static string MobileMoneyTellerConfiguration = "/api/v1/Teller/MobileMoney/Configuration/{0}";
         public static string GetAllTeller = "/api/v1/Teller";
         public static string CreateTeller = "/api/v1/Teller";
         //DailyTeller
@@ -261,6 +267,13 @@
         public static string CreateSubTellerCashReplenishment = "/api/v1/SubTellerCashReplenishment/Request";
         public static string ValidateSubTellerCashReplenishment = "/api/v1/SubTellerCashReplenishment/RequestValidation/{0}";
         public static string GetAllApendingSubTellerCashReplenishment = "/api/v1/SubTellerCashReplenishment/Request/Pending";
+
+        //MobileMoneyCashTopup
+        public static string GetMobileMoneyCashTopup = "/api/v1/MobileMoneyCashTopup/Request/{0}";
+        public static string GetAllMobileMoneyCashTopup = "/api/v1/MobileMoneyCashTopup/Requests";
+        public static string CreateMobileMoneyCashTopup = "/api/v1/MobileMoneyCashTopup/Request";
+        public static string ValidateMobileMoneyCashTopup = "/api/v1/MobileMoneyCashTopup/RequestValidation/{0}";
+        public static string DeleteMobileMoneyCashTopup = "/api/v1/MobileMoneyCashTopup/Request/Delete/{0}";
 
         //SubTellerCashReplenishment/Request/Pending
         //OtherTransaction
@@ -325,7 +338,7 @@
         public static string CreateCurrency = "/api/v1/Currency";
         //Branch
         public static string Get_Update_Delete_Branch = "/api/v1/Branch/{0}";
-        public static string GetBranchesByBankID = "api/v1/Branch/GetBranchsByBank/{bankid}";
+        public static string GetBranchesByBankID = "api/v1/Branch/GetBranchsByBank/{0}";
         ///api/v1/Branch/GetBranchsByBank/{bankid}
         public static string GetAllBranch = "/api/v1/Branchs";
         public static string CreateBranch = "/api/v1/Branch";

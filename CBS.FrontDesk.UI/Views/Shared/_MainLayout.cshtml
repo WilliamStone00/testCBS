@@ -287,6 +287,14 @@
                 font-weight: bold;
                 margin-bottom: 10px;
             }
+        .underline-text {
+            text-decoration: underline;
+        }
+        .underline-blue-bold {
+            text-decoration: underline;
+            text-decoration-color: blue;
+            font-weight: bold;
+        }
 
         .image-preview img {
             width: auto;
@@ -969,15 +977,15 @@
                 <div class="content-wrapper" style="padding-top: 1px; padding-bottom: 1px; padding-left: 1px; padding-right: 1px;">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <div class="col-12">
-                            <div class="card mb-4">
-                                <div class="card-body d-sm-flex d-block">
-                                    <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                        @Html.MvcSiteMap().SiteMapPath()
+                        @*<div class="col-12">
+                                <div class="card mb-4">
+                                    <div class="card-body d-sm-flex d-block">
+                                        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                                            @Html.MvcSiteMap().SiteMapPath()
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </div>*@
                         <div id="connectionModal" style="display:none; background-color: red; color: white; padding: 20px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; text-align: center; font-size: 36px;">
                             <span id="connectionMessage"></span>
                         </div>
@@ -1049,12 +1057,11 @@
     <!-- Main JS -->
     <script src="~/CBSTemp/ui/assets/js/main.js"></script>
 
-    @*<script src="~/CBSTemp/ui/assets/js/form-validation.js"></script>*@
+    <script src="~/CBSTemp/ui/assets/js/form-validation.js"></script>
     <script src="~/CBSTemp/ui/assets/js/form-layouts.js"></script>
     <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
     <script src="~/Scripts/Js/main.js/ConnectionMonitor.js"></script>
     @*<script src="~/Scripts/Js/main.js/NotificationMonitor.js"></script>*@
-
     <script src="~/signalr/hubs"></script>
     <script src="~/Scripts/Js/main.js/App.js"></script>
     <script src="~/CBSTemp/ui/assets/js/ui-toasts.js"></script>
@@ -1083,8 +1090,22 @@
             });
         </script>*@
     <script>
+        $(function () {
+            var connection = new signalR.HubConnectionBuilder().withUrl("/sessionHub").build();
 
+            connection.on("Logout", function (message) {
+                alert(message); // Notify the user
+                window.location.href = '/Authentication/Logout'; // Redirect to logout page
+            });
+
+            connection.start().then(function () {
+                console.log("Connected to SessionHub");
+            }).catch(function (err) {
+                console.error("Failed to connect to SessionHub: " + err.toString());
+            });
+        });
     </script>
+
 
 
     <script>

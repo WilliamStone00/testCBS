@@ -53,15 +53,15 @@ $(document).on('input', '.amount-input, .fee-input, .interest-input, .penalty-in
 function calculateTableTotal() {
     var total = 0;
     $('.total-span').each(function () {
-        total += parseFloat($(this).text());
+        total += parseFloat($(this).text()) || 0;
     });
 
     // Calculate balance
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
+    var totalNotes = parseFloat($("#totalNoteAmount").val()) || 0;
     var balance = totalNotes - total;
 
-    // Update balance in the table footer
-    var formattedBalance = balance.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
+    // Update balance in the table footer with separators (no currency)
+    var formattedBalance = balance.toLocaleString('en-US'); // No currency, just thousand separators
     $('#tableBalance').text(formattedBalance);
 
     // Change color of balance text if negative
@@ -90,8 +90,8 @@ function calculateTableTotal() {
         iconColor = 'text-danger';
     }
 
-    // Append the total value to the tableTotal cell
-    var formattedTotal = total.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
+    // Append the total value to the tableTotal cell with separators (no currency)
+    var formattedTotal = total.toLocaleString('en-US'); // No currency, just thousand separators
     $('#tableTotal').html(`<span>${formattedTotal}</span>`);
     // Append the icon after the total value
     $('#tableTotal').append(` <i class="${iconClass} total-icon ${iconColor}"></i>`);
@@ -102,6 +102,20 @@ function calculateTableTotal() {
     } else {
         $('#submit').prop('disabled', true); // Disable the button
     }
+}
+
+function calculateVat(interestInput, vatRate) {
+    // Get the entered interest amount from the input
+    var interestAmount = parseFloat(interestInput.value) || 0;
+
+    // Calculate the VAT based on the interest amount and the vatRate from the specific row
+    var calculatedVat = interestAmount * (vatRate / 100);
+
+    // Format the calculated VAT with thousand separators (no currency symbol)
+    var formattedVat = calculatedVat.toLocaleString('en-US');
+
+    // Display the formatted VAT in the "calculatedVat" footer cell
+    document.getElementById("calculatedVat").innerText = formattedVat;
 }
 
 
@@ -174,6 +188,10 @@ function collectDeposits() {
             deposit.LoanApplicationId = $(this).find('.loan-application-id').val();
             deposit.Period = $(this).find('.period').val();
             deposits.push(deposit);
+            deposits.PaymentMethod = 'Cash';
+            deposits.PaymentChannel = 'Web_Portal';
+
+
         }
     });
 
@@ -220,7 +238,11 @@ function resetDepositorForm() {
     $('#Note').val('')
 }
 function Reprint() {
-    ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
+    ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLessWithSubReports");
+
+}
+function ReprintLoan() {
+    ReportView("CashDesk", null, "GetReport", null, null, "loan", "ReportParameterLessWithSubReports");
 
 }
 function confirmTransaction(title, message, ajaxUrl, data, operationType) {
@@ -627,3 +649,156 @@ function AjaxPostAndUpdate(form) {
 
 
 }
+
+var selectedLoanId;
+var selectedVatRate;
+
+// Function to open modal and store selected row's LoanId and VatRate
+
+//function updateTotal() {
+//    // Get the raw input values without formatting
+//    var amount = parseFloat(document.getElementById('modalAmount').value.replace(/,/g, '')) || 0;
+//    var interest = parseFloat(document.getElementById('modalInterest').value.replace(/,/g, '')) || 0;
+//    var penalty = parseFloat(document.getElementById('modalPenalty').value.replace(/,/g, '')) || 0;
+
+//    // Calculate the total
+//    var total = amount + interest + penalty;
+
+//    // Display the formatted total (using XAF currency format)
+//    document.getElementById('modalTotalAmount').value = `XAF ${total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+//}
+
+// Apply formatting only when leaving the input field (onblur event)
+function formatAmount(input) {
+    var value = parseFloat(input.value.replace(/,/g, '')) || 0;
+    input.value = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+
+
+// Function to open the payment modal and set the initial values
+function openPaymentModal(loanId, accrualInterest, balance) {
+    // Set the values in the modal
+    console.log(loanId);
+    document.getElementById('modalLoanId').value = loanId;
+    document.getElementById('modalAccrualInterest').value = accrualInterest;
+    document.getElementById('modalBalance').value = balance;
+
+    // Clear previous values
+    document.getElementById('modalAmount').value = '0';
+    document.getElementById('modalInterest').value = '0';
+    document.getElementById('modalPenalty').value = '0';
+    document.getElementById('modalTotalAmount').value = '0';
+
+    // Show the modal
+    var paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+    paymentModal.show();
+}
+
+// Function to apply modal values to the table row
+// Function to update the total amount in the modal
+function updateTotal() {
+    var amount = parseFloat(document.getElementById('modalAmount').value) || 0;
+    var interest = parseFloat(document.getElementById('modalInterest').value) || 0;
+    var penalty = parseFloat(document.getElementById('modalPenalty').value) || 0;
+
+    // Calculate total (capital + interest + penalty)
+    var total = amount + interest + penalty;
+
+    // Format the total amount for display
+    document.getElementById('modalTotalAmount').value = 'XAF ' + total.toLocaleString('en-US', { minimumFractionDigits: 2 });
+}
+
+// Function to apply the payment values from the modal to the table row
+function applyPayment() {
+    var loanId = document.getElementById('modalLoanId').value;
+    var amount = parseFloat(document.getElementById('modalAmount').value) || 0;
+    var interest = parseFloat(document.getElementById('modalInterest').value) || 0;
+    var penalty = parseFloat(document.getElementById('modalPenalty').value) || 0;
+
+    // Update the row with the values entered from the modal
+    var capitalInput = document.getElementById('capital-' + loanId);
+    var interestInput = document.getElementById('interest-' + loanId);
+    var penaltyInput = document.getElementById('penalty-' + loanId);
+    var totalSpan = document.getElementById('total-' + loanId);
+
+    // Check if elements are found
+    if (!capitalInput || !interestInput || !penaltyInput || !totalSpan) {
+        console.error("One or more elements not found. Check your IDs and ensure they match.");
+        return;
+    }
+
+    // Update the row with entered values
+    capitalInput.value = amount;
+    interestInput.value = interest;
+    penaltyInput.value = penalty;
+
+    // Calculate total (capital + interest + penalty)
+    var total = amount + interest + penalty;
+    totalSpan.innerText = total;
+    calculateTableTotal();
+    // Calculate VAT based on the entered interest
+    calculateVat(interestInput, selectedVatRate);
+
+    // Close the modal
+    var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+    paymentModal.hide();
+}
+
+
+// VAT calculation function
+function calculateVat(interestInput, vatRate) {
+    // Parse the interest value from the input
+    var interest = parseFloat(interestInput.value) || 0;
+
+    // Calculate VAT based on the vatRate
+    var vat = interest * vatRate / 100;
+
+    // Format VAT with thousands separators and two decimal places
+    var formattedVat = vat.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+    // Display the formatted VAT amount
+    document.getElementById('calculatedVat').innerText = `${formattedVat}`;
+}
+
+// Function to open the loan details modal and populate it with data
+
+
+function showLoanDetails(loan) {
+    // Format amounts with thousands separators
+    const formatCurrency = (amount) => {
+        return `XAF ${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    };
+
+    // Format percentage
+    const formatPercentage = (value) => {
+        const numberValue = parseFloat(value);
+        if (isNaN(numberValue)) return 'N/A';
+        return `${numberValue.toFixed(1)}%`;
+    };
+
+    // Populate modal fields with loan details
+    document.getElementById('detailLoanDate').innerText = moment(loan.LoanDate).format('DD/MM/YYYY HH:mm:ss');
+    document.getElementById('detailLoanAmount').innerText = formatCurrency(loan.LoanAmount);
+    document.getElementById('detailBalance').innerText = formatCurrency(loan.Balance);
+    document.getElementById('detailInterest').innerText = formatCurrency(loan.AccrualInterest);
+    document.getElementById('detailDueAmount').innerText = formatCurrency(loan.DueAmount);
+    document.getElementById('detailPenalty').innerText = formatCurrency(loan.Penalty);
+
+    // Format and populate percentage fields
+    document.getElementById('interestRate').innerText = formatPercentage(loan.InterestRate);
+    document.getElementById('vatRate').innerText = formatPercentage(loan.VatRate);
+
+    console.log(loan.VatRate)
+
+    // Show the modal
+    var loanDetailsModal = new bootstrap.Modal(document.getElementById('loanDetailsModal'));
+    loanDetailsModal.show();
+}
+
+//function formatPercentage(value) {
+//    // Ensure value is a number
+//    const numberValue = parseFloat(value);
+//    if (isNaN(numberValue)) return 'N/A';
+//    return `${numberValue.toFixed(2)}%`;
+//}

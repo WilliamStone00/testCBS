@@ -20,6 +20,7 @@
                         <th>charges</th>
                         <th>Value</th>
                         <th>type</th>
+                        <th>Branch</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -27,12 +28,13 @@
                     @foreach (var d in Model)
                     {
                         <tr>
-                            <td style="width:38%">@d.Fee.Name</td>
+                            <td style="width:23%">@d.Fee.Name</td>
                             <td style="width:10%">@d.AmountFrom.ToString("#,##0.0")</td>
                             <td style="width:10%">@d.AmountTo.ToString("#,##0.0")</td>
                             <td style="width:10%">@d.Charge.ToString("#,##0.0")</td>
                             <td style="width:10%">@d.Value.ToString("#,##0.0")</td>
                             <td style="width:10%">@d.Fee.FeeType</td>
+                            <td style="width:15%">@d.BranchName</td>
                             <td style="width:13%">
                                 <a href="#" onclick="AddORUpdateGenCustom('@d.Id','datalistingview','_Create','update','FeePolicy',null,'@d.FeeId')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Fee.Name to edit">Edit</a> |
                                 <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Fee.Name" onclick="DeleteRecordDataTable('FeePolicy','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>

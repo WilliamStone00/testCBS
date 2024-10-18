@@ -3,34 +3,35 @@
 {
 
     @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.RequestedAmount)
     <fieldset class="fieldset-custom">
         <legend id="select_base">Request Validation</legend>
         <div class="row mt-2 gy-4">
             @*<div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                <span class="formatted-amount shadow-box float-start">Amount Requested: @Model.RequestedAmount.ToString("#,##0.0")</span>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Requested Info: @Model.RequesterName, @Model.InitializeDate</span>
-            </div>
-        </div>*@
+                    <div class="form-floating form-floating-outline">
+                        <span class="formatted-amount shadow-box float-start">Amount Requested: @Model.RequestedAmount.ToString("#,##0.0")</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Requested Info: @Model.RequesterName, @Model.InitializeDate</span>
+                    </div>
+                </div>*@
             @*<div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.TextAreaFor(m => m.Requetcomment, new { @class = "form-control", @style = "height: 70px;" })
-                @Html.ValidationMessageFor(m => m.Requetcomment, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Provisioing Note</label>
-            </div>
-        </div>
-        <legend>Validation</legend>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.ConfirmedAmount, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.ConfirmedAmount, "", new { @class = "text-danger " })
-                <label>Validated amount</label>
-            </div>
-        </div>*@
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextAreaFor(m => m.Requetcomment, new { @class = "form-control", @style = "height: 70px;" })
+                        @Html.ValidationMessageFor(m => m.Requetcomment, "", new { @class = "text-danger " })
+                        <label for="formValidationDob">Provisioing Note</label>
+                    </div>
+                </div>
+                <legend>Validation</legend>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.ConfirmedAmount, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ConfirmedAmount, "", new { @class = "text-danger " })
+                        <label>Validated amount</label>
+                    </div>
+                </div>*@
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     <span class="formatted-amount shadow-box float-start">Requested Amount: @Model.RequestedAmount.ToString("#,##0.0")</span>

@@ -35,7 +35,6 @@ namespace CBS.FrontDesk.UI.Controllers
         
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(AuthRequest model, string returnUrl = "")
         {
             var result = new ExecutionMessages();
@@ -142,13 +141,13 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
         [AllowAnonymous]
-        public ActionResult Logout()
+        public async Task<ActionResult> Logout()
         {
 
             FormsAuthentication.SignOut();
-
             // List of all cookies to clear
             var cookieNames = new[]{ "BranchObject", "AuthUser", "CBS4U", "CBS4U_MFA", "MFA", "PWD", "ASP.NET_SessionId", "EncryptedJWToken"};
+            await _helper.Logout();
 
             foreach (var cookieName in cookieNames)
             {
@@ -168,7 +167,6 @@ namespace CBS.FrontDesk.UI.Controllers
             Session.Abandon();
             Session.Clear();
             Session.RemoveAll();
-
             // Redirect to login page
             return RedirectToAction("Login");
         }

@@ -1,5 +1,6 @@
 ﻿using CBS.BusinessService.Accounts;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.Message;
 using System;
 using System.Collections.Generic;
@@ -38,10 +39,10 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             try
             {
                 ViewBag.Option = "Primary";
-                var account = await _accountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", true));
-                ViewBag.Error = account.ErrorMessage;
-                ViewBag.HasError = account.HasError;
-                return View(new OpeningOfTheDay { OpenningOfDayRequest = new OpenningOfDayRequest { Comment = $"As Primary Teller, {Session["FullName"].ToString()} is commencing operations for the day on [{DateTime.Now}] with a total balance of {account.CashAtHand.ToString("#,##0")}.", Amount = account.CashAtHand, InitialAmount = account.CashAtHand, CurrencyNotes = account.CloseOfDayRequest.CurrencyNotes } });
+                var openOfDay = await _accountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", true));
+                ViewBag.Error = openOfDay.ErrorMessage;
+                ViewBag.HasError = openOfDay.HasError;
+                return View(new OpeningOfTheDay { OpenningOfDayRequest = new OpenningOfDayRequest { AccountingDay = openOfDay.AccountingDay, Comment = $"As Primary Teller, {Session["FullName"].ToString()} is commencing operations for the day on [{openOfDay.AccountingDay}] with a total balance of {openOfDay.CashAtHand.ToString("#,##0")}. Date: [{DateTime.Now}]", Amount = openOfDay.CashAtHand, InitialAmount = openOfDay.CashAtHand, CurrencyNotes = openOfDay.CloseOfDayRequest.CurrencyNotes } });
 
             }
             catch (Exception ex)
@@ -53,17 +54,17 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         public async Task<ActionResult> SubTeller()
         {
             ViewBag.Option = "SubTeller";
-            var tellerProvioningHistory = await _accountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", false));
-            ViewBag.Error = tellerProvioningHistory.ErrorMessage;
-            ViewBag.HasError = tellerProvioningHistory.HasError;
-            if (tellerProvioningHistory.CashAtHand==0 && !tellerProvioningHistory.HasError)
+            var openOfDay = await _accountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", false));
+            ViewBag.Error = openOfDay.ErrorMessage;
+            ViewBag.HasError = openOfDay.HasError;
+            if (openOfDay.CashAtHand==0 && !openOfDay.HasError)
             {
                 ViewBag.HasNoBalance = true;
-                ViewBag.Error = $"The current balance of Teller {tellerProvioningHistory.Teller.name} is 0. Kindly make a cash request";
+                ViewBag.Error = $"The current balance of Teller {openOfDay.Teller.name} is 0. Kindly make a cash request";
             }
             
 
-            return View(new OpeningOfTheDay { OpenningOfDayRequest = new OpenningOfDayRequest { Amount = tellerProvioningHistory.CashAtHand, InitialAmount = tellerProvioningHistory.CashAtHand, CurrencyNotes = tellerProvioningHistory.CloseOfDayRequest.CurrencyNotes, Comment = $"As Sub-Teller {Session["FullName"].ToString()}, I hereby commence today's operations on [{DateTime.Now}] with an opening balance of {tellerProvioningHistory.CashAtHand.ToString("#,##0")}." }
+            return View(new OpeningOfTheDay { OpenningOfDayRequest = new OpenningOfDayRequest { AccountingDay = openOfDay.AccountingDay, Amount = openOfDay.CashAtHand, InitialAmount = openOfDay.CashAtHand, CurrencyNotes = openOfDay.CloseOfDayRequest.CurrencyNotes, Comment = $"As Sub-Teller {Session["FullName"].ToString()}, I hereby commence today's operations on [{openOfDay.AccountingDay}] with an opening balance of {openOfDay.CashAtHand.ToString("#,##0")}. Date: [{DateTime.Now}]" }
         });
         }
 

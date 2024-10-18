@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -117,6 +118,101 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public int Skip { get; set; }
         public int TotalPages { get; set; }
     }
+    public class CustomerListingDto
+    {
+
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string BankingRelationship { get; set; } //This is an enum//  1.  CB-Customer  2. NCB-Non-customer
+        public DateTime RegistrationDate { get; set; }
+        public string IDNumber { get; set; }
+        public string IDNumberIssueDate { get; set; }
+        public string MembershipApprovalStatus { get; set; }
+        public string Address { get; set; }
+        public string BranchId { get; set; }
+        public string PhoneNumber { get; set; }
+    }
+    public class ReportQuerTemplate : IValidatableObject
+    {
+        public bool ByBranch { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Date From")]
+        public string DateFrom { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Date To")]
+        public string DateTo { get; set; }
+
+        [Required(ErrorMessage = "Branch is required.")]
+        public string BranchId { get; set; }
+
+        [Required(ErrorMessage = "Members Status Type is required.")]
+        public string MembersStatusType { get; set; } // None Members, Members, Both
+
+        [Required(ErrorMessage = "Legal Form Status is required.")]
+        public string LegalFormStatus { get; set; } // Moral_Person, Physical_Person, Both
+
+        [Required(ErrorMessage = "Query Parameter is required.")]
+        public string QueryParameter { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var validationResults = new List<ValidationResult>();
+
+            // Validate DateFrom and DateTo only if QueryParameter is ByDate
+            if (QueryParameter == "ByDate")
+            {
+                if (string.IsNullOrWhiteSpace(DateFrom))
+                {
+                    validationResults.Add(new ValidationResult(
+                        "Date From is required when Query Parameter is ByDate.",
+                        new[] { nameof(DateFrom) }));
+                }
+
+                if (string.IsNullOrWhiteSpace(DateTo))
+                {
+                    validationResults.Add(new ValidationResult(
+                        "Date To is required when Query Parameter is ByDate.",
+                        new[] { nameof(DateTo) }));
+                }
+                else
+                {
+                    // Validate DateFrom and DateTo if both are provided
+                    DateTime fromDate;
+                    DateTime toDate;
+
+                    if (DateTime.TryParse(DateFrom, out fromDate) && DateTime.TryParse(DateTo, out toDate))
+                    {
+                        if (fromDate > toDate)
+                        {
+                            validationResults.Add(new ValidationResult(
+                                "The DateFrom must be less than or equal to DateTo.",
+                                new[] { nameof(DateFrom), nameof(DateTo) }));
+                        }
+                    }
+                    else
+                    {
+                        validationResults.Add(new ValidationResult(
+                            "Invalid date format for DateFrom or DateTo.",
+                            new[] { nameof(DateFrom), nameof(DateTo) }));
+                    }
+                }
+            }
+
+            // BranchId must be present at all times
+            if (string.IsNullOrEmpty(BranchId))
+            {
+                validationResults.Add(new ValidationResult(
+                    "Branch is required.",
+                    new[] { nameof(BranchId) }));
+            }
+
+            return validationResults;
+        }
+    }
+
+
 
     public class CustomerDocument
     {

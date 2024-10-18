@@ -21,7 +21,7 @@ using CBS.FrontDesk.Data.Entity.Accounting;
 using System.Net.Sockets;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data;
- 
+
 namespace CBS.API.Helper
 {
     public class ApiCallerHelper : IDisposable
@@ -360,7 +360,7 @@ namespace CBS.API.Helper
             catch (Exception EX)
             {
 
-                throw(EX);
+                throw (EX);
             }
         }
         public async Task<List<AccountingEntry>> PostAccountingAsync(string apiUrl, object data)
@@ -523,7 +523,7 @@ namespace CBS.API.Helper
             }
         }
 
-       
+
 
         //private async Task<ApiResponse<T>> HandleResponse<T>(HttpResponseMessage response)
         //{
@@ -615,7 +615,7 @@ namespace CBS.API.Helper
                 throw (ex);
             }
         }
-        
+
         private async Task<ApiResponse<T>> HandleResponse<T>(HttpResponseMessage response)
         {
             string message = null;
@@ -640,7 +640,7 @@ namespace CBS.API.Helper
                                 Message = $"Request failed with status code {(int)response.StatusCode}, Message: The server is requesting authorization token."
                             };
                         }
-                        
+
                         else if (response.StatusCode == HttpStatusCode.InternalServerError)
                         {
                             return new ApiResponse<T>
@@ -687,7 +687,8 @@ namespace CBS.API.Helper
                             return new ApiResponse<T>
                             {
                                 IsSuccess = true,
-                                ApiResponseData = data
+                                ApiResponseData = data,
+                                Message = statusDescription + " " + message
                             };
                         }
                         else
@@ -1026,7 +1027,7 @@ namespace CBS.API.Helper
             {
                 if (response.Content != null)
                 {
-                      responseData = await response.Content.ReadAsStringAsync();
+                    responseData = await response.Content.ReadAsStringAsync();
 
                     entries = JsonConvert.DeserializeObject<UploadAccountResultServiceResponse>(responseData);
                 }

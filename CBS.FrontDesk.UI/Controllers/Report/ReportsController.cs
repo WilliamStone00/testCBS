@@ -1,5 +1,6 @@
 using CBS.BusinessService.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.ReportDataSetDto;
 using ClosedXML.Excel;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
@@ -74,14 +75,119 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
+        public void ReportParameterLessWithSubReports()
+        {
+            try
+            {
+                // Retrieve parameters from session
+                string strReportName = HttpContext.Session["ReportName"]?.ToString();
+                var rptSource = HttpContext.Session["rptSource"];
+                var rptpath = HttpContext.Session["rptpath"]?.ToString();
+                var rpttitle = HttpContext.Session["rpttitle"]?.ToString();
+
+                if (string.IsNullOrEmpty(strReportName) || rptSource == null || rptpath == null || rpttitle == null)
+                {
+                    HttpContext.Response.Write("<H2>No Report with such name found</H2>");
+                    return;
+                }
+
+                // Create a new ReportDocument
+                ReportDocument rd = new ReportDocument();
+                string strRptPath = HttpContext.Server.MapPath(rptpath);
+                rd.Load(strRptPath);
+
+                // Cast rptSource to List<PaymentReciptDS>
+                if (rptSource is List<PaymentReciptDS> reportData)
+                {
+                    // Check if the list has at least one item
+                    if (reportData.Count > 0)
+                    {
+                        // Set data source for the main report
+                        rd.SetDataSource(reportData);
+
+                        // Set data sources for subreports
+                        foreach (ReportDocument subReport in rd.Subreports)
+                        {
+                            string subReportName = subReport.Name;
+
+                            switch (subReportName)
+                            {
+                                case "DenominationSubReport.rpt":
+                                    // Extract Denominations from the first PaymentReciptDS object
+                                    var denominations = reportData[0].DenominationDs;
+                                    subReport.SetDataSource(denominations);
+                                    break;
+
+                                case "PaymentDetailSubReport.rpt":
+                                    // Extract Payment Details from the first PaymentReciptDS object
+                                    var paymentDetails = reportData[0].PaymentDetailDs;
+                                    subReport.SetDataSource(paymentDetails);
+                                    break;
+                                case "PaymentDetailSubReportLoan.rpt":
+                                    // Extract Payment Details from the first PaymentReciptDS object
+                                    var paymentDetailsLoan = reportData[0].PaymentDetailDs;
+                                    subReport.SetDataSource(paymentDetailsLoan);
+                                    break;
+
+                                    // Add more cases if you have more subreports
+                            }
+                        }
+                    }
+                    else
+                    {
+                        HttpContext.Response.Write("<H2>No data found in report source</H2>");
+                        return;
+                    }
+                }
+                else
+                {
+                    HttpContext.Response.Write("<H2>Invalid report source</H2>");
+                    return;
+                }
+
+                // Set report parameters if needed
+                string year = HttpContext.Session["Year"]?.ToString() ?? "Non";
+                string dates = HttpContext.Session["Dates"]?.ToString() ?? "Non";
+                string strFromDate = HttpContext.Session["DateFrom"]?.ToString() ?? "Non";
+                string strToDate = HttpContext.Session["DateTo"]?.ToString() ?? "Non";
+
+                if (year != "Non")
+                {
+                    rd.SetParameterValue("param", $"Header summary: {year}");
+                }
+
+                if (dates != "Non" && !string.IsNullOrEmpty(strFromDate) && !string.IsNullOrEmpty(strToDate))
+                {
+                    rd.SetParameterValue("DateFrom", strFromDate);
+                    rd.SetParameterValue("DateTo", strToDate);
+                }
+
+                // Export the report to PDF and send to response
+                string savedFileName = $"{rpttitle}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
+                rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, savedFileName);
+
+                // Clean up the report document
+                CleanReport(rd);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // Handle specific exceptions if needed
+                HttpContext.Response.Write("<H2>An error occurred while generating the report</H2>");
+            }
+        }
         public void CleanReport(ReportDocument rd)
         {
-            rd.Close();
-            rd.Clone();
-            rd.Dispose();
-            rd = null;
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
+            if (rd != null)
+            {
+                rd.Close();
+                rd.Clone();
+                rd.Dispose();
+                rd = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+           
         }
         public void ReportWithParameter()
         {
@@ -268,6 +374,50 @@ namespace CBS.FrontDesk.UI.Controllers
                         SetReportParameter(rd, "DateFrom", strFromDate);
                         SetReportParameter(rd, "DateTo", strToDate);
                         SetReportParameter(rd, "PrintedBy", strPrintedBy);
+                        // Export the report to PDF
+                        string SavedFileName = $"{strtitle}-{DateTime.UtcNow.ToString("dd_MM_yyyy_HHmmss")}";
+                        rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+
+                        // Clean up the report document
+                        CleanReport(rd);
+                    }
+                    else
+                    {
+                        Response.Write("<H2>Nothing Found; No Report name found</H2>");
+                    }
+                }
+                else if (parameters == "member_listing")
+                {
+                    string strReportName = System.Web.HttpContext.Current.Session["ReportName"]?.ToString();
+                    var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+                    string rptpath = System.Web.HttpContext.Current.Session["rptpath"]?.ToString();
+                    //string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"]?.ToString() ?? "N/A";
+                    //string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? "N/A";
+                    string strPrintedBy = System.Web.HttpContext.Current.Session["ParamTitle"]?.ToString() ?? "N/A";
+                    string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
+                    // Validate if the report name is present
+                    if (string.IsNullOrEmpty(strReportName))
+                    {
+                        isValid = false;
+                    }
+
+                    if (isValid)
+                    {
+                        // Load and configure the report document
+                        ReportDocument rd = new ReportDocument();
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+
+                        // Set data source if available
+                        if (rptSource != null && rptSource.GetType().ToString() != "System.String")
+                        {
+                            rd.SetDataSource(rptSource);
+                        }
+
+                        // Set report parameters
+                        //SetReportParameter(rd, "DateFrom", strFromDate);
+                        //SetReportParameter(rd, "DateTo", strToDate);
+                        SetReportParameter(rd, "ParamTitle", strPrintedBy);
                         // Export the report to PDF
                         string SavedFileName = $"{strtitle}-{DateTime.UtcNow.ToString("dd_MM_yyyy_HHmmss")}";
                         rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
@@ -497,7 +647,6 @@ namespace CBS.FrontDesk.UI.Controllers
             var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
             string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
             string rpTType = System.Web.HttpContext.Current.Session["rptType"].ToString();
-            string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
             var model = rptSource;
 
             if (rpTType == "EXCEL")
@@ -508,6 +657,7 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             else
             {
+                string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
 
                 if (rptSource != "empty")
                 {

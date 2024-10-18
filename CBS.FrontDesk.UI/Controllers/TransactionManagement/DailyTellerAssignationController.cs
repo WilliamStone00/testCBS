@@ -389,18 +389,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {
             if (path == "search")
             {
-                if (KEY != string.Empty)
-                {
-                    var data = await _services.GetDailyTellers(_services.GetDateTime(dateFrom), _services.GetDateTime(dateTo), KEY);
-                    return PartialView(partialView, data.ToList());
+                var data = await _services.GetDailyTellers(KEY);
+                return PartialView(partialView, data.ToList());
 
-                }
-                else
-                {
-                    var data = await _services.GetDailyTellers(_services.GetDateTime(dateFrom), _services.GetDateTime(dateTo));
-                    return PartialView(partialView, data.ToList());
-
-                }
             }
 
             else if (path == "new")

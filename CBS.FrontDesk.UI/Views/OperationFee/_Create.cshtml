@@ -5,39 +5,64 @@
             <legend>Charges types</legend>
             @Html.HiddenFor(model => model.Id)
      <div class="row mt-2 gy-4">
-         <div class="col-md-12">
+         <div class="col-md-12 mb-3">
              <div class="form-floating form-floating-outline">
                  @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                  @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                  <label>Name</label>
              </div>
          </div>
-         <div class="col-12">
-             <div class="form-check">
-                 @Html.RadioButtonFor(m => m.FeeType, "Rate", new { @class = "form-check-input", id = "rateOption" })
-                 <label class="form-check-label" for="rateOption">Calculated as rate (%)</label>
+         <div class="row">
+             <div class="col-6">
+                 <div class="form-check">
+                     @Html.RadioButtonFor(m => m.FeeType, "Rate", new { @class = "form-check-input shadow-input-boxes", id = "rateOption" })
+                     <label class="form-check-label" for="rateOption">Calculated as rate (%)</label>
+                 </div>
              </div>
-             @*<div class="form-check">
-                 @Html.RadioButtonFor(m => m.FeeType, "Flat", new { @class = "form-check-input", id = "flatOption" })
-                 <label class="form-check-label" for="flatOption">Calculated as flat fee</label>
-             </div>*@
-             <div class="form-check">
-                 @Html.RadioButtonFor(m => m.FeeType, "Range", new { @class = "form-check-input", id = "rangeOption" })
-                 <label class="form-check-label" for="rangeOption">Calculated on ranges</label>
+             <div class="col-6">
+                 <div class="form-check">
+                     @Html.RadioButtonFor(m => m.FeeType, "Range", new { @class = "form-check-input shadow-input-boxes", id = "rangeOption" })
+                     <label class="form-check-label" for="rangeOption">Calculated on ranges</label>
+                 </div>
              </div>
          </div>
-         <div class="col-12">
+       
+         <div class="col-6">
              <div class="form-check">
                  @Html.CheckBoxFor(m => m.IsAppliesOnHoliday, new { @class = "form-check-input" })
                  <label class="form-check-label" for="isActive">Check if its a fee applied on holidays</label>
              </div>
          </div>
-         <div class="col-12">
+         <div class="col-6 mb-3">
              <div class="form-check">
                  @Html.CheckBoxFor(m => m.IsMoralPerson, new { @class = "form-check-input" })
                  <label class="form-check-label" for="isActive">Check if this fee type is for Moral person (Group)</label>
              </div>
          </div>
+         <div class="row">
+             <div class="col-6">
+                 <div class="form-check">
+                     @Html.RadioButtonFor(m => m.OperationFeeType, "MemberShip", new { @class = "form-check-input shadow-input-boxes", id = "MemberShip" })
+                     <label class="form-check-label" for="MemberShip">Member Ship (Members Registration)</label>
+                 </div>
+             </div>
+             <div class="col-6">
+                 <div class="form-check">
+                     @Html.RadioButtonFor(m => m.OperationFeeType, "Operation", new { @class = "form-check-input shadow-input-boxes", id = "Operation" })
+                     <label class="form-check-label" for="Operation">Operations Only</label>
+                 </div>
+             </div>
+         </div>
+         @*<div class="col-12">
+            <div class="form-check">
+                @Html.RadioButtonFor(m => m.OperationFeeType, "MemberShip", new { @class = "form-check-input", id = "MemberShip" })
+                <label class="form-check-label" for="MemberShip">Member Ship (Members Registration)</label>
+            </div>
+            <div class="form-check">
+                @Html.RadioButtonFor(m => m.OperationFeeType, "Operation", new { @class = "form-check-input", id = "Operation" })
+                <label class="form-check-label" for="Operation">Operations Only</label>
+            </div>
+        </div>*@
          <div class="col-md-12">
              <div class="form-floating form-floating-outline">
                  @Html.TextBoxFor(m => m.MaximumExtraCharge, new { @class = "form-control" })

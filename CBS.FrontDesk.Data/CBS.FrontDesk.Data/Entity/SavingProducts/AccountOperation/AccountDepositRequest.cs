@@ -91,13 +91,18 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string TelephoneNumber { get; set; }
         public string CNI { get; set; }
         public string Period { get; set; }
-        public bool IsSWS { get; set; }
+        public bool IsSWS { get; set; } = false;
         public string CheckNumber { get; set; }
         public string BookingDirection { get; set; }
         public string CheckName { get; set; }
         public string MemberName { get; set; }
         public bool isDepositDoneByAccountOwner { get; set; }
-        public bool IsChargesInclussive { get; set; }
+        public bool IsChargesInclussive { get; set; } = false;
+        public string PaymentMethod { get; set; }
+        public decimal Tax { get; set; }
+        public decimal Principal { get; set; }
+        public string PaymentChannel { get; set; }
+
         public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
         public Depositer Depositer { get; set; } = new Depositer();
         public OtherTransaction OtherTransaction { get; set; } = new OtherTransaction();

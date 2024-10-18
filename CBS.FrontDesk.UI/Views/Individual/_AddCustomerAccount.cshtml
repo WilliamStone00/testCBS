@@ -1,44 +1,72 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+
 <div class="card-header">
-    <h5 class="card-title">Add ordinary account to @Model.CustomerList.name</h5>
+    <h5 class="card-title">Add Ordinary Account to @Model.CustomerList.name</h5>
 </div>
 <div class="card-body">
-
-
     @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
     {
-        <!-- Account Details -->
+        <!-- Hidden Fields -->
         @Html.HiddenFor(model => model.AddCustomerAccount.customerId)
         @Html.HiddenFor(model => model.AddCustomerAccount.CustomerName)
         <input type="hidden" name="option" value="addaccount" id="option" />
 
+        <!-- Member Reference Number -->
         <div class="col-md-3">
-            <div class="form-floating form-floating-outline">
+            <div class="form-floating">
                 @Html.TextBoxFor(m => m.CustomerList.CustomerId, new { @class = "form-control", @readonly = true })
-                <label>Member reference number</label>
+                <label>Member Reference Number</label>
             </div>
         </div>
+
+        <!-- Member Name -->
         <div class="col-md-9">
-            <div class="form-floating form-floating-outline">
+            <div class="form-floating">
                 @Html.TextBoxFor(m => m.CustomerList.name, new { @class = "form-control", @readonly = true })
-                <label>Member name</label>
+                <label>Member Name</label>
             </div>
         </div>
+
+        <!-- Account Type Selection -->
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.DropDownListFor(m => m.AddCustomerAccount.productId, new SelectList(ViewBag.Savings, "Id", "Name"), "---Select product---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.AddCustomerAccount.productId, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Select the account type to open for @Model.CustomerList.name</label>
+                <label for="formValidationDob">Select the account type to Open/Remove for @Model.CustomerList.name</label>
             </div>
         </div>
+
+        <!-- Delete Account Option -->
         <div class="col-12">
             <div class="form-check">
-                @Html.CheckBoxFor(m => m.AddCustomerAccount.IsRemoveAccount, new { @class = "form-check-input" })
-                <label class="form-check-label" for="isActive">Check to remove/delete account.</label>
+                @Html.CheckBoxFor(m => m.AddCustomerAccount.IsRemoveAccount, new { @class = "form-check-input", @id = "isRemoveAccount", onchange = "toggleButtonStyle();" })
+                <label class="form-check-label" for="isRemoveAccount">Check to remove/delete account.</label>
             </div>
         </div>
+
+        <!-- Submit Button -->
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">Add account/Remove account</button>
+            <button type="submit" class="btn btn-primary" id="submitButton">Add Account</button>
         </div>
     }
+
+    <!-- JavaScript to dynamically change button style and text -->
+    <script type="text/javascript">
+        function toggleButtonStyle() {
+            var isRemoveAccount = document.getElementById('isRemoveAccount').checked;
+            var submitButton = document.getElementById('submitButton');
+
+            if (isRemoveAccount) {
+                // If checkbox is checked, make the button red and change text to "Remove Account"
+                submitButton.classList.remove('btn-primary');
+                submitButton.classList.add('btn-danger');
+                submitButton.textContent = 'Remove Account';
+            } else {
+                // If checkbox is unchecked, revert to the original state
+                submitButton.classList.remove('btn-danger');
+                submitButton.classList.add('btn-primary');
+                submitButton.textContent = 'Add Account';
+            }
+        }
+    </script>
 </div>

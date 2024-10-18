@@ -102,8 +102,7 @@ namespace CBS.BusinessService.Accounts
                 model.bankId = GetBankID();
                 model.branchId = GetBranchID();
                 model.depositType = "CASH_INITIAL_DEPOSIT";
-                model.amount = ComputeDenomination(model.currencyNotes);
-                if (model.amount <= 0)
+                if (!ComputeDenomination(model.currencyNotes, model.amount))
                 {
                     GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered be greater than 0");
@@ -336,18 +335,16 @@ namespace CBS.BusinessService.Accounts
         }
 
 
-        public async Task<Account> GetTransactionsAsync()
+        public async Task<List<TransactionHistory>> GetTransactionsAsync(GetAllTransactionsByDatesAndBranchQuery allTransactionsByDatesAndBranchQuery)
         {
             try
             {
-
-                var apiResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<TransactionHistory>>>(APICallHelper.GetAllTransactions);
+                var apiResponse = await _transactionApiHelper.PostAsync<ResponseObject<List<TransactionHistory>>>(APICallHelper.GetTransactionsByQueryParameters, allTransactionsByDatesAndBranchQuery);
                 if (apiResponse != null)
                 {
-                    var accounts = new Account { TransactionHistories = apiResponse.ApiResponseData.Data };
-                    return accounts;
+                    return apiResponse.ApiResponseData.Data;
                 }
-                return new Account();
+                return new List<TransactionHistory>();
             }
             catch (Exception ex)
             {
@@ -381,7 +378,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
 
-                var accounts = MapToTransactionHistoryExport(transactionHistories);
+                var accounts = MapTransactionHistoryToExport(transactionHistories,null);
                 return accounts;
             }
             catch (Exception ex)
@@ -390,46 +387,46 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
-        public List<TransactionHistoryExport> MapToTransactionHistoryExport(List<TransactionHistory> transactions)
+        public List<TransactionHistoryExport> MapTransactionHistoryToExport(List<TransactionHistory> transactionHistories, Branch branch)
         {
-            return transactions
-                .OrderBy(t => t.CreatedDate) // Order transactions by date in ascending order
-                .Select(transaction => new TransactionHistoryExport
+            var transactionHistoryExports = new List<TransactionHistoryExport>();
+
+            foreach (var transaction in transactionHistories)
+            {
+                var transactionExport = new TransactionHistoryExport
                 {
-                    accountHolderName = transaction.Account?.AccountName ?? "-", // Use null coalescing operator
+                    MemberName = transaction.Account?.CustomerName, // Assuming AccountName is from AccountNumber
+                    AccountNumber = transaction.AccountNumber, AccountType= transaction.Account?.AccountType,
+                    CustomerReference = transaction.CustomerId,
                     Date = transaction.CreatedDate,
-                    originalAmount = transaction.OriginalDepositAmount,
-                    accountNumber = transaction.AccountNumber,
-                    transactionType = transaction.TransactionType,
-                    operationDirection = transaction.OperationType,
-                    transactionRef = transaction.TransactionReference,
-                    previousBalance = transaction.PreviousBalance,
-                    note = transaction.Note,
-                    senderAccountId = transaction.SenderAccountId,
-                    receiverAccountId = transaction.ReceiverAccountId,
-                    depositorIdNumber = transaction.DepositorIDNumber,
-                    depositorName = transaction.DepositorName,
-                    depositorIdIssueDate = transaction.DepositorIDIssueDate,
-                    depositorIdExpiryDate = transaction.DepositorIDExpiryDate,
-                    balance = transaction.Balance,
-                    InterBrachOperation = transaction.IsInterBrachOperation ? "Yes" : "No",
-                    fee = transaction.Fee,
-                    feeType = transaction.FeeType,
+                    AccountingDate = transaction.AccountingDate, // Update this as required if there's a specific accounting date
+                    Amount = transaction.Amount,
+                    Fee = transaction.Fee,
+                    Balance = transaction.Balance,
+                    NewBalance = transaction.PreviousBalance,
+                    Reference = transaction.TransactionReference,
+                    TellerName = transaction.DailyTeller?.UserName, // Assuming TellerName is from TellerId
+                    TellerBranchName = transaction?.Branch?.Name, // Assuming this is the teller's branch
+                    Note = transaction.Note,
+                    ThirdPartyName = transaction.DepositorName,
                     Operation = transaction.Operation,
-                    teller = transaction.Teller?.name ?? "-", // Use null coalescing operator
-                    customerReferenceNumber = transaction.Account?.CustomerId ?? "-", // Use null coalescing operator
-                    newAmount = transaction.Amount,
-                    productName = transaction.Account?.Product.Name ?? "-",
-                    DestinationBranch = transaction.DestinationBrachId,
-                    DestinationShare = transaction.DestinationBranchCommission,
-                    SourceShare = transaction.SourceBranchCommission,
-                    SourceBranch = transaction.SourceBrachId,
-                    credit = transaction.Credit,
-                    debit = transaction.Debit
-                    // Use null coalescing operator
-                })
-                .ToList();
+                    WithdrawalFormCharge = transaction.WithrawalFormCharge,
+                    OperationCharge = transaction.OperationCharge,
+                    Debit = transaction.Debit,
+                    Credit = transaction.Credit,
+                    InterBranch = transaction.IsInterBrachOperation ? "Yes" : "No",
+                    BankName = branch.Bank.Name, // Assuming this is the bank name
+                    BranchCode = branch.BranchCode,
+                    BrnachName = branch.Name, // Assuming this is the branch name
+                    BranchTel = branch.Telephone // Assuming this is the branch telephone number
+                };
+
+                transactionHistoryExports.Add(transactionExport);
+            }
+
+            return transactionHistoryExports.OrderBy(t => t.Date).ToList();
         }
+
 
 
         public async Task<IEnumerable<StringValues>> SourceAndDestinationAccount()
@@ -501,9 +498,28 @@ namespace CBS.BusinessService.Accounts
                 var cusResponseObject = await _transactionApiHelper.PostAsync<ResponseObject<TellerProvioningHistory>>(APICallHelper.GetTellerAccountInfo, getTellerAccountBalanceQuery);
                 if (cusResponseObject.ApiResponseData != null)
                 {
-                    var closeOfDayRequest = Mapper(cusResponseObject.ApiResponseData.Data, false);
-                    var endofDay = new EndOfTheDay { CloseOfDayRequest = closeOfDayRequest, Teller= cusResponseObject.ApiResponseData.Data.Teller, CashAtHand= closeOfDayRequest.CashAtHand, HasError=false, ErrorMessage=null };
-                    return endofDay;
+                    if (isOpen)
+                    {
+                        var closeOfDayRequest = Mapper(cusResponseObject.ApiResponseData.Data, false);
+                        var endofDay = new EndOfTheDay { CloseOfDayRequest = closeOfDayRequest, Teller = cusResponseObject.ApiResponseData.Data.Teller, CashAtHand = closeOfDayRequest.CashAtHand, HasError = false, ErrorMessage = null, AccountingDay = cusResponseObject.ApiResponseData.Data.OpenedDate };
+                        return endofDay;
+                    }
+                    else
+                    {
+                        if (getTellerAccountBalanceQuery.IsPrimary)
+                        {
+                            var closeOfDayRequest = Mapper(cusResponseObject.ApiResponseData.Data, false);
+                            var endofDay = new EndOfTheDay { CloseOfDayRequest = closeOfDayRequest, Teller = cusResponseObject.ApiResponseData.Data.Teller, CashAtHand = closeOfDayRequest.CashAtHand, HasError = false, ErrorMessage = null, AccountingDay = cusResponseObject.ApiResponseData.Data.OpenedDate };
+                            return endofDay;
+                        }
+                        else
+                        {
+                            var closeOfDayRequest = Mapper(ResetDenominations(cusResponseObject.ApiResponseData.Data), false);
+                            var endofDay = new EndOfTheDay { CloseOfDayRequest = closeOfDayRequest, Teller = cusResponseObject.ApiResponseData.Data.Teller, CashAtHand = closeOfDayRequest.CashAtHand, HasError = false, ErrorMessage = null, AccountingDay = cusResponseObject.ApiResponseData.Data.OpenedDate };
+                            return endofDay;
+                        }
+                    }
+                 
 
                 }
                 return new EndOfTheDay { CashAtHand = 0, HasError = true, ErrorMessage = $"{cusResponseObject.Message}" };
@@ -514,6 +530,40 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+        public TellerProvioningHistory ResetDenominations(TellerProvioningHistory tellerProvioningHistory)
+        {
+            // Reset Opening Notes and Coins Counts
+            tellerProvioningHistory.OpeningNote10000 = 0;
+            tellerProvioningHistory.OpeningNote5000 = 0;
+            tellerProvioningHistory.OpeningNote2000 = 0;
+            tellerProvioningHistory.OpeningNote1000 = 0;
+            tellerProvioningHistory.OpeningNote500 = 0;
+            tellerProvioningHistory.OpeningCoin500 = 0;
+            tellerProvioningHistory.OpeningCoin100 = 0;
+            tellerProvioningHistory.OpeningCoin50 = 0;
+            tellerProvioningHistory.OpeningCoin25 = 0;
+            tellerProvioningHistory.OpeningCoin10 = 0;
+            tellerProvioningHistory.OpeningCoin5 = 0;
+            tellerProvioningHistory.OpeningCoin1 = 0;
+
+            // Reset Closing Notes and Coins Counts
+            tellerProvioningHistory.ClosingNote10000 = 0;
+            tellerProvioningHistory.ClosingNote5000 = 0;
+            tellerProvioningHistory.ClosingNote2000 = 0;
+            tellerProvioningHistory.ClosingNote1000 = 0;
+            tellerProvioningHistory.ClosingNote500 = 0;
+            tellerProvioningHistory.ClosingCoin500 = 0;
+            tellerProvioningHistory.ClosingCoin100 = 0;
+            tellerProvioningHistory.ClosingCoin50 = 0;
+            tellerProvioningHistory.ClosingCoin25 = 0;
+            tellerProvioningHistory.ClosingCoin10 = 0;
+            tellerProvioningHistory.ClosingCoin5 = 0;
+            tellerProvioningHistory.ClosingCoin1 = 0;
+
+            // Optionally reset other denomination-related properties if needed
+            return tellerProvioningHistory;
+        }
+
         public CloseOfDayRequest Mapper(TellerProvioningHistory history, bool isOpen)
         {
             if (isOpen)
@@ -612,19 +662,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-        public async Task<List<TransactionHistory>> GetAllTransactions()
-        {
-            try
-            {
-                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<List<TransactionHistory>>>(APICallHelper.GetAllTransactions);
-                return cusResponseObject.ApiResponseData.Data;
-            }
-            catch (Exception ex)
-            {
-                // Log and handle exception
-                throw ex;
-            }
-        }
+       
         public async Task<List<CustomerAccount>> GetCustomerAccounts(string customerID)
         {
             try
@@ -889,8 +927,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                model.amount = ComputeDenomination(model.currencyNotes);
-                if (model.amount <= 0)
+                if (!ComputeDenomination(model.currencyNotes, model.amount))
                 {
                     GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered be greater than 0");
@@ -1067,8 +1104,7 @@ namespace CBS.BusinessService.Accounts
 
 
                 var model = new WithdrawalRequest { accountNumber = deposit.accountNumber, amount = deposit.amount, note = deposit.note, currencyNotes = deposit.currencyNotes, withDrawalType = "CASH" };
-                model.amount = ComputeDenomination(model.currencyNotes);
-                if (model.amount <= 0)
+                if (!ComputeDenomination(model.currencyNotes, model.amount))
                 {
                     GetExecutionMessages(model, false, $"{model.amount}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered be greater than 0");
@@ -1135,8 +1171,7 @@ namespace CBS.BusinessService.Accounts
                     DepositorIDNumberPlaceOfIssue = deposit.depositorIDNumberPlaceOfIssue,
                     IsDepositDoneByAccountOwner = deposit.isDepositDoneByAccountOwner
                 };
-                model.Amount = ComputeDenomination(model.CurrencyNotes);
-                if (model.Amount <= 0)
+                if (!ComputeDenomination(model.CurrencyNotes, Convert.ToInt32(model.Amount)))
                 {
                     GetExecutionMessages(model, false, $"{model.Amount}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered be greater than 0");

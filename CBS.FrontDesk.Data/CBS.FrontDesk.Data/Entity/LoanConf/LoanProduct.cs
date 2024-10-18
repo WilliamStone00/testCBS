@@ -322,7 +322,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string Description { get; set; }
 
         [Required]
-        [RegularExpression(@"^(Individual|Corporate|Employee|Government)$", ErrorMessage = "Target Type must be either 'Individual', 'Corporate', 'Employee', or 'Government'.")]
+        [RegularExpression(@"^(Individual|Corporate|Employee|Government|Elected_Staff|League)$", ErrorMessage = "Target Type must be either 'Individual', 'Corporate', 'Employee','Elected_Staff','League' or 'Government'.")]
         public string TargetType { get; set; }
 
         public bool ActiveStatus { get; set; }

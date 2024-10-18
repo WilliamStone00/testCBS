@@ -745,7 +745,7 @@ function DeleteWithRedirect(controller, KEY, option, url_redirect) {
 
 }
 //LoadDataTableNew("Country", "myDataTable", "InitializeData", null, "_Data", 1);
-function DeleteRecordDataTable(controller, KEY, tableID, partialView, order, divToLoadTheData,Key2) {
+function DeleteRecordDataTable(controller, KEY, tableID, partialView, order, divToLoadTheData,Key2,path) {
 
     alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
         function () {
@@ -756,7 +756,7 @@ function DeleteRecordDataTable(controller, KEY, tableID, partialView, order, div
                 success: function (response) {
                     if (response.success) {
                         appalert(response.message, 1, 1);
-                        LoadDataTableNew(controller, tableID, "InitializeData", Key2, partialView, order, "list", divToLoadTheData)
+                        LoadDataTableNew(controller, tableID, "InitializeData", Key2, partialView, order, path, divToLoadTheData)
                     }
                     else {
                         appalert(response.message, 3, 1);

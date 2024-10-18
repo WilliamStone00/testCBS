@@ -37,8 +37,8 @@ namespace CBS.FrontDesk.UI
 
             // Map SignalR hubs
             app.MapSignalR("/signalr", hubConfiguration);
-                
- 
+            app.MapSignalR();
+
             ConfigureAuth(app);
         }
 

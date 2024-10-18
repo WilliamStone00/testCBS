@@ -1,0 +1,141 @@
+﻿@model CBS.FrontDesk.Data.Entity.CustomerManagement.ReportQuerTemplate
+
+<fieldset class="fieldset-custom">
+    <legend id="select_base">Members Reporting With Parameters</legend>
+    <div class="card-body">
+        @using (Html.BeginForm("MembersReportingDownload", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateReportQuerTemplateStatus(this);" }))
+        {
+            <hr />
+
+            <div class="row g-4 mb-2">
+                <!-- Legal Form Status Group -->
+                <div class="col-md-6">
+                    <div class="card p-3">
+                        <h5 class="card-title">Legal Form Status</h5>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.LegalFormStatus, "Moral_Person", new { @class = "form-check-input", @id = "legalFormMoral" })
+                            <label class="form-check-label" for="legalFormMoral">Moral Person</label>
+                        </div>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.LegalFormStatus, "Physical_Person", new { @class = "form-check-input", @id = "legalFormPhysical" })
+                            <label class="form-check-label" for="legalFormPhysical">Physical Person</label>
+                        </div>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.LegalFormStatus, "Both", new { @class = "form-check-input", @id = "legalFormBoth" })
+                            <label class="form-check-label" for="legalFormBoth">Both</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Status Type Group -->
+                <div class="col-md-6 mb-2">
+                    <div class="card p-3">
+                        <h5 class="card-title">Member Status Type</h5>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.MembersStatusType, "Approved", new { @class = "form-check-input", @id = "memberStatusApproved" })
+                            <label class="form-check-label" for="memberStatusApproved">Approved</label>
+                        </div>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.MembersStatusType, "Pending", new { @class = "form-check-input", @id = "memberStatusPending" })
+                            <label class="form-check-label" for="memberStatusPending">Pending</label>
+                        </div>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.MembersStatusType, "All", new { @class = "form-check-input", @id = "memberStatusAll" })
+                            <label class="form-check-label" for="memberStatusAll">All</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Query Parameter Group -->
+            <div class="row g-4 mb-2" id="queryParameterGroup">
+                <div class="col-md-5">
+                    <div class="card p-3">
+                        <h5 class="card-title">Query Parameter</h5>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.QueryParameter, "ByDate", new { @class = "form-check-input", @id = "queryByDate", @onclick = "toggleDateQuery(true)" })
+                            <label class="form-check-label" for="queryByDate">By Date</label>
+                        </div>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.QueryParameter, "All", new { @class = "form-check-input", @id = "queryAll", @onclick = "toggleDateQuery(false)" })
+                            <label class="form-check-label" for="queryAll">All</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Query Group -->
+                <div class="col-md-7" id="dateQueryGroup">
+                    <div class="card p-3">
+                        <h5 class="card-title">Date Query</h5>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label for="dateFromInput">Date From</label>
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.DateFrom, new { @class = "form-control shadow-box date-picker", @id = "dateFromInput", @placeholder = "Date From", @disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.DateFrom, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <label for="dateToInput">Date To</label>
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.DateTo, new { @class = "form-control shadow-box date-picker", @id = "dateToInput", @placeholder = "Date To", @disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.DateTo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row g-4">
+                <!-- Branches Dropdown -->
+                <div class="col-md-12" id="branchDiv">
+                    <label for="branchInput">Branch</label>
+                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <hr />
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-print me-2"></i> Print
+                </button>
+            </div>
+        }
+    </div>
+</fieldset>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Set initial state based on the checked radio button
+        var queryParamChecked = document.querySelector('input[name="QueryParameter"]:checked');
+        if (queryParamChecked) {
+            toggleDateQuery(queryParamChecked.id === "queryByDate");
+        } else {
+            // Default to 'All' if no radio button is checked
+            toggleDateQuery(false);
+        }
+    });
+
+    function toggleDateQuery(show) {
+        var dateQueryGroup = document.getElementById('dateQueryGroup');
+        var dateInputs = dateQueryGroup.querySelectorAll('input');
+
+        if (show) {
+            dateQueryGroup.style.display = 'block';
+            dateInputs.forEach(function (input) {
+                input.disabled = false; // Enable date inputs
+            });
+        } else {
+            dateQueryGroup.style.display = 'block'; // Keep the group visible
+            dateInputs.forEach(function (input) {
+                input.disabled = true; // Disable date inputs
+            });
+        }
+    }
+</script>
+
+

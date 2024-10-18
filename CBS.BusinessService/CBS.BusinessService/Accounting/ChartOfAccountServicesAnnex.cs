@@ -33,7 +33,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     // Map the API response to StringValues objects with Text and Value properties
                     var stringValuesList = response.ApiResponseData.Data
-                        .Select(item => new StringValues(item.EventCode, item.AccountingRuleEntryName))
+                        .Select(item => new StringValues(item.AccountingRuleEntryName, item.EventCode))
                         .ToList();
 
                     return stringValuesList;

@@ -31,7 +31,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var objTeller = await GetTeller(id);
-                var inResponse = await _savingConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_Teller, id), id));
+                var inResponse = await _savingConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.Get_Update_Delete_Teller, id));
                 if (inResponse.IsSuccess)
                 {
 
@@ -255,6 +255,128 @@ namespace CBS.BusinessService.Accounts
                     SystemMessageStatus.Failed.ToString(), ex);
             }
             return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> UpdateMobileMoneyConfiguration(MobileMoneyTellerConfigurationCommand model, string action)
+        {
+            try
+            {
+                string option = null;
+                var Teller = await GetTeller(model.Id);
+                if (Teller != null)
+                {
+                    if (action == "operation_event")
+                    {
+                        Teller.OperationEventCode = model.OperationEventCode;
+                    }
+                    else if (action == "topup_accounting_Configuration")
+                    {
+                        Teller.FromAuxillaryAccountNumber_A = model.FromAuxillaryAccountNumber_A;
+                        Teller.ToBranchFloatAccountNumberAuxillary_A = model.ToBranchFloatAccountNumberAuxillary_A;
+                        Teller.FromHeadOfficeAccountNumber_B = model.FromHeadOfficeAccountNumber_B;
+                        Teller.ToBranchFloatAccountNumberHeadOffice_B = model.ToBranchFloatAccountNumberHeadOffice_B;
+                        Teller.FromBranchAccountNumber_C = model.FromBranchAccountNumber_C;
+                        Teller.ToBranchFloatAccountNumberBranch_C = model.ToBranchFloatAccountNumberBranch_C;
+                        Teller.FromBranchFloatAccountNumber_D = model.FromBranchFloatAccountNumber_D;
+                        Teller.ToHeadOfficeFloatAccountNumber_D = model.ToHeadOfficeFloatAccountNumber_D;
+                    }
+                    else if (action == "float_number_profile")
+                    {
+                        Teller.MobileMoneyFloatNumber = model.MobileMoneyFloatNumber;
+                        Teller.MobileMoneyUserKeepingThePhone = model.MobileMoneyUserKeepingThePhone;
+                        Teller.AccountNumber = model.AccountNumber;
+                        option = action;
+                    }
+                    else if (action == "balance_alert")
+                    {
+                        Teller.MobileMoneyMaximumBalanceAlertLevel = model.MobileMoneyMaximumBalanceAlertLevel;
+                        Teller.MobileMoneyMinimumBalanceAlertLevel = model.MobileMoneyMinimumBalanceAlertLevel;
+                    }
+                    else if (action == "sms_alert_profile")
+                    {
+                        Teller.PhoneNumberToRecieveAlert = model.PhoneNumberToRecieveAlert;
+                        Teller.MobileMoneyAlertMessageInFrench = model.MobileMoneyAlertMessageInFrench;
+                        Teller.MobileMoneyAlertMessageInEnglish = model.MobileMoneyAlertMessageInEnglish;
+                    }
+                    var branch = await _branchServices.GetBranch(Teller.branchId);
+                    var mobileMoneyTellerConfiguration = new MobileMoneyTellerConfigurationCommand
+                    {
+                        Id = Teller.id,
+                        FromAuxillaryAccountNumber_A = Teller.FromAuxillaryAccountNumber_A,
+                        ToBranchFloatAccountNumberAuxillary_A = Teller.ToBranchFloatAccountNumberAuxillary_A,
+                        FromHeadOfficeAccountNumber_B = Teller.FromHeadOfficeAccountNumber_B,
+                        ToBranchFloatAccountNumberHeadOffice_B = Teller.ToBranchFloatAccountNumberHeadOffice_B,
+                        FromBranchAccountNumber_C = Teller.FromBranchAccountNumber_C,
+                        ToBranchFloatAccountNumberBranch_C = Teller.ToBranchFloatAccountNumberBranch_C,
+                        FromBranchFloatAccountNumber_D = Teller.FromBranchFloatAccountNumber_D,
+                        ToHeadOfficeFloatAccountNumber_D = Teller.ToHeadOfficeFloatAccountNumber_D,
+                        OperationEventCode = Teller.OperationEventCode,
+                        MobileMoneyAlertMessageInEnglish = Teller.MobileMoneyAlertMessageInEnglish,
+                        MobileMoneyAlertMessageInFrench = Teller.MobileMoneyAlertMessageInFrench,
+                        MobileMoneyMinimumBalanceAlertLevel = Teller.MobileMoneyMinimumBalanceAlertLevel,
+                        MobileMoneyFloatNumber = Teller.MobileMoneyFloatNumber,
+                        MobileMoneyUserKeepingThePhone = Teller.MobileMoneyUserKeepingThePhone,
+                        MobileMoneyMaximumBalanceAlertLevel = Teller.MobileMoneyMaximumBalanceAlertLevel,
+                        PhoneNumberToRecieveAlert = Teller.PhoneNumberToRecieveAlert,
+                        AccountNumber = Teller.AccountNumber,
+                        Option = option,
+                        BranchCode = branch.BranchCode,
+                    };
+                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<Teller>>(string.Format(APICallHelper.MobileMoneyTellerConfiguration, Teller.id), mobileMoneyTellerConfiguration);
+                    if (response.IsSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, null, MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(model, false, $"{Teller.name}", MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public MobileMoneyTellerConfigurationCommand MapTellerToMobileMoneyCommand(Teller teller)
+        {
+            if (teller == null)
+            {
+                throw new ArgumentNullException(nameof(teller), "Teller cannot be null.");
+            }
+
+            // Map properties from the Teller object to the MobileMoneyTellerConfigurationCommand
+            var mobileMoneyTellerConfigCommand = new MobileMoneyTellerConfigurationCommand
+            {
+                Id = teller.id,
+                OperationEventCode = teller.OperationEventCode,
+                AccountNumber = teller.AccountNumber,
+                MobileMoneyUserKeepingThePhone = teller.MobileMoneyUserKeepingThePhone,
+                MobileMoneyFloatNumber = teller.MobileMoneyFloatNumber,
+                MobileMoneyMinimumBalanceAlertLevel = teller.MobileMoneyMinimumBalanceAlertLevel,
+                MobileMoneyMaximumBalanceAlertLevel = teller.MobileMoneyMaximumBalanceAlertLevel,
+                FromAuxillaryAccountNumber_A = teller.FromAuxillaryAccountNumber_A,
+                ToBranchFloatAccountNumberAuxillary_A = teller.ToBranchFloatAccountNumberAuxillary_A,
+                FromHeadOfficeAccountNumber_B = teller.FromHeadOfficeAccountNumber_B,
+                ToBranchFloatAccountNumberHeadOffice_B = teller.ToBranchFloatAccountNumberHeadOffice_B,
+                FromBranchAccountNumber_C = teller.FromBranchAccountNumber_C,
+                ToBranchFloatAccountNumberBranch_C = teller.ToBranchFloatAccountNumberBranch_C,
+                FromBranchFloatAccountNumber_D = teller.FromBranchFloatAccountNumber_D,
+                ToHeadOfficeFloatAccountNumber_D = teller.ToHeadOfficeFloatAccountNumber_D,
+                PhoneNumberToRecieveAlert = teller.PhoneNumberToRecieveAlert,
+                MobileMoneyAlertMessageInFrench = teller.MobileMoneyAlertMessageInFrench,
+                MobileMoneyAlertMessageInEnglish = teller.MobileMoneyAlertMessageInEnglish
+            };
+
+            return mobileMoneyTellerConfigCommand;
         }
 
     }
