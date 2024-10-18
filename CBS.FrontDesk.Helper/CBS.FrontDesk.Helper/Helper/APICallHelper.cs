@@ -1,7 +1,35 @@
-﻿namespace CBS.FrontDesk.Helper
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.VariantTypes;
+
+namespace CBS.FrontDesk.Helper
 {
     public abstract class APICallHelper
     {
+        /// <summary>
+        /// CashMovementTracker
+        /// </summary>
+                //Get,Update,Delete AccountClass By Id
+        public static string Get_CashMovementTracker = "/api/v1/CashMovementTracker/GetCashMovementTrackerQuery/{0}";
+        //Get All AccountClass
+        public static string Update_CashMovementTracker = "/api/v1/CashMovementTracker/UpdateCashMovementTrackerCommand/{0}";
+        public static string Delete_CashMovementTracker = "/api/v1/CashMovementTracker/{0}";
+
+        public static string GetAllCashMovementTracker = "/api/v1/CashMovementTracker/GetAllCashMovementTrackerQuery";
+        // POST  Create a AccountClass
+        public static string CreateCashMovementTracker = "/api/v1/CashMovementTracker/AddCashMovementTrackerCommand";
+        /// <summary>
+        /// CashMovementTrackerConfiguration
+        /// </summary>
+        //Get,Update,Delete AccountClass By Id
+        public static string Get_CashMovementTrackerConfiguration = "/api/v1//CashMovementTrackingConfiguration/GetCashMovementTrackingConfigurationQuery/{0}";
+        //Get All AccountClass
+        public static string Update_CashMovementTrackerConfiguration = "/api/v1/CashMovementTrackingConfiguration/UpdateCashMovementTrackingConfigurationCommand/{0}";
+        public static string Delete_CashMovementTrackerConfiguration = "/api/v1/CashMovementTrackingConfiguration/{0}";
+
+        public static string GetAllCashMovementTrackerConfiguration = "/api/v1/CashMovementTrackingConfiguration/GetAllCashMovementTrackingConfigurationQuery";
+        // POST  Create a AccountClass
+        public static string CreateCashMovementTrackerConfiguration = "/api/v1/CashMovementTrackingConfiguration/AddCashMovementTrackingConfigurationCommand";
+
         public static string CreateAccountPolicy = "/api/v1/AccountPolicy";
         public static string GetAccountPolicies = "/api/v1/AccountPolicies";
         public static string Get_Update_Delete_AccountPolicy = "/api/v1/AccountPolicy/{0}";
@@ -571,6 +599,8 @@
         public static string GetAllAccountCategory = "/api/v1/AccountCartegories";
         // POST  Create a AccountClass
         public static string CreateAccountCategory = "/api/v1/AccountCartegory";
+
+        public static string GetProductAccountingBookUrl = "/api/v1/ProductAccountingBook/{0}";
         //AccountCategory
         //Get,Update,Delete AccountCategory By Id
         public static string Get_Update_Delete_ChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition/{0}";
@@ -579,23 +609,33 @@
         public static string DownloadChartOfAccountManagementPositionUrl = "/api/v1/ChartOfAccountManagementPositions/DownloadQuery";
         public static string CreateChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition";
 
-        //Statementmodel
-        //Get,Update,Delete AccountCategory By Id api/v1/StatementModel/
-        public static string Get_Update_Delete_Statementmodel = "api/v1/StatementModel/{0}";
-        public static string Get_Statementmodel = "/api/v1/StatementmodelCartegory/{0}";
+        //DocumentReference   
+        public static string Get_Update_Delete_report  = "/api/v1/Document";
+        public static string Get_Update_Delete_DocumentType = "/api/v1/DocumentType/{0}";
+        public static string Get_DocumentType_By_DocumentReference = "/api/v1/DocumentTypeByDocumentReference/{0}";
+        public static string UpdateDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode/Update/{0}";
+        public static string Delete_DocumentReference = "/api/v1/FinancialReport/DocumentReferenceCode/Delete/{0}";
+        public static string GetDocumentReferenceCode = "/api/v1/FinancialReport/GetDocumentReferenceCodeById/{0}";
+        public static string GetAllDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode";    
+        public static string CreateDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode/Create";
+        public static string GetCorrespondingmappingByDocumentRefenceId = "/api/v1/FinancialReport/GetCorrespondingMappingByDocumentReferenceCodeIdQuery/{0}";
+        public static string GetCorrespondingmappingExceptionByDocumentRefenceId = "/api/v1/FinancialReport/GetCorrespondingMappingExceptionsByDocumentReferenceCodeIdQuery/{0}";
+
+        //CorrespondingMapping 
+
+        public static string Get_Update_Delete_CorrespondingMapping = "/api/v1/CorrespondingMapping/{0}";
+        public static string Get_CorrespondingMapping = "/api/v1/CorrespondingMapping/{0}";
         //Get All AccountCategory
-        public static string GetAllStatementmodel = "/api/v1/StatementModels";
+        public static string GetAllCorrespondingMapping = "/api/v1/CorrespondingMapping";
         // POST  Create a AccountClass
-        public static string CreateStatementmodel = "/api/v1/StatementModel/";
-        public static string CreateStatementmodelBS = "/api/v1/StatementModelBS/";
-        //TrialBalanceReference
-        //Get,Update,Delete AccountCategory By Id api/v1/StatementModel/
-        public static string Get_Update_Delete_TrialBalanceReference = "api/v1/TrialBalanceReference/{0}";
-        public static string Get_TrialBalanceReference = "/api/v1/TrialBalanceReferenceCartegory/{0}";
+        public static string CreateCorrespondingMapping = "/api/v1/CorrespondingMapping";
+        //CorrespondingMapping
+
+        public static string Get_Update_Delete_CorrespondingMappingException = "/api/v1/CorrespondingMappingException/{0}";
+        public static string Get_CorrespondingMappingException = "/api/v1/CorrespondingMappingException/{0}";
         //Get All AccountCategory
-        public static string GetAllTrialBalanceReference = "/api/v1/TrialBalanceReferences";
-        // POST  Create a AccountClass
-        public static string CreateTrialBalanceReference = "/api/v1/TrialBalanceReference/";
+        public static string GetAllCorrespondingMappingException = "/api/v1/CorrespondingMappingException";
+ 
 
         //ChartOfAccount
         //Get,Update,Delete ChartOfAccount By Id
@@ -663,6 +703,7 @@
         public static string CashReplenishmentRequest = "/api/v1/BankingOperation/RequestForCashReplenishment";
         public static string DepositNotificationUrl = "/api/v1/BankingOperation/AddDepositNotificationCommand";
         public static string ApproveDepositNotificationUrl = "/api/v1/BankingOperation/AddDepositApprovalCommand";
+        public static string BalanceSheet_EntriesUrl = "/api/v1/AccountingEntries/GenerateBalanceSheet";
 
         public static string UpdateCashReplenishmentRequest = "/api/v1/BankingOperation/UpdateRequestForCashReplenishment/{0}";
         public static string CashReplenishmentResponse = "/api/v1/BankingOperation/ResponseToCashReplenishment";

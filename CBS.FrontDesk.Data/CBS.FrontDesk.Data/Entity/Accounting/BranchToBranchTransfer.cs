@@ -23,7 +23,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string ReferenceId { get; set; }
         public string TransferBy { get; set; }
         public string TransferDate { get; set; }
-        public Denomination CurrencyNotes { get; set; }
+        public CurrencyNotesRequest CurrencyNotes { get; set; }
 
         public BranchTransfer ConvertToTransferData()
         {
@@ -31,6 +31,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             {
                 FromAccountId = FromAccountId,
                 ToAccountId = ToAccountId,
+                CurrencyNotesRequest= CurrencyNotes,
                 Amount = CurrencyNotes.GetAmountValue(),
                 ReferenceId = ReferenceId,
             };
@@ -43,19 +44,20 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
 
         public string ToAccountId { get; set; }
-
-
-
         public string FromAccountId { get; set; }
 
         public decimal Amount { get; set; }
 
+        public CurrencyNotesRequest CurrencyNotesRequest { get; set; }
         public string ReferenceId { get; set; }
 
 
     }
 
-    public class Denomination
+
+  
+
+    public class CurrencyNotesRequest
     {
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]

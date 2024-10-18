@@ -6,17 +6,17 @@
         <thead>
             <tr>
                 <th>Financial document </th>
-                <th>@Model.IncomeStatement.Document_type</th>
+                <th>@Model.DocumentReferenceCodeDto.Document - @Model.DocumentReferenceCodeDto.DocumentType</th>
             </tr>
         </thead>
         <tbody class="table-border-bottom-0">
             <tr>
-                <td style="width: 30%;">Heading</td>
-                <td style="width: 70%;">@Model.IncomeStatement.Heading</td>
+                <td style="width: 30%;">Description</td>
+                <td style="width: 70%;">@Model.DocumentReferenceCodeDto.Description</td>
             </tr>
             <tr>
                 <td style="width: 30%;">Reference code</td>
-                <td style="width: 70%;">@Model.IncomeStatement.Reference</td>
+                <td style="width: 70%;">@Model.DocumentReferenceCodeDto.ReferenceCode</td>
             </tr>
         </tbody>
     </table>
@@ -24,38 +24,37 @@
     {
 
 
-        @Html.HiddenFor(Model => Model.TrialBalanceReference.StatementModelId)
-        @Html.HiddenFor(Model => Model.ServiceOption)
+        @Html.HiddenFor(Model => Model.CorrespondingMapping.Id)
+        @Html.HiddenFor(Model => Model.ServiceOption, "CorrespondingMapping")
         <div class="row mt-2 gy-4">
 
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.TrialBalanceReference.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---Select chartOfaccount---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(model => model.TrialBalanceReference.ChartOfAccountId, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(m => m.CorrespondingMapping.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---Select chartOfaccount---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(model => model.CorrespondingMapping.ChartOfAccountId, "", new { @class = "text-danger" })
                     <label for="Document_type">Select Account number</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(model => model.IncomeStatement.Reference, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.IncomeStatement.Reference, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(model => model.CorrespondingMapping.AccountNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CorrespondingMapping.AccountNumber, "", new { @class = "text-danger" })
                     <label for="Document_type">Select Opertation side</label>
                 </div>
             </div>
-
-
+     
             @*60709 / 61510 / 61511 / 601 / 602 / 603 /  604 / 605*@
         </div>
 
         <div class="mt-4">
-            @if (Model.TrialBalanceReference.Id == null)
+            @if (Model.CorrespondingMapping.Id == null)
             {
                 <button type="submit" class="btn btn-primary me-2">Save</button>
                 <input type="hidden" name="Action" value="insert" id="Action" />
             }
             else
             { <button type="submit" class="btn btn-primary me-2">Update</button>
-                @Html.HiddenFor(m => m.TrialBalanceReference.Id)
+                @Html.HiddenFor(m => m.CorrespondingMapping.Id)
                 <input type="hidden" name="Action" value="update" id="Action" />
 
             }

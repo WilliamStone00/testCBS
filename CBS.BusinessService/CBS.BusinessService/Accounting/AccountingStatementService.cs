@@ -3,6 +3,8 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -167,7 +169,7 @@ namespace CBS.BusinessService.Accounting
 
         }
 
-
+      
         public async Task<List<JournalEntryDto>> GenerateJournalEntry(JEQuery model)
         {
             try
@@ -248,10 +250,10 @@ namespace CBS.BusinessService.Accounting
             List<AccountingEntry> filteredEntries = new List<AccountingEntry>();
             return await _Service.RetrieveTrialBalance6ColumnEntries(model);
         }
-        public async Task<List<ModelBalanceSheetAssets>> GenerateBalanceSheet(SystemQuery model)
+        public async Task<BalanceSheetData> GenerateBalanceSheet(BSQuery model)
         {
-            List<AccountingEntry> filteredEntries = new List<AccountingEntry>();
-            return await _Service.RetrieveBalanceSheetColumnEntries(model);
+  
+            return await _Service.GetBalanceSheetDataEntries(model);
         }
 
         public async Task<List<ModelExpenses>> GenerateIncomeStatement(SystemQuery model)

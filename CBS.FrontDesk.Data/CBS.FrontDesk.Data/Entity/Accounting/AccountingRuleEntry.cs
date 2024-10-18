@@ -14,7 +14,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string  AccountingRuleEntryName { get; set; }
         public string BookingDirection { get; set; }
         public string  OperationEventAttributeId { get; set; }
-        public string  OperationEventId { get; set; }
+        public string  EventCode { get; set; }
+        
+                   public string OperationEventId { get; set; }
         public string DeterminationAccountId { get; set; }
         public string DeterminationManagementAccountId { get; set; }
         public string BalancingAccountId { get; set; }

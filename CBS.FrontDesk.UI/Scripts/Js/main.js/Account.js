@@ -18,43 +18,30 @@
     $('#ReadUploadedFile').click(function () {
         simulateProcessing();
     });
-    $('#document_type').change(function () {
+    $('#document').change(function () {
         var selectedValue = $(this).val();
+        console.log(selectedValue);
+        $.ajax({
+            url: '/AccountingConfiguration/GetDocumentType',
+            type: 'GET',
+            dataType: 'json',
+            data: { DocumentId: selectedValue },
+            success: function (data) {
+  
+                    IdModel = "#documentType";
+                    $(IdModel).empty();
+                    // Add new options based on the fetched data
+                    $.each(data, function (index, item) {
+                        $('#documentType').append($('<option>').text(item.Value).attr('value', item.Text));
+                    });
+                 
 
-        // Check if the selected value is not empty
-        if (selectedValue !== '') {
-            // Show the second dropdown
-            $('#document_Sub_type').show();
-            // Clear previous options
-            $('#document_Sub_type').empty();
-            // Populate the second dropdown based on the selected value
-            if (selectedValue === 'PANDL') {
-                $('#document_Sub_type').append('<option value="incomeStatement">Income Statement</option>');
-                $('#document_Sub_type').append('<option value="expenseStatement">Expense Statement</option>');
-                $('#document_Sub_type').append('<option value="none">none</option>');
-                // Show the element
-                $('#itemsToHide1').hide();
-                $('#itemsToHide2').hide();
-                $('#itemsToHide3').hide();
-                $('#itemsToHide4').hide();
-                $('#itemsToShow1').show();
-                $('#itemsToShow2').show();
-            } else if (selectedValue === 'BS') {
-                $('#document_Sub_type').append('<option value="asset">Asset</option>');
-                $('#document_Sub_type').append('<option value="liability">Liability</option>');
-                $('#document_Sub_type').append('<option value="none">none</option>');
-                // Show the element
-                $('#itemsToHide1').show();
-                $('#itemsToHide2').show();
-                $('#itemsToHide3').show();
-                $('#itemsToHide4').show();
-                $('#itemsToShow1').hide();
-                $('#itemsToShow2').hide();
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
             }
-        } else {
-            // If the selected value is empty, hide the second dropdown
-            $('#document_Sub_type').hide();
-        }
+        });
+    
     });
 
     $('#document_Sub_type').change(function () {
@@ -689,8 +676,10 @@ function loadPartialView2(nodeId, view, path, serviceOption, divToLoadContent) {
 
 }
 
-function TrialBalanceReferenceDataConfiguration(controller, KEY, tableID, partialView, order, divToLoadTheData, serviceOption) {
-    LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, "details", divToLoadTheData, serviceOption);
+function GetData(controller, KEY, tableID, partialView, order, subaction, divToLoadTheData, serviceOption) {
+   
+    LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, subaction, divToLoadTheData, serviceOption);
+    $('.select2').select2();
 }
 
 function DownloadMFIChartOfAccount() {

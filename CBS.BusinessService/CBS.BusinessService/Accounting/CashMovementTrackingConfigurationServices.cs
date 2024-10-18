@@ -1,40 +1,39 @@
-﻿using CBS.API.Helper;
-using CBS.FrontDesk.Data;
+﻿using BusinessServices;
+using CBS.API.Helper;
+using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.CashMovementTracker;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
-using CBS.FrontDesk.Service;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Accounting
 {
-
-    public class StatementModelServices : BaseApiServices
+    public class CashMovementTrackerServices : BaseService
     {
         private readonly ApiCallerHelper _loanConfigApiHelper;
-
-
-
-        public StatementModelServices()
+ 
+        public BranchServices branchServices { get;  set; }
+        public CashMovementTrackerServices()
         {
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
 
         }
-
         public async Task<ExecutionMessages> Delete(string id)
         {
             try
             {
-                var model = await GetStatementModel(id);
-                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_Statementmodel, id), id));
+             
+                var objCashMovementTracker = await GetCashMovementTracker(id);
+                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Delete_CashMovementTracker, id), id));
                 if (inResponse.IsSuccess)
                 {
-                    GetExecutionMessages(inResponse, true, $"{model.Reference} -{model.Heading} ", MessagesResults.Success,
+
+                    GetExecutionMessages(inResponse, true, $"{objCashMovementTracker.ReferenceId}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
 
 
@@ -42,7 +41,7 @@ namespace CBS.BusinessService.Accounting
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(model, false, $"{model.Reference} -{model.Heading} ", MessagesResults.Failed,
+                    GetExecutionMessages(objCashMovementTracker, false, $"{objCashMovementTracker.ReferenceId}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -53,24 +52,24 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
-        public async Task<IEnumerable<StatementModel>> GetAllStatementModel()
+        public async Task<IEnumerable<CashMovementTracker>> GetCashMovementTracker()
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<StatementModel>>>(APICallHelper.GetAllStatementmodel);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<CashMovementTracker>>>(APICallHelper.GetAllCashMovementTracker);
                 if (couApiResponse.IsSuccess)
                 {
 
                     if (couApiResponse.ApiResponseData == null)
                     {
-                        return new List<StatementModel>();
+                        return new List<CashMovementTracker>();
                     }
                     else
                     {
                         return couApiResponse.ApiResponseData.Data;
                     }
                 }
-                return new List<StatementModel>();
+                return new List<CashMovementTracker>();
             }
             catch (Exception ex)
             {
@@ -78,11 +77,11 @@ namespace CBS.BusinessService.Accounting
                 throw;
             }
         }
-        public async Task<StatementModel> GetStatementModel(string id)
+        public async Task<CashMovementTracker> GetCashMovementTracker(string id)
         {
             try
             {
-                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<StatementModel>>(string.Format(APICallHelper.Get_Update_Delete_Statementmodel, id));
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<CashMovementTracker>>(string.Format(APICallHelper.Get_CashMovementTracker, id));
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;
@@ -96,27 +95,36 @@ namespace CBS.BusinessService.Accounting
             }
         }
 
-        public async Task<ExecutionMessages> Update(StatementModel model)
+        public async Task<ExecutionMessages> Update(CashMovementTracker model)
         {
             try
             {
 
-                var AccountCategory = await GetStatementModel(model.Id);
-                if (AccountCategory != null)
+                var CashMovementTracker = await GetCashMovementTracker(model.Id);
+                if (CashMovementTracker != null)
                 {
+                    CashMovementTracker.OperationType = model.OperationType;
 
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<StatementModel>>(string.Format(APICallHelper.Get_Update_Delete_Statementmodel, model.Id), model);
+                    CashMovementTracker.Id = model.Id;
+                    CashMovementTracker.ReferenceId = model.ReferenceId;
+                    CashMovementTracker.Constraint = model.Constraint;
+                    CashMovementTracker.DoneBy = UserID;
+                    CashMovementTracker.Status = model.Status;
+                    CashMovementTracker.StartTime = model.StartTime;
+                    CashMovementTracker.ExpectedEndTime = model.ExpectedEndTime;
+                    CashMovementTracker.EndTime = model.EndTime;
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<CashMovementTracker>>(string.Format(APICallHelper.Update_CashMovementTracker, model.Id), CashMovementTracker);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{model.Reference} -{model.Heading} ", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"{model.ReferenceId}", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, $"{model.Reference} -{model.Heading} ", MessagesResults.Failed,
+                        GetExecutionMessages(model, false, (string)model.ReferenceId, MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }
@@ -131,24 +139,28 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
-        public async Task<ExecutionMessages> Create(StatementModel model)
+        public async Task<ExecutionMessages> Create(CashMovementTracker model)
         {
             try
             {
 
-                string url = (model.AmortizationChartOfAccountId == null) ? APICallHelper.CreateStatementmodel : APICallHelper.CreateStatementmodelBS;
-                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<StatementModel>>(url, model);
+                // Make an API call to create an individual profile
+
+                //model.BankId = this.BankId;
+                //model.BranchId= this .BranchId;
+                //model.OrganizationId= this .OrganizationId;
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse< CashMovementTracker>>(APICallHelper.CreateCashMovementTracker, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.Reference} -{model.Heading} ", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.ReferenceId}", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, $"{model.Reference} -{model.Heading} ", MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.ReferenceId, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -162,22 +174,5 @@ namespace CBS.BusinessService.Accounting
         }
 
 
-        public async Task<List<StatementModel>> GetAccountClassCategory(string id)
-        {
-            try
-            {
-                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<List<StatementModel>>>(string.Format(APICallHelper.Get_AccountClassCategory, id));
-                if (cusResponseObject.IsSuccess)
-                {
-                    return cusResponseObject.ApiResponseData.Data;
-                }
-                return null;
-            }
-            catch (Exception ex)
-            {
-                // Log and handle exception
-                throw ex;
-            }
-        }
     }
 }

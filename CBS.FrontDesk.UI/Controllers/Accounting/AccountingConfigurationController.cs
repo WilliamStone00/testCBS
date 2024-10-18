@@ -51,8 +51,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly AccountTypeServices _AccountTypeServices;
         private readonly ChartOfAccountManagementPositionService _ChartOfAccountManagementPositionServicesServices;
         private readonly AccountCategoryServices _AccountCategoryServices;
-        private readonly StatementModelServices _statementModelServices;
-        private readonly TrialBalanceReferenceServices _trialBalanceReferenceServices;
+        private readonly DocumentRefereceCodeServices _documentRefereceCodeServices;
+        private readonly CorrespondingMappingServices _correspondingMappingServices;
         private readonly TrailBalanceUploudServices _trialBalanceUploudServices;
         private readonly AccountPolicyServices _accountPolicyServices;
         public AccountingConfigurationController()
@@ -67,8 +67,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _AccountServices = new AccountingServices();
             _AccountTypeServices = new AccountTypeServices();
             _AccountCategoryServices = new AccountCategoryServices();
-            _trialBalanceReferenceServices = new TrialBalanceReferenceServices();
-            _statementModelServices = new StatementModelServices();
+            _correspondingMappingServices = new CorrespondingMappingServices();
+            _documentRefereceCodeServices = new DocumentRefereceCodeServices();
             _ChartOfAccountManagementPositionServicesServices = new ChartOfAccountManagementPositionService();
             _AccountClassServices = new AccountClassServices();
             _trialBalanceUploudServices = new TrailBalanceUploudServices();
@@ -124,35 +124,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.CreditAccounts = ViewBag.ChartOfAccounts;
             ViewBag.DebitAccounts = ViewBag.ChartOfAccounts;
             ViewBag.AccountCartegories = await _AccountCategoryServices.GetAccountCategory();
-            ViewBag.Document_type = BuildMenuViewBag();
-            ViewBag.Document_Sub_type = BuildMenuISViewBag();
+            ViewBag.Document = await BuildMenuViewBagAsync();
+            ViewBag.DocumentType = await BuildMenuViewBagAsync();
             ViewBag.OperationSide = BuildMenuViewBagopside();
-            ViewBag.ChartOfAccountReport = BuildMenuAccountViewBag(listAccounts.ToList());
+            ViewBag.GrossAccount = BuildMenuAccountViewBag(listAccounts.ToList());
+            ViewBag.GrossExceptionAccount = BuildMenuAccountViewBag(listAccounts.ToList());
+            ViewBag.ProvisionAccount = BuildMenuAccountViewBag(listAccounts.ToList());
+            ViewBag.ProvisionExceptionAccount = BuildMenuAccountViewBag(listAccounts.ToList());
         }
 
-        private dynamic BuildMenuViewBag(string DocumentId)
-        {
-            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-            if ((DocumentId == "Income Statement") || (DocumentId == "Expense Statement"))
-            {
-                selectListItems = BuildMenuISViewBag();
-            }
-            else
-            {
-                selectListItems = BuildMenuBSViewBag();
-            }
-            return Json(selectListItems, JsonRequestBehavior.AllowGet);
-        }
-        private dynamic BuildMenuISViewBag()
-        {
-            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>
-            {
-            new System.Web.WebPages.Html.SelectListItem { Value = "Income Statement", Text = "Income Statement" },
-            new System.Web.WebPages.Html.SelectListItem { Value = "Expense Statement", Text = "Expense Statement" }
 
-            };
-            return selectListItems;
-        }
+ 
         private dynamic BuildMenuISViewBag(List<Branch> listOfItems)
         {
            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
@@ -184,24 +166,32 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return selectListItems;
 
         }
-        private dynamic BuildMenuViewBag()
+        private async Task<dynamic> BuildMenuViewBagAsync()
         {
-            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>
+            var listOfItems = await _documentRefereceCodeServices.GetAllReport();
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select Financial Statement" });
+            foreach (var item in listOfItems)
             {
-            new System.Web.WebPages.Html.SelectListItem { Value = "PROFIT AND LOSS", Text = "PANDL" },
-            new System.Web.WebPages.Html.SelectListItem { Value = "BALANCE SHEET", Text = "BS" }
+               
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.id, Value = $"{item.name}" });
+                
 
-            };
+            }
             return selectListItems;
         }
-        private dynamic BuildMenuBSViewBag()
+        private async Task<dynamic> BuildMenuBSViewBagAsync(string documentId)
         {
-            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>
+            var listOfItems = await _documentRefereceCodeServices.GetAllReportTypeBydocumentId(documentId);
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select Cartegory" });
+            foreach (var item in listOfItems)
             {
 
-            new System.Web.WebPages.Html.SelectListItem { Value = "Balance SheetAsset", Text = "Balance SheetAsset" },
-            new System.Web.WebPages.Html.SelectListItem { Value = "BalanceSheet Liabilities", Text = "BalanceSheet Liabilities" }
-            };
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.id, Value = $"{item.name}" });
+
+
+            }
             return selectListItems;
         }
 
@@ -343,6 +333,23 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
                 var dataList = new List<StringValues>();
                 dataList.AddRange(BuildStringValuesViewBag(data.ToList()));
+                return Json(dataList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        public async Task<ActionResult> GetDocumentType(string DocumentId)
+        {
+
+  
+
+            try
+            {
+                var dataList = await BuildMenuBSViewBagAsync(DocumentId); 
                 return Json(dataList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -655,7 +662,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
             }
-            else if (model.ServiceOption == "statementModel")
+            else if (model.ServiceOption == "documentReferenceCode")
             {
                 if (model.Action == "insert")
                 {
@@ -756,14 +763,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 return () => _accountingEntryRuleService.Create(model.AccountingRuleEntry);
             }
-            else if (serviceOption == "trialbalancereference")
+            else if (serviceOption == "documentReferenceCode")
             {
-                return () => _trialBalanceReferenceServices.Create(model.TrialBalanceReference);
+
+                return () => _documentRefereceCodeServices.Create(model.DocumentReferenceCode);
             }
-            else if (serviceOption == "statementModel")
-            {
-                return () => _statementModelServices.Create(model.IncomeStatement);
-            }
+      
             else if (serviceOption == "chartOfAccount")
             {
                 ChartOfAccount mode = null;
@@ -850,15 +855,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                 return () => _AccountTypeServices.Update(model.AccountType);
             }
-            else if (serviceOption == "statementModel")
+            else if (serviceOption == "documentReferenceCode")
             {
 
-                return () => _statementModelServices.Update(model.IncomeStatement);
+                return () => _documentRefereceCodeServices.Update(model.DocumentReferenceCode);
             }
-            else if (serviceOption == "trialbalancereference")
+            else if (serviceOption == "correspondingMapping")
             {
 
-                return () => _trialBalanceReferenceServices.Update(model.TrialBalanceReference);
+                return () => _correspondingMappingServices.Update(model.CorrespondingMapping);
+            }
+            else if (serviceOption == "correspondingMappingException")
+            {
+
+                return () => _correspondingMappingServices.UpdateException(model.CorrespondingMapping);
             }
             else if (serviceOption == "accountPolicy")
             {
@@ -1048,38 +1058,50 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
 
             }
-            else if (serviceOption == "trialbalancereference")
+            else if (serviceOption == "documentReferenceCode")
             {
                 if (path == "list")
                 {
 
-                    var data = await _trialBalanceReferenceServices.GetAllTrialBalanceReference();
+                    var data = await _documentRefereceCodeServices.GetAllDocumentReferenceCodeModel();
 
-                    var sysData = new AccountingConfiguration { TrialBalanceReferences = data.ToList() };
+                    var sysData = new AccountingConfiguration { DocumentReferenceCodeDataDtos = data.ToList() };
                     return PartialView(partialView, sysData);
 
                 }
                 else if (path == "new")
                 {
-                    var data = await _statementModelServices.GetStatementModel(key);
-                    return PartialView(partialView, new AccountingConfiguration { ServiceOption = "trialbalancereference", IncomeStatement = data, TrialBalanceReference = new TrialBalanceReference { StatementModelId = data.Id } });
+                    
+                    return PartialView(partialView, new AccountingConfiguration { ServiceOption = "documentReferenceCode", DocumentReferenceCode = new DocumentReferenceCode(), CorrespondingMapping = new CorrespondingMapping {  } });
+                }
+                else if (path=="details")
+                {
+                    var data = await _documentRefereceCodeServices.GetDocumentReferenceCode(key);
+                    var datast = await _correspondingMappingServices.GetAllCorrespondingMappingByDocumentReference(key);
+                    var datastEx = await _correspondingMappingServices.GetAllCorrespondingMappingExceptionByDocumentReference(key);
+
+                    return PartialView(partialView, new AccountingConfiguration { ServiceOption = "documentReferenceCode", DocumentReferenceCodeDto = data, CorrespondingMappingDataDto = datast,CorrespondingMappingExceptionDataDto= datastEx });
                 }
                 else
                 {
-                    var data = await _trialBalanceReferenceServices.GetTrialBalanceReference(key);
-                    var datast = await _statementModelServices.GetStatementModel(data.StatementModelId);
-                    return PartialView(partialView, new AccountingConfiguration { ServiceOption = "trialbalancereference", TrialBalanceReference = data, IncomeStatement = datast });
+                    var data = await _documentRefereceCodeServices.GetDocumentReferenceCode(key);
+                    var datast = await _correspondingMappingServices.GetAllCorrespondingMappingByDocumentReference(key);
+                    var datastEx = await _correspondingMappingServices.GetAllCorrespondingMappingExceptionByDocumentReference(key);
+                    DocumentReferenceCode documentReferenceCode =await BuildDocumentReferenceCodeObjAsync(data, datast, datastEx);
+ 
+                    return PartialView(partialView, new AccountingConfiguration { ServiceOption = "documentReferenceCode",DocumentReferenceCode= documentReferenceCode, DocumentReferenceCodeDto = data, CorrespondingMappingDataDto = datast });
+
                 }
 
             }
-            else if (serviceOption == "statementmodel")
+            else if (serviceOption == "correspondingMapping")
             {
                 if (path == "list")
                 {
 
-                    var data = await _statementModelServices.GetAllStatementModel();
+                    var data = await _correspondingMappingServices.GetAllCorrespondingMappingByDocumentReference(key);
 
-                    var sysData = new AccountingConfiguration { IncomeStatements = data.ToList() };
+                    var sysData = new AccountingConfiguration { CorrespondingMappingDataDto = data.ToList() };
                     return PartialView(partialView, sysData);
 
                 }
@@ -1087,36 +1109,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     return PartialView(partialView, new AccountingConfiguration { });
                 }
-                else if (path == "details")
-                {
-
-                    var data = await _statementModelServices.GetStatementModel(key);
-                    var datas = (await _trialBalanceReferenceServices.GetAllTrialBalanceReference()).Where(c => c.StatementModelId == data.Id).ToList();
-                    var chartOfAccounts = (await _chartOfAccountServices.GetAllChartOfAccounts());
-                    var result = from tr in datas
-                                 join acc in chartOfAccounts
-                                 on tr.ChartOfAccountId equals acc.Id
-
-                                 select new TrialBalanceReference
-                                 {
-                                     Id = tr.Id,
-                                     ChartOfAccountId = tr.ChartOfAccountId,
-                                     AccountInfo = acc.AccountNumber.PadRight(6,'0' ) + "-" + acc.LabelEn,
-                                     //OperationSide = tr.OperationSide,
-                                     StatementModelId = data.Id
-                                 };
-
-                    return PartialView(partialView, new AccountingConfiguration { IncomeStatement = data, TrialBalanceReferences = result.ToList() });
-                }
+             
                 else
                 {
-                    var data = await _statementModelServices.GetStatementModel(key);
-                    var AccountIds = (from d in (await _trialBalanceReferenceServices.GetAllTrialBalanceReference())
-                                      select d.ChartOfAccountId).ToList();
-                    data.AccountIds = AccountIds;
-                    //data.OperationSide= 
+                    var data = await _correspondingMappingServices.GetCorrespondingMapping(key);
+                 
 
-                    return PartialView(partialView, new AccountingConfiguration { IncomeStatement = data });
+                    return PartialView(partialView, new AccountingConfiguration { CorrespondingMappingDto = data });
                 }
 
             }
@@ -1291,6 +1290,41 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return null;
         }
 
+        private async Task<DocumentReferenceCode> BuildDocumentReferenceCodeObjAsync(DocumentReferenceCodeDto data, List<CorrespondingMappingDto> datast, List<CorrespondingMappingExceptionDto> datastEx)
+        {
+           var listAccounts =( await _chartOfAccountServices.GetAllChartOfAccounts()).ToList();
+            DocumentReferenceCode documentReferenceCode = new DocumentReferenceCode();
+            documentReferenceCode.Id = data.Id;
+            documentReferenceCode.ReferenceCode = data.ReferenceCode;
+            documentReferenceCode.Description = data.Description;
+            documentReferenceCode.DocumentType = data.DocumentTypeId;
+            documentReferenceCode.Document = data.DocumentId;
+            documentReferenceCode.GrossCorrespondingAccount = datast.Where(x => x.Cartegory.Equals(BalanceSheetCartegory.GROSS)).Select(x=>x.ChartOfAccountId).ToList();
+            documentReferenceCode.GrossCorrespondingExceptionAccount = datastEx.Where(x => x.Cartegory.Equals(BalanceSheetCartegory.GROSS)).Select(x => x.ChartOfAccountId).ToList();
+            documentReferenceCode.ProvCorrespondingAccount = datast.Where(x => x.Cartegory.Equals(BalanceSheetCartegory.PROVISION)).Select(x => x.ChartOfAccountId).ToList();
+            documentReferenceCode.ProvCorrespondingExceptionAccount = datastEx.Where(x => x.Cartegory.Equals(BalanceSheetCartegory.PROVISION)).Select(x => x.ChartOfAccountId).ToList();
+            //ViewBag.GrossAccount = BuildMenuAccountViewBag(GetSelectedAccount(listAccounts, documentReferenceCode.GrossCorrespondingAccount));
+            //ViewBag.GrossExceptionAccount = BuildMenuAccountViewBag(GetSelectedAccount(listAccounts, documentReferenceCode.GrossCorrespondingExceptionAccount));
+            //ViewBag.ProvisionAccount = BuildMenuAccountViewBag(GetSelectedAccount(listAccounts, documentReferenceCode.GrossCorrespondingExceptionAccount));
+            //ViewBag.ProvisionExceptionAccount = BuildMenuAccountViewBag(GetSelectedAccount(listAccounts, documentReferenceCode.ProvCorrespondingExceptionAccount)) ;
+            ViewBag.Document = await BuildMenuViewBagAsync();
+            ViewBag.DocumentType = await BuildMenuBSViewBagAsync(data.DocumentId);
+            return documentReferenceCode;
+        }
+
+        private List<ChartOfAccount> GetSelectedAccount(IEnumerable<ChartOfAccount> listAccounts, List<string> grossCorrespondingAccount)
+        {
+             var objct= (from account in listAccounts
+                    join Idaccount in grossCorrespondingAccount on account.Id equals Idaccount
+                    select new ChartOfAccount
+                    {
+                        Id = Idaccount,
+                        LabelEn = account.LabelEn
+
+                    }).ToList();
+            return objct;
+        }
+
         private async Task<string > GetAccountNumberWithMangementPositon(string ChartOfAccountId, string chartOfAccountPositionId)
         {
             string accountNumber = string.Empty;
@@ -1359,17 +1393,24 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
 
             }
-            else if (serviceOption == "statementmodel")
+            else if (serviceOption == "correspondingMapping")
             {
 
-                var data = await _statementModelServices.Delete(KEY);
+                var data = await _correspondingMappingServices.Delete(KEY);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
 
             }
-            else if (serviceOption == "trialbalancereference")
+            else if (serviceOption == "correspondingMappingException")
             {
 
-                var data = await _trialBalanceReferenceServices.Delete(KEY);
+                var data = await _correspondingMappingServices.DeleteException(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
+            else if (serviceOption == "documentReferenceCode")
+            {
+
+                var data = await _documentRefereceCodeServices.Delete(KEY);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
 
             }

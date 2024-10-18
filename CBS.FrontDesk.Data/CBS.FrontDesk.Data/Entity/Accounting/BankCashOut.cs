@@ -34,7 +34,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public HttpPostedFileBase UploadedFile{ get; set; }
         [Required]
         public DateTime ValueDate { get; set; }
-        public Denomination CurrencyNotes { get; set; }
+        public CurrencyNotesRequest CurrencyNotes { get; set; }
 
         public BankTransactionModel ConvertToTransferData()
         {
@@ -115,7 +115,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
      
         public string Description { get; set; }
         [Required]
-        public Denomination CurrencyNotes { get; set; }
+        public CurrencyNotesRequest CurrencyNotes { get; set; }
         public BranchTransfer ConvertToTransferData()
         {
             return new BranchTransfer

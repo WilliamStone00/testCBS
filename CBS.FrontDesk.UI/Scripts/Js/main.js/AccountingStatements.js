@@ -451,9 +451,16 @@ function openReportWindow(fileType, reportType) {
             url = "/Reports/PrintTrialBalance4Column";
         } else if (reportType === "TB6") {
             url = "/Reports/PrintTrialBalance6Column";
+        } else if (reportType === "BS") {
+            url = "/Reports/PrintBalanceSheet";
         }
     } else {
-        url = "/Reports/DownloadExcelFile";
+        if (reportType === "BS") {
+            url = "/Reports/DownloadBSFile";
+        } else {
+            url = "/Reports/DownloadExcelFile";
+        }
+        
     }
     window.open(url, "_blank");
 }

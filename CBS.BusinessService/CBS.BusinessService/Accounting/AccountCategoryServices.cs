@@ -177,18 +177,27 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.Accounting.AccountCategory>>>(string.Format(APICallHelper.Get_AccountClassCategory, id));
-                if (cusResponseObject.IsSuccess)
+                if (id.Equals("0"))
                 {
-                    return cusResponseObject.ApiResponseData.Data;
+                    return (await this.GetAccountCategory()).ToList();
                 }
-                return null;
+                else
+                {
+                    var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.Accounting.AccountCategory>>>(string.Format(APICallHelper.Get_AccountClassCategory, id));
+                    if (cusResponseObject.IsSuccess)
+                    {
+                        return cusResponseObject.ApiResponseData.Data;
+                    }
+                }
+           
+ 
             }
             catch (Exception ex)
             {
                 // Log and handle exception
                 throw ex;
             }
+            return null;    
         }
     }
 }

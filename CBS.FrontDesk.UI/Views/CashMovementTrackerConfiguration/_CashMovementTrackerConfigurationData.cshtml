@@ -1,0 +1,42 @@
+﻿@model CBS.FrontDesk.Data.Entity.CashMovementTracker.CashMovementConfiguration
+<div id="datalistingview_CashMovementTrackerConfiguration">
+
+    <table class="table table-hover" id="DataTable_CashMovementTrackerConfiguration">
+        <thead class="table-light">
+            <tr>
+                <th>Movement</th>
+
+                <th>Source Branch</th>
+
+                <th>Destination</th>
+                <th>Duration(In Mins)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+
+                foreach (var d in Model.CashMovementTrackingConfigurationData)
+                {
+                    <tr>
+                        <td style="width:15%">@d.MovementType</td>
+                        <td style="width:25%">@d.From</td>
+                        <td style="width:25%">@d.To</td>
+                        <td style="width:15%">@d.Duration</td>
+                        <td style="width:15%">
+ 
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View Status</a>
+ 
+
+                        </td>
+                    </tr>
+
+                }
+
+
+
+            }
+        </tbody>
+    </table>
+
+</div>

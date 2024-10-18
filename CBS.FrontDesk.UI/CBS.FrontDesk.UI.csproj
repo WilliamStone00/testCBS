@@ -368,6 +368,7 @@
     <Content Include="AppFiles\Images\BG2.png" />
     <Content Include="AppFiles\Images\BG3.jpeg" />
     <Content Include="AppFiles\Images\BG3.png" />
+    <Content Include="AppFiles\Images\CaptureBG.png" />
     <Content Include="AppFiles\Images\Logog2.jpeg" />
     <Content Include="AppFiles\Images\Logog2X.jpeg" />
     <Content Include="AppFiles\Images\Logog2XI.png" />
@@ -376,10 +377,40 @@
     <Content Include="AppFiles\Images\SideImageHeader_login.png" />
     <Content Include="AppFiles\Images\BG4.jpeg" />
     <Content Include="App_Code\Helper\HtmlExtension.cs" />
+    <Compile Include="AppFiles\Reporting\Accounting\BalanceSheet.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BalanceSheet.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\Expense Report.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Expense Report.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\GeneralLedger.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GeneralLedger.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\Income and expense summary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Income and expense summary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\Income and Expense.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Income and Expense.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\Income.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Income.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\JournalEntries.cs">
@@ -495,6 +526,8 @@
     <Compile Include="Controllers\Accounting\AccountEntry.cs" />
     <Compile Include="Controllers\Accounting\AccountingChartController.cs" />
     <Compile Include="Controllers\Accounting\BranchAccountJournalEntriesQueryObject.cs" />
+    <Compile Include="Controllers\Accounting\CashMovementTrackerConfigurationController.cs" />
+    <Compile Include="Controllers\Accounting\CashMovementTrackerController.cs" />
     <Compile Include="Controllers\Accounting\ManagementSelectionOption.cs" />
     <Compile Include="Controllers\Accounting\ManuallyJournalEntryController.cs" />
     <Compile Include="Controllers\Accounting\AccountingConfigurationController.cs" />
@@ -574,6 +607,9 @@
     <Compile Include="Controllers\TransactionManagement\TransactionConfigurationController.cs" />
     <Compile Include="Controllers\UserManagement\MFAVerificationController.cs" />
     <Compile Include="Controllers\UserManagement\UserManagementController.cs" />
+    <Compile Include="DataSet\Accounting\AccountingDataSet.cs">
+      <DependentUpon>AccountingDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet\Accounting\AccountingDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2423,6 +2459,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Js\AccountEventConfigurtion\MFIChartOfAccount.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
+    <Content Include="Scripts\Js\CashMovementTracker\CashMovementTracker.js" />
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\MomocashCollection.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\ExpensesCashDesk.js" />
@@ -2880,11 +2917,10 @@
     <Content Include="Views\UserManagement\_UserDetails.cshtml" />
     <Content Include="Views\AccountingConfiguration\_AccountUploud.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateIncomeStatementStructure.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_CreateStatementModel.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateDocumentReferenceCode.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateStatementModelBS.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_CreateTrialBalanceReference.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_statementModelData.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_statementModelDetails.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateCorrespondingMapping.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_DocumentReferenceCodeData.cshtml" />
     <Content Include="Views\AccountingConfiguration\_UpdateStatementModel.cshtml" />
     <Content Include="Views\AccountingStatements\GeneralLedger.cshtml" />
     <Content Include="Views\AccountingStatements\_JournalEntries.cshtml" />
@@ -3141,6 +3177,12 @@
     <Content Include="Views\TellerManagement\_MMConfiguration.cshtml" />
     <Content Include="Views\MobileMoneyCashTopup\AllRequests.cshtml" />
     <Content Include="Views\MobileMoneyCashTopup\_AllRequestData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_DocumentReferenceCodeDetails.cshtml" />
+    <Content Include="Views\TransactionConfiguration\AccountMappingInfo.cshtml" />
+    <Content Include="Views\CashMovementTracker\Index.cshtml" />
+    <Content Include="Views\CashMovementTrackerConfiguration\Index.cshtml" />
+    <Content Include="Views\CashMovementTrackerConfiguration\_CreateCashMovementTrackerConfiguration.cshtml" />
+    <Content Include="Views\CashMovementTrackerConfiguration\_CashMovementTrackerConfigurationData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -3199,9 +3241,29 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\BalanceSheet.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BalanceSheet.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\Expense Report.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Expense Report.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\GeneralLedger.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GeneralLedger.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\Income and expense summary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Income and expense summary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\Income and Expense.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Income and Expense.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\Income.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Income.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\JournalEntries.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -3313,6 +3375,7 @@
           <DevelopmentServerPort>52456</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>https://localhost:44385/</IISUrl>
+          <IISUrl>https://localhost:44345/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

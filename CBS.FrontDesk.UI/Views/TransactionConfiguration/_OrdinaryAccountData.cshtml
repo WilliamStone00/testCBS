@@ -45,7 +45,9 @@ else
                                 @if (!d.IsUsedForTellerProvisioning)
                                 {
                                     <a href="/TransactionConfiguration/PolicyandSharing?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="Configure @d.Name operation policies">Policies |</a>
-                                    <a href="/TransactionConfiguration/AccountMapping?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="Configure @d.Name account mapping">Mappings </a>
+                                    <a href="/TransactionConfiguration/AccountMapping?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="Configure @d.Name account mapping">Mappings |</a>
+                                    <a href="/TransactionConfiguration/AccountMappingInfo?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="Configure @d.Name account mapping">Simulation</a>
+
                                 }
                             </td>
                         </tr>

@@ -17,7 +17,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-file-document-outline me-2"></i>
-                            JOURNAL ENTRIES PER BRANCH
+                            GENERAL LEDGER PER BRANCH
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -80,6 +80,8 @@ else
             <div class="col-xl-12 col-lg-12 col-md-12 order-12 order-md-12">
                 <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
+
+
                     <div class="accordion-item active">
                         <h2 class="accordion-header text-body d-flex justify-content-between"
                             id="accordionPopoutIconThree">
@@ -90,9 +92,12 @@ else
                                     aria-expanded="true"
                                     aria-controls="accordionPopoutIcon-3">
                                 <i class="mdi mdi-file-document-outline me-2"></i>
-                                GENERAL LEDGER OF  @Session["BranchName"]
+                                GENERAL LEDGER FOR  @Session["BranchName"]
                             </button>
                         </h2>
+
+
+
                         <div id="accordionPopoutIcon-3"
                              class="accordion-collapse collapse show"
                              data-bs-parent="#accordionPopoutIcon">
@@ -100,56 +105,94 @@ else
                                 <div id="mainviewChange">
                                     <div class="change-group">
 
-                                        <div class="table-responsive mb-3">
-                                            <table class="table table-hover" id="AccountDataTable">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th>AccountNumber</th>
-                                                        <th>Description</th>
+                                        <div id="accordionPopoutIcon_3" class="accordion mt-3 accordion-popout">
 
-                                                        <th>Current Balance</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                    @foreach (var d in Model.Accounts)
-                                                    {
-                                                        <tr>
-                                                            <td style="width:25%">@d.AccountNumber</td>
-                                                            <td style="width:50%">@d.AccountName</td>
-                                                            <td style="width:25%">@d.CurrentBalance</td>
-
-                                                        </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="card-header shift-right">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header text-body d-flex justify-content-between"
+                                                    id="accordionPopoutIconThree">
+                                                    <button type="button"
+                                                            class="accordion-button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#accordionPopoutIcon-3"
+                                                            aria-expanded="true"
+                                                            aria-controls="accordionPopoutIcon-3">
+                                                        <i class="mdi mdi-table-alert me-2"></i>
+                                                        Classic View
+                                                    </button>
+                                                </h2>
 
 
 
-                                            <div class="col-lg-3 col-sm-6 col-12">
+                                                <div id="accordionPopoutIcon-classic"
+                                                     class="accordion-collapse collapse show"
+                                                     data-bs-parent="#accordionPopoutIcon">
+                                                    <div class="accordion-body">
+                                                        <div id="mainviewChange">
+                                                            <div class="change-group">
 
-                                                <div class="demo-inline-spacing">
-                                                    <div class="btn-group" id="dropdown-icon-demo">
-                                                        <button type="button"
-                                                                class="btn btn-primary dropdown-toggle"
-                                                                data-bs-toggle="dropdown"
-                                                                aria-expanded="false">
-                                                            <i class="mdi mdi-cloud-download-outline me-1"></i>  Download General Ledger
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li>
-                                                                <a href="javascript:void(0);" onclick="DownLoadGL('EXCEL')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>In Excel Format</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="javascript:void(0);" onclick="DownLoadGL('PDF')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>In PDF Format</a>
-                                                            </li>
-                                                        </ul>
+                                                                <div class="table-responsive mb-3">
+                                                                    <table class="table table-hover" id="AccountDataTable">
+                                                                        <thead class="table-light">
+                                                                            <tr>
+                                                                                <th>AccountNumber</th>
+                                                                                <th>Description</th>
+
+                                                                                <th>Current Balance</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+
+                                                                            @foreach (var d in Model.Accounts)
+                                                                            {
+                                                                                <tr>
+                                                                                    <td style="width:25%">@d.AccountNumber</td>
+                                                                                    <td style="width:50%">@d.AccountName</td>
+                                                                                    <td style="width:25%">@d.CurrentBalance</td>
+
+                                                                                </tr>
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="card-header shift-right">
+
+
+
+                                                                    <div class="col-lg-3 col-sm-6 col-12">
+
+                                                                        <div class="demo-inline-spacing">
+                                                                            <div class="btn-group" id="dropdown-icon-demo">
+                                                                                <button type="button"
+                                                                                        class="btn btn-primary dropdown-toggle"
+                                                                                        data-bs-toggle="dropdown"
+                                                                                        aria-expanded="false">
+                                                                                    <i class="mdi mdi-cloud-download-outline me-1"></i>  Download General Ledger
+                                                                                </button>
+                                                                                <ul class="dropdown-menu">
+                                                                                    <li>
+                                                                                        <a href="javascript:void(0);" onclick="DownLoadGL('EXCEL')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>In Excel Format</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a href="javascript:void(0);" onclick="DownLoadGL('PDF')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>In PDF Format</a>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
+
+
+
                                                 </div>
                                             </div>
+
                                         </div>
+
+                          
+                                    
                                     </div>
                                 </div>
                             </div>

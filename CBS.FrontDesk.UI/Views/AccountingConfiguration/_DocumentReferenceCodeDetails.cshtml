@@ -1,0 +1,122 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+
+            <th colspan="2">@Model.DocumentReferenceCodeDto.Document - @Model.DocumentReferenceCodeDto.DocumentType</th>
+        </tr>
+    </thead>
+    <tbody class="table-border-bottom-0">
+        <tr>
+            <td style="width: 30%;">Heading</td>
+            <td style="width: 70%;">@Model.DocumentReferenceCodeDto.ReferenceCode</td>
+        </tr>
+        <tr>
+            <td style="width: 30%;">Reference code</td>
+            <td style="width: 70%;">@Model.DocumentReferenceCodeDto.Description</td>
+        </tr>
+    </tbody>
+</table>
+<div class="row invoice-preview">
+    <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+        <div class="accordion-item active">
+
+            <h2 class="accordion-header text-body d-flex justify-content-between"
+                id="accordionPopoutIconThree">
+                <button type="button"
+                        class="accordion-button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#accordionPopoutIcon-3"
+                        aria-expanded="true"
+                        aria-controls="accordionPopoutIcon-3">
+                    <i class="mdi mdi-file-document-plus-outline me-2"></i>
+                    Manage corresponding account reference
+                </button>
+            </h2>
+            <div class="card-body">
+
+                <br />
+                <div class="collapse show">
+                    <table class="table table-hover" id="myDataTable_correspondingMapping">
+                        <thead class="table-light">
+                            <tr>
+                                <th>AccountNumber</th>
+                                <th>Cartegory</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var d in Model.CorrespondingMappingDataDto)
+                            {
+                                <tr>
+                                    <td style="width:35%">@d.AccountNumber</td>
+                                    <td style="width:35%">@d.Cartegory</td>
+
+                                    <td style="width:30%">
+                                        @*<a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Id" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_correspondingMapping','_DocumentReferenceCodeDetails',0,'datalistingview_DocumentReferenceCode','correspondingMapping')">Delete</a>*@
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+            @if (Model.DocumentReferenceCodeDto.HasException)
+            {
+                <h2 class="accordion-header text-body d-flex justify-content-between"
+                    id="accordionPopoutIconThree">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accordionPopoutIcon-3"
+                            aria-expanded="true"
+                            aria-controls="accordionPopoutIcon-3">
+                        <i class="mdi mdi-file-document-plus-outline me-2"></i>
+                        Manage corresponding account reference exceptions
+                    </button>
+                </h2>
+                <div class="card-body">
+
+                    <br />
+                    <div class="collapse show">
+                        <table class="table table-hover" id="myDataTable_trialbalancereference">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>AccountNumber</th>
+                                    <th>Booking Direction</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var d in Model.CorrespondingMappingExceptionDataDto)
+                                {
+                                    <tr>
+                                        <td style="width:35%">@d.AccountNumber</td>
+                                        <td style="width:35%">@d.Cartegory</td>
+
+                                        <td style="width:30%">
+
+                                            @*<a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Statementmodel','_CreateTrialBalanceReference','update','AccountingConfiguration','trialbalancereference')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Id to edit">Edit</a>|
+
+                                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Id" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_trialbalancereference','_stamentModelData',0,'datalistingview_Statementmodel','trialbalancereference')">Delete</a>*@
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+            }
+
+        </div>
+
+
+    </div>
+</div>
