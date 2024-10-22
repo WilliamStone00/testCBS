@@ -302,14 +302,13 @@ function PostCashIn() {
     confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits, 'CashInMomocashCollection');
 }
 
-
 function PostLoanRepayment() {
-    if (!checkTotalNotes()) return false;
+    //if (!checkTotalNotes()) return false;
 
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
+    //var totalNotes = parseFloat($("#totalNoteAmount").val());
     var totalInfo = calculateTotalAmount();
 
-    if (!validateTotalAmount(totalInfo, totalNotes)) return;
+    //if (!validateTotalAmount(totalInfo, totalNotes)) return;
 
     var deposits = collectDeposits();
     if (deposits.length !== 1) {

@@ -105,6 +105,10 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_CloseFeeParameter = "/api/v1/CloseFeeParameter/{0}";
         public static string GetAllCloseFeeParameter = "/api/v1/CloseFeeParameter";
         public static string CreateCloseFeeParameter = "/api/v1/CloseFeeParameter";
+        //OldLoanAccountingMaping
+        public static string Get_Update_Delete_OldLoanAccountingMaping = "/api/v1/OldLoanAccountingMaping/{0}";
+        public static string GetAllOldLoanAccountingMaping = "/api/v1/OldLoanAccountingMaping";
+        public static string CreateOldLoanAccountingMaping = "/api/v1/OldLoanAccountingMaping";
         //EntryFeeParameter
         public static string Get_Update_Delete_EntryFeeParameter = "/api/v1/EntryFeeParameter/{0}";
         public static string GetAllEntryFeeParameter = "/api/v1/EntryFeeParameter";

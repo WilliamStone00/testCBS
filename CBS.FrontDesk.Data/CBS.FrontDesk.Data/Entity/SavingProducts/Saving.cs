@@ -142,6 +142,30 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public SavingProduct product { get; set; }
 
     }
+
+    public class OldLoanAccountingMaping
+    {
+        public string Id { get; set; }
+
+        [Required(ErrorMessage = "Loan Type Name is required.")]
+        [StringLength(50, ErrorMessage = "Loan Type Name cannot exceed 50 characters.")]
+        public string LoanTypeName { get; set; }
+
+        [Required(ErrorMessage = "Chart of Account ID for VAT is required.")]
+        public string ChartOfAccountIdForVAT { get; set; }
+
+        [Required(ErrorMessage = "Chart of Account ID for Interest is required.")]
+        public string ChartOfAccountIdForInterest { get; set; }
+
+        [Required(ErrorMessage = "Chart of Account ID for Capital is required.")]
+        public string ChartOfAccountIdForCapital { get; set; }
+
+        [Required(ErrorMessage = "Branch is required.")]
+        public string BranchId { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+    }
+
     public class OperationFee
     {
         public string Id { get; set; }

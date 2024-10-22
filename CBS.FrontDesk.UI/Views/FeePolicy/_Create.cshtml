@@ -6,103 +6,23 @@
         {
 
             @Html.HiddenFor(model => model.Id)
-            <div class="row mt-2 gy-4">
+        <div class="row mt-2 gy-4">
 
-                <div class="col-md-12" id="selectFeild">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.FeeId, new SelectList(ViewBag.Fees, "Id", "name"), "---Select fee---", new { @class = "form-control select2", @onchange = "GetFee(this.value);", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.FeeId, "", new { @class = "text-danger" })
-                        <label>Select fee</label>
-                    </div>
+            <div class="col-md-12" id="selectFeild">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.FeeId, new SelectList(ViewBag.Fees, "Id", "name"), "---Select fee---", new { @class = "form-control select2", @onchange = "GetFee(this.value);", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.FeeId, "", new { @class = "text-danger" })
+                    <label>Select fee</label>
                 </div>
+            </div>
 
-                @if (ViewBag.Base == "Range")
-                {
-                    if (ViewBag.MemberShip == "MemberShip")
-                    {
-                        <div id="range" style="display:block">
-                            <div class="row">
-                                <div class="col-md-2 mb-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.Charge, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.Charge, "", new { @class = "text-danger" })
-                                        <label>Charge</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-10" id="eventDiv" style="display:block;">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.EventCode, new SelectList(ViewBag.EventCodes, "Value", "Text"), "---Select Event---", new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.EventCode, "", new { @class = "text-danger" })
-                                        <label>Select event code</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    }
-                    else
-                    {
-                        <div id="range" style="display:block">
-                            <div class="row">
-                                <div class="col-md-5 mb-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AmountFrom, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.AmountFrom, "", new { @class = "text-danger" })
-                                        <label>Amount From</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-5 mb-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AmountTo, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.AmountTo, "", new { @class = "text-danger" })
-                                        <label>Amount To</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.Charge, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.Charge, "", new { @class = "text-danger" })
-                                        <label>Charge</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    }
-
-                }
-                else if (ViewBag.Base == "Rate")
-                {
-                    <div id="percentage">
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.TextBoxFor(m => m.Value, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Value, "", new { @class = "text-danger" })
-                                <label id="lblevalue">Enter value (in %)</label>
-                            </div>
-                        </div>
-                    </div>
-                }
-
-                else
+            @if (ViewBag.Base == "Range")
+            {
+                if (ViewBag.MemberShip == "MemberShip")
                 {
                     <div id="range" style="display:block">
                         <div class="row">
-                            <div id="amountfrom" style="display:block" class="col-md-5 mb-3">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.AmountFrom, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AmountFrom, "", new { @class = "text-danger" })
-                                    <label>Amount From</label>
-                                </div>
-                            </div>
-                            <div id="amountto" style="display:block" class="col-md-5 mb-3">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.AmountTo, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AmountTo, "", new { @class = "text-danger" })
-                                    <label>Amount To</label>
-                                </div>
-                            </div>
-                            <div id="memberShip" style="display:block" class="col-md-2 mb-3">
+                            <div class="col-md-2 mb-12">
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.Charge, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(m => m.Charge, "", new { @class = "text-danger" })
@@ -118,41 +38,120 @@
                             </div>
                         </div>
                     </div>
-                    <div id="percentage" style="display:none">
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.TextBoxFor(m => m.Value, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Value, "", new { @class = "text-danger" })
-                                <label id="lblevalue">Enter value (in %)</label>
+
+                }
+                else
+                {
+                    <div id="range" style="display:block">
+                        <div class="row">
+                            <div class="col-md-5 mb-3">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.AmountFrom, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.AmountFrom, "", new { @class = "text-danger" })
+                                    <label>Amount From</label>
+                                </div>
+                            </div>
+                            <div class="col-md-5 mb-3">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.AmountTo, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.AmountTo, "", new { @class = "text-danger" })
+                                    <label>Amount To</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.Charge, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Charge, "", new { @class = "text-danger" })
+                                    <label>Charge</label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                }
-                <div class="col-12 mb-2" id="isCentralised">
-                    <div class="form-check">
-                        @Html.CheckBoxFor(m => m.IsCentralised, new { @class = "form-check-input", @id = "isCentralisedCheck" })
-                        <label class="form-check-label" for="isCentralisedCheck" id="isCentralisedLabel">Check to de-centralise this policy</label>
-                    </div>
-                </div>
 
-                <div class="row" id="mfi" style="display:none;">
-                    <div class="col-md-5 mb-2">
+                }
+
+            }
+            else if (ViewBag.Base == "Rate")
+            {
+                <div id="percentage">
+                    <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
-                            @Html.DropDownListFor(m => m.BankId, new SelectList(ViewBag.Banks, "Id", "name"), "---Select Bank---", new { @class = "form-control select2", @onchange = "GetBranchesByBank(this.value,'BranchId');", @search = "true" })
-                            @Html.ValidationMessageFor(m => m.BankId, "", new { @class = "text-danger" })
-                            <label>Select MFI</label>
-                        </div>
-                    </div>
-                    <div class="col-md-7 mb-2">
-                        <div class="form-floating form-floating-outline">
-                            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select Branch---", new { @class = "form-control select2", id = "BranchId", @search = "true" })
-                            @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                            <label>Select branch</label>
+                            @Html.TextBoxFor(m => m.Value, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Value, "", new { @class = "text-danger" })
+                            <label id="lblevalue">Enter value (in %)</label>
                         </div>
                     </div>
                 </div>
-               
+            }
+
+            else
+            {
+                <div id="range" style="display:block">
+                    <div class="row">
+                        <div id="amountfrom" style="display:block" class="col-md-5 mb-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.AmountFrom, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.AmountFrom, "", new { @class = "text-danger" })
+                                <label>Amount From</label>
+                            </div>
+                        </div>
+                        <div id="amountto" style="display:block" class="col-md-5 mb-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.AmountTo, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.AmountTo, "", new { @class = "text-danger" })
+                                <label>Amount To</label>
+                            </div>
+                        </div>
+                        <div id="memberShip" style="display:block" class="col-md-2 mb-3">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.Charge, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Charge, "", new { @class = "text-danger" })
+                                <label>Charge</label>
+                            </div>
+                        </div>
+                        <div class="col-md-10" id="eventDiv" style="display:block;">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.EventCode, new SelectList(ViewBag.EventCodes, "Value", "Text"), "---Select Event---", new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(m => m.EventCode, "", new { @class = "text-danger" })
+                                <label>Select event code</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="percentage" style="display:none">
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.Value, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Value, "", new { @class = "text-danger" })
+                            <label id="lblevalue">Enter value (in %)</label>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-12 mb-2" id="isCentralised">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.IsCentralised, new { @class = "form-check-input", @id = "isCentralisedCheck" })
+                    <label class="form-check-label" for="isCentralisedCheck" id="isCentralisedLabel">Check to de-centralise this policy</label>
+                </div>
             </div>
+
+            <div class="row" id="mfi" style="display:none;">
+                <div class="col-md-12 mb-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select Branch---", new { @class = "form-control select2", id = "BranchId", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                        <label>Select branch</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.BankId, new SelectList(ViewBag.Banks, "Id", "name"), "---Select Bank---", new { @class = "form-control select2", @onchange = "GetBranchesByBank(this.value,'BranchId');", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.BankId, "", new { @class = "text-danger" })
+                    <label>Select MFI</label>
+                </div>
+            </div>
+        </div>
             <div class="mt-4">
                 @if (ViewBag.Key != null)
                 {

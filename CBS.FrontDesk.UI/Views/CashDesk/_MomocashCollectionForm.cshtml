@@ -73,14 +73,14 @@
                                                 <input type="checkbox" class="form-check-input">
                                             </td>
                                             <td>
-                                                <input type="checkbox" class="form-check-input check-inclussive">
+                                                <input type="checkbox" class="form-check-input check-inclussive" disabled>
                                             </td>
                                         </tr>
                                     }
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="4" style="text-align: right;"><strong>Total:</strong></td>
+                                        <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
                                         <td id="tableTotal">0</td>
                                     </tr>
                                 </tfoot>
@@ -124,12 +124,12 @@ else if (ViewBag.Operation == "repayment")
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    @*<div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                         </div>
-                    </div>
+                    </div>*@
                     <hr style="border: 1px solid green;" />
                     <div class="row">
                         <div class="col-6">
@@ -182,19 +182,19 @@ else if (ViewBag.Operation == "repayment")
                                             <span class="total-span">0</span>
                                         </td>
                                         <td>
-                                            <input type="checkbox" class="form-check-input check-inclussive" disabled>
+                                            <input type="checkbox" class="form-check-input check-inclussive">
                                         </td>
                                     </tr>
                                 }
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="5" style="text-align: right;"><strong>Total:</strong></td>
+                                    <td colspan="7" style="text-align: right;"><strong>Total:</strong></td>
                                     <td id="tableTotal">0</td>
                                     <td></td> <!-- Empty cell to align with the checkbox column -->
                                 </tr>
                                 <tr>
-                                    <td colspan="6" style="text-align: right;"><strong>Balance:</strong></td>
+                                    <td colspan="7" style="text-align: right;"><strong>Balance:</strong></td>
                                     <td id="tableBalance">0</td>
                                 </tr>
                             </tfoot>

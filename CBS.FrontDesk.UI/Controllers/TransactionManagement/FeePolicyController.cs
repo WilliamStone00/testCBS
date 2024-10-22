@@ -65,9 +65,10 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var fees = await _feeServices.GetFees();
             var Banks = await _bankServices.GetBanks();
             var branches = await _branchServices.GetBranches();
+            ViewBag.Branches = branches;
+
             ViewBag.Fees = fees;
             ViewBag.Banks = Banks;
-            ViewBag.Branches = branches;
 
             ViewBag.EventCodes = await _accountingServices.GetEventNames(operationType);
 
