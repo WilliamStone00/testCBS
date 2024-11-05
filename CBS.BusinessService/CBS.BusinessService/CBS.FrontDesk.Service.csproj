@@ -310,6 +310,7 @@
     <Compile Include="RoleManagement\RoleServices.cs" />
     <Compile Include="Session\SessionHelper.cs" />
     <Compile Include="Session\LocalSession.cs" />
+    <Compile Include="Session\SessionHub.cs" />
     <Compile Include="UserManagement\IUserManagementServices.cs" />
     <Compile Include="UserManagement\UserManagementServices.cs" />
     <Compile Include="UserManagement\UserPermissionServices.cs" />

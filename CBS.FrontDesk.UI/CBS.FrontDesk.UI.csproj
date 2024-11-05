@@ -3198,6 +3198,9 @@
     <Content Include="Views\CashMovementTrackerConfiguration\Index.cshtml" />
     <Content Include="Views\CashMovementTrackerConfiguration\_CreateCashMovementTrackerConfiguration.cshtml" />
     <Content Include="Views\CashMovementTrackerConfiguration\_CashMovementTrackerConfigurationData.cshtml" />
+    <Content Include="Views\OldLoanAccountingMaping\_Create.cshtml" />
+    <Content Include="Views\OldLoanAccountingMaping\_Data.cshtml" />
+    <Content Include="Views\OldLoanAccountingMaping\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
