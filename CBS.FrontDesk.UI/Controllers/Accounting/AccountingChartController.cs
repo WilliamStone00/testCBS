@@ -48,7 +48,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
                 else
                 {
-                    return Json(new {Data= model ,});
+                    return Json(new {Data= model });
                 }
 
             }
@@ -134,7 +134,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
-           await  GetListAsync();
+    
             if (path == "list" )
             {
                 var treeData = await _Services.GetAllChartOfAccountTreeNodes();
@@ -143,23 +143,27 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (path == "new")
             {
+                await GetListAsync();
                 var account = await _Services.GetChartOfAccountByAccountNumber(KEY);
                  account =(account == null )?new ChartOfAccount(): account;
                 return PartialView(partialView, account);
             }
             else if (path == "Transit")
             {
+                await GetListAsync();
                 var OperationEventAttribute = await _Services.GetChartOfAccountById(KEY);
 
                 return PartialView(partialView, OperationEventAttribute);
             }else if (path == "Cartegory")
-                {
+            {
+                await GetListAsync();
                 var treeData = await _AccountCategoryServices.GetAccountClassCategory(KEY);
 
                 return Json(treeData, JsonRequestBehavior.AllowGet);
             }
             else
             {
+                await GetListAsync();
                 if (string.IsNullOrEmpty(KEY))
                 {
                     return PartialView("_AcccountChartErrorMessage", new ChartOfAccount());

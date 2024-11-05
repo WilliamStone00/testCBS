@@ -771,6 +771,13 @@ namespace CBS.FrontDesk.Helper
 
         public static string GetAllTrailBalanceUploud = "/api/v1/TrailBalanceUplouds";
 
-
+        //ThirdPartyBranche
+        public static string Get_Update_Delete_ThirdPartyBranche = "/api/v1/ThirdPartyBranche/{0}";
+        public static string GetAllThirdPartyBranche = "/api/v1/ThirdPartyBranches";
+        public static string CreateThirdPartyBranche = "/api/v1/ThirdPartyBranche";
+        //ThirdPartyBranche
+        public static string Get_Update_Delete_ThirdPartyInstitution = "/api/v1/ThirdPartyInstitution/{0}";
+        public static string GetAllThirdPartyInstitution = "/api/v1/ThirdPartyInstitution";
+        public static string CreateThirdPartyInstitution = "/api/v1/ThirdPartyInstitution";
     }
 }

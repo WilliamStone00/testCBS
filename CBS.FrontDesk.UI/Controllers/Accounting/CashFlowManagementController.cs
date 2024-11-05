@@ -151,10 +151,24 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public async Task<ActionResult> CreateCashReplenishmentRequest()
         {
             await GetList();
-            var model = new CashDemandDataEntity();
-            model.CashInfusionModel = new CashInfusion();
-            model.CashInfusionModel.RequestMessage = $"I {_AccountServices.GetUserFullName()} i want more cash as soon as possible";
-            return View(model);
+            if (_AccountServices.IsHeadOffice())
+            {
+                var model = new CashDemandDataEntity();
+                model.CashInfusionModel = new CashInfusion();
+                model.CashInfusionModel.RequestMessage = $"I {_AccountServices.GetUserFullName()} i want more cash as soon as possible";
+                ViewBag.IsAuthourized = false;
+                ViewBag.Error = _AccountServices.GetUserFullName() + ", You are not authourized to perform this cash request kindly contact the system admin for advice";
+                return View(model);
+            }
+            else
+            {
+                var model = new CashDemandDataEntity();
+                model.CashInfusionModel = new CashInfusion();
+                model.CashInfusionModel.RequestMessage = $"I {_AccountServices.GetUserFullName()} i want more cash as soon as possible";
+                ViewBag.IsAuthourized = true   ;
+                return View(model);
+            }
+           
         }
         [HttpGet]
         public async Task<ActionResult> DepositRequest()

@@ -78,7 +78,7 @@ else
 {
     <div class="row">
 
-        <div class="col-xl-9 col-lg-9 col-md-9 order-0 order-md-1">
+        <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
             <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
                 <div class="accordion-item active">
@@ -119,13 +119,10 @@ else
                                                     <tr>
                                                         <td style="width:15%">@d.AccountNumber</td>
                                                         <td style="width:25%">@d.AccountName</td>
-                                                        <td style="width:25%">@d.DebitBalance</td>
+                                                        <td style="width:15%">@d.DebitBalance</td>
                                                         <td style="width:25%">@d.CreditBalance</td>
-                                                        <td style="width:25%">@d.CurrentBalance</td>
-                                                        <td style="width:10%">
-                                                            <a href="#" onclick="loadAccountingEntriesByAccountId('@d.Id')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#largeModal" title="Select @d.AccountName to journal entry">View Journal Entry</a>
-
-                                                        </td>
+                                                        <td style="width:20%">@d.CurrentBalance</td>
+                                                         
                                                     </tr>
                                                 }
                                             </tbody>

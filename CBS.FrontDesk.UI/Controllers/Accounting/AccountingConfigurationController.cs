@@ -280,7 +280,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         private Task<List<System.Web.WebPages.Html.SelectListItem>> GetBookingDirections()
         {
-            var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" } }.ToList();
+            var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { 
+                new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, 
+                new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "NOT", Value = "DEFINE" }
+            }.ToList();
             return Task.FromResult(bookingDirections);
         }
         private dynamic BuildMenuViewBag(IEnumerable<Data.Account> debitAccounts)
@@ -367,7 +371,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
              
                 var data = await _chartOfAccountServices.GetChartOfAccountById(Id);
                 var dataList = new List<StringValues>();
-                if (data.LabelEn== "BALANCING_ACCOUNT"|| data.LabelEn.ToUpper()== "ENGLISH")
+                if (data.LabelEn == "ROOT ACCOUNT" || data.LabelEn== "BALANCING_ACCOUNT"|| data.LabelEn.ToUpper()== "ENGLISH")
                 {
                     var dataModel = (await _AccountCategoryServices.GetAccountCategory()).FirstOrDefault();
                     dataList.Add(new StringValues { Text = dataModel.Name, Value = dataModel.Id });
@@ -1028,6 +1032,23 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     return PartialView(partialView, new AccountingConfiguration { });
                 }
+                else if (path == "download")
+                {
+                    var data = await _accountingEntryRuleService.GetAccountingEntryRules();
+                    var OperationEventList = await _OperationEventService.GetOperationEvents();
+                    var OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
+                    var DebitAccounts = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
+                    var dataList = await _Service.GetAccountingEntryRules();
+                    var dataModel = await _Service.GetAccountingEntryRulesDto(dataList, OperationEventList, OperationEventAttributes, DebitAccounts);
+
+                    string fileTitle = $"MFI_ChartOfAccount";
+                    this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                    this.HttpContext.Session["rptSource" + Session.SessionID] = dataModel;
+
+                    var sysData = new AccountingConfiguration { AccountingRuleEntriesDTOS = dataModel };
+                    return PartialView(partialView, sysData);
+
+                }
                 else
                 {
 
@@ -1124,17 +1145,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 if (path == "list")
                 {
                     string code = "[BranchCode]";
-                    var dataChart = await _chartOfAccountServices.GetAllChartOfAccounts();
+                   var dataChart = await _chartOfAccountServices.GetAllChartOfAccounts();
                     var ChartofAccountManagementPositions = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
                     var listOfItems = (from item in ChartofAccountManagementPositions
-                                       join element in dataChart on item.ChartOfAccountId equals element.Id
+                                       //join element in dataChart on item.ChartOfAccountId equals element.Id
                                        select new ManagementSelectionOption
                                        {
                                            Id = item.Id,
-                                           AccountNumber = element.AccountNumber.PadRight(6, '0'),
+                                           AccountNumber = item.AccountNumber.PadRight(6, '0'),
                                            PositionNumber = item.PositionNumber.PadRight(3, '0'),
                                            Description = item.Description,
-                                           GeneralRepresentation = element.AccountNumber.PadRight(6, '0') + code + item.PositionNumber.PadRight(3, '0')
+                                           GeneralRepresentation = item.AccountNumber.PadRight(6, '0') + code + item.PositionNumber.PadRight(3, '0')
 
                                        }).ToList();
                     var sysData = new AccountingConfiguration { ChartofAccountManagementPositionDtos = listOfItems.ToList() };
@@ -1151,13 +1172,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                     string code = "[BCD]";
 
-                    var ChartofAccountManagementPositions = await _ChartOfAccountManagementPositionServicesServices.DownloadChartOfAccount();
+                    var ChartofAccountManagementPositions = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
                     var listOfItems = (from item in ChartofAccountManagementPositions
                                        select new ChartofAccountManagementPosition
                                        {
                                            Id = item.Id,
                                            AccountNumber = item.AccountNumber.PadRight(6, '0'),
-                                           PositionNumber = item.AccountNumber.PadRight(6, '0')+ code + item.PositionNumber.PadRight(3, '0'),
+                                           PositionNumber = item.AccountNumber.PadRight(6, '0')+ item.PositionNumber.PadRight(3, '0') + code,
                                            Description = item.Description,
                                            New_AccountNumber =item.New_AccountNumber,
                                            Old_AccountNumber =  item.Old_AccountNumber,

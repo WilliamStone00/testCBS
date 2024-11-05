@@ -10,5 +10,7 @@ namespace CBS.FrontDesk.Data.DataContext
         }
 
         public DbSet<FrontEndAuditTB> FrontEndAuditLoggs { get; set; }
+
+        public System.Data.Entity.DbSet<CBS.BusinessService.ThirdPartyBankAccount.ThirdPartyInstitution> ThirdPartyInstitutions { get; set; }
     }
 }

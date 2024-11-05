@@ -22,7 +22,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.MovementType, new SelectList(ViewBag.MovementTypes == null ? "" : ViewBag.MovementTypes, "Text", "Value"), "---Select Account---", new { @class = "form-control select2", @search = "true" })
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.MovementType, new SelectList(ViewBag.MovementTypes == null ? "" : ViewBag.MovementTypes, "Text", "Value"), "---Select Movement---", new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.MovementType, "", new { @class = "text-danger" })
                                 <label>Movement Type</label>
                             </div>
@@ -47,7 +47,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.AlertTimeBefore, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.AlertTimeBefore, "", new { @class = "text-danger" })
-                                <label>Alert time before timespan elapse's </label>
+                                <label>Alert time before timespan elapse's  in minutes</label>
 
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.AlertTimeAfter, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.AlertTimeAfter, "", new { @class = "text-danger" })
-                                <label>Alert time after timespan elapse's </label>
+                                <label>Alert time after timespan elapse's in minutes</label>
                             </div>
                         </div>
                         <div class="col-md-6">

@@ -1053,8 +1053,29 @@ namespace CBS.BusinessService
                     var listOfAccounts = await _accountServices.GetAllBranchAccountUsedToCreditCashFlow(this.GetBranchID());
                     if (model.IsApproved==true && listOfAccounts.Count==0)
                     {
-                        GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
-                                     SystemMessageStatus.Failed.ToString(), new Exception("There no bank account placed under the management of this branch, Please kindly contact system administrator"));
+                        if (_accountServices.IsHeadOffice())
+                        {
+                            var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<CashApprovalResponse>>(APICallHelper.CashReplenishmentResponse, model);
+                            if (response.IsSuccess)
+                            {
+                                // Successful creation
+                                GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+                                    ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                                return ExecutionMessage;
+                            }
+                            else
+                            {
+                                // Failed creation
+                                GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                            }
+                        }
+                        else
+                        {
+                            GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                                                  SystemMessageStatus.Failed.ToString(), new Exception("There no bank account placed under the management of this branch, Please kindly contact system administrator"));
+
+                        }
 
                     }
                     else
