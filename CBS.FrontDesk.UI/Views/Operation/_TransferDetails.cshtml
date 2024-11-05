@@ -1,88 +1,263 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
 
-<div class="card mb-4 border-2">
-    <div class="card-header">
-        <h5 class="card-title">Transfer details</h5>
+<div class="card mb-4 border-2 shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+        <h5 class="card-title mb-0">Transfer Details</h5>
+        <button class="btn btn-sm btn-light" onclick="printTransferDetails()">
+            <i class="fa fa-print"></i> Print
+        </button>
     </div>
-    <div class="mt-3">
+    <div id="transferDetails" class="card-body">
 
-        <table class="table">
-            <tr>
-                <td><strong>Source account number, Account type:</strong></td>
-                <td>@Model.Transfer.SourceAccountNumber,  @Model.Transfer.SourceAccountType</td>
-            </tr>
-            <tr>
-                <td><strong>Destination account number, Account type:</strong></td>
-                <td>@Model.Transfer.DestinationAccountNumber, @Model.Transfer.DestinationAccountType</td>
-            </tr>
-            <tr>
-                <td><strong>Amount:</strong></td>
-                <td>@Model.Transfer.Amount.ToString("#,##0.00") FCFA</td>
-            </tr>
-            <tr>
-                <td><strong>Source commision</strong></td>
-                <td>@Model.Transfer.SourceCommision.ToString("#,##0.00") FCFA</td>
-            </tr>
-            <tr>
-                <td><strong>Destination commision</strong></td>
-                <td>@Model.Transfer.DestinationCommision.ToString("#,##0.00") FCFA</td>
-            </tr>
-            <tr>
-                <td><strong>Amount:</strong></td>
-                <td>@Model.Transfer.Amount.ToString("#,##0.00") FCFA</td>
-            </tr>
-            <tr>
-                <td><strong>Request source:</strong></td>
-                <td>@Model.Transfer.SourceType</td>
-            </tr>
-            <tr>
-                <td><strong>Transactiontype:</strong></td>
-                <td>@Model.Transfer.TransactionType </td>
-            </tr>
-            <tr>
-                <td><strong>Reference number</strong></td>
-                <td>@Model.Transfer.TransactionRef</td>
-            </tr>
+        <div class="row mb-3">
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Source Account:</strong>
+                <span>@Model.Transfer.SourceAccountNumber, @Model.Transfer.SourceAccountType</span>
+            </div>
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Destination Account:</strong>
+                <span>@Model.Transfer.DestinationAccountNumber, @Model.Transfer.DestinationAccountType</span>
+            </div>
+        </div>
 
-            <tr>
-                <td><strong>Status</strong></td>
-                <td>@Model.Transfer.Status</td>
-            </tr>
-            <tr>
-                <td><strong>Initiated by:</strong></td>
-                <td>@Model.Transfer.InitiatedByUSerName</td>
+        <div class="row mb-3">
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Source Branch:</strong>
+                <span>@Model.Transfer.SourceBranchName</span>
+            </div>
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Destination Branch:</strong>
+                <span>@Model.Transfer.DestinationAccountName</span>
+            </div>
+        </div>
 
-            </tr>
-            <tr>
-                <td><strong>Initiator comment:</strong></td>
-                <td>@Model.Transfer.InitiatorComment</td>
+        <div class="row mb-3">
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Sender:</strong>
+                <span>@Model.Transfer.SenderName</span>
+            </div>
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Receiver:</strong>
+                <span>@Model.Transfer.RecieverName</span>
+            </div>
+        </div>
 
-            </tr>
-            <tr>
-                <td><strong>Initiation date:</strong></td>
-                <td>@Model.Transfer.DateOfInitiation</td>
-            </tr>
-            <tr>
-                <td><strong>Approved by:</strong></td>
-                <td>@Model.Transfer.ApprovedByUserName</td>
-            </tr>
-            <tr>
-                <td><strong>Approved comment:</strong></td>
-                <td>@Model.Transfer.ValidatorComment</td>
-            </tr>
-            <tr>
-                <td><strong>Approval date:</strong></td>
-                <td>@Model.Transfer.DateOfApproval</td>
-            </tr>
-            <tr>
-                <td><strong>Teller:</strong></td>
-                <td>@Model.Transfer.Teller.name.</td>
-            </tr>
-        </table>
+        <div class="row mb-3">
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Amount:</strong>
+                <span>@Model.Transfer.Amount.ToString("#,##0.00") FCFA</span>
+            </div>
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Status:</strong>
+                @if (Model.Transfer.Status == "Pending")
+                {
+                    <span class="badge bg-warning text-dark">Pending</span>
+                }
+                else if (Model.Transfer.Status == "Approved")
+                {
+                    <span class="badge bg-success">Approved</span>
+                }
+                else if (Model.Transfer.Status == "Rejected")
+                {
+                    <span class="badge bg-danger">Rejected</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Unknown</span>
+                }
+            </div>
+        </div>
+
+        <hr class="my-3">
+
+        <div class="row mb-3">
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Source Commission:</strong>
+                <span>@Model.Transfer.SourceCommision.ToString("#,##0.00") FCFA</span>
+            </div>
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Destination Commission:</strong>
+                <span>@Model.Transfer.DestinationCommision.ToString("#,##0.00") FCFA</span>
+            </div>
+        </div>
+
+        <hr class="my-3">
+
+        <div class="row mb-3">
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Request Source:</strong>
+                <span>@Model.Transfer.SourceType</span>
+            </div>
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Transaction Type:</strong>
+                <span>@Model.Transfer.TransactionType</span>
+            </div>
+        </div>
+
+        <hr class="my-3">
+
+        <div class="row mb-3">
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Reference Number:</strong>
+                <span>@Model.Transfer.TransactionRef</span>
+            </div>
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Initiator:</strong>
+                <span>@Model.Transfer.InitiatedByUSerName</span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12 d-flex justify-content-between">
+                <strong>Initiator Comment:</strong>
+                <span>@Model.Transfer.InitiatorComment</span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12 d-flex justify-content-between">
+                <strong>Approved By:</strong>
+                <span>@Model.Transfer.ApprovedByUserName</span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12 d-flex justify-content-between">
+                <strong>Approval Comment:</strong>
+                <span>@Model.Transfer.ValidatorComment</span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Initiation Date:</strong>
+                <span>@Model.Transfer.DateOfInitiation.ToString("dd-MM-yyyy, hh:mm:ss")</span>
+            </div>
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Approval Date:</strong>
+                <span>@Model.Transfer.DateOfApproval?.ToString("dd-MM-yyyy, hh:mm:ss")</span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6 d-flex justify-content-between">
+                <strong>Teller:</strong>
+                <span>@Model.Transfer.Teller.name</span>
+            </div>
+        </div>
 
     </div>
-
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+<script>
+function printTransferDetails() {
+    // Get the content of the transferDetails div
+    var printContent = document.getElementById('transferDetails').innerHTML;
+
+    // Define custom HTML with header, footer, and signature lines
+    var printWindow = window.open('', '', 'height=800,width=600');
+    printWindow.document.write('<html><head><title>Print Transfer Details</title>');
+    printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">');
+    printWindow.document.write('</head><body>');
+
+    // Custom Header with Bank Name and Branch Name
+    printWindow.document.write('<div class="text-center mb-4">');
+    printWindow.document.write('<h3>' + '@Session["BankName"]' + '</h3>'); // Correctly include the bank name from session
+    printWindow.document.write('<p>Branch Name: ' + '@Model.Transfer.SourceBranchName' + '</p>'); // Correctly include the branch name
+    printWindow.document.write('<p>Date: ' + new Date().toLocaleDateString() + '</p>');
+    // Title for the transfer
+    printWindow.document.write('<h4 class="text-center">TRANSFER DETAILS</h4>');
+    printWindow.document.write('<hr></div>'); // Separates header from the content
+
+
+    // Insert the transfer details content
+    printWindow.document.write('<div>' + printContent + '</div>');
+
+    // Signature Section
+    printWindow.document.write('<div class="mt-5 mb-5">');
+    printWindow.document.write('<p><strong>Signatures:</strong></p>');
+    printWindow.document.write('<div class="d-flex justify-content-between" style="margin-top: 50px;">');
+    printWindow.document.write('<div><hr style="width:200px;"/><p>Client Signature</p></div>');
+    printWindow.document.write('<div><hr style="width:200px;"/><p>Cashier Signature</p></div>');
+    printWindow.document.write('</div></div>');
+
+    // Footer
+    printWindow.document.write('<hr><footer class="text-center"><p>Thank you for using our service.</p></footer>');
+
+    printWindow.document.write('</body></html>');
+
+    // Print and close the window
+    printWindow.document.close();
+    printWindow.print();
+}
+
+    //function printTransferDetails() {
+    //    const { jsPDF } = window.jspdf;
+    //    const doc = new jsPDF();
+
+    //    // Custom styling and layout
+    //    const pageWidth = doc.internal.pageSize.getWidth();
+    //    const margin = 10;
+    //    let yPos = margin;
+
+    //    // Header
+    //    doc.setFontSize(18);
+    //    doc.setFont("helvetica", "bold");
+    //    doc.text("Transfer Details", pageWidth / 2, yPos, { align: "center" });
+    //    yPos += 10;
+
+    //    doc.setFontSize(12);
+    //    doc.setFont("helvetica", "normal");
+    //    doc.text("Date: " + new Date().toLocaleDateString(), pageWidth - margin, yPos, { align: "right" });
+    //    yPos += 10;
+
+    //    // Transfer Information
+    //    const transferDetails = document.getElementById("transferDetails");
+    //    if (transferDetails) {
+    //        // Iterate through rows of the card body
+    //        Array.from(transferDetails.getElementsByClassName("row")).forEach(row => {
+    //            Array.from(row.getElementsByClassName("col-md-6")).forEach(column => {
+    //                const label = column.querySelector("strong").innerText;
+    //                const value = column.querySelector("span") ? column.querySelector("span").innerText : '';
+
+    //                doc.text(label + ": " + value, margin, yPos);
+    //                yPos += 7;
+    //            });
+    //            yPos += 3;
+    //        });
+    //    }
+
+    //    // Signature section
+    //    yPos += 15;
+    //    doc.setFont("helvetica", "bold");
+    //    doc.text("Signatures:", margin, yPos);
+    //    yPos += 10;
+
+    //    doc.setFont("helvetica", "normal");
+    //    doc.line(margin, yPos, pageWidth / 2 - 20, yPos);
+    //    doc.text("Client Signature", margin, yPos + 5);
+
+    //    doc.line(pageWidth / 2 + 20, yPos, pageWidth - margin, yPos);
+    //    doc.text("Cashier Signature", pageWidth / 2 + 25, yPos + 5);
+
+    //    // Footer
+    //    doc.setFontSize(10);
+    //    yPos = doc.internal.pageSize.getHeight() - 10;
+    //    doc.text("Thank you for using our service.", pageWidth / 2, yPos, { align: "center" });
+
+    //    // Save as PDF
+    //    doc.save("TransferDetails.pdf");
+    //}
+
+    //function printTransferDetails() {
+    //    var printContent = document.getElementById('transferDetails').innerHTML;
+    //    var originalContent = document.body.innerHTML;
+    //    document.body.innerHTML = "<html><head><title>Print Transfer Details</title><link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'></head><body>" + printContent + "</body></html>";
+    //    window.print();
+    //    document.body.innerHTML = originalContent;
+    //}
+</script>
 
 
 

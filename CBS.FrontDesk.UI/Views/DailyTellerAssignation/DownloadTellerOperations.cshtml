@@ -14,7 +14,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-file-excel me-2"></i> Statement of account (Teller Daily Operations)
+                            <i class="mdi mdi-file-excel me-2"></i> Statement of account (Teller Daily Operations F5)
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -44,7 +44,126 @@
 
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
-@*<script src="~/Scripts/Js/Crud/DailyTellerAssignation/DailyTellerAssignation.js"></script>*@
+<script>
+    function LoadTilles(KEY) {
+        //GetLoanApplication(KEY);
+        var url = "/DailyTellerAssignation/Ajaxloader?Key=" + KEY;
+        FillDropDownAjaxCallParam(url, 'tellerInput', "---Select Option---");
+    }
+    function AjaxPostAndUpdatePrintTillOperations(form) {
+
+
+        // Validate form and get the list of errors
+        var errors = validateTellerOperationsForm();
+
+        if (errors.length > 0) {
+            console.log("Form validation failed:", errors);
+            // Display errors to the user
+            appalert("Please correct the following errors:<br>" + errors.join("<br>"), 0, 1);
+            return false; // Stop further execution
+        }
+
+
+        var formData = new FormData(form);
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
+        // Parse and validate form for client-side unobtrusive validation
+        $.validator.unobtrusive.parse(form);
+
+        if ($(form).valid()) { // If form is valid
+            alertify.confirm("Confirmation", "Are you sure you want to perform this action?",
+                function () {
+                    var ajaxConfig = {
+                        type: 'POST',
+                        url: form.action,
+                        data: formData,
+                        success: function (response) {
+                            console.log("Response:", response);
+                            if (response.success) {
+                                if (response.ispdf) {
+                                    appalert(response.message, 1, 1);
+                                    var url = "/Reports/ReportWithParameter";
+                                    window.open(url, "_blank"); // Updated URL
+                                }
+                                else {
+                                    console.log("Url:", response.message);
+                                    window.location.href = response.message
+                                }
+                               
+                            } else {
+                                appalert(response.message, 2, 1);
+                            }
+                        },
+                        error: function (err) {
+                            console.log("Error:", err);
+                            if (err.status === 401) { // Unauthorized
+                                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+                            } else {
+                                appalert(err.statusText, 0, 1);
+                            }
+                        }
+                    };
+
+                    // Set enctype and content type for multipart form data
+                    if ($(form).attr('enctype') === "multipart/form-data") {
+                        ajaxConfig.contentType = false;
+                        ajaxConfig.processData = false;
+                    }
+
+                    console.log("AJAX Config:", ajaxConfig);
+                    $.ajax(ajaxConfig);
+                },
+                function () {
+                    appalert('Transaction cancelled', 3, 1);
+                }
+            );
+        } else {
+            console.log("Form validation failed.");
+            appalert("Please correct the errors in the form.", 0, 1);
+        }
+
+        return false;
+    }
+    function validateTellerOperationsForm() {
+        const errors = [];
+
+        // Retrieve values from the form
+        const isByBranchChecked = document.getElementById("byBranchCheckbox").checked;
+        const isByTellerChecked = document.getElementById("byTellerCheckbox").checked;
+        const isByDateChecked = document.getElementById("byDateCheckbox").checked;
+
+        const branchId = document.getElementById("branchInput").value;
+        const tellerId = document.getElementById("tellerInput").value;
+        const dateFrom = document.getElementById("dateFromInput").value;
+        const dateTo = document.getElementById("dateToInput").value;
+
+        // Validation checks
+        if (isByBranchChecked && branchId === "") {
+            errors.push("Branch is required when filtering by branch.");
+        }
+
+        if (isByTellerChecked && tellerId === "") {
+            errors.push("Teller is required when filtering by till.");
+        }
+
+        if (isByDateChecked) {
+            if (dateFrom === "") {
+                errors.push("Date From is required when filtering by date.");
+            }
+            if (dateTo === "") {
+                errors.push("Date To is required when filtering by date.");
+            }
+            if (new Date(dateFrom) > new Date(dateTo)) {
+                errors.push("Date From cannot be later than Date To.");
+            }
+        }
+
+        return errors;
+    }
+
+</script>
 }
 
 

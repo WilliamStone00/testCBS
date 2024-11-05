@@ -8,6 +8,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace CBS.FrontDesk.Data.Entity.SavingProducts
 {
@@ -280,7 +283,6 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string OperationType { get; set; }//Cash, NoneCash
         public string UserBranchId { get; set; }
-
         public bool Status { get; set; }
         public bool IsPrimary { get; set; }
         [Required]
@@ -290,8 +292,11 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public decimal MaximumCeilin { get; set; }
         public Teller Teller { get; set; }
+        [ValidateObject]
         public GetAllTellerOperationsQuery GetAllTellerOperationsQuery { get; set; } = new GetAllTellerOperationsQuery();
+        [ValidateObject]
         public GetTellerOpenningAndClossingQuery GetTellerOpenningAndClossingQuery { get; set; } = new GetTellerOpenningAndClossingQuery();
+        [ValidateObject]
         public GetTillStatusQuery GetTillStatusQuery { get; set; } = new GetTillStatusQuery();
 
         public Branch Branch { get; set; }
@@ -362,18 +367,42 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public int TotalTransactions { get; set; }
         public decimal TotalDebit { get; set; }
     }
+
+
     public class GetAllTellerOperationsQuery
     {
+        [Required(ErrorMessage = "Operation type is required.")]
+        [RegularExpression("^(CashOperations|NoneCashOperations|All)$", ErrorMessage = "Operation must be 'CashOperations', 'NoneCashOperation' Or 'All'.")]
         public string QueryString { get; set; }
+
+        [RequiredIf("IsByTeller", ErrorMessage = "Teller is required if 'IsByTeller' is true.")]
+        [StringLength(50, ErrorMessage = "Teller cannot exceed 50 characters.")]
         public string TellerId { get; set; }
+
+        [RequiredIf("IsByDate", ErrorMessage = "DateFrom is required if 'IsByDate' is true.")]
+        [DataType(DataType.Date, ErrorMessage = "DateFrom must be a valid date.")]
         public string DateFrom { get; set; }
+
+        [RequiredIf("IsByDate", ErrorMessage = "DateTo is required if 'IsByDate' is true.")]
+        [DataType(DataType.Date, ErrorMessage = "DateTo must be a valid date.")]
+        [DateGreaterThan("DateFrom", ErrorMessage = "DateTo must be greater than DateFrom.")]
         public string DateTo { get; set; }
+
+        [RequiredIf("IsByBranch", ErrorMessage = "Branch is required if 'IsByBranch' is true.")]
+        [StringLength(50, ErrorMessage = "Branch cannot exceed 50 characters.")]
         public string BranchId { get; set; }
+
         public bool IsByTeller { get; set; }
         public bool IsByBranch { get; set; }
         public bool IsByDate { get; set; }
         public bool IsPDF { get; set; }
+        public GetAllTellerOperationsQuery()
+        {
+            IsByDate = true;
+            QueryString = "CashOperations";
+        }
     }
+
     public class CashReplenishmentSubTeller
     {
         public string Id { get; set; }
@@ -505,7 +534,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string AccountNumber { get; set; }
     }
 
-   
+
     public class ValidateMobileMoneyCashTopup
     {
         [Required(ErrorMessage = "Id is required.")]
@@ -517,6 +546,86 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
 
         [StringLength(200, ErrorMessage = "Request Approval Note cannot exceed 200 characters.")]
         public string RequestApprovalNote { get; set; }
+    }
+
+    public class RequiredIfAttribute : ValidationAttribute
+    {
+        private readonly string _propertyName;
+
+        public RequiredIfAttribute(string propertyName)
+        {
+            _propertyName = propertyName;
+        }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            // Get the property being used as the condition
+            PropertyInfo property = validationContext.ObjectType.GetProperty(_propertyName);
+            if (property == null)
+                return new ValidationResult($"Unknown property: {_propertyName}");
+
+            // Get the value of the conditional property
+            var propertyValue = property.GetValue(validationContext.ObjectInstance);
+
+            // Check if the conditional property is true, and if so, validate the value
+            if (propertyValue is bool boolValue && boolValue && value == null)
+                return new ValidationResult(ErrorMessage ?? $"{validationContext.DisplayName} is required.");
+
+            return ValidationResult.Success;
+        }
+    }
+
+
+    public class DateGreaterThanAttribute : ValidationAttribute
+    {
+        private readonly string _comparisonProperty;
+
+        public DateGreaterThanAttribute(string comparisonProperty)
+        {
+            _comparisonProperty = comparisonProperty;
+        }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var currentValue = value as DateTime?;
+
+            // Get the property to compare
+            PropertyInfo comparisonProperty = validationContext.ObjectType.GetProperty(_comparisonProperty);
+            if (comparisonProperty == null)
+                return new ValidationResult($"Unknown property: {_comparisonProperty}");
+
+            var comparisonValue = comparisonProperty.GetValue(validationContext.ObjectInstance) as DateTime?;
+
+            // Check if current value is greater than the comparison value
+            if (currentValue != null && comparisonValue != null && currentValue <= comparisonValue)
+            {
+                return new ValidationResult(ErrorMessage ?? $"{validationContext.DisplayName} must be greater than {_comparisonProperty}.");
+            }
+
+            return ValidationResult.Success;
+        }
+    }
+
+
+    public class ValidateObjectAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            // If the value is null, skip validation (this attribute doesn't enforce required)
+            if (value == null)
+                return ValidationResult.Success;
+
+            // Validate the object by its properties
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(value, new ValidationContext(value), validationResults, validateAllProperties: true);
+
+            if (isValid)
+                return ValidationResult.Success;
+
+            // Collect all error messages and return a combined result
+            var compositeErrorMessage = string.Join("; ", validationResults.Select(r => r.ErrorMessage));
+            return new ValidationResult(compositeErrorMessage);
+        }
     }
 
 }

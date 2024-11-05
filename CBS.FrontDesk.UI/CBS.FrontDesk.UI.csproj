@@ -381,6 +381,9 @@
     <Content Include="AppFiles\Images\Logog2.jpeg" />
     <Content Include="AppFiles\Images\Logog2X.jpeg" />
     <Content Include="AppFiles\Images\Logog2XI.png" />
+    <Content Include="AppFiles\Images\NBG.jpeg" />
+    <Content Include="AppFiles\Images\NBG.png" />
+    <Content Include="AppFiles\Images\NBG_Login.jpeg" />
     <Content Include="AppFiles\Images\SideImageHeader.jpeg" />
     <Content Include="AppFiles\Images\SideImageHeader.png" />
     <Content Include="AppFiles\Images\SideImageHeader_login.png" />

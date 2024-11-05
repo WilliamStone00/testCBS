@@ -36,18 +36,19 @@
             <div class="row g-4">
                 <div class="col-12">
                     <div class="form-check">
-                        @Html.CheckBoxFor(m => m.LoanGuarantor.IsCoMember, new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">Is this gurantor a co-member?</label>
+                        @Html.CheckBoxFor(m => m.LoanGuarantor.IsCoMember, new { @class = "form-check-input", @id = "isCoMemberCheckbox" })
+                        <label class="form-check-label" id="isCoMemberLabel" for="isCoMemberCheckbox">Guarantor</label>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <!-- Account Number (conditionally shown) -->
+                <div class="col-md-12" id="accountNumberField" style="display: none;">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.LoanGuarantor.AccountNumber, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.LoanGuarantor.AccountNumber, "", new { @class = "text-danger" })
                         <label>Account number</label>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-9">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.LoanGuarantor.GuarantorName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.LoanGuarantor.GuarantorName, "", new { @class = "text-danger" })
@@ -70,14 +71,14 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.LoanGuarantor.IssueDate, new { @class = "form-control"})
+                        @Html.TextBoxFor(m => m.LoanGuarantor.IssueDate, new { @class = "form-control date" })
                         @Html.ValidationMessageFor(m => m.LoanGuarantor.IssueDate, "", new { @class = "text-danger" })
                         <label>Date of issue (yyyy-mm-dd e.g 2024-03-22)</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.LoanGuarantor.ExpireDate, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.LoanGuarantor.ExpireDate, new { @class = "form-control date" })
                         @Html.ValidationMessageFor(m => m.LoanGuarantor.ExpireDate, "", new { @class = "text-danger" })
                         <label>Expiry date (yyyy-mm-dd e.g 2024-03-22)</label>
                     </div>
@@ -133,3 +134,23 @@
 
 
 
+<script>
+    $(document).ready(function () {
+        // Function to toggle visibility and label text
+        function toggleAccountNumberField() {
+            if ($("#isCoMemberCheckbox").is(":checked")) {
+                $("#accountNumberField").show();
+                $("#isCoMemberLabel").text("Co-Obligor");
+            } else {
+                $("#accountNumberField").hide();
+                $("#isCoMemberLabel").text("Guarantor");
+            }
+        }
+
+        // Initialize visibility and label text on page load
+        toggleAccountNumberField();
+
+        // Attach change event listener to the checkbox
+        $("#isCoMemberCheckbox").change(toggleAccountNumberField);
+    });
+</script>

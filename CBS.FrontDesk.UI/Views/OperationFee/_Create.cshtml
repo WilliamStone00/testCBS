@@ -1,91 +1,143 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.OperationFee
 <div class="card-body">
     @using (Html.BeginForm("Create", "OperationFee", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-    {<fieldset class="fieldset-custom">
-            <legend>Charges types</legend>
+    {
+        <fieldset class="fieldset-custom">
+            <legend>Operation Fee Details</legend>
+
             @Html.HiddenFor(model => model.Id)
-     <div class="row mt-2 gy-4">
-         <div class="col-md-12 mb-3">
-             <div class="form-floating form-floating-outline">
-                 @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-                 @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                 <label>Name</label>
-             </div>
-         </div>
-         <div class="row">
-             <div class="col-6">
-                 <div class="form-check">
-                     @Html.RadioButtonFor(m => m.FeeType, "Rate", new { @class = "form-check-input shadow-input-boxes", id = "rateOption" })
-                     <label class="form-check-label" for="rateOption">Calculated as rate (%)</label>
-                 </div>
-             </div>
-             <div class="col-6">
-                 <div class="form-check">
-                     @Html.RadioButtonFor(m => m.FeeType, "Range", new { @class = "form-check-input shadow-input-boxes", id = "rangeOption" })
-                     <label class="form-check-label" for="rangeOption">Calculated on ranges</label>
-                 </div>
-             </div>
-         </div>
-       
-         <div class="col-6">
-             <div class="form-check">
-                 @Html.CheckBoxFor(m => m.IsAppliesOnHoliday, new { @class = "form-check-input" })
-                 <label class="form-check-label" for="isActive">Check if its a fee applied on holidays</label>
-             </div>
-         </div>
-         <div class="col-6 mb-3">
-             <div class="form-check">
-                 @Html.CheckBoxFor(m => m.IsMoralPerson, new { @class = "form-check-input" })
-                 <label class="form-check-label" for="isActive">Check if this fee type is for Moral person (Group)</label>
-             </div>
-         </div>
-         <div class="row">
-             <div class="col-6">
-                 <div class="form-check">
-                     @Html.RadioButtonFor(m => m.OperationFeeType, "MemberShip", new { @class = "form-check-input shadow-input-boxes", id = "MemberShip" })
-                     <label class="form-check-label" for="MemberShip">Member Ship (Members Registration)</label>
-                 </div>
-             </div>
-             <div class="col-6">
-                 <div class="form-check">
-                     @Html.RadioButtonFor(m => m.OperationFeeType, "Operation", new { @class = "form-check-input shadow-input-boxes", id = "Operation" })
-                     <label class="form-check-label" for="Operation">Operations Only</label>
-                 </div>
-             </div>
-         </div>
-         @*<div class="col-12">
-            <div class="form-check">
-                @Html.RadioButtonFor(m => m.OperationFeeType, "MemberShip", new { @class = "form-check-input", id = "MemberShip" })
-                <label class="form-check-label" for="MemberShip">Member Ship (Members Registration)</label>
+
+            <!-- Basic Information -->
+            <div class="row mt-2 gy-3">
+                <h5 class="border-bottom pb-2 mb-3">
+                    BASIC INFORMATION
+                    <i class="fa fa-info-circle text-muted" title="Provide the basic details of the operation fee, such as its name."></i>
+                </h5>
+                <div class="col-md-12 mb-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        <label>Name</label>
+                    </div>
+                </div>
             </div>
-            <div class="form-check">
-                @Html.RadioButtonFor(m => m.OperationFeeType, "Operation", new { @class = "form-check-input", id = "Operation" })
-                <label class="form-check-label" for="Operation">Operations Only</label>
+
+            <!-- Fee Type and Application -->
+            <div class="row mt-3 gy-3">
+                <h5 class="border-bottom pb-2 mb-3">
+                    FEE CALCULATION TYPE
+                    <i class="fa fa-info-circle text-muted" title="Select how the fee will be calculated: as a percentage rate or based on defined ranges. Specify if it applies on holidays or for moral persons."></i>
+                </h5>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.FeeType, "Rate", new { @class = "form-check-input shadow-input-boxes", id = "rateOption" })
+                        <label class="form-check-label" for="rateOption">Fee is calculated as rate (%)</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.FeeType, "Range", new { @class = "form-check-input shadow-input-boxes", id = "rangeOption" })
+                        <label class="form-check-label" for="rangeOption">Fee is calculated on ranges</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.IsAppliesOnHoliday, new { @class = "form-check-input", id = "IsAppliesOnHoliday" })
+                        <label class="form-check-label" for="IsAppliesOnHoliday">Applied on holidays</label>
+                    </div>
+                </div>
+                <div class="col-6 mb-3">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.IsMoralPerson, new { @class = "form-check-input", id = "IsMoralPerson" })
+                        <label class="form-check-label" for="IsMoralPerson">Applicable for moral persons (Group. If not checked, then it's for individual)</label>
+                    </div>
+                </div>
             </div>
-        </div>*@
-         <div class="col-md-12">
-             <div class="form-floating form-floating-outline">
-                 @Html.TextBoxFor(m => m.MaximumExtraCharge, new { @class = "form-control" })
-                 @Html.ValidationMessageFor(m => m.MaximumExtraCharge, "", new { @class = "text-danger" })
-                 <label>Extra charges (Flat) on the excess amount that exceed maximum range limit</label>
-             </div>
-         </div>
-         <div class="col-md-12">
-             <div class="form-floating form-floating-outline">
-                 @Html.TextBoxFor(m => m.MaximumRateAboveMaximumRange, new { @class = "form-control" })
-                 @Html.ValidationMessageFor(m => m.MaximumRateAboveMaximumRange, "", new { @class = "text-danger" })
-                 <label>Extra charges (%) on the excess amount that exceed maximum range limit</label>
-             </div>
-         </div>
-         <div class="col-md-12">
-             <div class="form-floating form-floating-outline">
-                 @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 90px;" })
-                 @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger " })
-                 <label for="formValidationDob">Fee description</label>
-             </div>
-         </div>
-     </div>
-            <div class="mt-4">
+
+            <!-- Operation Fee Type -->
+            <div class="row mt-3 gy-3">
+                <h5 class="border-bottom pb-2 mb-3">
+                    OPERATION FEE TYPE
+                    <i class="fa fa-info-circle text-muted" title="Select the type of operation fee applicable, such as membership or C-Money."></i>
+                </h5>
+                <!-- Operation Fee Type options -->
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "MemberShip", new { @class = "form-check-input shadow-input-boxes", id = "MemberShip" })
+                        <label class="form-check-label" for="MemberShip">Membership (Member Registration)</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "Operation", new { @class = "form-check-input shadow-input-boxes", id = "Operation" })
+                        <label class="form-check-label" for="Operation">Normal cash operation</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "CMoney", new { @class = "form-check-input shadow-input-boxes", id = "CMoney" })
+                        <label class="form-check-label" for="CMoney">C-Money</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "Gav", new { @class = "form-check-input shadow-input-boxes", id = "Gav" })
+                        <label class="form-check-label" for="Gav">Gav</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "MobileMoney", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoney" })
+                        <label class="form-check-label" for="MobileMoney">Mobile Money</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "OrangeMoney", new { @class = "form-check-input shadow-input-boxes", id = "OrangeMoney" })
+                        <label class="form-check-label" for="OrangeMoney">Orange Money</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Charges -->
+            <div class="row mt-3 gy-3">
+                <h5 class="border-bottom pb-2 mb-3">
+                    ADDITIONAL CHARGES
+                    <i class="fa fa-info-circle text-muted" title="Define any extra charges that apply when the limit is exceeded. This can be a flat fee or a percentage."></i>
+                </h5>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.MaximumExtraCharge, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MaximumExtraCharge, "", new { @class = "text-danger" })
+                        <label>Flat Extra Charge on Exceeding Limit</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.MaximumRateAboveMaximumRange, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MaximumRateAboveMaximumRange, "", new { @class = "text-danger" })
+                        <label>Percentage Extra Charge on Exceeding Limit</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="row mt-3 gy-3">
+                <h5 class="border-bottom pb-2 mb-3">
+                    DESCRIPTION
+                    <i class="fa fa-info-circle text-muted" title="Provide a detailed description for this fee type."></i>
+                </h5>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 90px;" })
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                        <label for="formValidationDob">Fee Description</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-4 text-end">
                 @if (ViewBag.Key != null)
                 {
                     <button type="submit" class="btn btn-primary me-2">Update</button>
@@ -94,7 +146,6 @@
                 {
                     <button type="submit" class="btn btn-primary me-2">Save</button>
                     <button type="reset" class="btn btn-outline-secondary">Reset</button>
-
                 }
             </div>
         </fieldset>

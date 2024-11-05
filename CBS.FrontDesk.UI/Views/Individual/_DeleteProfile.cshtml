@@ -5,57 +5,83 @@
 </div>
 <div class="card-body">
     <div class="mb-3 col-12">
-        @if (Model.CustomerList.Active)
+        @if (Model.CustomerList.MembershipApprovalStatus != "Approved")
         {
-            <div class="alert alert-success" role="alert">
-                <h6 class="alert-heading">@Model.CustomerList.name's account is active.</h6>
-                <p>Uncheck the box and click the "Deactivate" button to deactivate the account.</p>
+            <span class="badge bg-danger">Awaits Membership Approval</span>
+            <div class="alert alert-warning mt-2" role="alert">
+                <p>This account has not yet been approved for membership. To complete the approval process, the member needs to fulfill the following requirements:</p>
+                <ul>
+                    <li>Pay the required membership dues.</li>
+                    <li>Make an initial or minimum deposit into the following accounts:</li>
+                    <ul>
+                        <li>O.Share (Ordinary Share)</li>
+                        <li>Savings Account</li>
+                        <li>Preference Share Account (if applicable)</li>
+                    </ul>
+                </ul>
+                <p>Once these requirements are met, the membership status will be updated to "Approved," and the member will become a fully recognized member, eligible for all account benefits and services.</p>
             </div>
         }
         else
         {
-            <div class="alert alert-danger" role="alert">
-                <h6 class="alert-heading">@Model.CustomerList.name's account is deactivated.</h6>
-                <p>Check the box and click the "Reactivate" button to reactivate the account.</p>
+            <span class="badge bg-success">Full Member</span>
+            <div class="alert alert-info mt-2" role="alert">
+                <p>The membership approval process is complete, and @Model.CustomerList.name is now a full member. They are eligible for all membership benefits and services.</p>
             </div>
+
+            if (Model.CustomerList.Active)
+            {
+                <div class="alert alert-success" role="alert">
+                    <h6 class="alert-heading">@Model.CustomerList.name's account is active.</h6>
+                    <p>Uncheck the box and click the "Deactivate" button to deactivate the account.</p>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger" role="alert">
+                    <h6 class="alert-heading">@Model.CustomerList.name's account is deactivated.</h6>
+                    <p>Check the box and click the "Reactivate" button to reactivate the account.</p>
+                </div>
+            }
+
+            using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+            {
+                <!-- Hidden Fields -->
+                @Html.HiddenFor(model => model.CustomerList.CustomerId)
+                <input type="hidden" name="option" value="Status" id="option" />
+
+                <!-- Activation Toggle -->
+                <div class="form-check mb-3">
+                    @Html.CheckBoxFor(m => m.CustomerList.Active, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="isActive">
+                        @if (Model.CustomerList.Active)
+                        {
+                            @:Uncheck to deactivate the customer's account
+                        }
+                        else
+                        {
+                            @:Check to reactivate the customer's account
+                        }
+                    </label>
+                </div>
+
+                <!-- Action Button -->
+                <div class="col-12">
+                    <button type="submit" class="btn @(Model.CustomerList.Active ? "btn-danger" : "btn-primary")">
+                        @if (Model.CustomerList.Active)
+                        {
+                            @:Deactivate Account
+                        }
+                        else
+                        {
+                            @:Reactivate Account
+                        }
+                    </button>
+                </div>
+            }
         }
     </div>
 
-    @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
-    {
-        <!-- Hidden Fields -->
-        @Html.HiddenFor(model => model.CustomerList.CustomerId)
-        <input type="hidden" name="option" value="Status" id="option" />
 
-        <!-- Activation Toggle -->
-        <div class="form-check mb-3">
-            @Html.CheckBoxFor(m => m.CustomerList.Active, new { @class = "form-check-input" })
-            <label class="form-check-label" for="isActive">
-                @if (Model.CustomerList.Active)
-                {
-                    @:Uncheck to deactivate the customer's account
-                }
-                else
-                {
-                    @:Check to reactivate the customer's account
-                }
-            </label>
-        </div>
-
-        <!-- Action Button -->
-        <div class="col-12">
-            <button type="submit" class="btn @(Model.CustomerList.Active ? "btn-danger" : "btn-primary")">
-                @if (Model.CustomerList.Active)
-                {
-                    @:Deactivate Account
-                }
-                else
-                {
-                    @:Reactivate Account
-                }
-            </button>
-        </div>
-    }
-    
 </div>
 

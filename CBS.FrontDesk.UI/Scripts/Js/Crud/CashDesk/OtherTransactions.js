@@ -1,6 +1,45 @@
-﻿
+﻿$(document).ready(function () {
+    // Initial call to set the correct visibility on page load
+    toggleAccountDropdown();
+
+    // Hide the manualSearchInputButton on page load
+    document.getElementById("manualSearchInputbutton").style.display = "none";
+
+    // Attach toggle function to radio buttons to trigger on change
+    document.getElementById("memberAccountOption").addEventListener("change", toggleAccountDropdown);
+    document.getElementById("cashCollectionOption").addEventListener("change", toggleAccountDropdown);
+});
+// Function to toggle visibility of the "Member Account" dropdown and related inputs
+function toggleAccountDropdown() {
+    var isCashCollected = document.getElementById("cashCollectionOption").checked;
+    var accountDropdown = document.getElementById("memberAccountDropdown");
+    var manualSearchInput = document.getElementById("manualSearchInput");
+    var manualSearchInputButton = document.getElementById("manualSearchInputbutton");
+
+    // Show or hide the Member Account dropdown based on the selected option
+    accountDropdown.style.display = isCashCollected ? "none" : "block";
+
+    //// Show or hide the manual search input and button based on the selected option
+    //manualSearchInput.style.display = isCashCollected ? "none" : "block";
+    //manualSearchInputButton.style.display = isCashCollected ? "none" : "block";
+
+    // Reset the dropdown if Member Account is selected
+    if (!isCashCollected) {
+        var accountNumberDropdown = document.getElementById("account_number");
+        accountNumberDropdown.selectedIndex = 0; // Reset dropdown to the first option
+    }
+}
+
+
 function GetMember() {
-    var id = $('#manualSearchInput').val();
+    var id = $('#manualSearchInput').val().trim();
+
+    // Check if manualSearchInput is empty
+    if (!id) {
+        appalert("Please enter a member reference number.", 3, 1);
+        return;
+    }
+
     var url = "/CashDesk/Ajaxloader?Key=" + id + "&path=getmember";
     $.ajax({
         type: "GET",
@@ -8,7 +47,7 @@ function GetMember() {
         success: function (data) {
             // Check if the FeeBase is Percentage or Range and show/hide the corresponding divs
             $('#customerId').val(data.CustomerId);
-            $('#Name').val(data.FirstName + " " + data.LastName)
+            $('#Name').val(data.FirstName + " " + data.LastName);
             //$('#select_base').html("Configuration option: " + data.FeeBase);
         },
         error: function (err) {
@@ -17,17 +56,25 @@ function GetMember() {
     });
 }
 
+
 function LoadMembersAccounts(affectedId) {
+    $('#customerId').val('');
+    $('#Name').val('');
+    var id = $('#manualSearchInput').val().trim();
+
+    // Check if manualSearchInput is empty
+    if (!id) {
+        appalert("Please enter a member reference number.", 3, 1);
+        return;
+    }
+
     var SourceType = $("input[name='BulkDeposit.OtherTransaction.SourceType']:checked").val();
     console.log(SourceType);
     if (SourceType == "Cash_Collected") {
-       
     } else {
         var id = $('#manualSearchInput').val();
-        console.log(id);
-        console.log(affectedId);
         var url = "/CashDesk/Ajaxloader?Key=" + id;
-        FillDropDownAjaxCall(url, affectedId, "---Select account---");
+        FillDropDownAjaxCallParam(url, affectedId, "---Select account---");
         GetMember();
     }
 
@@ -266,7 +313,34 @@ function PostOtherCashIn() {
         appalert("Please select at least one account to perform the cash-in.", 3, 1);
         return;
     }
+    var sourceType = document.querySelector('input[name="BulkDeposit.OtherTransaction.SourceType"]:checked').value;
+    var eventCode = document.getElementById("BulkDeposit_OtherTransaction_EventCode").value;
+    var memberName = document.getElementById("Name").value;
+    var accountNumber = document.getElementById("account_number").value;
+    // Check if Event Code is selected
+    if (!eventCode) {
+        appalert("Please select an event item.", 3, 1);
+        return;
+    }
 
+    // Check SourceType requirements
+    if (sourceType === "Member_Account" && !document.getElementById("account_number").value) {
+        appalert("Please select a member account.", 3, 1);
+        return;
+    }
+
+    // Check if Member Name is provided
+    if (!memberName || memberName.trim() === "") {
+        appalert("Member Name cannot be empty.", 3, 1);
+        return;
+    }
+    // Check SourceType requirements
+    if (sourceType === "Member_Account") {
+        if (!accountNumber) {
+            appalert("Please select a member account", 3, 1);
+            return;
+        }
+    }
     deposits[0].currencyNotes = collectCurrencyNotes();
     var message = "";
     // Check if MemberAccount radio button is checked

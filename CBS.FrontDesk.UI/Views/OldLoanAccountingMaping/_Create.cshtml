@@ -34,13 +34,13 @@
                         <label>Select account ledger for vat amount</label>
                     </div>
                 </div>
-                <div class="col-md-12">
+                @*<div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select Branch---", new { @class = "form-control select2", id = "BranchId", @search = "true" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
                         <label>Select branch</label>
                     </div>
-                </div>
+                </div>*@
             </div>
             <div class="mt-4">
                 @if (ViewBag.Key != null)

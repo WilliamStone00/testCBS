@@ -16,9 +16,9 @@
         top: 100%;
         left: 50%;
         transform: translateX(-50%);
-        border: 1px solid #dee2e6; /* Border color matching Bootstrap's default */
-        background-color: #ffffff; /* Background color of the dropdown */
-        min-width: 200px; /* Adjusted width for additional items */
+        border: 1px solid #dee2e6;
+        background-color: #ffffff;
+        min-width: 200px;
     }
 
     .dropdown-item {
@@ -30,13 +30,13 @@
 
         .dropdown-item:hover,
         .dropdown-item:focus {
-            background-color: #f8f9fa; /* Lighter background color on hover/focus */
-            color: #0056b3; /* Color change on hover/focus */
-            text-decoration: none; /* Remove underline */
+            background-color: #f8f9fa;
+            color: #0056b3;
+            text-decoration: none;
         }
 
         .dropdown-item i {
-            font-size: 1.1rem; /* Icon size */
+            font-size: 1.1rem;
         }
 
     .text-danger {
@@ -51,7 +51,6 @@
         color: #ffc107 !important;
     }
 
-    /* Arrow styling */
     .dropdown-menu::before {
         content: '';
         position: absolute;
@@ -60,14 +59,51 @@
         transform: translateX(-50%);
         border-width: 5px;
         border-style: solid;
-        border-color: transparent transparent #ffffff transparent; /* Match the dropdown background color */
+        border-color: transparent transparent #ffffff transparent;
     }
 
-    /* Hide dropdown arrow for first item */
     .dropdown-menu li:first-child::before {
         display: none;
     }
+
+    /* Adjust table columns based on header implications */
+    .table-auto {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    /* Specific width for each column */
+    .column-name {
+        width: 30%; /* Adjust if more space needed for longer names */
+    }
+
+    .column-username {
+        width: 10%; /* Adjust for username length */
+    }
+
+    .column-status {
+        width: 5%; /* Smaller width for short status values */
+    }
+
+    .column-branch {
+        width: 30%; /* Adjust for branch names */
+    }
+
+    .column-last-login {
+        width: 20%; /* Adjust based on date/time format */
+    }
+
+    .column-action {
+        width: 5%; /* Adjust for dropdown actions */
+    }
+
+    /* Badge styling for compact display */
+    .badge {
+        padding: 0.3rem 0.5rem; /* Reduce padding for smaller badge */
+        font-size: 0.85rem; /* Slightly smaller font size */
+    }
 </style>
+
 <fieldset class="fieldset-custom">
     @if (!Model.Any())
     {
@@ -78,24 +114,24 @@
     else
     {
         <div class="table-responsive mb-4">
-            <table class="table table-hover table-striped align-middle" id="myDataTable">
+            <table class="table table-hover table-striped align-middle table-auto" id="myDataTable">
                 <thead class="table-light text-center">
                     <tr>
-                        <th>Name</th>
-                        <th>Username</th>
-                        <th>Status</th>
-                        <th>Branch</th>
-                        <th>Last Login</th>
-                        <th>Action</th>
+                        <th class="column-name">Name</th>
+                        <th class="column-username">Username</th>
+                        <th class="column-status">Status</th>
+                        <th class="column-branch">Branch</th>
+                        <th class="column-last-login">Last Login</th>
+                        <th class="column-action">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var user in Model)
                     {
                         <tr>
-                            <td>@user.name</td>
-                            <td>@user.userName</td>
-                            <td class="text-center">
+                            <td class="column-name">@user.name</td>
+                            <td class="column-username">@user.userName</td>
+                            <td class="text-center column-status">
                                 @if (user.status == "Active")
                                 {
                                     <span class="badge rounded-pill bg-success fs-6">@user.status</span>
@@ -105,12 +141,12 @@
                                     <span class="badge rounded-pill bg-danger fs-6">Blocked</span>
                                 }
                             </td>
-                            <td>@(user.Brancch?.Name ?? "N/A")</td>
-                            <td>@user.strlastLoginDate</td>
-                            <td class="text-center">
+                            <td class="column-branch">@(user.Brancch?.Name ?? "N/A")</td>
+                            <td class="column-last-login">@user.strlastLoginDate</td>
+                            <td class="text-center column-action">
                                 <div class="dropdown">
                                     <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fas fa-cogs"></i> <!-- Icon representing actions -->
+                                        <i class="fas fa-cogs"></i>
                                     </button>
                                     <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="actionDropdown">
                                         <li>
@@ -147,4 +183,4 @@
             </table>
         </div>
     }
-    </fieldset>
+</fieldset>

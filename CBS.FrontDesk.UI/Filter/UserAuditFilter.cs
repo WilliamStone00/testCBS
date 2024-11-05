@@ -137,5 +137,17 @@ namespace CBS.FrontDesk.UI.Filters
             return serializedData;
         }
     }
+    public static class StatusHelper
+    {
+        public static readonly Dictionary<string, string> StatusClasses = new Dictionary<string, string>
+    {
+        { "Pending", "badge bg-warning text-dark" },
+        { "Approved", "badge bg-success" },
+        { "Rejected", "badge bg-danger" },
+        { "In Progress", "badge bg-info" },
+        { "Cancelled", "badge bg-secondary" },
+        // Add more status classes as needed
+    };
+    }
 
 }

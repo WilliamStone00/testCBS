@@ -9,47 +9,61 @@
     }
     else
     {
-<div class="table-responsive mb-3">
-    <div class="card-header">
-        <h5 class="card-title">Transfers initiated</h5>
-    </div>
-    <table class="table table-hover" id="myDataTableT">
-        <thead class="table-light">
-            <tr>
-                <th>Date</th>
-                <th>Sending account</th>
-                <th>Recieving account</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Initiator</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var d in Model.Transfers)
-            {
-                <tr>
-                    <td style="width:20%">@d.DateOfInitiation.ToString("dd-MM-yyyy, hh:mm:ss")</td>
-                    <td style="width:12%">@d.SourceAccountNumber</td>
-                    <td style="width:12%">@d.DestinationAccountNumber</td>
-                    <td style="width:10%">@d.Amount.ToString("#,##0.0")</td>
-                    <td style="width:8%">@d.Status</td>
-                    <td style="width:30%">@d.InitiatedByUSerName</td>
-                    <td style="width:8%">
-
-                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_TransferDetails','details','Operation')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select to approve">
-                            Details
-                        </a>
-
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-</div>
-
+        <div class="table-responsive mb-3">
+            <div class="card-header">
+                <h5 class="card-title">Transfers Initiated</h5>
+            </div>
+            <table class="table table-hover table-striped table-bordered align-middle" id="myDataTableT">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Sending Account</th>
+                        <th>Receiving Account</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Initiator</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.Transfers)
+                    {
+                        <tr>
+                            <td style="width:20%">@d.DateOfInitiation.ToString("dd-MM-yyyy, hh:mm:ss")</td>
+                            <td style="width:12%">@d.SourceAccountNumber</td>
+                            <td style="width:12%">@d.DestinationAccountNumber</td>
+                            <td style="width:10%">@d.Amount.ToString("#,##0.0")</td>
+                            <td style="width:8%">
+                                <!-- Beautified Status with Badges -->
+                                @if (d.Status == "Pending")
+                                {
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                }
+                                else if (d.Status == "Approved")
+                                {
+                                    <span class="badge bg-success">Approved</span>
+                                }
+                                else if (d.Status == "Rejected")
+                                {
+                                    <span class="badge bg-danger">Rejected</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Unknown</span>
+                                }
+                            </td>
+                            <td style="width:30%">@d.InitiatedByUSerName</td>
+                            <td style="width:8%">
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_TransferDetails','details','Operation')"
+                                   class="btn btn-sm btn-outline-primary" data-toggle="tooltip" data-placement="top" title="View Details">
+                                    Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
-
 </fieldset>
 

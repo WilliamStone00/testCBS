@@ -64,28 +64,28 @@ namespace CBS.BusinessService.Accounts
                 if (OldLoanAccountingMapingResponse.IsSuccess)
                 {
                     // Fetch branches data
-                    var branches = await _branchServices.GetBranches();
+                    //var branches = await _branchServices.GetBranches();
 
                     // Extract fee policies and branches from the responses
                     var oldLoanAccountings = OldLoanAccountingMapingResponse.ApiResponseData.Data;
 
                     // Map branch information to fee policies
-                    var mappedPolicies = (from ol in oldLoanAccountings
-                                          join branch in branches on ol.BranchId equals branch.Id into branchGroup
-                                          from branch in branchGroup.DefaultIfEmpty()
-                                          select new OldLoanAccountingMaping
-                                          {
-                                              Id = ol.Id,
-                                              ChartOfAccountIdForCapital = ol.ChartOfAccountIdForCapital,
-                                              ChartOfAccountIdForInterest = ol.ChartOfAccountIdForInterest,
-                                              ChartOfAccountIdForVAT = ol.ChartOfAccountIdForVAT,
-                                              LoanTypeName = ol.LoanTypeName,
-                                              BranchId = ol.BranchId,
-                                              BranchName = branch != null ? branch.Name : "N/A", // Map branch name if found
-                                              BranchCode = branch != null ? branch.BranchCode : "N/A", // Map branch code if found
-                                          }).ToList();
+                    //var mappedPolicies = (from ol in oldLoanAccountings
+                    //                      join branch in branches on ol.BranchId equals branch.Id into branchGroup
+                    //                      from branch in branchGroup.DefaultIfEmpty()
+                    //                      select new OldLoanAccountingMaping
+                    //                      {
+                    //                          Id = ol.Id,
+                    //                          ChartOfAccountIdForCapital = ol.ChartOfAccountIdForCapital,
+                    //                          ChartOfAccountIdForInterest = ol.ChartOfAccountIdForInterest,
+                    //                          ChartOfAccountIdForVAT = ol.ChartOfAccountIdForVAT,
+                    //                          LoanTypeName = ol.LoanTypeName,
+                    //                          BranchId = ol.BranchId,
+                    //                          BranchName = branch != null ? branch.Name : "N/A", // Map branch name if found
+                    //                          BranchCode = branch != null ? branch.BranchCode : "N/A", // Map branch code if found
+                    //                      }).ToList();
 
-                    return mappedPolicies;
+                    return oldLoanAccountings;
                 }
 
                 // Return an empty list if the response is not successful
@@ -153,7 +153,7 @@ namespace CBS.BusinessService.Accounts
                     oldLoanAccountingMaping.ChartOfAccountIdForCapital = model.ChartOfAccountIdForCapital;
                     oldLoanAccountingMaping.ChartOfAccountIdForVAT = model.ChartOfAccountIdForVAT;
                     oldLoanAccountingMaping.ChartOfAccountIdForInterest = model.ChartOfAccountIdForInterest;
-                    oldLoanAccountingMaping.BranchId = model.BranchId;
+                    //oldLoanAccountingMaping.BranchId = model.BranchId;
                     var response = await _transactionApiHelper.PutAsync<ServiceResponse<OldLoanAccountingMaping>>(string.Format(APICallHelper.Get_Update_Delete_OldLoanAccountingMaping, model.Id), oldLoanAccountingMaping);
                     if (response.IsSuccess)
                     {

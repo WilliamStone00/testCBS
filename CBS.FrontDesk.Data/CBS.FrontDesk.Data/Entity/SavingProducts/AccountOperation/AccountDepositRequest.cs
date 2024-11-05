@@ -256,6 +256,13 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string TellerId { get; set; }
         public string SourceBrachId { get; set; }
         public string DestinationBrachId { get; set; }
+        public string SourceAccountName { get; set; }
+        public string DestinationAccountName { get; set; }
+        public string SenderName { get; set; }
+        public string RecieverName { get; set; }
+
+        public string SourceBranchName { get; set; }
+        public string DestinationBranchName { get; set; }
         public virtual Account Account { get; set; }
         public virtual Teller Teller { get; set; }
  

@@ -1,7 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
 
 <fieldset class="fieldset-custom">
-
     @if (!Model.Transfers.Any())
     {
         <div class="text-center my-3">
@@ -15,43 +14,57 @@
                 <h5 class="card-title">Transfers</h5>
             </div>
 
-            <table class="table table-hover" id="myDataTableT">
+            <table class="table table-hover table-striped table-bordered align-middle" id="myDataTableT">
                 <thead class="table-light">
                     <tr>
-                        <th>Date</th>
-                        <th>Sending account</th>
-                        <th>Recieving account</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Initiator</th>
-                        <th>Action</th>
+                        <th style="width: 15%;">Date</th>
+                        <th style="width: 15%;">Sending Account</th>
+                        <th style="width: 15%;">Receiving Account</th>
+                        <th style="width: 10%;">Amount</th>
+                        <th style="width: 10%;">Status</th>
+                        <th style="width: 25%;">Initiator</th>
+                        <th style="width: 10%;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var d in Model.Transfers)
                     {
                         <tr>
-                            <td style="width:20%">@d.DateOfInitiation.ToString("dd-MM-yyyy, hh:mm:ss")</td>
-                            <td style="width:12%">@d.SourceAccountNumber</td>
-                            <td style="width:12%">@d.DestinationAccountNumber</td>
-                            <td style="width:10%">@d.Amount.ToString("#,##0.0")</td>
-                            <td style="width:8%">@d.Status</td>
-                            <td style="width:30%">@d.InitiatedByUSerName</td>
-                            <td style="width:8%">
-
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_TransferConfirmation','confirmation_request','Operation')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select to approve">
+                            <td>@d.DateOfInitiation.ToString("dd-MM-yyyy, hh:mm:ss")</td>
+                            <td>@d.SourceAccountNumber</td>
+                            <td>@d.DestinationAccountNumber</td>
+                            <td>@d.Amount.ToString("#,##0.0")</td>
+                            <td>
+                                <!-- Beautified Status with Badges -->
+                                @if (d.Status == "Pending")
+                                {
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                }
+                                else if (d.Status == "Approved")
+                                {
+                                    <span class="badge bg-success">Approved</span>
+                                }
+                                else if (d.Status == "Rejected")
+                                {
+                                    <span class="badge bg-danger">Rejected</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Unknown</span>
+                                }
+                            </td>
+                            <td>@d.InitiatedByUSerName</td>
+                            <td>
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_TransferConfirmation','confirmation_request','Operation')"
+                                   class="btn btn-sm btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Select to approve">
                                     Approve
                                 </a>
-
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-
         </div>
-
     }
-
 </fieldset>
 

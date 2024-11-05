@@ -277,6 +277,10 @@ namespace CBS.BusinessService
                 model.FullName = GetUserFullName();
                 model.BranchName = "N/A";
                 model.BranchId = model.BranchId;
+                if (model.IsMigratedLoan)
+                {
+                    model.QueryParameter = "MigratedLoans";
+                }
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<FileDownloadInfo>>(APICallHelper.InitiateBulkDownloadLoans, model);
                 if (response.IsSuccess)
                 {
