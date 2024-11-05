@@ -3,6 +3,7 @@ using CBS.API.Helper;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -12,6 +13,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -139,6 +141,29 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
+        public async Task<SelectList> GetTellersDroupDownListByBranchId(string id = null)
+        {
+            try
+            {
+
+                var data = await GetTellers();
+                var values = data.Where(x=>x.branchId==id).Select(a => new StringValues
+                {
+                    Text = $"[{a.name}] [{a.Branch.Name}] [{(a.isPrimary ? "Primary" : "Sub")}-Till]",
+                    Value = $"{a.id}",
+                });
+                var defaultSelectedValue = "default-value";
+                return new SelectList(values.ToList(), "Value", "Text", defaultSelectedValue);
+
+               
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
 
         public async Task<IEnumerable<Teller>> GetTellersPrimary()
         {

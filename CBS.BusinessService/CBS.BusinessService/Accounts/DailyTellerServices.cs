@@ -319,8 +319,9 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                operationsQuery.TellerId = "N/A";
-                operationsQuery.QueryString = "all";
+                //operationsQuery.TellerId = "N/A";
+                operationsQuery.QueryString = operationsQuery.QueryString == null? "all": operationsQuery.QueryString;
+                operationsQuery.BranchId = operationsQuery.BranchId == null ? "N/A" : operationsQuery.BranchId;
                 operationsQuery.IsByBranch = true;
                 operationsQuery.IsByDate = true;
                 var couApiResponse = await _transactionBaseConfigApiHelper.PostAsync<ResponseObject<List<TellerOperationGL>>>(APICallHelper.GetTellerDailyOperations, operationsQuery);
@@ -458,7 +459,7 @@ namespace CBS.BusinessService.Accounts
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, $"{model.UserName}", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
@@ -503,7 +504,7 @@ namespace CBS.BusinessService.Accounts
                     {
                         // Successful creation
                         GetExecutionMessages(response, true, $"{DailyTeller.UserName}", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
                     else

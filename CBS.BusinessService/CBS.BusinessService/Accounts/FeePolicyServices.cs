@@ -154,6 +154,11 @@ namespace CBS.BusinessService.Accounts
                 var Fee = await GetFeePolicy(model.Id);
                 if (Fee != null)
                 {
+                    if (!model.IsCentralised)
+                    {
+                        model.IsCentralised = true;
+                        model.BranchId = "N/A";
+                    }
                     if (Fee.Fee.FeeType=="Range")
                     {
                         Fee.AmountFrom = model.AmountFrom;

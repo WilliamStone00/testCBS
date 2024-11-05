@@ -160,10 +160,10 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required(ErrorMessage = "Chart of Account ID for Capital is required.")]
         public string ChartOfAccountIdForCapital { get; set; }
 
-        [Required(ErrorMessage = "Branch is required.")]
-        public string BranchId { get; set; }
-        public string BranchName { get; set; }
-        public string BranchCode { get; set; }
+        //[Required(ErrorMessage = "Branch is required.")]
+        //public string BranchId { get; set; }
+        //public string BranchName { get; set; }
+        //public string BranchCode { get; set; }
     }
 
     public class OperationFee

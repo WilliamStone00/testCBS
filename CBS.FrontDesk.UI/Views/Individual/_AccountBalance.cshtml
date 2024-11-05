@@ -1,99 +1,155 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
 @{
     var status = false;
+    var balance = Model.AccountBalance.accounts.Sum(x => x.Balance);
     string comment = "No initial deposit has been made.";
     if (Model.AccountBalance.accounts.Any())
     {
         status = true;
+
     }
 }
+<style>
+   /* .card {
+        border-radius: 10px;
+        border: none;
+    }*/
+
+    /*.card-header {
+        border-radius: 10px 10px 0 0;
+        font-weight: bold;
+    }*/
+
+    .balance-info h1 {
+        font-weight: bold;
+    }
+
+    .balance-info .badge {
+        font-size: 1rem;
+        padding: 0.5em 1em;
+    }
+
+    .text-success {
+        color: #28a745 !important;
+    }
+
+    .text-muted em {
+        font-style: italic;
+    }
+</style>
 
 <div class="card-body">
-    <div class="row gy-4">
 
-        <!-- Account Balance Section -->
-        <div class="card-header">
-            <h5 class="card-title">Account Balance</h5>
-        </div>
-        <div class="card-body">
-            <div class="balance-info">
-                <h3 class="mb-0 text-primary">@Model.AccountBalance.totalBalance</h3>
-                <small class="text-muted">
-                    @if (status) // Fixing the missing Model context
-                    {
-                        <small>Total account balance</small>
-                    }
-                </small>
+    <div class="col-lg-12 mb-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Account Balance</h5>
+            </div>
+            <div class="card-body">
+                <div class="row gy-4">
+                    <div class="balance-info text-center">
+                        <h1 class="display-4 text-success mb-1">@balance.ToString("#,##0.0 XAF")</h1>
+                        <p class="text-muted">
+                            @if (Model.CustomerList.MembershipApprovalStatus != "Approved")
+                            {
+                                <span class="badge bg-danger">Await Membership Approval</span>
+                            }
+                            else
+                            {
+                                if (balance >= 0)
+                                {
+                                    <span class="badge bg-success">In Good Standing</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Overdrawn</span>
+                                }
+                            }
+                        </p>
+                        <p class="text-muted mt-2 mb-0">
+                            <small>
+                                @if (status) // Assuming "status" represents a display condition for the total balance message
+                                {
+                                    <em>Total account balance as of today.</em>
+                                }
+                            </small>
+                        </p>
+                    </div>
+
+
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- Customer Accounts Section -->
-        @if (Model.CustomerAccounts != null && Model.CustomerAccounts.Any())
-        {
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">Accounts Overview</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row gy-4">
-                            @foreach (var account in Model.CustomerAccounts)
-                            {
-                                <div class="col-lg-6 col-md-6 col-sm-12">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <div class="account-details">
-                                                    <h6 class="mb-1">Balance: <span class="text-success">@account.balance.ToString("#,##0.00")</span></h6> <!-- Proper currency formatting -->
-                                                    <small>Account Name: <b>@account.product.Name</b></small><br />
-                                                    <small>Account Number: <b>@account.accountNumber</b></small><br />
-                                                </div>
-                                                <div class="action-links">
-                                                    @*<a class="btn btn-outline-secondary btn-sm" href="#" data-bs-toggle="modal" data-bs-target="#accountDetailsModal" onclick="loadAccountDetails('@account.id')">
-                                                        <i class="mdi mdi-information me-1"></i> Detail
-                                                    </a>*@
-                                                    <a class="btn btn-outline-secondary btn-sm" href="#">
-                                                        <i class="mdi mdi-information me-1"></i> Detail
-                                                    </a>
-                                                </div>
+   
+
+    <!-- Customer Accounts Section -->
+    @if (Model.CustomerAccounts != null && Model.CustomerAccounts.Any())
+    {
+        <div class="col-lg-12 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Accounts Overview</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row gy-4">
+                        @foreach (var account in Model.CustomerAccounts)
+                        {
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="account-details">
+                                                <h6 class="mb-1">Balance: <span class="text-success">@account.balance.ToString("#,##0.00")</span></h6>
+                                                <small>Account Name: <b>@account.product.Name</b></small><br />
+                                                <small>Account Number: <b>@account.accountNumber</b></small><br />
+                                            </div>
+                                            <div class="action-links">
+                                                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#accountDetailModal" onclick="loadAccountDetails('@account.id')">
+                                                    <i class="mdi mdi-information me-1"></i> Detail
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            }
-                        </div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
-        }
-        else
-        {
-            <!-- No Accounts Alert -->
-            <div class="col-lg-12">
-                <div class="alert alert-warning text-center" role="alert">
-                    <h5 class="alert-heading"><i class="mdi mdi-alert"></i> No Accounts Found</h5>
-                    <p>@Model.CustomerList.name does not have any accounts associated with his/her profile.</p>
-                    <hr>
-                    <p class="mb-0">Please add new accounts to start managing financial transactions.</p>
-                </div>
-            </div>
-        }
-
-        <!-- Add New Customer Account Section -->
-        <div class="col-lg-12">
-            <div class="card card-action shadow-sm">
-                <div class="card-body">
-                    @Html.Partial("_AddCustomerAccount")
-                </div>
+        </div>
+    }
+    else
+    {
+        <!-- No Accounts Alert -->
+        <div class="col-lg-12 mb-3">
+            <div class="alert alert-warning text-center" role="alert">
+                <h5 class="alert-heading"><i class="mdi mdi-alert"></i> No Accounts Found</h5>
+                <p>@Model.CustomerList.name does not have any accounts associated with his/her profile.</p>
+                <hr>
+                <p class="mb-0">Please add new accounts to start managing financial transactions.</p>
             </div>
         </div>
+    }
 
-        <!-- Delete Profile Section -->
-        <div class="col-lg-12">
-            <div class="card card-action shadow-sm">
-                <div class="card-body">
-                    @Html.Partial("_DeleteProfile")
-                </div>
+   
+
+
+    <!-- Add New Customer Account Section -->
+    <div class="col-lg-12 mb-3">
+        <div class="card card-action shadow-sm">
+            <div class="card-body">
+                @Html.Partial("_AddCustomerAccount")
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Profile Section -->
+    <div class="col-lg-12 mb-3">
+        <div class="card card-action shadow-sm">
+            <div class="card-body">
+                @Html.Partial("_DeleteProfile")
             </div>
         </div>
     </div>

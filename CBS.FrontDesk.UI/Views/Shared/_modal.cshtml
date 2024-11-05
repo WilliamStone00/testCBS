@@ -1,67 +1,74 @@
-﻿<!-- Modal -->
-@*<div class="modal fade" id="modal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="modalLabel">Modal title</h4>
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="modalBody">
-                    <div id="modalContent">
+﻿<style>
+    /* Modal Styling Enhancements */
+    .modal.fade .modal-dialog {
+        transform: scale(0.9);
+        transition: transform 0.3s ease-out;
+    }
 
-                    </div>
-                </div>
+    .modal.fade.show .modal-dialog {
+        transform: scale(1);
+    }
 
-            </div>
-        </div>
-    </div>*@
+    .modal-dialog {
+        max-width: 900px; /* Set a larger max-width for a bigger modal */
+    }
 
+    .modal-content {
+        border-radius: 15px; /* Rounded corners */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Soft shadow */
+        border: none; /* Remove the default border */
+        background-color: #f9f9f9; /* Soft gray background for the modal */
+    }
 
-@*<div class="modal fade" id="modal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-simple modal-enable-otp modal-dialog-centered">
-            <div class="modal-content p-3 p-md-5">
+    .modal-header {
+        background-color: #007bff; /* A nice blue header background */
+        color: white; /* White text for contrast */
+        border-top-left-radius: 15px; /* Match rounded corners */
+        border-top-right-radius: 15px;
+        padding: 1.5rem 2rem; /* Increased padding for a more spacious look */
+    }
 
-                <div class="modal-body">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <div class="text-center mb-4">
-                        <h4 class="modal-title" id="modalLabel">Modal title</h4>
-                    </div>
-                    <hr />
-                    <div class="modal-body" id="modalBody">
-                        <div id="modalContent">
+    .modal-title {
+        font-weight: bold;
+        font-size: 1.5rem;
+        letter-spacing: 0.05rem;
+    }
 
-                        </div>
-                    </div>
+    .btn-close {
+        color: white;
+        opacity: 0.9;
+    }
 
-                </div>
-            </div>
-        </div>
-    </div>*@
+        .btn-close:hover {
+            opacity: 1;
+        }
 
+    .modal-body {
+        padding: 2rem; /* Increase padding for better spacing */
+        background-color: #ffffff; /* White background for content area */
+        border-radius: 15px; /* Rounded corners for the content */
+    }
 
-@*<div class="modal fade" id="modal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-simple modal-enable-otp modal-dialog-centered">
-            <div class="modal-content p-3 p-md-5">
-                <div class="modal-body">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <div class="text-center mb-4">
-                        <h4 class="modal-title" id="modalLabel">Modal title</h4>
-                    </div>
-                    <div class="signature">FLX-CBS</div>
+    .table-responsive {
+        max-height: 400px; /* Limit the height for scrollable content if needed */
+        overflow-y: auto;
+    }
 
-                    <hr />
-                    <div class="modal-body" id="modalBody">
-                        <div id="modalContent"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>*@
+    .modal-footer {
+        background-color: #f1f1f1; /* Light gray footer */
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        padding: 1rem 2rem; /* Padding adjustments */
+        display: flex;
+        justify-content: center;
+    }
 
+        .modal-footer small {
+            color: #6c757d; /* Muted color for the powered-by text */
+        }
+</style>
 
+<!-- Modal HTML -->
 <div class="modal fade" id="modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content p-4">
@@ -71,7 +78,7 @@
             </div>
             <div class="modal-body">
                 <div id="modalContent" class="table-responsive">
-
+                    <!-- Your modal content will be dynamically loaded here -->
                 </div>
             </div>
             <div class="modal-footer border-0">

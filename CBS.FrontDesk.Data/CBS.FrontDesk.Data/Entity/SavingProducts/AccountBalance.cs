@@ -14,6 +14,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
 {
 
 
+
     public class Account
     {
 

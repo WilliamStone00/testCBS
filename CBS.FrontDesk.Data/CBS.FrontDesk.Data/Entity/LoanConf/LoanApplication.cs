@@ -485,6 +485,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required(ErrorMessage = "Please select a branch.")]
         public string BranchId { get; set; }
         public bool IsUnpaidOnly { get; set; }
+        public bool IsMigratedLoan { get; set; }
+        public string QueryParameter { get; set; }
         public string FullName { get; set; }
         public string UserId { get; set; }
         public string BranchName { get; set; }

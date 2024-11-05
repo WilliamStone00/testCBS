@@ -1,43 +1,51 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
 
 @*<fieldset class="fieldset-custom">
-    <legend>Initialise Loan Download By Dates</legend>
-    <hr />
-    @using (Html.BeginForm("InitializeDownload", "Loan", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-    {
+        <legend>Initialise Loan Download By Dates</legend>
+        <hr />
+        @using (Html.BeginForm("InitializeDownload", "Loan", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
 
-        @Html.HiddenFor(model => model.Id)
-        <div class="row mt-2 gy-4">
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.InitiateLoanDownloadCommand.StrStartDate, new { @class = "form-control date-picker" })
-                    @Html.ValidationMessageFor(m => m.InitiateLoanDownloadCommand.StrStartDate, "", new { @class = "text-danger" })
-                    <label>Start Data</label>
+            @Html.HiddenFor(model => model.Id)
+            <div class="row mt-2 gy-4">
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.InitiateLoanDownloadCommand.StrStartDate, new { @class = "form-control date-picker" })
+                        @Html.ValidationMessageFor(m => m.InitiateLoanDownloadCommand.StrStartDate, "", new { @class = "text-danger" })
+                        <label>Start Data</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.InitiateLoanDownloadCommand.StrEndDate, new { @class = "form-control date-picker" })
+                        @Html.ValidationMessageFor(m => m.InitiateLoanDownloadCommand.StrEndDate, "", new { @class = "text-danger" })
+                        <label>End Date</label>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.InitiateLoanDownloadCommand.StrEndDate, new { @class = "form-control date-picker" })
-                    @Html.ValidationMessageFor(m => m.InitiateLoanDownloadCommand.StrEndDate, "", new { @class = "text-danger" })
-                    <label>End Date</label>
-                </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary me-2">Initiate Download</button>
             </div>
-        </div>
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary me-2">Initiate Download</button>
-        </div>
-    }
-</fieldset>*@
+        }
+    </fieldset>*@
 
 
 <fieldset class="fieldset-custom">
     <legend>Loan Portfolio</legend>
     <form method="post" action="/Loan/DownloadFile/">
         <hr />
-        <div class="col-12">
-            <div class="form-check">
-                @Html.CheckBoxFor(m => m.InitiateLoanDownloadCommand.IsUnpaidOnly, new { @class = "form-check-input" })
-                <label class="form-check-label" for="isActive">UnChecked to include paid loans.</label>
+        <div class="row g-4">
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.InitiateLoanDownloadCommand.IsUnpaidOnly, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="isActive">UnChecked to include paid loans.</label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.InitiateLoanDownloadCommand.IsMigratedLoan, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="isActive">Export Migrated Loans</label>
+                </div>
             </div>
         </div>
         <hr />

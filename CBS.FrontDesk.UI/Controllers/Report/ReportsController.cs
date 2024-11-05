@@ -179,6 +179,21 @@ namespace CBS.FrontDesk.UI.Controllers
                 HttpContext.Response.Write("<H2>An error occurred while generating the report</H2>");
             }
         }
+        public ActionResult DownloadFromJquery(string Filename)
+        {
+            string filePath = Path.Combine(Server.MapPath("~/AppFiles/Exports"), Filename);
+            if (!System.IO.File.Exists(filePath))
+            {
+                return HttpNotFound();
+            }
+            //Response.Clear();
+            //Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            //Response.AddHeader("content-disposition", $"attachment; filename=\"{excelName}\"");
+            //Response.BinaryWrite(memoryStream.ToArray());
+            //Response.Flush();
+            //Response.Close();
+            return File(filePath, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Filename);
+        }
         public void CleanReport(ReportDocument rd)
         {
             if (rd != null)

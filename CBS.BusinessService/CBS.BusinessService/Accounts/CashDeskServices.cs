@@ -709,6 +709,10 @@ namespace CBS.BusinessService.Accounts
             {
 
                 var cusResponseObject = await GetCustomerAccounts(customerId);
+                if (cusResponseObject==null)
+                {
+                    return null;
+                }
                 if (cusResponseObject.Any())
                 {
                     var Accounts = cusResponseObject;
@@ -918,7 +922,7 @@ namespace CBS.BusinessService.Accounts
                 {
                     var charOfAccount = customerAccounts.Select(a => new StringValues
                     {
-                        Text = $"[{a.accountNumber}] [{a.accountType}] [{a.accountName}]",
+                        Text = $"[{a.accountNumber}]-[{a.accountType}], Balance: [{a.balance.ToString("#,##0.0")}]",
                         Value = a.accountNumber
                     });
 
