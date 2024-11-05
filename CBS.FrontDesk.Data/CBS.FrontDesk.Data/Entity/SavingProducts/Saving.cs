@@ -43,6 +43,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<SystemConfigForSaving> SystemConfigForSavings { get; set; } = new List<SystemConfigForSaving>();
         public List<SavingProductFee> SavingProductFees { get; set; } = new List<SavingProductFee>();
         public SavingProductFee SavingProductFee { get; set; } = new SavingProductFee();
+        public MobileMoneyTellerConfigurationCommand MobileMoneyTellerConfiguration { get; set; } = new MobileMoneyTellerConfigurationCommand();
         public List<ChartofAccountInfo> chartofAccountInfos { get; set; } = new List<ChartofAccountInfo>();
 
         public List<AccountingRuleEntry> AccountingRuleEntries { get; set; } = new List<AccountingRuleEntry>();
@@ -141,6 +142,30 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public SavingProduct product { get; set; }
 
     }
+
+    public class OldLoanAccountingMaping
+    {
+        public string Id { get; set; }
+
+        [Required(ErrorMessage = "Loan Type Name is required.")]
+        [StringLength(50, ErrorMessage = "Loan Type Name cannot exceed 50 characters.")]
+        public string LoanTypeName { get; set; }
+
+        [Required(ErrorMessage = "Chart of Account ID for VAT is required.")]
+        public string ChartOfAccountIdForVAT { get; set; }
+
+        [Required(ErrorMessage = "Chart of Account ID for Interest is required.")]
+        public string ChartOfAccountIdForInterest { get; set; }
+
+        [Required(ErrorMessage = "Chart of Account ID for Capital is required.")]
+        public string ChartOfAccountIdForCapital { get; set; }
+
+        [Required(ErrorMessage = "Branch is required.")]
+        public string BranchId { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+    }
+
     public class OperationFee
     {
         public string Id { get; set; }
@@ -153,8 +178,10 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal MaximumRateAboveMaximumRange { get; set; }
         public decimal MaximumExtraCharge { get; set; }
         public bool IsMoralPerson { get; set; }
+        [Required]
+        public string OperationFeeType { get; set; }//MemberShip Or Operation
 
-        public virtual ICollection<FeePolicy> FeePolicies { get; set; }
+        public List<FeePolicy> FeePolicies { get; set; }
 
     }
     public class FeePolicy
@@ -162,13 +189,27 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string Id { get; set; }
         [Required]
         public string FeeId { get; set; }
-        [Required]
         public decimal AmountFrom { get; set; }
-        [Required]
         public decimal AmountTo { get; set; }
         public decimal Value { get; set; }
         public decimal Charge { get; set; }
-        public virtual OperationFee Fee { get; set; }
+        [Required]
+        public string BranchId { get; set; }
+        [Required]
+        public string BankId { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public string EventCode { get; set; }
+        public bool IsCentralised { get; set; }
+        public OperationFee Fee { get; set; }
+        public FeePolicy()
+        {
+            IsCentralised = true;
+            AmountFrom = 0;
+            AmountTo = 0;
+            Value = 0;
+            Charge = 0;
+        }
     }
     public class SavingProductFee
     {
@@ -392,7 +433,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     }
 
 
-public class Teller
+    public class Teller
     {
         [Required]
         public string id { get; set; }
@@ -465,12 +506,42 @@ public class Teller
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "MaximumTransferAmount must be a positive number.")]
         public decimal MaximumTransferAmount { get; set; } = 0m;
+        public string AccountNumber { get; set; }
 
         public Branch Branch { get; set; }
 
         public bool inUseStatus { get; set; }
 
         public bool activeStatus { get; set; }
+        public string OperationEventCode { get; set; }
+        public string MobileMoneyUserKeepingThePhone { get; set; }
+        public string MobileMoneyFloatNumber { get; set; }
+        [Required]
+        [Range(0, double.MaxValue, ErrorMessage = "Minimum alert balance must be a positive number.")]
+        public decimal MobileMoneyMinimumBalanceAlertLevel { get; set; }
+        [Required]
+        [Range(0, double.MaxValue, ErrorMessage = "Maximum alert balance must be a positive number.")]
+
+        public decimal MobileMoneyMaximumBalanceAlertLevel { get; set; }
+        [Required]
+        public string FromAuxillaryAccountNumber_A { get; set; }
+        [Required]
+        public string ToBranchFloatAccountNumberAuxillary_A { get; set; }
+        [Required]
+        public string FromHeadOfficeAccountNumber_B { get; set; }
+        [Required]
+        public string ToBranchFloatAccountNumberHeadOffice_B { get; set; }
+        [Required]
+        public string FromBranchAccountNumber_C { get; set; }
+        [Required]
+        public string ToBranchFloatAccountNumberBranch_C { get; set; }
+        [Required]
+        public string FromBranchFloatAccountNumber_D { get; set; }
+        [Required]
+        public string ToHeadOfficeFloatAccountNumber_D { get; set; }
+        public string PhoneNumberToRecieveAlert { get; set; }
+        public string MobileMoneyAlertMessageInFrench { get; set; }
+        public string MobileMoneyAlertMessageInEnglish { get; set; }
 
         public List<TransactionHistory> Transactions { get; set; }
 
@@ -485,7 +556,70 @@ public class Teller
             MaximumWithdrawalAmount = 1;
             MinimumTransferAmount = 0m;
             MaximumTransferAmount = 1;
+            MobileMoneyMinimumBalanceAlertLevel = 0m;
+            MobileMoneyMaximumBalanceAlertLevel = 0m;
         }
+    }
+
+    public class MobileMoneyTellerConfigurationCommand
+    {
+        public string Id { get; set; }
+
+        [Required(ErrorMessage = "Operation Event Code is required.")]
+        public string OperationEventCode { get; set; }
+
+        [Required(ErrorMessage = "Designated User of the Phone is required.")]
+        [StringLength(100, ErrorMessage = "The name must be a maximum of 100 characters long.")]
+        public string MobileMoneyUserKeepingThePhone { get; set; }
+
+        [Required(ErrorMessage = "Mobile Money Float Number is required.")]
+        [StringLength(50, ErrorMessage = "The float number must be a maximum of 50 characters long.")]
+        public string MobileMoneyFloatNumber { get; set; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "Minimum Balance Alert Level must be a non-negative value.")]
+        public decimal MobileMoneyMinimumBalanceAlertLevel { get; set; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "Maximum Balance Alert Level must be a non-negative value.")]
+        public decimal MobileMoneyMaximumBalanceAlertLevel { get; set; }
+
+        [StringLength(20, ErrorMessage = "Auxiliary Account Number A must be a maximum of 20 characters long.")]
+        public string FromAuxillaryAccountNumber_A { get; set; }
+
+        [StringLength(20, ErrorMessage = "Branch Float Account Number Auxiliary A must be a maximum of 20 characters long.")]
+        public string ToBranchFloatAccountNumberAuxillary_A { get; set; }
+
+        [StringLength(20, ErrorMessage = "Head Office Account Number B must be a maximum of 20 characters long.")]
+        public string FromHeadOfficeAccountNumber_B { get; set; }
+
+        [StringLength(20, ErrorMessage = "Branch Float Account Number Head Office B must be a maximum of 20 characters long.")]
+        public string ToBranchFloatAccountNumberHeadOffice_B { get; set; }
+
+        [StringLength(20, ErrorMessage = "Branch Account Number C must be a maximum of 20 characters long.")]
+        public string FromBranchAccountNumber_C { get; set; }
+
+        [StringLength(20, ErrorMessage = "Branch Float Account Number C must be a maximum of 20 characters long.")]
+        public string ToBranchFloatAccountNumberBranch_C { get; set; }
+
+        [StringLength(20, ErrorMessage = "Branch Float Account Number D must be a maximum of 20 characters long.")]
+        public string FromBranchFloatAccountNumber_D { get; set; }
+
+        [StringLength(20, ErrorMessage = "Head Office Float Account Number D must be a maximum of 20 characters long.")]
+        public string ToHeadOfficeFloatAccountNumber_D { get; set; }
+
+        [Phone(ErrorMessage = "Invalid phone number format.")]
+        public string PhoneNumberToRecieveAlert { get; set; }
+
+        [StringLength(500, ErrorMessage = "Alert message in French must be a maximum of 500 characters long.")]
+        public string MobileMoneyAlertMessageInFrench { get; set; }
+
+        [StringLength(500, ErrorMessage = "Alert message in English must be a maximum of 500 characters long.")]
+        public string MobileMoneyAlertMessageInEnglish { get; set; }
+
+        [StringLength(20, ErrorMessage = "Account Number must be a maximum of 20 characters long.")]
+        public string AccountNumber { get; set; }
+        public string Option { get; set; }
+        public string BranchCode { get; set; }
+
     }
     public class OpeningOfTheDay
     {
@@ -513,6 +647,7 @@ public class Teller
         public string Comment { get; set; }
         [Required]
         public CurrencyNotes CurrencyNotes { get; set; }
+        public DateTime? AccountingDay { get; set; }
 
     }
 
@@ -528,6 +663,8 @@ public class Teller
         public string ClossedStatus { get; set; }
         [Required]
         public decimal Amount { get; set; }
+        public DateTime? AccountingDay { get; set; }
+
     }
     public class OpeningOfTheDayResponse
     {

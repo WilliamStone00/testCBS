@@ -47,7 +47,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public bool ByTeller { get; set; }
 
         public string BranchId { get; set; }
-  
+
         public string TellerId { get; set; }
         public string QueryParameter { get; set; }
 
@@ -60,7 +60,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         {
             var validationResults = new List<ValidationResult>();
 
-            
+
 
             // Validate DateFrom and DateTo are equal
             DateTime fromDate;
@@ -265,6 +265,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public bool HasError { get; set; }
         public string ErrorMessage { get; set; }
         public decimal CashAtHand { get; set; }
+        public DateTime? AccountingDay { get; set; }
         public Teller Teller { get; set; }
     }
     public class DailyTeller
@@ -278,6 +279,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string TellerId { get; set; }
         [Required]
         public string OperationType { get; set; }//Cash, NoneCash
+        public string UserBranchId { get; set; }
+
         public bool Status { get; set; }
         public bool IsPrimary { get; set; }
         [Required]
@@ -301,6 +304,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     {
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
+
         public string BranchId { get; set; }
     }
     public class TellerOperationGL
@@ -438,4 +442,81 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         }
 
     }
+    public class GetAllMobileMoneyCashTopupQuery
+    {
+        public string QueryParameter { get; set; }
+        public bool ByBranch { get; set; }
+        public string BranchId { get; set; }
+    }
+    public class MobileMoneyCashTopup
+    {
+        public string Id { get; set; }
+        public decimal Amount { get; set; }
+        public string OperatorType { get; set; }//MTN Or Orange
+        public string SourceType { get; set; }//GAV, OtherTransfer, HeadOffice, Wirering, M2Float
+        public DateTime RequestDate { get; set; }
+        public string BranchId { get; set; }
+        public string BankId { get; set; }
+        public string RequestNote { get; set; }
+        public string RequestInitiatedBy { get; set; }
+        public DateTime RequestApprovalDate { get; set; }
+        public string RequestApprovedBy { get; set; }
+        public string RequestApprovalStatus { get; set; }
+        public string RequestApprovalNote { get; set; }
+        public string RequestReference { get; set; }
+        public string MobileMoneyTransactionId { get; set; }
+        public string MobileMoneyMemberReference { get; set; }
+        public string AccountNumber { get; set; }
+        public string PhoneNumber { get; set; }
+        public string TellerId { get; set; }
+        public Branch Branch { get; set; }
+        public string BranchName { get; set; }
+        public string StrRequestDate { get; set; }
+        public string StrRequestApprovalDate { get; set; }
+        public Teller Teller { get; set; }
+        public ValidateMobileMoneyCashTopup ValidateMobileMoneyCashTopup { get; set; }
+    }
+
+    public class AddMobileMoneyCashTopup
+    {
+        [Required(ErrorMessage = "Please enter the requested amount.")]
+        [Range(1000, double.MaxValue, ErrorMessage = "The amount must be at least 1000 and be a positive value.")]
+        public decimal Amount { get; set; }
+
+        [Required(ErrorMessage = "Operator Type is required.")]
+        [RegularExpression(@"^(MobileMoneyORANGE|MobileMoneyMTN)$", ErrorMessage = "Operator Type must be either 'MTN' or 'Orange'.")]
+        public string OperatorType { get; set; } // MTN or Orange
+
+        [Required(ErrorMessage = "Trannsfer type is required.")]
+        [RegularExpression(@"^(AuxillaryToBranch|HeadOfficeToBranch|BranchToBranch|BranchToHeadOffice)$", ErrorMessage = "Transfer type must be one of the following: AuxillaryToBranch, HeadOfficeToBranch, BranchToBranch, BranchToHeadOffice.")]
+        public string SourceType { get; set; }
+
+        [Required(ErrorMessage = "Branch is required.")]
+        public string BranchId { get; set; }
+
+        [StringLength(500, ErrorMessage = "Request Note cannot exceed 500 characters.")]
+        public string RequestNote { get; set; }
+
+        [StringLength(20, ErrorMessage = "Mobile Money Or Orange Money Transaction Reference cannot exceed 20 characters.")]
+        [Required(ErrorMessage = "Mobile Money Or Orange Money Transaction Reference is required.")]
+        public string MobileMoneyTransactionId { get; set; }
+
+        [StringLength(20, MinimumLength = 8, ErrorMessage = "Account Number must be between 10 and 20 characters.")]
+        public string AccountNumber { get; set; }
+    }
+
+   
+    public class ValidateMobileMoneyCashTopup
+    {
+        [Required(ErrorMessage = "Id is required.")]
+        public string Id { get; set; }
+
+        [Required(ErrorMessage = "Request Approval Status is required.")]
+        [RegularExpression(@"^(Pending|Approved|Rejected)$", ErrorMessage = "Request Approval Status must be 'Pending', 'Approved', or 'Rejected'.")]
+        public string RequestApprovalStatus { get; set; }
+
+        [StringLength(200, ErrorMessage = "Request Approval Note cannot exceed 200 characters.")]
+        public string RequestApprovalNote { get; set; }
+    }
+
 }

@@ -18,21 +18,26 @@ using System.Data.Entity.Core.Metadata.Edm;
 using CBS.BusinessService.Config;
 using System.Linq.Expressions;
 using CBS.BusinessService.MembersAccountSettings;
+using CBS.BusinessService.Accounts;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
+using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
 
     public class IndividualController : BaseController
     {
         // GET: Individual
         private readonly IndividualProfileServices _individualProfileServices;
         private readonly MemberAccountActivationServices _memberAccountActivationServices;
+        private readonly BranchServices _branchServices;
 
-        public IndividualController(IndividualProfileServices individualProfileServices, MemberAccountActivationServices memberAccountActivationServices = null)
+        public IndividualController(IndividualProfileServices individualProfileServices, MemberAccountActivationServices memberAccountActivationServices = null, BranchServices branchServices = null)
         {
             _individualProfileServices = individualProfileServices;
             _memberAccountActivationServices = memberAccountActivationServices;
+            _branchServices = branchServices;
         }
         public async Task<ActionResult> List()
         {
@@ -51,7 +56,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         }
         public async Task<ActionResult> MyMembers()
         {
-         
+
             return View();
         }
         public async Task<ActionResult> Account(string KEY = null, string ReadOptions = null, string path = null, string group = null)
@@ -61,7 +66,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             return View(customer);
         }
 
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null,string serviceOption = null, string path = null)
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string serviceOption = null, string path = null)
         {
             ViewBag.KEY = KEY;
             if (KEY != "null")
@@ -81,11 +86,120 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
                     //var data = await _individualProfileServices.GetMembers();
                     return PartialView(partialView, null);
                 }
- 
+
             }
             return PartialView(partialView, new List<IndividualProfile>());
         }
+        public async Task<ActionResult> MembersReportingDownload(ReportQuerTemplate request)
+        {
+            // Clear ModelState errors for properties you don't want to validate
+            //request.QueryParameter = "all";
+            // Manually add the validation errors for `GetTillStatusQuery`
+            string DateFrom = request.DateFrom;
+            TryValidateModel(request, nameof(request));
 
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select((e, index) => $"{index + 1}. {e.ErrorMessage}")
+                    .ToList();
+
+                string error = string.Join("<br/>", errors);
+                return Json(new { success = false, message = error });
+            }
+            string ParamTitle =$"{request.LegalFormStatus} Members With {request.MembersStatusType}";
+            if (request.DateFrom == null)
+            {
+                request.DateFrom = DateTime.Now.ToString();
+                request.DateTo = DateTime.Now.ToString();
+            }
+            else if (request.LegalFormStatus == "Moral_Person" && DateFrom==null)
+            {
+                ParamTitle = $"Moral Members";
+
+            }
+            else if (request.LegalFormStatus == "Moral_Person" && DateFrom != null)
+            {
+                ParamTitle = $"Moral Members within dated period {request.DateFrom} to {request.DateTo}";
+
+            }
+            else if (request.LegalFormStatus == "Physical_Person" && DateFrom == null)
+            {
+                ParamTitle = $"Physical Members";
+
+            }
+            else if (request.LegalFormStatus == "Physical_Person" && DateFrom != null)
+            {
+                ParamTitle = $"Physical Members within dated period {request.DateFrom} to {request.DateTo}";
+
+            }
+            else if (request.LegalFormStatus == "Physical_Person")
+            {
+                ParamTitle = $"All Members both Moral and Physical persons";
+
+            }
+            else if (request.LegalFormStatus == "Physical_Person")
+            {
+                ParamTitle = $"All Members both Moral and Physical persons";
+
+            }
+        
+       
+
+            // Call your service to get the data
+            var response = await _individualProfileServices.GetAllMembersByParameters(request);
+            var data = response.ToList(); // Convert to list if needed
+
+            // Set session variables based on the request
+            //if (request.ByBranch)
+            //{
+            //    if (data.Any())
+            //    {
+            //        this.HttpContext.Session["RPTBranchName"] = data.FirstOrDefault()?.BranchName;
+            //    }
+            //}
+            //else
+            //{
+            //    this.HttpContext.Session["RPTBranchName"] = "For All Branches";
+            //}
+
+            // Check if data is available
+            if (data == null || !data.Any())
+            {
+                return Json(new { success = false, message = "No data available for the selected query criteria." });
+
+            }
+            // If data is available, proceed with setting session variables and redirecting to the report
+            this.HttpContext.Session["rptSource"] = data;
+            this.HttpContext.Session["param_size"] = "member_listing";
+            this.HttpContext.Session["DateFrom"] = request.DateFrom;
+            this.HttpContext.Session["DateTo"] = request.DateTo;
+            this.HttpContext.Session["ParamTitle"] = ParamTitle;
+            this.HttpContext.Session["rptType"] = "ReportWithParameter";
+            this.HttpContext.Session["ReportName"] = "Membersrpt.rpt";
+            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Members/MembersListing/Membersrpt.rpt";
+            this.HttpContext.Session["rpttitle"] = $"Members";
+
+            // Construct the URL to redirect to the PDF
+            string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller name if different
+
+            // Set the ViewBag variables for the URL to open the report
+            ViewBag.UrlToOpen = url;
+            ViewBag.CurrentUrl = "/DailyTellerAssignation/TillCashStatus"; // The current URL
+            ViewBag.ErrorMessage = string.Empty;
+
+            // Return the view that opens the report in a new window
+            return Json(new { success = true, message = "Success." });
+        }
+
+
+        public async Task<ActionResult> MembersReporting()
+        {
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.Branches = Branches;
+            return View();
+        }
         public async Task<ActionResult> Create()
         {
             var customer = new IndividualProfile();
@@ -120,8 +234,8 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         {
             var agrAggregates = await _individualProfileServices.GetAggregates();
             await PopulateAggregatesInViewBag(agrAggregates);
-            var results= await _individualProfileServices.GetCustomer(KEY, agrAggregates);
-            ViewBag.MemberAccounts= _individualProfileServices.MembersAccounts(results.CustomerAccounts.ToList());
+            var results = await _individualProfileServices.GetCustomer(KEY, agrAggregates);
+            ViewBag.MemberAccounts = _individualProfileServices.MembersAccounts(results.CustomerAccounts.ToList());
             return results;
         }
 
@@ -152,7 +266,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             ViewBag.languages = _individualProfileServices.GetLanguages();
             ViewBag.Categories = agrAggregates.CustomerDefaultEnum.customerCategories;
             ViewBag.relationships = agrAggregates.CustomerDefaultEnum.relationships;
-            
+
         }
 
 
@@ -161,7 +275,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         {
             try
             {
-                var dataTable = await _individualProfileServices.GetDataTable(GetDataTableOptions(),searchCriteria);
+                var dataTable = await _individualProfileServices.GetDataTable(GetDataTableOptions(), searchCriteria);
                 return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data }, JsonRequestBehavior.AllowGet);
 
             }
@@ -175,7 +289,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         {
             try
             {
-                var dataTable = await _individualProfileServices.GetDataTable(GetDataTableOptions(),searchCriterial);
+                var dataTable = await _individualProfileServices.GetDataTable(GetDataTableOptions(), searchCriterial);
                 return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data });
 
             }
@@ -214,7 +328,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             }
             else if (model.option == "AddMemberAccount")
             {
-               
+
                 var data = await _memberAccountActivationServices.Create(model.MemberAccountActivation);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
@@ -262,7 +376,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             {
                 var data = await _individualProfileServices.UpdateMaritalStatus(model);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-                
+
             }
             else if (model.option == "employmentdetail")
             {
@@ -292,6 +406,6 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
 
-     
+
     }
 }

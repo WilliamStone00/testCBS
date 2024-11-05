@@ -3,6 +3,7 @@ using CBS.BusinessService;
 using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.Config.Localization;
+using CBS.BusinessService.Session;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.Service;
@@ -43,7 +44,7 @@ namespace CBS.FrontDesk.UI
             container.RegisterType<BankServices, BankServices>();
             container.RegisterType<ApiCallerHelper, ApiCallerHelper>();
             container.RegisterType<APICallHelper, APICallHelper>();
-
+            container.RegisterType<SessionHub, SessionHub>();
             container.RegisterType<INotificationServices, NotificationServices>();
             container.RegisterType<ApiCallerHelper>("TransactionApiCallerHelper",
                 new InjectionConstructor(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString()));

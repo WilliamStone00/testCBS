@@ -14,7 +14,10 @@ namespace CBS.FrontDesk.Data.Entity
         public string claimType { get; set; }
         public string claimValue { get; set; }
     }
-
+    public class AddLogoutSessionCommand
+    {
+        public Guid UserId { get; set; }
+    }
     public class UserDto
     {
         public string id { get; set; }

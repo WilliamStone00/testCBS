@@ -47,10 +47,10 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 //var primaryTellerProvisionings = await _primaryTellerEndOfDayServices.GetPrimaryTellerHistories();
                 ViewBag.Option = "Primary";
-                var account = await _acountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", true, false, true),false);
-                ViewBag.Error = account.ErrorMessage;
-                ViewBag.HasError = account.HasError;
-                return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest { Amount = account.CashAtHand, CashAtHand = account.CashAtHand, CurrencyNotes = account.CloseOfDayRequest.CurrencyNotes, ClossedStatus = "Pending", Comment = $"As Primary Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{DateTime.Now}] with a final total.CashAtHand of {account.CashAtHand.ToString("#,##0")}." } });
+                var openOfDay = await _acountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", true, false, true),false);
+                ViewBag.Error = openOfDay.ErrorMessage;
+                ViewBag.HasError = openOfDay.HasError;
+                return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest { AccountingDay = openOfDay.AccountingDay, Amount = openOfDay.CashAtHand, CashAtHand = openOfDay.CashAtHand, CurrencyNotes = openOfDay.CloseOfDayRequest.CurrencyNotes, ClossedStatus = "Pending", Comment = $"As Primary Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{openOfDay.AccountingDay}] with a final total.CashAtHand of {openOfDay.CashAtHand.ToString("#,##0")}. Date: [{DateTime.Now}]" } });
                 //85,222,000.0
             }
             catch (Exception ex)
@@ -70,17 +70,17 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         public async Task<ActionResult> SubTeller()
         {
             ViewBag.Option = "SubTeller";
-            var account = await _acountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", false),false);
-            ViewBag.Error = account.ErrorMessage;
-            ViewBag.HasError = account.HasError;
-            if (account.CashAtHand == 0 && !account.HasError)
-            {
-                ViewBag.HasN.CashAtHand = true;
-                ViewBag.Error = $"The current CashAtHand of Teller {account.Teller.name} is 0. Kindly make a cash request";
-            }
+            var openOfDay = await _acountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", false),false);
+            ViewBag.Error = openOfDay.ErrorMessage;
+            ViewBag.HasError = openOfDay.HasError;
+            //if (account.CashAtHand == 0 && !account.HasError)
+            //{
+            //    ViewBag.HasN.CashAtHand = true;
+            //    ViewBag.Error = $"The current CashAtHand of Teller {account.Teller.name} is 0. Kindly make a cash request";
+            //}
 
 
-            return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest { Amount = account.CashAtHand, CashAtHand = account.CashAtHand, CurrencyNotes = account.CloseOfDayRequest.CurrencyNotes,   ClossedStatus = "Pending", Comment = $"As Sub-Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{DateTime.Now}] with a final total.CashAtHand of {account.CashAtHand.ToString("#,##0")}." } });
+            return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest {AccountingDay= openOfDay.AccountingDay, Amount = openOfDay.CashAtHand, CashAtHand = openOfDay.CashAtHand, CurrencyNotes = openOfDay.CloseOfDayRequest.CurrencyNotes,   ClossedStatus = "Pending", Comment = $"As Sub-Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{openOfDay.AccountingDay}] with a final total.CashAtHand of {openOfDay.CashAtHand.ToString("#,##0")}. Date: [{DateTime.Now}]" } });
         }
 
 

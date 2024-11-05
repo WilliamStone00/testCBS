@@ -1,4 +1,5 @@
-﻿using CBS.FrontDesk.Data.Entity.Config;
+﻿using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Config;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -108,7 +109,18 @@ namespace CBS.FrontDesk.Data.UserManagement
 
     }
 
-
+    public class UserSessionDto
+    {
+        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
+        public string DeviceName { get; set; }
+        public string IpAddress { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? ExpiresAt { get; set; }
+        public UserDto User { get; set; }
+    }
     public class MFAActivation
     {
         [Required(ErrorMessage = "Email is required.")]

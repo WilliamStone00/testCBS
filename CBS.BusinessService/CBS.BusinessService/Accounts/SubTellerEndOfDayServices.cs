@@ -49,11 +49,10 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                model.Amount = ComputeDenomination(model.CurrencyNotes);
-                if (model.Amount < 0)
+                if (!ComputeDenomination(model.CurrencyNotes, Convert.ToInt32(model.Amount)))
                 {
                     GetExecutionMessages(model, false, $"{model.Amount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered must not be less than 0");
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "The amount you entered does not match the breakdown of the currency denominations provided. Please verify that the total cash amount you input aligns with the individual denominations listed. This ensures that the total cash in hand is accurate and properly accounted for. Review the denomination details and adjust the entered amount accordingly.");
                     return ExecutionMessage;
                 }
                 var response = await _transactionApiHelper.PostAsync<ServiceResponse<TellerProvioningHistory>>(APICallHelper.SubTellerEndOfDay, model);
@@ -131,6 +130,9 @@ namespace CBS.BusinessService.Accounts
                 ClosingCoin25 = tellerProvisioningHistory.ClosingCoin25,
                 ClosingCoin10 = tellerProvisioningHistory.ClosingCoin10,
                 ClosingCoin5 = tellerProvisioningHistory.ClosingCoin5,
+                Id = tellerProvisioningHistory.Id,
+                IsPrimaryTeller = tellerProvisioningHistory.IsPrimaryTeller,
+                TellerType = tellerProvisioningHistory.Teller?.isPrimary == true ? "Primary-Till" : "Sub-Till",
                 ClosingCoin1 = tellerProvisioningHistory.ClosingCoin1,
                 TotalOpeningAmount = tellerProvisioningHistory.TotalOpeningAmount,
                 TotalClosingAmount = tellerProvisioningHistory.TotalClosingAmount,

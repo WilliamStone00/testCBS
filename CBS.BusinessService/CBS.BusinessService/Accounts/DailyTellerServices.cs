@@ -29,14 +29,17 @@ namespace CBS.BusinessService.Accounts
         private readonly BranchServices _branchServices;
         private readonly TellerProvissioningServices _tellerProvissioningServices;
         private readonly TellerServices _tellerServices;
-
-        public DailyTellerServices(TellerProvissioningServices userManagementServices = null, TellerServices tellerServices = null)
+        private readonly UserManagementServices _userManagementServices;
+        public DailyTellerServices(TellerProvissioningServices tellerProvissioningServices = null, TellerServices tellerServices = null, UserManagementServices userManagementServices = null)
         {
             _transactionBaseConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
             _branchServices = new BranchServices();
-            _tellerProvissioningServices = userManagementServices;
+            _tellerProvissioningServices = tellerProvissioningServices;
             _tellerServices = tellerServices;
+            _userManagementServices = userManagementServices;
         }
+
+
 
         public async Task<ExecutionMessages> Delete(string id)
         {
@@ -232,20 +235,22 @@ namespace CBS.BusinessService.Accounts
         }
 
 
-        public async Task<IEnumerable<DailyTeller>> GetDailyTellers(DateTime DateFrom, DateTime DateTo, string branchId)
+        public async Task<IEnumerable<DailyTeller>> GetDailyTellers(string branchId)
         {
             try
             {
                 var Tellers = await _tellerServices.GetTellers();
 
-                var query = new QueryParamWithDates { DateFrom = DateFrom, DateTo = DateTo, BranchId = branchId };
+                var query = new QueryParamWithDates { BranchId = branchId };
                 var couApiResponse = await _transactionBaseConfigApiHelper.PostAsync<ResponseObject<List<DailyTeller>>>(APICallHelper.GetAllDailyTellerByBranch, query);
 
                 if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
                 {
-                    var branch = await _branchServices.GetBranch(GetBranchID());
+                    var branch = await _branchServices.GetBranch(branchId);
                     var dailyTellers = couApiResponse.ApiResponseData.Data;
-                    var filteredTellers = dailyTellers.Where(x => x.BranchId == GetBranchID())
+
+
+                    var filteredTellers = dailyTellers.Where(x => x.BranchId == branchId)
                                                       .Select(dailyTeller => MapDailyTellerWithBranch(dailyTeller, branch, Tellers.Where(t => t.id == dailyTeller.TellerId).FirstOrDefault()));
 
                     return filteredTellers;
@@ -440,10 +445,13 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
+
                 string[] parts = model.UserId.Split('@');
                 model.UserId = parts[0];
                 model.UserName = parts[1];
                 model.ProvisionedBy = GetUserFullName();
+                var user = await _userManagementServices.GetUser(model.UserId);
+                model.UserBranchId = user.BranchID;
                 // Make an API call to create an individual profile
                 var response = await _transactionBaseConfigApiHelper.PostAsync<ServiceResponse<DailyTeller>>(APICallHelper.CreateDailyTeller, model);
                 if (response.IsSuccess)
@@ -475,18 +483,20 @@ namespace CBS.BusinessService.Accounts
                 string[] parts = model.UserId.Split('@');
                 model.UserId = parts[0];
                 model.UserName = parts[1];
-
                 var DailyTeller = await GetDailyTeller(model.Id);
                 if (DailyTeller != null)
                 {
+                    var user = await _userManagementServices.GetUser(model.UserId);
+                    model.UserBranchId = user.BranchID;
                     //DailyTeller.IsPrimary = model.IsPrimary;
-                    DailyTeller.MaximumCeilin = model.MaximumCeilin;
-                    DailyTeller.MaximumWithdrawalAmount = model.MaximumWithdrawalAmount;
+                    //DailyTeller.MaximumCeilin = model.MaximumCeilin;
+                    //DailyTeller.MaximumWithdrawalAmount = model.MaximumWithdrawalAmount;
                     DailyTeller.ProvisionedBy = GetUserFullName();
                     DailyTeller.Status = model.Status;
-                    DailyTeller.TellerId = model.TellerId;
+                    //DailyTeller.TellerId = model.TellerId;
                     DailyTeller.UserId = model.UserId;
-                    DailyTeller.BranchId = model.BranchId;
+                    DailyTeller.UserBranchId = model.UserBranchId;
+                    //DailyTeller.BranchId = model.BranchId;
                     DailyTeller.UserName = model.UserName;
                     var response = await _transactionBaseConfigApiHelper.PutAsync<ServiceResponse<DailyTeller>>(string.Format(APICallHelper.Get_Update_Delete_DailyTeller, model.Id), DailyTeller);
                     if (response.IsSuccess)

@@ -342,6 +342,37 @@ namespace CBS.BusinessService.UserManagement
                 throw ex;
             }
         }
+        public async Task<IEnumerable<UserSessionDto>> GetUserSessions()
+        {
+            try
+            {
+                var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+                var branchApiResponse = await ApiCallerHelper.GetAsync<ResponseObject<List<UserSessionDto>>>((string.Format(APICallHelper.GetUserSessions, GetUserID())));
+                var Sessions = branchApiResponse.ApiResponseData.Data;
+                return Sessions;
+                ;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<IEnumerable<UserSessionDto>> GetUserSessions(Guid userid)
+        {
+            try
+            {
+                var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+                var branchApiResponse = await ApiCallerHelper.GetAsync<ResponseObject<List<UserSessionDto>>>((string.Format(APICallHelper.GetUserSessions, userid)));
+                var Sessions = branchApiResponse.ApiResponseData.Data;
+                return Sessions;
+                ;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        //GetUserSessions
         public async Task<User> GetUser(string userid)
         {
             try

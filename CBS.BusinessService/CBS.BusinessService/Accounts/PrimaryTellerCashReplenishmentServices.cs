@@ -309,10 +309,9 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                model.ConfirmedAmount = ComputeDenomination(model.CurrencyNote);
-                if (model.ConfirmedAmount <= 0)
+                if (!ComputeDenomination(model.CurrencyNote, Convert.ToInt32(model.RequestedAmount)))
                 {
-                    GetExecutionMessages(model, false, $"{model.ConfirmedAmount}", MessagesResults.Failed,
+                    GetExecutionMessages(model, false, $"{model.RequestedAmount}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered must be greater than 0");
                     return ExecutionMessage;
                 }
@@ -321,7 +320,7 @@ namespace CBS.BusinessService.Accounts
 
                 if (cashReplenishmentSubTeller != null)
                 {
-                    cashReplenishmentSubTeller.ConfirmedAmount = model.ConfirmedAmount;
+                    cashReplenishmentSubTeller.ConfirmedAmount = model.RequestedAmount;
                     cashReplenishmentSubTeller.ApprovedComment = model.ApprovedComment;
                     cashReplenishmentSubTeller.ApprovedStatus = model.ApprovedStatus;
                     cashReplenishmentSubTeller.CurrencyNote = model.CurrencyNote;

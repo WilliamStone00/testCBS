@@ -79,7 +79,7 @@
                                             <div class="form-floating form-floating-outline">
                                                 @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdLiassonAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
                                                 @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdLiassonAccount, "", new { @class = "text-danger" })
-                                                <label>Liasson account. (This account is used as transit for inter-operations between branches)</label>
+                                                <label>Liaison account. (This account is used as transit for inter-operations between branches)</label>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -153,14 +153,14 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee, new SelectList(ViewBag.EventCodes, "Text", "Value"), "---Select event code---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.DropDownListFor(m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee, new SelectList(ViewBag.EventCodes, "Value", "Text"), "---Select event code---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee, "", new { @class = "text-danger " })
                                             <label for="formValidationDob">Form fee moral person</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee, new SelectList(ViewBag.EventCodes, "Text", "Value"), "---Select event code---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.DropDownListFor(m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee, new SelectList(ViewBag.EventCodes, "Value", "Text"), "---Select event code---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee, "", new { @class = "text-danger " })
                                             <label for="formValidationDob">Form fee physical person</label>
                                         </div>
@@ -211,7 +211,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.SavingProductFee.FeeType, new SelectList(ViewBag.FeeType, "Text", "Value"), "---Select Fee Type---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.DropDownListFor(m => m.SavingProductFee.FeeType, new SelectList(ViewBag.FeeType, "Value", "Text"), "---Select Fee Type---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.SavingProductFee.FeeType, "", new { @class = "text-danger " })
                                             <label for="formValidationDob">Operation type</label>
                                         </div>

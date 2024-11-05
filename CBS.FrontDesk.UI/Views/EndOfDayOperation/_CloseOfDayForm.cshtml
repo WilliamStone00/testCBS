@@ -11,7 +11,10 @@
 {
 
     <fieldset class="fieldset-custom">
-        <legend id="select_base">Closing of Till</legend>
+        <legend id="select_base" class="underline-blue-bold">
+            CLOSE OF THE TILL AS OF ACCOUNTING DAY [@Model.CloseOfDayRequest.AccountingDay]
+        </legend>
+
         <div class="row mt-2 gy-4">
             @Html.HiddenFor(model => model.CloseOfDayRequest.Amount)
             @Html.HiddenFor(model => model.CloseOfDayRequest.CashAtHand)

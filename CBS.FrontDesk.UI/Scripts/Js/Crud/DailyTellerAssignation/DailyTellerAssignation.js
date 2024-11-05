@@ -1,15 +1,9 @@
 ﻿
 
 
-function SearchByDates(partialView, divToloadPV) {
-    if (!validateDates()) {
-        return;
-    }
-
+function LoadTellerrsAssigned() {
     var branchid = $('#branchInput').val();
-    var datefrom = $('#dateFromInput').val();
-    var dateto = $('#dateToInput').val();
-    LoadDataMain("DailyTellerAssignation", null, divToloadPV, "myDataTable", "InitializeData", branchid, "search", "search", null, datefrom, dateto, null, null, 0, partialView);
+    LoadDataMain("DailyTellerAssignation", null, "datalistingview", "myDataTable", "InitializeData", branchid, "search", "search", null, null, null, null, null, 0, "_Data");
 }
 
 function EditReset(KEY, partialView) {
@@ -53,6 +47,36 @@ function AjaxPostLoanScedule(form) {
 
 }
 
+function DeleteAssignedTeller(controller, KEY, tableID, partialView, order, divToLoadTheData) {
+
+    alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
+        function () {
+            var url = "/" + controller + "/Delete?KEY=" + KEY;
+            $.ajax({
+                type: "Get",
+                url: url,
+                success: function (response) {
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        LoadDataTableNew(controller, tableID, "InitializeData", $("#branchInput").val(), partialView, order,"search" , divToLoadTheData)
+                    }
+                    else {
+                        appalert(response.message, 3, 1);
+                    }
+
+                }, error: function (err) {
+
+                    appalert(err.statusText, 3, 1);
+                }
+            });
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
+
+        });
+
+
+}
 
 
 function showConfirmMessage(KEY, ServiceOption, tableID) {

@@ -30,10 +30,10 @@
                                 @Html.RadioButtonFor(m => m.OpenOrCloseAccountingDay, "Open", new { @class = "form-check-input", id = "openOption" })
                                 <label class="form-check-label" for="openOption">Open Accounting Day</label>
                             </div>
-                            <div class="form-check">
+                            @*<div class="form-check">
                                 @Html.RadioButtonFor(m => m.OpenOrCloseAccountingDay, "Close", new { @class = "form-check-input", id = "closeOption" })
                                 <label class="form-check-label" for="closeOption">Close Accounting Day</label>
-                            </div>
+                            </div>*@
                         </div>
                         @Html.ValidationMessageFor(m => m.OpenOrCloseAccountingDay, "", new { @class = "text-danger" })
                     </div>

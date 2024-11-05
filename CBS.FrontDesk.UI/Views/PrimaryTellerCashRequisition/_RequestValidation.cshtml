@@ -3,10 +3,12 @@
 {
 
     @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.RequestedAmount)
+
     <fieldset class="fieldset-custom">
         <legend id="select_base">Request Validation</legend>
         <div class="row mt-2 gy-4">
-           
+
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     <span class="formatted-amount shadow-box float-start">Requested Amount: @Model.RequestedAmount.ToString("#,##0.0")</span>

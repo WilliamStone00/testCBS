@@ -34,6 +34,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string AccountName { get; set; }
         public string LastOperation { get; set; }
         public string AccountType { get; set; }
+        public string CustomerName { get; set; }
         public bool IsTellerAccount { get; set; }
         public decimal OpeningBalance { get; set; }
         public decimal LastOperationAmount { get; set; } = 0;

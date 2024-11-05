@@ -1,4 +1,5 @@
-﻿using CBS.BusinessService.Accounts;
+﻿using CBS.BusinessService;
+using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
@@ -237,6 +238,15 @@ namespace CBS.FrontDesk.UI.Controllers.Series
         {
             this.HttpContext.Session["DateFrom"] = datefrom;
             this.HttpContext.Session["DateTo"] = dateto;
+        }
+        [HttpGet]
+        //GetMembersLoans(string customerId, string queryParameter)
+        public async Task<ActionResult> GetFilteredLoans(string filter, string memberId)
+        {
+            // Fetch all loans first
+            var loans = await _cashDeskService.GetMembersLoans(memberId, filter); // Replace this with your actual loan retrieval logic
+
+            return Json(loans, JsonRequestBehavior.AllowGet);
         }
 
     }

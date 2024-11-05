@@ -1,0 +1,439 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+<div class="col">
+
+
+
+
+
+
+    <div class="row my-4">
+        <div class="accordion" id="collapsibleSection">
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingDeliveryAddress">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDeliveryAddress"
+                            aria-expanded="true"
+                            aria-controls="collapseDeliveryAddress">
+                        @Model.Teller.name.ToUpper() Float Account Profile
+                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="Mobile Money Float Account Profile: This section allows you to configure details related to the Mobile Money Float account.
+            <strong>Instructions:</strong>
+            1. <strong>Teller Code:</strong> Enter a unique code for the teller managing this account.
+            2. <strong>Teller Name:</strong> Provide the full name of the teller.
+            3. <strong>Set as Primary Teller:</strong> Check this option if this teller is the primary contact for the account.
+            4. <strong>Account Number:</strong> Input the account number associated with the Mobile Money Float.
+            5. <strong>Holder of the Phone:</strong> Specify the name of the person responsible for the mobile money phone.
+            6. <strong>Float Number:</strong> Enter the float number for transaction processing."></i>
+                    </button>
+                </h2>
+                <div id="collapseDeliveryAddress"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        @using (Html.BeginForm("AddOrUpdate", "TellerManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        {
+                            <input type="hidden" name="ServiceOption" value="primary_teller" id="ServiceOption" />
+                            <fieldset class="fieldset-custom">
+                                <legend><strong>Profile</strong></legend>
+                                <div class="row mt-2 gy-4">
+                                    <div class="col-md-2">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.Teller.code, new { @class = "form-control", @readonly = true })
+                                            @Html.ValidationMessageFor(m => m.Teller.code, "", new { @class = "text-danger" })
+                                            <label>Teller code</label>
+                                            <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Enter a unique code for the teller managing this account."></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.Teller.name, new { @class = "form-control", @readonly = true })
+                                            @Html.ValidationMessageFor(m => m.Teller.name, "", new { @class = "text-danger" })
+                                            <label>Teller name</label>
+                                            <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Provide the full name of the teller."></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.Teller.activeStatus, new { @class = "form-check-input", id = "isPrimary", disabled = "disabled" })
+                                            <label class="form-check-label" for="isPrimary">Active status</label>
+                                            <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Check this option if the teller is currently active."></i>
+                                        </div>
+                                        <span id="activeStatusBadge" class="badge @((Model.Teller.activeStatus ? "bg-success" : "bg-danger")) mt-2">
+                                            @((Model.Teller.activeStatus ? "Till is Active" : "In-active"))
+                                        </span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.AccountNumber, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.AccountNumber, "", new { @class = "text-danger" })
+                                            <label>Float ledger account number</label>
+                                            <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the account associated with @Model.Teller.name form managing float."></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyUserKeepingThePhone, new SelectList(ViewBag.Users, "Text", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyUserKeepingThePhone, "", new { @class = "text-danger" })
+                                            <label>Select Designated User of the Phone</label>
+                                            <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the name of the person responsible for the float operation phone."></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyFloatNumber, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyFloatNumber, "", new { @class = "text-danger" })
+                                            <label>Float phone number</label>
+                                            <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Enter the float number for transaction processing."></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="mt-4">
+                                @if (Model.Teller.id == null)
+                                {
+                                    <button type="submit" class="btn btn-primary me-2">Save</button>
+                                    <input type="hidden" name="Action" value="insert" id="Action" />
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary me-2">Update Float Profile</button>
+                                    @Html.HiddenFor(m => m.MobileMoneyTellerConfiguration.Id)
+                                    <input type="hidden" name="Action" value="float_number_profile" id="Action" />
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            ,
+            @if (Model.Teller.TellerType == "MomocashCollectionMTN" || Model.Teller.TellerType == "MomocashCollectionOrange")
+            {
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingPaymentMethod5">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePaymentMethod5"
+                                aria-expanded="false"
+                                aria-controls="collapsePaymentMethod5">
+                            Mobile or Orange Money Collection Mapping For Operations (Cashin & Loan Repayment)
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="This section allows you to configure the accounting mappings for operational events related to Mobile or Orange Money transactions. Ensure accurate input for proper operation tracking."></i>
+                        </button>
+                    </h2>
+                    <div id="collapsePaymentMethod5"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPaymentMethod5"
+                         data-bs-parent="#collapsibleSection">
+                        <div class="accordion-body">
+                            @using (Html.BeginForm("AddOrUpdate", "TellerManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            {
+                                <input type="hidden" name="ServiceOption" value="primary_teller" id="ServiceOption" />
+                                <fieldset class="fieldset-custom">
+                                    <legend><strong>Accounting Mapping For Operations</strong></legend>
+                                    <p class="text-muted">Please specify the operation event code that will be used to track operational events for cash top-ups and other transactions. Ensure the code is consistent with your accounting practices.</p>
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.OperationEventCode, new SelectList(ViewBag.EventCodes, "Value", "Text"), "---Select Event Name---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.OperationEventCode, "", new { @class = "text-danger" })
+                                                <label>Operation event code</label>
+                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Enter the unique code associated with the operational event. This code is used for accounting purposes and must be aligned with the predefined coding system."></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div class="mt-4">
+                                    @if (Model.Teller.id == null)
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Save</button>
+                                        <input type="hidden" name="Action" value="insert" id="Action" />
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Map Event Code</button>
+                                        @Html.HiddenFor(m => m.MobileMoneyTellerConfiguration.Id)
+                                        <input type="hidden" name="Action" value="operation_event" id="Action" />
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingPaymentMethod3">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePaymentMethod3"
+                                aria-expanded="false"
+                                aria-controls="collapsePaymentMethod3">
+                            Mobile Or Orange Money Accounting Mapping For Float Transfer
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip"
+                               title="This section configures accounting mappings for float transfers related to Mobile or Orange Money. Ensure accurate entries for successful top-ups."></i>
+                        </button>
+                    </h2>
+                    <div id="collapsePaymentMethod3"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPaymentMethod3"
+                         data-bs-parent="#collapsibleSection">
+                        <div class="accordion-body">
+                            @using (Html.BeginForm("AddOrUpdate", "TellerManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            {
+                                <input type="hidden" name="ServiceOption" value="primary_teller" id="ServiceOption" />
+
+                                <!-- Fieldset 1: Transfer from Auxillary Account to Branch Float Account -->
+                                <fieldset class="fieldset-custom">
+                                    <legend><strong>Transfer from auxiliary account to branch float account</strong></legend>
+                                    <p class="text-muted">Set up the accounting mappings for cash top-ups through Mobile or Orange Money. Ensure correct ledger accounts to avoid discrepancies.</p>
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.FromAuxillaryAccountNumber_A, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.FromAuxillaryAccountNumber_A, "", new { @class = "text-danger" })
+                                                <label>From auxiliary account number</label>
+                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account from which funds will be deducted for the float transfer."></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.ToBranchFloatAccountNumberAuxillary_A, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.ToBranchFloatAccountNumberAuxillary_A, "", new { @class = "text-danger" })
+                                                <label>To branch float account number</label>
+                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account to which funds will be credited for the float transfer."></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <!-- Fieldset 2: Transfer from Head Office to Branch Float Account -->
+                                <fieldset class="fieldset-custom">
+                                    <legend><strong>Transfer from head office to branch float account</strong></legend>
+                                    <p class="text-muted">Set up the accounting mappings for head office cash top-ups to the branch float. Ensure ledger account numbers are accurate to avoid errors.</p>
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.FromHeadOfficeAccountNumber_B, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.FromHeadOfficeAccountNumber_B, "", new { @class = "text-danger" })
+                                                <label>From head-office account number</label>
+                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account from which head office funds will be deducted for the float transfer."></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.ToBranchFloatAccountNumberHeadOffice_B, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.ToBranchFloatAccountNumberHeadOffice_B, "", new { @class = "text-danger" })
+                                                <label>To branch float account number</label>
+                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account to which head office funds will be credited for the float transfer."></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <!-- Fieldset 3: Transfer between Branch Float Accounts -->
+                                <fieldset class="fieldset-custom">
+                                    <legend><strong>Transfer between branch float accounts</strong></legend>
+                                    <p class="text-muted">Configure the accounting mappings for float transfers between branches. Ensure the accuracy of ledger accounts.</p>
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.FromBranchAccountNumber_C, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.FromBranchAccountNumber_C, "", new { @class = "text-danger" })
+                                                <label>From branch float account number</label>
+                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account from which branch float funds will be deducted for the float transfer."></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.ToBranchFloatAccountNumberBranch_C, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.ToBranchFloatAccountNumberBranch_C, "", new { @class = "text-danger" })
+                                                <label>To another branch float account number</label>
+                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account to which funds will be credited during branch float transfer."></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <!-- Fieldset 4: Transfer from Branch to Head Office Float Account -->
+                                <fieldset class="fieldset-custom">
+                                    <legend><strong>Transfer from branch float account to head-office float account</strong></legend>
+                                    <p class="text-muted">Set up the accounting mappings for transfers from branch float accounts to head-office float accounts.</p>
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.FromBranchFloatAccountNumber_D, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.FromBranchFloatAccountNumber_D, "", new { @class = "text-danger" })
+                                                <label>From branch float account number</label>
+                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account from which branch float funds will be deducted for the transfer to head office."></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.ToHeadOfficeFloatAccountNumber_D, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.ToHeadOfficeFloatAccountNumber_D, "", new { @class = "text-danger" })
+                                                <label>To head-office float account number</label>
+                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account to which funds will be credited during the transfer to head office."></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary me-2">MAP Accounts</button>
+                                    @Html.HiddenFor(m => m.MobileMoneyTellerConfiguration.Id)
+                                    <input type="hidden" name="Action" value="topup_accounting_Configuration" id="Action" />
+
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingDeliveryOptions">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseDeliveryOptions"
+                                aria-expanded="false"
+                                aria-controls="collapseDeliveryOptions">
+                            Account Balance Alert
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="Set thresholds for account balance alerts. Users will be notified when their balance falls below or exceeds specified levels. Ensure appropriate values to avoid unnecessary alerts."></i>
+                        </button>
+                    </h2>
+                    <div id="collapseDeliveryOptions"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingDeliveryOptions"
+                         data-bs-parent="#collapsibleSection">
+                        <div class="accordion-body">
+                            @using (Html.BeginForm("AddOrUpdate", "TellerManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            {
+                                <input type="hidden" name="ServiceOption" value="primary_teller" id="ServiceOption" />
+                                <fieldset class="fieldset-custom">
+                                    <legend><strong>Account Balance Alert</strong></legend>
+                                    <p class="text-muted">Set the minimum and maximum balance thresholds for alert notifications. Users will be alerted when their account balance falls below the minimum or exceeds the maximum specified limits.</p>
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyMinimumBalanceAlertLevel, new { @class = "form-control", placeholder = "Minimum balance for alert" })
+                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyMinimumBalanceAlertLevel, "", new { @class = "text-danger" })
+                                                <label>Minimum balance for alert</label>
+                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Enter the minimum balance level at which alerts should be triggered."></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyMaximumBalanceAlertLevel, new { @class = "form-control", placeholder = "Maximum balance for alert" })
+                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyMaximumBalanceAlertLevel, "", new { @class = "text-danger" })
+                                                <label>Maximum balance for alert</label>
+                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Enter the maximum balance level at which alerts should be triggered."></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div class="mt-4">
+                                    @if (Model.Teller.id == null)
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Save</button>
+                                        <input type="hidden" name="Action" value="insert" id="Action" />
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Update Balance Alert Level</button>
+                                        @Html.HiddenFor(m => m.MobileMoneyTellerConfiguration.Id)
+                                        <input type="hidden" name="Action" value="balance_alert" id="Action" />
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingPaymentMethod">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePaymentMethod"
+                                aria-expanded="false"
+                                aria-controls="collapsePaymentMethod">
+                            Alert Profile
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="Set parameters for alert notifications, including phone numbers and alert messages in different languages. Key Points: 1. Phone Number: Specify the number to receive alerts. 2. Alert Messages: Define the content of alerts in English and French. 3. Customization: Tailor messages to enhance user engagement. 4. Accessibility: Ensure the phone number is valid and reachable."></i>
+                        </button>
+                    </h2>
+                    <div id="collapsePaymentMethod"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPaymentMethod"
+                         data-bs-parent="#collapsibleSection">
+                        <div class="accordion-body">
+                            @using (Html.BeginForm("AddOrUpdate", "TellerManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            {
+                                <input type="hidden" name="ServiceOption" value="primary_teller" id="ServiceOption" />
+                                <fieldset class="fieldset-custom">
+                                    <legend><strong>Alert Profile</strong></legend>
+                                    <p class="text-muted">Please enter the phone numbers of the persons to receive alerts and customize the alert messages in English and French. Seperate numbers with a comma (,). If User is to recive notification in french, add F at the end of this number. E.g 650535634F, 650535634</p>
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextAreaFor(m => m.MobileMoneyTellerConfiguration.PhoneNumberToRecieveAlert, new { @class = "form-control", placeholder = "Enter phone number", @style = "height: 74px;" })
+                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.PhoneNumberToRecieveAlert, "", new { @class = "text-danger" })
+                                                <label>Phone numbers to receive alert</label>
+                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Enter the phone numbers where alerts will be sent. Make sure it's correct. Example 650535634F, 650535634, 677145369F"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextAreaFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyAlertMessageInEnglish, new { @class = "form-control", placeholder = "Enter English alert message", @style = "height: 74px;" })
+                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyAlertMessageInEnglish, "", new { @class = "text-danger" })
+                                                <label>Alert message (English)</label>
+                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Enter the message content for English alerts."></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextAreaFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyAlertMessageInFrench, new { @class = "form-control", placeholder = "Enter French alert message", @style = "height: 74px;" })
+                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyAlertMessageInFrench, "", new { @class = "text-danger" })
+                                                <label>Alert message (French)</label>
+                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Enter the message content for French alerts."></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div class="mt-4">
+                                    @if (Model.Teller.id == null)
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Save</button>
+                                        <input type="hidden" name="Action" value="insert" id="Action" />
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Update Monitoring Alert Profile</button>
+                                        @Html.HiddenFor(m => m.MobileMoneyTellerConfiguration.Id)
+                                        <input type="hidden" name="Action" value="sms_alert_profile" id="Action" />
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</div>
+

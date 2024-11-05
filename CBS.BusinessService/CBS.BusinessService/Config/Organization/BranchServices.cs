@@ -1,8 +1,10 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -12,6 +14,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CBS.BusinessService.Config
 {
@@ -81,7 +84,42 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+        public async Task<SelectList> GetBranchesByBankId(string id)
+        {
+            try
+            {
+                var couApiResponse = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(string.Format(APICallHelper.GetAllBranch));
+                if (IsHeadOffice())
+                {
+                    var BRANCHES = couApiResponse.ApiResponseData.Data.Where(x => x.BankId == id).ToList();
+                    return ProcessApiResponseResponse(BRANCHES);
+                }
+                else
+                {
+                    var BRANCHES = couApiResponse.ApiResponseData.Data.Where(x => x.BankId == id && x.Id==GetBranchID()).ToList();
+                    return ProcessApiResponseResponse(BRANCHES);
 
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+
+        private SelectList ProcessApiResponseResponse(List<Branch> branches)
+        {
+            var values = branches.Select(a => new Branch
+            {
+                Name = $"{a.BranchCode} {a.Name}",
+                Id = a.Id
+            });
+            var defaultSelectedValue = "default-value";
+            return new SelectList(values.ToList(), "Id", "Name", defaultSelectedValue);
+
+        }
 
         public async Task<IEnumerable<Branch>> GetLiaison()
         {

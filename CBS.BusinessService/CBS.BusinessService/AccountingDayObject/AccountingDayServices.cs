@@ -229,7 +229,7 @@ namespace CBS.BusinessService.AccountingDayObject
 
                 var response = await _transactionBaseConfigApiHelper.PostAsync<ServiceResponse<List<OpenOrCloseOfAccountingDayResultDto>>>(apiEndpoint, model);
 
-                if (response.ApiResponseData != null)
+                if (response.IsSuccess)
                 {
                     // Successful operation
                     GetExecutionMessages(response, true, null, MessagesResults.Success, ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);

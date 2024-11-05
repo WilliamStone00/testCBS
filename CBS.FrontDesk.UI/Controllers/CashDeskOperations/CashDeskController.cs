@@ -164,14 +164,26 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             }
         }
         [HttpPost]
-        public async Task<ActionResult> GetReport()
+        public async Task<ActionResult> GetReport(string path)
         {
-            this.HttpContext.Session["rptType"] = "ReportParameterLess";
-            this.HttpContext.Session["ReportName"] = $"Receipts.rpt";
-            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/Reciepts/Receipts.rpt";
-            this.HttpContext.Session["rpttitle"] = $"MemberReceipts";
-            return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
+            if (path=="loan")
+            {
+                this.HttpContext.Session["rptType"] = "ReportParameterLess";
+                this.HttpContext.Session["ReportName"] = $"MainReportLoan.rpt";
+                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/Payment/Loan/MainReportLoan.rpt";
+                this.HttpContext.Session["rpttitle"] = $"MemberLoanReceipts";
+                return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
 
+            }
+            else
+            {
+                this.HttpContext.Session["rptType"] = "ReportParameterLess";
+                this.HttpContext.Session["ReportName"] = $"MainReport.rpt";
+                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/Payment/MainReport.rpt";
+                this.HttpContext.Session["rpttitle"] = $"MemberReceipts";
+                return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
+
+            }
         }
 
         [HttpPost]

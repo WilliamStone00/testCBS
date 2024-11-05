@@ -488,6 +488,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             }
             var loanpurpose = await _loanPurposeServices.GetAllLoanPurpose();
             var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
+            ViewBag.LoanTypes = productEnumAgregates.LoanTypes;
+
             ViewBag.EconomicActivities = agrAggregates.EconomicActivities;
             ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
             ViewBag.RepaymentCycles = productEnumAgregates.RepaymentCycles;

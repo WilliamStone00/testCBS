@@ -117,7 +117,7 @@ namespace BusinessServices
 
             return string.Join("&", properties.ToArray());
         }
-        public int ComputeDenomination(CurrencyNotes currencyNotes)
+        public bool ComputeDenomination(CurrencyNotes currencyNotes, int amount)
         {
             int totalNotesValue = currencyNotes.note10000 * 10000 +
                                   currencyNotes.note5000 * 5000 +
@@ -131,8 +131,11 @@ namespace BusinessServices
                                   currencyNotes.coin10 * 10 +
                                   currencyNotes.coin5 * 5 +
                                   currencyNotes.coin1;
-
-            return totalNotesValue;
+            if (amount!= totalNotesValue)
+            {
+                return false;
+            }
+            return true;
         }
         public Guid ConvertStringToGuid(string input)
         {
@@ -1584,7 +1587,7 @@ namespace BusinessServices
                 case 10:
                     return date.ToString("dddd/MMMM/yyyy");
                 default:
-                    return date.ToString("dd/MM/yyyy");
+                    return date.ToString("dd/MM/yyyy HH:mm:ss");
             }
 
 

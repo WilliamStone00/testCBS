@@ -38,8 +38,7 @@ namespace CBS.FrontDesk.UI
             UnityConfig.RegisterComponents();
             MvcHandler.DisableMvcResponseHeader = true;
             GlobalFilters.Filters.Add(new UserAuditFilter()); // Register UserAuditFilter
-
-        ConnectionMonitoringService connectionService = new ConnectionMonitoringService();
+            ConnectionMonitoringService connectionService = new ConnectionMonitoringService();
         }
        
       

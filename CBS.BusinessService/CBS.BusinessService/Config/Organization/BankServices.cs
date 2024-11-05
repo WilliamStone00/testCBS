@@ -60,12 +60,24 @@ namespace CBS.BusinessService.Config
             var dataTable = await DatatableHelper.GenerateDataTable<Bank>(dataTableOptions, getDataFunc);
             return dataTable;
         }
+       
         public async Task<IEnumerable<Bank>> GetBanks()
         {
             try
             {
-                var couApiResponse = await _bankConfigApiHelper.GetAsync<ResponseObject<List<Bank>>>(APICallHelper.GetAllBank);
-                return couApiResponse.ApiResponseData.Data;
+                if (IsHeadOffice())
+                {
+                    var couApiResponse = await _bankConfigApiHelper.GetAsync<ResponseObject<List<Bank>>>(APICallHelper.GetAllBank);
+                    return couApiResponse.ApiResponseData.Data;
+
+                }
+                else
+                {
+                    var couApiResponse = await _bankConfigApiHelper.GetAsync<ResponseObject<List<Bank>>>(APICallHelper.GetAllBank);
+                    return couApiResponse.ApiResponseData.Data.Where(x => x.Id == GetBankID());
+
+                }
+
             }
             catch (Exception ex)
             {

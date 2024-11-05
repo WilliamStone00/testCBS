@@ -50,59 +50,48 @@ $(document).on('input', '.amount-input, .fee-input, .interest-input, .penalty-in
     $row.find('.total-span').text(total.toFixed(2));
     calculateTableTotal();
 });
+// Trigger this function whenever the "Amount" or "Fee" inputs change
+// Trigger this function whenever the "Amount" or "Fee" inputs change
 function calculateTableTotal() {
     var total = 0;
-    $('.total-span').each(function () {
-        total += parseFloat($(this).text());
+
+    // Iterate over each row in the table
+    $('#myDataTableT tbody tr').each(function () {
+        // Get the Amount and Fee input values
+        var amount = parseFloat($(this).find('.amount-input').val()) || 0;
+        var fee = parseFloat($(this).find('.fee-input').val()) || 0;
+
+        // Calculate the row total (Amount + Fee)
+        var rowTotal = amount + fee;
+
+        // Update the total span in the current row
+        $(this).find('.total-span').text(rowTotal.toFixed(1));
+
+        // Add the row total to the overall total
+        total += rowTotal;
     });
 
-    // Calculate balance
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
-    var balance = totalNotes - total;
+    // Update the table footer total
+    var formattedTotal = total.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
+    $('#tableTotal').text(formattedTotal);
 
-    // Update balance in the table footer
+    // Update balance (Total notes - total from table)
+    var totalNotes = parseFloat($("#totalNoteAmount").val()) || 0;
+    var balance = totalNotes - total;
     var formattedBalance = balance.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
     $('#tableBalance').text(formattedBalance);
 
-    // Change color of balance text if negative
-    if (balance < 0) {
-        $('#tableBalance').addClass('text-danger');
-    } else {
-        $('#tableBalance').removeClass('text-danger');
-    }
-
-    // Remove any existing icon
-    $('#tableTotal .total-icon').remove();
-
-    // Compare total with totalNotes and update the icon accordingly
-    var iconClass, iconColor;
-    if (total === totalNotes) {
-        // Equal to totalNotes, show a green checkmark
-        iconClass = 'fas fa-check-circle';
-        iconColor = 'text-success';
-    } else if (total < totalNotes) {
-        // Less than totalNotes, show a warning exclamation mark
-        iconClass = 'fas fa-exclamation-circle';
-        iconColor = 'text-warning';
-    } else {
-        // Greater than totalNotes, show a red X
-        iconClass = 'fas fa-times-circle';
-        iconColor = 'text-danger';
-    }
-
-    // Append the total value to the tableTotal cell
-    var formattedTotal = total.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
-    $('#tableTotal').html(`<span>${formattedTotal}</span>`);
-    // Append the icon after the total value
-    $('#tableTotal').append(` <i class="${iconClass} total-icon ${iconColor}"></i>`);
-
-    // Enable or disable the button based on the comparison
-    if (total === totalNotes) {
-        $('#submit').prop('disabled', false); // Enable the button
-    } else {
-        $('#submit').prop('disabled', true); // Disable the button
-    }
+    // The "Cash-In" button will always be active, so no need to enable/disable it
 }
+
+// Bind event listeners to the input fields
+$(document).ready(function () {
+    // Whenever the amount or fee input fields change, recalculate the totals
+    $('#myDataTableT').on('input', '.amount-input, .fee-input', function () {
+        calculateTableTotal();
+    });
+});
+
 
 
 function checkTotalNotes() {
@@ -274,41 +263,52 @@ function failureCallback(response) {
 }
 
 function PostCashIn() {
-    if (!checkTotalNotes()) return false;
-
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
-    var totalInfo = calculateTotalAmount();
-
-    if (!validateTotalAmount(totalInfo, totalNotes)) return;
-
     var deposits = collectDeposits();
     if (deposits.length === 0) {
         appalert("Please select at least one account to perform the cash-in.", 3, 1);
         return;
     }
 
+    // Calculate total amount from user inputs in the table
+    var totalInfo = calculateTotalAmount();
+
+    // Collect the selected amounts from the input fields (Amount + Fee)
+    var selectedTotalAmount = 0;
+    $('#myDataTableT tbody tr').each(function () {
+        var amount = parseFloat($(this).find('.amount-input').val()) || 0;
+        var fee = parseFloat($(this).find('.fee-input').val()) || 0;
+        selectedTotalAmount += (amount + fee);
+    });
+
+    // Compare calculated total with the user input
+    if (totalInfo.total !== selectedTotalAmount) {
+        appalert("The total amount does not match the sum of the selected account amounts and fees.", 3, 1);
+        return;
+    }
+
     deposits[0].currencyNotes = collectCurrencyNotes();
     deposits[0].Depositer = collectDepositorInfo();
+
     // Check if one of the radio buttons is selected
     var sourceType = $("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked").val();
     if (!sourceType) {
         appalert("Please select operator type, Either Mobile Money MTN OR Mobile Money Orange", 3, 1);
         return;
     }
+
     var message = "";
     message += "Are you sure you want to perform a cash-in of " + totalInfo.total + " to the selected account numbers?\n";
     message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
     confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits, 'CashInMomocashCollection');
 }
 
-
 function PostLoanRepayment() {
-    if (!checkTotalNotes()) return false;
+    //if (!checkTotalNotes()) return false;
 
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
+    //var totalNotes = parseFloat($("#totalNoteAmount").val());
     var totalInfo = calculateTotalAmount();
 
-    if (!validateTotalAmount(totalInfo, totalNotes)) return;
+    //if (!validateTotalAmount(totalInfo, totalNotes)) return;
 
     var deposits = collectDeposits();
     if (deposits.length !== 1) {

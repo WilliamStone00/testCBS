@@ -42,13 +42,14 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                model.Amount = ComputeDenomination(model.CurrencyNotes);
-                if (model.Amount < 0)
+                if (!ComputeDenomination(model.CurrencyNotes, Convert.ToInt32(model.InitialAmount)))
                 {
                     GetExecutionMessages(model, false, $"{model.Amount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered must not be less than 0");
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "The amount you entered does not match the breakdown of the currency denominations provided. Please verify that the total cash amount you input aligns with the individual denominations listed. This ensures that the total cash in hand is accurate and properly accounted for. Review the denomination details and adjust the entered amount accordingly."
+);
                     return ExecutionMessage;
                 }
+
 
                 var response = await _transactionApiHelper.PostAsync<ServiceResponse<TellerProvioningHistory>>(APICallHelper.OpenningOfDayPrimaryTeller, model);
                 if (response.IsSuccess && response.ApiResponseData != null)
@@ -131,6 +132,9 @@ namespace CBS.BusinessService.Accounts
                 ClosingCoin1 = tellerProvisioningHistory.ClosingCoin1,
                 TotalOpeningAmount = tellerProvisioningHistory.TotalOpeningAmount,
                 TotalClosingAmount = tellerProvisioningHistory.TotalClosingAmount,
+                Id = tellerProvisioningHistory.Id,
+                IsPrimaryTeller = tellerProvisioningHistory.IsPrimaryTeller,
+                TellerType = tellerProvisioningHistory.Teller?.isPrimary == true ? "Primary-Till" : "Sub-Till",
                 Logo = branch.Bank.LogoUrl,
                 BranchName = branch.Name,
                 BranchCode = branch.BranchCode,
@@ -213,6 +217,7 @@ namespace CBS.BusinessService.Accounts
                     ClosingCoin1 = tellerProvisioningHistory.ClosingCoin1,
                     TotalOpeningAmount = tellerProvisioningHistory.TotalOpeningAmount,
                     TotalClosingAmount = tellerProvisioningHistory.TotalClosingAmount,
+                    Id = tellerProvisioningHistory.Id,
                     Logo = branch.Bank?.LogoUrl,
                     BranchName = branch.Name,
                     BranchCode = branch.BranchCode,
@@ -239,11 +244,10 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                model.InitialAmount = ComputeDenomination(model.CurrencyNotes);
-                if (model.InitialAmount <= 0)
+                if (!ComputeDenomination(model.CurrencyNotes, Convert.ToInt32(model.InitialAmount)))
                 {
                     GetExecutionMessages(model, false, $"{model.InitialAmount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered be greater than 0");
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "The amount you entered does not match the breakdown of the currency denominations provided. Please verify that the total cash amount you input aligns with the individual denominations listed. This ensures that the total cash in hand is accurate and properly accounted for. Review the denomination details and adjust the entered amount accordingly.");
                     return ExecutionMessage;
                 }
                 var response = await _transactionApiHelper.PostAsync<ServiceResponse<TellerProvioningHistory>>(APICallHelper.OpenningOfDaySubTeller, model);

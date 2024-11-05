@@ -1,6 +1,7 @@
 ﻿using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
+using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using System;
@@ -20,18 +21,29 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private readonly TellerServices _tellerServices;
         private readonly ChartOfAccountServicesAnnex _accountingServices;
         private readonly BranchServices _branchServices;
-
-        public TellerManagementController(ChartOfAccountServicesAnnex accountingServices, TellerServices tellerServices, BranchServices branchServices = null)
+        private readonly IUserManagementServices _userManagementServices;
+        public TellerManagementController(ChartOfAccountServicesAnnex accountingServices, TellerServices tellerServices, BranchServices branchServices = null, IUserManagementServices userManagementServices = null)
         {
             _accountingServices = accountingServices;
             _tellerServices = tellerServices;
             _branchServices = branchServices;
+            _userManagementServices = userManagementServices;
         }
 
         public async Task<ActionResult> Index()
         {
             await GetList();
             return View(new SavingConfiguration());
+        }
+        public async Task<ActionResult> MMConfiguration(string key)
+        {
+            var teller = await _tellerServices.GetTeller(key);
+            var mobileMoneyTellerConfiguration = _tellerServices.MapTellerToMobileMoneyCommand(teller);
+            ViewBag.EventCodes = await _accountingServices.GetEventNames("FEE");
+            ViewBag.ChartOfAccounts = await _accountingServices.GetChartOfAccounts();
+            ViewBag.Users = await _userManagementServices.GetUserDropDownList();
+            var data = new SavingConfiguration { Teller = teller, MobileMoneyTellerConfiguration = mobileMoneyTellerConfiguration };
+            return View(data);
         }
 
         [HttpPost]
@@ -45,7 +57,15 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             }
             else
             {
-                serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                if (model.Action == "update")
+                {
+                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+
+                }
+                else
+                {
+                    serviceAction = UpdateMobileMoneyCOnfigurations(model.ServiceOption, model);
+                }
             }
 
             if (serviceAction != null)
@@ -73,6 +93,11 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private Func<Task<ExecutionMessages>> GetUpdateServiceAction(string serviceOption, SavingConfiguration model)
         {
             return () => _tellerServices.Update(model.Teller);
+        }
+
+        private Func<Task<ExecutionMessages>> UpdateMobileMoneyCOnfigurations(string serviceOption, SavingConfiguration model)
+        {
+            return () => _tellerServices.UpdateMobileMoneyConfiguration(model.MobileMoneyTellerConfiguration,model.Action);
         }
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)

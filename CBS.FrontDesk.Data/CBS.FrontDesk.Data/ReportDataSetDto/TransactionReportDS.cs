@@ -127,7 +127,33 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public string ReceiptTitle { get; set; }
 
     }
-    public class OpenningAnclClossingTillDto: HeadOffice
+    public class CustomerListingDS
+    {
+
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string BankingRelationship { get; set; }
+        public DateTime RegistrationDate { get; set; }
+        public string IDNumber { get; set; }
+        public string IDNumberIssueDate { get; set; }
+        public string MembershipApprovalStatus { get; set; }
+        public string Address { get; set; }
+        public string CustomerBranchCode { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Logo { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchAddress { get; set; }
+        public string BranchTelephone { get; set; }
+        public string HeadOfficeName { get; set; }
+        public string HeadOfficeAddress { get; set; }
+        public string HeadOfficeTelephone { get; set; }
+        public string HeadOfficeEmail { get; set; }
+        public string HeadOfficeWebSite { get; set; }
+        public string HeadOfficeInitial { get; set; }
+        public string HeadOfficeCode { get; set; }
+    }
+    public class OpenningAnclClossingTillDto : HeadOffice
     {
         public string UserIdInChargeOfThisTeller { get; set; }
         public string ProvisionedBy { get; set; }
@@ -154,7 +180,7 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public string PrimaryTellerConfirmationStatus { get; set; }
         public string TellerName { get; set; }
     }
-    public class TillOpenAndClossingDS: HeadOffice
+    public class TillOpenAndClossingDS : HeadOffice
     {
         public string UserIdInChargeOfThisTeller { get; set; }
         public string ProvisionedBy { get; set; }
@@ -207,9 +233,67 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public int ClosingCoin1 { get; set; }
         public decimal TotalOpeningAmount { get; set; }
         public decimal TotalClosingAmount { get; set; }
+        public string Id { get; set; }
+    }
+    public class PaymentReciptDS: HeadOffice
+    {
+        public string Id { get; set; }
+        public string MemberName { get; set; }
+        public string MemberReference { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Charges { get; set; }
+        public decimal TotalAmount { get; set; }
+        public string AmountInWord { get; set; }
+        public string ReceiptTitle { get; set; }
+        public string CashierName { get; set; }
+        public string DepositorName { get; set; }
+        public string DepositorPhone { get; set; }
+        public string DepositorCNI { get; set; }
+
+        public string TillName { get; set; }
+        public string ServiceType { get; set; }
+        public string OperationType { get; set; }
+        public string OperationTypeGrouping { get; set; }
+        public DateTime AccountingDay { get; set; }
+        public DateTime Date { get; set; }
+        public string InternalReferenceNumber { get; set; }
+        public string ExternalReferenceNumber { get; set; }
+        public string SourceOfRequest { get; set; }
+        public string PortalUsed { get; set; }
+        public List<DenominationDS> DenominationDs { get; set; }
+        public List<PaymentDetailDS> PaymentDetailDs { get; set; }
 
     }
-    public class AccountingDayDS: HeadOffice
+    public class DenominationDS
+    {
+        public string PaymentReceiptId { get; set; }
+        public string NoteOrCoins { get; set; }
+        public int Quantity { get; set; }
+        public decimal Value { get; set; }
+
+        public string DenominationType { get; set; }
+    }
+    public class PaymentDetailDS
+    {
+        public string Id { get; set; }
+        public string MemberName { get; set; }
+        public string MemberReference { get; set; }
+        public string PaymentReceiptId { get; set; }
+        public string SericeName { get; set; }
+        public string DepositorName { get; set; }
+        public string DepositorPhone { get; set; }
+        public string DepositorCNI { get; set; }
+        public decimal Amount { get; set; } = 0;
+        public decimal Fee { get; set; } = 0;
+        public decimal LoanCapital { get; set; } = 0;
+        public decimal Interest { get; set; } = 0;
+        public decimal VAT { get; set; } = 0;
+        public string AccountNumber { get; set; }
+        public DateTime AccountingDay { get; set; }
+        public DateTime Date { get; set; }
+    }
+   
+    public class AccountingDayDS : HeadOffice
     {
         public string Id { get; set; }
         public string BranchId { get; set; }

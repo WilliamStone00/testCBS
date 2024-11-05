@@ -1,65 +1,61 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+
 <div class="card-header">
     <h5 class="card-title">Account Status</h5>
 </div>
 <div class="card-body">
-    <div class="mb-3 col-12 mb-0">
+    <div class="mb-3 col-12">
         @if (Model.CustomerList.Active)
         {
-            <div class="alert alert-outline-success" role="alert">
-                <h6 class="alert-heading mb-1">@Model.CustomerList.name account is active.</h6>
-                <p class="mb-0">Un-check the box and click on de-activate button to de-activate account</p>
+            <div class="alert alert-success" role="alert">
+                <h6 class="alert-heading">@Model.CustomerList.name's account is active.</h6>
+                <p>Uncheck the box and click the "Deactivate" button to deactivate the account.</p>
             </div>
         }
         else
-        {<div class="alert alert-outline-danger" role="alert">
-                <h6 class="alert-heading mb-1">@Model.CustomerList.name account is de-activated</h6>
-                <p class="mb-0">Check the box and click on re-activate button to re-activate account</p>
+        {
+            <div class="alert alert-danger" role="alert">
+                <h6 class="alert-heading">@Model.CustomerList.name's account is deactivated.</h6>
+                <p>Check the box and click the "Reactivate" button to reactivate the account.</p>
             </div>
         }
-
     </div>
+
     @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
     {
-        <!-- Account Details -->
-
+        <!-- Hidden Fields -->
         @Html.HiddenFor(model => model.CustomerList.CustomerId)
         <input type="hidden" name="option" value="Status" id="option" />
 
-        if (Model.CustomerList.Active)
-        {
-            <div class="form-check mb-3">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.CustomerList.Active, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="isActive">Uncheck to deactivate customer's account</label>
-                </div>
-            </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-danger deactivate-account">De-activate account</button>
-            </div>
+        <!-- Activation Toggle -->
+        <div class="form-check mb-3">
+            @Html.CheckBoxFor(m => m.CustomerList.Active, new { @class = "form-check-input" })
+            <label class="form-check-label" for="isActive">
+                @if (Model.CustomerList.Active)
+                {
+                    @:Uncheck to deactivate the customer's account
+                }
+                else
+                {
+                    @:Check to reactivate the customer's account
+                }
+            </label>
+        </div>
 
-        }
-        else
-        {
-            <div class="form-check mb-3">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.CustomerList.Active, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="isActive">Check to re-activate customer's account</label>
-                </div>
-            </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary deactivate-account">Re-activate account</button>
-            </div>
-
-        }
-
-
-
+        <!-- Action Button -->
+        <div class="col-12">
+            <button type="submit" class="btn @(Model.CustomerList.Active ? "btn-danger" : "btn-primary")">
+                @if (Model.CustomerList.Active)
+                {
+                    @:Deactivate Account
+                }
+                else
+                {
+                    @:Reactivate Account
+                }
+            </button>
+        </div>
     }
-
-
+    
 </div>
-
-
-
 

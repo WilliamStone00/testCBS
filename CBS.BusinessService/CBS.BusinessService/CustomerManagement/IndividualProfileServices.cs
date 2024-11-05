@@ -19,6 +19,7 @@ using CBS.BusinessService.MembersAccountSettings.policy;
 using System.Net.Http;
 using Newtonsoft.Json;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.ReportDataSetDto;
 
 namespace CBS.BusinessService.CustomerManagement
 {
@@ -32,10 +33,12 @@ namespace CBS.BusinessService.CustomerManagement
         private readonly ApiCallerHelper _identityServerBaseUrl;
 
         private readonly BranchServices _branchServices;
+        private readonly BankServices _bankServices;
+
         private readonly MemberAccountActivationServices _memberAccountActivationServices;
         private readonly MemberAccountActivationPolicyServices _memberAccountActivationPolicyServices;
 
-        public IndividualProfileServices(BranchServices branchServices = null, MemberAccountActivationServices memberAccountActivationServices = null, MemberAccountActivationPolicyServices memberAccountActivationPolicyServices = null)
+        public IndividualProfileServices(BranchServices branchServices = null, MemberAccountActivationServices memberAccountActivationServices = null, MemberAccountActivationPolicyServices memberAccountActivationPolicyServices = null, BankServices bankServices = null)
         {
             _customerApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["CustomerBaseUrl"].ToString());
             //_bankConfigApiHelper = new ApiCallerHelper("https://localhost:7085/");
@@ -45,6 +48,7 @@ namespace CBS.BusinessService.CustomerManagement
             _branchServices = branchServices;
             _memberAccountActivationServices = memberAccountActivationServices;
             _memberAccountActivationPolicyServices = memberAccountActivationPolicyServices;
+            _bankServices = bankServices;
         }
         //https://localhost:7085/
         // Other existing methods...
@@ -237,9 +241,60 @@ namespace CBS.BusinessService.CustomerManagement
                 throw;
             }
         }
-        //using System.Net.Http.Headers;
+        public async Task<IEnumerable<CustomerListingDS>> GetAllMembersByParameters(ReportQuerTemplate resource)
+        {
+            try
+            {
+                var fullUrl = $"{APICallHelper.GetAllByParameters}";
+                var apiResponse = await _customerApiHelper.PostAsync<ResponseObject<List<CustomerListingDto>>>(fullUrl, resource);
+                var branches = await _branchServices.GetBranches(); // Get list of branches
+                var bank = await _bankServices.GetBank(GetBankID()); // Get list of branches
+                var data = MapToCustomerListingDS(apiResponse.ApiResponseData.Data.ToList(), branches.ToList(), bank);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
 
+        public List<CustomerListingDS> MapToCustomerListingDS(List<CustomerListingDto> customerListingDtos, List<Branch> branches, Bank bank)
+        {
+            return customerListingDtos.Select(c =>
+            {
+                // Find the corresponding branch based on BranchCode or other logic
+                var branch = branches.FirstOrDefault(b => b.Id == c.BranchId);
+                return new CustomerListingDS
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    BankingRelationship = c.BankingRelationship,
+                    RegistrationDate = c.RegistrationDate,
+                    IDNumber = c.IDNumber,
+                    IDNumberIssueDate = c.IDNumberIssueDate,
+                    MembershipApprovalStatus = c.MembershipApprovalStatus,
+                    Address = c.Address,
+                    PhoneNumber = c.PhoneNumber,
+                    CustomerBranchCode = branch.BranchCode,
+                    // Branch-specific details
+                    BranchName = branch.Name,
+                    BranchCode = branch.BranchCode,
+                    BranchAddress = branch.Address,
+                    BranchTelephone = branch.Telephone,
+                    Logo = bank.LogoUrl,
 
+                    // Head Office details
+                    HeadOfficeName = bank.Name,
+                    HeadOfficeAddress = bank.Address,
+                    HeadOfficeTelephone = bank.Telephone,
+                    HeadOfficeEmail = bank.Email,
+                    HeadOfficeWebSite = bank.WebSite,
+                    HeadOfficeInitial = bank.BankInitial,
+                    HeadOfficeCode = bank.BankCode
+                };
+            }).ToList();
+        }
         public async Task<IEnumerable<StringValues>> GetMembers(List<IndividualProfile> individuals)
         {
             try
@@ -429,7 +484,7 @@ namespace CBS.BusinessService.CustomerManagement
                 var cusResponseObject = await GetSingleCustomer(id);
                 var accountBalance = await GetCustomerBalance(id);
                 var accounts = await GetCustomerAccounts(id);
-                var policies = await _memberAccountActivationPolicyServices.GetMemberAccountActivationPolicys();
+                //var policies = await _memberAccountActivationPolicyServices.GetMemberAccountActivationPolicys();
                 var memberAccountActivation = await _memberAccountActivationServices.GetMemberAccountActivationByMemberId(id);
                 var data = (from a in new List<IndividualProfile> { cusResponseObject }
                             join b in aggregrates.Branches on a.BranchId equals b.Id
@@ -442,35 +497,35 @@ namespace CBS.BusinessService.CustomerManagement
                 var result = new IndividualCustomerProfile(data.First(), aggregrates, accountBalance, accounts, addaccount, nextOfKingsMember, cardSignatureSpecimen);
                 result.SavingProducts = aggregrates.Savings;
                 result.AddCustomerAccount.CustomerName = result.CustomerList.name;
-                var policy = new MemberRegistrationFeePolicy();
-                if (policies.Any())
-                {
-                    policy = policies.Where(x => x.LegalForm == cusResponseObject.LegalForm).FirstOrDefault();
-                }
-                if (policy == null)
-                {
-                    policy = new MemberRegistrationFeePolicy();
-                }
-                if (memberAccountActivation == null)
-                {
-                    result.MemberAccountActivation = new MemberAccountActivation
-                    {
-                        CustomerId = id,
-                        EntranceFee = policy.MaximumEntrancenFee,
-                        ByeLawFee = policy.MaximumByeLawsFee,
-                        LoanPolicyFee = policy.MaximumLoanPolicyFee,
-                        MemberAccountActivationPolicyId = policy.Id,
-                        Balance = policy.MaximumEntrancenFee + policy.MaximumByeLawsFee + policy.MaximumLoanPolicyFee,
-                        AmountPaid = 0,
-                        BuildingContribution = policy.MaximumBuildingContribution
-                    };
-                    result.option = "AddMemberAccount";
-                }
-                else
-                {
-                    result.MemberAccountActivation = memberAccountActivation;
-                    result.option = "UpdateMemberAccount";
-                }
+                //var policy = new MemberRegistrationFeePolicy();
+                //if (policies.Any())
+                //{
+                //    policy = policies.Where(x => x.LegalForm == cusResponseObject.LegalForm).FirstOrDefault();
+                //}
+                //if (policy == null)
+                //{
+                //    policy = new MemberRegistrationFeePolicy();
+                //}
+                //if (memberAccountActivation == null)
+                //{
+                //    result.MemberAccountActivation = new MemberAccountActivation
+                //    {
+                //        CustomerId = id,
+                //        EntranceFee = policy.MaximumEntrancenFee,
+                //        ByeLawFee = policy.MaximumByeLawsFee,
+                //        LoanPolicyFee = policy.MaximumLoanPolicyFee,
+                //        MemberAccountActivationPolicyId = policy.Id,
+                //        Balance = policy.MaximumEntrancenFee + policy.MaximumByeLawsFee + policy.MaximumLoanPolicyFee,
+                //        AmountPaid = 0,
+                //        BuildingContribution = policy.MaximumBuildingContribution
+                //    };
+                //    result.option = "AddMemberAccount";
+                //}
+                //else
+                //{
+                //    result.MemberAccountActivation = memberAccountActivation;
+                //    result.option = "UpdateMemberAccount";
+                //}
 
                 return result;
             }
@@ -575,7 +630,7 @@ namespace CBS.BusinessService.CustomerManagement
                 {
                     var aggregates = subscriptionAggregatesResponse?.ApiResponseData.Data ?? new Aggregrate();
                     var savingsResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<SavingProduct>>>(APICallHelper.GetSavingProducts);
-                    aggregates.Savings = savingsResponse?.ApiResponseData == null ? new List<SavingProduct>() : savingsResponse.ApiResponseData.Data.Where(x => !x.IsUsedForTellerProvisioning).ToList();
+                    aggregates.Savings = savingsResponse?.ApiResponseData == null ? new List<SavingProduct>() : savingsResponse.ApiResponseData.Data.Where(x => !x.IsUsedForTellerProvisioning && x.ActiveStatus).ToList();
                     var customerDefaultEnum = await _customerApiHelper.GetAsync<ResponseObject<CustomerDefaultEnum>>(APICallHelper.GetCustomerDefaultEnums);
                     aggregates.CustomerDefaultEnum = customerDefaultEnum?.ApiResponseData == null ? new CustomerDefaultEnum() : customerDefaultEnum.ApiResponseData.Data;
                     return aggregates;
@@ -1038,6 +1093,10 @@ namespace CBS.BusinessService.CustomerManagement
             return ExecutionMessage;
         }
 
+        public Task TillCashStatus(ReportQuerTemplate request)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 

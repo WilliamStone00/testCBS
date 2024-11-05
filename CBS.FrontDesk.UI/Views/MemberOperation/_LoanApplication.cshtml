@@ -356,10 +356,9 @@ By accurately specifying these details, you can ensure transparency and clarity 
                                         <label id="interest">Interest in rate</label>
                                     </div>
                                 </div>
-                                <div class="col-md-12" id="ApplyInterestWaiverDiv">
+                                @*<div class="col-md-12" id="ApplyInterestWaiverDiv">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsInterestWaiverApplied, new { @class = "form-check-input" })
-                                        @*@Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.IsChargesApplied, "", new { @class = "text-danger" })*@
                                         <label class="form-check-label" for="isActive">Apply interest waiver to this application ?</label>
                                     </div>
                                 </div>
@@ -369,7 +368,7 @@ By accurately specifying these details, you can ensure transparency and clarity 
                                         @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.InterestWaiverPercentage, "", new { @class = "text-danger" })
                                         <label id="waiverranges">waiver rate (%)</label>
                                     </div>
-                                </div>
+                                </div>*@
                             </div>
                         </fieldset>
                     </div>

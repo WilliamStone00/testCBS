@@ -21,6 +21,7 @@ using CBS.FrontDesk.Data.Entity.Accounting;
 using System.Net.Sockets;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data;
+
 using System.Threading;
 
 namespace CBS.API.Helper
@@ -417,6 +418,7 @@ namespace CBS.API.Helper
             {
 
                 throw (EX);
+                throw (EX);
             }
         }
 
@@ -762,7 +764,8 @@ namespace CBS.API.Helper
                             return new ApiResponse<T>
                             {
                                 IsSuccess = true,
-                                ApiResponseData = data
+                                ApiResponseData = data,
+                                Message = statusDescription + " " + message
                             };
                         }
                         else

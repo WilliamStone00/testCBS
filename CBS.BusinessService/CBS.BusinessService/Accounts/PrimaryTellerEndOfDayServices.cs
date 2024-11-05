@@ -50,11 +50,10 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                model.Amount = ComputeDenomination(model.CurrencyNotes);
-                if (model.Amount < 0)
+                if (!ComputeDenomination(model.CurrencyNotes, Convert.ToInt32(model.Amount)))
                 {
                     GetExecutionMessages(model, false, $"{model.Amount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered must be greater than 0");
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "The amount you entered does not match the breakdown of the currency denominations provided. Please verify that the total cash amount you input aligns with the individual denominations listed. This ensures that the total cash in hand is accurate and properly accounted for. Review the denomination details and adjust the entered amount accordingly.");
                     return ExecutionMessage;
                 }
                 model.ClossedStatus = "CLOSED";

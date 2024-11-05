@@ -455,9 +455,34 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public List<DailyInterestCalculation> DailyInterestCalculations { get; set; }
 
     }
+    public class MembersLoanDto
+    {
+        public string Id { get; set; }
+        public string LoanApplicationId { get; set; }
+        public decimal Principal { get; set; }
+        public decimal LoanAmount { get; set; }
+        public decimal InterestRate { get; set; }
+        public decimal Paid { get; set; }
+        public decimal Balance { get; set; }
+        public decimal AccrualInterest { get; set; }
+        public decimal Tax { get; set; }
+        public decimal Penalty { get; set; }
+        public string LoanDate { get; set; }
+        public bool IsLoanDisbursed { get; set; }
+        public string CustomerId { get; set; }
+        public string LoanStatus { get; set; }
+        public string BranchCode { get; set; }
+        public string CustomerName { get; set; }
+        public string MaturityDate { get; set; }
+        public int NumberOfInstallments { get; set; }
+        public string LoanType { get; set; }
+        public decimal DueAmount { get; set; }
+        public string RepaymentCycle { get; set; }
+    }
     public class InitiateLoanDownloadCommand
     {
         public bool IsByBranch { get; set; }
+        [Required(ErrorMessage = "Please select a branch.")]
         public string BranchId { get; set; }
         public bool IsUnpaidOnly { get; set; }
         public string FullName { get; set; }

@@ -6,21 +6,43 @@
         {
 
             @Html.HiddenFor(model => model.Id)
+           
         <div class="row mt-2 gy-4">
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                    <label>Branch</label>
+            @if (ViewBag.Key != null)
+            {
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control select2", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                        <label>Branch</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.TellerId, new SelectList(ViewBag.Tellers, "Value", "Text"), "---Select Teller---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.TellerId, "", new { @class = "text-danger" })
-                    <label>Teller</label>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.TellerId, new SelectList(ViewBag.Tellers, "Value", "Text"), "---Select Teller---", new { @class = "form-control select2", @search = "true", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.TellerId, "", new { @class = "text-danger" })
+                        <label>Teller</label>
+                    </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                        <label>Branch</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.TellerId, new SelectList(ViewBag.Tellers, "Value", "Text"), "---Select Teller---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.TellerId, "", new { @class = "text-danger" })
+                        <label>Teller</label>
+                    </div>
+                </div>
+
+            }
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.DropDownListFor(m => m.UserId, new SelectList(ViewBag.Users, "Value", "Text"), "---Select User---", new { @class = "form-control select2", @search = "true" })
@@ -35,34 +57,38 @@
                 </div>
             </div>
             @*<div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.MaximumWithdrawalAmount, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.MaximumWithdrawalAmount, "", new { @class = "text-danger" })
-                    <label>Maximum daily withdrawal</label>
-                </div>
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.MaximumWithdrawalAmount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.MaximumWithdrawalAmount, "", new { @class = "text-danger" })
+                <label>Maximum daily withdrawal</label>
             </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.MaximumCeilin, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.MaximumCeilin, "", new { @class = "text-danger" })
-                    <label>Maximum daily cash to hold</label>
-                </div>
-            </div>*@
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.MaximumCeilin, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.MaximumCeilin, "", new { @class = "text-danger" })
+                <label>Maximum daily cash to hold</label>
+            </div>
+        </div>*@
 
 
         </div>
-            <div class="mt-4">
-                @if (ViewBag.Key != null)
-                {
-                    <button type="submit" class="btn btn-primary me-2">Update</button>
-                }
-                else
-                {
-                    <button type="submit" class="btn btn-primary me-2">Save</button>
-                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+        <div class="mt-4">
+            @if (ViewBag.Key != null)
+            {
+                <button type="submit" class="btn btn-primary me-2">Update</button>
 
-                }
-            </div>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-primary me-2">Save</button>
+                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+
+            }
+            <a type="button" href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" onclick="LoadTellerrsAssigned()" data-bs-toggle="tooltip" title="View Assigned tellers">
+                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+            </a>
+        </div>
 
         }
     </div>

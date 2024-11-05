@@ -1,6 +1,7 @@
 ﻿
 using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -17,11 +18,12 @@ namespace CBS.BusinessService.Accounts
     public class FeePolicyServices : BaseService
     {
         private readonly ApiCallerHelper _transactionApiHelper;
+        private readonly BranchServices _branchServices;
 
-        public FeePolicyServices()
+        public FeePolicyServices(BranchServices branchServices)
         {
             _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
-
+            _branchServices = branchServices;
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -56,16 +58,46 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<FeePolicy>>>(APICallHelper.GetAllFeePolicy);
-                if (couApiResponse.IsSuccess)
+                // Fetch the FeePolicy data from the API
+                var feePolicyResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<FeePolicy>>>(APICallHelper.GetAllFeePolicy);
+
+                if (feePolicyResponse.IsSuccess)
                 {
-                    return couApiResponse.ApiResponseData.Data;
+                    // Fetch branches data
+                    var branches = await _branchServices.GetBranches();
+
+                    // Extract fee policies and branches from the responses
+                    var policies = feePolicyResponse.ApiResponseData.Data;
+
+                    // Map branch information to fee policies
+                    var mappedPolicies = (from policy in policies
+                                         join branch in branches on policy.BranchId equals branch.Id into branchGroup
+                                         from branch in branchGroup.DefaultIfEmpty()
+                                         select new FeePolicy
+                                         {
+                                             Id = policy.Id,
+                                             FeeId = policy.FeeId,
+                                             AmountFrom = policy.AmountFrom,
+                                             AmountTo = policy.AmountTo,
+                                             Value = policy.Value, IsCentralised= policy.IsCentralised,
+                                             Charge = policy.Charge,
+                                             BranchId = policy.BranchId,
+                                             BankId = policy.BankId,
+                                             BranchName = branch != null ? branch.Name : "N/A", // Map branch name if found
+                                             BranchCode = branch != null ? branch.BranchCode : "N/A", // Map branch code if found
+                                             EventCode = policy.EventCode,
+                                             Fee = policy.Fee
+                                         }).ToList();
+
+                    return mappedPolicies;
                 }
+
+                // Return an empty list if the response is not successful
                 return new List<FeePolicy>();
             }
             catch (Exception ex)
             {
-                // Log and handle exception
+                // Log and handle the exception
                 throw;
             }
         }
@@ -127,12 +159,26 @@ namespace CBS.BusinessService.Accounts
                         Fee.AmountFrom = model.AmountFrom;
                         Fee.AmountTo = model.AmountTo;
                         Fee.Charge = model.Charge;
+                        Fee.BranchId = model.BranchId;
+                        Fee.BankId = model.BankId;
+                        Fee.IsCentralised = model.IsCentralised;
+                        if (model.EventCode!=string.Empty)
+                        {
+                            Fee.EventCode = model.EventCode;
 
+                        }
                     }
                     else
                     {
                         Fee.Value = model.Value;
+                        Fee.BranchId = model.BranchId;
+                        Fee.BankId = model.BankId;
+                        Fee.IsCentralised = model.IsCentralised;
+                        if (model.EventCode != string.Empty)
+                        {
+                            Fee.EventCode = model.EventCode;
 
+                        }
                     }
                     var response = await _transactionApiHelper.PutAsync<ServiceResponse<FeePolicy>>(string.Format(APICallHelper.Get_Update_Delete_FeePolicy, model.Id), Fee);
                     if (response.IsSuccess)

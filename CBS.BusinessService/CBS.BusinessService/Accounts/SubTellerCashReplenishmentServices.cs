@@ -275,61 +275,13 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-        //public async Task<ExecutionMessages> Update(CashReplenishmentSubTeller model)
-        //{
-        //    try
-        //    {
-        //        var cashReplenishmentSubTeller = await GetCashReplenishmentSubTeller(model.Id);
-
-        //        if (cashReplenishmentSubTeller != null)
-        //        {
-        //            cashReplenishmentSubTeller.RequestedAmount = model.RequestedAmount;
-        //            cashReplenishmentSubTeller.ConfirmedAmount = model.ConfirmedAmount;
-        //            cashReplenishmentSubTeller.RequesterUserId = model.RequesterUserId;
-        //            cashReplenishmentSubTeller.RequesterName = model.RequesterName;
-        //            cashReplenishmentSubTeller.ApprovedBy = model.ApprovedBy;
-        //            cashReplenishmentSubTeller.ApprovedByUserId = model.ApprovedByUserId;
-        //            cashReplenishmentSubTeller.ApprovedDate = model.ApprovedDate;
-        //            cashReplenishmentSubTeller.InitializeDate = model.InitializeDate;
-        //            cashReplenishmentSubTeller.ApprovedComment = model.ApprovedComment;
-        //            cashReplenishmentSubTeller.Requetcomment = model.Requetcomment;
-        //            cashReplenishmentSubTeller.ApprovedStatus = model.ApprovedStatus;
-        //            cashReplenishmentSubTeller.TellerId = model.TellerId;
-        //            cashReplenishmentSubTeller.BranchId = model.BranchId;
-
-        //            var response = await _transactionBaseConfigApiHelper.PutAsync<ServiceResponse<CashReplenishmentSubTeller>>(string.Format(APICallHelper.Get_Update_Delete_SubTellerCashReplenishment, model.Id), cashReplenishmentSubTeller);
-
-        //            if (response.IsSuccess)
-        //            {
-        //                // Successful update
-        //                return GetExecutionMessages(response, true, $"{cashReplenishmentSubTeller.RequesterName}", MessagesResults.Success,
-        //                                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
-        //            }
-        //            else
-        //            {
-        //                // Failed update
-        //                return GetExecutionMessages(model, false, $"{cashReplenishmentSubTeller.RequesterName}", MessagesResults.Failed,
-        //                                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log and handle exception
-        //        return GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
-        //                                    SystemMessageStatus.Failed.ToString(), ex);
-        //    }
-
-        //    return ExecutionMessage;
-        //}
         public async Task<ExecutionMessages> ValidateRequest(CashReplenishmentSubTeller model)
         {
             try
             {
-                model.ConfirmedAmount = ComputeDenomination(model.CurrencyNotes);
-                if (model.ConfirmedAmount <= 0)
+                if (!ComputeDenomination(model.CurrencyNotes, Convert.ToInt32(model.RequestedAmount)))
                 {
-                    GetExecutionMessages(model, false, $"{model.ConfirmedAmount}", MessagesResults.Failed,
+                    GetExecutionMessages(model, false, $"{model.RequestedAmount}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered must be greater than 0");
                     return ExecutionMessage;
                 }
@@ -338,7 +290,7 @@ namespace CBS.BusinessService.Accounts
 
                 if (cashReplenishmentSubTeller != null)
                 {
-                    cashReplenishmentSubTeller.ConfirmedAmount = model.ConfirmedAmount;
+                    cashReplenishmentSubTeller.ConfirmedAmount = model.RequestedAmount;
                     cashReplenishmentSubTeller.ApprovedComment = model.ApprovedComment;
                     cashReplenishmentSubTeller.ApprovedStatus = model.ApprovedStatus;
                     cashReplenishmentSubTeller.CurrencyNotes = model.CurrencyNotes;
