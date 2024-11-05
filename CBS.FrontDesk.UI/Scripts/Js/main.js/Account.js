@@ -689,3 +689,10 @@ function DownloadMFIChartOfAccount() {
 
 
 }
+function DownloadAccountingEntryRule() {
+    // (string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+
+    window.open('/Reports/DownloadExcelFilelist', '_blank');
+
+
+}

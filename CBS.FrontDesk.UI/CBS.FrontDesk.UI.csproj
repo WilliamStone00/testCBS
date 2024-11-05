@@ -519,6 +519,8 @@
     <Compile Include="Controllers\CustomerManagement\IndividualController.cs" />
     <Compile Include="Controllers\CustomerManagement\Policy\MemberAccountActivationPolicyController.cs" />
     <Compile Include="Controllers\Loan\Configuration\LoanDeliquencyConfigurationController.cs" />
+    <Compile Include="Controllers\ThirdPartyBankAccount\ThirdPartyBranchController.cs" />
+    <Compile Include="Controllers\ThirdPartyBankAccount\ThirdPartyInstitutionController.cs" />
     <Compile Include="Controllers\TransactionManagement\ChargesWaivedController.cs" />
     <Compile Include="Controllers\TransactionManagement\AccountingDayController.cs" />
     <Compile Include="Controllers\TransactionManagement\DailyTellerAssignationController.cs" />
@@ -2434,6 +2436,7 @@
     <Content Include="Scripts\Js\Crud\Teller\Teller.js" />
     <Content Include="Scripts\Js\Crud\TransactionConfiguration\SavingProductFeeMapping.js" />
     <Content Include="Scripts\Js\main.js\CashFlowManagementDeposit.js" />
+    <Content Include="Scripts\Js\main.js\CashTracker.js" />
     <Content Include="Scripts\Js\main.js\ConnectionMonitor.js" />
     <Content Include="Scripts\Js\main.js\Connection_checker.js" />
     <Content Include="Scripts\Js\main.js\AutoJournalEntry.js" />
@@ -3086,6 +3089,19 @@
     <Content Include="Views\CashMovementTrackerConfiguration\Index.cshtml" />
     <Content Include="Views\CashMovementTrackerConfiguration\_CreateCashMovementTrackerConfiguration.cshtml" />
     <Content Include="Views\CashMovementTrackerConfiguration\_CashMovementTrackerConfigurationData.cshtml" />
+    <Content Include="Views\ThirdPartyBranch\Index.cshtml" />
+    <Content Include="Views\ThirdPartyInstitution\Index.cshtml" />
+    <Content Include="Views\ThirdPartyInstitution\_Create.cshtml" />
+    <Content Include="Views\ThirdPartyInstitution\_Data.cshtml" />
+    <Content Include="Views\ThirdPartyInstitution\_Update.cshtml" />
+    <Content Include="Views\ThirdPartyBranch\_Update.cshtml" />
+    <Content Include="Views\ThirdPartyBranch\_Data.cshtml" />
+    <Content Include="Views\ThirdPartyBranch\_Create.cshtml" />
+    <Content Include="Views\CashMovementTracker\_Data.cshtml" />
+    <Content Include="Views\CashMovementTracker\SettingCashTracker.cshtml" />
+    <Content Include="Views\CashMovementTracker\_CashMovementRequestData.cshtml" />
+    <Content Include="Views\CashMovementTracker\_CreateTracker.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_DownloadAccountingEntryRule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

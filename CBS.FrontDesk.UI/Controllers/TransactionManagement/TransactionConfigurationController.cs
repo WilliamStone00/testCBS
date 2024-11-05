@@ -241,11 +241,13 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
             return new List<string> { "CMP8789317766", "CMP1896099658", "CMP3458647794", "CMP4736030114" };
         }
+        //"Physical_Teller "
 
         private async Task<AccountingRuleEntry> GetPhysicalTellerAccount()
         {
             var data = await _accountingEntryRuleService.GetAccountingEntryRules();
-            return data.FirstOrDefault(e => e.EventCode.Equals("Physical_Teller"));
+         //   return data.Where(e => e.EventCode.Equals("Physical_Teller ")).FirstOrDefault();
+            return data.FirstOrDefault(e => e.EventCode.Equals("Physical_Teller "));
         }
         private async Task<AccountingRuleEntry> GetVirtualDailyCollectorAccount()
         {

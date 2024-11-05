@@ -127,6 +127,7 @@
     <Compile Include="Entity\BudgetManagement\Budget.cs" />
     <Compile Include="Entity\BudgetManagement\BudgetPeriod.cs" />
     <Compile Include="Entity\BudgetManagement\OrganizationUnit.cs" />
+    <Compile Include="Entity\CashMovementTracker\CashMovementRecord.cs" />
     <Compile Include="Entity\CashMovementTracker\CashMovementTrackingConfiguration.cs" />
     <Compile Include="Entity\Config\Organization\BankConfig.cs" />
     <Compile Include="Entity\Config\Others\CustomerCategory.cs" />
@@ -192,6 +193,8 @@
     <Compile Include="Entity\Organization\Oranization.cs" />
     <Compile Include="Entity\SavingProducts\AccountOperation\AccountDepositRequest.cs" />
     <Compile Include="Entity\SavingProducts\AccountOperation\TransactionRespose.cs" />
+    <Compile Include="Entity\ThirdPartyBankConfiguration.cs" />
+    <Compile Include="Entity\ThirdPartyBranch.cs" />
     <Compile Include="Entity\TrialBalanceReference.cs" />
     <Compile Include="Entity\UserSession.cs" />
     <Compile Include="Entity\Config\Aggregrate.cs" />
@@ -211,6 +214,7 @@
     <Compile Include="PropertiesBuilder\PropertyBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportDataSetDto\TransactionReportDS.cs" />
+    <Compile Include="Entity\ThirdPartyInstitution.cs" />
     <Compile Include="UserManagement\Request\UserAllowedIP.cs" />
     <Compile Include="UserManagement\Response\UserClaim.cs" />
     <Compile Include="UserManagement\Response\User.cs" />

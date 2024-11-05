@@ -1,0 +1,32 @@
+﻿@model  CBS.FrontDesk.Data.Entity.CashMovementTracker.CashMovementConfiguration
+
+    <table class="table table-hover" id="DataTableCashMovementTrackerData">
+        <thead class="table-light">
+            <tr>
+                <th>Branch</th>
+                <th>Done  By</th>
+                <th>Register  By</th>
+                <th>Movement</th>
+                <th>Amount</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.CashMovementDataStatus)
+            {
+                <tr>
+                    <td style="width:20%">@d.BranchName</td>
+                    <td style="width:22%">@d.DoneBy</td>
+                    <td style="width:23%">@d.CreatedBy</td>
+                    <td style="width:10%">@d.MovementType</td>
+                    <td style="width:15%">@d.Amount</td>
+
+                    <td style="width:10%">
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_CashMovementDetails','details','CashMovementTracker','cashmovementtracker')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select item to edit">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+

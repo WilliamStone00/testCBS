@@ -1491,6 +1491,7 @@ namespace CBS.FrontDesk.UI.Controllers
                         footerRange.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
                         footerRange.Style.Border.RightBorder = XLBorderStyleValues.Thin;
                         footerRange.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                        //var balance = accounts.Where(x => x.accountName == "Total").First();
                         // Print totals
                         worksheet.Cell(row, 2).Value = "Totals";
                         worksheet.Cell(row, 3).Value = trialBalance.totalBeginningDebitBalance.ToString();
@@ -1499,6 +1500,13 @@ namespace CBS.FrontDesk.UI.Controllers
                         worksheet.Cell(row, 6).Value = trialBalance.totalCreditBalance.ToString();
                         worksheet.Cell(row, 7).Value = trialBalance.totalEndDebitBalance.ToString();
                         worksheet.Cell(row, 8).Value = trialBalance.totalEndCreditBalance.ToString();
+                        //worksheet.Cell(row, 2).Value = "Totals";
+                        //worksheet.Cell(row, 3).Value = balance.beginningDebitBalance.ToString();
+                        //worksheet.Cell(row, 4).Value = trialBalance.beginningCreditBalance.ToString();
+                        //worksheet.Cell(row, 5).Value = trialBalance.debitBalance.ToString();
+                        //worksheet.Cell(row, 6).Value = trialBalance.creditBalance.ToString();
+                        //worksheet.Cell(row, 7).Value = trialBalance.endDebitBalance.ToString();
+                        //worksheet.Cell(row, 8).Value = trialBalance.endCreditBalance.ToString();
                     }
 
 

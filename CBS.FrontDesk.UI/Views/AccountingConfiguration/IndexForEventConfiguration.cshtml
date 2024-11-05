@@ -6,7 +6,7 @@
 
 <div class="card mb-12">
 
-    <h2> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Accounting Event Configuration Panel </h2>
+    <h2 class="me-2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Accounting Event Configuration Panel </h2>
     <div class="row">
         <div class="col-md-12">
 
@@ -105,6 +105,9 @@
                                         <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountingEntryRule','_CreateAccountingEntryRule','new','AccountingConfiguration','accountingEntryRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
                                             <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                         </a>
+                                        <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_AccountingEntryRule','_DownloadAccountingEntryRule','datalistingview_AccountingEntryRule',0,'accountingEntryRule','download')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Download EventRule">
+                                            <span class="tf-icons mdi mdi-download-circle-outline mdi-18px"></span>
+                                        </a>
                                     </div>
                                 </div>
                                 <br />
@@ -114,7 +117,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="accordion-item">
+                    @*<div class="accordion-item">
                         <h2 class="accordion-header" id="heading11">
                             <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion11" aria-expanded="false" aria-controls="accordion11">
                                 <i class="tf-icons mdi mdi-toolbox-outline me-1"></i>
@@ -143,7 +146,7 @@
 
 
                         </div>
-                    </div>
+                    </div>*@
             
                 </div>
 

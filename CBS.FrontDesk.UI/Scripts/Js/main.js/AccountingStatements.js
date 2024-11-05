@@ -99,9 +99,12 @@ function LoadAccountDataSetDT(tableID) {
         ],
         "columnDefs": [
             /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
-            { "targets": 0, "searchable": true, "orderable": true, "width": "25%" },
-            { "targets": 1, "searchable": true, "orderable": true, "width": "50%" },
-            { "targets": 2, "searchable": true, "orderable": true, "width": "25%" }
+            { "targets": 0, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 2, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 3, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 4, "searchable": true, "orderable": true, "width": "20%" }
+
            
 
         ],

@@ -21,8 +21,8 @@
                         <td style="width:15%">@d.BookingDirection</td>
                         <td style="width:15%">
                             @*<a href="#" class="mr-2 " data-toggle="tooltip" data-placement="top" title="Entris simulation for @d.AccountingRuleEntryName" onclick="GenerateEntries('AccountingConfiguration','@d.Id','myDataTable_AccountingEntryRule','_AccountingEntryRuleData',0,'datalistingview_AccountingEntryRule','accountingRuleEntry')">Entris</a>|*@
-                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_AccountingEntryRule','_CreateAccountingEntryRule','update','AccountingConfiguration','accountingEntryRule')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountingRuleEntryName to edit">Edit</a>|
-                            <a href="#" class="mr-2 " data-toggle="tooltip" data-placement="top" title="Delete @d.AccountingRuleEntryName" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_AccountingEntryRule','_AccountingEntryRuleData',0,'datalistingview_AccountingEntryRule','accountingRuleEntry')">Delete</a>
+                            @*<a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_AccountingEntryRule','_CreateAccountingEntryRule','update','AccountingConfiguration','accountingEntryRule')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountingRuleEntryName to edit">Edit</a>|
+                                <a href="#" class="mr-2 " data-toggle="tooltip" data-placement="top" title="Delete @d.AccountingRuleEntryName" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_AccountingEntryRule','_AccountingEntryRuleData',0,'datalistingview_AccountingEntryRule','accountingRuleEntry')">Delete</a>*@
 
                         </td>
                     </tr>
@@ -31,4 +31,8 @@
             }
         </tbody>
     </table>
+    <button type="button" onclick="DownloadAccountingEntryRule()" class="btn btn-primary me-2 mdi-download-circle-outline">Download-MFI ChartOfAccount</button>
+
+
 </div>
+

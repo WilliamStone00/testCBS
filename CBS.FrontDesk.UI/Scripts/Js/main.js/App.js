@@ -745,6 +745,8 @@ function DeleteWithRedirect(controller, KEY, option, url_redirect) {
 
 }
 //LoadDataTableNew("Country", "myDataTable", "InitializeData", null, "_Data", 1);
+
+
 function DeleteRecordDataTable(controller, KEY, tableID, partialView, order, divToLoadTheData,Key2) {
 
     alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",

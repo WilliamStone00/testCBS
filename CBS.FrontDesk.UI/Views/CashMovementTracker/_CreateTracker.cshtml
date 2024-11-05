@@ -1,0 +1,44 @@
+﻿@model CBS.FrontDesk.Data.Entity.CashMovementTracker.CashMovementConfiguration
+
+<div class="table-responsive">
+    <div class="modal fade" id="largeModal" tabindex="0" aria-hidden="false">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="cashTrackerReferenceTitle">Loading ***</h4>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+
+                </div>
+                <input type="hidden" id="expectedReference" value="" />
+                <div class="modal-body">
+                    <div class="col-12">
+
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(m => m.CashMovementTracker.DoneBy, new SelectList(ViewBag.BranchUsers == null ? "" : ViewBag.BranchUsers, "Text", "Value"), "---Select Personel---", new { @class = "form-control select2", @id = "loadBranchUser", @search = "true" })
+                                    @Html.ValidationMessageFor(m => m.CashMovementTracker.DoneBy, "", new { @class = "text-danger" })
+                                    <label>Select Personel Responsible</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="row justify-content-center mt-12">
+                            <div class="shift-right">
+                                <button type="button" onclick="ActivateCashMovementTracker('CashMovementTracker', 'Ref', 'DataTableCashMovementTrackerData','_CashMovementRequestData',0,'datalistingview','CashMovementTracker')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#superposedModal">Search</button>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
