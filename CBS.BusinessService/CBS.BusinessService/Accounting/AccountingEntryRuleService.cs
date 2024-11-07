@@ -209,9 +209,10 @@ namespace CBS.BusinessService.Accounting
                             BookingDirection = accountingRuleEntry.BookingDirection, // Add your logic for BookingDirection
                             OperationEventAttributeName = operationEventAttribute.Name,
                             OperationEventName = operationEventAttribute.Name,
-                            DebitAccountLabel = debitAccount.Description + "-" + debitAccount.AccountNumber + debitAccount.PositionNumber + "[BCD]",
-                            CreditAccountLabel = creditAccount.Description + "-" + creditAccount.AccountNumber  + creditAccount.PositionNumber + "[BCD]",
-
+                            DebitAccountLabel = debitAccount.Description ,//+ "-" + debitAccount.AccountNumber.PadRight(6,'0') + debitAccount.PositionNumber.PadRight(3, '0') + "[BCD]",
+                           DebitAccountNumber = debitAccount.AccountNumber.PadRight(6, '0') + debitAccount.PositionNumber.PadRight(3, '0') + "[BCD]",
+                            CreditAccountLabel = creditAccount.Description, //+ "-" + creditAccount.AccountNumber.PadRight(6, '0') + creditAccount.PositionNumber.PadRight(3, '0') + "[BCD]",
+                            CreditAccountNumber= creditAccount.AccountNumber.PadRight(6, '0') + creditAccount.PositionNumber.PadRight(3, '0') + "[BCD]",
                         };
 
             List<AccountingRuleEntryDto> result = query.ToList();
