@@ -69,66 +69,21 @@
                     <label>Interest posting frequency</label>
                 </div>
             </div>
-            <div class="col-12">
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.SavingProduct.DisplayOrder, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SavingProduct.DisplayOrder, "", new { @class = "text-danger" })
+                    <label>Order of listing/display</label>
+                </div>
+            </div>
+            <div class="col-9">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.AutoAddToMember, new { @class = "form-check-input" })
                     <label class="form-check-label" for="activeStatus">Add to members default ordinary account.</label>
                 </div>
             </div>
 
-        </div>
-    </fieldset>
-    <fieldset class="fieldset-custom">
-        <legend>Account Characteristics/Behaviour</legend>
-        <div class="row">
-            <div class="col-6">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.SavingProduct.ActiveStatus, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="activeStatus">Check to activate this product.</label>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.SavingProduct.IsUsedForTellerProvisioning, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="activeStatus">Check to reserve this product for teller managment.</label>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.SavingProduct.AllowInterbranchDeposit, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="activeStatus">Check to allow inter-branch cashin.</label>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.SavingProduct.IsWithdrawalAllowedDirectlyFromthisAccount, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="activeStatus">Check to allow direct cashout.</label>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.SavingProduct.AllowInterbranchTransfter, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="activeStatus">Check to allow inter-branch transfer.</label>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.SavingProduct.IsDepositAllowedDirectlyTothisAccount, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="activeStatus">Check to allow direct cashin.</label>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.SavingProduct.AllowInterbranchWithdrawal, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="activeStatus">Check to allow inter-branch withdrawal</label>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.SavingProduct.AllowShareing, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="activeStatus">Check to allow commision sharing</label>
-                </div>
-            </div>
+
         </div>
     </fieldset>
     <fieldset class="fieldset-custom">
@@ -205,6 +160,187 @@
         </div>
     </fieldset>
 
+    <fieldset class="fieldset-custom">
+        <legend>Account Characteristics/Behaviour</legend>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.ActiveStatus, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="SavingProduct_ActiveStatus">
+                        Check to activate this product.
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Enable this option to activate the account for transactions."></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.IsUsedForTellerProvisioning, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="SavingProduct_IsUsedForTellerProvisioning">
+                        Check to reserve this product for teller management.
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Select this option to make the account accessible only to tellers for management purposes."></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.AllowInterbranchDeposit, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="SavingProduct_AllowInterbranchDeposit">
+                        Check to allow inter-branch deposit.
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Allow deposits to be made into this account from different branches."></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.IsWithdrawalAllowedDirectlyFromthisAccount, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="SavingProduct_IsWithdrawalAllowedDirectlyFromthisAccount">
+                        Check to allow direct withdrawal.
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Permit withdrawals directly from this account."></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.AllowInterbranchTransfter, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="SavingProduct_AllowInterbranchTransfter">
+                        Check to allow inter-branch transfer.
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Enable transfers to and from other branches for this account."></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.IsDepositAllowedDirectlyTothisAccount, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="SavingProduct_IsDepositAllowedDirectlyTothisAccount">
+                        Check to allow direct deposit.
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Permit deposits directly into this account."></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.AllowInterbranchWithdrawal, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="SavingProduct_AllowInterbranchWithdrawal">
+                        Check to allow inter-branch withdrawal.
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Enable withdrawals from this account at different branches."></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.AllowShareing, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="SavingProduct_AllowShareing">
+                        Check to allow commission sharing.
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Permit sharing of commissions with other linked accounts."></i>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+ 
+
+    <fieldset class="fieldset-custom">
+        <legend>
+            Mobile Application Account Control
+            <i class="bi bi-question-circle-fill" data-bs-toggle="tooltip" title="Control product settings for mobile application access, including activation, transfer, cashin, and cashout permissions."></i>
+        </legend>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.ActivateForMobileApp, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="ActivateForMobileApp">
+                        Check to activate this product for mobile app
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Enable this option to make this product available on the mobile app."></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.CanPeformTransferMobileApp, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="CanPeformTransferMobileApp">
+                        Perform transfer
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Allow users to perform transfers via the mobile app."></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.CanPeformCashOutMobileApp, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="CanPeformCashoutMobileApp">
+                        Perform cashout
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Allow cash-out transactions through the mobile app."></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.CanPeformCashinMobileApp, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="CanPeformCashinMobileApp">
+                        Perform cashin
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Enable cash-in operations through the mobile app."></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-6" id="swn">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.ActivateSavingWithdrawalNotificationForMobileApp, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="ActivateSavingWithdrawalNotificationForMobileApp">
+                        Activate Saving Withdrawal Notification
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Activate notifications for savings withdrawals in the mobile app."></i>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="fieldset-custom">
+        <legend>
+            Third Party Application Control
+            <i class="bi bi-question-circle-fill" data-bs-toggle="tooltip" title="Control settings for third-party application access, including activation and transaction permissions."></i>
+        </legend>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.ActivateFor3PPApp, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="ActivateFor3PPApp">
+                        Check to activate this product for 3PP app
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Enable this option to activate the product for third-party applications."></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.CanPeformTransfer3PP, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="CanPeformTransfer3PP">
+                        Perform transfer
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Allow transfer operations via third-party applications."></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.CanPeformCashOut3PP, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="CanPeformCashOut3PP">
+                        Perform cashout
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Enable cash-out transactions via third-party applications."></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.CanPeformCashin3PP, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="CanPeformCashin3PP">
+                        Perform cashin
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Enable cash-in transactions via third-party applications."></i>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+
+
     <div class="mt-4">
         @if (Model.SavingProduct.Id == null)
         {
@@ -221,3 +357,9 @@
 }
 
 
+<script>
+    // Enable all tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })</script>

@@ -357,7 +357,16 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal MinimumAccountBalancePhysicalPerson { get; set; } = 0;
         public decimal MinimumAccountBalanceMoralPerson { get; set; } = 0;
         public bool AutoAddToMember { get; set; } = false;
-
+        public bool CanPeformTransferMobileApp { get; set; }
+        public bool CanPeformCashinMobileApp { get; set; }
+        public bool CanPeformCashOutMobileApp { get; set; }
+        public bool ActivateSavingWithdrawalNotificationForMobileApp { get; set; }
+        public bool CanPeformTransfer3PP { get; set; }
+        public bool CanPeformCashin3PP { get; set; }
+        public bool CanPeformCashOut3PP { get; set; }
+        public bool ActivateForMobileApp { get; set; }
+        public bool ActivateFor3PPApp { get; set; }
+        public int DisplayOrder { get; set; }
         public bool AllowInterbranchWithdrawal { get; set; } = false;
         public bool AllowShareing { get; set; } = false;
         public bool AllowInterbranchDeposit { get; set; } = false;
@@ -403,11 +412,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<WithdrawalLimit> WithdrawalParameters { get; set; }
         public List<TransferLimit> TransferParameters { get; set; }
         public string UpdateOption { get; set; }
+
+
         public SavingProduct()
         {
             AllowInterbranchTransfter = true;
             AllowInterbranchWithdrawal = true;
             AllowShareing = false;
+            ActiveStatus = true;
+            DisplayOrder = 1;
             IsDepositAllowedDirectlyTothisAccount = true;
             IsWithdrawalAllowedDirectlyFromthisAccount = true;
             AllowInterbranchDeposit = true;

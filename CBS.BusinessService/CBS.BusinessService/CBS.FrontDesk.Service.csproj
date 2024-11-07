@@ -311,6 +311,8 @@
     <Compile Include="Session\SessionHelper.cs" />
     <Compile Include="Session\LocalSession.cs" />
     <Compile Include="Session\SessionHub.cs" />
+    <Compile Include="ThirdPartyBranchServices\ThirdPartyBranchServices.cs" />
+    <Compile Include="ThirdPartyInstitutionServices\ThirdPartyInstitutionServices.cs" />
     <Compile Include="UserManagement\IUserManagementServices.cs" />
     <Compile Include="UserManagement\UserManagementServices.cs" />
     <Compile Include="UserManagement\UserPermissionServices.cs" />
