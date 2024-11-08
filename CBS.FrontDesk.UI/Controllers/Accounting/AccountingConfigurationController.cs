@@ -1518,7 +1518,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     UploadModel.AccountModelList = dataList;
                                     if (_AccountServices.IsHeadOffice() == true)
                                     {
-                                        UploadModel.BranchId = model.BranchId;
+                                        UploadModel.BranchId = _AccountServices.GetBranchID();
                                     }
                                     else
                                     {
@@ -1530,6 +1530,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             }
                             catch (Exception ex)
                             {
+                                
                                 // Log the exception
                                 // Handle the error gracefully
                                 throw new InvalidOperationException("An error occurred while extracting data from the file.", ex);
