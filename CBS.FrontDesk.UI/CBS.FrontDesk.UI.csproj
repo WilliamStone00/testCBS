@@ -3247,6 +3247,11 @@
     <Content Include="Views\CashMovementTracker\_CreateTracker.cshtml" />
     <Content Include="Views\CashMovementTracker\_Data.cshtml" />
     <Content Include="Views\CashMovementTracker\SettingCashTracker.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_AccountingEntryRuleDataModif.cshtml" />
+    <Content Include="Views\AccountingConfiguration\IndexForEventConfigurationModification.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_DownloadAccountingEntryRule.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_OperationEventAttributeDataModif.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_OperationEventDataModif.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
