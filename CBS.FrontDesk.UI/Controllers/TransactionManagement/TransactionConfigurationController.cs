@@ -247,7 +247,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {
             var data = await _accountingEntryRuleService.GetAccountingEntryRules();
          //   return data.Where(e => e.EventCode.Equals("Physical_Teller ")).FirstOrDefault();
-            return data.FirstOrDefault(e => e.EventCode.Equals("Physical_Teller "));
+            return data.FirstOrDefault(e => e.EventCode.Equals("Physical_Teller"));
         }
         private async Task<AccountingRuleEntry> GetVirtualDailyCollectorAccount()
         {
