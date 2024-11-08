@@ -19,6 +19,7 @@ namespace CBS.FrontDesk.Data.Entity.CashMovementTracker
         public  CashMovementTracker CashMovementTracker { get; set; } = new CashMovementTracker();
         public List<CashReplenimentRequestDto> CashReplenimentRequestDtos { get; set; } = new List<CashReplenimentRequestDto> ();
        public List<DepositNotificationDto> DepositNotificationDto = new List<DepositNotificationDto>();
+        public List<CashReplenimentRequestDto> requestDtos = new List<CashReplenimentRequestDto>();
         public string ServiceOption { get; set; }
 
         public string Action { get; set; }
