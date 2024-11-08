@@ -86,6 +86,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             await GetList();
             return View(new AccountingConfiguration());
         }
+        public async Task<ActionResult> IndexForEventConfigurationModification()
+        {
+            await GetList();
+            return View(new AccountingConfiguration());
+        }
         public async Task<ActionResult> DownloadFile()
         {
       
@@ -1023,8 +1028,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     var DebitAccounts = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
                     var dataList = await _Service.GetAccountingEntryRules();
                     var dataModel = await _Service.GetAccountingEntryRulesDto(dataList, OperationEventList, OperationEventAttributes, DebitAccounts);
-
-                    var sysData = new AccountingConfiguration { AccountingRuleEntries = data.ToList(), AccountingRuleEntriesDTOS = dataModel };
+                    var dataEntry = from entry in dataModel
+                                    select new AccountingRuleEntryData
+                                    {
+                                        AccountingRuleEntryName = entry.AccountingRuleEntryName,
+                                        Determinant = entry.DebitAccountLabel,
+                                        CounterPart = entry.CreditAccountLabel,
+                                        CounterPartAccountNumber = entry.CreditAccountNumber,
+                                        DeterminantAccountNumber = entry.DebitAccountNumber
+                                    };
+                    var sysData = new AccountingConfiguration { AccountingRuleEntriesDTOS = dataModel, AccountingRuleEntries = data.ToList(), AccountingRuleEntryDataDTOS = dataEntry.ToList() };
                     return PartialView(partialView, sysData);
 
                 }
@@ -1034,19 +1047,38 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
                 else if (path == "download")
                 {
-                    var data = await _accountingEntryRuleService.GetAccountingEntryRules();
-                    var OperationEventList = await _OperationEventService.GetOperationEvents();
-                    var OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
-                    var DebitAccounts = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
-                    var dataList = await _Service.GetAccountingEntryRules();
-                    var dataModel = await _Service.GetAccountingEntryRulesDto(dataList, OperationEventList, OperationEventAttributes, DebitAccounts);
+                    try
+                    {
+                        var data = await _accountingEntryRuleService.GetAccountingEntryRules();
+                        var OperationEventList = await _OperationEventService.GetOperationEvents();
+                        var OperationEventAttributes = await _OperationEventAttributeService.GetOperationEventAttributes();
+                        var DebitAccounts = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
+                        var dataList = await _Service.GetAccountingEntryRules();
+                        var dataModel = await _Service.GetAccountingEntryRulesDto(dataList, OperationEventList, OperationEventAttributes, DebitAccounts);
 
-                    string fileTitle = $"MFI_ChartOfAccount";
-                    this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
-                    this.HttpContext.Session["rptSource" + Session.SessionID] = dataModel;
 
-                    var sysData = new AccountingConfiguration { AccountingRuleEntriesDTOS = dataModel };
-                    return PartialView(partialView, sysData);
+                        var dataEntry = (from entry in dataModel
+                                         select new AccountingRuleEntryData
+                                         {
+                                             AccountingRuleEntryName = entry.AccountingRuleEntryName,
+                                             Determinant = entry.DebitAccountLabel,
+                                             CounterPart = entry.CreditAccountLabel,
+                                             CounterPartAccountNumber = entry.CreditAccountNumber,
+                                             DeterminantAccountNumber = entry.DebitAccountNumber,
+                                             BookingDirection = entry.BookingDirection
+                                         }).ToList();
+                        string fileTitle = $"AccountingEventRule";
+                        this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                        this.HttpContext.Session["rptSource" + Session.SessionID] = dataEntry;
+
+                        var sysData = new AccountingConfiguration { AccountingRuleEntryDataDTOS = dataEntry };
+                        return PartialView(partialView, sysData);
+                    }
+                    catch (Exception ex)
+                    {
+
+                        throw;
+                    }
 
                 }
                 else

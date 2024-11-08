@@ -1,0 +1,173 @@
+﻿
+@{
+    ViewBag.Title = "Accounting Configurations";
+
+}
+
+<div class="card mb-12">
+
+    <h2 class="me-2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Accounting Event Configuration Panel </h2>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="accordion mt-3" id="accordionExample">
+
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingsix">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionsix"
+                                aria-expanded="false"
+                                aria-controls="accordionsix">
+                            <i class="tf-icons mdi mdi-book-open-page-variant-outline me-1"></i>  &nbsp; &nbsp; &nbsp; &nbsp;   Operation Event Management
+                        </button>
+                    </h2>
+                    <div id="accordionsix"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingsix"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_OperationEvent','_OperationEventData','datalistingview_OperationEvent',0,'operationEvent','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEvent','_CreateOperationEvent','new','AccountingConfiguration','operationEvent')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_OperationEvent">
+                                @Html.Partial("_CreateOperationEvent")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingseven">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionseven"
+                                aria-expanded="false"
+                                aria-controls="accordionseven">
+                            <i class="tf-icons mdi mdi-book-lock-open-outline me-1"></i>   &nbsp; &nbsp; &nbsp; &nbsp;   Operation Event Attribute Management
+                        </button>
+                    </h2>
+                    <div id="accordionseven"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingseven"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_OperationEventAttribute','_OperationEventAttributeData','datalistingview_OperationEventAttribute',0,'operationEventAttribute','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEventAttribute','_CreateOperationEventAttribute','new','AccountingConfiguration','operationEventAttribute')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_OperationEventAttribute">
+                                @Html.Partial("_CreateOperationEventAttribute")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingtwenty">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordiontwenty"
+                                aria-expanded="false"
+                                aria-controls="accordiontwenty">
+                            <i class="tf-icons mdi mdi-book-account-outline me-1"></i>
+                            &nbsp; &nbsp; &nbsp; &nbsp;   Accounting Entry Rule Management
+                        </button>
+                    </h2>
+                    <div id="accordiontwenty"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingtwenty"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_AccountingEntryRule','_AccountingEntryRuleData','datalistingview_AccountingEntryRule',0,'accountingEntryRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountingEntryRule','_CreateAccountingEntryRule','new','AccountingConfiguration','accountingEntryRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_AccountingEntryRule','_DownloadAccountingEntryRule','datalistingview_AccountingEntryRule',0,'accountingEntryRule','download')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Download EventRule">
+                                        <span class="tf-icons mdi mdi-download-circle-outline mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_AccountingEntryRule">
+                                @Html.Partial("_CreateAccountingEntryRule")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="accordion-item">
+                        <h2 class="accordion-header" id="heading11">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion11" aria-expanded="false" aria-controls="accordion11">
+                                <i class="tf-icons mdi mdi-toolbox-outline me-1"></i>
+                                &nbsp; &nbsp; &nbsp; &nbsp; Setting Multiple Accounting Entry Rule<br>
+                            </button>
+                        </h2>
+                        <div id="accordion11" class="accordion-collapse collapse" aria-labelledby="heading11" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+
+                                <div class="row justify-content-end">
+                                    <div class="demo-inline-spacing text-end">
+                                        <button type="submit" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_AccountingRule','_AccountingRuleData','datalistingview_AccountingRule',0,'accountingRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                            <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                        </button>
+                                        <button type="submit" onclick="AddORUpdateGen(null,'datalistingview_AccountingRule','_CreateAccountingRule','new','AccountingConfiguration','accountingRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                            <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <br />
+                                <div id="datalistingview_AccountingRule">
+                                    @Html.Partial("_CreateAccountingRule")
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>*@
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+</div>
+
+<!--/ Accordion -->
+
+
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/AccountEventConfigurtion/MFIChartOfAccount.js"></script>
+<script src="~/Scripts/Js/main.js/Account.js"></script>
+
+}
+
+
+

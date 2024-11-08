@@ -188,7 +188,7 @@
     <Compile Include="Accounting\CashMovementTrackerServices.cs" />
     <Compile Include="Accounting\CashMovementTrackingConfigurationServices.cs" />
     <Compile Include="Accounting\ChartOfAccountManagementPositionService.cs" />
-    <Compile Include="Accounting\Class1.cs" />
+    <Compile Include="Accounting\ThirdPartyBranchServices.cs" />
     <Compile Include="Accounting\ConnectionHub.cs" />
     <Compile Include="Accounting\ConnectionMonitoringService.cs" />
     <Compile Include="Accounting\IAccountingEntryServices.cs" />

@@ -5,27 +5,26 @@
             <tr>
                 <th>EntryRule</th>
                 <th>Derterminant</th>
+                <th>Derterminant AccountNumber</th>
                 <th>Balancing Account</th>
+                <th>Balancing AccountNumber</th>
                 <th>Booking</th>
-                <th>Action</th>
+    
             </tr>
         </thead>
         <tbody>
             @{
                 foreach (var d in Model.AccountingRuleEntriesDTOS)
                 {
-                    <tr>
-                        <td style="width:20%">@d.AccountingRuleEntryName</td>
-                        <td style="width:25%">@d.DebitAccountLabel</td>
-                        <td style="width:25%">@d.CreditAccountLabel</td>
-                        <td style="width:15%">@d.BookingDirection</td>
-                        <td style="width:15%">
-                            @*<a href="#" class="mr-2 " data-toggle="tooltip" data-placement="top" title="Entris simulation for @d.AccountingRuleEntryName" onclick="GenerateEntries('AccountingConfiguration','@d.Id','myDataTable_AccountingEntryRule','_AccountingEntryRuleData',0,'datalistingview_AccountingEntryRule','accountingRuleEntry')">Entris</a>|*@
-                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_AccountingEntryRule','_CreateAccountingEntryRule','update','AccountingConfiguration','accountingEntryRule')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountingRuleEntryName to edit">Edit</a>|
-                            <a href="#" class="mr-2 " data-toggle="tooltip" data-placement="top" title="Delete @d.AccountingRuleEntryName" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_AccountingEntryRule','_AccountingEntryRuleData',0,'datalistingview_AccountingEntryRule','accountingRuleEntry')">Delete</a>
+                        <tr>
+                            <td style="width:15%">@d.AccountingRuleEntryName</td>
+                            <td style="width:20%">@d.DebitAccountLabel</td>
+                            <td style="width:20%">@d.DebitAccountNumber</td>
+                            <td style="width:20%">@d.CreditAccountLabel</td>
+                            <td style="width:20%">@d.CreditAccountNumber</td>
+                            <td style="width:5%">@d.BookingDirection</td>
 
-                        </td>
-                    </tr>
+                        </tr>
                 }
 
             }
