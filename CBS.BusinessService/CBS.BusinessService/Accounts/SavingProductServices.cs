@@ -158,6 +158,16 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.IsDepositAllowedDirectlyTothisAccount = model.IsDepositAllowedDirectlyTothisAccount;
                     SavingProduct.IsWithdrawalAllowedDirectlyFromthisAccount = model.IsWithdrawalAllowedDirectlyFromthisAccount;
                     SavingProduct.UpdateOption = "N/A";
+                    SavingProduct.CanPeformTransferMobileApp = model.CanPeformTransferMobileApp;
+                    SavingProduct.CanPeformCashinMobileApp = model.CanPeformCashinMobileApp;
+                    SavingProduct.CanPeformCashOutMobileApp = model.CanPeformCashOutMobileApp;
+                    SavingProduct.ActivateSavingWithdrawalNotificationForMobileApp = model.ActivateSavingWithdrawalNotificationForMobileApp;
+                    SavingProduct.CanPeformTransfer3PP = model.CanPeformTransfer3PP;
+                    SavingProduct.CanPeformCashin3PP = model.CanPeformCashin3PP;
+                    SavingProduct.CanPeformCashOut3PP = model.CanPeformCashOut3PP;
+                    SavingProduct.DisplayOrder = model.DisplayOrder;
+                    SavingProduct.ActivateForMobileApp = model.ActivateForMobileApp;
+                    SavingProduct.ActivateFor3PPApp = model.ActivateFor3PPApp;
                     SavingProduct.AllowInterbranchDeposit = model.AllowInterbranchDeposit;
                     SavingProduct.AllowInterbranchTransfter = model.AllowInterbranchTransfter;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);

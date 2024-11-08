@@ -232,6 +232,10 @@
                                             @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Inter_Branch", new { @class = "form-check-input", id = "interBranchOption" })
                                             <label class="form-check-label" for="interBranchOption">Inter-Branch</label>
                                         </div>
+                                        <div class="form-check">
+                                            @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Self", new { @class = "form-check-input", id = "self" })
+                                            <label class="form-check-label" for="self">Self-Transfer</label>
+                                        </div>
                                     </div>
 
                                     <input type="hidden" value="@Model.SavingProduct.Id" id="savingproductid" />

@@ -2,6 +2,7 @@
 using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
+using CBS.BusinessService.ThirdPartyBankAccount;
 
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity;
