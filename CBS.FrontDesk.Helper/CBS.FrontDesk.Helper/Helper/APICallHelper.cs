@@ -5,6 +5,13 @@ namespace CBS.FrontDesk.Helper
 {
     public abstract class APICallHelper
     {
+
+
+        //TrialBalanceFile
+        //Get,Update,Delete TrialBalanceFile By Id
+        public static string Get_Update_Delete_TrialBalanceFile = "/api/v1/TrialBalanceFile/{0}";
+
+        public static string Get_TrialBalanceFile = "/api/v1/TrialBalanceFiles";
         /// <summary>
         /// CashMovementTracker
         /// </summary>

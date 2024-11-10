@@ -3252,6 +3252,7 @@
     <Content Include="Views\AccountingConfiguration\_DownloadAccountingEntryRule.cshtml" />
     <Content Include="Views\AccountingConfiguration\_OperationEventAttributeDataModif.cshtml" />
     <Content Include="Views\AccountingConfiguration\_OperationEventDataModif.cshtml" />
+    <Content Include="Views\AccountingConfiguration\AccountUploadData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

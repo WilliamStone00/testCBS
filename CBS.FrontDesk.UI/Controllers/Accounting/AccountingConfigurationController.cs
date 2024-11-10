@@ -32,6 +32,7 @@ using DocumentFormat.OpenXml.Office2010.Excel;
 using System.IO.Packaging;
 using ClosedXML.Excel;
 using CBS.API.Helper;
+using CBS.BusinessService.UserManagement;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -55,6 +56,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly CorrespondingMappingServices _correspondingMappingServices;
         private readonly TrailBalanceUploudServices _trialBalanceUploudServices;
         private readonly AccountPolicyServices _accountPolicyServices;
+     private readonly TrialBalanceFileServices _trialBalanceFileServices;
+        private readonly UserManagementServices _userService;
         public AccountingConfigurationController()
         {
             _AccountingRuleServices = new AccountingRuleService();
@@ -73,6 +76,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _AccountClassServices = new AccountClassServices();
             _trialBalanceUploudServices = new TrailBalanceUploudServices();
             _accountPolicyServices = new AccountPolicyServices();
+            _trialBalanceFileServices = new TrialBalanceFileServices();
+            _userService = new UserManagementServices();    
         }
         // GET: AccountingConfiguration
         
@@ -928,6 +933,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     return PartialView(partialView, new AccountingConfiguration { TBuploadHistories = new List<Data.TrailBalanceUploud>() });
 
                 }
+           
                 else
                 {
                     var data = await _AccountServices.GetAccount(key);
@@ -1316,6 +1322,27 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
 
             }
+            else if (serviceOption == "uploadedTrialBalance")
+            {
+                var dataChart = await _trialBalanceFileServices.GetAllTrialBalanceFile();
+                var userss = await _userService.GetUsers();
+             
+                var LoadedData = from d in dataChart
+                                 join user in userss on d.CreatedBy equals user.id.ToString()
+                 
+                                 select new TrialBalanceFile
+                                 {
+                                     Id = d.Id,
+                                     Owner = d.Owner,
+                                     Size = d.Size,
+                                     FilePath = d.FilePath,
+                                     CreatedBy = user.lastName + " " + user.firstName,
+                                     CreatedDate = d.CreatedDate
+
+                                 };
+                var sysData = new AccountingConfiguration { TrialBalanceFiles = LoadedData.ToList() };
+                return PartialView(partialView, sysData);
+            }
             else if (serviceOption == "accountPolicy")
             {
                 if (path == "list")
@@ -1518,7 +1545,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     UploadModel.AccountModelList = dataList;
                                     if (_AccountServices.IsHeadOffice() == true)
                                     {
-                                        UploadModel.BranchId = _AccountServices.GetBranchID();
+                                        UploadModel.BranchId = model.BranchId;
                                     }
                                     else
                                     {
