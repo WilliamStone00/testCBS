@@ -28,14 +28,10 @@
                         <div class="accordion-body">
                             <div class="row justify-content-end">
                                 <div class="demo-inline-spacing text-end">
-
-                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_accountUpload','_AccountUploud','new','AccountingConfiguration','uploadedTrialBalance')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                    </a>
-                                   
-                                    <a type="button" onclick=" LoadDataGeneration('AccountingConfiguration', 'FileUploadDataTable', '_FileUploadHistory', 'datalistingview_accountUpload', '0', 'uploadedTrialBalance', 'list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <a type="button" onclick="LoadDataGen('AccountingConfiguration','FileUploadDataTable','_FileUploadHistory','desc','datalistingview_accountUpload',0,'uploadedTrialBalance','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                     </a>
+                                 
 
                                 </div>
                             </div>
@@ -73,8 +69,10 @@
                         <div class="accordion-body">
                             <div class="row justify-content-end">
                                 <div class="demo-inline-spacing text-end">
-                                 
-                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_accountUpload','_AccountUploud','new','AccountingConfiguration','uploadedTrialBalance')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                    <a type="button" onclick="LoadDataGen('AccountingConfiguration','FileUploadDataTable','_FileUploadHistory','desc','datalistingview_accountUpload',0,'accountUpload','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_accountUpload','_AccountUploud','new','AccountingConfiguration','accountUpload')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
                                         <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                     </a>
 
@@ -100,7 +98,7 @@
 
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/AccountEventConfigurtion/MFIChartOfAccount.js"></script>
+
 <script src="~/Scripts/Js/main.js/Account_Upload.js"></script>
 
 }

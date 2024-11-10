@@ -12,6 +12,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class AccountingConfiguration
     {
         //
+
+        public TrialBalanceFile TrialBalanceFile { get; set; }
+        public List<TrialBalanceFile> TrialBalanceFiles { get; set; } = new List<TrialBalanceFile>();
+
         public AccountTreeNode AccountTreeNode { get; set; }
         public AccountType AccountType { get; set; } = new AccountType();
         public List<ChartofAccountManagementPosition> ListChartofAccountManagementPosition { get; set; } = new List<ChartofAccountManagementPosition>();

@@ -30,7 +30,9 @@ function simulateProcessing() {
     }, 1000); // Update every 1 second
 }
 
- 
+function DownloadFile(path) {
+ window.open(path, "_blank");
+}
 
 function ReadExcelFile() {
     var formData = new FormData();
@@ -95,7 +97,36 @@ function updateProgressBar(progress) {
 }
 
 
+function LoadFileHistory(tableID) {
 
+
+    var T = '#' + tableID;
+    var dataThumbView = $(T).DataTable({
+        responsive: false,
+        "columns": [],
+        "columnDefs": [
+            /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
+            { "targets": 0, "searchable": true, "orderable": true, "width": "30%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 2, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 3, "searchable": true, "orderable": true, "width": "25%" },
+            { "targets": 4, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 5, "searchable": true, "orderable": true, "width": "10%" },
+        ],
+
+        oLanguage: {
+            sLengthMenu: "_MENU_",
+            sSearch: ""
+        },
+        aLengthMenu: [[10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
+
+
+        order: [[0, "asc"]],
+        bInfo: true,
+        pageLength: 10
+
+    });
+}
 
 function displayResults(response) {
     if (response.success && response.Data && response.Data.apiResponseData) {

@@ -3255,6 +3255,7 @@
     <Content Include="Views\AccountingConfiguration\_OperationEventDataModif.cshtml" />
     <Content Include="Views\Dashboard\DailyOperation.cshtml" />
     <Content Include="Views\Dashboard\_SharedDBDailyOperations.cshtml" />
+    <Content Include="Views\AccountingConfiguration\AccountUploadData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
