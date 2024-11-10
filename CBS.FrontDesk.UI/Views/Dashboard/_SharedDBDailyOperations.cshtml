@@ -1,0 +1,158 @@
+﻿<style>
+    /* Dashboard Title */
+    .dashboard-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.8rem;
+        text-align: center;
+        padding-top: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Section Header with Left Alignment */
+    .section-header {
+        margin-bottom: 0.8rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #444;
+        text-align: left; /* Align text to the left */
+        text-transform: uppercase;
+        padding-left: 1rem; /* Optional: Add padding if you want some space from the left edge */
+    }
+
+
+    /* Other styles remain the same */
+</style>
+
+<!-- Dashboard Container -->
+<div class="dashboard-container">
+    <!-- Dashboard Title -->
+    <div class="mb-4">
+        <h2 class="dashboard-title">Daily Cash Operation Overview</h2>
+    </div>
+
+    <!-- Membership Section -->
+    <!--<div class="section-header">Membership</div>-->
+    <div class="row mb-2">
+        <!-- New Members Card -->
+        <div class="col-sm-6 col-md-4">
+            <div class="card card-border-shadow-primary h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-primary">
+                                <i class="mdi mdi-account-plus mdi-18px"></i> <!-- New members icon -->
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0"><span id="newMembers"></span></h5>
+                    </div>
+                    <p class="mb-0 text-heading">New Members</p>
+                </div>
+            </div>
+        </div>
+        <!-- Closed Accounts Card -->
+        <div class="col-sm-6 col-md-4">
+            <div class="card card-border-shadow-secondary h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-secondary">
+                                <i class="mdi mdi-account-off mdi-18px"></i> <!-- Closed accounts icon -->
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0"><span id="closedAccounts"></span></h5>
+                    </div>
+                    <p class="mb-0 text-heading">Closed Accounts</p>
+                </div>
+            </div>
+        </div>
+        <!-- Active Accounts Card -->
+        <div class="col-sm-6 col-md-4">
+            <div class="card card-border-shadow-success h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-success">
+                                <i class="mdi mdi-account-check mdi-18px"></i> <!-- Active accounts icon -->
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0"><span id="activeAccounts"></span></h5>
+                    </div>
+                    <p class="mb-0 text-heading">Active Accounts</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cash Flow Section -->
+    <!--<div class="section-header">Cash Flow</div>-->
+    <div class="row mb-2">
+        <!-- Cash In Card -->
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-border-shadow-warning h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-primary">
+                                <i class="mdi mdi-cash-multiple mdi-18px"></i> <!-- Cash-in icon -->
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0"><span id="numberOfCashIn"></span></h5>
+                    </div>
+                    <p class="mb-0 text-heading">Cash In</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cash In Volume Card -->
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-border-shadow-danger h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-primary">
+                                <i class="mdi mdi-cash-plus mdi-18px"></i> <!-- Cash-in volume icon -->
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0"><span id="totalCashInAmount"></span></h5>
+                    </div>
+                    <p class="mb-0 text-heading">Cash In Volume</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cash-out Card -->
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-border-shadow-primary h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-danger">
+                                <i class="mdi mdi-cash-minus mdi-18px"></i> <!-- Cash-out icon -->
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0"><span id="numberOfCashOut"></span></h5>
+                    </div>
+                    <p class="mb-0 text-heading">Cash Out</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cash Out Volume Card -->
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-border-shadow-info h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-danger">
+                                <i class="mdi mdi-cash-minus mdi-18px"></i> <!-- Cash-out icon -->
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0"><span id="totalCashOutAmount"></span></h5>
+                    </div>
+                    <p class="mb-0 text-heading">Cash Out Volume</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

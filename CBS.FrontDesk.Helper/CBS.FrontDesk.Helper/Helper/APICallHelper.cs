@@ -527,6 +527,11 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_Fee = "/api/v1/Fee/{0}";
         public static string GetAllFee = "/api/v1/Fees";
         public static string CreateFee = "/api/v1/Fee";
+
+        //GeneralDailyDashboard
+        public static string GetAllGeneralDailyDashboard = "/api/v1/Dashboard/GetAllGeneralDailyDashboard";
+        public static string GetGeneralDailyDashboardByBranch = "/api/v1/Dashboard/GetGeneralDailyDashboardByBranch";
+
         //FeePolicy
         public static string Get_Update_Delete_FeePolicy = "/api/v1/FeePolicy/{0}";
         public static string GetAllFeePolicy = "/api/v1/FeePolicys";

@@ -222,6 +222,7 @@
     <Compile Include="Accounts\OldLoanAccountingMapingServices.cs" />
     <Compile Include="Accounts\FileDownloadServices.cs" />
     <Compile Include="Accounts\MobileMoneyTopupServices.cs" />
+    <Compile Include="Accounts\GeneralDailyDashboardServices.cs" />
     <Compile Include="Accounts\TransactionResversalServices.cs" />
     <Compile Include="Accounts\SubTellerCashReplenishmentServices.cs" />
     <Compile Include="Accounts\PrimaryTellerCashReplenishmentServices.cs" />
