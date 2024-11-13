@@ -140,6 +140,7 @@
     <Compile Include="Entity\BudgetManagement\OrganizationUnit.cs" />
     <Compile Include="Entity\CashMovementTracker\CashMovementRecord.cs" />
     <Compile Include="Entity\CashMovementTracker\CashMovementTrackingConfiguration.cs" />
+    <Compile Include="Entity\GeneralDailyDashboardDto.cs" />
     <Compile Include="Entity\Config\Organization\BankConfig.cs" />
     <Compile Include="Entity\Config\Others\CustomerCategory.cs" />
     <Compile Include="Entity\Config\System\SysConfiguration.cs" />
