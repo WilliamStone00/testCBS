@@ -1,9 +1,15 @@
 ﻿@{
-    ViewBag.Title = "Dashboard-HOF";
+    ViewBag.Title = "Head office Dashboard";
 }
 
 
 
-@Html.Partial("_Content")
+@Html.Partial("_SharedDBDailyHeadOffice")
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/Dashboard/Dailyoperations/HeadOffice.js"></script>
+}
+
 
 

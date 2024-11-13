@@ -27,7 +27,13 @@ namespace CBS.FrontDesk.UI.Controllers.Home
         {
             return View();
         }
-        public async Task<ActionResult> DailyOperation()
+        [HttpGet]
+        public ActionResult HeadOfficeStatistics()
+        {
+            return View();
+        }
+        [HttpGet]
+        public ActionResult BranchStatistics()
         {
             return View();
         }
@@ -36,6 +42,43 @@ namespace CBS.FrontDesk.UI.Controllers.Home
         public async Task<JsonResult> GetLiveDashboard()
         {
             var dashboard = await _generalDailyDashboardServices.GetDailyDashboard();
+            return Json(dashboard, JsonRequestBehavior.AllowGet);
+        }
+        // New Action to get daily dashboard data
+        [HttpGet]
+        public async Task<JsonResult> GetMemberDashboard()
+        {
+            var dashboardStatistics = await _generalDailyDashboardServices.GetCustomerDashboardAdmin();
+            var dashboard = _generalDailyDashboardServices.ConvertToMainDashboardMembers(dashboardStatistics);
+            return Json(dashboard, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetOrdinaryAccountsDashboard()
+        {
+            var dashboardStatistics = await _generalDailyDashboardServices.GetAccountsDashboardAdmin();
+            var dashboard = _generalDailyDashboardServices.ConvertToMainDashboardOrdinaryAccounts(dashboardStatistics);
+            return Json(dashboard, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetAccountingsDashboard()
+        {
+            var dashboardStatistics = await _generalDailyDashboardServices.GetAccountingDashboardAdmin();
+            var dashboard = _generalDailyDashboardServices.GenerateDashboardAccountingStatistics(dashboardStatistics);
+            return Json(dashboard, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetLoanDashboard()
+        {
+            var dashboard = await _generalDailyDashboardServices.GetLoanDashboardAdmin();
+            return Json(dashboard, JsonRequestBehavior.AllowGet);
+        }
+
+        // New Action to get daily dashboard data
+        [HttpGet]
+        public async Task<JsonResult> GetLiveDashboardHeadOffice()
+        {
+            var dashboard = await _generalDailyDashboardServices.GetDailyDashboardHeadOffice();
             return Json(dashboard, JsonRequestBehavior.AllowGet);
         }
     }

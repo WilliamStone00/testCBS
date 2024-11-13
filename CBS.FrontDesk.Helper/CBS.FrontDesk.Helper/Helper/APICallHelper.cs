@@ -539,6 +539,11 @@ namespace CBS.FrontDesk.Helper
         //GeneralDailyDashboard
         public static string GetAllGeneralDailyDashboard = "/api/v1/Dashboard/GetAllGeneralDailyDashboard";
         public static string GetGeneralDailyDashboardByBranch = "/api/v1/Dashboard/GetGeneralDailyDashboardByBranch";
+        public static string GetAllGeneralDailySummaryDashboard = "/api/v1/Dashboard/GetAllGeneralDailySummaryDashboard";
+        public static string GetAllMembersDashboard = "/api/v1/Dashboard/GetAllMembersDashboard";
+        public static string GetAllAccountsDashboard = "/api/v1/Dashboard/GetAllAccountsDashboard";
+        public static string GetAllAccountingDashboard = "/api/v1/DashboardStatisticsDto";
+        public static string GetLoanDashboardQuery = "/api/v1/Dashboard/GetLoanDashboardQuery";
 
         //FeePolicy
         public static string Get_Update_Delete_FeePolicy = "/api/v1/FeePolicy/{0}";
