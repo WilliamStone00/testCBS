@@ -2542,7 +2542,10 @@
     <Content Include="Scripts\Js\Crud\Penalty\Penalty.js" />
     <Content Include="Scripts\Js\Crud\Teller\Teller.js" />
     <Content Include="Scripts\Js\Crud\TransactionConfiguration\SavingProductFeeMapping.js" />
-    <Content Include="Scripts\Js\Dashboard\Dailyoperations\DBDailyOperation.js" />
+    <Content Include="Scripts\Js\Dashboard\Dailyoperations\HeadOfficeOrdinaryAccounts.js" />
+    <Content Include="Scripts\Js\Dashboard\Dailyoperations\HeadOfficeMembers.js" />
+    <Content Include="Scripts\Js\Dashboard\Dailyoperations\HeadOffice.js" />
+    <Content Include="Scripts\Js\Dashboard\Dailyoperations\BranchOffice.js" />
     <Content Include="Scripts\Js\main.js\CashFlowManagementDeposit.js" />
     <Content Include="Scripts\Js\main.js\CashTracker.js" />
     <Content Include="Scripts\Js\main.js\ConnectionMonitor.js" />
@@ -3253,9 +3256,16 @@
     <Content Include="Views\AccountingConfiguration\_DownloadAccountingEntryRule.cshtml" />
     <Content Include="Views\AccountingConfiguration\_OperationEventAttributeDataModif.cshtml" />
     <Content Include="Views\AccountingConfiguration\_OperationEventDataModif.cshtml" />
-    <Content Include="Views\Dashboard\DailyOperation.cshtml" />
     <Content Include="Views\Dashboard\_SharedDBDailyOperations.cshtml" />
     <Content Include="Views\AccountingConfiguration\AccountUploadData.cshtml" />
+    <Content Include="Views\Dashboard\_SharedDBDailyHeadOffice.cshtml" />
+    <Content Include="Views\Dashboard\_BranchOfficeStatistics.cshtml" />
+    <Content Include="Views\Dashboard\HeadOfficeStatistics.cshtml" />
+    <Content Include="Views\Dashboard\BranchOfficeStatistics.cshtml" />
+    <Content Include="Views\Dashboard\_HeadOfficeMembers.cshtml" />
+    <Content Include="Views\Dashboard\_HeadOfficeOdinaryAccounts.cshtml" />
+    <Content Include="Views\Dashboard\_HeadOfficeAccounting.cshtml" />
+    <Content Include="Views\Dashboard\_HeadOfficeLoans.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

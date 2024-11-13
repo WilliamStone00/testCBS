@@ -10,6 +10,41 @@ namespace CBS.FrontDesk.Helper
     {
         TECH01
     }
+    public enum AccountTypeEnumerations
+    {
+        PreferenceShare,
+        MemberShare,
+        Deposit,
+        Saving,
+        Loan,
+        Atm,
+        Gav,
+        DailyCollection,
+        Membership,
+        MobileMoneyMTN,
+        MobileMoneyORANGE,
+        Teller,
+        MomocashCollectionMTN,
+        MomocashCollectionOrange,
+    }
+    public enum DashboardAccountingType
+    {
+        CashInHand,
+        CashInBank,
+        CashInVault,
+        MTNMobileMoneyMaster,
+        PreferenceShare,
+        OrdinaryShares,
+        Deposit, Savings,
+        Gav,
+        DailyCollections,
+        MTNMobileMoney,
+        OrangeMoneyMaster,
+        OrangeMoney,
+        TotalLiquidity,
+        TotalExpense,
+        TotalIncome
+    }
     public enum InsuranceStatus
     {
         WAITING_PERIOD,

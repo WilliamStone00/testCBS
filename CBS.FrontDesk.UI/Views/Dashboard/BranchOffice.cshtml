@@ -1,9 +1,14 @@
 ﻿@{
-    ViewBag.Title = "Dashboard-BOF";
+    ViewBag.Title = "Daily Dashboard";
 }
 
 
 
-@Html.Partial("_Content")
+@Html.Partial("_SharedDBDailyOperations")
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/Dashboard/Dailyoperations/BranchOffice.js"></script>
+}
 
 

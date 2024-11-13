@@ -31,7 +31,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     async function fetchDashboardData() {
         try {
-            const response = await fetch('/Dashboard/GetLiveDashboard');
+            const response = await fetch('/Dashboard/GetLiveDashboardHeadOffice');
 
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -51,20 +51,30 @@ document.addEventListener("DOMContentLoaded", function () {
             function setElementText(id, value, isCurrency = false) {
                 const element = document.getElementById(id);
                 if (element) {
-                    element.textContent = isCurrency ? currencyFormatter.format(value) : value;
+                    if (typeof value === 'number' && isCurrency) {
+                        // Format numbers as currency
+                        element.textContent = currencyFormatter.format(value);
+                    } else {
+                        // Display strings or non-currency values directly
+                        element.textContent = value ?? '';
+                    }
                 }
             }
 
             // Mapping values from GeneralDailyDashboardDto to HTML elements
+            setElementText('id', data.Id);
+            setElementText('branchId', data.BranchId);
+            setElementText('branchName', data.BranchName);
+            setElementText('branchCode', data.BranchCode);
+            setElementText('numberOfBranches', data.NumberOfBranches);
+            setElementText('numberOfCashIn', data.NumberOfCashIn);
+            setElementText('numberOfCashOut', data.NumberOfCashOut);
+            setElementText('totalCashInAmount', data.TotalCashInAmount, true);
+            setElementText('totalCashOutAmount', data.TotalCashOutAmount, true);
             setElementText('newMembers', data.NewMembers);
             setElementText('closedAccounts', data.ClosedAccounts);
             setElementText('activeAccounts', data.ActiveAccounts);
             setElementText('dormantAccounts', data.DormantAccounts);
-            setElementText('numberOfCashIn', data.NumberOfCashIn);
-            setElementText('numberOfCashOut', data.NumberOfCashOut);
-            
-            setElementText('totalCashInAmount', data.TotalCashInAmount, true);
-            setElementText('totalCashOutAmount', data.TotalCashOutAmount, true);
             setElementText('loanDisbursements', data.LoanDisbursements, true);
             setElementText('loanRepayments', data.LoanRepayments, true);
             setElementText('serviceFeesCollected', data.ServiceFeesCollected, true);
@@ -92,10 +102,13 @@ document.addEventListener("DOMContentLoaded", function () {
             setElementText('transfer', data.Transfer, true);
             setElementText('primaryTillOpenOfDayBalance', data.PrimaryTillOpenOfDayBalance, true);
             setElementText('subTillTillOpenOfDayBalance', data.SubTillTillOpenOfDayBalance, true);
+            setElementText('date', data.Date);
+            setElementText('accountingDate', data.AccountingDate);
             setElementText('subTillBalance', data.SubTillBalance, true);
             setElementText('primaryTillBalance', data.PrimaryTillBalance, true);
             setElementText('cashReplenishmentSubTill', data.CashReplenishmentSubTill, true);
             setElementText('cashReplenishmentPrimaryTill', data.CashReplenishmentPrimaryTill, true);
+
         } catch (error) {
             console.error("Error fetching data:", error.message);
             appalert(`Failed to fetch data: ${error.message}`, 0, 1);
@@ -107,4 +120,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Initial call
     fetchDashboardData();
+
+
 });
+
+

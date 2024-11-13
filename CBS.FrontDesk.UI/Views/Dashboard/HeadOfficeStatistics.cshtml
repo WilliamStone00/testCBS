@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "HO Dashboard";
+}
+<style>
+    /* Dashboard Title */
+    .dashboard-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.8rem;
+        text-align: center;
+        padding-top: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Section Header with Left Alignment */
+    .section-header {
+        margin-bottom: 0.8rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #444;
+        text-align: left; /* Align text to the left */
+        text-transform: uppercase;
+        padding-left: 1rem; /* Optional: Add padding if you want some space from the left edge */
+    }
+
+
+    /* Other styles remain the same */
+</style>
+
+
+<div class="dashboard-container">
+    <!-- Dashboard Title -->
+    <div class="mb-4">
+        <hr style="border: 2px solid green;" />
+        <h2 class="dashboard-title"><span>FINANCIAL ANALITIC DASHBOARD (HEAD OFFICE)</span></h2>
+        <hr style="border: 2px solid blue;" />
+    </div>
+    @Html.Partial("_HeadOfficeMembers")
+    @Html.Partial("_HeadOfficeOdinaryAccounts")
+    @Html.Partial("_HeadOfficeLoans")
+    @Html.Partial("_HeadOfficeAccounting")
+</div>
+    @section Scripts {@Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Dashboard/Dailyoperations/HeadOfficeOrdinaryAccounts.js"></script>
+    }
+
+
+

@@ -29,7 +29,7 @@ namespace CBS.BusinessService
             Currency currency = new Currency();
            return  currency.CreateCurrencies();
         }
-        public async Task<ExecutionMessages> Create( AccountType model)
+        public async Task<ExecutionMessages> Create(AccountType model)
         {
             try
             {
