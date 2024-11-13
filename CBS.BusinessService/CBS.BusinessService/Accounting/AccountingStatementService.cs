@@ -56,8 +56,6 @@ namespace CBS.BusinessService.Accounting
             List<LiaisonLedgerEntry> accountingEntryDtos = new List<LiaisonLedgerEntry>();
             return (await _Service.RetrieveBranchLiaisonAccountingEntries(model));
 
-
-
         }
         public async Task<List<LiaisonLedgerEntry>> GenerateLiasonAccountLiaisonledger(SystemQuery model)
         {

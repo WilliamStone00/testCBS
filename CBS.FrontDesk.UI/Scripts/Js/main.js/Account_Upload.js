@@ -142,7 +142,7 @@ function displayResults(response) {
         // Update download linkDownload non-matching accounts:
         var message = "";
         if (accountsPresent === 0) {
-            message = "Download chart of account";
+            message = "Download uploaded trailbalance";
         } else {
             message = "Download non-matching accounts";
         }
