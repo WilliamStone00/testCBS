@@ -151,8 +151,7 @@ function displayResults(response) {
         //  window.open("", "_blank");
         $('#downloadLink').attr('href', downloadUrl);
         $('#downloadLink').text(message);
-        $('#downloadLink').attr('target', '_blank'); // This opens the link in a new tab/window
-        //      window.open("/Reports/PrintAccountLedgerDtoInExcel", "_blank");
+        $('#downloadLink').attr('target', '_blank');
         // Add onclick event to trigger download in a new window
         $('#downloadLink').off('click').on('click', function (e) {
             e.preventDefault(); // Prevent default link behavior
