@@ -5,7 +5,8 @@ namespace CBS.FrontDesk.Helper
 {
     public abstract class APICallHelper
     {
-
+        //
+        public static string GetAllFinancialDocument = "/api/v1/Document";
 
         //TrialBalanceFile
         //Get,Update,Delete TrialBalanceFile By Id

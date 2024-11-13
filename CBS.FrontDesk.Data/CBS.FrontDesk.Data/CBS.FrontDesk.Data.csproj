@@ -103,6 +103,7 @@
     <Compile Include="Entity\Accounting\BranchLiaisonLedgerEntry.cs" />
     <Compile Include="Entity\Accounting\ChartofAccountManagementPosition.cs" />
     <Compile Include="Entity\Accounting\Class1.cs" />
+    <Compile Include="Entity\Accounting\FSDocument.cs" />
     <Compile Include="Entity\Accounting\DepositNotificationDto.cs" />
     <Compile Include="Entity\Accounting\DocumentUpload.cs" />
     <Compile Include="Entity\Accounting\PostedEntry.cs" />

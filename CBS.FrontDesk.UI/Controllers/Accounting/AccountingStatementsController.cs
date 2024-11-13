@@ -6,6 +6,7 @@ using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
 using OfficeOpenXml;
@@ -461,7 +462,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         case "BS":
                             {
                                 string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
-                                var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, Date = model.SystemQuery.ToDate, DocumentId = "DOC298781794326" };
+                                var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x=>x.name.ToUpper()=="BALANCESHEET").First();
+                                var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, Date = model.SystemQuery.ToDate, DocumentId = DocModel.id };
                                 var account = await _acountServices.GenerateBalanceSheet(modelx);
                                 this.HttpContext.Session["rptSource"] = account;
                                 string ReportName = $"BalanceSheet.rpt";

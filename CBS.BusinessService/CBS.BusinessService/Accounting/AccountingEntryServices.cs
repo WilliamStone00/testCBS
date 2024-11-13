@@ -344,7 +344,27 @@ namespace CBS.BusinessService
             }
 
         }
- 
+        public async Task<List<FSDocument>> GetAllFSDocument()
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FSDocument>>>(APICallHelper.GetAllFinancialDocument);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData != null)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<FSDocument>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
         public async Task<BalanceSheetData> GetBalanceSheetDataEntries(BSQuery model)
         {
             //Task<ServiceResponseXX<BalanceSheetData>> apiCallTask = null;
