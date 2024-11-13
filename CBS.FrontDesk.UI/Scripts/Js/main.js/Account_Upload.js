@@ -48,8 +48,6 @@ function ReadExcelFile() {
     formData.append("BranchId", branchCode);
 
     event.preventDefault();
-
-    // Initialize progress bar
     updateProgressBar(0);
     $('#progressBarContainer').show();
 
@@ -74,12 +72,12 @@ function ReadExcelFile() {
             updateProgressBar(100);
             appalert("File uploaded successfully", 1, 1);
             displayResults(response);
-            console.log(response);
+ 
         },
         error: function (xhr, status, error) {
             updateProgressBar(0);
             appalert("Error uploading file: " + error, 3, 1);
-            console.log("Error uploading file: " + error);
+ 
         },
         complete: function () {
             setTimeout(function () {
