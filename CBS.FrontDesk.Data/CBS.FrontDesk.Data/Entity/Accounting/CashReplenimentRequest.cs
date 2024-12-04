@@ -94,10 +94,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     //
     public class CashReplenimentRequestDto: CashReplenimentRequest
     {
-       
 
 
-  
+        // to determine if request was created by a branch
+        public bool IsOwner { get; set; }
 
         public string BranchOffice { get; set; }
         public bool IsRejected { get; set; }

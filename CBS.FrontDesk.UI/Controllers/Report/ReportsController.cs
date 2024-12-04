@@ -711,62 +711,61 @@ namespace CBS.FrontDesk.UI.Controllers
 
         }
 
-        //public ActionResult DownloadBSFile()
-        //{
-        //    var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
-        //    var dtoPasser = System.Web.HttpContext.Current.Session["dtoPasser"];
-        //    string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
-        //    string rpTType = System.Web.HttpContext.Current.Session["rptType"].ToString();
-        //    string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
-        //    var model = (BalanceSheetData)rptSource;
+        public ActionResult DownloadBSFile()
+        {
+            var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+            var dtoPasser = System.Web.HttpContext.Current.Session["dtoPasser"];
+            string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
+            string rpTType = System.Web.HttpContext.Current.Session["rptType"].ToString();
+            string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
+            var model = (BalanceSheetData)rptSource;
 
-        //    if (rpTType == "EXCEL")
-        //    {
-        //        Export export = new Export();
-        //        export.ToExcel(Response, model as IEnumerable<object>, strtitle);
+            if (rpTType == "EXCEL")
+            {
+                Export export = new Export();
+                export.ToExcel(Response, model as IEnumerable<object>, strtitle);
 
-        //    }
-        //    else
-        //    {
+            }
+            else
+            {
 
-        //        if (rptSource != "empty")
-        //        {
-        //            var user = this.GetUserDto();
-        //            var modeli = (BSQuery)dtoPasser;
-        //            var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date,  BSCartegory.Assets);
-        //            var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date, BSCartegory.LIABILITIES);
+                if (rptSource != "empty")
+                {
+                    var user = this.GetUserDto();
+                    var modeli = (BSQuery)dtoPasser;
+                    var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
+                    var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
 
-        //            ReportDocument rd = new ReportDocument();
-        //            string strRptPath = Server.MapPath(rptpath);
-        //            rd.Load(strRptPath);
-        //            rd.SetDataSource(assetsModel);
-        //            rd.SetDataSource(LiabilityModel);
-        //            string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
-        //            // Export the report to a byte array
-        //            Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
-        //            byte[] bytes = new byte[stream.Length];
-        //            stream.Read(bytes, 0, bytes.Length);
+                    ReportDocument rd = new ReportDocument();
+                    string strRptPath = Server.MapPath(rptpath);
+                    rd.Load(strRptPath);
+                    rd.SetDataSource(assetsModel);
+                    rd.SetDataSource(LiabilityModel);
+                    string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
+                    //Export the report to a byte array
+                    Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+                    byte[] bytes = new byte[stream.Length];
+                    stream.Read(bytes, 0, bytes.Length);
 
-        //            // Clear the response and set the content type
-        //            Response.ClearContent();
-        //            Response.ClearHeaders();
-        //            Response.ContentType = "application/pdf";
+                    //Clear the response and set the content type
+                    Response.ClearContent();
+                    Response.ClearHeaders();
+                    Response.ContentType = "application/pdf";
 
-        //            // Write the report bytes to the response
-        //            Response.BinaryWrite(bytes);
-        //            Response.Flush();
-        //            Response.End();
-        //            //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
-        //            //CleanReport(rd);
+                    //Write the report bytes to the response
+                    Response.BinaryWrite(bytes);
+                    Response.Flush();
+                    Response.End();
+                    //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+                    //CleanReport(rd);
+ 
+                }
+
+            }
+            return new EmptyResult();
 
 
-        //        }
-
-        //    }
-        //    return new EmptyResult();
-
-
-        //}
+        }
         static string GetDayWithSuffix(int day)
         {
             string suffix = "th";
@@ -776,79 +775,79 @@ namespace CBS.FrontDesk.UI.Controllers
 
             return day.ToString("00") + suffix;
         }
-        public ActionResult DownloadBSFile()
-        {
-            try
-            {
-                var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
-                var dtoPasser = System.Web.HttpContext.Current.Session["dtoPasser"];
-                string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
-                string rpTType = System.Web.HttpContext.Current.Session["rptType"].ToString();
-                string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
-                var model = (BalanceSheetData)rptSource;
+        //public ActionResult DownloadBSFile()
+        //{
+        //    try
+        //    {
+        //        var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+        //        var dtoPasser = System.Web.HttpContext.Current.Session["dtoPasser"];
+        //        string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
+        //        string rpTType = System.Web.HttpContext.Current.Session["rptType"].ToString();
+        //        string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
+        //        var model = (BalanceSheetData)rptSource;
 
-                if (rpTType == "EXCEL")
-                {
-                    Export export = new Export();
-                    export.ToExcel(Response, model as IEnumerable<object>, strtitle);
-                }
-                else
-                {
+        //        if (rpTType == "EXCEL")
+        //        {
+        //            Export export = new Export();
+        //            export.ToExcel(Response, model as IEnumerable<object>, strtitle);
+        //        }
+        //        else
+        //        {
               
-                    if (rptSource != "empty")
-                    {
-                        var user = this.GetUserDto();
-                        var modeli = (BSQuery)dtoPasser;
+        //            if (rptSource != "empty")
+        //            {
+        //                var user = this.GetUserDto();
+        //                var modeli = (BSQuery)dtoPasser;
                       
-                        var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd/MM/yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
+        //                var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd/MM/yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
 
-                        ReportDocument rd = new ReportDocument();
-                        string strRptPath = Server.MapPath(rptpath);
-                        rd.Load(strRptPath);
-                        rd.SetDataSource(assetsModel);
+        //                ReportDocument rd = new ReportDocument();
+        //                string strRptPath = Server.MapPath(rptpath);
+        //                rd.Load(strRptPath);
+        //                rd.SetDataSource(assetsModel);
                        
 
          
-                        string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
-                        // Export the report to a byte array
-                        Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
-                        byte[] bytes = new byte[stream.Length];
-                        stream.Read(bytes, 0, bytes.Length);
+        //                string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
+        //                // Export the report to a byte array
+        //                Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+        //                byte[] bytes = new byte[stream.Length];
+        //                stream.Read(bytes, 0, bytes.Length);
 
-                        // Clear the response and set the content type
-                        Response.ClearContent();
-                        Response.ClearHeaders();
-                        Response.ContentType = "application/pdf";
+        //                // Clear the response and set the content type
+        //                Response.ClearContent();
+        //                Response.ClearHeaders();
+        //                Response.ContentType = "application/pdf";
 
-                        // Write the report bytes to the response
-                        Response.BinaryWrite(bytes);
-                        Response.Flush();
-                        Response.End();
-                        //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
-                        //CleanReport(rd);
+        //                // Write the report bytes to the response
+        //                Response.BinaryWrite(bytes);
+        //                Response.Flush();
+        //                Response.End();
+        //                //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+        //                //CleanReport(rd);
 
 
-                    }
-                }
-            }
-            catch (LogOnException logOnEx)
-            {
-                // Handle Crystal Reports logon exception
-                // Log the exception details and provide a user-friendly message
-                // Example logging (assuming you have a logging mechanism)
-                //Logger.LogError("Crystal Reports logon failed.", logOnEx);
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "An error occurred while trying to generate the report.");
-            }
-            catch (Exception ex)
-            {
-                // Handle general exceptions
-                // Log the exception details and provide a user-friendly message
-                //Logger.LogError("An error occurred while generating the report.", ex);
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "An unexpected error occurred.");
-            }
+        //            }
+        //        }
+        //    }
+        //    catch (LogOnException logOnEx)
+        //    {
+        //        // Handle Crystal Reports logon exception
+        //        // Log the exception details and provide a user-friendly message
+        //        // Example logging (assuming you have a logging mechanism)
+        //        //Logger.LogError("Crystal Reports logon failed.", logOnEx);
+        //        return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "An error occurred while trying to generate the report.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Handle general exceptions
+        //        // Log the exception details and provide a user-friendly message
+        //        //Logger.LogError("An error occurred while generating the report.", ex);
+        //        return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "An unexpected error occurred.");
+        //    }
 
-            return new EmptyResult();
-        }
+        //    return new EmptyResult();
+        //}
 
         public ActionResult DownloadExcelFileForTB4C()
         {
@@ -1666,7 +1665,7 @@ namespace CBS.FrontDesk.UI.Controllers
                         worksheet.Cell(row, 7).Value = trialBalance.totalEndDebitBalance.ToString();
                         worksheet.Cell(row, 8).Value = trialBalance.totalEndCreditBalance.ToString();
                         //worksheet.Cell(row, 2).Value = "Totals";
-                        //worksheet.Cell(row, 3).Value = balance.beginningDebitBalance.ToString();
+                        //worksheet.Cell(row, 3).Value = trialBalance.beginningDebitBalance.ToString();
                         //worksheet.Cell(row, 4).Value = trialBalance.beginningCreditBalance.ToString();
                         //worksheet.Cell(row, 5).Value = trialBalance.debitBalance.ToString();
                         //worksheet.Cell(row, 6).Value = trialBalance.creditBalance.ToString();

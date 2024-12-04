@@ -4,7 +4,7 @@
     ViewBag.Title = "Cash Replenishment Request";
 
 }
-@if (Convert.ToBoolean(ViewBag.IsAuthourized) == true)
+@if (Convert.ToBoolean(ViewBag.IsAuthourized) == false)
 {
     @Html.Partial("_GeneralErrorDiv")
 }

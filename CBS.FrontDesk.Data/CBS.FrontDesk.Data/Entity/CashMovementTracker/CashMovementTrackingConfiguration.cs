@@ -17,9 +17,10 @@ namespace CBS.FrontDesk.Data.Entity.CashMovementTracker
         public List<CashMovementTrackingConfiguration> CashMovementTrackingConfigurationData { get; set; } = new List<CashMovementTrackingConfiguration>();
         public List<CashMovementDataStatus> CashMovementDataStatus { get; set; } = new List<CashMovementDataStatus>();
         public  CashMovementTracker CashMovementTracker { get; set; } = new CashMovementTracker();
-        public List<CashReplenimentRequestDto> CashReplenimentRequestDtos { get; set; } = new List<CashReplenimentRequestDto> ();
-       public List<DepositNotificationDto> DepositNotificationDto = new List<DepositNotificationDto>();
-        public List<CashReplenimentRequestDto> requestDtos = new List<CashReplenimentRequestDto>();
+        public List<CashReplenimentRequestDto> CashReplenimentRequestDtos { get; set; } = new List<CashReplenimentRequestDto>();
+        public List<DepositNotificationDto> DepositNotificationDto = new List<DepositNotificationDto>();
+        // public List<CashReplenimentRequestDto> requestDtos = new List<CashReplenimentRequestDto>();
+        public List<CashMovement> CashMovementDtos = new List<CashMovement>();
         public string ServiceOption { get; set; }
 
         public string Action { get; set; }
@@ -36,6 +37,18 @@ namespace CBS.FrontDesk.Data.Entity.CashMovementTracker
         public string ExpiresAt { get; set; }
         public string CreatedBy { get; set; }
     }
+
+    public class CashMovement
+    {
+        public string Id { get; set; }
+        public string BranchName { get; set; }
+        public string OperationType { get; set; }
+        public string RequestedBy { get; set; }
+        public decimal Amount { get; set; }
+        public string ApprovedBy { get; set; }
+      
+    }
+
     public class CashMovementTrackingConfiguration
     {
         public string Id { get; set; }

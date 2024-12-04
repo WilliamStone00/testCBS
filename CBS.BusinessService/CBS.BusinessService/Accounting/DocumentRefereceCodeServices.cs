@@ -56,7 +56,7 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Document>>>(APICallHelper.Get_Update_Delete_report);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Document>>>(APICallHelper.Get_Update_Delete_Document);
                 if (couApiResponse.IsSuccess)
                 {
 
@@ -179,6 +179,38 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
+
+        public async Task<ExecutionMessages> CreateCode(DocReferenceCode model)
+        {
+            try
+            {
+
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<DocumentReferenceCodeDto>>(APICallHelper.CreateDocumentReferenceCode, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{model.ReferenceCode} -{model.Description} has been created successfully ", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"{model.ReferenceCode} -{model.Description} Creation Failed", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+
+
 
         public async Task<ExecutionMessages> Create(DocumentReferenceCode model)
         {

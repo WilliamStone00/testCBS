@@ -631,9 +631,13 @@ namespace CBS.FrontDesk.Helper
         public static string DownloadChartOfAccountManagementPositionUrl = "/api/v1/ChartOfAccountManagementPositions/DownloadQuery";
         public static string CreateChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition";
 
-        //DocumentReference   
-        public static string Get_Update_Delete_report  = "/api/v1/Document";
+        //DocumentType
+        public static string Create_DocumentType = "/api/v1/DocumentType";
         public static string Get_Update_Delete_DocumentType = "/api/v1/DocumentType/{0}";
+        public static string GetAllDocumentTypes = "/api/v1/DocumentType";
+      
+        //DocumentReference   
+
         public static string Get_DocumentType_By_DocumentReference = "/api/v1/DocumentTypeByDocumentReference/{0}";
         public static string UpdateDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode/Update/{0}";
         public static string Delete_DocumentReference = "/api/v1/FinancialReport/DocumentReferenceCode/Delete/{0}";
@@ -642,6 +646,9 @@ namespace CBS.FrontDesk.Helper
         public static string CreateDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode/Create";
         public static string GetCorrespondingmappingByDocumentRefenceId = "/api/v1/FinancialReport/GetCorrespondingMappingByDocumentReferenceCodeIdQuery/{0}";
         public static string GetCorrespondingmappingExceptionByDocumentRefenceId = "/api/v1/FinancialReport/GetCorrespondingMappingExceptionsByDocumentReferenceCodeIdQuery/{0}";
+
+
+
 
         //CorrespondingMapping 
 
@@ -687,7 +694,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAccountByAccountType = "/api/v1/Account/GetAccountByAccountType/{0}";
         public static string GetAccount = "/api/v1/Account/{0}";
         public static string Delete_Account = "/api/v1/Account/{0}";
-        public static string GetAccountByAccountNumberUrl = "/api/v1/Account/GetAccountByAccountNumber/{0}";
+        public static string GetAccountByAccountNumberUrl = "/api/v1/Account/GetAccountByAccountNumberRef/{0}";
 
         public static string GetAlAccounts = "/api/v1/Accounts";
         public static string GetAllLiaisonAccount = "/api/v1/Accounts/LiaisonAccount";

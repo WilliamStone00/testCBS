@@ -238,7 +238,65 @@ namespace CBS.BusinessService.Accounting
             }
         }
 
-        public async Task<ExecutionMessages> UpdateException(CorrespondingMapping model)
+        public async Task<ExecutionMessages> Create(CorrespondingMapping model)
+        {
+            try
+            {
+
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<CorrespondingMapping>>(APICallHelper.CreateCorrespondingMapping, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Mapping has been created successfully ", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Mapping   Creation Failed", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task<ExecutionMessages> CreateException(CorrespondingMappingException model)
+        {
+            try
+            {
+
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<CorrespondingMappingException>>(APICallHelper.CreateCorrespondingMapping, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Mapping has been created successfully ", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Mapping   Creation Failed", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task<ExecutionMessages> UpdateException(CorrespondingMappingException model)
         {
             try
             {
