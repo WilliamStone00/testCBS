@@ -562,6 +562,7 @@
     <Compile Include="Controllers\Accounting\BranchAccountJournalEntriesQueryObject.cs" />
     <Compile Include="Controllers\Accounting\CashMovementTrackerConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\CashMovementTrackerController.cs" />
+    <Compile Include="Controllers\Accounting\DocumentConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\ManagementSelectionOption.cs" />
     <Compile Include="Controllers\Accounting\ManuallyJournalEntryController.cs" />
     <Compile Include="Controllers\Accounting\AccountingConfigurationController.cs" />
@@ -3286,6 +3287,15 @@
     <Content Include="Views\HolidayRecurring\_Create.cshtml" />
     <Content Include="Views\HolidayRecurring\_Data.cshtml" />
     <Content Include="Views\HolidayRecurring\Index.cshtml" />
+    <Content Include="Views\Shared\_SystemError.cshtml" />
+    <Content Include="Views\CashMovementTracker\_DataMovements.cshtml" />
+    <Content Include="Views\DocumentConfiguration\Index.cshtml" />
+    <Content Include="Views\DocumentConfiguration\_CreateDocument.cshtml" />
+    <Content Include="Views\DocumentConfiguration\_CreateDocumentType.cshtml" />
+    <Content Include="Views\DocumentConfiguration\_DocumentData.cshtml" />
+    <Content Include="Views\DocumentConfiguration\_DocumentTypeData.cshtml" />
+    <Content Include="Views\DocumentConfiguration\_CreateDocumentReferenceCode.cshtml" />
+    <Content Include="Views\DocumentConfiguration\_DocumentTypeData - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -4,6 +4,10 @@
     @Html.Partial("_GeneralErrorDiv")
 }
 
+@if (Convert.ToBoolean(ViewBag.IsSystemError) == true)
+{
+    @Html.Partial("_SystemError")
+}
 
 @using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
@@ -31,7 +35,7 @@
                     </div>
                 </div>
             </div>
-      
+
             <div class="col-md-6" hidden="hidden">
                 <div class="form-floating form-floating-outline">
                     <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>

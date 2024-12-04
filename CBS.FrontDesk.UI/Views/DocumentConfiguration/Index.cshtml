@@ -1,0 +1,144 @@
+﻿
+@{
+    ViewBag.Title = "Financial Statements Configurations";
+
+}
+
+<div class="card mb-12">
+
+    <h2 class="me-2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Financial Statements Configuration Panel </h2>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="accordion mt-3" id="accordionExample">
+
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingsix">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionsix"
+                                aria-expanded="false"
+                                aria-controls="accordionsix">
+                            <i class="tf-icons mdi mdi-book-open-page-variant-outline me-1"></i>  &nbsp; &nbsp; &nbsp; &nbsp;   Document Management
+                        </button>
+                    </h2>
+                    <div id="accordionsix"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingsix"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGeneration('DocumentConfiguration','myDataTable_Document','_DocumentData','datalistingview_Document',0,'Document','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Document','_CreateDocument','new','DocumentConfiguration','Document')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_Document">
+                                @Html.Partial("_CreateDocument")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingseven">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionseven"
+                                aria-expanded="false"
+                                aria-controls="accordionseven">
+                            <i class="tf-icons mdi mdi-book-lock-open-outline me-1"></i>   &nbsp; &nbsp; &nbsp; &nbsp;  DocumentType Management
+                        </button>
+                    </h2>
+                    <div id="accordionseven"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingseven"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGeneration('DocumentConfiguration','myDataTable_DocumentType','_DocumentTypeData','datalistingview_DocumentType',0,'DocumentType','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_DocumentType','_CreateDocumentType','new','DocumentConfiguration','DocumentType')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_DocumentType">
+                                @Html.Partial("_CreateDocumentType")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingtwenty">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordiontwenty"
+                                aria-expanded="false"
+                                aria-controls="accordiontwenty">
+                            <i class="tf-icons mdi mdi-book-account-outline me-1"></i>
+                            &nbsp; &nbsp; &nbsp; &nbsp;   Document Reference Code Management
+                        </button>
+                    </h2>
+                    <div id="accordiontwenty"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingtwenty"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGeneration('DocumentConfiguration','myDataTable_DocumentReferenceCode','_DocumentReferenceCodeDataModif','datalistingview_DocumentReferenceCode',0,'DocumentReferenceCode','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_DocumentReferenceCode','_CreateDocumentReferenceCode','new','DocumentConfiguration','DocumentReferenceCode')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick="LoadDataGeneration('DocumentConfiguration','myDataTable_DocumentReferenceCode','_DownloadDocumentReferenceCode','datalistingview_DocumentReferenceCode',0,'DocumentReferenceCode','download')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Download EventRule">
+                                        <span class="tf-icons mdi mdi-download-circle-outline mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_DocumentReferenceCode">
+                                @Html.Partial("_CreateDocumentReferenceCode")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+ 
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+</div>
+
+<!--/ Accordion -->
+
+
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/AccountEventConfigurtion/MFIChartOfAccount.js"></script>
+
+
+}
+
+
+

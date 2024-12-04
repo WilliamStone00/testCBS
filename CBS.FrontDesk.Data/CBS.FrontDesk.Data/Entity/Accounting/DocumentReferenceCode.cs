@@ -1,7 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CBS.FrontDesk.Data
 {
+    public class DocumentTypeDto
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public string documentName
+        {
+            get; set;
+        }
+        public string documentId { get; set; }
+    }
     public class DocumentType 
     {
         public string id { get; set; }
@@ -14,6 +26,16 @@ namespace CBS.FrontDesk.Data
         public string id { get; set; }
         public string name { get; set; }
         public string description { get; set; }
+    }
+    public class DocReferenceCode
+    {
+        public string Id { get; set; }
+        public string ReferenceCode { get; set; }
+        public bool HasException { get; set; }
+        public string Description { get; set; }
+        public string DocumentId { get; set; }
+        public string DocumentTypeId { get; set; }
+
     }
     public class DocumentReferenceCode
     {
@@ -29,7 +51,10 @@ namespace CBS.FrontDesk.Data
         public List<string> ProvCorrespondingExceptionAccount { get; set; }
         public List<string> ProvCorrespondingAccount { get; set; }
 
-        
+        public static implicit operator DocumentReferenceCode(DocumentReferenceCodeDto v)
+        {
+            throw new NotImplementedException();
+        }
     }
  
     public static class BalanceSheetCartegory

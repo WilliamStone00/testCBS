@@ -58,6 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly AccountPolicyServices _accountPolicyServices;
      private readonly TrialBalanceFileServices _trialBalanceFileServices;
         private readonly UserManagementServices _userService;
+        //private
         public AccountingConfigurationController()
         {
             _AccountingRuleServices = new AccountingRuleService();
@@ -288,15 +289,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return selectListItems;
         }
 
-        private Task<List<System.Web.WebPages.Html.SelectListItem>> GetBookingDirections()
-        {
-            var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { 
-                new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, 
-                new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" },
-                new System.Web.WebPages.Html.SelectListItem { Text = "NOT", Value = "DEFINE" }
-            }.ToList();
-            return Task.FromResult(bookingDirections);
-        }
+
         private dynamic BuildMenuViewBag(IEnumerable<Data.Account> debitAccounts)
         {
             List<System.Web.WebPages.Html.SelectListItem> list = new List<System.Web.WebPages.Html.SelectListItem>();
@@ -745,7 +738,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     model.Account.AccountCategoryId = chartOfAccount.AccountCartegoryId;
                 }
-                model.Account.AccountOwnerId = (await _branchService.GetBranches()).Where(xx => xx.BranchCode.Equals(model.Account.AccountOwnerId)).FirstOrDefault().Id;
+                var BranchCode= (await _branchService.GetBranches()).Where(xx => xx.BranchCode.Equals(model.Account.AccountOwnerId)).FirstOrDefault();
+
+                model.Account.AccountOwnerId = BranchCode.Id;//(await _branchService.GetBranches()).Where(xx => xx.BranchCode.Equals(model.Account.AccountOwnerId)).FirstOrDefault().Id;
                 if (model.Account.AccountNumber == "45100")
                 {
                     model.Account.AccountCounterPartId = (await _branchService.GetBranches()).Where(xx => xx.BranchCode.Equals(model.Account.AccountCounterPartId)).FirstOrDefault().Id;
@@ -882,7 +877,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             else if (serviceOption == "correspondingMappingException")
             {
 
-                return () => _correspondingMappingServices.UpdateException(model.CorrespondingMapping);
+                return () => _correspondingMappingServices.UpdateException(model.CorrespondingMappingException);
             }
             else if (serviceOption == "accountPolicy")
             {
@@ -1551,6 +1546,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     {
                                         UploadModel.BranchId = _AccountServices.GetBranchID();
                                     }
+                                   
                                         var data = await  _AccountServices.Create(UploadModel);
                                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data), Data= data.Data });
                                 }

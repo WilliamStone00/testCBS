@@ -17,6 +17,7 @@ using CBS.API.Helper;
 using System.IdentityModel.Tokens.Jwt;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using DocumentFormat.OpenXml.EMMA;
+using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -172,23 +173,15 @@ namespace CBS.FrontDesk.UI.Controllers
 
         }
 
-        //protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        //{
-        //    // Check if the request is going to the login page to avoid redirection loops
-        //    if (!filterContext.HttpContext.Request.RawUrl.StartsWith("/Authentication/Login", StringComparison.OrdinalIgnoreCase))
-        //    {
-        //        if (Session["UserID"] == null) // Replace "UserID" with your session key
-        //        {
-        //            // Redirect to login or show a session expired message
-        //            filterContext.Result = new RedirectResult("~/Authentication/Login");
-        //            return;
-        //        }
-        //    }
-        //    GetUserSession();
-        //    base.OnActionExecuting(filterContext);
-        //}
-
-
+        public Task<List<System.Web.WebPages.Html.SelectListItem>> GetBookingDirections()
+        {
+            var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] {
+                new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "NOT", Value = "DEFINE" }
+            }.ToList();
+            return Task.FromResult(bookingDirections);
+        }
         public static bool IsTokenExpired(string token)
         {
             try

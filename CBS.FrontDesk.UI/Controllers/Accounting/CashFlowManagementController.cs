@@ -23,6 +23,7 @@ using System.Web.UI.WebControls;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using CBS.FrontDesk.Data.UserManagement;
 using DocumentFormat.OpenXml.EMMA;
+using Azure.Core;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -519,6 +520,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                              {
                                  Id = request.Id,
                                  ReferenceId = request.ReferenceId,
+                                 IsOwner =request.BranchId==_AccountServices.GetBranchID(),
                                  AmountRequested = request.AmountRequested,
                                  BranchOffice = branch.Name,
                                  RequestMessage = request.RequestMessage,
@@ -716,7 +718,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (path == "BranchToBranchTransfer")
             {
-                var Accountnumber = "571010" + _AccountServices.GetBranchCode() + "000";
+                var Accountnumber = "571010" + "000"+_AccountServices.GetBranchCode();
                 var account = (await _AccountServices.GetAccountByAccountNumber(Accountnumber));
                 var listBranch = await branchServices.GetLiaison();
                 ViewBag.Liaisons = BuildDropDown(GenerateBranchListView(listBranch.ToList()));
@@ -743,11 +745,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                 string name, balance = string.Empty;
                 string Id = "", idB = "";
-                if (account != null)
+                if (account.AccountNumber != null)
                 {
                     var acc = account;
                     var AccountnumberCD = $"451000{SourceBranch.BranchCode}{DestinationBranch.BranchCode}";
                     var accountb = (await _AccountServices.GetAccountByAccountNumber(AccountnumberCD));
+                    if (accountb.AccountNumber==null)
+                    {
+                        ViewBag.IsSystemError = true;
+                        ViewBag.Error = _AccountServices.GetUserFullName() + ", there is no liaison account : 451000 between " + _AccountServices.GetBranchName() + " and "+ DestinationBranch.Name+ " please kindly contact the head office ";
+
+                    }
                     name = $"{acc.AccountNumberCU}-{acc.AccountName}>>450000{SourceBranch.BranchCode}{DestinationBranch.BranchCode}-{accountb.AccountName}";
                     balance = acc.CurrentBalance;
                     Id = acc.Id;
@@ -759,6 +767,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     balance = "0";
                     name = $"No Vault Found";
+                    ViewBag.IsSystemError = true;
+                    ViewBag.Error = _AccountServices.GetUserFullName() + ", there is no vault account : 57101 for "+ _AccountServices.GetBranchName()+ " please kindly contact the head office ";
+
                 }
                 var mOdelsd = new BranchToBranchTransfer();
                 mOdelsd.Balance = balance.ToString();
@@ -783,6 +794,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     ViewBag.IsAuthourized = false;
                     ViewBag.Error = _AccountServices.GetUserFullName() + ", You are not authourized to perform this transaction kindly contact the " + (await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name;
+
+             
+
                     return PartialView(partialView, cashDemandDataEntity);
                 }
                 ViewBag.IsAuthourized = true;
@@ -801,6 +815,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     if (accountAcc.AccountNumberCU == "" && accountAcc.AccountName == null)
                     {
                         name = $"{acc.AccountNumberCU}:{branch.Name}-{acc.AccountName}>>There is no vault account for {_AccountServices.GetBranchName()}";
+                        if (accountAcc.AccountNumber == null)
+                        {
+                            ViewBag.IsSystemError = true;
+                            ViewBag.Error = _AccountServices.GetUserFullName() + ", There is no vault account:57101 existing  for " + _AccountServices.GetBranchName() + ". Please kindly contact the head office ";
+
+                        }
+
                     }
                     else
                     {
@@ -813,6 +834,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     balance = "0";
                     name = $"No Vault Found";
+                    ViewBag.IsSystemError = true;
+                    ViewBag.Error = _AccountServices.GetUserFullName() + ", there is no liaison account : 451000 between " + _AccountServices.GetBranchName() + " and " + (await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name + " please kindly contact the head office ";
+
                 }
 
                 var mOdelsd = new CashClearing();
@@ -1017,6 +1041,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 itemdto.HasAccount56 = await CheckIfBranchHasBankAccountAsync(itemdto.BranchId);
                 var userx = await _accountingEntryServices.GetUser(item.IssuedBy);
                 itemdto.TempId1 = userx.firstName + "," + userx.lastName;
+                itemdto.IsOwner = itemdto.BranchId == _AccountServices.GetBranchID();
                 if (item.IsApproved)
                 {
                     var userxc = await _accountingEntryServices.GetUser(item.ApprovedBy);

@@ -418,7 +418,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 string fileTitle = $"TB4C{model.SystemQuery.FromDate.Date.ToString("yyyyMMddhhmmss")}";
                                 var account = await _acountServices.GenerateTrialBalance_4column(model.SystemQuery);
                                 this.HttpContext.Session["rptSource"] = account;
-                                string ReportName = $"TrialBalance4Column.rpt";
+                                string ReportName = $"TrialBalance6Column.rpt";
                                 if (!account.Any())
                                 {
                                     this.HttpContext.Session["rptSource"] = "empty";
@@ -461,7 +461,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             break;
                         case "BS":
                             {
-                                string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                                string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate.ToString("ddMMyyyy")}_{model.SystemQuery.ToDate.ToString("ddMMyyyy")}";
                                 var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x=>x.name.ToUpper()=="BALANCESHEET").First();
                                 var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, Date = model.SystemQuery.ToDate, DocumentId = DocModel.id };
                                 var account = await _acountServices.GenerateBalanceSheet(modelx);
