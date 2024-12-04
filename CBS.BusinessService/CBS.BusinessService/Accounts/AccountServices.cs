@@ -415,9 +415,9 @@ namespace CBS.BusinessService.Accounts
                     Debit = transaction.Debit,
                     Credit = transaction.Credit,
                     InterBranch = transaction.IsInterBrachOperation ? "Yes" : "No",
-                    BankName = branch.Bank.Name, // Assuming this is the bank name
+                    BankName = branch.Bank.Name, // Assuming this is the bank Name
                     BranchCode = branch.BranchCode,
-                    BrnachName = branch.Name, // Assuming this is the branch name
+                    BrnachName = branch.Name, // Assuming this is the branch Name
                     BranchTel = branch.Telephone // Assuming this is the branch telephone number
                 };
 

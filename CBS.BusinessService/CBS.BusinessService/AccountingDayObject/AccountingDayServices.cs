@@ -137,7 +137,7 @@ namespace CBS.BusinessService.AccountingDayObject
                 Id = accountingDay.Id,
                 BranchId = branch?.Id ?? accountingDay.BranchId, // Use the branch's Id if available; otherwise, use the existing BranchId
                 BranchCode = branch?.BranchCode ?? "N/A", // Default to "N/A" if branch code is not available
-                BranchName = branch?.Name ?? "Centralised System", // Default to "Centralised System" if branch name is not available
+                BranchName = branch?.Name ?? "Centralised System", // Default to "Centralised System" if branch Name is not available
                 Date = accountingDay.Date,
                 IsClosed = accountingDay.IsClosed,
                 ClosedBy = accountingDay.ClosedBy,
@@ -170,7 +170,7 @@ namespace CBS.BusinessService.AccountingDayObject
                     Id = accountingDay.Id,
                     BranchId = accountingDay.BranchId, // Use the branch's Id if available; otherwise, use the existing BranchId
                     BranchCode = accountingDay.BranchCode ?? "N/A", // Default to "N/A" if branch code is not available
-                    BranchName = accountingDay.BranchName ?? "Centralised System", // Default to "Centralised System" if branch name is not available
+                    BranchName = accountingDay.BranchName ?? "Centralised System", // Default to "Centralised System" if branch Name is not available
                     Date = accountingDay.Date,
                     IsClosed = accountingDay.IsClosed,
                     ClosedBy = accountingDay.ClosedBy,

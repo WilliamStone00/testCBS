@@ -22,8 +22,8 @@ namespace CBS.FrontDesk.Service
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="roleName"></param>
+        /// <param Name="username"></param>
+        /// <param Name="roleName"></param>
         /// <returns></returns>
         public override bool IsUserInRole(string username, string roleName)
         {
@@ -34,7 +34,7 @@ namespace CBS.FrontDesk.Service
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="username"></param>
+        /// <param Name="username"></param>
         /// <returns></returns>
         /// 
         //public override string[] GetRolesForUser(string username)

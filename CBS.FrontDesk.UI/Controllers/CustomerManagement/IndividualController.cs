@@ -182,7 +182,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             this.HttpContext.Session["rpttitle"] = $"Members";
 
             // Construct the URL to redirect to the PDF
-            string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller name if different
+            string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller Name if different
 
             // Set the ViewBag variables for the URL to open the report
             ViewBag.UrlToOpen = url;

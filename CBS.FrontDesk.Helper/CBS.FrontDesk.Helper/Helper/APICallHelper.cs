@@ -63,6 +63,14 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllCustomerCategory = "/api/v1/CustomerCategory";
         public static string CreateCustomerCategory = "/api/v1/CustomerCategory";
 
+        public static string Get_Update_Delete_HolyDay = "/api/v1/HolyDay/{0}";
+        public static string GetAllHolyDay = "/api/v1/HolyDays";
+        public static string CreateHolyDay = "/api/v1/HolyDay";
+
+        public static string Get_Update_Delete_HolyDayRecurring = "/api/v1/HolyDayRecurring/{0}";
+        public static string GetAllHolyDayRecurring = "/api/v1/HolyDayRecurrings";
+        public static string CreateHolyDayRecurring = "/api/v1/HolyDayRecurring";
+
         //User
         public static string GetUserByID = "/api/User/{0}";
         public static string DeleteUser = "/api/User/{0}";
@@ -401,12 +409,17 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_GuarantyPack = "/api/v1/GuarantyPack/{0}";
         public static string GetAllGuarantyPack = "/api/v1/GuarantyPacks";
         public static string CreateGuarantyPack = "/api/v1/GuarantyPack";
-        public static string Get_Update_Delete_Period = "/api/v1/Period/{0}";
-        public static string GetAllPeriod = "/api/v1/Periods";
-        public static string CreatePeriod = "/api/v1/Period";
+        public static string Get_Update_Delete_LoanProductCategory = "/api/v1/LoanProductCategory/{0}";
+        public static string GetAllLoanProductCategory = "/api/v1/LoanProductCategorys";
+        public static string CreateLoanProductCategory = "/api/v1/LoanProductCategory";
         public static string AttachedDocuments = "/api/FIleManagement/Upload";
         public static string AttachedDocumentsRemotelyLoan = "/api/v1/DocumentAttachedToLoan/AddLoanAttachedDocumentCallBackCommand";
         public static string AttachedDocumentsRemotelyBank = "/api/v1/Bank/UpdateBankLogoCallBack";
+
+        public static string Get_Update_Delete_LoanTerm = "/api/v1/LoanTerm/{0}";
+        public static string GetAllLoanTerm = "/api/v1/LoanTerms";
+        public static string CreateLoanTerm = "/api/v1/LoanTerm";
+
 
         public static string Get_Update_Delete_InstallmentType = "/api/v1/InstallmentType/{0}";
         public static string GetAllInstallmentType = "/api/v1/InstallmentTypes";
@@ -416,6 +429,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_LoanProduct = "/api/v1/LoanProduct/{0}";
         public static string GetAllMembersCurrentLoans = "/api/v1/LoanProduct/{0}";
         public static string GetAllLoanProduct = "/api/v1/LoanProducts";
+        public static string GetAllLoanProductLighterVersion = "/api/v1/LoanProducts/Lighterversion";
         public static string CreateLoanProduct = "/api/v1/LoanProduct";
         public static string GetLoanProductConfigurationAgregates = "/api/v1/LoanProductConfigurationAgregates";
         public static string GetAllLoanApplicationByCustomerId = "/api/v1/LoanApplication/GetAllLoanApplicationByCustomerId/{0}";
@@ -544,7 +558,6 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllAccountsDashboard = "/api/v1/Dashboard/GetAllAccountsDashboard";
         public static string GetAllAccountingDashboard = "/api/v1/DashboardStatisticsDto";
         public static string GetLoanDashboardQuery = "/api/v1/Dashboard/GetLoanDashboardQuery";
-
         //FeePolicy
         public static string Get_Update_Delete_FeePolicy = "/api/v1/FeePolicy/{0}";
         public static string GetAllFeePolicy = "/api/v1/FeePolicys";

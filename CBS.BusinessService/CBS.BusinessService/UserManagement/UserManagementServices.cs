@@ -474,9 +474,13 @@ namespace CBS.BusinessService.UserManagement
                     user.userAllowedIPs = new List<UserAllowedIP>();
 
                 }
+
                 user.id = Guid.Parse(GetUserToDoAction());
                 user.userRoles.Add(new UserRole { roleId = user.roleID, userId = user.id });
-
+                if (!IsHeadOffice())
+                {
+                    user.BranchID = GetBranchID();
+                }
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var reUser = await ApiCallerHelper.PutAsync<ResponseObject<User>>(string.Format(APICallHelper.UpdateUser, user.id), user);
                 if (reUser.IsSuccess)

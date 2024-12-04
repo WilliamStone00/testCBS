@@ -17,13 +17,15 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
     {
         // GET: LoanPurpose
         private readonly LoanPurposeServices _LoanPurposeServices;
-        public LoanPurposeController(LoanPurposeServices LoanPurposeServices)
+        private readonly LoanProductCategoryServices _loanProductCategoryServices;
+        public LoanPurposeController(LoanPurposeServices LoanPurposeServices, LoanProductCategoryServices loanProductCategoryServices)
         {
             _LoanPurposeServices = LoanPurposeServices;
-           
+            _loanProductCategoryServices = loanProductCategoryServices;
         }
         public async Task<ActionResult> Index()
         {
+            ViewBag.Categories = await _loanProductCategoryServices.GetLoanProductCategorys();
             return View();
         }
         [HttpPost]
@@ -62,6 +64,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             }
             else
             {
+                ViewBag.Categories = await _loanProductCategoryServices.GetLoanProductCategorys();
                 var LoanPurpose = await _LoanPurposeServices.GetLoanPurpose(KEY);
                 return PartialView(partialView, LoanPurpose);
             }

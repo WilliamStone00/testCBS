@@ -22,7 +22,7 @@ namespace CBS.FrontDesk.Helper
                     parentNames[menuLoader.ParentId] = "Root-Parent";
                 }
 
-                // If the ParentId is not 0, find the parent name
+                // If the ParentId is not 0, find the parent Name
                 if (menuLoader.ParentId != 0)
                 {
                     parentNames[menuLoader.MenuMasterId] = menuLoaders.FirstOrDefault(m => m.MenuMasterId == menuLoader.ParentId)?.MenuText ?? "";

@@ -47,7 +47,7 @@ namespace CBS.FrontDesk.Service
         /// <summary>
         /// Initializes a new instance of the RequireHstsAttribute class.
         /// </summary>
-        /// <param name="maxAge">The time (in seconds) that the browser should remember that this resource is only to be accessed using HTTPS.</param>
+        /// <param Name="maxAge">The time (in seconds) that the browser should remember that this resource is only to be accessed using HTTPS.</param>
         public RequireHstsAttribute(uint maxAge)
             : base()
         {
@@ -61,7 +61,7 @@ namespace CBS.FrontDesk.Service
         /// <summary>
         /// Determines whether a request is secured (HTTPS). If it is sets the Strict-Transport-Security header. If it is not calls the HandleNonHttpsRequest method.
         /// </summary>
-        /// <param name="filterContext"></param>
+        /// <param Name="filterContext"></param>
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             if (filterContext == null)

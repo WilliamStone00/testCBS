@@ -32,8 +32,8 @@ namespace CBS.FrontDesk.Helper
         /// <summary>
         /// Initializes a new instance of the ServiceResponse class with the specified status code and data payload.
         /// </summary>
-        /// <param name="statusCode">The HTTP status code of the response.</param>
-        /// <param name="data">The data payload of the response.</param>
+        /// <param Name="statusCode">The HTTP status code of the response.</param>
+        /// <param Name="data">The data payload of the response.</param>
         private ServiceResponse(int statusCode, T data)
         {
             StatusCode = statusCode;

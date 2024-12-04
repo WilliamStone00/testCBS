@@ -36,13 +36,13 @@ namespace CBS.FrontDesk.UI
             string actionName = filterContext.ActionDescriptor.ActionName;
             string url = $"{controllerName}/{actionName}";
 
-            // If action name is "Index", set the URL to only contain the controller name.
+            // If action Name is "Index", set the URL to only contain the controller Name.
             if (actionName.Equals("Index", StringComparison.OrdinalIgnoreCase))
             {
                 url = $"{controllerName}";
             }
 
-            // If action name is "FLoginChangePassword", return without further checks.
+            // If action Name is "FLoginChangePassword", return without further checks.
             if (actionName.Equals("FLoginChangePassword", StringComparison.OrdinalIgnoreCase))
             {
                 return;

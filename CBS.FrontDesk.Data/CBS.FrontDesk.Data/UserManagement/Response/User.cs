@@ -86,7 +86,7 @@ namespace CBS.FrontDesk.Data.UserManagement
     public class ChangePassword
     {
         [Required]
-        [Display(Name = "Enter user name")]
+        [Display(Name = "Enter user Name")]
         public string userName { get; set; }
         [Required]
         [Display(Name = "Enter old password")]

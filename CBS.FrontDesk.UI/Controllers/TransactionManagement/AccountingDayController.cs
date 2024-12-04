@@ -42,7 +42,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 BranchId = b.Id,           // Assuming 'Id' is the branch identifier in your source data
                 BranchCode = b.BranchCode,       // Assuming 'Code' is the branch code in your source data
-                BranchName = b.Name        // Assuming 'Name' is the branch name in your source data
+                BranchName = b.Name        // Assuming 'Name' is the branch Name in your source data
             }).ToList();
 
             // Create an instance of the OpenOrCloseOfAccountingDayCommand with the mapped branches

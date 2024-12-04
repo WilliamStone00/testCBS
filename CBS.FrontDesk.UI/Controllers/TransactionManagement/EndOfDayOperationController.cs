@@ -76,7 +76,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             //if (account.CashAtHand == 0 && !account.HasError)
             //{
             //    ViewBag.HasN.CashAtHand = true;
-            //    ViewBag.Error = $"The current CashAtHand of Teller {account.Teller.name} is 0. Kindly make a cash request";
+            //    ViewBag.Error = $"The current CashAtHand of Teller {account.Teller.Name} is 0. Kindly make a cash request";
             //}
 
 

@@ -5,9 +5,10 @@
     // Initial call to fetch data after the page loads
     fetchDashboardDataForMember();
 
-    fetchDashboardDataForAccounting();
 
     fetchDashboardDataForLoan();
+    fetchDashboardDataForAccounting();
+
 
 });
 async function fetchDashboardDataForOrdinaryAccounts() {
@@ -115,7 +116,7 @@ async function fetchDashboardDataForAccounting() {
         }
 
         const data = await response.json();
-
+        console.log(data)
         // Define the currency formatter for XAF
         const currencyFormatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -149,15 +150,16 @@ async function fetchDashboardDataForAccounting() {
         setElementText('depositBalance', data.DepositBalance, true);
         setElementText('savingsBalance', data.SavingsBalance, true);
         setElementText('gavBalance', data.GavBalance, true);
+        setElementText('mmTNMobileMoneyBalance', data.MTNMobileMoneyBalance, true);
         setElementText('dailyCollectionsBalance', data.DailyCollectionsBalance, true);
-        setElementText('mtnMobileMoneyBalance', data.MTNMobileMoneyBalance, true);
         setElementText('mtnMobileMoneyMasterBalance', data.MTNMobileMoneyMasterBalance, true);
         setElementText('orangeMoneyMasterBalance', data.OrangeMoneyMasterBalance, true);
         setElementText('orangeMoneyBalance', data.OrangeMoneyBalance, true);
         setElementText('totalExpenseBalance', data.TotalExpenseBalance, true);
         setElementText('totalIncomeBalance', data.TotalIncomeBalance, true);
         setElementText('totalLiquidity', data.TotalLiquidity, true);
-
+        console.log(setElementText('mtnMobileMoneyMasterBalance', data.MTNMobileMoneyMasterBalance, true))
+        console.log(setElementText('mmTNMobileMoneyBalance', data.MTNMobileMoneyMasterBalance, true))
     } catch (error) {
         console.error("Error fetching data:", error.message);
         appalert(`Failed to fetch data: ${error.message}`, 0, 1);

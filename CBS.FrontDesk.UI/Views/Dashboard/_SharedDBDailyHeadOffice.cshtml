@@ -34,23 +34,29 @@
     <hr style="border: 2px solid blue;" />
     <!-- Membership Section -->
     <div class="section-header">Membership</div>
+
+
     <div class="row mb-2">
-        <!-- New Members Card -->
+        <!-- Number of Active Branches Card -->
         <div class="col-sm-6 col-md-3">
             <div class="card card-border-shadow-primary h-100">
                 <div class="card-body">
-                    <div class="d-flex align-items-center mb-1 pb-1">
-                        <div class="avatar me-1">
-                            <span class="avatar-initial rounded bg-label-secondary">
-                                <i class="mdi mdi-counter mdi-18px"></i> <!-- New members icon -->
-                            </span>
+                    <a href="/Dashboard/OpenedBranches" target="_blank" class="text-decoration-none text-dark">
+                        <div class="d-flex align-items-center mb-1 pb-1">
+                            <div class="avatar me-1">
+                                <span class="avatar-initial rounded bg-label-secondary">
+                                    <i class="mdi mdi-counter mdi-18px"></i> <!-- New members icon -->
+                                </span>
+                            </div>
+                            <h5 class="ms-1 mb-0"><span id="numberOfBranches"></span></h5>
                         </div>
-                        <h5 class="ms-1 mb-0"><span id="numberOfBranches"></span></h5>
-                    </div>
-                    <p class="mb-0 text-heading">Number of active branches</p>
+                        <p class="mb-0 text-heading">Number of active branches</p>
+                    </a>
                 </div>
             </div>
         </div>
+
+        <!-- New Members Card -->
         <div class="col-sm-6 col-md-3">
             <div class="card card-border-shadow-primary h-100">
                 <div class="card-body">
@@ -66,6 +72,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Closed Accounts Card -->
         <div class="col-sm-6 col-md-3">
             <div class="card card-border-shadow-secondary h-100">
@@ -82,6 +89,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Active Accounts Card -->
         <div class="col-sm-6 col-md-3">
             <div class="card card-border-shadow-success h-100">
@@ -101,11 +109,11 @@
     </div>
 
     <!-- Cash Flow Section -->
-    <div class="section-header">Cash Flow</div>
+    <div class="section-header">Cash Operations Summaries</div>
     <div class="row mb-2">
         <!-- Cash In Card -->
         <div class="col-sm-6 col-md-3">
-            <div class="card card-border-shadow-warning h-100">
+            <div class="card card-border-shadow-secondary h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-1 pb-1">
                         <div class="avatar me-1">
@@ -168,11 +176,75 @@
             </div>
         </div>
     </div>
-    <div class="section-header">Cash Flow-Mobile Money-MTN</div>
+
     <div class="row mb-2">
         <!-- Cash In Card -->
         <div class="col-sm-6 col-md-3">
-            <div class="card card-border-shadow-warning h-100">
+            <div class="card card-border-shadow-secondary h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-secondary">
+                                <i class="mdi mdi-cash-multiple mdi-18px"></i> <!-- Cash-in icon -->
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0"><span id="serviceFeesCollected"></span></h5>
+                    </div>
+                    <p class="mb-0 text-heading">Daily Income Collected</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-border-shadow-secondary h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-secondary">
+                                <i class="mdi mdi-cash-multiple mdi-18px"></i> <!-- Cash-in icon -->
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0"><span id="loanRepayments"></span></h5>
+                    </div>
+                    <p class="mb-0 text-heading">Loan Repayment</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-border-shadow-secondary h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-secondary">
+                                <i class="mdi mdi-cash-multiple mdi-18px"></i> <!-- Cash-in icon -->
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0"><span id="dailyExpenses"></span></h5>
+                    </div>
+                    <p class="mb-0 text-heading">Other Expense</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-border-shadow-primary h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-primary">
+                                <i class="mdi mdi-cash-multiple mdi-18px"></i> <!-- Cash-in icon -->
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0"><span id="subTillBalance"></span></h5>
+                    </div>
+                    <p class="mb-0 text-heading">Till Balance</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-header">Mobile Money-MTN</div>
+    <div class="row mb-2">
+        <!-- Cash In Card -->
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-border-shadow-secondary h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-1 pb-1">
                         <div class="avatar me-1">
@@ -228,18 +300,18 @@
                                 <i class="mdi mdi-cash-minus mdi-18px"></i> <!-- Cash-out icon -->
                             </span>
                         </div>
-                        <h5 class="ms-1 mb-0"><span id="0"></span></h5>
+                        <h5 class="ms-1 mb-0"><span id="mobileMoneyCashOut"></span></h5>
                     </div>
                     <p class="mb-0 text-heading">Cash Out-MTN Volume</p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="section-header">Cash Flow-Mobile Money-ORANGE</div>
+    <div class="section-header">Mobile Money-ORANGE</div>
     <div class="row mb-2">
         <!-- Cash In Card -->
         <div class="col-sm-6 col-md-3">
-            <div class="card card-border-shadow-warning h-100">
+            <div class="card card-border-shadow-secondary h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-1 pb-1">
                         <div class="avatar me-1">
@@ -302,5 +374,43 @@
             </div>
         </div>
     </div>
+
+    <div class="section-header">Daily Collections</div>
+    <div class="row mb-2">
+        <!-- Cash In Card -->
+        <div class="col-sm-6 col-md-6">
+            <div class="card card-border-shadow-secondary h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-secondary">
+                                <i class="mdi mdi-cash-multiple mdi-18px"></i> <!-- Cash-in icon -->
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0"><span id="dailyCollectionCashIn"></span></h5>
+                    </div>
+                    <p class="mb-0 text-heading">Cash In Daily collections</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cash-out Card -->
+        <div class="col-sm-6 col-md-6">
+            <div class="card card-border-shadow-primary h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-secondary">
+                                <i class="mdi mdi-cash-minus mdi-18px"></i> <!-- Cash-out icon -->
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0"><span id="dailyCollectionCashOut"></span></h5>
+                    </div>
+                    <p class="mb-0 text-heading">Cash Out Daily collections</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cash Out Volume Card -->
+    </div>
+
 </div>
 

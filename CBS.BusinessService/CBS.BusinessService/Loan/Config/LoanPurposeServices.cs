@@ -11,6 +11,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CBS.BusinessService.Config
 {
@@ -50,7 +51,7 @@ namespace CBS.BusinessService.Config
             }
             return ExecutionMessage;
         }
-        
+
         public async Task<IEnumerable<LoanPurpose>> GetLoanPurposes()
         {
             try
@@ -91,7 +92,29 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+        public async Task<List<StringValues>> GetAllLoanPurpose(string categoryid)
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanPurpose>>>(APICallHelper.GetAllLoanPurpose);
+                if (couApiResponse != null)
+                {
+                    var values = couApiResponse.ApiResponseData.Data.Where(x=>x.LoanProductCategoryId==categoryid).Select(a => new StringValues
+                    {
+                        Text = $"{a.purposeName}",
+                        Value = a.id
+                    }).ToList();
+                    return values;
+                }
+                return new List<StringValues>();
 
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<LoanPurpose> GetLoanPurpose(string id)
         {
             try
@@ -113,7 +136,7 @@ namespace CBS.BusinessService.Config
         {
             try
             {
-               
+
                 // Make an API call to create an individual profile
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<LoanPurpose>>(APICallHelper.CreateLoanPurpose, model);
                 if (response.IsSuccess)
@@ -147,6 +170,7 @@ namespace CBS.BusinessService.Config
                 if (LoanPurpose != null)
                 {
                     LoanPurpose.purposeName = model.purposeName;
+                    LoanPurpose.LoanProductCategoryId = model.LoanProductCategoryId;
                     var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanPurpose>>(string.Format(APICallHelper.Get_Update_Delete_LoanPurpose, model.id), LoanPurpose);
                     if (response.IsSuccess)
                     {

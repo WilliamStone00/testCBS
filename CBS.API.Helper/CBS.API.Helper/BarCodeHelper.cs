@@ -72,7 +72,7 @@ namespace CBS.API.Helper
             // Generate a unique filename
             string fileName = $"{Guid.NewGuid().ToString()}.png";
 
-            // Combine folder path and file name to get the full file path
+            // Combine folder path and file Name to get the full file path
             string filePath = Path.Combine(folderPath, fileName);
 
             // Save the barcode image to the file path

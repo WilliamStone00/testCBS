@@ -15,6 +15,13 @@
                 <label>Phone number</label>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.CustomerPackageId, new { @class = "form-control", @placeholder = "1234",@readonly=true })
+                @Html.ValidationMessageFor(m => m.CustomerList.CustomerPackageId, "", new { @class = "text-danger" })
+                <label>Current Pin</label>
+            </div>
+        </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Reset pin</button>
         </div>

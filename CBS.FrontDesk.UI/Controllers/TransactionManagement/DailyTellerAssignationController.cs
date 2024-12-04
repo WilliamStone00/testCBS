@@ -98,7 +98,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 this.HttpContext.Session["rpttitle"] = "AccountStatementTeller";
 
                 // Construct the URL to redirect to the PDF
-                string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller name if different
+                string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller Name if different
 
                 // Set the ViewBag variables
                 ViewBag.UrlToOpen = url;
@@ -177,7 +177,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             this.HttpContext.Session["rpttitle"] = $"TillStatus";
 
             // Construct the URL to redirect to the PDF
-            string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller name if different
+            string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller Name if different
 
             // Set the ViewBag variables for the URL to open the report
             ViewBag.UrlToOpen = url;
@@ -239,7 +239,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 this.HttpContext.Session["rptpath"] = "~/AppFiles/Reporting/Transactions/Reciepts/TellerStatement.rpt";
                 this.HttpContext.Session["rpttitle"] = $"Till_F5_{data.FirstOrDefault().TellerName}";
                 // Construct the URL to redirect to the PDF
-                string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller name if different
+                string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller Name if different
 
                 // Set the ViewBag variables for the URL to open the report
                 ViewBag.UrlToOpen = url;
@@ -405,7 +405,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         //        //else
         //        //{
         //        //    // Construct the URL to redirect to the PDF
-        //        //    string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller name if different
+        //        //    string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller Name if different
 
         //        //    // Set the ViewBag variables
         //        //    ViewBag.UrlToOpen = url;
@@ -451,7 +451,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         //        this.HttpContext.Session["rptpath"] = "~/AppFiles/Reporting/Transactions/Reciepts/TellerStatement.rpt";
         //        this.HttpContext.Session["rpttitle"] = $"Till_F5_{Data.FirstOrDefault().TellerName}";
         //        // Construct the URL to redirect to the PDF
-        //        string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller name if different
+        //        string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller Name if different
 
         //        // Set the ViewBag variables for the URL to open the report
         //        ViewBag.UrlToOpen = url;
@@ -582,7 +582,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         //            // Save the workbook to the memory stream
         //            wb.SaveAs(memoryStream);
 
-        //            // Generate dynamic Excel file name based on branch name and current date/time
+        //            // Generate dynamic Excel file Name based on branch Name and current date/time
         //            string excelName = $"Operation_{response.FirstOrDefault().BranchName}_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
         //            excelName = excelName.Replace(" ", "_");
         //            // Set response headers

@@ -4,20 +4,155 @@
     ViewBag.Title = "T R U S T S O F T C R E D I T-Authentication";
 }
 
+<style>
+    /* Apply the background image to the body */
+   /* body {
+        height: 100vh;
+        margin: 0;
+        background-image: url('~/AppFiles/Images/NBG.JPEG');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }*/
 
-<div class="authentication-inner row mb-0">
-    <!-- Left Section -->
-    <div class="col-lg-7 col-xl-8 align-items-center justify-content-center">
-        <img src="~/AppFiles/Images/NBG.JPEG" class="authentication-image" alt="mask" />
+            body {
+    background-image: url('@Url.Content("~/AppFiles/Images/NBG_.jpeg")'); /* Resolves the relative path in MVC */
+    background-size: cover; /* Ensures the image covers the entire screen */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+    background-attachment: fixed; /* Keeps the background static while scrolling */
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Ensures it fills the full viewport height */
+    width: 100vw; /* Ensures it fills the full viewport width */
+    font-family: Arial, sans-serif; /* Optional: Set default font */
+}
+
+    /* Flexbox for centering the form container with margin at the top */
+    .authentication-inner {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding-top: 50px; /* Adjust padding as needed */
+    }
+
+    .authentication-bg {
+        background-color: rgba(255, 255, 255, 0.9); /* White background with some opacity */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 450px;
+    }
+
+    .form-container {
+        text-align: center;
+    }
+
+        .form-container img {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .form-container hr {
+            border-color: #ddd;
+        }
+
+    .trustbank-text {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    /* Button styling */
+    button[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+    /* Additional styling for error message */
+    .alert {
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    /* Styling for login policy section */
+   /* .login-policy {
+        margin-top: 20px;
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+        .login-policy label {
+            display: block;
+            margin-bottom: 5px;
+        }*/
+
+        .login-policy hr {
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+    .login-policy {
+        text-align: left; /* Ensures that text is left-aligned */
+    }
+
+        .login-policy label {
+            display: block; /* Makes each label element take its own line */
+            margin-bottom: 8px; /* Optional: Adjusts space between the lines */
+        }
+    .styled-hr {
+        border: 0; /* Remove default border */
+        height: 4px; /* Make the line thicker */
+        background: linear-gradient(to right, deepskyblue, limegreen); /* Gradient from DeepSkyBlue to LimeGreen */
+        margin: 20px 0; /* Add spacing around the HR */
+    }
+
+    /* Colors for T R U S T S O F T and C R E D I T */
+    .trust-soft {
+        color: deepskyblue;
+        font-weight: bold;
+    }
+
+    .credit {
+        color: limegreen;
+        font-weight: bold;
+    }
+</style>
+
+<div class="authentication-inner row">
+    <!-- Left Section (Image) -->
+    <div class="col-lg-8 d-none d-lg-block">
+        @*<img src="~/AppFiles/Images/NBG.JPEG" class="authentication-image img-fluid" alt="mask" />*@
     </div>
-    <div class="d-flex col-12 col-lg-5 col-xl-4 align-items-center authentication-bg position-relative">
-        <div class="w-px-400 mx-auto pt-5 pt-lg-0 form-container">
-            <div class="image-container">
-                <img src="~/AppFiles/Images/Logog2XI.png" />
+
+    <!-- Right Section (Login Form) -->
+    <div class="col-12 col-lg-4 col-xl-4 authentication-bg position-relative">
+        <div class="w-100 mx-auto p-3 pt-5 pt-lg-0 form-container">
+            <div class="image-container text-center mb-4">
+                <img src="~/AppFiles/Images/Logog2XI.png" class="img-fluid" alt="Logo" />
             </div>
-            <hr />
-            <h5 class="mb-2 trustbank-text" style="display: inline-block; font-size: 1rem;">T R U S T S O F T C R E D I T <span class="authentication-text" style="display: inline-block;">Authentication</span></h5>
-            <hr />
+            <hr class="styled-hr">
+            <h5 class="trustbank-text mb-1">
+                <span class="trust-soft">T R U S T S O F T</span>
+                <span class="credit">C R E D I T</span>
+            </h5>
+            <small class="d-block mt-0"><i>Our objectives, Your Satisfactions</i></small>
+
+            <hr class="styled-hr">
+
             <!-- Error Message -->
             @if (ViewBag.Success == false)
             {
@@ -25,14 +160,13 @@
                     @ViewBag.Message
                 </div>
             }
-            <p class="mb-4">Please sign in to your account.</p>
+            <p class="mb-4 text-center">Please sign in to your account.</p>
 
             @using (Html.BeginForm("Login", "Authentication", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left" }))
             {
-                
                 <!-- Username Input -->
                 <div class="form-floating form-floating-outline mb-3">
-                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "User name", autocomplete = "username" })
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Email or Username", autocomplete = "username" })
                     @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                     <label for="username">Email or Username</label>
                 </div>
@@ -48,122 +182,25 @@
                         <span class="input-group-text cursor-pointer"><i class="mdi mdi-eye-off-outline"></i></span>
                     </div>
                 </div>
-
-                <!-- Hidden fields for geolocation data -->
-                @Html.HiddenFor(m => m.GeoLocationResponse.Ip, new { id = "GeoLocationResponse_Ip" })
-                @Html.HiddenFor(m => m.GeoLocationResponse.City, new { id = "GeoLocationResponse_City" })
-                @Html.HiddenFor(m => m.GeoLocationResponse.Region, new { id = "GeoLocationResponse_Region" })
-                @Html.HiddenFor(m => m.GeoLocationResponse.Country, new { id = "GeoLocationResponse_Country" })
-                @Html.HiddenFor(m => m.GeoLocationResponse.Loc, new { id = "GeoLocationResponse_Loc" })
-                @Html.HiddenFor(m => m.GeoLocationResponse.Org, new { id = "GeoLocationResponse_Org" })
-                @Html.HiddenFor(m => m.GeoLocationResponse.Timezone, new { id = "GeoLocationResponse_Timezone" })
-                @Html.HiddenFor(m => m.GeoLocationResponse.Readme, new { id = "GeoLocationResponse_Readme" })
-
                 <!-- Login Button -->
                 <button type="submit" class="btn btn-primary d-grid w-100">Login</button>
             }
 
             <!-- Login Policy -->
-            <div class="login-policy">
-                <div class="col-sm-12">
-                    <p class="text-muted mb-0"><b>LOGIN POLICY</b></p>
-                    <hr />
-                    <label>1. Your max login attempt is 3, else blocked.</label>
-                    <label>2. If your account is blocked, contact your administrator.</label>
-                    <label>3. If you forget your password, contact your administrator.</label>
-                </div>
+            <div class="login-policy mt-4">
+                <p class="text-muted mb-0 text-center mt-2"><b>LOGIN POLICY</b></p>
+                <hr class="styled-hr" />
+                <ol class="text-start ps-3">
+                    <li>Your max login attempt is 3, else blocked.</li>
+                    <li>If your account is blocked, contact administrator.</li>
+                    <li>If you forget your password, contact administrator.</li>
+                </ol>
             </div>
-            @*<div id="location-prompt">
-                <p>We need to access your location to provide a better user experience. Please allow location access when prompted.</p>
-            </div>
-            <button id="retry-location" onclick="getLocation()">Retry Location Access</button>*@
-
 
         </div>
     </div>
-    <!-- /Login Section -->
 </div>
 
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-@*<script>
-    function getLocationAndIP() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                // Get device location
-                const deviceLatitude = position.coords.latitude;
-                const deviceLongitude = position.coords.longitude;
-                //ipinfo.io / 102.244.155.13 ? token = 554c46283a9441
-                // Fetch IP-based geolocation
-                fetch('https://ipinfo.io/json?token=554c46283a9441')
-                    .then(response => response.json())
-                    .then(data => {
-                        // Combine both location and IP information
-                        const geoLocationData = {
-                            Ip: data.ip,
-                            City: data.city,
-                            Region: data.region,
-                            Country: data.country,
-                            Loc: deviceLatitude + ',' + deviceLongitude,
-                            Org: data.org,
-                            Timezone: data.timezone,
-                            Readme: data.readme
-                        };
-
-                        // Send the combined data to the server
-                        fetch('/Authentication/SaveLocation', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': $('input[name="__RequestVerificationToken"]').val() // Add the anti-forgery token
-                            },
-                            body: JSON.stringify(geoLocationData)
-                        }).then(response => {
-                            if (response.ok) {
-                                console.log("Location data sent successfully.");
-                            } else {
-                                console.error("Failed to send location data.");
-                            }
-                        }).catch(error => console.error('Error:', error));
-                    });
-            }, showError);
-        } else {
-            alert("Geolocation is not supported by this browser.");
-        }
-    }
-
-    function showError(error) {
-        switch (error.code) {
-            case error.PERMISSION_DENIED:
-                alert("Location access denied. Certain features may not be available.");
-                // Optionally, use IP-based location as a fallback
-                fetchIPBasedLocation();
-                break;
-            case error.POSITION_UNAVAILABLE:
-                alert("Location information is unavailable.");
-                break;
-            case error.TIMEOUT:
-                alert("The request to get user location timed out.");
-                break;
-            case error.UNKNOWN_ERROR:
-                alert("An unknown error occurred.");
-                break;
-        }
-    }
-
-    function fetchIPBasedLocation() {
-        fetch('https://ipinfo.io/json?token=554c46283a9441')
-            .then(response => response.json())
-            .then(data => {
-                // Process the IP-based location
-                console.log("IP-based location: ", data);
-                // Send or handle the data as required
-            })
-            .catch(error => console.error('Error fetching IP-based location:', error));
-    }
-
-    // Call the function when the page loads
-    document.addEventListener("DOMContentLoaded", function () {
-        getLocationAndIP();
-    });*@
-</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 }

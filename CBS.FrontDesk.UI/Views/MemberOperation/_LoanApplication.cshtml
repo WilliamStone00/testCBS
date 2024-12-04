@@ -40,6 +40,18 @@ By carefully selecting the appropriate loan product and terms in this section, y
                                         <label>Application type</label>
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductCategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), "---Select loan product category---", new { @class = "form-control select2", @search = "true", @id = "LoanCategoryId", @onchange = "GetLoanPurposes(this.value,'purposeId')" })
+                                        <label>Select loan product category</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTermId, new SelectList(ViewBag.LoanTerms, "Id", "Name"), "---Select loan term---", new { @class = "form-control select2", @search = "true", @id = "LoanTermId", @onchange = "GetConfiuredTargets(this.value,'TargetId')" })
+                                        <label>Select loan term</label>
+                                    </div>
+                                </div>
                                 <div class="col-12" id="LoanCategoryDive">
                                     <div class="form-check form-check-inline" id="accountType">
                                         @Html.RadioButtonFor(m => m.AddLoanApplicationCommand.LoanCategory, "Main_Loan", new { id = "MainLoan", @class = "form-check-input" })
@@ -52,7 +64,7 @@ By carefully selecting the appropriate loan product and terms in this section, y
                                 </div>
                                 <div class="col-md-12" id="TargetPopulationDiv">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTarget, new SelectList(ViewBag.LoanTargets, "Value", "Text"), "---Select loan category---", new { @class = "form-control select2", @search = "true", @onchange = "GetProductByTarget(this.value,'loan_productid')" })
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTarget, new SelectList(ViewBag.LoanTargets, "Value", "Text"), "---Select loan category---", new { @class = "form-control select2", @search = "true", @onchange = "GetProductByTarget(this.value,'loan_productid')", @id = "TargetId" })
                                         @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanTarget, "", new { @class = "text-danger " })
                                         <label>Targeted population</label>
                                     </div>
@@ -190,76 +202,69 @@ By carefully considering and implementing appropriate risk mitigation measures i
                                 <div class="col-12">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsThereGuarantor, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">Have member provided guarantor Or Co-Obligator?</label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsThereCollateral, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">Have member provided collateral?</label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPreferenceShareAccountCoverageAmount, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">Place preference share as guarantee</label>
+                                        <label class="form-check-label" for="isActive">Has the member provided a guarantor or co-obligator ?</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsDepositAccountCoverageAmount, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">Place deposit as guarantee</label>
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsThereCollateral, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="isActive">Has member provided collateral?</label>
                                     </div>
                                 </div>
-                                @*<div class="col-6">
-                                        <div class="form-check">
-                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsTermDeposiAccountCoverageAmount, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Place temp deposit as guarantee</label>
-                                        </div>
-                                    </div>*@
 
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.DepositAccountCoverageAmount, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.DepositAccountCoverageAmount, "", new { @class = "text-danger" })
-                                        <label>Deposit coverage amount</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount, "", new { @class = "text-danger" })
-                                        <label>Preference coverage amount</label>
-                                    </div>
-                                </div>
-                                @*<div class="col-md-4">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.TermDeposiAccountCoverageAmount, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.TermDeposiAccountCoverageAmount, "", new { @class = "text-danger" })
-                                            <label>Temp account coverage amount</label>
-                                        </div>
-                                    </div>*@
-                                <div class="col-md-6">
+                                <hr />
+
+
+                                <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.AddLoanApplicationCommand.ShareAccountCoverageAmount, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.ShareAccountCoverageAmount, "", new { @class = "text-danger" })
-                                        <label id="share">Share account coverage amount</label>
+                                        <label id="share">Ordinary share account coverage amount</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.AddLoanApplicationCommand.SavingAccountCoverageRate, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.SavingAccountCoverageRate, "", new { @class = "text-danger" })
                                         <label id="saving">Saving account coverage rate</label>
                                     </div>
                                 </div>
+
                                 <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.SalaryAccountCoverageRate, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.SalaryAccountCoverageRate, "", new { @class = "text-danger" })
-                                        <label id="salary">Salary account coverage rate</label>
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPreferenceShareAccountCoverageAmount, new { @class = "form-check-input" })
+                                        <label class="form-check-label">Place preference share as guarantee</label>
                                     </div>
                                 </div>
+                                <div class="col-md-12 form-floating form-floating-outline" style="display: none;">
+                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount, "", new { @class = "text-danger" })
+                                    <label>Preference coverage amount</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsDepositAccountCoverageAmount, new { @class = "form-check-input" })
+                                        <label class="form-check-label">Place deposit as guarantee</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-floating form-floating-outline" style="display: none;">
+                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.DepositAccountCoverageAmount, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.DepositAccountCoverageAmount, "", new { @class = "text-danger" })
+                                    <label>Deposit coverage amount</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsSalryAccount, new { @class = "form-check-input" })
+                                        <label class="form-check-label">Check to place standing order on salary account</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 form-floating form-floating-outline" style="display: none;">
+                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.SalaryAccountCoverageRate, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.SalaryAccountCoverageRate, "", new { @class = "text-danger" })
+                                    <label id="salary">Enter standing order amount</label>
+                                </div>
+
                             </div>
                         </fieldset>
                     </div>
@@ -297,14 +302,14 @@ By specifying these parameters accurately, you can ensure clarity regarding char
                             <div class="row g-4">
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, new { @class = "form-control" })
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, new { @class = "form-control", @readonly = true })
                                         @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
                                         <label>Prefered first payment date (in Month e.g 1 or 2 or 3)</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.GracePeriodAfterMaturityDate, new { @class = "form-control" })
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.GracePeriodAfterMaturityDate, new { @class = "form-control", @readonly = true })
                                         @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
                                         <label>Enter grace period after entire loan is overdure (in days)</label>
                                     </div>
@@ -357,18 +362,18 @@ By accurately specifying these details, you can ensure transparency and clarity 
                                     </div>
                                 </div>
                                 @*<div class="col-md-12" id="ApplyInterestWaiverDiv">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsInterestWaiverApplied, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">Apply interest waiver to this application ?</label>
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsInterestWaiverApplied, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">Apply interest waiver to this application ?</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-12" id="WaiverDiv">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.InterestWaiverPercentage, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.InterestWaiverPercentage, "", new { @class = "text-danger" })
-                                        <label id="waiverranges">waiver rate (%)</label>
-                                    </div>
-                                </div>*@
+                                    <div class="col-md-12" id="WaiverDiv">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.InterestWaiverPercentage, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.InterestWaiverPercentage, "", new { @class = "text-danger" })
+                                            <label id="waiverranges">waiver rate (%)</label>
+                                        </div>
+                                    </div>*@
                             </div>
                         </fieldset>
                     </div>
@@ -486,7 +491,7 @@ By accurately defining the purpose and activities, you ensure alignment between 
                             <div class="row g-4">
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanPurposeId, new SelectList(ViewBag.LoanPurposes, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanPurposeId, new SelectList(ViewBag.LoanPurposes, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", @id = "purposeId" })
                                         @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanPurposeId, "", new { @class = "text-danger " })
                                         <label>Purpose of taken loan</label>
                                     </div>
@@ -547,6 +552,48 @@ By accurately defining the purpose and activities, you ensure alignment between 
 
 }
 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get the elements
+        const depositCheckbox = document.querySelector('input[name="AddLoanApplicationCommand.IsDepositAccountCoverageAmount"]');
+        const preferenceCheckbox = document.querySelector('input[name="AddLoanApplicationCommand.IsPreferenceShareAccountCoverageAmount"]');
+        const salaryCheckbox = document.querySelector('input[name="AddLoanApplicationCommand.IsSalryAccount"]'); // Salary checkbox
+
+        const depositField = document.querySelector('[name="AddLoanApplicationCommand.DepositAccountCoverageAmount"]');
+        const preferenceField = document.querySelector('[name="AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount"]');
+        const salaryField = document.querySelector('[name="AddLoanApplicationCommand.SalaryAccountCoverageRate"]'); // Salary field
+
+        // Function to toggle visibility and reset value if unchecked
+        function toggleFieldVisibilityAndReset(checkbox, field) {
+            const parent = field.closest('.form-floating');
+            if (checkbox.checked) {
+                parent.style.display = "block";
+            } else {
+                parent.style.display = "none";
+                field.value = 0; // Reset the value to 0
+            }
+        }
+
+        // Initial toggle based on the default checkbox state
+        toggleFieldVisibilityAndReset(depositCheckbox, depositField);
+        toggleFieldVisibilityAndReset(preferenceCheckbox, preferenceField);
+        toggleFieldVisibilityAndReset(salaryCheckbox, salaryField); // Handle salary field
+
+        // Add event listeners for checkbox changes
+        depositCheckbox.addEventListener("change", function () {
+            toggleFieldVisibilityAndReset(depositCheckbox, depositField);
+        });
+
+        preferenceCheckbox.addEventListener("change", function () {
+            toggleFieldVisibilityAndReset(preferenceCheckbox, preferenceField);
+        });
+
+        salaryCheckbox.addEventListener("change", function () {
+            toggleFieldVisibilityAndReset(salaryCheckbox, salaryField); // Handle salary field
+        });
+    });
+</script>
 
 
 

@@ -20,19 +20,38 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
     {
         // GET: LoanProduct
         private readonly LoanProductServices _LoanProductServices;
+        private readonly LoanProductCategoryServices _loanProductCategoryServices;
+        private readonly LoanTermServices _loanTermServices;
         private readonly PenaltyServices _PenaltyServices;
         private readonly ChartOfAccountServicesAnnex _accountingServices;
-        public LoanProductController(LoanProductServices LoanProductServices, ChartOfAccountServicesAnnex accountingServices, PenaltyServices penaltyServices)
+        public LoanProductController(LoanProductServices LoanProductServices, ChartOfAccountServicesAnnex accountingServices, PenaltyServices penaltyServices, LoanProductCategoryServices loanProductCategoryServices, LoanTermServices loanTermServices)
         {
             _LoanProductServices = LoanProductServices;
             _accountingServices = accountingServices;
             _PenaltyServices = penaltyServices;
+            _loanProductCategoryServices = loanProductCategoryServices;
+            _loanTermServices = loanTermServices;
         }
         public async Task<ActionResult> Index()
         {
             await GetValues();
             return View(new LoanProductObject());
         }
+        public ActionResult ProductListingPolicySet()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> Policy(string Key)
+        {
+            await GetValues();
+            var LoanProduct = await _LoanProductServices.GetLoanProduct(Key);
+            var loanProductObject = new LoanProductObject();
+            loanProductObject.UpdateLoanProductCommand = _LoanProductServices.ProductMappingToUpdateObject(LoanProduct, "N/A", "N/A");
+            return View(loanProductObject);
+
+        }
+        //Policy
         public async Task<ActionResult> LoanAccountMapping()
         {
 
@@ -71,6 +90,20 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         [HttpPost]
         public async Task<ActionResult> Update(LoanProductObject model)
         {
+
+            //var loanProductCategory = await _loanProductCategoryServices.GetLoanProductCategory(model.UpdateLoanProductCommand.LoanProductCategoryId); // Fetch LoanTerm details
+            //if (loanProductCategory == null)
+            //{
+            //    return Json(new
+            //    {
+            //        success = false,
+            //        status = false,
+            //        message = "The loan product category is not defined or could not be found for the selected product. Please ensure that a valid loan category is assigned before proceeding. If the issue persists, contact your system administrator for further assistance."
+            //    });
+            //}
+
+
+
             if (model.ServiceOption == "set_penalty")
             {
                 var data = await _PenaltyServices.Create(model.Penalty);
@@ -80,7 +113,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             else
             {
                 model.UpdateLoanProductCommand.ServiceOption = model.ServiceOption;
-                if (model.ServiceOption== "product")
+                if (model.ServiceOption == "product")
                 {
                     model.UpdateLoanProductCommand.ProductCode = model.AddLoanProductCommand.ProductCode;
                     model.UpdateLoanProductCommand.TargetType = model.AddLoanProductCommand.TargetType;
@@ -89,7 +122,60 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                     model.UpdateLoanProductCommand.Description = model.AddLoanProductCommand.Description;
                     model.UpdateLoanProductCommand.ActiveStatus = model.AddLoanProductCommand.ActiveStatus;
                     model.UpdateLoanProductCommand.ServiceOption = model.ServiceOption;
+                    model.UpdateLoanProductCommand.LoanTermId = model.AddLoanProductCommand.LoanTermId;
+                    model.UpdateLoanProductCommand.LoanProductCategoryId = model.AddLoanProductCommand.LoanProductCategoryId;
+                    model.UpdateLoanProductCommand.IsProductWithSavingFacilities = model.AddLoanProductCommand.IsProductWithSavingFacilities;
                 }
+                else if (model.ServiceOption == "duration")
+                {
+                    var selectedLoanTerm = await _loanTermServices.GetLoanTerm(model.UpdateLoanProductCommand.LoanTermId); // Fetch LoanTerm details
+                    if (selectedLoanTerm == null)
+                    {
+                        return Json(new
+                        {
+                            success = false,
+                            status = false,
+                            message = "The selected loan term is invalid. Please select a valid loan term and try again Or Set the loan term."
+                        });
+                    }
+
+                    // Validate the minimum duration period
+                    if (model.UpdateLoanProductCommand.MinimumDurationPeriod < selectedLoanTerm.MinInMonth ||
+                        model.UpdateLoanProductCommand.MinimumDurationPeriod > selectedLoanTerm.MaxInMonth)
+                    {
+                        return Json(new
+                        {
+                            success = false,
+                            status = false,
+                            message = $"The provided Minimum Duration Period of {model.UpdateLoanProductCommand.MinimumDurationPeriod} months does not fall within the allowable range of {selectedLoanTerm.MinInMonth} to {selectedLoanTerm.MaxInMonth} months for the selected loan term '{selectedLoanTerm.Name}'. Please review and adjust accordingly."
+                        });
+                    }
+
+                    // Validate the maximum duration period
+                    if (model.UpdateLoanProductCommand.MaximumDurationPeriod < selectedLoanTerm.MinInMonth ||
+                        model.UpdateLoanProductCommand.MaximumDurationPeriod > selectedLoanTerm.MaxInMonth)
+                    {
+                        return Json(new
+                        {
+                            success = false,
+                            status = false,
+                            message = $"The provided Maximum Duration Period of {model.UpdateLoanProductCommand.MaximumDurationPeriod} months exceeds the permissible range of {selectedLoanTerm.MinInMonth} to {selectedLoanTerm.MaxInMonth} months for the selected loan term '{selectedLoanTerm.Name}'. Please review and adjust your input."
+                        });
+                    }
+
+                    // Validate that minimum is not greater than maximum
+                    if (model.UpdateLoanProductCommand.MinimumDurationPeriod > model.UpdateLoanProductCommand.MaximumDurationPeriod)
+                    {
+                        return Json(new
+                        {
+                            success = false,
+                            status = false,
+                            message = $"The Minimum Duration Period ({model.UpdateLoanProductCommand.MinimumDurationPeriod} months) cannot be greater than the Maximum Duration Period ({model.UpdateLoanProductCommand.MaximumDurationPeriod} months) for the selected loan term '{selectedLoanTerm.Name}'. Please ensure the values are entered correctly."
+                        });
+                    }
+                }
+
+
                 var data = await _LoanProductServices.Update(model.UpdateLoanProductCommand);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
@@ -121,7 +207,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                     ViewBag.PenaltyTypes = productEnumAgregates.PenaltyTypes;
                     ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
                     var penalty = await _PenaltyServices.GetPenalty(KEY);
-                    
+
                     return PartialView(partialView, penalty.LoanProduct);
                 }
                 else if (path == "add_penalty")
@@ -148,14 +234,18 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                     await GetValues();
                     var LoanProduct = await _LoanProductServices.GetLoanProduct(KEY);
                     var loanProductObject = new LoanProductObject();
-                    loanProductObject.UpdateLoanProductCommand = _LoanProductServices.ProductMappingToUpdateObject(LoanProduct,"N/A","N/A");
+                    loanProductObject.UpdateLoanProductCommand = _LoanProductServices.ProductMappingToUpdateObject(LoanProduct, "N/A", "N/A");
                     loanProductObject.AddLoanProductCommand = new AddLoanProductCommand
                     {
                         ActiveStatus = LoanProduct.ActiveStatus,
                         Description = LoanProduct.Description,
                         Id = LoanProduct.Id,
                         ProductCode = LoanProduct.ProductCode,
-                        ProductName = LoanProduct.ProductName
+                        ProductName = LoanProduct.ProductName,
+                        TargetType = LoanProduct.TargetType,
+                        IsProductWithSavingFacilities = LoanProduct.IsProductWithSavingFacilities,
+                        LoanTermId = LoanProduct.LoanTermId,
+                        LoanProductCategoryId = LoanProduct.LoanProductCategoryId
 
                     };
                     return PartialView(partialView, loanProductObject);
@@ -168,9 +258,13 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         {
             var agreggates = await _LoanProductServices.GetAgreggates();
             var productEnumAgregates = await _LoanProductServices.GetLoanProductEnumAggregates();
+            var loanProductCategories = await _loanProductCategoryServices.GetLoanProductCategorys();
+            var loanTerms = await _loanTermServices.GetLoanTerms();
 
             ViewBag.SheduleTypes = _LoanProductServices.GetScheduleTypes();
             ViewBag.Penalties = agreggates.Penalties;
+            ViewBag.ProductCategories = loanProductCategories;
+            ViewBag.LoanTerms = loanTerms;
             ViewBag.Fees = agreggates.Fees;
             ViewBag.DocumentPackes = agreggates.DocumentPackes;
             ViewBag.GuranteePackes = agreggates.GuranteePackes;
@@ -189,7 +283,6 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             ViewBag.YesOrNo = productEnumAgregates.YesOrNo;
             ViewBag.LoanCategories = productEnumAgregates.LoanCategories;
             ViewBag.LoanTargets = productEnumAgregates.LoanTargets;
-            ViewBag.LoanTerms = productEnumAgregates.LoanTerms;
             //YesOrNo
             return true;
         }

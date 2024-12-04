@@ -18,6 +18,7 @@ using CBS.BusinessService.Application;
 using CBS.BusinessService;
 using CBS.BusinessService.LoanCommitee;
 using System.IO;
+using DocumentFormat.OpenXml.Bibliography;
 
 namespace CBS.FrontDesk.UI.Controllers.MemberOperation
 {
@@ -30,7 +31,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         private readonly LoanProductServices _loanProductServices;
         private readonly LoanPurposeServices _loanPurposeServices;
         private readonly LoanApplicationServices _loanApplicationServices;
-        private readonly LoanServices _loanServices;
+        private readonly LoanServices _loanservices;
         private readonly LoanAmortizationServices _loanAmortizationServices;
         private readonly LoanCommiteeValidationHistoryServices _loanCommiteeValidationHistoryServices;
         private readonly LoanApplicationCollateralServices _loanApplicationCollateralServices;
@@ -38,14 +39,16 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         private readonly LoanProductCollateralServices _loanProductCollateralServices;
         private readonly AttachedDocumentServices _attachedDocumentServices;
         private readonly DocumentServices _documentServices;
-        private readonly LoanServices _loanservices;
-        public MemberOperationController(IndividualProfileServices individualProfileServices, LoanProductServices loanProductServices = null, LoanPurposeServices loanPurposeServices = null, LoanApplicationServices loanApplicationServices = null, LoanServices loanServices = null, LoanAmortizationServices loanAmortizationServices = null, LoanCommiteeValidationHistoryServices loanCommiteeValidationHistoryServices = null, LoanApplicationCollateralServices loanApplicationCollateralServices = null, LoanGuarantorServices loanGuarantorServices = null, LoanProductCollateralServices loanProductCollateralServices = null, AttachedDocumentServices services = null, DocumentServices documentServices = null, LoanServices loanservices = null)
+        private readonly LoanTermServices _loanTermServices;
+        
+
+        public MemberOperationController(IndividualProfileServices individualProfileServices, LoanProductServices loanProductServices = null, LoanPurposeServices loanPurposeServices = null, LoanApplicationServices loanApplicationServices = null, LoanServices loanServices = null, LoanAmortizationServices loanAmortizationServices = null, LoanCommiteeValidationHistoryServices loanCommiteeValidationHistoryServices = null, LoanApplicationCollateralServices loanApplicationCollateralServices = null, LoanGuarantorServices loanGuarantorServices = null, LoanProductCollateralServices loanProductCollateralServices = null, AttachedDocumentServices services = null, DocumentServices documentServices = null, LoanTermServices loanTermServices = null)
         {
             _individualProfileServices = individualProfileServices;
             _loanProductServices = loanProductServices;
             _loanPurposeServices = loanPurposeServices;
             _loanApplicationServices = loanApplicationServices;
-            _loanServices = loanServices;
+            _loanservices = loanServices;
             _loanAmortizationServices = loanAmortizationServices;
             _loanCommiteeValidationHistoryServices = loanCommiteeValidationHistoryServices;
             _loanApplicationCollateralServices = loanApplicationCollateralServices;
@@ -53,7 +56,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             _loanProductCollateralServices = loanProductCollateralServices;
             _attachedDocumentServices = services;
             _documentServices = documentServices;
-            _loanservices = loanservices;
+            _loanTermServices = loanTermServices;
         }
         public async Task<ActionResult> Members()
         {
@@ -85,7 +88,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             return View(new MemberOperationPanel { LoanApplication = new LoanApplication { CustomerId = KEY }, AddLoanApplicationCommand = new AddLoanApplicationCommand { CustomerId = KEY }, Customer = customer.CustomerList });
 
 
-            //var CustomerLoans = await _loanServices.GetLoanByCustomerID(KEY);
+            //var CustomerLoans = await _loanservices.GetLoanByCustomerID(KEY);
         }
         public async Task<ActionResult> MyMembers()
         {
@@ -158,7 +161,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     }
                     else if (path == "loan_for_disbursed")
                     {
-                        var loan = await _loanServices.GetLoan(KEY);
+                        var loan = await _loanservices.GetLoan(KEY);
                         var Accounts = await _individualProfileServices.GetCustomerAccounts(loan.CustomerId);
                         var documentAttachedToLoans = loan.LoanApplication.DocumentAttachedToLoans;
                         var loanApplication = loan.LoanApplication;
@@ -307,7 +310,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     else if (path == "loan_detail")
                     {
                         ViewBag.PaymentModes = productEnumAgregates.PaymentModes;
-                        var loan = await _loanServices.GetLoan(KEY);
+                        var loan = await _loanservices.GetLoan(KEY);
                         var loanList = new List<Loan>(); // Replace Loan with the actual type of the loan object
                         loanList.Add(loan);
                         var loanApplication = await _loanApplicationServices.GetLoanApplication(loan.LoanApplicationId);
@@ -442,7 +445,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
 
                 if (model.AddLoanApplicationCommand.LoanApplicationType == "Reschedule")
                 {
-                    var loan = await _loanServices.GetLoan(model.AddLoanApplicationCommand.LoanId);
+                    var loan = await _loanservices.GetLoan(model.AddLoanApplicationCommand.LoanId);
                     model.AddLoanApplicationCommand.AmortizationType = loan.LoanApplication.AmortizationType;
                     model.AddLoanApplicationCommand.LoanCategory = loan.LoanApplication.LoanCategory;
                     model.AddLoanApplicationCommand.EconomicActivityId = loan.LoanApplication.EconomicActivityId;
@@ -488,8 +491,10 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             }
             var loanpurpose = await _loanPurposeServices.GetAllLoanPurpose();
             var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
+            var loanTerms = await _loanProductServices.GetProductTermOrDurationFromConfiguredProduct();
+            var categories = await _loanProductServices.GetProductCategoryFromConfiguredProduct();
             ViewBag.LoanTypes = productEnumAgregates.LoanTypes;
-
+            
             ViewBag.EconomicActivities = agrAggregates.EconomicActivities;
             ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
             ViewBag.RepaymentCycles = productEnumAgregates.RepaymentCycles;
@@ -506,7 +511,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             ViewBag.LoanCommiteeValidationStatuses = productEnumAgregates.LoanCommiteeValidationStatuses;
             ViewBag.LoanCategories = productEnumAgregates.LoanCategories;
             ViewBag.LoanTargets = productEnumAgregates.LoanTargets;
-            ViewBag.LoanTerms = productEnumAgregates.LoanTerms;
+            ViewBag.LoanTerms = loanTerms;
+            ViewBag.Categories = categories;
         }
 
 
@@ -530,8 +536,13 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             var data = await _individualProfileServices.Delete(id);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
-        public async Task<ActionResult> Ajaxloader(string Key, string path)
+        public async Task<ActionResult> Ajaxloader(string Key, string path,string loanTermId,string loanCategoryid, string loanCategoryValue)
         {
+            bool isSSF = false;
+            if (loanCategoryValue == "SpecialSavingFacilityLoan")
+            {
+                isSSF = true;
+            }
             if (Key != null)
             {
                 if (path == "loanrepayment_cycles")
@@ -539,12 +550,26 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     var listing = await _loanProductServices.GetLoanProductRepayments(Key, path);
                     return Json(listing, JsonRequestBehavior.AllowGet);
                 }
-                else if (path == "target")
+                else if (path == "load_loan_products")
                 {
-                    var listing = await _loanProductServices.GetLoanProductsDropDown(Key);
+                    var listing = await _loanProductServices.GetLoanProductsDropDown(Key, loanTermId, loanCategoryid, isSSF);
                     return Json(listing, JsonRequestBehavior.AllowGet);
 
                 }
+                else if (path == "get_configurated_target")
+                {
+                    var listing = await _loanProductServices.GetTargetsConfiguredForProductByTermOrDuration(Key, loanCategoryid, isSSF);
+                    return Json(listing, JsonRequestBehavior.AllowGet);
+
+                }
+               
+                else if (path == "get_puposes")
+                {
+                    var listing = await _loanPurposeServices.GetAllLoanPurpose(Key);
+                    return Json(listing, JsonRequestBehavior.AllowGet);
+
+                }
+                // 
                 else
                 {
                     var loans = await _loanservices.GetAllMembersCurrents(Key);
@@ -552,6 +577,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     return Json(listing, JsonRequestBehavior.AllowGet);
 
                 }
+                //
             }
             return Json(null, JsonRequestBehavior.AllowGet);
         }

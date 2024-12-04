@@ -202,24 +202,24 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             //}
 
             //var account = (await _AccountServices.GetAllAccounting()).Where(pp => pp.AccountNumberCU.EndsWith(_AccountServices.GetBranchCode()) && pp.Account3 == "451" && pp.LiaisonId == _AccountServices.GetBranchID());
-            //string name, balance = string.Empty;
+            //string Name, balance = string.Empty;
             //string Id = string.Empty;
             //if (account.Any())
             //{
             //    var acc = account.FirstOrDefault();
-            //    name = $"451[***]{_AccountServices.GetBranchCode()}-{acc.AccountName}";
+            //    Name = $"451[***]{_AccountServices.GetBranchCode()}-{acc.AccountName}";
             //    balance = (account.Sum(ff=> Convert.ToDecimal(ff.CurrentBalance))).ToString();
             //    Id = acc.Id;
             //}
             //else
             //{
             //    balance = "0";
-            //    name = $"No Vault Found";
+            //    Name = $"No Vault Found";
             //}
 
             //var mOdelsd = new CashClearing();
             ////mOdelsd.ExpectedAmount = Convert.ToDecimal( balance);
-            //mOdelsd.AccountInfo = name;
+            //mOdelsd.AccountInfo = Name;
             //return View(new CashDemandDataEntity { CashClearing = mOdelsd }); 
             #endregion
             List<CashReplenimentRequest> cashReplenimentRequestDtos = new List<CashReplenimentRequest>();

@@ -290,88 +290,81 @@ namespace CBS.BusinessService.Accounts
 
             if (statistics == null || statistics.Count == 0)
                 return mainDashboardStatistics;
-            // Assuming all entries have the same Branch info, we set Branch info based on the first entry
+            // Set branch information
             mainDashboardStatistics.BranchName = statistics[0].BranchName;
             mainDashboardStatistics.BranchId = statistics[0].BranchId;
             mainDashboardStatistics.BranchCode = statistics[0].BranchCode;
-
+            var datagp = statistics.GroupBy(x => x.DashboardAccountType).ToList();
             foreach (var stat in statistics)
             {
-                // Safely parse the DashboardAccountType to handle invalid or missing values
-                //if (Enum.TryParse(stat.DashboardAccountType, out DashboardAccountingType accountType))
                 if (Enum.TryParse(stat.DashboardAccountType, out DashboardAccountingType accountType))
                 {
                     switch (accountType)
+
                     {
+
                         case DashboardAccountingType.CashInHand:
                             mainDashboardStatistics.CashInHandBalance += stat.Balance;
                             break;
-
                         case DashboardAccountingType.CashInBank:
                             mainDashboardStatistics.CashInBankBalance += stat.Balance;
                             break;
-
                         case DashboardAccountingType.PreferenceShare:
                             mainDashboardStatistics.PreferenceShareBalance += stat.Balance;
                             break;
-
                         case DashboardAccountingType.OrdinaryShares:
                             mainDashboardStatistics.OrdinarySharesBalance += stat.Balance;
                             break;
-
                         case DashboardAccountingType.Deposit:
                             mainDashboardStatistics.DepositBalance += stat.Balance;
                             break;
-
                         case DashboardAccountingType.Savings:
                             mainDashboardStatistics.SavingsBalance += stat.Balance;
                             break;
-
                         case DashboardAccountingType.Gav:
                             mainDashboardStatistics.GavBalance += stat.Balance;
                             break;
-
                         case DashboardAccountingType.DailyCollections:
                             mainDashboardStatistics.DailyCollectionsBalance += stat.Balance;
                             break;
-
                         case DashboardAccountingType.MTNMobileMoney:
                             mainDashboardStatistics.MTNMobileMoneyBalance += stat.Balance;
                             break;
                         case DashboardAccountingType.MTNMobileMoneyMaster:
                             mainDashboardStatistics.MTNMobileMoneyMasterBalance += stat.Balance;
                             break;
-
                         case DashboardAccountingType.OrangeMoney:
                             mainDashboardStatistics.OrangeMoneyBalance += stat.Balance;
                             break;
                         case DashboardAccountingType.OrangeMoneyMaster:
                             mainDashboardStatistics.OrangeMoneyMasterBalance += stat.Balance;
                             break;
-
                         case DashboardAccountingType.TotalExpense:
                             mainDashboardStatistics.TotalExpenseBalance += stat.Balance;
-                            break;
-                        case DashboardAccountingType.TotalLiquidity:
-                            mainDashboardStatistics.TotalLiquidity += stat.Balance;
                             break;
 
                         case DashboardAccountingType.TotalIncome:
                             mainDashboardStatistics.TotalIncomeBalance += stat.Balance;
                             break;
-
-                            // Add additional cases if there are other account types to handle
                     }
                 }
                 else
                 {
-                    // Optional: Log or handle the case where DashboardAccountType could not be parsed
                     Console.WriteLine($"Warning: Unknown DashboardAccountType '{stat.DashboardAccountType}' encountered.");
                 }
             }
 
-            // Calculate the total of Preference and Ordinary Shares
-            mainDashboardStatistics.TotalSharesBalance =mainDashboardStatistics.PreferenceShareBalance + mainDashboardStatistics.OrdinarySharesBalance;
+            // Calculate Total Shares
+            mainDashboardStatistics.TotalSharesBalance = mainDashboardStatistics.PreferenceShareBalance
+                                                        + mainDashboardStatistics.OrdinarySharesBalance;
+
+            // Calculate Total Liquidity
+            mainDashboardStatistics.TotalLiquidity = mainDashboardStatistics.CashInHandBalance
+                                                    + mainDashboardStatistics.CashInBankBalance
+                                                    + mainDashboardStatistics.MTNMobileMoneyBalance
+                                                    + mainDashboardStatistics.OrangeMoneyBalance
+                                                    + mainDashboardStatistics.DailyCollectionsBalance
+                                                    - mainDashboardStatistics.TotalExpenseBalance;
 
             return mainDashboardStatistics;
         }
@@ -391,7 +384,7 @@ namespace CBS.BusinessService.Accounts
                 TotalActieAccounts = accountStatistics.TotalNumberOfActiveAccounts,
                 TotalInactiveAccounts = accountStatistics.TotalNumberOfInActiveAccounts,
                 TotalVolumeOfBlockedAccounts = accountStatistics.TotalBlockedAmount,
-                BranchName = accountStatistics.BranchId, // Assuming BranchId maps to a name in the system
+                BranchName = accountStatistics.BranchId, // Assuming BranchId maps to a Name in the system
                 TotalBranches = accountStatistics.TotalBranches, // This value can be adjusted if more than one branch is involved
                 TotalMembers = accountStatistics.TotalMembers, // Assuming this data is available in accountStatistics
                 TotalBalance = accountStatistics.TotalBalance, // Assuming this data is available in accountStatistics
@@ -520,6 +513,24 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+        public async Task<GeneralDailyDashboardDto> GetDailyDashboard(string branchid)
+        {
+            try
+            {
+                var dailyDashboardQuery = new GetDailyDashboardQuery { BranchId = branchid, DateFrom = CurrentDate, DateTo = CurrentDate };
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<GeneralDailyDashboardDto>>(APICallHelper.GetGeneralDailyDashboardByBranch, dailyDashboardQuery);
+                if (response.IsSuccess)
+                {
+                    return response.ApiResponseData.Data;
+                }
+                return new GeneralDailyDashboardDto();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
         public async Task<GeneralDailyDashboardDto> GetDailyDashboard(string datefrom, string dateto, string branchid)
         {
             try
@@ -557,7 +568,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-        public async Task<List<GeneralDailyDashboardDto>> GetDailyDashboards(string datefrom, string dateto)
+        public async Task<List<GeneralDailyDashboardDto>> GetAllDailyDashboards(string datefrom, string dateto)
         {
             try
             {
@@ -566,6 +577,32 @@ namespace CBS.BusinessService.Accounts
                 if (response.IsSuccess)
                 {
                     return response.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<List<GeneralDailyDashboardDto>> GetAllDailyDashboards()
+        {
+            try
+            {
+                var dailyDashboardQuery = new GetDailyDashboardQuery { DateFrom = CurrentDate, DateTo = CurrentDate };
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<List<GeneralDailyDashboardDto>>>(APICallHelper.GetAllGeneralDailyDashboard, dailyDashboardQuery);
+                if (response.IsSuccess)
+                {
+                    if (IsHeadOffice())
+                    {
+                        return response.ApiResponseData.Data;
+                    }
+                    else
+                    {
+                        return response.ApiResponseData.Data.Where(x=>x.BranchId==GetBranchID()).ToList();
+                    }
+                    
                 }
                 return null;
             }

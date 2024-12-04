@@ -143,10 +143,11 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required(ErrorMessage = "Loan target is required.")]
         [StringLength(50, ErrorMessage = "Loan target must be less than 50 characters.")]
         public string LoanTarget { get; set; } //Employee, Government, Group, Company, Individual, etc.
-
         [Required(ErrorMessage = "Loan category is required.")]
         [StringLength(50, ErrorMessage = "Loan category must be less than 50 characters.")]
         public string LoanCategory { get; set; } //Main_Loan OR Special_Saving_Facilities
+        [Required(ErrorMessage = "Loan product category is required")]
+        public string LoanProductCategoryId { get; set; } //Main_Loan OR Special_Saving_Facilities
 
         [Required(ErrorMessage = "Fee IDs are required.")]
         //[MinLength(1, ErrorMessage = "At least one Fee ID is required.")]
@@ -196,6 +197,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required(ErrorMessage = "Loan type is required.")]
         [StringLength(50, ErrorMessage = "Loan type must be less than 50 characters.")]
         public string LoanType { get; set; }
+        [Required(ErrorMessage = "Select loan term.")]
+        public string LoanTermId { get; set; }
 
         [Required(ErrorMessage = "Loan duration is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Loan duration must be at least 1 Month.")]
@@ -255,6 +258,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IsPreferenceShareAccountCoverageAmount { get; set; }
 
         public bool IsDepositAccountCoverageAmount { get; set; }
+        public bool IsSalryAccount { get; set; }
 
         public bool IsTermDeposiAccountCoverageAmount { get; set; }
 

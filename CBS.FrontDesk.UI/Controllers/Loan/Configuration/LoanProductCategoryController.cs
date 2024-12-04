@@ -15,13 +15,13 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
     [CheckSessionTimeOutAttribute]
 
-    public class PeriodController : BaseController
+    public class LoanProductCategoryController : BaseController
     {
-        // GET: Period
-        private readonly PeriodServices _PeriodServices;
-        public PeriodController(PeriodServices PeriodServices)
+        // GET: LoanProductCategory
+        private readonly LoanProductCategoryServices _loanProductCategoryServices;
+        public LoanProductCategoryController(LoanProductCategoryServices PeriodServices)
         {
-            _PeriodServices = PeriodServices;
+            _loanProductCategoryServices = PeriodServices;
         }
       
         public async Task<ActionResult> Index()
@@ -30,22 +30,22 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> Create(Period model)
+        public async Task<ActionResult> Create(LoanProductCategory model)
         {
             if (ModelState.IsValid)
             {
-                var data = await _PeriodServices.Create(model);
+                var data = await _loanProductCategoryServices.Create(model);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
             }
 
             return Json(new { success = false, status = false, message = "Fill the required fields." });
         }
         [HttpPost]
-        public async Task<ActionResult> Update(Period model)
+        public async Task<ActionResult> Update(LoanProductCategory model)
         {
             if (ModelState.IsValid)
             {
-                var data = await _PeriodServices.Update(model);
+                var data = await _loanProductCategoryServices.Update(model);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
             }
 
@@ -56,17 +56,17 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         {
             if (path=="list")
             {
-                var data = await _PeriodServices.GetPeriods();
+                var data = await _loanProductCategoryServices.GetLoanProductCategorys();
                 return PartialView(partialView, data);
             }
 
             else if (path == "new")
             {
-                return PartialView(partialView, new Period());
+                return PartialView(partialView, new LoanProductCategory());
             }
             else
             {
-                var Period = await _PeriodServices.GetPeriod(KEY);
+                var Period = await _loanProductCategoryServices.GetLoanProductCategory(KEY);
                 return PartialView(partialView, Period);
                 
             }
@@ -74,7 +74,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
         public async Task<ActionResult> Delete(string KEY)
         {
-            var data = await _PeriodServices.Delete(KEY);
+            var data = await _loanProductCategoryServices.Delete(KEY);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
     }

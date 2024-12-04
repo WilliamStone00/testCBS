@@ -244,7 +244,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 //                 requestedAmount = request.requestedAmount,
                 //                 BranchOffice = "",
                 //                 requetcomment = request.requetcomment,
-                //                 requesterUserId = user.name + "," + user.roleName,
+                //                 requesterUserId = user.Name + "," + user.roleName,
                 //                 RequestDate = request.RequestDate,
                 //                 approvedBy = request.approvedBy,
                 //                 approvedDate = request.approvedDate,

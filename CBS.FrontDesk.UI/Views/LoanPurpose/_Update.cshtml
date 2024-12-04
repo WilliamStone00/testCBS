@@ -1,21 +1,32 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanPurpose
+
 <div class="card-body">
-
     @using (Html.BeginForm("Update", "LoanPurpose", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-    {@Html.HiddenFor(model => model.id)
+    {
+        @Html.HiddenFor(model => model.id)
         <div class="row mt-2 gy-4">
-            <div class="col-md-8">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.purposeName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.purposeName, "", new { @class = "text-danger" })
-                    <label>LoanPurpose type</label>
+            <fieldset class="fieldset-custom">
+                <!-- Loan Product Category Field -->
+                <div class="col-md-12 mb-3" id="selectFeild">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.LoanProductCategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), "---Select category---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.LoanProductCategoryId, "", new { @class = "text-danger" })
+                        <label>Select loan product category</label>
+                    </div>
                 </div>
-            </div>
-
-        </div>    <div class="mt-4">
-
-        <button type="submit" class="btn btn-primary me-2">Update</button>
-
-    </div>
-}
+                <!-- Loan Purpose Type Field -->
+                <div class="col-md-12 mb-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.purposeName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.purposeName, "", new { @class = "text-danger" })
+                        <label>Loan purpose</label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary me-2">Save</button>
+            <button type="reset" class="btn btn-outline-secondary">Reset</button>
+        </div>
+    }
 </div>

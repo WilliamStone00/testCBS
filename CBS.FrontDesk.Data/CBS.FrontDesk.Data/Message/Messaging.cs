@@ -356,7 +356,7 @@ namespace CBS.FrontDesk.Data.Message
                                 Result.MessageString = $"Your Password must contain lower case.";
                                 break;
                             case ExecutionProcessOption.MustNotBeLoginName:
-                                Result.MessageString = $"Your Password must not be your login name";
+                                Result.MessageString = $"Your Password must not be your login Name";
                                 break;
 
                             case ExecutionProcessOption.ClientHasAPending:

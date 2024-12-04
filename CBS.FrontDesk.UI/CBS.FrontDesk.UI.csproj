@@ -404,6 +404,7 @@
     <Content Include="AppFiles\Images\Logog2XI.png" />
     <Content Include="AppFiles\Images\NBG.jpeg" />
     <Content Include="AppFiles\Images\NBG.png" />
+    <Content Include="AppFiles\Images\NBG_.jpeg" />
     <Content Include="AppFiles\Images\NBG_Login.jpeg" />
     <Content Include="AppFiles\Images\SideImageHeader.jpeg" />
     <Content Include="AppFiles\Images\SideImageHeader.png" />
@@ -590,11 +591,15 @@
     <Compile Include="Controllers\CustomerManagement\IndividualController.cs" />
     <Compile Include="Controllers\CustomerManagement\Policy\MemberAccountActivationPolicyController.cs" />
     <Compile Include="Controllers\Loan\Configuration\LoanDeliquencyConfigurationController.cs" />
+    <Compile Include="Controllers\Loan\Configuration\LoanTermController.cs" />
+    <Compile Include="Controllers\Support\HelpDeskController.cs" />
     <Compile Include="Controllers\ThirdPartyBankAccount\ThirdPartyBranchController.cs" />
     <Compile Include="Controllers\ThirdPartyBankAccount\ThirdPartyInstitutionController.cs" />
     <Compile Include="Controllers\TransactionManagement\ChargesWaivedController.cs" />
     <Compile Include="Controllers\TransactionManagement\AccountingDayController.cs" />
     <Compile Include="Controllers\TransactionManagement\DailyTellerAssignationController.cs" />
+    <Compile Include="Controllers\TransactionManagement\HolidayRecurringController.cs" />
+    <Compile Include="Controllers\TransactionManagement\HolidayController.cs" />
     <Compile Include="Controllers\TransactionManagement\MigrationController.cs" />
     <Compile Include="Controllers\TransactionManagement\OpenningOfDayController.cs" />
     <Compile Include="Controllers\TransactionManagement\OldLoanAccountingMapingController.cs" />
@@ -623,7 +628,7 @@
     <Compile Include="Controllers\Loan\Configuration\InstallmentTypeController.cs" />
     <Compile Include="Controllers\Loan\Configuration\LoanPurposeController.cs" />
     <Compile Include="Controllers\Loan\Configuration\PenaltyController.cs" />
-    <Compile Include="Controllers\Loan\Configuration\PeriodController.cs" />
+    <Compile Include="Controllers\Loan\Configuration\LoanProductCategoryController.cs" />
     <Compile Include="Controllers\Loan\Configuration\DocumentController.cs" />
     <Compile Include="Controllers\Loan\Configuration\TaxController.cs" />
     <Compile Include="Controllers\Loan\LoanTransactions\LoanController.cs" />
@@ -2546,6 +2551,7 @@
     <Content Include="Scripts\Js\Dashboard\Dailyoperations\HeadOfficeMembers.js" />
     <Content Include="Scripts\Js\Dashboard\Dailyoperations\HeadOffice.js" />
     <Content Include="Scripts\Js\Dashboard\Dailyoperations\BranchOffice.js" />
+    <Content Include="Scripts\Js\Dashboard\OpenBranches.js" />
     <Content Include="Scripts\Js\main.js\CashFlowManagementDeposit.js" />
     <Content Include="Scripts\Js\main.js\CashTracker.js" />
     <Content Include="Scripts\Js\main.js\ConnectionMonitor.js" />
@@ -2644,10 +2650,10 @@
     <Content Include="Views\Document\Index.cshtml" />
     <Content Include="Views\Document\_Data.cshtml" />
     <Content Include="Views\Document\_Create.cshtml" />
-    <Content Include="Views\Period\_Create.cshtml" />
-    <Content Include="Views\Period\_Data.cshtml" />
-    <Content Include="Views\Period\_Update.cshtml" />
-    <Content Include="Views\Period\Index.cshtml" />
+    <Content Include="Views\LoanProductCategory\_Create.cshtml" />
+    <Content Include="Views\LoanProductCategory\_Data.cshtml" />
+    <Content Include="Views\LoanProductCategory\_Update.cshtml" />
+    <Content Include="Views\LoanProductCategory\Index.cshtml" />
     <Content Include="Views\GlobalConfiguration\Index.cshtml" />
     <Content Include="Views\Saving\_AccountData.cshtml" />
     <Content Include="Views\Saving\Accounts.cshtml" />
@@ -3266,6 +3272,20 @@
     <Content Include="Views\Dashboard\_HeadOfficeOdinaryAccounts.cshtml" />
     <Content Include="Views\Dashboard\_HeadOfficeAccounting.cshtml" />
     <Content Include="Views\Dashboard\_HeadOfficeLoans.cshtml" />
+    <Content Include="Views\Dashboard\OpenedBranches.cshtml" />
+    <Content Include="Views\Dashboard\_OpenedBranchesData.cshtml" />
+    <Content Include="Views\LoanProduct\_DataPolicySet.cshtml" />
+    <Content Include="Views\LoanProduct\Policy.cshtml" />
+    <Content Include="Views\LoanProduct\ProductListingPolicySet.cshtml" />
+    <Content Include="Views\LoanTerm\_Create.cshtml" />
+    <Content Include="Views\LoanTerm\_Data.cshtml" />
+    <Content Include="Views\LoanTerm\Index.cshtml" />
+    <Content Include="Views\Holiday\_Create.cshtml" />
+    <Content Include="Views\Holiday\_Data.cshtml" />
+    <Content Include="Views\Holiday\Index.cshtml" />
+    <Content Include="Views\HolidayRecurring\_Create.cshtml" />
+    <Content Include="Views\HolidayRecurring\_Data.cshtml" />
+    <Content Include="Views\HolidayRecurring\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

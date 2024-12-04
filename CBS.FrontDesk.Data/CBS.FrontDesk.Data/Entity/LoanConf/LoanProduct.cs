@@ -36,8 +36,6 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
         [Required]
         public int MinimumDurationPeriod { get; set; }
-        [Required]
-        public string LoanTerm { get; set; }
 
 
         [Required]
@@ -151,13 +149,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string ChartOfAccountIdForWriteOffPrincipal { get; set; }
         public string ChartOfAccountIdForProvisionOnPrincipal { get; set; }
         public Penalty Penalty { get; set; }
-
+        public string LoanTermId { get; set; }
+        public LoanTerm LoanTerm { get; set; }
 
         public Tax Tax { get; set; }
 
         public List<LoanProductFee> LoanProductFeeJoins { get; set; }
 
         public List<Penalty> Penalties { get; set; }
+        public LoanProductCategory LoanProductCategory { get; set; }
 
         public List<LoanProductRepaymentCycle> LoanProductRepaymentCycles { get; set; } //Daily, Weekly, Biweekly, Monthly, Bimonthly, Quarterly, Every 4 Months, Semi-Annual, Every 9 Months, Yearly, Lump-Sum
 
@@ -183,7 +183,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             MinimumNumberOfRepayment = 0;
             MaximumNumberOfRepayment = 0;
             DefaultNumberOfRepayment = 0;
-
+            LoanTerm = new LoanTerm();
+            LoanProductCategory = new LoanProductCategory();
             LoanMinimumAmount = 0;
             LoanMaximumAmount = 0;
             MinimumProcessingFeeRate = 0;
@@ -216,6 +217,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     {
         public string Id { get; set; }
         public string ProductCode { get; set; }
+        public string LoanProductCategoryId { get; set; }
         public string ProductName { get; set; }
         public string LoanInterestPeriod { get; set; }//Per Day, Per Week, Per Month, Per Year
         public decimal MinimumInterestRate { get; set; }
@@ -268,6 +270,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string ChartOfAccountIdForLoanTransition { get; set; }
         public string ChartOfAccountIdForWriteOffPrincipal { get; set; }
         public string ChartOfAccountIdForProvisionOnPrincipal { get; set; }
+        public LoanProductCategory LoanProductCategory { get; set; }
         public List<string> RepaymentCycles { get; set; }
         public List<Penalty> Penalties { get; set; }
         public List<LoanProductRepaymentCycle> LoanProductRepaymentCycles { get; set; }//Daily, Weekly, Biweekly, Monthly, Bimonthly, Quarterly, Every 4 Months, Semi-Annual, Every 9 Months, Yearly, Lump-Sum
@@ -285,6 +288,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string LoanDeliquencyPeriod { get; set; }
         public string RepaymentTypeName { get; set; }
         public string LoanProductId { get; set; }
+        public string LoanTermId { get; set; }
+        public LoanTerm LoanTerm { get; set; }
+        public bool IsProductWithSavingFacilities { get; set; }
     }
 
     public class LoanProductObject
@@ -314,7 +320,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string ProductCode { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "Product name cannot be longer than 50 characters.")]
+        [StringLength(50, ErrorMessage = "Product Name cannot be longer than 50 characters.")]
         public string ProductName { get; set; }
 
         [Required]
@@ -322,10 +328,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string Description { get; set; }
 
         [Required]
-        [RegularExpression(@"^(Individual|Corporate|Employee|Government|Elected_Staff|League)$", ErrorMessage = "Target Type must be either 'Individual', 'Corporate', 'Employee','Elected_Staff','League' or 'Government'.")]
+        [RegularExpression(@"^(Individual|Moral|Employee|Private_Sectors|Public_Sectors|Elected_Staff|CamCCUL_Staff)$", ErrorMessage = "Target Type must be either Individual|Corporate|Employee|Private_Sectors|Public_Sectors|Elected_Staff|CamCCUL_Staff.")]
         public string TargetType { get; set; }
-
+        [Required(ErrorMessage = "Please select loan term")]
+        public string LoanTermId { get; set; }
         public bool ActiveStatus { get; set; }
+        [Required(ErrorMessage = "Loan product category is required.")]
+        public string LoanProductCategoryId { get; set; }
+        public bool IsProductWithSavingFacilities { get; set; }
+
     }
 
     public class UpdateLoanProductCommand
@@ -337,7 +348,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal MinimumInterestRate { get; set; }
         public decimal LoanMaximumAmount { get; set; }
         public string TargetType { get; set; }
-
+        public string LoanProductCategoryId { get; set; }
         public decimal MaximumInterestRate { get; set; }
         public string LoanDurationPeriod { get; set; }//Days, Weeks, Months, Years
         public int MinimumDurationPeriod { get; set; }
@@ -362,6 +373,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal LoanMinimumAmount { get; set; }
         public decimal MinimumCollateralPercentage { get; set; }
         public bool IsRequiredShareAccount { get; set; }
+        public bool IsProductWithSavingFacilities { get; set; }
+
         public bool IsRequiredSalaryccount { get; set; }
         public bool IsRequiredSavingAccount { get; set; }
         public bool IsRequresRegisteredPublicAuthority { get; set; }
@@ -396,6 +409,11 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string LoanDeliquencyPeriod { get; set; }
         public string RepaymentTypeName { get; set; }
         public string LoanProductId { get; set; }
+        [Required(ErrorMessage = "Please select loan term")]
+        public string LoanTermId { get; set; }
+
+        public LoanProductCategory LoanProductCategory { get; set; }
+        public LoanTerm LoanTerm { get; set; }
     }
 
     public class AddLoanDisbumentCommand

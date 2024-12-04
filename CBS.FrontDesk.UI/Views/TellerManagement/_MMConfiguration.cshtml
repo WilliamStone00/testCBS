@@ -64,7 +64,7 @@
                                         </span>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.AccountNumber, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.AccountNumber, "", new { @class = "text-danger" })
@@ -72,7 +72,7 @@
                                             <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the account associated with @Model.Teller.name form managing float."></i>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-9">
                                         <div class="form-floating form-floating-outline">
                                             @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyUserKeepingThePhone, new SelectList(ViewBag.Users, "Text", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyUserKeepingThePhone, "", new { @class = "text-danger" })
@@ -80,7 +80,7 @@
                                             <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the name of the person responsible for the float operation phone."></i>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyFloatNumber, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.MobileMoneyFloatNumber, "", new { @class = "text-danger" })

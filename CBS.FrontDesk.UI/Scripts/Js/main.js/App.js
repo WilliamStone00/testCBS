@@ -80,7 +80,7 @@ $(document).ready(function () {
             datePattern: ['m', 'y']
         });
     }
-
+    
     // CVV
     if (cvvMask) {
         new Cleave(cvvMask, {

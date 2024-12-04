@@ -78,6 +78,8 @@
     <Compile Include="Entity\AccountingDayObject\AccountingDay.cs" />
     <Compile Include="Entity\AccountingDayObject\BranchListing.cs" />
     <Compile Include="Entity\AccountingDayObject\DeleteAccountingDayCommand.cs" />
+    <Compile Include="Entity\AccountingDayObject\Holyday.cs" />
+    <Compile Include="Entity\AccountingDayObject\HolyDayRecurring.cs" />
     <Compile Include="Entity\AccountingDayObject\OpenOrCloseOfAccountingDayCommand.cs" />
     <Compile Include="Entity\AccountingDayObject\OpenOrCloseOfAccountingDayResultDto.cs" />
     <Compile Include="Entity\AccountingDayObject\GetAccountingDayQuery.cs" />
@@ -180,7 +182,8 @@
     <Compile Include="Entity\LoanConf\LoanProductCollateral.cs" />
     <Compile Include="Entity\LoanConf\LoanPurpose.cs" />
     <Compile Include="Entity\LoanConf\FeeRange.cs" />
-    <Compile Include="Entity\LoanConf\Period.cs" />
+    <Compile Include="Entity\LoanConf\LoanProductCategory.cs" />
+    <Compile Include="Entity\LoanConf\LoanTerm.cs" />
     <Compile Include="Entity\LoanConf\RescheduleLoan.cs" />
     <Compile Include="Entity\LoanConf\Tax.cs" />
     <Compile Include="Entity\LoanConf\WriteOffLoan.cs" />

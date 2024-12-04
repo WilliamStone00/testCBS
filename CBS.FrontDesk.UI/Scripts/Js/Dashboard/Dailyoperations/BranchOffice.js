@@ -30,8 +30,9 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     async function fetchDashboardData() {
+        var branchid = $("#branch_id").val();
         try {
-            const response = await fetch('/Dashboard/GetLiveDashboard');
+            const response = await fetch('/Dashboard/GetLiveOpenedBranchDashboard?branchid=' + branchid);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -91,11 +92,14 @@ document.addEventListener("DOMContentLoaded", function () {
             setElementText('numberOfCashOutMTN', data.NumberOfCashOutMTN);
             setElementText('numberOfCashOutOrange', data.NumberOfCashOutOrange);
             setElementText('numberOfCashInMTN', data.NumberOfCashInMTN);
+            setElementText('mobileMoneyCashOut', data.MobileMoneyCashOut);
+            
             setElementText('numberOfLoanFee', data.NumberOfLoanFee);
             setElementText('numberOfLoanDisbursementFee', data.NumberOfLoanDisbursementFee);
             setElementText('numberOfCashInOrange', data.NumberOfCashInOrange);
             setElementText('orangeMoney', data.OrangeMoney, true);
             setElementText('dailyCollectionCashOut', data.DailyCollectionCashOut, true);
+
             setElementText('dailyCollectionCashIn', data.DailyCollectionCashIn, true);
             setElementText('momocashCollection', data.MomocashCollection, true);
             setElementText('transfer', data.Transfer, true);

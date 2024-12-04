@@ -14,8 +14,8 @@ namespace CBS.FrontDesk.Helper
         /// <summary>
         /// Generates a unique insurance number with a specific prefix and maximum size.
         /// </summary>
-        /// <param name="maxSize">Maximum size of the generated number.</param>
-        /// <param name="prefix">Prefix for the generated number.</param>
+        /// <param Name="maxSize">Maximum size of the generated number.</param>
+        /// <param Name="prefix">Prefix for the generated number.</param>
         /// <returns>Generated insurance number.</returns>
         public static string GenerateInsuranceUniqueNumber(int maxSize, string prefix)
         {
@@ -26,7 +26,7 @@ namespace CBS.FrontDesk.Helper
         /// <summary>
         /// Generates a unique number with a specific maximum size.
         /// </summary>
-        /// <param name="maxSize">Maximum size of the generated number.</param>
+        /// <param Name="maxSize">Maximum size of the generated number.</param>
         /// <returns>Generated number.</returns>
         public static string GenerateUniqueNumber(int maxSize)
         {
@@ -46,7 +46,7 @@ namespace CBS.FrontDesk.Helper
         /// <summary>
         /// Adds '237' prefix to the MSISDN if it doesn't already start with it.
         /// </summary>
-        /// <param name="msisdn">Mobile number without prefix.</param>
+        /// <param Name="msisdn">Mobile number without prefix.</param>
         /// <returns>MSISDN with '237' prefix.</returns>
         public static string Add237Prefix(string msisdn)
         {
@@ -76,7 +76,7 @@ namespace CBS.FrontDesk.Helper
         /// <summary>
         /// Converts a DateTime to UTC if it's in Unspecified kind.
         /// </summary>
-        /// <param name="dateTime">The DateTime value.</param>
+        /// <param Name="dateTime">The DateTime value.</param>
         /// <returns>UTC representation of the input DateTime.</returns>
         public static DateTime ToUtc(this DateTime dateTime)
         {
@@ -92,7 +92,7 @@ namespace CBS.FrontDesk.Helper
         /// <summary>
         /// Converts a nullable DateTime from UTC to local time if it's in Unspecified kind.
         /// </summary>
-        /// <param name="dateTime">The nullable DateTime value in UTC.</param>
+        /// <param Name="dateTime">The nullable DateTime value in UTC.</param>
         /// <returns>Local time representation of the input DateTime, or null if input is null.</returns>
         public static DateTime? UtcToLocal(this DateTime? dateTime)
         {

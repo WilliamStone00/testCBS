@@ -1545,7 +1545,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     UploadModel.AccountModelList = dataList;
                                     if (_AccountServices.IsHeadOffice() == true)
                                     {
-                                        UploadModel.BranchId = _AccountServices.GetBranchID();
+                                        UploadModel.BranchId = model.BranchId;
                                     }
                                     else
                                     {

@@ -681,7 +681,7 @@ namespace CBS.BusinessService
                 if (couApiResponse.IsSuccess)
                 {
                     //var user = await GetUser(couApiResponse.ApiResponseData.Data.IssuedBy);
-                    //couApiResponse.ApiResponseData.Data.IssuedBy = user.name + "," + user.phoneNumber + " ";
+                    //couApiResponse.ApiResponseData.Data.IssuedBy = user.Name + "," + user.phoneNumber + " ";
                     return couApiResponse.ApiResponseData.Data;
                 }
                 return new List<UsersNotification>();
@@ -703,7 +703,7 @@ namespace CBS.BusinessService
                 if (couApiResponse.IsSuccess)
                 {
                     //var user = await GetUser(couApiResponse.ApiResponseData.Data.IssuedBy);
-                    //couApiResponse.ApiResponseData.Data.IssuedBy = user.name + "," + user.phoneNumber + " ";
+                    //couApiResponse.ApiResponseData.Data.IssuedBy = user.Name + "," + user.phoneNumber + " ";
                     return couApiResponse.ApiResponseData.Data;
                 }
                 return new List<UsersNotification>();
@@ -774,7 +774,7 @@ namespace CBS.BusinessService
         //        if (couApiResponse.IsSuccess)
         //        {
         //            var user = await GetUser(couApiResponse.ApiResponseData.Data.IssuedBy);
-        //            couApiResponse.ApiResponseData.Data.IssuedBy = user.name + "," + user.phoneNumber + " ";
+        //            couApiResponse.ApiResponseData.Data.IssuedBy = user.Name + "," + user.phoneNumber + " ";
         //            return couApiResponse.ApiResponseData.Data;
         //        }
         //        return new CashReplenimentRequest();

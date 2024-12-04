@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Config
 {
-    public class PeriodServices : BaseService
+    public class LoanProductCategoryServices : BaseService
     {
         private readonly ApiCallerHelper _loanConfigApiHelper;
 
-        public PeriodServices()
+        public LoanProductCategoryServices()
         {
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
         }
@@ -26,12 +26,12 @@ namespace CBS.BusinessService.Config
         {
             try
             {
-                var objPeriod = await GetPeriod(id);
-                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_Period, id), id));
+                var objLoanProductCategory = await GetLoanProductCategory(id);
+                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_LoanProductCategory, id), id));
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"{objPeriod.name}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{objLoanProductCategory.Name}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
@@ -39,7 +39,7 @@ namespace CBS.BusinessService.Config
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objPeriod, false, $"{objPeriod.name}", MessagesResults.Failed,
+                    GetExecutionMessages(objLoanProductCategory, false, $"{objLoanProductCategory.Name}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -50,16 +50,16 @@ namespace CBS.BusinessService.Config
             return ExecutionMessage;
         }
         
-        public async Task<IEnumerable<Period>> GetPeriods()
+        public async Task<IEnumerable<LoanProductCategory>> GetLoanProductCategorys()
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Period>>>(APICallHelper.GetAllPeriod);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProductCategory>>>(APICallHelper.GetAllLoanProductCategory);
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
                 }
-                return new List<Period>();
+                return new List<LoanProductCategory>();
             }
             catch (Exception ex)
             {
@@ -67,11 +67,11 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
-        public async Task<Period> GetPeriod(string id)
+        public async Task<LoanProductCategory> GetLoanProductCategory(string id)
         {
             try
             {
-                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<Period>>(string.Format(APICallHelper.Get_Update_Delete_Period, id));
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<LoanProductCategory>>(string.Format(APICallHelper.Get_Update_Delete_LoanProductCategory, id));
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;
@@ -84,24 +84,24 @@ namespace CBS.BusinessService.Config
                 throw ex;
             }
         }
-        public async Task<ExecutionMessages> Create(Period model)
+        public async Task<ExecutionMessages> Create(LoanProductCategory model)
         {
             try
             {
 
                 // Make an API call to create an individual profile
-                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<Period>>(APICallHelper.CreatePeriod, model);
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<LoanProductCategory>>(APICallHelper.CreateLoanProductCategory, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.name}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -113,28 +113,28 @@ namespace CBS.BusinessService.Config
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> Update(Period model)
+        public async Task<ExecutionMessages> Update(LoanProductCategory model)
         {
             try
             {
 
-                var Period = await GetPeriod(model.id);
-                if (Period != null)
+                var LoanProductCategory = await GetLoanProductCategory(model.Id);
+                if (LoanProductCategory != null)
                 {
-                    Period.name = model.name;
-                    Period.description = model.description;
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Period>>(string.Format(APICallHelper.Get_Update_Delete_Period, model.id), Period);
+                    LoanProductCategory.Name = model.Name;
+                    LoanProductCategory.Description = model.Description;
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanProductCategory>>(string.Format(APICallHelper.Get_Update_Delete_LoanProductCategory, model.Id), LoanProductCategory);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{model.name}", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
+                        GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }

@@ -38,7 +38,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 if (string.IsNullOrEmpty(strReportName) || rptSource == null || rptpath == null || rpttitle == null)
                 {
-                    Response.Write("<H2>No Report with such name found</H2>");
+                    Response.Write("<H2>No Report with such Name found</H2>");
                     return;
                 }
 
@@ -90,7 +90,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 if (string.IsNullOrEmpty(strReportName) || rptSource == null || rptpath == null || rpttitle == null)
                 {
-                    HttpContext.Response.Write("<H2>No Report with such name found</H2>");
+                    HttpContext.Response.Write("<H2>No Report with such Name found</H2>");
                     return;
                 }
 
@@ -230,7 +230,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     //string strBrnachName = System.Web.HttpContext.Current.Session["BranchName"]?.ToString() ?? "N/A";
                     string strPrintedBy = System.Web.HttpContext.Current.Session["FullName"]?.ToString() ?? "N/A";
                     string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
-                    // Validate if the report name is present
+                    // Validate if the report Name is present
                     if (string.IsNullOrEmpty(strReportName))
                     {
                         isValid = false;
@@ -265,7 +265,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     }
                     else
                     {
-                        Response.Write("<H2>Nothing Found; No Report name found</H2>");
+                        Response.Write("<H2>Nothing Found; No Report Name found</H2>");
                     }
                 }
                 else if (parameters == "3")
@@ -277,7 +277,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? "N/A";
                     string strBrnachName = System.Web.HttpContext.Current.Session["RPTBranchName"]?.ToString() ?? "N/A";
                     string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
-                    // Validate if the report name is present
+                    // Validate if the report Name is present
                     if (string.IsNullOrEmpty(strReportName))
                     {
                         isValid = false;
@@ -310,7 +310,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     }
                     else
                     {
-                        Response.Write("<H2>Nothing Found; No Report name found</H2>");
+                        Response.Write("<H2>Nothing Found; No Report Name found</H2>");
                     }
                 }
 
@@ -324,7 +324,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     string strBrnachName = System.Web.HttpContext.Current.Session["RPTBranchName"]?.ToString() ?? "N/A";
                     string strPrintedBy = System.Web.HttpContext.Current.Session["PrintedBy"]?.ToString() ?? "N/A";
                     string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
-                    // Validate if the report name is present
+                    // Validate if the report Name is present
                     if (string.IsNullOrEmpty(strReportName))
                     {
                         isValid = false;
@@ -357,7 +357,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     }
                     else
                     {
-                        Response.Write("<H2>Nothing Found; No Report name found</H2>");
+                        Response.Write("<H2>Nothing Found; No Report Name found</H2>");
                     }
                 }
                 else if (parameters == "6")
@@ -369,7 +369,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? "N/A";
                     string strPrintedBy = System.Web.HttpContext.Current.Session["PrintedBy"]?.ToString() ?? "N/A";
                     string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
-                    // Validate if the report name is present
+                    // Validate if the report Name is present
                     if (string.IsNullOrEmpty(strReportName))
                     {
                         isValid = false;
@@ -401,7 +401,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     }
                     else
                     {
-                        Response.Write("<H2>Nothing Found; No Report name found</H2>");
+                        Response.Write("<H2>Nothing Found; No Report Name found</H2>");
                     }
                 }
                 else if (parameters == "member_listing")
@@ -413,7 +413,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     //string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? "N/A";
                     string strPrintedBy = System.Web.HttpContext.Current.Session["ParamTitle"]?.ToString() ?? "N/A";
                     string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
-                    // Validate if the report name is present
+                    // Validate if the report Name is present
                     if (string.IsNullOrEmpty(strReportName))
                     {
                         isValid = false;
@@ -445,7 +445,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     }
                     else
                     {
-                        Response.Write("<H2>Nothing Found; No Report name found</H2>");
+                        Response.Write("<H2>Nothing Found; No Report Name found</H2>");
                     }
                 }
                 else
@@ -456,7 +456,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"]?.ToString() ?? "N/A";
                     string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? "N/A";
                     string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
-                    // Validate if the report name is present
+                    // Validate if the report Name is present
                     if (string.IsNullOrEmpty(strReportName))
                     {
                         isValid = false;
@@ -488,7 +488,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     }
                     else
                     {
-                        Response.Write("<H2>Nothing Found; No Report name found</H2>");
+                        Response.Write("<H2>Nothing Found; No Report Name found</H2>");
                     }
                 }
 
@@ -525,7 +525,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 string strPrintedBy = System.Web.HttpContext.Current.Session["FullName"]?.ToString() ?? "N/A";
                 string strtitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
 
-                // Validate if the report name is present
+                // Validate if the report Name is present
                 if (string.IsNullOrEmpty(strReportName))
                 {
                     isValid = false;
@@ -559,7 +559,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 }
                 else
                 {
-                    Response.Write("<H2>Nothing Found; No Report name found</H2>");
+                    Response.Write("<H2>Nothing Found; No Report Name found</H2>");
                 }
             }
             catch (Exception ex)
@@ -627,7 +627,7 @@ namespace CBS.FrontDesk.UI.Controllers
         //        }
         //        else
         //        {
-        //            Response.Write("<H2>Nothing Found; No Report name found</H2>");
+        //            Response.Write("<H2>Nothing Found; No Report Name found</H2>");
         //        }
         //    }
         //    catch (Exception ex)

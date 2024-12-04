@@ -582,7 +582,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string OperationEventCode { get; set; }
 
         [Required(ErrorMessage = "Designated User of the Phone is required.")]
-        [StringLength(100, ErrorMessage = "The name must be a maximum of 100 characters long.")]
+        [StringLength(100, ErrorMessage = "The Name must be a maximum of 100 characters long.")]
         public string MobileMoneyUserKeepingThePhone { get; set; }
 
         [Required(ErrorMessage = "Mobile Money Float Number is required.")]
@@ -748,6 +748,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<StringValues> primaryTellerEODStatuses { get; set; } = new List<StringValues>();
         public List<StringValues> accountantEODStatuses { get; set; } = new List<StringValues>();
         public List<StringValues> Statuses { get; set; } = new List<StringValues>();
+        public List<StringValues> HolidayTypes { get; set; } = new List<StringValues>();
+        public List<StringValues> RecurrencePatterns { get; set; } = new List<StringValues>();
+        public List<StringValues> DayOfWeeks { get; set; } = new List<StringValues>();
 
     }
     public class AddCustomerAccount

@@ -81,7 +81,7 @@ namespace CBS.BusinessService.Accounts
                     //                          ChartOfAccountIdForVAT = ol.ChartOfAccountIdForVAT,
                     //                          LoanTypeName = ol.LoanTypeName,
                     //                          BranchId = ol.BranchId,
-                    //                          BranchName = branch != null ? branch.Name : "N/A", // Map branch name if found
+                    //                          BranchName = branch != null ? branch.Name : "N/A", // Map branch Name if found
                     //                          BranchCode = branch != null ? branch.BranchCode : "N/A", // Map branch code if found
                     //                      }).ToList();
 

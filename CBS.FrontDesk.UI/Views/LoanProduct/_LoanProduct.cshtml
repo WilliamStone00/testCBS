@@ -11,6 +11,20 @@
             <div class="row g-4">
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.AddLoanProductCommand.LoanTermId, new SelectList(ViewBag.LoanTerms, "Id", "Name"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.AddLoanProductCommand.LoanTermId, "", new { @class = "text-danger " })
+                        <label>Loan Term</label>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.AddLoanProductCommand.LoanProductCategoryId, new SelectList(ViewBag.ProductCategories, "Id", "Name"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.AddLoanProductCommand.LoanProductCategoryId, "", new { @class = "text-danger " })
+                        <label>Loan product category</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating form-floating-outline">
                         @Html.DropDownListFor(m => m.AddLoanProductCommand.TargetType, new SelectList(ViewBag.LoanTargets, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.AddLoanProductCommand.TargetType, "", new { @class = "text-danger " })
                         <label>Target</label>
@@ -41,6 +55,12 @@
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.AddLoanProductCommand.ActiveStatus, new { @class = "form-check-input" })
                         <label class="form-check-label" for="isActive">Active status</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.AddLoanProductCommand.IsProductWithSavingFacilities, new { @class = "form-check-input" })
+                        <label class="form-check-label" for="isActive">Check to reserve this product as SSF (Special Saving Facility)</label>
                     </div>
                 </div>
             </div>

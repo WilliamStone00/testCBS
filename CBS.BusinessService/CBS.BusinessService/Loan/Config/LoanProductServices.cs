@@ -19,6 +19,7 @@ using CBS.FrontDesk.Data.Entity.Accounting;
 using System.Web.Mvc;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.Owin.Logging;
 
 namespace CBS.BusinessService.Config
 {
@@ -26,11 +27,15 @@ namespace CBS.BusinessService.Config
     {
         private readonly ApiCallerHelper _loanConfigApiHelper;
         private readonly ApiCallerHelper _BankConfigApiHelper;
+        private readonly LoanProductCategoryServices _loanProductCategoryServices;
+        private readonly LoanTermServices _loanTermServices;
 
-        public LoanProductServices()
+        public LoanProductServices(LoanProductCategoryServices loanProductCategoryServices = null, LoanTermServices loanTermServices = null)
         {
             _BankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
+            _loanProductCategoryServices = loanProductCategoryServices;
+            _loanTermServices = loanTermServices;
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -65,7 +70,7 @@ namespace CBS.BusinessService.Config
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProduct);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProductLighterVersion);
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
@@ -97,22 +102,22 @@ namespace CBS.BusinessService.Config
             }
         }
 
-        public async Task<SelectList> GetLoanProductsDropDown(string targetType)
+        public async Task<SelectList> GetLoanProductsDropDown(string targetType, string loanTermId, string loanCategoryid,bool isSSF)
         {
             try
             {
                 // Fetch data from API
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProduct);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProductLighterVersion);
 
                 // Check if the response is successful and contains data
                 if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData?.Data != null)
                 {
                     // Filter and map the data to the list of SelectListItem
                     var values = couApiResponse.ApiResponseData.Data
-                        .Where(x => x.TargetType == targetType)
+                        .Where(x => x.TargetType == targetType && x.ActiveStatus && x.LoanTermId == loanTermId && x.LoanProductCategoryId == loanCategoryid &&x.IsProductWithSavingFacilities== isSSF)
                         .Select(x => new SelectListItem
                         {
-                            Text = $"{x.ProductName}, [Min: {x.LoanMinimumAmount.ToString("#,##0.0")} : Max: {x.LoanMaximumAmount.ToString("#,##0.0")}]",
+                            Text = $"{x.ProductCode} {x.ProductName}, [Min: {x.LoanMinimumAmount.ToString("#,##0")} - Max: {x.LoanMaximumAmount.ToString("#,##0")}], [BTN: {x.LoanTerm.MinInMonth} - {x.LoanTerm.MaxInMonth} Month(s)]",
                             Value = x.Id
                         })
                         .ToList();
@@ -140,7 +145,121 @@ namespace CBS.BusinessService.Config
             }
         }
 
-       
+        public async Task<SelectList> GetTargetsConfiguredForProductByTermOrDuration(string loanTermId, string LoanProductCategoryId, bool isSSF)
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProductLighterVersion);
+
+                // Check if the response is successful and contains data
+                if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData?.Data != null)
+                {
+                    // Filter and map the data to the list of SelectListItem
+                    var values = couApiResponse.ApiResponseData.Data
+                        .Where(x => x.ActiveStatus && x.LoanTermId == loanTermId && x.LoanProductCategoryId == LoanProductCategoryId &&x.IsProductWithSavingFacilities== isSSF)
+                        .Select(x => new SelectListItem
+                        {
+                            Text = $"{x.TargetType}",
+                            Value = x.TargetType
+                        })
+                        .GroupBy(x => x.Value) // Group by Value to ensure distinct entries
+                        .Select(group => group.First()) // Select the first item from each group
+                        .ToList();
+
+                    // Default selected value (adjust as per your needs)
+                    var defaultSelectedValue = "default-value";
+
+                    // Return the SelectList
+                    return new SelectList(values, "Value", "Text", defaultSelectedValue);
+                }
+
+
+                // Return an empty SelectList with a default "No options available" option
+                return new SelectList(new List<SelectListItem>
+        {
+            new SelectListItem { Text = "No options available", Value = string.Empty }
+        }, "Value", "Text");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // _logger.LogError(ex, "An error occurred while getting the loan products dropdown.");
+
+                // Handle the exception accordingly
+                throw; // Re-throw the exception after logging
+            }
+        }
+        //GetProductTermOrDurationFromConfiguredProduct
+        public async Task<List<LoanProductCategory>> GetProductCategoryFromConfiguredProduct()
+        {
+            try
+            {
+                // Fetch loan products using the API helper
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProductLighterVersion);
+
+                // Return an empty list if the API response is unsuccessful or data is null
+                if (!(couApiResponse?.IsSuccess == true && couApiResponse.ApiResponseData?.Data != null))
+                {
+                    return new List<LoanProductCategory>();
+                }
+
+                // Extract loan products
+                var loanProducts = couApiResponse.ApiResponseData.Data;
+
+                // Fetch loan product categories
+                var productsCats = await _loanProductCategoryServices.GetLoanProductCategorys();
+
+                // Perform join to filter categories based on loan products
+                var productCategories = productsCats
+                    .Where(pc => loanProducts.Any(lp => lp.LoanProductCategoryId == pc.Id && lp.ActiveStatus))
+                    .ToList();
+
+                return productCategories;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging purposes
+
+                // Rethrow the exception to propagate it further
+                throw;
+            }
+        }
+
+        public async Task<List<LoanTerm>> GetProductTermOrDurationFromConfiguredProduct()
+        {
+            try
+            {
+                // Fetch loan products using the API helper
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProductLighterVersion);
+
+                // Return an empty list if the API response is unsuccessful or data is null
+                if (!(couApiResponse?.IsSuccess == true && couApiResponse.ApiResponseData?.Data != null))
+                {
+                    return new List<LoanTerm>();
+                }
+
+                // Extract loan products
+                var loanProducts = couApiResponse.ApiResponseData.Data;
+
+                // Fetch loan product termes
+                var loanTerms = await _loanTermServices.GetLoanTerms();
+
+                // Perform join to filter categories based on loan products
+                var terms = loanTerms
+                    .Where(pc => loanProducts.Any(lp => lp.LoanTermId == pc.Id))
+                    .ToList();
+
+                return terms;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging purposes
+
+                // Rethrow the exception to propagate it further
+                throw;
+            }
+        }
+
         public async Task<IEnumerable<StringValues>> GetFees()
         {
             try
@@ -169,7 +288,9 @@ namespace CBS.BusinessService.Config
                 var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<LoanProduct>>(string.Format(APICallHelper.Get_Update_Delete_LoanProduct, id));
                 if (cusResponseObject.IsSuccess)
                 {
-                    return cusResponseObject.ApiResponseData.Data;
+                    var data = cusResponseObject.ApiResponseData.Data;
+
+                    return data;
                 }
                 return null;
             }
@@ -225,7 +346,7 @@ namespace CBS.BusinessService.Config
             }
         }
 
-       
+
         private SelectList ProcessApiResponseResponse(List<Loan> loans)
         {
             var values = loans.Select(a => new StringValues
@@ -237,7 +358,7 @@ namespace CBS.BusinessService.Config
             return new SelectList(values.ToList(), "Value", "Text", defaultSelectedValue);
 
         }
-       
+
         private SelectList ProcessApiResponseResponse(LoanProduct product, string path)
         {
             var values = product.LoanProductRepaymentCycles.Select(a => new StringValues
@@ -250,7 +371,7 @@ namespace CBS.BusinessService.Config
 
         }
 
-       
+
 
         public async Task<LoanProductEnumAgregates> GetLoanProductEnumAggregates()
         {
@@ -269,6 +390,7 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+
         public async Task<ExecutionMessages> Create(AddLoanProductCommand model)
         {
             try
@@ -306,7 +428,12 @@ namespace CBS.BusinessService.Config
                 {
                     Id = product.Id,
                     ProductCode = product.ProductCode,
+                    LoanProductCategoryId = product.LoanProductCategoryId,
+                    LoanProductCategory = product.LoanProductCategory ?? new LoanProductCategory { Name = "N/A" },
+                    LoanProductId = product.Id,
                     TargetType = product.TargetType,
+                    LoanTermId = product.LoanTermId,
+                    LoanTerm = product.LoanTerm,
                     LoanMaximumAmount = product.LoanMaximumAmount,
                     ProductName = product.ProductName,
                     LoanInterestPeriod = product.LoanInterestPeriod,
@@ -317,6 +444,7 @@ namespace CBS.BusinessService.Config
                     MaximumDurationPeriod = product.MaximumDurationPeriod,
                     RequiresGuarantor = product.RequiresGuarantor,
                     IsInterestWaiverApplied = product.IsInterestWaiverApplied,
+                    IsProductWithSavingFacilities = product.IsProductWithSavingFacilities,
                     MinimumInterestWaiver = product.MinimumInterestWaiver,
                     MaximumInterestWaiver = product.MaximumInterestWaiver,
                     IsChargesApplied = product.IsChargesApplied,
@@ -395,6 +523,10 @@ namespace CBS.BusinessService.Config
                         LoanProduct.ActiveStatus = model.ActiveStatus;
                         LoanProduct.Description = model.Description;
                         LoanProduct.TargetType = model.TargetType;
+                        LoanProduct.LoanProductCategoryId = model.LoanProductCategoryId;
+                        LoanProduct.LoanTermId = model.LoanTermId;
+                        LoanProduct.IsProductWithSavingFacilities = model.IsProductWithSavingFacilities;
+
                     }
                     else if (model.ServiceOption == "gurantee")
                     {
@@ -420,7 +552,7 @@ namespace CBS.BusinessService.Config
                         LoanProduct.LoanMinimumAmount = model.LoanMinimumAmount;
                         LoanProduct.MinimumDownPaymentPercentage = model.MinimumDownPaymentPercentage;
                         LoanProduct.LoanMaximumAmount = model.LoanMaximumAmount;
-                        LoanProduct.TargetType = model.TargetType;
+                        //LoanProduct.TargetType = model.TargetType;
 
                     }
                     else if (model.ServiceOption == "topup")
@@ -505,7 +637,7 @@ namespace CBS.BusinessService.Config
                         LoanProduct.MinimumChargesStartDayAfterLoanDueDate = model.MinimumChargesStartDayAfterLoanDueDate;
                         LoanProduct.MaximumChargesStartDayAfterLoanDueDate = model.MaximumChargesStartDayAfterLoanDueDate;
                         LoanProduct.DefaulChargesStartDayAfterLoanDueDate = model.DefaulChargesStartDayAfterLoanDueDate;
-                        
+
                     }
                     var dataobject = ProductMappingToUpdateObject(LoanProduct, model.ServiceOption, LoanProduct.UpdateOption);
                     var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanProduct>>(string.Format(APICallHelper.Get_Update_Delete_LoanProduct, model.Id), dataobject);

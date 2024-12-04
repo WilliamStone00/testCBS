@@ -53,7 +53,7 @@ namespace CBS.FrontDesk.UI
 
         protected void Application_PreSendRequestHeaders()
         {
-            // Remove server version details and set custom server name
+            // Remove server version details and set custom server Name
             Response.Headers.Remove("Server");
             Response.Headers.Remove("X-AspNet-Version");
             Response.Headers.Remove("X-Powered-By");

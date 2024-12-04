@@ -160,11 +160,11 @@ namespace BusinessServices
         /// This function create archives of all files created for previous days and delete files already archived.
         /// param: DestinationzipPath, The destination to save the archive files. Path example, @"C:\ServiceLogs\Momokash\KYC_SCORING\Archive".
         /// param: sourcefilepath, The source path where files are being read from. Path example, @"C:\ServiceLogs\Momokash\KYC_SCORING\Log".
-        /// param: filename, The name file the saved archive file. example KYC_SCORING.
+        /// param: filename, The Name file the saved archive file. example KYC_SCORING.
         /// </summary>
-        /// <param name="DestinationzipPath">The destination to save the archive files. Path example, @"C:\ServiceLogs\Momokash\KYC_SCORING\Archive"</param>
-        /// <param name="sourcefilepath">The source path where files are being read from. Path example, @"C:\ServiceLogs\Momokash\KYC_SCORING\Log"</param>
-        /// <param name="filename">The name file the saved archive file. example KYC_SCORING</param>
+        /// <param Name="DestinationzipPath">The destination to save the archive files. Path example, @"C:\ServiceLogs\Momokash\KYC_SCORING\Archive"</param>
+        /// <param Name="sourcefilepath">The source path where files are being read from. Path example, @"C:\ServiceLogs\Momokash\KYC_SCORING\Log"</param>
+        /// <param Name="filename">The Name file the saved archive file. example KYC_SCORING</param>
         public void CreateFileArchives(string DestinationzipPath, string sourcefilepath, string filename)
         {
             if (!Directory.Exists(DestinationzipPath))
@@ -320,8 +320,8 @@ namespace BusinessServices
         /// Key e.g =Loan_List
         /// Criterial e.g=20201210 transaction date
         /// </summary>
-        /// <param name="Key"></param>
-        /// <param name="Criteria"></param>
+        /// <param Name="Key"></param>
+        /// <param Name="Criteria"></param>
         /// <returns>Concatinated key as (Loan_List:20201210) for example.</returns>
         public string GenerateKey(string Key, string Criteria)
         {
@@ -1402,7 +1402,7 @@ namespace BusinessServices
         /// <summary>
         /// Returns and interger when subscracting two date
         /// </summary>
-        /// <param name="date"></param>
+        /// <param Name="date"></param>
         /// <returns></returns>
         public int DateDefferenceReturningCount(DateTime date)
         {
@@ -1558,8 +1558,8 @@ namespace BusinessServices
         /// 10. dddd/MMMM/yyyy
         /// 0. MM/dd/yyyy
         /// </summary>
-        /// <param name="date"></param>
-        /// <param name="select"></param>
+        /// <param Name="date"></param>
+        /// <param Name="select"></param>
         /// <returns></returns>
         public string GetDateFormat(DateTime date, int select = 0)
         {

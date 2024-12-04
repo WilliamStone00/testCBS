@@ -11,7 +11,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         // ISO 4217 currency code
         public string  Code { get; set; }
 
-        // Full currency name
+        // Full currency Name
         public string  Name { get; set; }
 
         // Number of decimal places

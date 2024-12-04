@@ -144,7 +144,7 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             if (Session == null || string.IsNullOrEmpty(sessionName))
             {
-                return false; // Session or session name is null
+                return false; // Session or session Name is null
             }
 
             var sessionValue = Session[sessionName];
@@ -544,7 +544,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 draw = queryParams["draw"],
                 start = int.TryParse(queryParams["start"], out var start) ? start : 0,
                 length = int.TryParse(queryParams["length"], out var length) ? length : 10,
-                sortColumnName = queryParams[$"columns[{queryParams["order[0][column]"]}][name]"],
+                sortColumnName = queryParams[$"columns[{queryParams["order[0][column]"]}][Name]"],
                 sortColumnDirection = queryParams["order[0][dir]"],
                 searchValue = queryParams["search[value]"] ?? string.Empty
             };
@@ -564,7 +564,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 draw = form["draw"],
                 start = int.TryParse(form["start"], out var start) ? start : 0,
                 length = int.TryParse(form["length"], out var length) ? length : 10,
-                sortColumnName = form[$"columns[{form["order[0][column]"]}][name]"],
+                sortColumnName = form[$"columns[{form["order[0][column]"]}][Name]"],
                 sortColumnDirection = form["order[0][dir]"],
                 searchValue = form["search[value]"] ?? string.Empty
             };
@@ -586,7 +586,7 @@ namespace CBS.FrontDesk.UI.Controllers
         //    dataTableOptions.start = Convert.ToInt32(context.Request.QueryString["start"]);
         //    dataTableOptions.length = Convert.ToInt32(context.Request.QueryString["length"]);
         //    //dataTableOptions.sortColumnName = context.Request.QueryString["order[0][column]"];
-        //    dataTableOptions.sortColumnName = context.Request.QueryString["columns[" + context.Request.QueryString["order[0][column]"] + "][name]"];
+        //    dataTableOptions.sortColumnName = context.Request.QueryString["columns[" + context.Request.QueryString["order[0][column]"] + "][Name]"];
         //    dataTableOptions.sortColumnDirection = context.Request.QueryString["order[0][dir]"];
         //    dataTableOptions.searchValue = context.Request.QueryString["search[value]"];
 
@@ -609,7 +609,7 @@ namespace CBS.FrontDesk.UI.Controllers
         //    dataTableOptions.start = Convert.ToInt32(request.Form.GetValues("start")[0]);
         //    // Paging Length 10,20
         //    dataTableOptions.length = Convert.ToInt32(request.Form.GetValues("length")[0]);
-        //    // Sort Column Index (changed from name to index)
+        //    // Sort Column Index (changed from Name to index)
         //    dataTableOptions.sortColumnName = Convert.ToInt32(request.Form.GetValues("order[0][column]")[0]);
         //    // Sort Column Direction ( asc ,desc)
         //    dataTableOptions.sortColumnDirection = request.Form.GetValues("order[0][dir]")[0];
@@ -709,17 +709,17 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             try
             {
-                string body = "<b>Dear " + user.firstName.ToUpper() + "</b><br/>Your momokash account was successfully created." + "<br/>User name: <b>" + user.userName + "</b><br/>Password: <b>" + user.refreshToken + "</b><b><br/><a href=" + domain + " class='btn-gradient-primary' style='font-size: 14px; text-decoration: none'>Login to portal</a></b>";
+                string body = "<b>Dear " + user.firstName.ToUpper() + "</b><br/>Your momokash account was successfully created." + "<br/>User Name: <b>" + user.userName + "</b><br/>Password: <b>" + user.refreshToken + "</b><b><br/><a href=" + domain + " class='btn-gradient-primary' style='font-size: 14px; text-decoration: none'>Login to portal</a></b>";
                 string subject = "MOMOKASH ACCOUNT CREATION";
                 if (smstype == "Registration")
                 {
-                    body = "<b>Dear " + user.firstName.ToUpper() + "</b><br/>Your momokash account was successfully created." + "<br/>User name: <b>" + user.userName + "</b><br/>Password: <b>" + user.refreshToken + "</b><b><br/><a href=" + domain + " class='btn-gradient-primary' style='font-size: 14px; text-decoration: none'>Login to portal</a></b>";
+                    body = "<b>Dear " + user.firstName.ToUpper() + "</b><br/>Your momokash account was successfully created." + "<br/>User Name: <b>" + user.userName + "</b><br/>Password: <b>" + user.refreshToken + "</b><b><br/><a href=" + domain + " class='btn-gradient-primary' style='font-size: 14px; text-decoration: none'>Login to portal</a></b>";
                 }
                 else if (smstype == "Reset")
                 {
                     string data = Session["FullName"].ToString();
                     subject = "MOMOKASH PASSWORD RESET";
-                    body = "<b>Dear " + user.firstName.ToUpper() + "</b><br/>Your momokash account was successfully reseted by " + data.ToUpper() + "\n" + "<br/>User name: <b>" + user.userName + "</b><br/>New password: <b>" + user.refreshToken + "</b><b><br/><a href=" + domain + " class='btn-gradient-primary' style='font-size: 14px; text-decoration: none'>Login to portal using new password</a></b>";
+                    body = "<b>Dear " + user.firstName.ToUpper() + "</b><br/>Your momokash account was successfully reseted by " + data.ToUpper() + "\n" + "<br/>User Name: <b>" + user.userName + "</b><br/>New password: <b>" + user.refreshToken + "</b><b><br/><a href=" + domain + " class='btn-gradient-primary' style='font-size: 14px; text-decoration: none'>Login to portal using new password</a></b>";
                 }
 
                 SmtpSection smtpSection = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");

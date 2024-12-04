@@ -4,6 +4,29 @@
     <div class="row my-4">
         <div class="accordion" id="collapsibleSection">
             <div class="card accordion-item mb-3">
+                @if (Model.UpdateLoanProductCommand.LoanMinimumAmount <= 0 ||
+Model.UpdateLoanProductCommand.LoanMaximumAmount <= 0 ||
+Model.UpdateLoanProductCommand.LoanMinimumAmount > Model.UpdateLoanProductCommand.LoanMaximumAmount)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Validation Error:</strong>
+                        <ul>
+                            @if (Model.UpdateLoanProductCommand.LoanMinimumAmount <= 0)
+                            {
+                                <li>Minimum Loan Amount must be greater than 0.</li>
+                            }
+                            @if (Model.UpdateLoanProductCommand.LoanMaximumAmount <= 0)
+                            {
+                                <li>Maximum Loan Amount must be greater than 0.</li>
+                            }
+                            @if (Model.UpdateLoanProductCommand.LoanMinimumAmount > Model.UpdateLoanProductCommand.LoanMaximumAmount)
+                            {
+                                <li>Minimum Loan Amount cannot exceed Maximum Loan Amount.</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
                 <h2 class="accordion-header" id="headingDeliveryAddress">
                     <button type="button"
                             class="accordion-button"
@@ -30,11 +53,17 @@ Key Points:
                                 <div class="row g-4">
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.TargetType, new SelectList(ViewBag.LoanTargets, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", @readonly = true })
+                                            @Html.DropDownListFor(
+                                                m => m.UpdateLoanProductCommand.TargetType,
+                                                new SelectList(ViewBag.LoanTargets, "Value", "Text"),
+                                                "---Select---",
+                                                new { @class = "form-control select2", @search = "true", disabled = "disabled" }
+                                            )
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.TargetType, "", new { @class = "text-danger " })
                                             <label>Target</label>
                                         </div>
                                     </div>
+
                                     <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.ProductCode, new { @class = "form-control", @readonly = true })
@@ -152,16 +181,17 @@ Key Points:
                                     </div>
                                     <div class="col-6">
                                         <div class="form-check">
-                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsRequredIrrivocableSalaryTransfer, new { @class = "form-check-input" })
+                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsRequredIrrivocableSalaryTransfer, new { @class = "form-check-input", disabled = "disabled" })
                                             <label class="form-check-label" for="isActive">Requires irrivocable fund transfer</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-check">
-                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsRequresRegisteredPublicAuthority, new { @class = "form-check-input" })
+                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsRequresRegisteredPublicAuthority, new { @class = "form-check-input", disabled = "disabled" })
                                             <label class="form-check-label" for="isActive">Requires registered public authority</label>
                                         </div>
                                     </div>
+
                                     <h6>Collateral</h6>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
@@ -188,7 +218,7 @@ Key Points:
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockedSavingAccount, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Blocked saving account for operations above placed amount </label>
+                                            <label class="form-check-label" for="isActive">Blocked down payments for saving account. </label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -201,19 +231,20 @@ Key Points:
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockedSalaryAccount, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Blocked salary account for operations above placed amount </label>
+                                            <label class="form-check-label" for="isActive">Blocked salary account for standing orders. </label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockedGuarantorAccount, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Blocked co-guarantors account for operations above placed amount </label>
+                                            <label class="form-check-label" for="isActive">Blocked co-guarantors account. </label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary me-2">Update</button>
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
+                                    @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
                                     <input type="hidden" name="ServiceOption" value="gurantee" id="ServiceOption" />
                                 </div>
                             </fieldset>
@@ -259,6 +290,7 @@ Key Points:
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary me-2">Update</button>
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
+                                    @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
                                     <input type="hidden" name="ServiceOption" value="topup" id="ServiceOption" />
                                 </div>
                             </fieldset>
@@ -351,6 +383,7 @@ Key Points:
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary me-2">Update</button>
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
+                                    @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
                                     <input type="hidden" name="ServiceOption" value="interest" id="ServiceOption" />
                                 </div>
                             </fieldset>
@@ -361,6 +394,27 @@ Key Points:
 
 
             <div class="card accordion-item mb-3">
+                <!-- Check if LoanTerm is not set -->
+                @if (Model.UpdateLoanProductCommand.LoanTerm.Name == "N/A" ||
+                    string.IsNullOrEmpty(Model.UpdateLoanProductCommand.LoanTerm.Name) ||
+                    Model.UpdateLoanProductCommand.LoanTerm.MinInMonth == 0 ||
+                    Model.UpdateLoanProductCommand.LoanTerm.MaxInMonth == 0)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Configuration Missing:</strong>
+                        <ul>
+                            @if (Model.UpdateLoanProductCommand.LoanTerm.Name == "N/A" || string.IsNullOrEmpty(Model.UpdateLoanProductCommand.LoanTerm.Name))
+                            {
+                                <li>Loan Term is not configured for this loan product. Please set the loan term before updating duration parameters.</li>
+                            }
+                            @if (Model.UpdateLoanProductCommand.LoanTerm.MinInMonth == 0 || Model.UpdateLoanProductCommand.LoanTerm.MaxInMonth == 0)
+                            {
+                                <li>Loan Term duration parameters (Minimum or Maximum) are not properly set. Ensure both values are greater than 0 before updating duration parameters.</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
                 <h2 class="accordion-header" id="headingPaymentMethod">
                     <button type="button"
                             class="accordion-button collapsed"
@@ -368,7 +422,7 @@ Key Points:
                             data-bs-target="#collapsePaymentMethod"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod">
-                        Duration
+                        Duration in Months
                         <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="Duration: Set the loan duration parameters including the minimum, default, and maximum duration for the loan product.
 Key Points:
 1. Minimum Loan Duration: Specify the shortest duration allowed for the loan.
@@ -377,54 +431,50 @@ Key Points:
 4. Flexibility: Offer customizable loan durations to meet borrower needs.
 5. Risk Mitigation: Balance risk and borrower preferences in setting loan duration parameters.
 6. Market Analysis: Consider market trends and demand when determining loan duration limits."></i>
-
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod"
                      class="accordion-collapse collapse"
                      aria-labelledby="headingPaymentMethod"
                      data-bs-parent="#collapsibleSection">
-
                     <div class="accordion-body">
                         @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
                             <fieldset class="fieldset-custom">
-                                <legend>Loan duration</legend>
+                                <legend>Loan Duration (In Months)</legend>
                                 <div class="row g-4">
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.LoanDurationPeriod, new SelectList(ViewBag.LoanDurationPeriods, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.LoanDurationPeriod, "", new { @class = "text-danger " })
-                                            <label>Loan duration period</label>
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.LoanTerm.Name, new { @class = "form-control", @readonly = true })
+                                            <label>Loan Duration Period</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumDurationPeriod, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumDurationPeriod, "", new { @class = "text-danger" })
-                                            <label>Minimum loan duration period</label>
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.LoanTerm.MinInMonth, new { @class = "form-control", @readonly = true })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.LoanTerm.MinInMonth, "", new { @class = "text-danger" })
+                                            <label>Minimum month(s)</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MaximumDurationPeriod, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MaximumDurationPeriod, "", new { @class = "text-danger" })
-                                            <label>Maximum loan duration period</label>
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.LoanTerm.MaxInMonth, new { @class = "form-control", @readonly = true })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.LoanTerm.MaxInMonth, "", new { @class = "text-danger" })
+                                            <label>Maximum month(s)</label>
                                         </div>
                                     </div>
                                 </div>
 
-
-                                <div class="mt-4">
+                                @*<div class="mt-4">
                                     <button type="submit" class="btn btn-primary me-2">Update</button>
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
+                                    @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanTermId)
+                                    @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
                                     <input type="hidden" name="ServiceOption" value="duration" id="ServiceOption" />
-                                </div>
+                                </div>*@
                             </fieldset>
                         }
-
                     </div>
-
                 </div>
             </div>
             <div class="card accordion-item mb-3">
@@ -487,50 +537,52 @@ Key Points:
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.InterestOrder, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.InterestOrder, new { @class = "form-control", disabled = "disabled" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.InterestOrder, "", new { @class = "text-danger" })
                                             <label>Interest order</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.CapitalOrder, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.CapitalOrder, new { @class = "form-control", disabled = "disabled" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.CapitalOrder, "", new { @class = "text-danger" })
                                             <label>Capital order</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.FineOrder, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.FineOrder, new { @class = "form-control", disabled = "disabled" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.FineOrder, "", new { @class = "text-danger" })
                                             <label>Fine order</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.InterestRate, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.InterestRate, new { @class = "form-control", disabled = "disabled" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.InterestRate, "", new { @class = "text-danger" })
                                             <label>Interest percent to refund</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.CapitalRate, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.CapitalRate, new { @class = "form-control", disabled = "disabled" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.CapitalRate, "", new { @class = "text-danger" })
                                             <label>Capital percent to refund</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.FineRate, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.FineRate, new { @class = "form-control", disabled = "disabled" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.FineRate, "", new { @class = "text-danger" })
                                             <label>Fine percent to refund</label>
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary me-2">Update</button>
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
+                                    @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
                                     <input type="hidden" name="ServiceOption" value="repayment" id="ServiceOption" />
                                 </div>
                             </fieldset>
@@ -740,6 +792,7 @@ Key Points:
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary me-2">Update</button>
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
+                                    @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
                                     <input type="hidden" name="ServiceOption" value="charges" id="ServiceOption" />
                                 </div>
                             </fieldset>

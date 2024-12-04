@@ -83,7 +83,7 @@ namespace CBS.BusinessService.Accounts
                                              Charge = policy.Charge,
                                              BranchId = policy.BranchId,
                                              BankId = policy.BankId,
-                                             BranchName = branch != null ? branch.Name : "N/A", // Map branch name if found
+                                             BranchName = branch != null ? branch.Name : "N/A", // Map branch Name if found
                                              BranchCode = branch != null ? branch.BranchCode : "N/A", // Map branch code if found
                                              EventCode = policy.EventCode,
                                              Fee = policy.Fee

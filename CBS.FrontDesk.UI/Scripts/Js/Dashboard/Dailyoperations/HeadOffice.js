@@ -80,6 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
             setElementText('serviceFeesCollected', data.ServiceFeesCollected, true);
             setElementText('interestPaid', data.InterestPaid, true);
             setElementText('vat', data.Vat, true);
+            setElementText('mTNMobileMoneyBalance', data.MTNMobileMoneyBalance, true);
             setElementText('penalties', data.Penalties, true);
             setElementText('dailyExpenses', data.DailyExpenses, true);
             setElementText('ordinaryShares', data.OrdinaryShares, true);
@@ -90,6 +91,8 @@ document.addEventListener("DOMContentLoaded", function () {
             setElementText('cashInHand56', data.CashInHand56, true);
             setElementText('mtnMobileMoney', data.MTNMobileMoney, true);
             setElementText('numberOfCashOutMTN', data.NumberOfCashOutMTN);
+            setElementText('mobileMoneyCashOut', data.MobileMoneyCashOut);
+            setElementText('orangeMoneyCashOut', data.OrangeMoneyCashOut);
             setElementText('numberOfCashOutOrange', data.NumberOfCashOutOrange);
             setElementText('numberOfCashInMTN', data.NumberOfCashInMTN);
             setElementText('numberOfLoanFee', data.NumberOfLoanFee);

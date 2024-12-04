@@ -5,7 +5,7 @@ namespace CBS.FrontDesk.Data.DataContext
 {
     public class CBSDbContext : DbContext
     {
-        public CBSDbContext() : base("name=CBSTransactionDB")
+        public CBSDbContext() : base("Name=CBSTransactionDB")
         {
         }
 

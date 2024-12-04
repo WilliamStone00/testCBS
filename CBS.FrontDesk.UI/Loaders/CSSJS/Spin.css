@@ -39,6 +39,7 @@
         opacity: 1;
     }
 }
+
 #loadingspinner::before {
     border-top-color: #4CAF50; /* Green */
 }
@@ -46,6 +47,7 @@
 #loadingspinner {
     color: #4CAF50; /* Green */
 }
+
 #loadingcontent span {
     animation: fadeIn 1s ease-in-out infinite;
 }
@@ -64,5 +66,60 @@
 @keyframes spin {
     to {
         transform: rotate(360deg);
+    }
+}
+/* Right-aligned for large screens */
+@media (min-width: 992px) {
+    .authentication-bg {
+        margin-right: 20px; /* Push form to the right */
+    }
+}
+
+/* Centered for smaller screens */
+@media (max-width: 991px) {
+    .authentication-bg {
+        margin: auto; /* Center the form horizontally and vertically */
+    }
+}
+
+
+/*.table-responsive {
+    max-height: 800px;*/ /* Limit height for large data */
+    /*overflow-y: auto;*/ /* Add vertical scrolling */
+    /*border: 1px solid #ddd;*/ /* Optional border for the container */
+/*}
+
+    .table-responsive table {
+        table-layout: auto;*/ /* Dynamic column width based on content */
+        /*width: 100%;*/ /* Ensure table spans the container width */
+        /*border-collapse: collapse;*/ /* Consistent border appearance */
+    /*}
+
+    .table-responsive th,
+    .table-responsive td {
+        word-wrap: break-word;*/ /* Allow text to wrap */
+        /*word-break: break-word;*/ /* Handle long words gracefully */
+        /*white-space: normal;*/ /* Allow text to break into new lines */
+        /*text-overflow: ellipsis;*/ /* Optionally add ellipsis for truncated text */
+        /*overflow: hidden;*/ /* Prevent content from overflowing */
+        /*border: 1px solid #ddd;*/ /* Cell border */
+        /*padding: 8px;*/ /* Add padding for better readability */
+        /*vertical-align: top;*/ /* Align text at the top of the cell */
+    /*}*/
+
+th {
+    background-color: #f4f4f4; /* Optional header background */
+    font-weight: bold; /* Bold header text */
+}
+
+
+td, th {
+    vertical-align: middle; /* Align text vertically in the middle */
+}
+
+@media (max-width: 768px) {
+    td, th {
+        font-size: 12px;
+        Reduce font size for smaller devices
     }
 }

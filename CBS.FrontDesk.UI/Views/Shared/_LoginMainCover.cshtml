@@ -1,35 +1,24 @@
 ﻿<!DOCTYPE html>
-
-<html lang="en"
-      class="light-style layout-wide customizer-hide"
-      dir="ltr"
-      data-theme="theme-default"
-      data-assets-path="~/CBSTemp/ui/assets/"
-      data-template="vertical-menu-template">
+<html lang="en" class="light-style layout-wide customizer-hide" dir="ltr" data-theme="theme-default" data-assets-path="~/CBSTemp/ui/assets/" data-template="vertical-menu-template">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <title>@ViewBag.Title</title>
-
     <meta name="description" content="" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="~/AppFiles/Images/Icon.ico" />
 
-
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap"
-          rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap" rel="stylesheet" />
 
     <!-- Icons -->
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/fonts/materialdesignicons.css" />
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/fonts/flag-icons.css" />
 
-    <!-- Menu waves for no-customizer fix -->
+    <!-- Menu Waves -->
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/node-waves/node-waves.css" />
 
     <!-- Core CSS -->
@@ -42,84 +31,48 @@
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.css" />
     <link href="~/Loaders/CSSJS/Spin.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/toastr/toastr.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/toastr/toastr.css" />
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/animate-css/animate.css" />
+
     <!-- Page CSS -->
-    <!-- Page -->
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/pages/page-auth.css" />
+
     <style>
         .responsive-img {
             max-width: 100%;
             height: auto;
         }
-        /*.authentication-image {
-            max-width: 100%;*/ /* Ensure the image does not exceed its container */
-        /*height: auto;*/ /* Maintain the aspect ratio of the image */
-        /*display: block;*/ /* Ensure the image is displayed as a block element */
-        /*margin-left: auto;*/ /* Center the image horizontally */
-        /*margin-right: auto;*/ /* Center the image horizontally */
-        /*border-radius: 10px;*/ /* Add rounded corners to the image */
-        /*box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);*/ /* Add a subtle shadow to the image */
-        /*}*/
-        .image-container {
-            max-width: 400px; /* Adjust the max-width as needed */
-            margin: 0 auto; /* Center the container horizontally */
-            border-radius: 10px; /* Add rounded corners to the container */
-            overflow: hidden; /* Hide any overflowing content */
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to the container */
-        }
-
-            .image-container img {
-                width: 100%; /* Ensure the image fills the container */
-                height: auto; /* Maintain the aspect ratio of the image */
-                display: block; /* Ensure the image is displayed as a block element */
-            }
 
         .image-container {
-            width: 150px; /* Set the width of the container */
-            height: 150px; /* Set the height of the container */
-            border-radius: 50%; /* Make the container circular */
-            overflow: hidden; /* Hide any overflowing content */
-            margin: 0 auto; /* Center the container horizontally */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Add a subtle shadow */
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
         }
 
-            .image-container img {
-                width: 100%; /* Ensure the image fills the container */
-                height: auto; /* Maintain the aspect ratio of the image */
-                display: block; /* Ensure the image is displayed as a block element */
-            }
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
 
         .btn-primary {
             background-color: green;
             border-color: green;
-            color: #fff; /* To maintain white text */
-        }
-
-        .bg-navbar-theme {
-            background-color: green;
-            color: #636578; /* Optionally, set the text color */
+            color: #fff;
         }
 
         .btn-primary:hover {
             color: #fff !important;
-            background-color: #5a5fe0 !important; /* Green color */
+            background-color: #5a5fe0 !important;
             border-color: #5a5fe0 !important;
         }
 
-        /*.bg-white {
-            background-color: white;*/ /* Set the background color to white */
-        /*}*/
-
-        /* Keep previous image and container styling */
-        .authentication-image {
-            max-width: 100%;
-            max-height: 100%;
-            margin: auto;
-            display: block;
+        .bg-navbar-theme {
+            background-color: green;
+            color: #636578;
         }
-
-  
 
         .trustbank-text {
             font-weight: bold;
@@ -127,30 +80,26 @@
         }
 
         .authentication-text {
-            color: grey; /* Define your desired shade of grey for the "Authentication" text */
+            color: grey;
         }
     </style>
+
     <!-- Helpers -->
     <script src="~/CBSTemp/ui/assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+    <!-- Template Customizer & Theme Config -->
     <script src="~/CBSTemp/ui/assets/vendor/js/template-customizer.js"></script>
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="~/CBSTemp/ui/assets/js/config.js"></script>
 </head>
 
 <body>
     <!-- Content -->
-
-    <div class="authentication-wrapper authentication-cover">
-
+    <div class="authentication-wrapper">
         @RenderBody()
         @Html.Partial("_AjaxSpinner")
     </div>
-
     <!-- / Content -->
+
     <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
     <script src="~/CBSTemp/ui/assets/vendor/libs/jquery/jquery.js"></script>
     <script src="~/CBSTemp/ui/assets/vendor/libs/popper/popper.js"></script>
     <script src="~/CBSTemp/ui/assets/vendor/js/bootstrap.js"></script>
@@ -166,8 +115,10 @@
     <!-- Main JS -->
     <script src="~/CBSTemp/ui/assets/js/main.js"></script>
     <script src="~/Scripts/Js/main.js/App.js"></script>
+
     <!-- Page JS -->
     <script src="~/CBSTemp/ui/assets/js/pages-auth.js"></script>
+
     @RenderSection("scripts", required: false)
 </body>
 </html>

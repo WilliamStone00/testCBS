@@ -220,10 +220,12 @@
     <Compile Include="Accounts\BankingOperationServices.cs" />
     <Compile Include="Accounts\CloseFeeParameterServices.cs" />
     <Compile Include="Accounts\ChargesWaivedServices.cs" />
+    <Compile Include="Accounts\HolyDayRecurringServices.cs" />
     <Compile Include="Accounts\OldLoanAccountingMapingServices.cs" />
     <Compile Include="Accounts\FileDownloadServices.cs" />
     <Compile Include="Accounts\MobileMoneyTopupServices.cs" />
     <Compile Include="Accounts\GeneralDailyDashboardServices.cs" />
+    <Compile Include="Accounts\HolyDayServices.cs" />
     <Compile Include="Accounts\TransactionResversalServices.cs" />
     <Compile Include="Accounts\SubTellerCashReplenishmentServices.cs" />
     <Compile Include="Accounts\PrimaryTellerCashReplenishmentServices.cs" />
@@ -235,6 +237,7 @@
     <Compile Include="Accounts\OperationFeeServices.cs" />
     <Compile Include="Accounts\SysConfigurationServices.cs" />
     <Compile Include="Accounts\SavingProductFeeServices.cs" />
+    <Compile Include="Loan\Config\LoanProductCategoryServices.cs" />
     <Compile Include="PaymentReceiptMapping.cs" />
     <Compile Include="Config\EconomicActivityServices.cs" />
     <Compile Include="Config\CustomerCategoryServices.cs" />
@@ -302,7 +305,7 @@
     <Compile Include="Loan\Config\LoanProductServices.cs" />
     <Compile Include="Loan\Config\CollateralServices.cs" />
     <Compile Include="Loan\Config\LoanDeliquencyConfigurationServices.cs" />
-    <Compile Include="Loan\Config\PeriodServices.cs" />
+    <Compile Include="Loan\Config\LoanTermServices.cs" />
     <Compile Include="Loan\Config\LoanProductCollateralServices.cs" />
     <Compile Include="MembersAccountSettings\Policy\MemberAccountActivationPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

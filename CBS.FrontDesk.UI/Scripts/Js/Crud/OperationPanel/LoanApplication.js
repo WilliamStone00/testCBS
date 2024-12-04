@@ -1,4 +1,12 @@
 ﻿$(document).ready(function () {
+    // Bind the event to trigger when the radio buttons are clicked
+    $("input[name='AddLoanApplicationCommand.LoanCategory']").on('change', function () {
+        GetProductByTargetLoandingMainLoan();  // Call the function when the radio button is checked
+    });
+});
+
+
+$(document).ready(function () {
 
     // Trigger the download on button click
     $("#btnData").click(function () {
@@ -36,51 +44,75 @@ function LoanProductsProperties(KEY, path, affectedID) {
     GetLoanApplication(KEY);
     var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
     FillDropDownAjaxCallParam(url, affectedID, "---Select Option---");
+
+    //GetLoanPurposes()
 }
 function GetProductByTarget(KEY, affectedID) {
-    path = "target";
-    var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
+    // Fetch the selected radio button based on the 'id' attribute
+    var loanCategoryValue = $("input[name='AddLoanApplicationCommand.LoanCategory']:checked").attr('id');
+    console.log(loanCategoryValue); // Logs 'MainLoan' or 'SpecialSavingFacilityLoan'
+
+    var path = "load_loan_products";
+
+    // Fetch other necessary parameters
+    var loantermid = $("#LoanTermId").val();
+    var loanCategoryid = $("#LoanCategoryId").val();
+
+    // Construct the URL with updated isSSF value
+    var url = "/MemberOperation/Ajaxloader?Key=" + KEY +
+        "&path=" + path +
+        "&loanTermId=" + loantermid +
+        "&loanCategoryid=" + loanCategoryid +
+        "&loanCategoryValue=" + loanCategoryValue;
+    console.log(url);  // Logs the constructed URL
+
+    // Make the AJAX call to populate the dropdown
     FillDropDownAjaxCallParam(url, affectedID, "---Select Option---");
 }
-//target
-//function LoadRefinancing(KEY, path, affectedID) {
-//    var loandiv = document.getElementById('loandiv');
-//    var showLoanDiv = (KEY === "Refinancing" || KEY === "Reschedule" || KEY === "Restructure");
-//    var dataPath = KEY;
+function GetProductByTargetLoandingMainLoan() {
+    // Fetch the selected radio button based on the 'id' attribute
+    var loanCategoryValue = $("input[name='AddLoanApplicationCommand.LoanCategory']:checked").attr('id');
+    console.log(loanCategoryValue); // Logs 'MainLoan' or 'SpecialSavingFacilityLoan'
+    var affectedID = "loan_productid";
+    var KEY = $("#TargetId").val(); 
+    var path = "load_loan_products";
+    // Fetch other necessary parameters
+    var loantermid = $("#LoanTermId").val();
+    var loanCategoryid = $("#LoanCategoryId").val();
+    // Construct the URL with updated isSSF value
+    var url = "/MemberOperation/Ajaxloader?Key=" + KEY +
+        "&path=" + path +
+        "&loanTermId=" + loantermid +
+        "&loanCategoryid=" + loanCategoryid +
+        "&loanCategoryValue=" + loanCategoryValue;
+    console.log(url);  // Logs the constructed URL
 
-//    if (showLoanDiv) {
-//        KEY = document.getElementById('customerid').value;
-//        loandiv.style.display = "block";
-//        dataPath = "Select loan to " + dataPath;
-//        $('#loanlable').html(dataPath);
-//        var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
-//        FillDropDownAjaxCallParam(url, affectedID, dataPath);
-//    }
-//    else {
-//        loandiv.style.display = "none";
-//    }
-//    toggleInputFields();
+    // Make the AJAX call to populate the dropdown
+    FillDropDownAjaxCallParam(url, affectedID, "---Select Option---");
+}
+function GetConfiuredTargets(KEY, affectedID) {
+    var loanCategoryValue = $("input[name='AddLoanApplicationCommand.LoanCategory']:checked").attr('id');
+    console.log(KEY);
+    console.log(affectedID);
+    path = "get_configurated_target";
+    var loanCategoryid = $("#LoanCategoryId").val();
+    console.log(loanCategoryid);
+    var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path + "&loanCategoryid=" + loanCategoryid +
+        "&loanCategoryValue=" + loanCategoryValue;
+    FillDropDownAjaxCallParam(url, affectedID, "---Select Option---");
+}
+function GetLoanPurposes() {
+    path = "get_puposes";
+    var loanCategoryid = $("#LoanCategoryId").val();
+    var url = "/MemberOperation/Ajaxloader?Key=" + loanCategoryid + "&path=" + path;
+    FillDropDownAjaxCallParam(url, "purposeId", "---Select Option---");
+}
 
-//}
-
-//function toggleInputFields() {
-//    var loanApplicationType = document.getElementById('LoanApplicationType').value;
-//    var isReschedule = loanApplicationType === "Reschedule";
-
-//    // List of input fields to toggle
-//    var inputFields = ["NewBalance", /*"NewInterest", "NewVAT", "NewPenalty"*/];
-
-//    // Loop through each field and set the readonly attribute
-//    inputFields.forEach(function (fieldId) {
-//        var field = document.getElementById(fieldId);
-//        if (isReschedule) {
-//            field.setAttribute('readonly', 'readonly');
-//        } else {
-//            field.removeAttribute('readonly');
-//        }
-//    });
-//}
-
+function GetLoanPurposes(key) {
+    path = "get_puposes";
+    var url = "/MemberOperation/Ajaxloader?Key=" + key + "&path=" + path;
+    FillDropDownAjaxCallParam(url, "purposeId", "---Select Option---");
+}
 
 function LoadRefinancing(KEY, path, affectedID) {
     var loandiv = document.getElementById('loandiv');

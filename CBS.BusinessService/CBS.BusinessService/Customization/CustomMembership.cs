@@ -22,8 +22,8 @@ namespace CBS.FrontDesk.Service
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
+        /// <param Name="username"></param>
+        /// <param Name="password"></param>
         /// <returns></returns>
         /// cto     
         public override bool ValidateUser(string username, string password)
@@ -51,8 +51,8 @@ namespace CBS.FrontDesk.Service
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="userIsOnline"></param>
+        /// <param Name="username"></param>
+        /// <param Name="userIsOnline"></param>
         /// <returns></returns>
         public override MembershipUser GetUser(string username, bool userIsOnline)
         {

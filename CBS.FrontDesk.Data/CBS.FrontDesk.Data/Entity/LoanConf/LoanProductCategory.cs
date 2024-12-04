@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.LoanConf
 {
-    public class Period
+    public class LoanProductCategory
     {
-        public string id { get; set; }
+        public string Id { get; set; }
         [Required]
-        public string name { get; set; }
-        [Required]
-        public string description { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+
     }
 }
