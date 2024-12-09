@@ -9,12 +9,14 @@
     $(document).on('change', '#SystemQuery_BranchId', function () {
         // Get the selected value AccountNumber
         var selectedValue = $(this).val();
-
+        $("#selectedBranchID").val(selectedValue);
         var selectedReportType = $("#SystemQuery_ReportType").val();
 
         if (selectedReportType == "LL") {
             // Load another dropdown based on the selected value
             loadBranchLiasonAccount(selectedValue);
+        } else if(selectedReportType == "GL") {
+            loadBranchAccounts(selectedValue);
         }
 
     });
@@ -26,6 +28,8 @@
         if (selectedValue === 'GL') {
             // Show the element
             $('#AccountToHide').show();
+            var selectedId = $("#selectedBranchID").val();
+            loadBranchAccounts(selectedId);
         } else {
             // Hide the element
             $('#AccountToHide').hide();
@@ -256,6 +260,37 @@ function DownLoadGL(FileType) {
     });
 }
 
+
+function DownLoadGLByAccount(FileType) {
+    var branchId = $('#selectedForJEBranchId').val();
+    var branchName = $('#selectedForJEBranchName').val();
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/AccountingStatements/GenerateGLByBranchId',
+        type: 'Get',
+        dataType: 'json',
+        data: { branchId: branchId, fileType: FileType },
+        success: function (data) {
+            console.log(data);
+            // Clear existing options in the OperationEventAttributeId combo
+            appalert("GeneralLedger for " + branchName + " was created successfully", 1, 1);
+            if (FileType === "EXCEL")
+            {
+
+                window.open("/Reports/PrintGeneralLedgerOfAccount", "_blank");
+
+            } else {
+                window.open("/Reports/DownloadExcelFile", "_blank");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+
+
 function DownLoadJE(fileType) {
     var BranchId = $('#selectedBranchId').val();
     var dateFrom = $('#selectedDateFromForJE').val();
@@ -456,6 +491,8 @@ function openReportWindow(fileType, reportType) {
             url = "/Reports/PrintTrialBalance6Column";
         } else if (reportType === "BS") {
             url = "/Reports/PrintBalanceSheet";
+        } else if (reportType === "GL") {
+            url = "/Reports/PrintGeneralLedgerOfAccount";
         }
     } else {
         if (reportType === "BS") {
@@ -633,6 +670,31 @@ function loadBranchLiasonAccount(branchId) {
             // Add new options based on the fetched data
             $.each(data, function (index, item) {
                 $('#SystemQuery_AccountNumber').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+
+
+function loadBranchAccounts(branchId) {
+    console.log(branchId);
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/AccountingStatements/GetAccountForABranch',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId: branchId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+            $('#SystemQuery_AccountId').empty();
+
+            // Add new options based on the fetched data
+            $.each(data, function (index, item) {
+                $('#SystemQuery_AccountId').append($('<option>').text(item.Value).attr('value', item.Text));
             });
         },
         error: function (xhr, status, error) {

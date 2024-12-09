@@ -1691,6 +1691,300 @@ namespace CBS.FrontDesk.UI.Controllers
 
             //return new EmptyResult();
         }
+
+
+        //public ActionResult PrintGeneralLedgerOfAccount()
+        //{
+        //    //new Dto();
+        //    //List<TrialBalance4ColumnDto> accounts = new List<TrialBalance4ColumnDto>();
+
+
+        //    var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+        //    var paths = System.Web.HttpContext.Current.Session["rptpath"].ToString();
+        //    var rpttitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
+        //    AccountingGeneralLedger accounts = (rptSource == "empty") ? new AccountingGeneralLedger() : (AccountingGeneralLedger)rptSource;
+      
+        //    if ((rptSource == "empty"))
+        //    {
+        //        return new EmptyResult();// Json(true, JsonRequestBehavior.AllowGet);
+        //    }
+        //    else
+        //    {
+        //        using (var workbook = new XLWorkbook())
+        //        {
+        //            var worksheet = workbook.Worksheets.Add(rpttitle);
+        //            var headerStyle = workbook.Style;
+
+        //            headerStyle.Font.Bold = true;
+        //            headerStyle.Font.FontSize = 14;
+        //            headerStyle.Font.FontColor = XLColor.Black;
+        //            // Apply border to branch range
+        //            headerStyle.Border.BottomBorder = XLBorderStyleValues.Thin;
+        //            headerStyle.Border.LeftBorder = XLBorderStyleValues.Thin;
+        //            headerStyle.Border.RightBorder = XLBorderStyleValues.Thin;
+        //            headerStyle.Border.TopBorder = XLBorderStyleValues.Thin;
+        //            // Print letterhead
+        //            worksheet.Cell(1, 2).Value = accounts.BranchName;
+        //            worksheet.Cell(2, 2).Value = $"{accounts.BranchLocation}, {accounts.BranchAddress}";
+        //            worksheet.Cell(3, 2).Value = $" {accounts.Capital}";
+        //            worksheet.Cell(4, 2).Value = $"{accounts.ImmatriculationNumber}";
+        //            worksheet.Cell(5, 2).Value = $"{accounts.WebSite}";
+        //            worksheet.Cell(6, 2).Value = $" {accounts.BranchTelephone}";
+        //            worksheet.Cell(7, 2).Value = $"{accounts.HeadOfficeTelePhone}";
+
+        //            worksheet.Cell(1, 1).Value = "BranchName";
+        //            worksheet.Cell(2, 1).Value = $"Address";
+        //            worksheet.Cell(3, 1).Value = $"Capital";
+        //            worksheet.Cell(4, 1).Value = $"Immatriculation Number";
+        //            worksheet.Cell(5, 1).Value = $"Website";
+        //            worksheet.Cell(6, 1).Value = $"Branch Telephone";
+        //            worksheet.Cell(7, 1).Value = $"Head Office Telephone";
+        //            // Apply header style
+
+        //            var headerRange = worksheet.Range(1, 1, 7, 1);
+        //            headerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
+        //            headerRange.Style.Font.FontSize = 12;
+        //            headerRange.Style.Font.Bold = true;
+        //            headerRange.Style.Alignment.WrapText = true;
+        //            headerRange.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+        //            headerRange.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+        //            headerRange.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+        //            headerRange.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+
+        //            var headerRange2 = worksheet.Range(1, 1, 7, 2);
+
+        //            headerRange2.Style.Font.FontSize = 12;
+
+        //            headerRange2.Style.Alignment.WrapText = true;
+        //            headerRange2.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+        //            headerRange2.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+        //            headerRange2.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+        //            headerRange2.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+        //            // Print account details
+        //            var titleRange = worksheet.Range("B12:G12");
+        //            titleRange.Merge().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+        //            titleRange.Style.Font.Bold = true;
+        //            titleRange.Style.Font.FontSize = 14;
+        //            titleRange.Style.Font.FontColor = XLColor.Black;
+
+
+        //// Apply border to title range
+        //titleRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+        //            titleRange.Value = $"  General Ledger of {accounts.MainAccountNumber} as at {accounts.FromDate} to {accounts.ToDate}";
+        //            // Print balance sheet header
+        //            worksheet.Cell(12, 1).Value = "Entry DateTime";
+        //            worksheet.Cell(12, 2).Value = "Reference";
+        //            worksheet.Cell(12, 3).Value = "Description";
+        //            worksheet.Cell(12, 4).Value = "Account Name";
+        //            worksheet.Cell(12, 5).Value = "Account Number";
+        //            worksheet.Cell(12, 6).Value = "Debit Balance";
+        //            worksheet.Cell(12, 7).Value = "Credit Balance";
+          
+
+        //            // Apply header style
+        //            var headerRange0 = worksheet.Range(12, 1, 12, 8);
+        //            headerRange0.Style.Fill.BackgroundColor = XLColor.LightBlue;
+        //            headerRange0.Style.Font.FontSize = 12;
+        //            headerRange0.Style.Font.Bold = true;
+        //            headerRange0.Style.Alignment.WrapText = true;
+        //            headerRange0.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+        //            headerRange0.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+        //            headerRange0.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+        //            headerRange0.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+        //            var headerRange10 = worksheet.Range(13, 1, accounts.AccountingEntries.Count() + 13, 8);
+        //            headerRange10.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+        //            headerRange10.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+        //            headerRange10.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+        //            headerRange10.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+        //            int row = 13;
+        //            foreach (var account in accounts.AccountingEntries)
+        //            {
+        //                worksheet.Cell(row, 1).Value = account.EntryDateTime;
+        //                worksheet.Cell(row, 2).Value = account.ReferenceID;
+        //                worksheet.Cell(row, 3).Value = account.Description;
+        //                worksheet.Cell(row, 4).Value = account.AccountName;
+        //                worksheet.Cell(row, 5).Value = account.AccountNumber;
+        //                worksheet.Cell(row, 6).Value = account.Debit;
+        //                worksheet.Cell(row, 7).Value = account.Credit;
+                     
+        //                row++;
+        //            }
+
+        //            // Autofit columns
+        //            worksheet.Columns().AdjustToContents();
+
+        //            if ((rptSource == "empty"))
+        //            {
+
+        //            }
+        //            else
+        //            {
+        //                var footerRange = worksheet.Range(accounts.AccountingEntries.Count() + 13, 2, accounts.AccountingEntries.Count() + 13, 8);
+        //                footerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
+        //                footerRange.Style.Font.FontSize = 12;
+        //                footerRange.Style.Font.Bold = true;
+        //                footerRange.Style.Alignment.WrapText = false;
+        //                footerRange.Style.Alignment.JustifyLastLine = false;
+        //                footerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+        //                footerRange.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+        //                footerRange.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+        //                footerRange.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+        //                footerRange.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+        //                //var balance = accounts.Where(x => x.accountName == "Total").First();
+        //                // Print totals
+        //                worksheet.Cell(row, 5).Value = "Totals";
+        //                worksheet.Cell(row, 6).Value = accounts.AccountingEntries.Sum(d=>Convert.ToDouble(d.Debit)).ToString();
+        //                worksheet.Cell(row, 7).Value = accounts.AccountingEntries.Sum(d => Convert.ToDouble(d.Credit)).ToString();
+ 
+        //                //worksheet.Cell(row, 2).Value = "Totals";
+        //                //worksheet.Cell(row, 3).Value = trialBalance.beginningDebitBalance.ToString();
+        //                //worksheet.Cell(row, 4).Value = trialBalance.beginningCreditBalance.ToString();
+        //                //worksheet.Cell(row, 5).Value = trialBalance.debitBalance.ToString();
+        //                //worksheet.Cell(row, 6).Value = trialBalance.creditBalance.ToString();
+        //                //worksheet.Cell(row, 7).Value = trialBalance.endDebitBalance.ToString();
+        //                //worksheet.Cell(row, 8).Value = trialBalance.endCreditBalance.ToString();
+        //            }
+
+
+        //            using (var stream = new MemoryStream())
+        //            {
+        //                workbook.SaveAs(stream);
+        //                stream.Position = 0;
+
+        //                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "BapCCUL-" + accounts.BranchName + "GL.xlsx");
+        //            }
+        //            //worksheet.Cell(row + 1, 1).Value = $"Ending Balance Sign: {trialBalance.EndingBalanceSigne}";
+
+        //            // Save the workbook
+
+        //        }
+
+        //    }
+
+        //    //return new EmptyResult();
+        //}
+        public ActionResult PrintGeneralLedgerOfAccount()
+        {
+            // Retrieve session values
+            var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+            var rptPath = System.Web.HttpContext.Current.Session["rptpath"]?.ToString();
+            var rptTitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
+
+            if (rptSource == null || rptSource.ToString() == "empty")
+            {
+                return new EmptyResult();
+            }
+
+            var accounts = rptSource as AccountingGeneralLedger;
+            if (accounts == null)
+            {
+                return new EmptyResult();
+            }
+
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add(rptTitle ?? "General Ledger");
+
+                // Define styles for headers and data
+                var headerStyle = workbook.Style;
+                headerStyle.Font.Bold = true;
+                headerStyle.Font.FontSize = 14;
+                headerStyle.Font.FontColor = XLColor.Black;
+                headerStyle.Border.BottomBorder = XLBorderStyleValues.Thin;
+                headerStyle.Border.LeftBorder = XLBorderStyleValues.Thin;
+                headerStyle.Border.RightBorder = XLBorderStyleValues.Thin;
+                headerStyle.Border.TopBorder = XLBorderStyleValues.Thin;
+
+                // Print letterhead
+                worksheet.Cell(1, 2).Value = accounts.BranchName;
+                worksheet.Cell(2, 2).Value = $"{accounts.BranchLocation}, {accounts.BranchAddress}";
+                worksheet.Cell(3, 2).Value = accounts.Capital;
+                worksheet.Cell(4, 2).Value = accounts.ImmatriculationNumber;
+                worksheet.Cell(5, 2).Value = accounts.WebSite;
+                worksheet.Cell(6, 2).Value = accounts.BranchTelephone;
+                worksheet.Cell(7, 2).Value = accounts.HeadOfficeTelePhone;
+
+                // Print header titles
+                worksheet.Cell(1, 1).Value = "Branch Name";
+                worksheet.Cell(2, 1).Value = "Address";
+                worksheet.Cell(3, 1).Value = "Capital";
+                worksheet.Cell(4, 1).Value = "Immatriculation Number";
+                worksheet.Cell(5, 1).Value = "Website";
+                worksheet.Cell(6, 1).Value = "Branch Telephone";
+                worksheet.Cell(7, 1).Value = "Head Office Telephone";
+
+                // Style header range
+                var headerRange = worksheet.Range(1, 1, 7, 2);
+                headerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
+                headerRange.Style.Font.FontSize = 12;
+                headerRange.Style.Font.Bold = true;
+                headerRange.Style.Alignment.WrapText = true;
+                headerRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+
+                // Title for General Ledger
+                var titleRange = worksheet.Range("B10:G10");
+                titleRange.Merge().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                titleRange.Style.Font.Bold = true;
+                titleRange.Style.Font.FontSize = 14;
+                titleRange.Style.Font.FontColor = XLColor.Black;
+                titleRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                titleRange.Value = $"General Ledger of {accounts.MainAccountNumber} from {accounts.FromDate} to {accounts.ToDate}";
+
+                // Print column headers
+                worksheet.Cell(12, 1).Value = "Entry DateTime";
+                worksheet.Cell(12, 2).Value = "Reference";
+                worksheet.Cell(12, 3).Value = "Description";
+                worksheet.Cell(12, 4).Value = "Account Name";
+                worksheet.Cell(12, 5).Value = "Account Number";
+                worksheet.Cell(12, 6).Value = "Debit Balance";
+                worksheet.Cell(12, 7).Value = "Credit Balance";
+
+                // Style column headers
+                var columnHeaderRange = worksheet.Range(12, 1, 12, 7);
+                columnHeaderRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
+                columnHeaderRange.Style.Font.FontSize = 12;
+                columnHeaderRange.Style.Font.Bold = true;
+                columnHeaderRange.Style.Alignment.WrapText = true;
+                columnHeaderRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+
+                // Populate data rows
+                int currentRow = 13;
+                foreach (var entry in accounts.AccountingEntries)
+                {
+                    worksheet.Cell(currentRow, 1).Value = entry.EntryDateTime;
+                    worksheet.Cell(currentRow, 2).Value = entry.Reference;
+                    worksheet.Cell(currentRow, 3).Value = entry.Description;
+                    worksheet.Cell(currentRow, 4).Value = entry.AccountName;
+                    worksheet.Cell(currentRow, 5).Value = entry.AccountNumber;
+                    worksheet.Cell(currentRow, 6).Value = entry.Debit;
+                    worksheet.Cell(currentRow, 7).Value = entry.Credit;
+                    currentRow++;
+                }
+
+                // Print totals
+                worksheet.Cell(currentRow, 5).Value = "Totals";
+                worksheet.Cell(currentRow, 6).Value = accounts.AccountingEntries.Sum(e =>Convert.ToDouble( e.Debit));
+                worksheet.Cell(currentRow, 7).Value = accounts.AccountingEntries.Sum(e => Convert.ToDouble(e.Credit));
+
+                // Style totals row
+                var totalsRange = worksheet.Range(currentRow, 5, currentRow, 7);
+                totalsRange.Style.Fill.BackgroundColor = XLColor.LightGray;
+                totalsRange.Style.Font.Bold = true;
+                totalsRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+
+                // Autofit columns
+                worksheet.Columns().AdjustToContents();
+
+                // Save and return the Excel file
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    stream.Position = 0;
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"GeneralLedger_{accounts.BranchName}.xlsx");
+                }
+            }
+        }
+
     }
     public class ExcelResult : ActionResult
     {

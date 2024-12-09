@@ -36,7 +36,7 @@ namespace CBS.FrontDesk.Data
         public string BranchCode { get; set; }
         public string LiaisonId { get; set; }
         public string AccountNumberManagementPosition { get; set; }
-
+        public string TempData { get; set; }
     }
 
 

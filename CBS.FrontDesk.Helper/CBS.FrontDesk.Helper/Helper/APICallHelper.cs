@@ -278,7 +278,7 @@ namespace CBS.FrontDesk.Helper
         //Teller
         public static string Get_Update_Delete_Teller = "/api/v1/Teller/{0}";
         public static string MobileMoneyTellerConfiguration = "/api/v1/Teller/MobileMoney/Configuration/{0}";
-        public static string GetAllTeller = "/api/v1/Teller";
+        public static string GetAllTeller = "/api/v1/Teller"; 
         public static string CreateTeller = "/api/v1/Teller";
         //DailyTeller
         public static string Get_Update_Delete_DailyTeller = "/api/v1/DailyTeller/{0}";
@@ -287,7 +287,7 @@ namespace CBS.FrontDesk.Helper
         public static string CreateDailyTeller = "/api/v1/DailyTeller";
 
 
-        //Accounting Day
+        //Accounting DayHF
 
 
         public static string OpenOfAccountingDay = "/api/v1/AccountingDay/Open";
@@ -717,7 +717,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAccountUploadFiles = "/api/v1/Accounts/UploadFiles/{0}";
         public static string PutAccount = "/api/v1/Account/{0}";
         public static string GetSystemLiaisonAccountQueryUrl = "/api/v1/Account/GetSystemLiaisonAccountQuery/{0}";
-
+  
         public static string GetAccountType = "/api/v1/AccountType/{0}";
         public static string GetAccountTypeAccountRubrique = "/api/v1/AccountType/AccountRubrique/{0}";
         public static string GetAllAccountType = "/api/v1/AccountTypes/AllSystemAccountTypes";
@@ -731,7 +731,7 @@ namespace CBS.FrontDesk.Helper
         public static string AccountingEntry_Generate4ColumnTrialBalance = "api/v1/AccountingEntries/Generate4ColumnTrialBalance";
         public static string AccountingEntry_Generate6ColumnTrialBalance = "api/v1/AccountingEntries/Generate6ColumnTrialBalance";
         public static string AccountingEntry_BalanceSheetColumn = "api/v1/AccountingEntries/GenerateCOBACBalanceSheet";
-
+        public static string AccountingEntry_AccountGl = "api/v1/AccountingEntry/GetAccountGLEntry/{0}";
         public static string AccountingEntry_BranchLiaisonEntries = "api/v1/AccountingEntries/BranchLiaisonEntries";
         public static string AccountingEntry_LiaisonEntries = "/api/v1/AccountingEntries/LiaisonEntries";
         public static string AccountingEntry_Get_Update_delete = "/api/v1/AccountingEntry/{0}";

@@ -13,6 +13,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<Branch> Branches { get; set; } = new List<Branch>();
         public List<AccountDto> AccountDtos { get; set; } = new List<AccountDto>();
         public List<AccountingEntryDto> AccountingEntryDtos { get; set; } = new List<AccountingEntryDto>();
+        public AccountingGeneralLedger AccountingGeneralLedger { get; set; } = new AccountingGeneralLedger();
         public Branch Branch { get; set; } = new  Branch();
         public Account Account  { get; set; } = new Account();
     }

@@ -68,7 +68,6 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             };
         }
     }
-
     public class TrialBalance6ColumnDtoServiceResponse
     {
         public List<TrialBalance6ColumnDto> data { get; set; }
@@ -79,6 +78,47 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string status { get; set; }
     }
 
+    public class AccountingGeneralLedger
+    {
+        public string EntityId { get; set; }
+        public string EntityType { get; set; }
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public string BranchName { get; set; }
+        public string BranchLocation { get; set; }
+        public string BranchAddress { get; set; }
+        public string Capital { get; set; }
+        public string ImmatriculationNumber { get; set; }
+        public string WebSite { get; set; }
+        public string BranchTelephone { get; set; }
+        public string HeadOfficeTelePhone { get; set; }
+        public string BranchCode { get; set; }
+        public string Name { get; set; }
+        public string Location { get; set; }
+        public string Address { get; set; }
+        public List<AccountingEntryDto> AccountingEntries { get; set; }
+        public string MainAccountNumber { get; set; }
+    }
+    public class AccountingGeneralLedgerServiceResponse
+    {
+        public AccountingGeneralLedger data { get; set; }
+        public List<object> errors { get; set; }
+        public int statusCode { get; set; }
+        public string statusDescription { get; set; }
+        public string message { get; set; }
+        public string status { get; set; }
+    }
+
+
+    public class GLServiceResponse
+    {
+        public List<AccountingEntryDto> data { get; set; }
+        public List<object> errors { get; set; }
+        public int statusCode { get; set; }
+        public string statusDescription { get; set; }
+        public string message { get; set; }
+        public string status { get; set; }
+    }
 
 
 }

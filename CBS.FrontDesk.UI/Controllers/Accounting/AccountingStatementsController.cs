@@ -44,7 +44,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.ReportTypes = BuildDropDown(GenerateReportType());
             var listAccount = (await _accountingServices.GetAllAccounting());
             listAccount.Add(new Account { Id = "XXXXXX", AccountNumber = "000000", AccountName = "ALL" });
-            ViewBag.Accounts = BuildDropDown(GenerateAccountsListView(listAccount));
+            //ViewBag.Accounts = BuildDropDown(GenerateAccountsListView(listAccount));
             var listBranches = (await _branchServices.GetBranches()).ToList();
             listBranches.Add(new Branch { Id = "XXXXXX", Name = "ALL" });
             ViewBag.Branches = BuildDropDown(GenerateBranchListView(listBranches));
@@ -164,7 +164,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     query.BranchId = _branchServices.GetBranchID();
 
                         var models =await _acountServices.GenerateAccountingLedgerForAnumber(query); 
-                    return View(new AccountingStatementDto { AccountingEntryDtos = models });
+                    return View(new AccountingStatementDto { AccountingGeneralLedger = models });
                 }
 
 
@@ -175,7 +175,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 query.BranchId = _branchServices.GetBranchID();
 
                 var models = await _acountServices.GenerateAccountingLedgerForAnumber(query);
-                return View(new AccountingStatementDto { AccountingEntryDtos = models });
+                return View(new AccountingStatementDto { AccountingGeneralLedger = models });
             }
 
 
@@ -265,6 +265,35 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
+        public async Task<ActionResult> GetAccountForABranch(string BranchId)
+        {
+
+
+            try
+            {
+                var models = await _accountingServices.GetAllAccountForABranch(BranchId);
+                return Json(BuildMenuViewBag(models), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        private dynamic BuildMenuViewBag(IEnumerable<Data.Account> debitAccounts)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> list = new List<System.Web.WebPages.Html.SelectListItem>();
+            if (debitAccounts != null)
+
+                foreach (var item in debitAccounts)
+                {
+
+                    list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.TempData + "-" + item.AccountName });
+
+                }
+
+            return list;
+        }
 
         public async Task<ActionResult> GetBranchAccounts(string branchId)
         {
@@ -276,9 +305,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                  var data = (from account in listOfAccounts
                             select new Account
                             {
-                                AccountNumber= account.AccountNumberCU,
+                                AccountNumber= account.TempData,
                             AccountName = account.AccountName,
-                            CurrentBalance = account.CurrentBalance
+                            Id = account.Id
                             }).ToList();
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
@@ -359,7 +388,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery);
                                 this.HttpContext.Session["rptSource"] = account;
                                 string ReportName = $"JournalEntries.rpt";
-                                if (!account.Any())
+                                if (account == null)
                                 {
                                     this.HttpContext.Session["rptSource"] = "empty";
                                 }
@@ -373,18 +402,44 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             {
                                 string fileTitle = $"GeneralLedger_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
 
-                                var account = await _acountServices.GenerateAccountLedger(new GLQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType });
-                                this.HttpContext.Session["rptSource"] = account;
+                                //var account = await _acountServices.GenerateAccountingLedgerForAnumber(new SystemQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType, AccountId= model.SystemQuery.AccountId,FromDate= model.SystemQuery.FromDate,ToDate= model.SystemQuery.ToDate });
+                                //this.HttpContext.Session["rptSource"] = account;
+                                //string ReportName = $"GeneralLedger.rpt";
+                                //if (!account.AccountingEntries.Any())
+                                //{
+                                //    this.HttpContext.Session["rptSource"] = "empty";
+                                //}
+                                //this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                                //this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                                //this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
+                                //this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                                //this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/GeneralLedger.rpt";
+                             //   string fileTitle = $"TB6C{model.SystemQuery.FromDate.Date.ToString("yyyyMMddhhmmss")}";
                                 string ReportName = $"GeneralLedger.rpt";
-                                if (!account.Any())
+                                var account = await _acountServices.GenerateAccountingLedgerForAnumber(new SystemQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType, AccountId = model.SystemQuery.AccountId, FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate });
+
+                                if (model.SystemQuery.FileType == "PDF")
+                                {
+                                    this.HttpContext.Session["rptSource"] = account;
+                                }
+                                else
+                                {
+                                    this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                                    this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
+                                    this.HttpContext.Session["rptSource"] = (account!=null) ? account : new AccountingGeneralLedger();
+                                }
+
+                                if (account==null)
                                 {
                                     this.HttpContext.Session["rptSource"] = "empty";
                                 }
                                 this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
-                                this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                                 this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
                                 this.HttpContext.Session["ReportName"] = $"{ReportName}";
-                                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/GeneralLedger.rpt";
+                                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
+
+
+
                             }
                             break;
                         case "LL":
