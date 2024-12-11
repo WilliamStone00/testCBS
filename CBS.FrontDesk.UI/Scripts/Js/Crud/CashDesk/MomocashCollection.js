@@ -50,47 +50,163 @@ $(document).on('input', '.amount-input, .fee-input, .interest-input, .penalty-in
     $row.find('.total-span').text(total.toFixed(2));
     calculateTableTotal();
 });
+//$(document).on('input', '.amount-input, .fee-input, .interest-input, .penalty-input, .loan-amount-input', function () {
+//    var $row = $(this).closest('tr');
+//    var amount = parseFloat($row.find('.amount-input').val()) || 0;
+//    var fee = parseFloat($row.find('.fee-input').val()) || 0;
+//    var interest = parseFloat($row.find('.interest-input').val()) || 0;
+//    var penalty = parseFloat($row.find('.penalty-input').val()) || 0;
+//    var loan_amount_input = parseFloat($row.find('.loan-amount-input').val()) || 0;
+//    var total = amount + fee + penalty + interest + loan_amount_input;
+//    $row.find('.total-span').text(total.toFixed(2));
+//    calculateTableTotal();
+//});
 // Trigger this function whenever the "Amount" or "Fee" inputs change
 // Trigger this function whenever the "Amount" or "Fee" inputs change
 function calculateTableTotal() {
-    var total = 0;
+    var total = 0; // Total of all rows
+    var totalVat = 0; // Total VAT for all rows
 
     // Iterate over each row in the table
     $('#myDataTableT tbody tr').each(function () {
-        // Get the Amount and Fee input values
-        var amount = parseFloat($(this).find('.amount-input').val()) || 0;
+        // Extract values for Capital, Interest, and Penalty
+        var capital = parseFloat($(this).find('.amount-input').val()) || 0;
+        var interest = parseFloat($(this).find('.interest-input').val()) || 0;
+        var penalty = parseFloat($(this).find('.penalty-input').val()) || 0;
         var fee = parseFloat($(this).find('.fee-input').val()) || 0;
+         //Calculate VAT (interest × vatRate)
+        //var vatRate = parseFloat($(this).find('.interest-input').data('vat-rate')) || 0; // Get VAT rate from data attribute
+        //var vat = interest * (vatRate / 100);
 
-        // Calculate the row total (Amount + Fee)
-        var rowTotal = amount + fee;
+        // Row total
+        var rowTotal = capital + interest + penalty + fee;
 
-        // Update the total span in the current row
-        $(this).find('.total-span').text(rowTotal.toFixed(1));
+        // Update row total and VAT display in the row (optional)
+        $(this).find('.total-span').text(rowTotal);
 
-        // Add the row total to the overall total
+        // Accumulate totals
         total += rowTotal;
+        //totalVat += vat;
     });
 
-    // Update the table footer total
-    var formattedTotal = total.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
-    $('#tableTotal').text(formattedTotal);
+    // Update footer totals
+    $('#tableTotal').text(total.toLocaleString('en-US', { style: 'currency', currency: 'XAF' }));
+    $('#calculatedVat').text(totalVat.toLocaleString('en-US', { minimumFractionDigits: 1 })); // Update VAT in the footer
 
-    // Update balance (Total notes - total from table)
-    var totalNotes = parseFloat($("#totalNoteAmount").val()) || 0;
+    // Update balance (if applicable)
+    var totalNotes = parseFloat($("#totalNoteAmount").val()) || 0; // Assuming total funds are available
     var balance = totalNotes - total;
-    var formattedBalance = balance.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
-    $('#tableBalance').text(formattedBalance);
-
-    // The "Cash-In" button will always be active, so no need to enable/disable it
+    $('#tableBalance').text(balance.toLocaleString('en-US', { style: 'currency', currency: 'XAF' }));
 }
-
 // Bind event listeners to the input fields
 $(document).ready(function () {
-    // Whenever the amount or fee input fields change, recalculate the totals
-    $('#myDataTableT').on('input', '.amount-input, .fee-input', function () {
+    // Recalculate totals whenever inputs change
+    $('#myDataTableT').on('input', '.amount-input, .interest-input, .penalty-input', function () {
         calculateTableTotal();
     });
 });
+
+// Optional: Single VAT calculation function for real-time updates
+// VAT calculation function
+function calculateVat(interestInput, vatRate) {
+    // Parse the interest value from the input
+    var interest = parseFloat(interestInput.value) || 0;
+
+    // Calculate VAT for the current row
+    var vat = interest * vatRate / 100;
+
+    // Format VAT for display with thousands separators and no decimal places
+    var formattedVat = vat.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+    // Recalculate the total VAT for all rows
+    calculateTotalVat();
+
+    // Find the element with id 'calculatedVat' and update its content
+    var vatElement = document.getElementById('calculatedVat');
+    if (vatElement) {
+        vatElement.textContent = formattedVat;
+    } else {
+        console.error('Element with id "calculatedVat" not found in the DOM.');
+    }
+}
+
+function calculateTotalVat() {
+    var totalVat = 0;
+
+    // Iterate over all interest inputs and calculate the total VAT
+    $('#myDataTableT tbody tr').each(function () {
+        var interest = parseFloat($(this).find('.interest-input').val()) || 0;
+        var vatRate = parseFloat($(this).find('.vat-rate').text()) || 0; // Assuming a hidden cell for VAT rate
+        totalVat += interest * vatRate / 100;
+    });
+
+    // Format the total VAT for display
+    var formattedTotalVat = totalVat.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+    // Update the VAT footer cell
+    var vatFooterElement = document.getElementById('calculatedVat');
+    if (vatFooterElement) {
+        vatFooterElement.textContent = formattedTotalVat;
+    } else {
+        console.error('Footer element with id "calculatedVat" not found in the DOM.');
+    }
+}
+
+//function calculateTableTotal() {
+//    var total = 0;
+//    $('.total-span').each(function () {
+//        total += parseFloat($(this).text()) || 0;
+//    });
+
+//    // Calculate balance
+//    var totalNotes = parseFloat($("#totalNoteAmount").val()) || 0;
+//    var balance = totalNotes - total;
+
+//    // Update balance in the table footer with separators (no currency)
+//    var formattedBalance = balance.toLocaleString('en-US'); // No currency, just thousand separators
+//    $('#tableBalance').text(formattedBalance);
+
+//    // Change color of balance text if negative
+//    if (balance < 0) {
+//        $('#tableBalance').addClass('text-danger');
+//    } else {
+//        $('#tableBalance').removeClass('text-danger');
+//    }
+
+//    // Remove any existing icon
+//    $('#tableTotal .total-icon').remove();
+
+//    // Compare total with totalNotes and update the icon accordingly
+//    var iconClass, iconColor;
+//    if (total === totalNotes) {
+//        // Equal to totalNotes, show a green checkmark
+//        iconClass = 'fas fa-check-circle';
+//        iconColor = 'text-success';
+//    } else if (total < totalNotes) {
+//        // Less than totalNotes, show a warning exclamation mark
+//        iconClass = 'fas fa-exclamation-circle';
+//        iconColor = 'text-warning';
+//    } else {
+//        // Greater than totalNotes, show a red X
+//        iconClass = 'fas fa-times-circle';
+//        iconColor = 'text-danger';
+//    }
+
+//    // Append the total value to the tableTotal cell with separators (no currency)
+//    var formattedTotal = total.toLocaleString('en-US'); // No currency, just thousand separators
+//    $('#tableTotal').html(`<span>${formattedTotal}</span>`);
+//    // Append the icon after the total value
+//    $('#tableTotal').append(` <i class="${iconClass} total-icon ${iconColor}"></i>`);
+
+//    // Enable or disable the button based on the comparison
+//    if (total === totalNotes) {
+//        $('#submit').prop('disabled', false); // Enable the button
+//    } else {
+//        $('#submit').prop('disabled', true); // Disable the button
+//    }
+//}
+
+
 
 
 
@@ -137,6 +253,41 @@ function validateTotalAmount(total, totalNotes) {
     }
 
     return true;
+}
+
+function applyPayment() {
+    var loanId = document.getElementById('modalLoanId').value;
+    var amount = parseFloat(document.getElementById('modalAmount').value) || 0;
+    var interest = parseFloat(document.getElementById('modalInterest').value) || 0;
+    var penalty = parseFloat(document.getElementById('modalPenalty').value) || 0;
+
+    // Update the row with the values entered from the modal
+    var capitalInput = document.getElementById('capital-' + loanId);
+    var interestInput = document.getElementById('interest-' + loanId);
+    var penaltyInput = document.getElementById('penalty-' + loanId);
+    var totalSpan = document.getElementById('total-' + loanId);
+
+    // Check if elements are found
+    if (!capitalInput || !interestInput || !penaltyInput || !totalSpan) {
+        console.error("One or more elements not found. Check your IDs and ensure they match.");
+        return;
+    }
+
+    // Update the row with entered values
+    capitalInput.value = amount;
+    interestInput.value = interest;
+    penaltyInput.value = penalty;
+
+    // Calculate total (capital + interest + penalty)
+    var total = amount + interest + penalty;
+    totalSpan.innerText = total;
+    calculateTableTotal();
+    // Calculate VAT based on the entered interest
+    calculateVat(interestInput, selectedVatRate);
+
+    // Close the modal
+    var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+    paymentModal.hide();
 }
 
 function collectDeposits() {
@@ -331,7 +482,27 @@ function PostLoanRepayment() {
 
 
 
+//function PostLoanRepayment() {
+//    if (!checkTotalNotes()) return false;
 
+//    var totalNotes = parseFloat($("#totalNoteAmount").val());
+//    var totalInfo = calculateTotalAmount();
+
+//    if (!validateTotalAmount(totalInfo, totalNotes)) return;
+
+//    var deposits = collectDeposits();
+//    if (deposits.length !== 1) {
+//        appalert("Only one loan can be paid at an instant. Please deselect other accounts.", 3, 1);
+//        return;
+//    }
+
+//    deposits[0].currencyNotes = collectCurrencyNotes();
+//    deposits[0].Depositer = collectDepositorInfo();
+
+//    var message = "";
+//    message += "Are you sure you want to perform loan repayment of " + totalInfo.total + "?";
+//    confirmTransaction('Confirm Loan Repayment Operation', message, '/CashDesk/PostRequestCash', deposits, 'LoanRepayment');
+//}
 
 function getSelectedAccountNumbers() {
     var selectedAccountNumbers = [];

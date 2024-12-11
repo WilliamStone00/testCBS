@@ -82,6 +82,30 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         [HttpPost]
         public async Task<ActionResult> Update(HolyDayRecurring model)
         {
+            if (model.ExludeDayAndMonth)
+            {
+                // Remove errors related to Month and DayOfMonth if ExcludeDayAndMonth is true
+                ModelState.Remove(nameof(model.Month));
+                ModelState.Remove(nameof(model.DayOfMonth));
+            }
+
+            if (model.IsGlobal)
+            {
+                // Remove errors related to BranchId if IsGlobal is true
+                ModelState.Remove(nameof(model.BranchId));
+            }
+
+            // Validate the model state after adjustments
+            if (!ModelState.IsValid)
+            {
+                // Concatenate all validation messages into a single string
+                var validationMessage = string.Join("; ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+
+                // Return the validation messages as a single string in the JSON response
+                return Json(new { success = false, message = $"Validation failed: {validationMessage}" });
+            }
             var data = await _services.Update(model);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
         }

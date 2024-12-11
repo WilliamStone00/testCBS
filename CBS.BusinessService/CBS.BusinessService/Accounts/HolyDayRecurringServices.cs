@@ -36,7 +36,7 @@ namespace CBS.BusinessService.Accounts
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"{objHolyDayRecurring.HolidayType}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{objHolyDayRecurring.Name}", MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
@@ -44,7 +44,7 @@ namespace CBS.BusinessService.Accounts
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objHolyDayRecurring, false, $"{objHolyDayRecurring.HolidayType}", MessagesResults.Failed,
+                    GetExecutionMessages(objHolyDayRecurring, false, $"{objHolyDayRecurring.Name}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -106,14 +106,14 @@ namespace CBS.BusinessService.Accounts
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.HolidayType}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.HolidayType, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -141,18 +141,19 @@ namespace CBS.BusinessService.Accounts
                     HolyDayRecurring.DayOfMonth = model.DayOfMonth;
                     HolyDayRecurring.DayOfMonth = model.DayOfMonth;
                     HolyDayRecurring.IsGlobal = model.IsGlobal;
+                    HolyDayRecurring.Name = model.Name;
                     var response = await _transactionApiHelper.PutAsync<ServiceResponse<HolyDayRecurring>>(string.Format(APICallHelper.Get_Update_Delete_HolyDayRecurring, model.Id), HolyDayRecurring);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{model.HolidayType}", MessagesResults.Success,
-                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, null);
+                        GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, model.HolidayType, MessagesResults.Failed,
+                        GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }

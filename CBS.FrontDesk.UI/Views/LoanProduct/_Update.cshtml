@@ -107,6 +107,13 @@ Key Points:
                                             <label>Minimum down payment rate</label>
                                         </div>
                                     </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsPaidFeeBeforeProcessing, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">Must a partial fee be paid before the loan application is processed?</label>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary me-2">Update</button>

@@ -161,6 +161,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     }
                     else if (path == "loan_for_disbursed")
                     {
+                       
+
                         var loan = await _loanservices.GetLoan(KEY);
                         var Accounts = await _individualProfileServices.GetCustomerAccounts(loan.CustomerId);
                         var documentAttachedToLoans = loan.LoanApplication.DocumentAttachedToLoans;
@@ -169,15 +171,15 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         ViewBag.DisbursmentStatuses = productEnumAgregates.DisbursmentStatuses;
                         var loand = new AddLoanDisbumentCommand
                         {
-                            AccountNumber = Accounts.FirstOrDefault().accountNumber,
-                            Comment = $"Loan successfully disbursed to Customer number: [{loan.CustomerId}] and Account number: [{Accounts.FirstOrDefault().accountNumber}]. Documentation updated. For inquiries, contact Loan Manager {loan.LoanManager}.",
+                            //AccountNumber = Accounts.FirstOrDefault().accountNumber,
+                            //Comment = $"Loan successfully disbursed to Customer number: [{loan.CustomerId}] and Account number: [{Accounts.FirstOrDefault().accountNumber}]. Documentation updated. For inquiries, contact Loan Manager {loan.LoanManager}.",
                             LoanId = loan.Id,
                             Status = "Disbursed"
                         };
                         var collaterals = await _loanProductCollateralServices.GetAllLaonApplicationCollateralByApplicationIdQuery(KEY);
                         var attachedDoc = new DocumentAttachedToLoan { LoanApplicationId = loanApplication.Id };
                         var loanCommiteeValidationHistories = loanApplication.LoanCommiteeValidations;
-                        return PartialView(partialView, new MemberOperationPanel { AddLoanDisbumentCommand = loand, LoanCommiteeValidationHistory = new Data.Entity.LoanCommitee.LoanCommiteeValidationHistory { LoanApplicationId = loanApplication.Id }, LoanCommiteeValidationHistories = loanCommiteeValidationHistories.ToList(), LoanCollateras = collaterals.ToList(), DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
+                        return PartialView(partialView, new MemberOperationPanel { Loan= loan, AddLoanDisbumentCommand = loand, LoanCommiteeValidationHistory = new Data.Entity.LoanCommitee.LoanCommiteeValidationHistory { LoanApplicationId = loanApplication.Id }, LoanCommiteeValidationHistories = loanCommiteeValidationHistories.ToList(), LoanCollateras = collaterals.ToList(), DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
                     }
                     else if (path == "perding_disbursement")
                     {

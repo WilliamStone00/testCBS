@@ -15,6 +15,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string FeeLable { get; set; }
         public decimal AmountPaid { get; set; }
         public bool IsPaid { get; set; }
+        public bool IsCashDeskPayment { get; set; }
         public string LoanApplicationId { get; set; }
         public string CustomerId { get; set; }
         public string Status { get; set; }

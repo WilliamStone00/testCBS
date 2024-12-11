@@ -31,7 +31,7 @@
                             <td style="width:10%">@d.DestinationBranchOfficeShare.ToString("#,##0.0")</td>
                             <td style="width:15%">
                                 <a href="#" onclick="AddORUpdateGen('@d.id','datalistingview_Transfer','_TransferConfig','get','TransactionConfiguration','transferlimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.product.Name @d.transferType to edit">Edit</a> |
-                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.product.Name @d.transferType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable','_TransferData',0,'datalistingview_Transfer')">Delete</a>
+                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.product.Name @d.transferType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable','_TransferData',0,'datalistingview_Transfer',null,'cash_transfer_parameter')">Delete</a>
                             </td>
                         </tr>
                     }

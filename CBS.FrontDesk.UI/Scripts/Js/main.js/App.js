@@ -38,7 +38,9 @@ $(document).ready(function () {
         }
     });
 });
-
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'XAF', minimumFractionDigits: 1 }).format(amount);
+}
 (function () {
     const phoneMaskList = document.querySelectorAll('.phone-mask'),
         creditCardMask = document.querySelector('.credit-card-mask'),

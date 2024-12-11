@@ -1,6 +1,9 @@
 ﻿$(document).ready(function () {
     // Bind the event to trigger when the radio buttons are clicked
     $("input[name='AddLoanApplicationCommand.LoanCategory']").on('change', function () {
+
+        var loanTermId = $("#LoanTermId").val();
+        GetConfiuredTargets(loanTermId,'TargetId');
         GetProductByTargetLoandingMainLoan();  // Call the function when the radio button is checked
     });
 });
@@ -74,7 +77,7 @@ function GetProductByTargetLoandingMainLoan() {
     var loanCategoryValue = $("input[name='AddLoanApplicationCommand.LoanCategory']:checked").attr('id');
     console.log(loanCategoryValue); // Logs 'MainLoan' or 'SpecialSavingFacilityLoan'
     var affectedID = "loan_productid";
-    var KEY = $("#TargetId").val(); 
+    var KEY = $("#TargetId").val();
     var path = "load_loan_products";
     // Fetch other necessary parameters
     var loantermid = $("#LoanTermId").val();
@@ -223,27 +226,57 @@ function GetLoanApplication(KEY) {
         type: "GET",
         url: '/MemberOperation/GetLoanProduct?KEY=' + KEY,
         success: function (data) {
-            $('#amount').html("Enter amount from:" + data.LoanMinimumAmount + " to " + data.LoanMaximumAmount);
-            $('#loanduration').html("Loan duration is between:" + data.MinimumDurationPeriod + " to " + data.MaximumDurationPeriod + " " + data.LoanDurationPeriod);
-            $('#interest').html("Enter interest between:" + data.MinimumInterestRate + "% and " + data.MaximumInterestRate + "%. Calculated on daily bases: " + data.LoanInterestPeriod);
-            $('#installment').html("Minimum repayment installment is:" + data.MinimumNumberOfRepayment + " and Maximum is " + data.MaximumNumberOfRepayment);
-            $('#saving').html("Enter balance saving rate between:" + data.MinimumSavingAccountBalanceRateForTheRequestAmount + "% and " + data.MaximumSavingAccountBalanceRateForTheRequestAmount + "%");
-            $('#share').html("Enter required share amount between:" + data.MinimumShareAccountBalanceForTheRequestAmount + " and " + data.MaximumShareAccountBalanceForTheRequestAmount + "");
-            $('#salary').html("Enter Salary rate between:" + data.MinimumSalaryAccountBalanceRateForTheRequestAmount + "% and " + data.MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount + "%");
-            $('#fee').html("Enter processing fee rate between:" + data.MinimumProcessingFeeRate + "% and " + data.MaximumProcessingFeeRate + "%.");
-            $('#inspectionfee').html("Enter inspection fee between:" + data.MinimumInspectionFeeRate + "% and " + data.MaximumInspectionFeeRate + "%.");
-            $('#chargeparcentages').html("Enter charge percentage between:" + data.MinimumChargesToAppliedInPercentage + " % and " + data.MaximumChargesToAppliedPercentage + "%");
-            $('#chargedayranges').html("Enter in days when charges starts between:" + data.MinimumChargesStartDayAfterLoanDueDate + " to " + data.MaximumChargesStartDayAfterLoanDueDate + "days");
-            $('#waiverranges').html("Enter in percentage interest to waive between:" + data.MinimumInterestWaiver + "% and " + data.MaximumInterestWaiver + "%.");
+            // Helper function to format amounts to XAF currency
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'XAF', minimumFractionDigits: 1 }).format(amount);
+            }
+
+            // Update the HTML elements based on the data received
+            $('#amount').html("Enter amount from: " + formatCurrency(data.LoanMinimumAmount) + " to " + formatCurrency(data.LoanMaximumAmount));
+            $('#loanduration').html("Loan duration is between: " + data.MinimumDurationPeriod + " to " + data.MaximumDurationPeriod + " Months");
+            $('#interest').html("Enter interest between: " + data.MinimumInterestRate + "% and " + data.MaximumInterestRate + "%. Calculated on a daily basis.");
+            $('#installment').html("Minimum repayment installment is: " + data.MinimumNumberOfRepayment + " and Maximum is " + data.MaximumNumberOfRepayment);
+            $('#saving').html("Enter balance saving rate between: " + data.MinimumSavingAccountBalanceRateForTheRequestAmount + "% and " + data.MaximumSavingAccountBalanceRateForTheRequestAmount + "%");
+            $('#share').html("Enter required share amount between: " + formatCurrency(data.MinimumShareAccountBalanceForTheRequestAmount) + " and " + formatCurrency(data.MaximumShareAccountBalanceForTheRequestAmount));
+            $('#salary').html("Enter Salary rate between: " + data.MinimumSalaryAccountBalanceRateForTheRequestAmount + "% and " + data.MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount + "%");
+            $('#fee').html("Enter processing fee rate between: " + data.MinimumProcessingFeeRate + "% and " + data.MaximumProcessingFeeRate + "%.");
+            $('#inspectionfee').html("Enter inspection fee between: " + data.MinimumInspectionFeeRate + "% and " + data.MaximumInspectionFeeRate + "%.");
+            $('#chargeparcentages').html("Enter charge percentage between: " + data.MinimumChargesToAppliedInPercentage + " % and " + data.MaximumChargesToAppliedPercentage + "%");
+            $('#chargedayranges').html("Enter in days when charges start between: " + data.MinimumChargesStartDayAfterLoanDueDate + " to " + data.MaximumChargesStartDayAfterLoanDueDate + " days");
+            $('#waiverranges').html("Enter in percentage interest to waive between: " + data.MinimumInterestWaiver + "% and " + data.MaximumInterestWaiver + "%.");
             $('#downpaymentrate').html("Does this application require down payment? Minimum rate is [" + data.MinimumDownPaymentPercentage + "%].");
 
-            //InspectionFee
-        }, error: function (err) {
+            const requiredDownPayment = data.MinimumDownPaymentPercentage > 0;
 
+            // Set the checkbox state for Down Payment
+            const $downPaymentCheckbox = $('input[name="AddLoanApplicationCommand.RequiredDownPaymentCoverageRate"]');
+            $downPaymentCheckbox.prop('checked', requiredDownPayment);
+            $downPaymentCheckbox.prop('disabled', true);
+
+            // Handle IsPaidFeeBeforeProcessing logic
+            const $paidFeeCheckbox = $('input[name="AddLoanApplicationCommand.IsPaidFeeBeforeProcessing"]');
+            const $processingLabel = $('label[for="FeePaidBeforeProcessing"]');
+            const loanProductName = data.ProductName || "this loan product"; // Use the loan product name if available
+
+            if (data.IsPaidFeeBeforeProcessing) {
+                $paidFeeCheckbox.prop('checked', true); // Check the checkbox
+                $paidFeeCheckbox.prop('disabled', true); // Disable the checkbox
+                $processingLabel.html(`A partial fee must be paid at the cash desk before the loan (${loanProductName}) can be processed.`);
+                $('#beforeProcessingDiv').show(); // Ensure the div is visible
+            } else {
+                $paidFeeCheckbox.prop('checked', false); // Uncheck the checkbox
+                $paidFeeCheckbox.prop('disabled', false); // Enable the checkbox
+                $processingLabel.html(`(${loanProductName}) is not configured for partial fee payment before processing.`);
+                //$('#beforeProcessingDiv').hide(); // Hide the div
+            }
+        },
+        error: function (err) {
             appalert(err.statusText, 1, 3);
         }
     });
 }
+
+
 function GetLoan(loanid) {
     $.ajax({
         type: "GET",

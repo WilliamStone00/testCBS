@@ -27,7 +27,7 @@
                             <td style="width:20%">@d.MinAmount.ToString("#,##0.0")-@d.MaxAmount.ToString("#,##0.0")</td>
                             <td style="width:15%">
                                 <a href="#" onclick="AddORUpdateGen('@d.Id','myDataTable','_DepositConfig','get','TransactionConfiguration','depositlimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Product.Name @d.DepositType to edit">Edit</a> |
-                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Product.Name @d.DepositType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit')">Delete</a>
+                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Product.Name @d.DepositType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit',null,'cash_deposit_parameter')">Delete</a>
                             </td>
                         </tr>
                     }

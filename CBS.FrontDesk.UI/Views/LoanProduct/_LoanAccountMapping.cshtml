@@ -11,7 +11,7 @@
                             data-bs-target="#collapseDeliveryAddress"
                             aria-expanded="true"
                             aria-controls="collapseDeliveryAddress">
-                        Loan product account mapping for @Model.AddLoanProductCommand.ProductName)
+                        <b>TERM: [@Model.UpdateLoanProductCommand.LoanTerm.Name], PRODUCT NAME: [@Model.UpdateLoanProductCommand.ProductName] </b>
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
@@ -26,80 +26,96 @@
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.ProductCode, new { @class = "form-control", @readonly = true })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ProductCode, "", new { @class = "text-danger" })
-                                            <label>Code</label>
+                                            <label>Product Code</label>
                                         </div>
                                     </div>
                                     <div class="col-md-9">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.ProductName, new { @class = "form-control", @readonly = true })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ProductName, "", new { @class = "text-danger" })
-                                            <label>Name</label>
+                                            <label>Product Name</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextAreaFor(m => m.UpdateLoanProductCommand.Description, new { @class = "form-control", @style = "height: 100px;", @readonly = true })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.Description, "", new { @class = "text-danger" })
-                                            <label>Description</label>
+                                            <label>Product Description</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForPrincipalAmount, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForPrincipalAmount, "", new { @class = "text-danger " })
-                                            <label>Principal account for dibursement</label>
+                                            <label>Principal Disbursement Account</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForAccrualInterest, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForAccrualInterest, "", new { @class = "text-danger " })
-                                            <label>Interest accrual account</label>
+                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForInterestReceived, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForInterestReceived, "", new { @class = "text-danger " })
+                                            <label>Interest Received Account</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForPenalty, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForPenalty, "", new { @class = "text-danger " })
-                                            <label>Penalty account</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForFee, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForFee, "", new { @class = "text-danger " })
-                                            <label>Fee account</label>
+                                            <label>Penalty Account</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForTax, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForTax, "", new { @class = "text-danger " })
-                                            <label>Tax account</label>
+                                            <label>Tax Account</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForLoanTransition, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForLoanTransition, "", new { @class = "text-danger " })
-                                            <label>Loan transit account</label>
+                                            <label>Loan Transit Account</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForWriteOffPrincipal, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForWriteOffPrincipal, "", new { @class = "text-danger " })
-                                            <label>Write off loan account</label>
+                                            <label>Write-Off Account</label>
                                         </div>
                                     </div>
 
+
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForProvisionOnPrincipal, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForProvisionOnPrincipal, "", new { @class = "text-danger " })
-                                            <label>Provision on principal account</label>
+                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForProvisionMoreThanOneYear, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForProvisionMoreThanOneYear, "", new { @class = "text-danger " })
+                                            <label>Provision Account for Loans Exceeding 1 Year but Less Than 2 Years</label>
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForProvisionMoreThanTwoYear, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForProvisionMoreThanTwoYear, "", new { @class = "text-danger " })
+                                            <label>Provision Account for Loans Exceeding 2 Years but Less Than 3 Years</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForProvisionMoreThanThreeYear, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForProvisionMoreThanThreeYear, "", new { @class = "text-danger " })
+                                            <label>Provision Account for Loans Exceeding 3 Years but Less Than 4 Years</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForProvisionMoreThanFourYear, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChartOfAccountIdForProvisionMoreThanFourYear, "", new { @class = "text-danger " })
+                                            <label>Provision Account for Loans Exceeding 4 Years</label>
+                                        </div>
+                                    </div>
+
 
                                 </div>
                                 <div class="mt-4">

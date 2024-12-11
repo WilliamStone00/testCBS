@@ -7,9 +7,15 @@
             @Html.HiddenFor(model => model.Id)
 
             <div class="row mt-3 gy-4">
-
+                <div class="col-md-5">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        <label for="Month">Name</label>
+                    </div>
+                </div>
                 <!-- Holiday Type -->
-                <div class="col-md-12">
+                <div class="col-md-4">
                     <div class="form-floating form-floating-outline">
                         @Html.DropDownListFor(m => m.HolidayType, new SelectList(ViewBag.HolidayTypes, "Value", "Text"), "--- Select Holiday Type ---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.HolidayType, "", new { @class = "text-danger" })
@@ -18,7 +24,7 @@
                 </div>
 
                 <!-- Recurrence Pattern -->
-                <div class="col-md-12">
+                <div class="col-md-3">
                     <div class="form-floating form-floating-outline">
                         @Html.DropDownListFor(m => m.RecurrencePattern, new SelectList(ViewBag.RecurrencePatterns, "Value", "Text"), "--- Select Recurrence Pattern ---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.RecurrencePattern, "", new { @class = "text-danger" })
@@ -26,8 +32,16 @@
                     </div>
                 </div>
 
-                <!-- Recurring Day -->
+                <!-- Checkbox to toggle Exclude Recurring Day visibility -->
                 <div class="col-md-12">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.ExcludeRecurringDay, new { @class = "form-check-input", id = "excludeRecurringDayCheck" })
+                        <label class="form-check-label" for="excludeRecurringDayCheck">Exclude Recurring Day</label>
+                    </div>
+                </div>
+
+                <!-- Recurring Day -->
+                <div class="col-md-12" id="recurringDayDive">
                     <div class="form-floating form-floating-outline">
                         @Html.DropDownListFor(m => m.RecurringDay, new SelectList(ViewBag.DayOfWeeks, "Value", "Text"), "--- Select Recurring Day ---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.RecurringDay, "", new { @class = "text-danger" })
@@ -35,7 +49,7 @@
                     </div>
                 </div>
 
-                <!-- Checkbox to toggle Month and Day visibility -->
+                <!-- Checkbox to toggle Exclude Day and Month visibility -->
                 <div class="col-md-12">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.ExludeDayAndMonth, new { @class = "form-check-input", id = "excludeDayMonthCheck" })
@@ -46,7 +60,7 @@
                 <!-- Month -->
                 <div class="col-md-6" id="monthDiv">
                     <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Month, new { @class = "form-control", type = "number", min = "1", max = "12" })
+                        @Html.TextBoxFor(m => m.Month, new { @class = "form-control", type = "number", min = "0", max = "12" })
                         @Html.ValidationMessageFor(m => m.Month, "", new { @class = "text-danger" })
                         <label for="Month">Month</label>
                     </div>
@@ -55,7 +69,7 @@
                 <!-- Day of Month -->
                 <div class="col-md-6" id="dayOfMonthDiv">
                     <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.DayOfMonth, new { @class = "form-control", type = "number", min = "1", max = "31" })
+                        @Html.TextBoxFor(m => m.DayOfMonth, new { @class = "form-control", type = "number", min = "", max = "31" })
                         @Html.ValidationMessageFor(m => m.DayOfMonth, "", new { @class = "text-danger" })
                         <label for="DayOfMonth">Day of Month</label>
                     </div>
@@ -80,7 +94,6 @@
                         <label for="BranchId">Select Branch</label>
                     </div>
                 </div>
-
 
                 <!-- Description -->
                 <div class="col-md-12">
@@ -115,47 +128,70 @@
         }
     </div>
 </fieldset>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const excludeDayMonthCheck = document.getElementById("excludeDayMonthCheck");
-        const monthDiv = document.getElementById("monthDiv");
-        const dayOfMonthDiv = document.getElementById("dayOfMonthDiv");
-
-        function toggleDayMonthFields() {
-            if (excludeDayMonthCheck.checked) {
-                monthDiv.style.display = "none";
-                dayOfMonthDiv.style.display = "none";
-            } else {
-                monthDiv.style.display = "block";
-                dayOfMonthDiv.style.display = "block";
-            }
-        }
-
-        // Initial check on page load
-        toggleDayMonthFields();
-
-        // Add event listener for changes
-        excludeDayMonthCheck.addEventListener("change", toggleDayMonthFields);
-    });
-</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const isGlobalCheck = document.getElementById("isGlobalCheck");
-        const branchSection = document.getElementById("branchSection");
+        // Function to initialize the form elements and event listeners
+        function initializeFormElements() {
+            const excludeRecurringDayCheck = document.getElementById("excludeRecurringDayCheck");
+            const excludeDayMonthCheck = document.getElementById("excludeDayMonthCheck");
+            const recurringDayDiv = document.getElementById("recurringDayDive");
+            const monthDiv = document.getElementById("monthDiv");
+            const dayOfMonthDiv = document.getElementById("dayOfMonthDiv");
+            const isGlobalCheck = document.getElementById("isGlobalCheck");
+            const branchSection = document.getElementById("branchSection");
 
-        function toggleBranchSection() {
-            if (isGlobalCheck.checked) {
-                branchSection.style.display = "none";
-            } else {
-                branchSection.style.display = "block";
+            // Toggle recurring day section visibility
+            function toggleRecurringDayDiv() {
+                if (excludeRecurringDayCheck.checked) {
+                    recurringDayDiv.style.display = "none";
+                } else {
+                    recurringDayDiv.style.display = "block";
+                }
             }
+
+            // Toggle month and day-of-month fields visibility
+            function toggleDayMonthFields() {
+                console.log("Exclude Day and Month checkbox checked: ", excludeDayMonthCheck.checked);
+
+                if (excludeDayMonthCheck.checked) {
+                    console.log("Hiding monthDiv and dayOfMonthDiv...");
+                    monthDiv.style.display = "none";
+                    dayOfMonthDiv.style.display = "none";
+                } else {
+                    console.log("Showing monthDiv and dayOfMonthDiv...");
+                    monthDiv.style.display = "block";
+                    dayOfMonthDiv.style.display = "block";
+                }
+            }
+
+            // Toggle branch section visibility
+            function toggleBranchSection() {
+                if (isGlobalCheck.checked) {
+                    branchSection.style.display = "none";
+                } else {
+                    branchSection.style.display = "block";
+                }
+            }
+
+            // Initial checks on page load
+            toggleRecurringDayDiv();
+            toggleDayMonthFields();
+            toggleBranchSection();
+
+            // Add event listeners for checkbox changes
+            excludeRecurringDayCheck.addEventListener("change", toggleRecurringDayDiv);
+            excludeDayMonthCheck.addEventListener("change", toggleDayMonthFields);
+            isGlobalCheck.addEventListener("change", toggleBranchSection);
         }
 
-        // Initial check on page load
-        toggleBranchSection();
+        //// Initialize the form elements
+        //initializeFormElements();
 
-        // Add event listener for changes
-        isGlobalCheck.addEventListener("change", toggleBranchSection);
+        //// Reinitialize form elements after an AJAX request (e.g., after partial view update)
+        //$(document).on('ajaxComplete', function () {
+        //    // Re-run the initialization for newly loaded form elements
+        //    initializeFormElements();
+        //});
     });
 </script>

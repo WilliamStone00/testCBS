@@ -12,6 +12,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingDayObject
 
         [Required(ErrorMessage = "Branch is required if the holiday is not global.")]
         public string BranchId { get; set; }
+        [Required(ErrorMessage = "Recurring holiday name is required.")]
+        public string Name { get; set; }
 
         public bool IsGlobal { get; set; } // If true, the holiday configuration applies globally to all branches.
 
@@ -38,6 +40,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingDayObject
         public string Description { get; set; }
 
         public Branch Branch { get; set; }
+        public bool ExcludeRecurringDay { get; set; }
         public bool ExludeDayAndMonth { get; set; }
         /// <summary>
         /// Validates the class properties based on custom rules.
