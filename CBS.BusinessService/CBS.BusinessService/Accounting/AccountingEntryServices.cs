@@ -26,6 +26,7 @@ using CBS.BusinessService.Accounting;
 using System.Threading;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Security.Cryptography.Xml;
 
 
 namespace CBS.BusinessService
@@ -1497,6 +1498,34 @@ namespace CBS.BusinessService
             catch (Exception ex)
             {
                 // Log and handle exception
+                throw (ex);
+            }
+        }
+
+        public async Task<AccountingGeneralLedger> GetAccountGLEntries(SystemQuery model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+                var urlString = string.Format(APICallHelper.AccountingEntry_AccountGl, model.AccountId);
+                var couApiResponse = await  _accountingApiCallerHelper.PostGLAsync(urlString,model);
+                if (couApiResponse!=null)
+                {
+                     
+                    return couApiResponse;
+                }
+                else
+                {
+                    throw new Exception("There are no accounting entries made for accountId:"+ model.AccountId);
+                }
+ 
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
                 throw (ex);
             }
         }

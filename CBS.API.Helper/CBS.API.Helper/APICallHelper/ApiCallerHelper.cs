@@ -471,7 +471,16 @@ namespace CBS.API.Helper
             var Model = await HandleBranchLiaisonResponse(response);
             return Model.Data;
         }
-
+        public async Task<AccountingGeneralLedger> PostGLAsync(string apiUrl, object data)
+        {
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+            string jsonData = JsonConvert.SerializeObject(data);
+            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            AddAuthorizationHeader(_httpClient);
+            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+            var Model = await HandleAccountingGeneralLedgerResponse(response);
+            return Model.data;
+        }
         public async Task<List<TrialBalance6ColumnDto>> PostTrialBalance6ColumnAsyncAsync(string apiUrl, object data)
         {
             apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
@@ -1069,6 +1078,26 @@ namespace CBS.API.Helper
                     string responseData = await response.Content.ReadAsStringAsync();
 
                     entries = JsonConvert.DeserializeObject<TrialBalance6ColumnDtoServiceResponse>(responseData);
+                }
+                return entries;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
+        private async Task<AccountingGeneralLedgerServiceResponse> HandleAccountingGeneralLedgerResponse(HttpResponseMessage response)
+        {
+
+            AccountingGeneralLedgerServiceResponse entries = new AccountingGeneralLedgerServiceResponse();
+            try
+            {
+                if (response.Content != null)
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    entries = JsonConvert.DeserializeObject<AccountingGeneralLedgerServiceResponse>(responseData);
                 }
                 return entries;
             }

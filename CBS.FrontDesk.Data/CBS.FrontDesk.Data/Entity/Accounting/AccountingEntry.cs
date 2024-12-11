@@ -92,11 +92,13 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string AccountName { get; set; }
         public string Debit { get; set; }
         public string Credit { get; set; }
-        //public string CrCurrentBalance { get; set; }
-        //public string DrCurrentBalance { get; set; }
-   public string CurrentBalance { get; set; }
+        public string AccountId { get; set; }
+        public string CurrentBalance { get; set; }
         public string CreditAccountBalance { get; set; }
         public string DebitAccountBalance { get; set; }
+        public string ReferenceID { get; set; }
+        public double DrAmount { get; set; }
+        public object CrAmount { get; set; }
     }
 
 
