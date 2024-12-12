@@ -905,8 +905,10 @@ namespace CBS.BusinessService.CustomerManagement
                 model.BranchId = GetBranchID();
                 model.BankId = GetBankID();
                 model.LegalForm = "Physical_Person";
+                model.IsDailyCollector = model.CustomerType == "DailyCollector" ? true : false;
+                model.CustomerType = model.NoneMemberAccount ? model.CustomerType : "MemberAccount";
                 model.EmployerTelephone = tel;
-                model.MembershipApprovalStatus = "Awaits_Validation";
+                model.MembershipApprovalStatus = model.NoneMemberAccount ? "Approved":"Awaits_Validation";
                 model.BankName = GetBranchName();
                 model.Email = model.Email ?? "fluxdefault@trustcredit.com";
                 model.MembershipApplicantDate = DateTime.Now.ToString();

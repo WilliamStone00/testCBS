@@ -81,6 +81,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public decimal Penalty { get; set; }
         public decimal Interest { get; set; }
         public decimal Total { get; set; }
+        public string TellerCode { get; set; }
+
         public string AccountType { get; set; }
         public string LoanId { get; set; }
         public string LoanApplicationId { get; set; }
@@ -92,6 +94,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string CNI { get; set; }
         public string Period { get; set; }
         public bool IsSWS { get; set; } = false;
+
+
         public string CheckNumber { get; set; }
         public string BookingDirection { get; set; }
         public string CheckName { get; set; }

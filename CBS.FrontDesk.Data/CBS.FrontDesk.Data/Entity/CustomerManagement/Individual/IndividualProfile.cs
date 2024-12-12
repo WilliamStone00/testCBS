@@ -13,6 +13,7 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
     public class IndividualProfile
     {
         public string CustomerId { get; set; }
+        public string CustomerType { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public bool IsMemberOfACompany { get; set; }
@@ -26,6 +27,7 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string VillageOfOrigin { get; set; }
         public bool IsDailyCollector { get; set; } = false;
 
+        public bool NoneMemberAccount { get; set; } = false;
         public string Address { get; set; }
         public string IDNumber { get; set; }
         public string IDNumberIssueDate { get; set; }

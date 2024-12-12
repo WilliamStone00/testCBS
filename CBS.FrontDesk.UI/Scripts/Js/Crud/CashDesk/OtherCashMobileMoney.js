@@ -126,6 +126,7 @@ function collectDeposits() {
         if ($(this).find('.form-check-input').prop('checked')) {
             var deposit = {};
             deposit.CustomerId = $('#customerId').val();
+            deposit.TellerCode = $('#TellerCode').val();
             deposit.Amount = parseFloat($(this).find('.amount-input').val());
             deposit.Total = parseFloat($(this).find('.total-span').text());
             deposit.OperationType = $('#OperationType').val();

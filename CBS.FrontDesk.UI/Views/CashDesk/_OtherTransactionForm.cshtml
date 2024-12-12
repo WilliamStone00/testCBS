@@ -7,21 +7,7 @@
             <legend class="text-primary h5 mb-4">Other Cash-In</legend>
 
             <div class="change-group">
-                <!-- Search Member Reference -->
-                <div class="row mb-3 align-items-center">
-                    <div class="col-md-6">
-                        <div class="input-group shadow-sm">
-                            <input type="text" id="manualSearchInput" class="form-control" placeholder="Enter member's reference number">
-                            <button class="btn btn-outline-primary" type="button" id="manualSearchInputbutton" onclick="LoadMembersAccounts('account_number')">Search</button>
-                        </div>
-                    </div>
-                    <div class="col-md-6 text-end">
-                        <span class="formatted-amount shadow-box fw-bold" id="lblDepositRequest_amount">Total amount: 0.0</span>
-                        <input type="hidden" id="totalNoteAmount" value="0">
-                    </div>
-                </div>
 
-                <hr />
 
                 <!-- Source Type Selection -->
                 <div class="row mb-3">
@@ -38,7 +24,21 @@
                         </div>
                     </div>
                 </div>
+                <!-- Search Member Reference -->
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-6">
+                        <div class="input-group shadow-sm">
+                            <input type="text" id="manualSearchInput" class="form-control" placeholder="Enter member's reference number">
+                            <button class="btn btn-outline-primary" type="button" id="manualSearchInputbutton" onclick="LoadMembersAccounts('account_number')">Search</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <span class="formatted-amount shadow-box fw-bold" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                        <input type="hidden" id="totalNoteAmount" value="0">
+                    </div>
+                </div>
 
+                <hr />
                 <!-- Event Item Selection -->
                 <div class="row mb-3">
                     <div class="col-md-12">

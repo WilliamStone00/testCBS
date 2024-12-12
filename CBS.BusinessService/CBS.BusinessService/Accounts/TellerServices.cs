@@ -90,6 +90,7 @@ namespace CBS.BusinessService.Accounts
                                        MinimumTransferAmount = teller.MinimumTransferAmount,
                                        MaximumTransferAmount = teller.MaximumTransferAmount,
                                        Branch = branch,
+                                       MapMobileMoneyToNoneMemberMobileMoneyReference = teller.MapMobileMoneyToNoneMemberMobileMoneyReference,
                                        inUseStatus = teller.inUseStatus,
                                        activeStatus = teller.activeStatus,
                                        Transactions = teller.Transactions
@@ -147,7 +148,7 @@ namespace CBS.BusinessService.Accounts
             {
 
                 var data = await GetTellers();
-                var values = data.Where(x=>x.branchId==id).Select(a => new StringValues
+                var values = data.Where(x => x.branchId == id).Select(a => new StringValues
                 {
                     Text = $"[{a.name}] [{a.Branch.Name}] [{(a.isPrimary ? "Primary" : "Sub")}-Till]",
                     Value = $"{a.id}",
@@ -155,7 +156,7 @@ namespace CBS.BusinessService.Accounts
                 var defaultSelectedValue = "default-value";
                 return new SelectList(values.ToList(), "Value", "Text", defaultSelectedValue);
 
-               
+
 
             }
             catch (Exception ex)
@@ -309,6 +310,7 @@ namespace CBS.BusinessService.Accounts
                         Teller.MobileMoneyFloatNumber = model.MobileMoneyFloatNumber;
                         Teller.MobileMoneyUserKeepingThePhone = model.MobileMoneyUserKeepingThePhone;
                         Teller.AccountNumber = model.AccountNumber;
+                        Teller.MapMobileMoneyToNoneMemberMobileMoneyReference = model.MapMobileMoneyToNoneMemberMobileMoneyReference;
                         option = action;
                     }
                     else if (action == "balance_alert")
@@ -343,6 +345,7 @@ namespace CBS.BusinessService.Accounts
                         MobileMoneyMaximumBalanceAlertLevel = Teller.MobileMoneyMaximumBalanceAlertLevel,
                         PhoneNumberToRecieveAlert = Teller.PhoneNumberToRecieveAlert,
                         AccountNumber = Teller.AccountNumber,
+                        MapMobileMoneyToNoneMemberMobileMoneyReference = Teller.MapMobileMoneyToNoneMemberMobileMoneyReference,
                         Option = option,
                         BranchCode = branch.BranchCode,
                     };
@@ -398,7 +401,8 @@ namespace CBS.BusinessService.Accounts
                 ToHeadOfficeFloatAccountNumber_D = teller.ToHeadOfficeFloatAccountNumber_D,
                 PhoneNumberToRecieveAlert = teller.PhoneNumberToRecieveAlert,
                 MobileMoneyAlertMessageInFrench = teller.MobileMoneyAlertMessageInFrench,
-                MobileMoneyAlertMessageInEnglish = teller.MobileMoneyAlertMessageInEnglish
+                MobileMoneyAlertMessageInEnglish = teller.MobileMoneyAlertMessageInEnglish,
+                MapMobileMoneyToNoneMemberMobileMoneyReference = teller.MapMobileMoneyToNoneMemberMobileMoneyReference,
             };
 
             return mobileMoneyTellerConfigCommand;

@@ -88,6 +88,18 @@
                                             <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Enter the float number for transaction processing."></i>
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.MobileMoneyTellerConfiguration.MapMobileMoneyToNoneMemberMobileMoneyReference, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.MapMobileMoneyToNoneMemberMobileMoneyReference, "", new { @class = "text-danger" })
+                                            <label>Enter the 16-digit account number designated as the collective reference for processing @Model.Teller.TellerType transactions for non-members.</label>
+                                            <i class="mdi mdi-help-circle text-muted ms-1"
+                                               data-bs-toggle="tooltip"
+                                               title="Provide the 16-digit account number that serves as the reference for processing non-member @Model.Teller.TellerType transactions."></i>
+                                        </div>
+                                    </div>
+
+
                                 </div>
                             </fieldset>
                             <div class="mt-4">
@@ -193,55 +205,52 @@
                                 <input type="hidden" name="ServiceOption" value="primary_teller" id="ServiceOption" />
 
                                 <!-- Fieldset 1: Transfer from Auxillary Account to Branch Float Account -->
-                                <fieldset class="fieldset-custom">
-                                    <legend><strong>Transfer from auxiliary account to branch float account</strong></legend>
-                                    <p class="text-muted">Set up the accounting mappings for cash top-ups through Mobile or Orange Money. Ensure correct ledger accounts to avoid discrepancies.</p>
-                                    <div class="row mt-2 gy-4">
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.FromAuxillaryAccountNumber_A, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.FromAuxillaryAccountNumber_A, "", new { @class = "text-danger" })
-                                                <label>From auxiliary account number</label>
-                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account from which funds will be deducted for the float transfer."></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.ToBranchFloatAccountNumberAuxillary_A, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.ToBranchFloatAccountNumberAuxillary_A, "", new { @class = "text-danger" })
-                                                <label>To branch float account number</label>
-                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account to which funds will be credited for the float transfer."></i>
-                                            </div>
-                                        </div>
+                        @*<fieldset class="fieldset-custom">
+                            <legend><strong>Transfer from auxiliary account to branch float account</strong></legend>
+                            <p class="text-muted">
+                                Configure the ledger account used for processing transactions when members send funds directly to the branch float Mobile Money account. This setup ensures accurate bookkeeping and facilitates the crediting of member accounts while maintaining proper alignment with financial records.
+                            </p>
+                            <div class="row mt-2 gy-4">
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.FromAuxillaryAccountNumber_A, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.FromAuxillaryAccountNumber_A, "", new { @class = "text-danger" })
+                                        <label>Source float account number</label>
+                                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the source ledger account from which funds will be deducted to credeit the member's account."></i>
                                     </div>
-                                </fieldset>
+                                </div>
+
+                            </div>
+                        </fieldset>*@
 
                                 <!-- Fieldset 2: Transfer from Head Office to Branch Float Account -->
-                                <fieldset class="fieldset-custom">
-                                    <legend><strong>Transfer from head office to branch float account</strong></legend>
-                                    <p class="text-muted">Set up the accounting mappings for head office cash top-ups to the branch float. Ensure ledger account numbers are accurate to avoid errors.</p>
-                                    <div class="row mt-2 gy-4">
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.FromHeadOfficeAccountNumber_B, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.FromHeadOfficeAccountNumber_B, "", new { @class = "text-danger" })
-                                                <label>From head-office account number</label>
-                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account from which head office funds will be deducted for the float transfer."></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.ToBranchFloatAccountNumberHeadOffice_B, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.ToBranchFloatAccountNumberHeadOffice_B, "", new { @class = "text-danger" })
-                                                <label>To branch float account number</label>
-                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account to which head office funds will be credited for the float transfer."></i>
-                                            </div>
-                                        </div>
+                        <fieldset class="fieldset-custom">
+                            <legend><strong>Transfer from head office to branch float account</strong></legend>
+                            <p class="text-muted">
+                                Configure the ledger accounts for processing fund transfers from the head office to the branch float account. This ensures accurate financial tracking, proper allocation of funds, and prevents discrepancies in accounting records.
+                            </p>
+                            <div class="row mt-2 gy-4">
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.FromHeadOfficeAccountNumber_B, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.FromHeadOfficeAccountNumber_B, "", new { @class = "text-danger" })
+                                        <label>From head-office account number</label>
+                                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account from which head office funds will be deducted for the float transfer."></i>
                                     </div>
-                                </fieldset>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.ToBranchFloatAccountNumberHeadOffice_B, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.ToBranchFloatAccountNumberHeadOffice_B, "", new { @class = "text-danger" })
+                                        <label>To branch float account number</label>
+                                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account to which head office funds will be credited for the float transfer."></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
 
                                 <!-- Fieldset 3: Transfer between Branch Float Accounts -->
-                                <fieldset class="fieldset-custom">
+                                @*<fieldset class="fieldset-custom">
                                     <legend><strong>Transfer between branch float accounts</strong></legend>
                                     <p class="text-muted">Configure the accounting mappings for float transfers between branches. Ensure the accuracy of ledger accounts.</p>
                                     <div class="row mt-2 gy-4">
@@ -262,31 +271,33 @@
                                             </div>
                                         </div>
                                     </div>
-                                </fieldset>
+                                </fieldset>*@
 
                                 <!-- Fieldset 4: Transfer from Branch to Head Office Float Account -->
-                                <fieldset class="fieldset-custom">
-                                    <legend><strong>Transfer from branch float account to head-office float account</strong></legend>
-                                    <p class="text-muted">Set up the accounting mappings for transfers from branch float accounts to head-office float accounts.</p>
-                                    <div class="row mt-2 gy-4">
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.FromBranchFloatAccountNumber_D, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.FromBranchFloatAccountNumber_D, "", new { @class = "text-danger" })
-                                                <label>From branch float account number</label>
-                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account from which branch float funds will be deducted for the transfer to head office."></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.ToHeadOfficeFloatAccountNumber_D, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.ToHeadOfficeFloatAccountNumber_D, "", new { @class = "text-danger" })
-                                                <label>To head-office float account number</label>
-                                                <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account to which funds will be credited during the transfer to head office."></i>
-                                            </div>
-                                        </div>
+                        <fieldset class="fieldset-custom">
+                            <legend><strong>Transfer from branch float account to head-office float account</strong></legend>
+                            <p class="text-muted">
+                                Configure the ledger accounts required for fund transfers from branch float accounts to head-office float accounts. This ensures seamless financial operations, accurate tracking of inter-branch transfers, and compliance with accounting standards.
+                            </p>
+                            <div class="row mt-2 gy-4">
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.FromBranchFloatAccountNumber_D, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.FromBranchFloatAccountNumber_D, "", new { @class = "text-danger" })
+                                        <label>From branch float account number</label>
+                                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account from which branch float funds will be deducted for the transfer to head office."></i>
                                     </div>
-                                </fieldset>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.MobileMoneyTellerConfiguration.ToHeadOfficeFloatAccountNumber_D, new SelectList(ViewBag.ChartOfAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.MobileMoneyTellerConfiguration.ToHeadOfficeFloatAccountNumber_D, "", new { @class = "text-danger" })
+                                        <label>To head-office float account number</label>
+                                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="Specify the ledger account to which funds will be credited during the transfer to head office."></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
 
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary me-2">MAP Accounts</button>
