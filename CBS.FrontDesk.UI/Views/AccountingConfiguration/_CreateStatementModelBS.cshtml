@@ -27,48 +27,52 @@
                     @Html.ValidationMessageFor(model => model.IncomeStatement.GrossChartOfAccountId, "", new { @class = "text-danger" })
                     <label for="AccountIds">Select account numbers from chart of account to be used as Gross account</label>
                 </div>
+                <div class="col-md-6 ">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.IncomeStatement.OperationSideGross, new SelectList(ViewBag.OperationSide == null ? "" : ViewBag.OperationSide, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(model => model.IncomeStatement.OperationSideGross, "", new { @class = "text-danger" })
+                        <label for="Document">Select gross account booking direction</label>
+                    </div>
+                </div>
+                <div class="col-md-6 ">
+                    <div class="form-floating form-floating-outline">
+                        @Html.ListBoxFor(m => m.IncomeStatement.AmortizationChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? new List<SelectListItem>() : ViewBag.ChartOfAccounts, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple" })
+                        @Html.ValidationMessageFor(model => model.IncomeStatement.AmortizationChartOfAccountId, "", new { @class = "text-danger" })
+                        <label for="AccountIds">Select account numbers from chart of account to be used as amortization account</label>
+                    </div>
+                </div>
+                <div class="col-md-6 ">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.IncomeStatement.OperationSideAmortization, new SelectList(ViewBag.OperationSide == null ? "" : ViewBag.OperationSide, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(model => model.IncomeStatement.OperationSideAmortization, "", new { @class = "text-danger" })
+                        <label for="Document">Select amortizations booking direction</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextAreaFor(m => m.IncomeStatement.Heading, new { @class = "form-control", @style = "height: 150px;" })
+                        @Html.ValidationMessageFor(m => m.IncomeStatement.Heading, "", new { @class = "text-danger" })
+                        <label for="Documentxxx">Heading (Description)</label>
+                    </div>
+                </div>
             </div>
-            @*<div class="col-md-6 ">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.IncomeStatement.OperationSideGross, new SelectList(ViewBag.OperationSide == null ? "" : ViewBag.OperationSide, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(model => model.IncomeStatement.OperationSideGross, "", new { @class = "text-danger" })
-                    <label for="Document">Select gross account booking direction</label>
-                </div>
-            </div>*@
-            <div class="col-md-6 ">
-                <div class="form-floating form-floating-outline">
-                    @Html.ListBoxFor(m => m.IncomeStatement.AmortizationChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? new List<SelectListItem>() : ViewBag.ChartOfAccounts, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple" })
-                    @Html.ValidationMessageFor(model => model.IncomeStatement.AmortizationChartOfAccountId, "", new { @class = "text-danger" })
-                    <label for="AccountIds">Select account numbers from chart of account to be used as amortization account</label>
-                </div>
-            </div>
-            @*<div class="col-md-6 ">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.IncomeStatement.OperationSideAmortization, new SelectList(ViewBag.OperationSide == null ? "" : ViewBag.OperationSide, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(model => model.IncomeStatement.OperationSideAmortization, "", new { @class = "text-danger" })
-                    <label for="Document">Select amortizations booking direction</label>
-                </div>
-            </div>*@
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextAreaFor(m => m.IncomeStatement.Heading, new { @class = "form-control", @style = "height: 150px;" })
-                    @Html.ValidationMessageFor(m => m.IncomeStatement.Heading, "", new { @class = "text-danger" })
-                    <label for="Documentxxx">Heading (Description)</label>
-                </div>
-            </div>
-        </div>
 
-        <div class="mt-4">
-            @if (Model.IncomeStatement.Id == null)
-            {
-                <button type="submit" class="btn btn-primary me-2">Save</button>
-                <input type="hidden" name="Action" value="insert" id="Action" />
-            }
-            else
-            { <button type="submit" class="btn btn-primary me-2">Update</button>
-                @Html.HiddenFor(m => m.IncomeStatement.Id)
-                <input type="hidden" name="Action" value="update" id="Action" />
-            }
+            <div class="mt-4">
+                @if (Model.IncomeStatement.Id == null)
+                {
+                    <button type="submit" class="btn btn-primary me-2">Save</button>
+                    <input type="hidden" name="Action" value="insert" id="Action" />
+                }
+                else
+                { <button type="submit" class="btn btn-primary me-2">Update</button>
+                    @Html.HiddenFor(m => m.IncomeStatement.Id)
+                    <input type="hidden" name="Action" value="update" id="Action" />
+                }
+            </div>
+
+
+
+
         </div>
     }
 </div>

@@ -109,6 +109,7 @@
     <Compile Include="Entity\Accounting\FSDocument.cs" />
     <Compile Include="Entity\Accounting\DepositNotificationDto.cs" />
     <Compile Include="Entity\Accounting\DocumentUpload.cs" />
+    <Compile Include="Entity\Accounting\IncomeStatement.cs" />
     <Compile Include="Entity\Accounting\PostedEntry.cs" />
     <Compile Include="Entity\Accounting\DocumentReferenceCode.cs" />
     <Compile Include="Entity\Accounting\ModelIncomeExpenses.cs" />

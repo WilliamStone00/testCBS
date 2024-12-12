@@ -89,12 +89,49 @@ namespace CBS.BusinessService.Accounting
                 throw;
             }
         }
+
         public async Task<List<ProductAccountingBook>> GetProductAccountingBook(string id)
         {
             try
             {
 
-                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<List<ProductAccountingBook>>>(string.Format(APICallHelper.GetProductAccountingBookUrl,id));// await _savingConfigApiHelper.GetAsync<ResponseObject<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, id));
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<List<ProductAccountingBook>>>(string.Format(APICallHelper.GetProductAccountingBookUrl, id));// await _savingConfigApiHelper.GetAsync<ResponseObject<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, id));
+                if (cusResponseObject.IsSuccess)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<List<AccountProduct>> GetProductAccountingBookByproductname(string name)
+        {
+            try
+            {
+
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<List<AccountProduct>>>(string.Format(APICallHelper.GetProductAccountingBookbyproductnameUrl,name));// await _savingConfigApiHelper.GetAsync<ResponseObject<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, id));
+                if (cusResponseObject.IsSuccess)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<List<ProductAccountingChart>> GetProductAccountingBookByproducttype(string productType)
+        {
+            try
+            {
+
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<List<ProductAccountingChart>>>(string.Format(APICallHelper.GetProductAccountingBookbyproductTypeUrl, productType));// await _savingConfigApiHelper.GetAsync<ResponseObject<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, id));
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;

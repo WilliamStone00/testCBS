@@ -91,7 +91,14 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
 
         }
+        public async Task<ActionResult> GetSavingProductAccountMapping()
+        {
 
+            List<ProductAccountingChart> AccountProductItems = await _accountConfiServices.GetProductAccountingBookByproducttype("Saving_Product");
+            return View(  new SavingConfiguration { ProductAccountingCharts = AccountProductItems });
+       
+
+        }
         public async Task<ActionResult> AccountMappingInfo(string key)
         {
             SavingDepositProductIsPayable = false;
@@ -100,13 +107,14 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var savingProduct = await _savingProductServices.GetSavingProduct(key);
             ViewBag.ProductName = $"{savingProduct.Name} Product";
             ViewBag.IsMobileMoney = savingProduct.Name.Contains("Mobile Money");
-            ViewBag.ProductName = $"{savingProduct.Name}";
+
             var accountingRuleEntries = await GetFilteredAccountingRuleEntries(key);
             var accountingConfigList = await _accountConfiServices.GetChartOfAccountManagementPositions();
             ListOfChartOfAccount = accountingConfigList.ToList();
             var rootAccount = accountingConfigList.FirstOrDefault(c => c.Description == "ROOT ACCOUNT");
             var physicalTellerAccount = await GetPhysicalTellerAccount();
             var productBook = await _accountConfiServices.GetProductAccountingBook(key);
+            List<AccountProduct> AccountProductItems = await _accountConfiServices.GetProductAccountingBookByproductname(savingProduct.Name);
             if (productBook.Any())
             {
                 var data = savingProduct.Name.Trim().ToLower();
@@ -122,6 +130,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                     var accountcom = ListOfChartOfAccount.Find(x => x.Id.Equals(Entryrulec.DeterminationAccountId));
                     chartofAccountInfos.Add(CreateChartOfAccountEntry(account, "COMMISION COLLECTION", "DEBIT", "20000"));
                     chartofAccountInfos.AddRange(await ProcessMOMOKASHCollectionAccountList(accountcom, ListOfChartOfAccount));
+                    ViewBag.Name = $"{savingProduct.Name}";
                     /// EXPENSE PAYABLE to be created 
                     //var EntryrulEx = accountingRuleEntries.Where(e => e.EventCode.Equals(key + "@Principal_Saving_Account")).FirstOrDefault();
                     //var accountEx = ListOfChartOfAccount.Find(x => x.Id.Equals(Entryrulec.DeterminationAccountId));
@@ -138,7 +147,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                         chartofAccountInfos.AddRange(await ProcessCASHINLiaisonAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount));
                         chartofAccountInfos.AddRange(await ProcessCASHOutAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount));
                         chartofAccountInfos.AddRange(await ProcessCASHOutLiaisonAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, physicalTellerAccount));
-
+                        ViewBag.Name = $"{savingProduct.Name}";
                     }
                 }
 
@@ -188,7 +197,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 }
             }
 
-            return View(new SavingConfiguration { chartofAccountInfos = chartofAccountInfos, AccountingRuleEntries = accountingRuleEntries, SavingDepositProductIsChargable = SavingDepositProductIsPayable, SavingWithdrwalProductIsChargable = SavingWithdrawalProductIsPayable });
+            return View(new SavingConfiguration {AccountProducts= AccountProductItems, chartofAccountInfos = chartofAccountInfos, AccountingRuleEntries = accountingRuleEntries, SavingDepositProductIsChargable = SavingDepositProductIsPayable, SavingWithdrwalProductIsChargable = SavingWithdrawalProductIsPayable });
 
         }
 
@@ -246,8 +255,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private async Task<AccountingRuleEntry> GetPhysicalTellerAccount()
         {
             var data = await _accountingEntryRuleService.GetAccountingEntryRules();
-         //   return data.Where(e => e.EventCode.Equals("Physical_Teller ")).FirstOrDefault();
-            return data.FirstOrDefault(e => e.EventCode.Equals("Physical_Teller"));
+             return data.Where(e => e.EventCode.Contains("Physical_Teller")).FirstOrDefault();
+         //   return data.Where(e => e.EventCode.Equals("Physical_Teller")).FirstOrDefault();
         }
         private async Task<AccountingRuleEntry> GetVirtualDailyCollectorAccount()
         {
@@ -769,6 +778,19 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                         await GetEventNames();
                         var savingProductFees = await _savingProductFeeServices.GetSavingProductFees(key);
                         return PartialView(partialView, new SavingConfiguration { SavingProductFees = savingProductFees.ToList() });
+
+                    };
+                }
+                else if (path == "download")
+                {
+
+                    return async () =>
+                    {
+                   
+                        
+            
+                        List<ProductAccountingChart> AccountProductItems = await _accountConfiServices.GetProductAccountingBookByproducttype("Saving_Product");
+                        return PartialView(partialView, new SavingConfiguration { ProductAccountingCharts= AccountProductItems });
 
                     };
                 }

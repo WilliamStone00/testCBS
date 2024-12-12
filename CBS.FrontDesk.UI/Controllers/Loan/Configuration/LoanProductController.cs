@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
@@ -182,7 +183,14 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             }
 
         }
+        public async Task<ActionResult> GetLoanProductAccountMapping()
+        {
 
+            List<ProductAccountingChart> AccountProductItems = await _accountingServices.GetProductAccountingBookByproducttype("Loan_Product");
+            return View(new LoanProductObject { ProductAccountingCharts = AccountProductItems });
+
+
+        }
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
             ViewBag.Key = KEY;

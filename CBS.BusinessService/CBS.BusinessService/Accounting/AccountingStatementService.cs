@@ -46,10 +46,10 @@ namespace CBS.BusinessService.Accounting
                             Reference = entry.ReferenceID,
                             Debit  = entry.EntryType == "DEBIT" ? entry.DrAmount.ToString() : "0",
                             Credit = entry.EntryType == "CREDIT" ? entry.CrAmount.ToString() : "0",
-                            EntryDateTime = entry.EntryDate.ToString(),
-                            //CreditAccountBalance = entry.DrCurrentBalance.ToString()
+                            EntryDatetime = entry.EntryDate.ToString(),
+            
                         };
-            return query.OrderByDescending(n => n.EntryDateTime).ToList();
+            return query.OrderByDescending(n => n.EntryDatetime).ToList();
         }
         public async Task<List<BranchLiaisonLedgerEntry>> GenerateLiasonAccountBranchLiaison(SystemQuery model)
         {
@@ -65,28 +65,13 @@ namespace CBS.BusinessService.Accounting
              
         
         }
-        public async Task<AccountingGeneralLedger> GenerateAccountingLedgerForAnumber(SystemQuery model)
+        public async Task<AccountingGeneralLedgerDetails> GenerateAccountingLedgerForAnumber(SystemQuery model)
         {
             try
             {
-                List<AccountingEntry> filteredEntries = new List<AccountingEntry>();
+    
                 var modelObject = await _Service.GetAccountGLEntries (model);
-                var accounts = await _AccountServices.GetAllAccounting();
-                var query = from entry in modelObject.AccountingEntries
-                            join account in accounts on entry.AccountId equals account.Id                   
-                            select new AccountingEntryDto
-                            {
-                                EntryDateTime = entry.EntryDate.ToString(),
-                             
-                                AccountNumber = account.AccountNumberCU,
-                                AccountName = account.AccountName,
-                                Description = entry.Description,
-                                 Reference = entry.ReferenceID,
-                                Debit = entry.DrAmount.ToString() ,
-                                Credit  = entry.CrAmount.ToString()
-                              
-                            };
-                modelObject.AccountingEntries = query.OrderBy(n => n.EntryDate).ToList();
+         
                 return modelObject;
             }
             catch (Exception ex)

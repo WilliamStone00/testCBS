@@ -48,8 +48,9 @@
                 <div class="col-12 mb-sm-1">
                     <div id="AccountToHide">
                         <div class="form-floating form-floating-outline">
-                            @Html.DropDownListFor(model => model.SystemQuery.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---Select Accounts---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_AccountId" })
-                            @Html.ValidationMessageFor(model => model.SystemQuery.AccountId, "", new { @class = "text-danger" })
+                       
+                            @Html.ListBoxFor(model => model.SystemQuery.AccountIds, new SelectList(ViewBag.Accounts == null ? new List<SelectListItem>() : ViewBag.Accounts, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple", @id = "SystemQuery_AccountId" })
+                            @Html.ValidationMessageFor(model => model.SystemQuery.AccountIds, "", new { @class = "text-danger" })
                             <label>Select Account</label>
                         </div>
                     </div>

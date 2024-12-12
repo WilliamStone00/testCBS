@@ -147,39 +147,39 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
 
-        [HttpGet]
-        public async Task<ActionResult> JournalEntries(string branchId = null)
-        {
-            if (_accountingServices.IsHeadOffice())
-            {
-                if (branchId == null)
-                {
-                    var listOfBranch = await _branchServices.GetBranches();
+        //[HttpGet]
+        //public async Task<ActionResult> JournalEntries(string branchId = null)
+        //{
+        //    if (_accountingServices.IsHeadOffice())
+        //    {
+        //        if (branchId == null)
+        //        {
+        //            var listOfBranch = await _branchServices.GetBranches();
 
-                    return View(new AccountingStatementDto { Branches = listOfBranch.ToList() });
-                }
-                else
-                {
-                    SystemQuery query = new SystemQuery();
-                    query.BranchId = _branchServices.GetBranchID();
+        //            return View(new AccountingStatementDto { Branches = listOfBranch.ToList() });
+        //        }
+        //        else
+        //        {
+        //            SystemQuery query = new SystemQuery();
+        //            query.BranchId = _branchServices.GetBranchID();
 
-                        var models =await _acountServices.GenerateAccountingLedgerForAnumber(query); 
-                    return View(new AccountingStatementDto { AccountingGeneralLedger = models });
-                }
-
-
-            }
-            else
-            {
-                SystemQuery query = new SystemQuery();
-                query.BranchId = _branchServices.GetBranchID();
-
-                var models = await _acountServices.GenerateAccountingLedgerForAnumber(query);
-                return View(new AccountingStatementDto { AccountingGeneralLedger = models });
-            }
+        //                var models =await _acountServices.GenerateAccountingLedgerForAnumber(query); 
+        //            return View(new AccountingStatementDto { AccountingGeneralLedger = models });
+        //        }
 
 
-        }
+        //    }
+        //    else
+        //    {
+        //        SystemQuery query = new SystemQuery();
+        //        query.BranchId = _branchServices.GetBranchID();
+
+        //        var models = await _acountServices.GenerateAccountingLedgerForAnumber(query);
+        //        return View(new AccountingStatementDto { AccountingGeneralLedger = models });
+        //    }
+
+
+        //}
 
 
         [HttpGet]
@@ -416,7 +416,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 //this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/GeneralLedger.rpt";
                              //   string fileTitle = $"TB6C{model.SystemQuery.FromDate.Date.ToString("yyyyMMddhhmmss")}";
                                 string ReportName = $"GeneralLedger.rpt";
-                                var account = await _acountServices.GenerateAccountingLedgerForAnumber(new SystemQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType, AccountId = model.SystemQuery.AccountId, FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate });
+                                var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery);//new SystemQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType, AccountIds = model.SystemQuery.AccountIds, FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate });
 
                                 if (model.SystemQuery.FileType == "PDF")
                                 {
@@ -426,7 +426,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 {
                                     this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                                     this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
-                                    this.HttpContext.Session["rptSource"] = (account!=null) ? account : new AccountingGeneralLedger();
+                                    this.HttpContext.Session["rptSource"] = (account!=null) ? account : new AccountingGeneralLedgerDetails();
                                 }
 
                                 if (account==null)

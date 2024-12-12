@@ -1863,127 +1863,152 @@ namespace CBS.FrontDesk.UI.Controllers
 
         //    //return new EmptyResult();
         //}
-        public ActionResult PrintGeneralLedgerOfAccount()
+public ActionResult PrintGeneralLedgerOfAccount()
+{
+    // Retrieve session values
+    var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+            var rptTitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString() ?? "General Ledger";
+
+    if (rptSource == null || rptSource.ToString() == "empty")
+    {
+        return new EmptyResult();
+    }
+
+    var accounts = rptSource as AccountingGeneralLedgerDetails;
+    if (accounts == null)
+    {
+        return new EmptyResult();
+    }
+
+    using (var workbook = new XLWorkbook())
+    {
+        var worksheet = workbook.Worksheets.Add(rptTitle);
+
+        // Define reusable styles
+        var headerStyle = workbook.Style;
+        headerStyle.Font.Bold = true;
+        headerStyle.Font.FontSize = 12;
+        headerStyle.Border.OutsideBorder = XLBorderStyleValues.Thin;
+
+        // Print letterhead
+        AddLetterhead(worksheet, accounts);
+
+        // Process each ledger account
+        int currentRow = 18; // Start data after letterhead
+        foreach (var ledger in accounts.LedgerDetails)
         {
-            // Retrieve session values
-            var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
-            var rptPath = System.Web.HttpContext.Current.Session["rptpath"]?.ToString();
-            var rptTitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
-
-            if (rptSource == null || rptSource.ToString() == "empty")
-            {
-                return new EmptyResult();
-            }
-
-            var accounts = rptSource as AccountingGeneralLedger;
-            if (accounts == null)
-            {
-                return new EmptyResult();
-            }
-
-            using (var workbook = new XLWorkbook())
-            {
-                var worksheet = workbook.Worksheets.Add(rptTitle ?? "General Ledger");
-
-                // Define styles for headers and data
-                var headerStyle = workbook.Style;
-                headerStyle.Font.Bold = true;
-                headerStyle.Font.FontSize = 14;
-                headerStyle.Font.FontColor = XLColor.Black;
-                headerStyle.Border.BottomBorder = XLBorderStyleValues.Thin;
-                headerStyle.Border.LeftBorder = XLBorderStyleValues.Thin;
-                headerStyle.Border.RightBorder = XLBorderStyleValues.Thin;
-                headerStyle.Border.TopBorder = XLBorderStyleValues.Thin;
-
-                // Print letterhead
-                worksheet.Cell(1, 2).Value = accounts.BranchName;
-                worksheet.Cell(2, 2).Value = $"{accounts.BranchLocation}, {accounts.BranchAddress}";
-                worksheet.Cell(3, 2).Value = accounts.Capital;
-                worksheet.Cell(4, 2).Value = accounts.ImmatriculationNumber;
-                worksheet.Cell(5, 2).Value = accounts.WebSite;
-                worksheet.Cell(6, 2).Value = accounts.BranchTelephone;
-                worksheet.Cell(7, 2).Value = accounts.HeadOfficeTelePhone;
-
-                // Print header titles
-                worksheet.Cell(1, 1).Value = "Branch Name";
-                worksheet.Cell(2, 1).Value = "Address";
-                worksheet.Cell(3, 1).Value = "Capital";
-                worksheet.Cell(4, 1).Value = "Immatriculation Number";
-                worksheet.Cell(5, 1).Value = "Website";
-                worksheet.Cell(6, 1).Value = "Branch Telephone";
-                worksheet.Cell(7, 1).Value = "Head Office Telephone";
-
-                // Style header range
-                var headerRange = worksheet.Range(1, 1, 7, 2);
-                headerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
-                headerRange.Style.Font.FontSize = 12;
-                headerRange.Style.Font.Bold = true;
-                headerRange.Style.Alignment.WrapText = true;
-                headerRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-
-                // Title for General Ledger
-                var titleRange = worksheet.Range("B10:G10");
-                titleRange.Merge().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                titleRange.Style.Font.Bold = true;
-                titleRange.Style.Font.FontSize = 14;
-                titleRange.Style.Font.FontColor = XLColor.Black;
-                titleRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                titleRange.Value = $"General Ledger of {accounts.MainAccountNumber} from {accounts.FromDate} to {accounts.ToDate}";
-
-                // Print column headers
-                worksheet.Cell(12, 1).Value = "Entry DateTime";
-                worksheet.Cell(12, 2).Value = "Reference";
-                worksheet.Cell(12, 3).Value = "Description";
-                worksheet.Cell(12, 4).Value = "Account Name";
-                worksheet.Cell(12, 5).Value = "Account Number";
-                worksheet.Cell(12, 6).Value = "Debit Balance";
-                worksheet.Cell(12, 7).Value = "Credit Balance";
-
-                // Style column headers
-                var columnHeaderRange = worksheet.Range(12, 1, 12, 7);
-                columnHeaderRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
-                columnHeaderRange.Style.Font.FontSize = 12;
-                columnHeaderRange.Style.Font.Bold = true;
-                columnHeaderRange.Style.Alignment.WrapText = true;
-                columnHeaderRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-
-                // Populate data rows
-                int currentRow = 13;
-                foreach (var entry in accounts.AccountingEntries)
-                {
-                    worksheet.Cell(currentRow, 1).Value = entry.EntryDateTime;
-                    worksheet.Cell(currentRow, 2).Value = entry.Reference;
-                    worksheet.Cell(currentRow, 3).Value = entry.Description;
-                    worksheet.Cell(currentRow, 4).Value = entry.AccountName;
-                    worksheet.Cell(currentRow, 5).Value = entry.AccountNumber;
-                    worksheet.Cell(currentRow, 6).Value = entry.Debit;
-                    worksheet.Cell(currentRow, 7).Value = entry.Credit;
-                    currentRow++;
-                }
-
-                // Print totals
-                worksheet.Cell(currentRow, 5).Value = "Totals";
-                worksheet.Cell(currentRow, 6).Value = accounts.AccountingEntries.Sum(e =>Convert.ToDouble( e.Debit));
-                worksheet.Cell(currentRow, 7).Value = accounts.AccountingEntries.Sum(e => Convert.ToDouble(e.Credit));
-
-                // Style totals row
-                var totalsRange = worksheet.Range(currentRow, 5, currentRow, 7);
-                totalsRange.Style.Fill.BackgroundColor = XLColor.LightGray;
-                totalsRange.Style.Font.Bold = true;
-                totalsRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-
-                // Autofit columns
-                worksheet.Columns().AdjustToContents();
-
-                // Save and return the Excel file
-                using (var stream = new MemoryStream())
-                {
-                    workbook.SaveAs(stream);
-                    stream.Position = 0;
-                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"GeneralLedger_{accounts.BranchName}.xlsx");
-                }
-            }
+            currentRow = AddLedgerHeader(worksheet, ledger, accounts, currentRow);
+            currentRow = AddLedgerEntries(worksheet, ledger, currentRow);
         }
+
+        // Autofit columns for better presentation
+        worksheet.Columns().AdjustToContents();
+
+        // Save and return the Excel file
+        using (var stream = new MemoryStream())
+        {
+            workbook.SaveAs(stream);
+            stream.Position = 0;
+            return File(stream.ToArray(), 
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 
+                        $"GeneralLedger_{accounts.BranchName}.xlsx");
+        }
+    }
+}
+
+private void AddLetterhead(IXLWorksheet worksheet, AccountingGeneralLedgerDetails accounts)
+{
+    var letterheadData = new (string Label, string Value)[]
+    {
+        ("Branch Name", accounts.BranchName),
+        ("Address", $"{accounts.BranchLocation}, {accounts.BranchAddress}"),
+        ("Capital", accounts.Capital),
+        ("Immatriculation Number", accounts.ImmatriculationNumber),
+        ("Website", accounts.WebSite),
+        ("Branch Telephone", accounts.BranchTelephone),
+        ("Head Office Telephone", accounts.HeadOfficeTelePhone)
+    };
+
+    for (int i = 0; i < letterheadData.Length; i++)
+    {
+        worksheet.Cell(i + 1, 1).Value = letterheadData[i].Label;
+        worksheet.Cell(i + 1, 2).Value = letterheadData[i].Value;
+    }
+
+    var letterheadRange = worksheet.Range(1, 1, letterheadData.Length, 2);
+    letterheadRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
+    letterheadRange.Style.Font.Bold = true;
+    letterheadRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+}
+
+private int AddLedgerHeader(IXLWorksheet worksheet, LedgerDetails ledger, AccountingGeneralLedgerDetails accounts, int startRow)
+{
+    // Add ledger title
+    var titleCell = worksheet.Cell(startRow, 1);
+    titleCell.Value = $"Entries of {ledger.AccountNumber} - {ledger.AccountName} ({accounts.FromDate:dd-MMM-yyyy} to {accounts.ToDate:dd-MMM-yyyy})";
+    var titleRange = worksheet.Range(startRow, 3, startRow, 8);
+    titleRange.Merge().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+    titleRange.Style.Font.Bold = true;
+    titleRange.Style.Font.FontSize = 14;
+    titleRange.Style.Fill.BackgroundColor = XLColor.LightGray;
+
+    // Add account summary
+    worksheet.Cell(startRow + 2, 1).Value = "Account Number:";
+    worksheet.Cell(startRow + 2, 2).Value = ledger.AccountNumber;
+    worksheet.Cell(startRow + 3, 1).Value = "Account Name:";
+    worksheet.Cell(startRow + 3, 2).Value = ledger.AccountName;
+
+    return startRow + 5; // Move to the next section
+}
+
+private int AddLedgerEntries(IXLWorksheet worksheet, LedgerDetails ledger, int startRow)
+{
+    // Add column headers
+    var headers = new[] 
+    { 
+        "Entry DateTime", "Reference", "Description", 
+        "Account Name", "Account Number", 
+        "Debit Balance", "Credit Balance", "Current Balance" 
+    };
+
+    for (int i = 0; i < headers.Length; i++)
+    {
+        worksheet.Cell(startRow, i + 1).Value = headers[i];
+    }
+
+    var headerRange = worksheet.Range(startRow, 1, startRow, headers.Length);
+    headerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
+    headerRange.Style.Font.Bold = true;
+    headerRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+
+    // Populate ledger entries
+    int currentRow = startRow + 1;
+    foreach (var entry in ledger.AccountingEntries)
+    {
+        worksheet.Cell(currentRow, 1).Value = entry.EntryDatetime;
+        worksheet.Cell(currentRow, 2).Value = entry.ReferenceID;
+        worksheet.Cell(currentRow, 3).Value = entry.Description;
+        worksheet.Cell(currentRow, 4).Value = entry.AccountName;
+        worksheet.Cell(currentRow, 5).Value = entry.AccountNumber;
+        worksheet.Cell(currentRow, 6).Value = entry.DrAmount;
+        worksheet.Cell(currentRow, 7).Value = entry.CrAmount;
+        worksheet.Cell(currentRow, 8).Value = entry.CurrentBalance;
+
+        currentRow++;
+    }
+
+    // Add totals
+    worksheet.Cell(currentRow, 5).Value = "Totals";
+    worksheet.Cell(currentRow, 6).Value = ledger.AccountingEntries.Sum(e => Convert.ToDouble( e.DrAmount));
+    worksheet.Cell(currentRow, 7).Value = ledger.AccountingEntries.Sum(e => Convert.ToDouble(e.CrAmount));
+
+    var totalsRange = worksheet.Range(currentRow, 5, currentRow, 7);
+    totalsRange.Style.Font.Bold = true;
+    totalsRange.Style.Fill.BackgroundColor = XLColor.LightGray;
+
+    return currentRow + 2; // Leave a gap before the next ledger
+}
+
 
     }
     public class ExcelResult : ActionResult

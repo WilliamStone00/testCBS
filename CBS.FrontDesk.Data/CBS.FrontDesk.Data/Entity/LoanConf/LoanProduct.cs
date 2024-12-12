@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.SavingProducts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -306,6 +307,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public Penalty Penalty { get; set; }
         public List<Penalty> Penalties { get; set; }
         public List<LoanProduct> LoanProducts { get; set; }
+         public List<ProductAccountingChart> ProductAccountingCharts { get; set; }
         public string ServiceOption { get; set; }
 
         public LoanProductObject()

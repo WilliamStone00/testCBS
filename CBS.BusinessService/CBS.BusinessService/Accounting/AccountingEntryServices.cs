@@ -1151,13 +1151,13 @@ namespace CBS.BusinessService
                         a.status = a.isActive ? "Active" : "In-active";
                         if (a.BranchID != null)
                         {
-                            a.Brancch = braches.Where(x => x.Id == a.BranchID).FirstOrDefault();
-                            a.Bank = braches.Where(x => x.Id == a.BranchID).FirstOrDefault().Bank;
-                            if (a.Bank == null)
-                            {
-                                a.BankID = null;
-                                a.Bank = new FrontDesk.Data.Entity.Config.Bank();
-                            }
+                            //a.Brancch = braches.Where(x => x.Id == a.BranchID).FirstOrDefault();
+                            //a.Bank = braches.Where(x => x.Id == a.BranchID).FirstOrDefault().Bank;
+                            //if (a.Bank == null)
+                            //{
+                            //    a.BankID = null;
+                            //    a.Bank = new FrontDesk.Data.Entity.Config.Bank();
+                            //}
 
                         }
                         else
@@ -1502,13 +1502,13 @@ namespace CBS.BusinessService
             }
         }
 
-        public async Task<AccountingGeneralLedger> GetAccountGLEntries(SystemQuery model)
+        public async Task<AccountingGeneralLedgerDetails> GetAccountGLEntries(SystemQuery model)
         {
             try
             {
 
                 // Make an API call to create an individual profile
-                var urlString = string.Format(APICallHelper.AccountingEntry_AccountGl, model.AccountId);
+                var urlString = APICallHelper.AccountingEntry_AccountGl;
                 var couApiResponse = await  _accountingApiCallerHelper.PostGLAsync(urlString,model);
                 if (couApiResponse!=null)
                 {
@@ -1517,7 +1517,7 @@ namespace CBS.BusinessService
                 }
                 else
                 {
-                    throw new Exception("There are no accounting entries made for accountId:"+ model.AccountId);
+                    throw new Exception("There are no accounting entries made for accountId:"+ GetAccountValues(model.AccountIds));
                 }
  
             }
@@ -1528,6 +1528,16 @@ namespace CBS.BusinessService
                     SystemMessageStatus.Failed.ToString(), ex);
                 throw (ex);
             }
+        }
+
+        private string GetAccountValues(List<string> accountIds)
+        {
+            string message = string.Empty;
+            foreach (var item in accountIds)
+            {
+                message = message + ", ";
+            }
+            return message;
         }
     }
 
