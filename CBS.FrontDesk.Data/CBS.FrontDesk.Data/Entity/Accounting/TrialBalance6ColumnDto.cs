@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
- 
+
+
+    public class GetListAccountGLQuery  
+    {
+        public DateTime ToDate { get; set; }
+        public DateTime FromDate { get; set; }
+        public string BranchId { get; set; }
+        public List<string> AccountIds { get; set; }
+    }
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class TrialBalance6ColumnDto
     {
@@ -99,9 +107,38 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<AccountingEntryDto> AccountingEntries { get; set; }
         public string MainAccountNumber { get; set; }
     }
+
+    public class AccountingGeneralLedgerDetails
+    {
+        public string EntityId { get; set; }
+        public string EntityType { get; set; }
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public string BranchName { get; set; }
+        public string BranchLocation { get; set; }
+        public string BranchAddress { get; set; }
+        public string Capital { get; set; }
+        public string ImmatriculationNumber { get; set; }
+        public string WebSite { get; set; }
+        public string BranchTelephone { get; set; }
+        public string HeadOfficeTelePhone { get; set; }
+        public string BranchCode { get; set; }
+        public string Name { get; set; }
+        public string Location { get; set; }
+        public string Address { get; set; }
+        public string MainAccountNumber { get; set; }
+        public List<LedgerDetails> LedgerDetails { get; set; }
+    }
+    public class LedgerDetails
+    {
+
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public List<AccountingEntryDto> AccountingEntries { get; set; }
+    }
     public class AccountingGeneralLedgerServiceResponse
     {
-        public AccountingGeneralLedger data { get; set; }
+        public AccountingGeneralLedgerDetails data { get; set; }
         public List<object> errors { get; set; }
         public int statusCode { get; set; }
         public string statusDescription { get; set; }

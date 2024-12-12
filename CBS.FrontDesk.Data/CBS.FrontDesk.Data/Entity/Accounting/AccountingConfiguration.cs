@@ -15,8 +15,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
         public TrialBalanceFile TrialBalanceFile { get; set; }
         public List<TrialBalanceFile> TrialBalanceFiles { get; set; } = new List<TrialBalanceFile>();
+   
 
-               public AccountTreeNode AccountTreeNode { get; set; }
+        public AccountTreeNode AccountTreeNode { get; set; }
         public AccountType AccountType { get; set; } = new AccountType();
         public List<ChartofAccountManagementPosition> ListChartofAccountManagementPosition { get; set; } = new List<ChartofAccountManagementPosition>();
         public ChartofAccountManagementPosition ChartofAccountManagementPosition { get; set; } = new ChartofAccountManagementPosition();
@@ -39,6 +40,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public DocumentReferenceCodeDto DocumentReferenceCodeDto { get; set; } = new DocumentReferenceCodeDto();
         public CorrespondingMappingDto CorrespondingMappingDto { get; set; } = new CorrespondingMappingDto();
         public CorrespondingMapping CorrespondingMapping { get; set; } = new CorrespondingMapping();
+        public IncomeStatement IncomeStatement { get; set; } = new IncomeStatement();
 
         public CorrespondingMappingException CorrespondingMappingException { get; set; } = new CorrespondingMappingException();
         public List<CorrespondingMappingDto> CorrespondingMappingDataDto { get; set; } = new List<CorrespondingMappingDto>();

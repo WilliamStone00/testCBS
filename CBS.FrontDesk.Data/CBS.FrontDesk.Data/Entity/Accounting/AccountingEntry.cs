@@ -84,7 +84,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         // Unique ID number for the entry=
         //public string Id { get; set; }
-        public string EntryDateTime { get; set; }
+        public string EntryDatetime { get; set; }
         public string EntryDate { get; set; }
         public string Description { get; set; }
         public string Reference { get; set; }
@@ -98,7 +98,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string DebitAccountBalance { get; set; }
         public string ReferenceID { get; set; }
         public double DrAmount { get; set; }
-        public object CrAmount { get; set; }
+        public double CrAmount { get; set; }
     }
 
 
@@ -109,7 +109,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public DateTime FromDate { get; set; }  
         public string FileType { get; set; }
         public string ReportType { get; set; }
-        public string AccountId { get; set; }
+        public List<string> AccountIds { get; set; }
         public string BranchId { get; set; }
     }
 

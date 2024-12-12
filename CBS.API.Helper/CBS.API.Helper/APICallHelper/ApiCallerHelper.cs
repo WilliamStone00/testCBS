@@ -471,7 +471,7 @@ namespace CBS.API.Helper
             var Model = await HandleBranchLiaisonResponse(response);
             return Model.Data;
         }
-        public async Task<AccountingGeneralLedger> PostGLAsync(string apiUrl, object data)
+        public async Task<AccountingGeneralLedgerDetails> PostGLAsync(string apiUrl, object data)
         {
             apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
             string jsonData = JsonConvert.SerializeObject(data);
