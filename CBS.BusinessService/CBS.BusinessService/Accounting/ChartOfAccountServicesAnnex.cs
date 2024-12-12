@@ -2,6 +2,7 @@
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Helper;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,25 @@ namespace CBS.BusinessService.Accounting
         {
             _accountingApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
 
+        }
+
+        public async Task<List<ProductAccountingChart>> GetProductAccountingBookByproducttype(string productType)
+        {
+            try
+            {
+
+                var cusResponseObject = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ProductAccountingChart>>>(string.Format(APICallHelper.GetProductAccountingBookbyproductTypeUrl, productType));// await _savingConfigApiHelper.GetAsync<ResponseObject<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, id));
+                if (cusResponseObject.IsSuccess)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
         }
         public async Task<IEnumerable<StringValues>> GetEventNames(string opertionType)
         {

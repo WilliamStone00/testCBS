@@ -636,7 +636,10 @@ namespace CBS.FrontDesk.Helper
         public static string CreateAccountCategory = "/api/v1/AccountCartegory";
 
         public static string GetProductAccountingBookUrl = "/api/v1/ProductAccountingBook/{0}";
-        //AccountCategory
+
+        public static string GetProductAccountingBookbyproductnameUrl = "/api/v1/ProductAccountingBook/GetProductAccountingConfigurations/{0}";
+        public static string GetProductAccountingBookbyproductTypeUrl = "/api/v1/ProductAccountingBook/GetAllProductAccountingConfigurations/{0}";
+        //AccountCategory AccountProduct {name}
         //Get,Update,Delete AccountCategory By Id
         public static string Get_Update_Delete_ChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition/{0}";
         public static string Get_ChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition/{0}";

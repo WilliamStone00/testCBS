@@ -10,7 +10,7 @@
 
         <span class="text-uppercase"></span>
     </h6>
-    <h3 class="text-center mb-2">Accounting entries for <span class="fw-bold"> @ViewBag.ProductName</span> service. </h3>
+    <h3 class="text-center mb-2">Accounting entries for <span class="fw-bold"> @ViewBag.Name</span> service. </h3>
     <div class="row gy-5">
         <div class="col-lg-5">
             <div class="text-center">
@@ -359,7 +359,7 @@
                                     @if (Model.SavingDepositProductIsChargable)
                                     {
                                         <p>
-                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.Name</span> account.
                                         </p>
                                         <p>
                                             <span class="fw-bold"> For Instance:</span>
@@ -372,7 +372,7 @@
                                     else
                                     {
                                         <p>
-                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.Name</span> account.
                                         </p>
                                         <p>
                                             <span class="fw-bold"> For Instance:</span>
@@ -454,7 +454,7 @@
                                     @if (Model.SavingDepositProductIsChargable)
                                     {
                                         <p>
-                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.Name</span> account.
                                         </p>
                                         <p>
                                             <span class="fw-bold"> For Instance:</span>
@@ -467,7 +467,7 @@
                                     else
                                     {
                                         <div class="text-center mb-2">
-                                            This table below show the accounting entries for a local branch deposit operation for a member in his  <span class="fw-bold"> @ViewBag.ProductName</span> account.
+                                            This table below show the accounting entries for a local branch deposit operation for a member in his  <span class="fw-bold"> @ViewBag.Name</span> account.
                                             <span class="fw-bold">
                                                 For Instance:
                                             </span><br>
@@ -548,7 +548,7 @@
                                     @if (Model.SavingWithdrwalProductIsChargable)
                                     {
                                         <p>
-                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.Name</span> account.
                                         </p>
                                         <p>
                                             <span class="fw-bold"> For Instance:</span>
@@ -561,7 +561,7 @@
                                     else
                                     {
                                         <p>
-                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.Name</span> account.
                                         </p>
                                         <p>
                                             <span class="fw-bold"> For Instance:</span>
@@ -642,7 +642,7 @@
                                     @if (Model.SavingWithdrwalProductIsChargable)
                                     {
                                         <p>
-                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.Name</span> account.
                                         </p>
                                         <p>
                                             <span class="fw-bold"> For Instance:</span>
@@ -655,7 +655,7 @@
                                     else
                                     {
                                         <p>
-                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.Name</span> account.
                                         </p>
                                         <p>
                                             <span class="fw-bold"> For Instance:</span>
@@ -727,7 +727,7 @@
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="head-Five">
-                                <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionFive" aria-expanded="true" aria-controls="accordionFive">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionFive" aria-expanded="false" aria-controls="accordionFive">
                                     Interest expense to members
                                 </button>
                             </h2>
@@ -742,6 +742,55 @@
                             </div>
                         </div>
 
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="head-Six">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionSix" aria-expanded="true" aria-controls="accordionSix">
+                                    Accounting Configurtions for  @ViewBag.Name 
+                                </button>
+                            </h2>
+                            <div id="accordionSix" class="accordion-collapse collapse show" aria-labelledby="accordionSix" data-bs-parent="#accordionFront" style="">
+                                <div class="accordion-body">
+
+                                    The table bellows shows the configurations of the @ViewBag.Name
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="myDataTable_AccountData">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Accouting Event</th>
+                                                    <th>Account Name</th>
+                                                    <th>AccountNumber</th>
+                                                    <th>Status</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    var AccountProducts = Model.AccountProducts;
+
+                                                    foreach (var item in AccountProducts)
+                                                    {
+                                                        <tr>
+                                                            <td style="width:25%">@item.OperationEvent</td>
+                                                            <td style="width:35%">@item.Description</td>
+                                                            
+                                                            <td style="width:20%">@item.AccountNumber</td>
+                                                            <td style="width:20%">@item.Status</td>
+                                                            
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                        
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             }

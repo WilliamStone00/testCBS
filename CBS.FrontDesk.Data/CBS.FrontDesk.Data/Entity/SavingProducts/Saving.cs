@@ -24,7 +24,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public ReopenFeeParameter ReopenFeeParameter { get; set; } = new ReopenFeeParameter();
         public ManagementFeeParameter ManagementFeeParameter { get; set; } = new ManagementFeeParameter();
         public EntryFeeParameter EntryFeeParameter { get; set; } = new EntryFeeParameter();
-
+        //List<>
+        //public List<ProductAccountingChart> CloseFeeParameters { get; set; } = new List<ProductAccountingChart>();
         public List<CloseFeeParameter> CloseFeeParameters { get; set; } = new List<CloseFeeParameter>();
         public List<ReopenFeeParameter> ReopenFeeParameters { get; set; } = new List<ReopenFeeParameter>();
         public List<ManagementFeeParameter> ManagementFeeParameters { get; set; } = new List<ManagementFeeParameter>();
@@ -45,13 +46,31 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public SavingProductFee SavingProductFee { get; set; } = new SavingProductFee();
         public MobileMoneyTellerConfigurationCommand MobileMoneyTellerConfiguration { get; set; } = new MobileMoneyTellerConfigurationCommand();
         public List<ChartofAccountInfo> chartofAccountInfos { get; set; } = new List<ChartofAccountInfo>();
-
+        public List<AccountProduct> AccountProducts { get; set; } = new List<AccountProduct>();
+        public List<ProductAccountingChart> ProductAccountingCharts { get; set; } = new List<ProductAccountingChart>();
         public List<AccountingRuleEntry> AccountingRuleEntries { get; set; } = new List<AccountingRuleEntry>();
         public bool SavingDepositProductIsChargable { get; set; }
         public bool SavingWithdrwalProductIsChargable { get; set; }
         public string ServiceOption { get; set; }
         public string Action { get; set; }
         public string KEY { get; set; } = "KEY";
+    }
+
+    public class AccountProduct
+    {
+        public string Id { get; set; }
+        public string OperationEvent { get; set; }
+        public string AccountNumber { get; set; }
+        public string Description { get; set; }
+        public string Status { get; set; }
+
+    }
+
+    public class ProductAccountingChart
+    {
+        public string ProductId { get; set; }
+        public string ProductName { get; set; }
+        public List<AccountProduct> AccountingChart { get; set; } = new List<AccountProduct>();
     }
     public class Sharing
     {

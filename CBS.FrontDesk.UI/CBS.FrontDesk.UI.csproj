@@ -3296,6 +3296,9 @@
     <Content Include="Views\DocumentConfiguration\_DocumentTypeData.cshtml" />
     <Content Include="Views\DocumentConfiguration\_CreateDocumentReferenceCode.cshtml" />
     <Content Include="Views\DocumentConfiguration\_DocumentTypeData - Copy.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_OrdinaryProductAccount.cshtml" />
+    <Content Include="Views\TransactionConfiguration\GetSavingProductAccountMapping.cshtml" />
+    <Content Include="Views\LoanProduct\GetLoanProductAccountMapping.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

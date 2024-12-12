@@ -1,0 +1,46 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
+@{
+    ViewBag.Title = "Loan Product Accounting Configurations";
+
+}
+
+<h2>Loan Product Accounting Configurations</h2>
+<fieldset class="fieldset-custom">
+
+
+    @foreach (var tab in Model.ProductAccountingCharts)
+    {
+        <legend>@tab.ProductName</legend>
+        <div class="table-responsive mb-3">
+
+            <table class="table table-hover" id="myDataTable">
+                <thead>
+                    <tr>
+                        <th>Operation Event</th>
+                        <th>Account Number</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                @foreach (var d in @tab.AccountingChart)
+                {
+
+                    <tbody>
+
+                        <tr>
+                            <td style="width:25%">@d.OperationEvent</td>
+                            <td style="width:20%">@d.AccountNumber</td>
+                            <td style="width:30%">@d.Description</td>
+                            <td style="width:25%">@d.Status</td>
+
+                        </tr>
+
+                    </tbody>
+                }
+            </table>
+        </div>
+
+
+    }
+</fieldset>
