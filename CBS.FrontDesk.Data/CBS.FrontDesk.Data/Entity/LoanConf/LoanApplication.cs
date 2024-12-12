@@ -181,7 +181,6 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
         public bool IsThereGuarantor { get; set; }
 
-        public bool IsChargesInclusive { get; set; }
 
         public bool IsThereCollateral { get; set; }
 
@@ -203,7 +202,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required(ErrorMessage = "Loan duration is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Loan duration must be at least 1 Month.")]
         public int LoanDuration { get; set; }
-        public bool IsChargesInclussive { get; set; }
+        public bool IsPaidFeeBeforeProcessing { get; set; }
+        public bool IsPaidFeeAfterProcessing { get; set; }
 
         //[Required(ErrorMessage = "First installment date is required.")]
         //[DataType(DataType.Date, ErrorMessage = "Invalid date format.")]

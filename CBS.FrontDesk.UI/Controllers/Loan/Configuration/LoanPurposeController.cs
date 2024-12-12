@@ -60,6 +60,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             }
             else if (path == "new")
             {
+                ViewBag.Categories = await _loanProductCategoryServices.GetLoanProductCategorys();
                 return PartialView(partialView, new LoanPurpose());
             }
             else

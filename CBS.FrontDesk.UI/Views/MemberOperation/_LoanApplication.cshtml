@@ -153,10 +153,20 @@ By carefully selecting the appropriate loan product and terms in this section, y
                                         <label id="loanduration">Loan duration</label>
                                     </div>
                                 </div>
-                                <div class="col-12" id="IncludeChargeDiv">
+                                <div class="col-12" id="beforeProcessingDiv">
                                     <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsChargesInclussive, new { @class = "form-check-input", @id = "IsChargesInclussive" })
-                                        <label class="form-check-label" for="IsChargesInclussive">Check me to include charges to my loan. I don't have money to pay at the cash desk.</label>
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPaidFeeBeforeProcessing, new { @class = "form-check-input", @id = "FeePaidBeforeProcessing" })
+                                        <label class="form-check-label" for="FeePaidBeforeProcessing">
+                                            A partial fee must be paid before the loan can be processed at the cash desk, depending on the loan product configuration.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12" id="afterProcessingDiv">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPaidFeeAfterProcessing, new { @class = "form-check-input", @id = "FeePaidAfterProcessing" })
+                                        <label class="form-check-label" for="FeePaidAfterProcessing">
+                                            The fee can either be paid upfront at the cash desk before disbursement, or deducted directly from the loan after it is disbursed to member's deposit account.
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -195,10 +205,12 @@ By carefully considering and implementing appropriate risk mitigation measures i
                             <div class="row g-4">
                                 <div class="col-12">
                                     <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.RequiredDownPaymentCoverageRate, new { @class = "form-check-input" })
-                                        <label id="downpaymentrate" class="form-check-label" for="isActive">Does this application require down payment?</label>
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.RequiredDownPaymentCoverageRate,
+                                            new { @class = "form-check-input", @id = "downPaymentCheckbox" })
+                                        <label id="downpaymentrate" class="form-check-label" for="downPaymentCheckbox">Does this application require down payment?</label>
                                     </div>
                                 </div>
+
                                 <div class="col-12">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsThereGuarantor, new { @class = "form-check-input" })

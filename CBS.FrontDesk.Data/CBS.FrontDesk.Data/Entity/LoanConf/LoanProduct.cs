@@ -143,12 +143,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
         public string ChartOfAccountIdForPrincipalAmount { get; set; }
         public string ChartOfAccountIdForLoanTransition { get; set; }
-        public string ChartOfAccountIdForAccrualInterest { get; set; }
         public string ChartOfAccountIdForPenalty { get; set; }
-        public string ChartOfAccountIdForFee { get; set; }
         public string ChartOfAccountIdForTax { get; set; }
         public string ChartOfAccountIdForWriteOffPrincipal { get; set; }
-        public string ChartOfAccountIdForProvisionOnPrincipal { get; set; }
+        public string ChartOfAccountIdForInterestReceived { get; set; }
+        public string ChartOfAccountIdForProvisionMoreThanOneYear { get; set; }
+        public string ChartOfAccountIdForProvisionMoreThanTwoYear { get; set; }
+        public string ChartOfAccountIdForProvisionMoreThanThreeYear { get; set; }
+        public string ChartOfAccountIdForProvisionMoreThanFourYear { get; set; }
+
         public Penalty Penalty { get; set; }
         public string LoanTermId { get; set; }
         public LoanTerm LoanTerm { get; set; }
@@ -264,13 +267,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool ActiveStatus { get; set; }
         public bool HasTopUp { get; set; }
         public string ChartOfAccountIdForPrincipalAmount { get; set; }
-        public string ChartOfAccountIdForAccrualInterest { get; set; }
         public string ChartOfAccountIdForPenalty { get; set; }
-        public string ChartOfAccountIdForFee { get; set; }
         public string ChartOfAccountIdForTax { get; set; }
         public string ChartOfAccountIdForLoanTransition { get; set; }
         public string ChartOfAccountIdForWriteOffPrincipal { get; set; }
-        public string ChartOfAccountIdForProvisionOnPrincipal { get; set; }
+        public string ChartOfAccountIdForInterestReceived { get; set; }
+        public string ChartOfAccountIdForProvisionMoreThanOneYear { get; set; }
+        public string ChartOfAccountIdForProvisionMoreThanTwoYear { get; set; }
+        public string ChartOfAccountIdForProvisionMoreThanThreeYear { get; set; }
+        public string ChartOfAccountIdForProvisionMoreThanFourYear { get; set; }
         public LoanProductCategory LoanProductCategory { get; set; }
         public List<string> RepaymentCycles { get; set; }
         public List<Penalty> Penalties { get; set; }
@@ -292,6 +297,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string LoanTermId { get; set; }
         public LoanTerm LoanTerm { get; set; }
         public bool IsProductWithSavingFacilities { get; set; }
+        public bool IsPaidFeeBeforeProcessing { get; set; }
     }
 
     public class LoanProductObject
@@ -303,6 +309,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public List<LoanProduct> LoanProducts { get; set; }
          public List<ProductAccountingChart> ProductAccountingCharts { get; set; }
         public string ServiceOption { get; set; }
+
         public LoanProductObject()
         {
             AddLoanProductCommand = new AddLoanProductCommand();
@@ -338,7 +345,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required(ErrorMessage = "Loan product category is required.")]
         public string LoanProductCategoryId { get; set; }
         public bool IsProductWithSavingFacilities { get; set; }
-
+        public bool IsPaidFeeBeforeProcessing { get; set; }
     }
 
     public class UpdateLoanProductCommand
@@ -373,6 +380,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public int MinimumNumberOfRepayment { get; set; }
         public string Description { get; set; }
         public decimal LoanMinimumAmount { get; set; }
+        public bool IsPaidFeeBeforeProcessing { get; set; }
+
         public decimal MinimumCollateralPercentage { get; set; }
         public bool IsRequiredShareAccount { get; set; }
         public bool IsProductWithSavingFacilities { get; set; }
@@ -391,13 +400,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool ActiveStatus { get; set; }
         public bool HasTopUp { get; set; }
         public string ChartOfAccountIdForPrincipalAmount { get; set; }
-        public string ChartOfAccountIdForAccrualInterest { get; set; }
         public string ChartOfAccountIdForPenalty { get; set; }
-        public string ChartOfAccountIdForFee { get; set; }
         public string ChartOfAccountIdForTax { get; set; }
         public string ChartOfAccountIdForLoanTransition { get; set; }
         public string ChartOfAccountIdForWriteOffPrincipal { get; set; }
-        public string ChartOfAccountIdForProvisionOnPrincipal { get; set; }
+        public string ChartOfAccountIdForInterestReceived { get; set; }
+        public string ChartOfAccountIdForProvisionMoreThanOneYear { get; set; }
+        public string ChartOfAccountIdForProvisionMoreThanTwoYear { get; set; }
+        public string ChartOfAccountIdForProvisionMoreThanThreeYear { get; set; }
+        public string ChartOfAccountIdForProvisionMoreThanFourYear { get; set; }
         public List<string> RepaymentCycles { get; set; }
         public string ServiceOption { get; set; }
         public string UpdateOption { get; set; }

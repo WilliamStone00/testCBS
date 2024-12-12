@@ -102,7 +102,7 @@ namespace CBS.BusinessService.Config
             }
         }
 
-        public async Task<SelectList> GetLoanProductsDropDown(string targetType, string loanTermId, string loanCategoryid,bool isSSF)
+        public async Task<SelectList> GetLoanProductsDropDown(string targetType, string loanTermId, string loanCategoryid, bool isSSF)
         {
             try
             {
@@ -114,7 +114,7 @@ namespace CBS.BusinessService.Config
                 {
                     // Filter and map the data to the list of SelectListItem
                     var values = couApiResponse.ApiResponseData.Data
-                        .Where(x => x.TargetType == targetType && x.ActiveStatus && x.LoanTermId == loanTermId && x.LoanProductCategoryId == loanCategoryid &&x.IsProductWithSavingFacilities== isSSF)
+                        .Where(x => x.TargetType == targetType && x.ActiveStatus && x.LoanTermId == loanTermId && x.LoanProductCategoryId == loanCategoryid && x.IsProductWithSavingFacilities == isSSF)
                         .Select(x => new SelectListItem
                         {
                             Text = $"{x.ProductCode} {x.ProductName}, [Min: {x.LoanMinimumAmount.ToString("#,##0")} - Max: {x.LoanMaximumAmount.ToString("#,##0")}], [BTN: {x.LoanTerm.MinInMonth} - {x.LoanTerm.MaxInMonth} Month(s)]",
@@ -156,7 +156,7 @@ namespace CBS.BusinessService.Config
                 {
                     // Filter and map the data to the list of SelectListItem
                     var values = couApiResponse.ApiResponseData.Data
-                        .Where(x => x.ActiveStatus && x.LoanTermId == loanTermId && x.LoanProductCategoryId == LoanProductCategoryId &&x.IsProductWithSavingFacilities== isSSF)
+                        .Where(x => x.ActiveStatus && x.LoanTermId == loanTermId && x.LoanProductCategoryId == LoanProductCategoryId && x.IsProductWithSavingFacilities == isSSF)
                         .Select(x => new SelectListItem
                         {
                             Text = $"{x.TargetType}",
@@ -431,8 +431,9 @@ namespace CBS.BusinessService.Config
                     LoanProductCategoryId = product.LoanProductCategoryId,
                     LoanProductCategory = product.LoanProductCategory ?? new LoanProductCategory { Name = "N/A" },
                     LoanProductId = product.Id,
-                    TargetType = product.TargetType,
+                    TargetType = product.TargetType, 
                     LoanTermId = product.LoanTermId,
+                    IsPaidFeeBeforeProcessing = product.IsPaidFeeBeforeProcessing,
                     LoanTerm = product.LoanTerm,
                     LoanMaximumAmount = product.LoanMaximumAmount,
                     ProductName = product.ProductName,
@@ -477,13 +478,17 @@ namespace CBS.BusinessService.Config
                     ActiveStatus = product.ActiveStatus,
                     HasTopUp = product.HasTopUp,
                     ChartOfAccountIdForPrincipalAmount = product.ChartOfAccountIdForPrincipalAmount,
-                    ChartOfAccountIdForAccrualInterest = product.ChartOfAccountIdForAccrualInterest,
+                    ChartOfAccountIdForInterestReceived = product.ChartOfAccountIdForInterestReceived,
                     ChartOfAccountIdForPenalty = product.ChartOfAccountIdForPenalty,
-                    ChartOfAccountIdForFee = product.ChartOfAccountIdForFee,
+                    ChartOfAccountIdForProvisionMoreThanOneYear = product.ChartOfAccountIdForProvisionMoreThanOneYear,
                     ChartOfAccountIdForTax = product.ChartOfAccountIdForTax,
                     ChartOfAccountIdForLoanTransition = product.ChartOfAccountIdForLoanTransition,
                     ChartOfAccountIdForWriteOffPrincipal = product.ChartOfAccountIdForWriteOffPrincipal,
-                    ChartOfAccountIdForProvisionOnPrincipal = product.ChartOfAccountIdForProvisionOnPrincipal,
+                    ChartOfAccountIdForProvisionMoreThanTwoYear = product.ChartOfAccountIdForProvisionMoreThanTwoYear,
+                    ChartOfAccountIdForProvisionMoreThanThreeYear = product.ChartOfAccountIdForProvisionMoreThanThreeYear,
+
+                    ChartOfAccountIdForProvisionMoreThanFourYear = product.ChartOfAccountIdForProvisionMoreThanFourYear,
+
                     RepaymentCycles = product.RepaymentCycles,
                     ServiceOption = ServiceOption,
                     UpdateOption = UpdateOption,
@@ -527,6 +532,7 @@ namespace CBS.BusinessService.Config
                         LoanProduct.LoanTermId = model.LoanTermId;
                         LoanProduct.IsProductWithSavingFacilities = model.IsProductWithSavingFacilities;
 
+
                     }
                     else if (model.ServiceOption == "gurantee")
                     {
@@ -542,7 +548,6 @@ namespace CBS.BusinessService.Config
                         LoanProduct.MinimumSalaryAccountBalanceRateForTheRequestAmount = model.MinimumSalaryAccountBalanceRateForTheRequestAmount;
                         LoanProduct.BlockedGuarantorAccount = model.BlockedGuarantorAccount;
                         LoanProduct.BlockedSalaryAccount = model.BlockedSalaryAccount;
-                        LoanProduct.BlockedSavingAccount = model.BlockedSavingAccount;
                         LoanProduct.MinimumSavingAccountBalanceRateForTheRequestAmount = model.MinimumSavingAccountBalanceRateForTheRequestAmount;
 
 
@@ -553,6 +558,7 @@ namespace CBS.BusinessService.Config
                         LoanProduct.MinimumDownPaymentPercentage = model.MinimumDownPaymentPercentage;
                         LoanProduct.LoanMaximumAmount = model.LoanMaximumAmount;
                         //LoanProduct.TargetType = model.TargetType;
+                        LoanProduct.IsPaidFeeBeforeProcessing = model.IsPaidFeeBeforeProcessing;
 
                     }
                     else if (model.ServiceOption == "topup")
@@ -615,13 +621,16 @@ namespace CBS.BusinessService.Config
                     else if (model.ServiceOption == "accounting")
                     {
                         LoanProduct.ChartOfAccountIdForPrincipalAmount = model.ChartOfAccountIdForPrincipalAmount;
-                        LoanProduct.ChartOfAccountIdForAccrualInterest = model.ChartOfAccountIdForAccrualInterest;
+                        LoanProduct.ChartOfAccountIdForInterestReceived = model.ChartOfAccountIdForInterestReceived;
                         LoanProduct.ChartOfAccountIdForPenalty = model.ChartOfAccountIdForPenalty;
-                        LoanProduct.ChartOfAccountIdForFee = model.ChartOfAccountIdForFee;
                         LoanProduct.ChartOfAccountIdForTax = model.ChartOfAccountIdForTax;
                         LoanProduct.ChartOfAccountIdForLoanTransition = model.ChartOfAccountIdForLoanTransition;
                         LoanProduct.ChartOfAccountIdForWriteOffPrincipal = model.ChartOfAccountIdForWriteOffPrincipal;
-                        LoanProduct.ChartOfAccountIdForProvisionOnPrincipal = model.ChartOfAccountIdForProvisionOnPrincipal;
+                        LoanProduct.ChartOfAccountIdForProvisionMoreThanOneYear = model.ChartOfAccountIdForProvisionMoreThanOneYear;
+                        LoanProduct.ChartOfAccountIdForProvisionMoreThanTwoYear = model.ChartOfAccountIdForProvisionMoreThanTwoYear;
+                        LoanProduct.ChartOfAccountIdForProvisionMoreThanThreeYear = model.ChartOfAccountIdForProvisionMoreThanThreeYear;
+                        LoanProduct.ChartOfAccountIdForProvisionMoreThanFourYear = model.ChartOfAccountIdForProvisionMoreThanFourYear;
+
                         LoanProduct.UpdateOption = "assign_account_chart";
 
                     }

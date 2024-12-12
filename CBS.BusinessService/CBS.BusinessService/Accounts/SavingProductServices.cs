@@ -38,7 +38,7 @@ namespace CBS.BusinessService.Accounts
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objSavingProduct, false, $"{objSavingProduct.Name}", MessagesResults.Failed,
+                    GetExecutionMessages(objSavingProduct, false, null, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }

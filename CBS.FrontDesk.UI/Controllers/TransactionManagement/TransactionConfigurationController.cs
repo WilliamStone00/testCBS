@@ -997,10 +997,32 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var listing = await _accountingServices.GetEventAttributeByOperationTypeID(Key);
             return Json(listing, JsonRequestBehavior.AllowGet);
         }
-        public async Task<ActionResult> Delete(string Key)
+        public async Task<ActionResult> Delete(string Key,string path)
         {
-            var data = await _savingProductServices.Delete(Key);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+            if (path== "cash_deposit_parameter")
+            {
+                var data = await _depositLimitServices.Delete(Key);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
+            else if (path == "cash_withdrawal_parameter")
+            {
+                var data = await _withdrawalLimitServices.Delete(Key);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
+            else if (path == "cash_transfer_parameter")
+            {
+                var data = await _transferLimitServices.Delete(Key);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+                var data = await _savingProductServices.Delete(Key);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
         }
     }
 }

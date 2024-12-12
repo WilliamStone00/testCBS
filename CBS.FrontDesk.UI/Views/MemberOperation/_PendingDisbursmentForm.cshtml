@@ -23,34 +23,42 @@
                         @using (Html.BeginForm("Create", "MemberOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
                             @Html.HiddenFor(m => m.AddLoanDisbumentCommand.LoanId)
+                            @Html.HiddenFor(m => m.Loan.CustomerId)
+                            @Html.HiddenFor(m => m.Loan.CustomerName)
+                            @Html.HiddenFor(m => m.Loan.BranchCode)
                             <input type="hidden" name="ServiceOption" value="pending_loan_disbursement" id="ServiceOption" />
                             <fieldset class="fieldset-custom">
                                 <div class="row g-4">
+                                    <!-- Checkbox -->
                                     <div class="col-12">
                                         <div class="form-check">
-                                            @Html.CheckBoxFor(m => m.AddLoanDisbumentCommand.IsAlreadyManage, new { @class = "form-check-input", id = "isAlreadyManage" })
+                                            @Html.CheckBoxFor(m => m.AddLoanDisbumentCommand.IsAlreadyManage, new { @class = "form-check-input", id = "isAlreadyManage", @disabled = "disabled" })
                                             <label class="form-check-label" for="isAlreadyManage">
-                                                Check if this request must not affect cash
+                                                Check if the customer already received the money. Then cash will not be affected.
                                             </label>
                                         </div>
                                     </div>
 
+
+                                    <!-- Status Dropdown -->
                                     <div class="col-md-12">
                                         <div class="form-floating">
                                             @Html.DropDownListFor(m => m.AddLoanDisbumentCommand.Status, new SelectList(ViewBag.DisbursmentStatuses, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", id = "statusDropdown" })
                                             @Html.ValidationMessageFor(m => m.AddLoanDisbumentCommand.Status, "", new { @class = "text-danger" })
-                                            <label for="statusDropdown">Select disbursed status</label>
+                                            <label for="statusDropdown">Select Disbursed Status</label>
                                         </div>
                                     </div>
 
+                                    <!-- Account Number Dropdown -->
                                     <div class="col-md-12">
                                         <div class="form-floating">
-                                            @Html.DropDownListFor(m => m.AddLoanDisbumentCommand.AccountNumber, new SelectList(ViewBag.CustomerAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", id = "accountDropdown" })
+                                            @Html.DropDownListFor(m => m.AddLoanDisbumentCommand.AccountNumber, new SelectList(ViewBag.CustomerAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", id = "accountDropdown", onchange = "updateComment()" })
                                             @Html.ValidationMessageFor(m => m.AddLoanDisbumentCommand.AccountNumber, "", new { @class = "text-danger" })
-                                            <label for="accountDropdown">Select account (Deposit/Current Or Saving) to receive disbursed amount</label>
+                                            <label for="accountDropdown">Select Account (Deposit/Current or Saving) to Receive Disbursed Amount</label>
                                         </div>
                                     </div>
 
+                                    <!-- Comment Text Area -->
                                     <div class="col-md-12">
                                         <div class="form-floating">
                                             @Html.TextAreaFor(m => m.AddLoanDisbumentCommand.Comment, new { @class = "form-control", style = "height: 200px;", id = "commentTextArea" })
@@ -60,6 +68,7 @@
                                     </div>
                                 </div>
 
+                                <!-- Submit Button -->
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary">
                                         Disburse
@@ -73,3 +82,42 @@
         </div>
     </div>
 </div>
+
+<script>
+    function updateComment() {
+        const accountDropdown = document.getElementById('accountDropdown');
+        const commentTextArea = document.getElementById('commentTextArea');
+        const selectedOption = accountDropdown.options[accountDropdown.selectedIndex];
+
+        // Fetch values from hidden fields
+        const loanId = document.querySelector("input[name='AddLoanDisbumentCommand.LoanId']").value || "N/A";
+        const customerId = document.querySelector("input[name='Loan.CustomerId']").value || "N/A";
+        const customerName = document.querySelector("input[name='Loan.CustomerName']").value || "N/A";
+        const branchCode = document.querySelector("input[name='Loan.BranchCode']").value || "N/A";
+        const defaultAccount = "Not yet selected";
+
+        // Construct the comment with a fallback default message
+        const accountNumber = selectedOption && selectedOption.value ? selectedOption.value : defaultAccount;
+
+        // Construct the professional comment
+        commentTextArea.value = `
+Loan Disbursement Details:
+- Customer Name: ${customerName}
+- Customer ID: ${customerId}
+- Branch Code: ${branchCode}
+- Loan ID: ${loanId}
+- Account Number for Credit: ${accountNumber}
+
+The loan amount has been successfully disbursed after completing all necessary validations and approval processes. Documentation has been updated accordingly.
+
+For inquiries, please contact the Loan Manager or the Branch Admin.
+        `.trim();
+    }
+
+    // Set default text when the page loads
+    //document.addEventListener("DOMContentLoaded", updateComment);
+    window.onload = function () {
+        updateComment();
+    };
+</script>
+
