@@ -1894,7 +1894,7 @@ public ActionResult PrintGeneralLedgerOfAccount()
         AddLetterhead(worksheet, accounts);
 
         // Process each ledger account
-        int currentRow = 10; // Start data after letterhead
+        int currentRow = 18; // Start data after letterhead
         foreach (var ledger in accounts.LedgerDetails)
         {
             currentRow = AddLedgerHeader(worksheet, ledger, accounts, currentRow);
@@ -1946,7 +1946,7 @@ private int AddLedgerHeader(IXLWorksheet worksheet, LedgerDetails ledger, Accoun
     // Add ledger title
     var titleCell = worksheet.Cell(startRow, 1);
     titleCell.Value = $"Entries of {ledger.AccountNumber} - {ledger.AccountName} ({accounts.FromDate:dd-MMM-yyyy} to {accounts.ToDate:dd-MMM-yyyy})";
-    var titleRange = worksheet.Range(startRow, 1, startRow, 8);
+    var titleRange = worksheet.Range(startRow, 3, startRow, 8);
     titleRange.Merge().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
     titleRange.Style.Font.Bold = true;
     titleRange.Style.Font.FontSize = 14;

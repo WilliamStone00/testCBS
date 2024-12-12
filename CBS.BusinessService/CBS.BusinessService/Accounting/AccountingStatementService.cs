@@ -47,7 +47,7 @@ namespace CBS.BusinessService.Accounting
                             Debit  = entry.EntryType == "DEBIT" ? entry.DrAmount.ToString() : "0",
                             Credit = entry.EntryType == "CREDIT" ? entry.CrAmount.ToString() : "0",
                             EntryDatetime = entry.EntryDate.ToString(),
-                            //CreditAccountBalance = entry.DrCurrentBalance.ToString()
+            
                         };
             return query.OrderByDescending(n => n.EntryDatetime).ToList();
         }
