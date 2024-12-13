@@ -1986,13 +1986,12 @@ private int AddLedgerEntries(IXLWorksheet worksheet, LedgerDetails ledger, int s
     foreach (var entry in ledger.AccountingEntries)
     {
         worksheet.Cell(currentRow, 1).Value = entry.EntryDatetime;
-        worksheet.Cell(currentRow, 2).Value = entry.ReferenceID;
-        worksheet.Cell(currentRow, 3).Value = entry.Description;
-        worksheet.Cell(currentRow, 4).Value = entry.AccountName;
-        worksheet.Cell(currentRow, 5).Value = entry.AccountNumber;
-        worksheet.Cell(currentRow, 6).Value = entry.DrAmount;
-        worksheet.Cell(currentRow, 7).Value = entry.CrAmount;
-        worksheet.Cell(currentRow, 8).Value = entry.CurrentBalance;
+        worksheet.Cell(currentRow, 2).Value = entry.ReferenceID;     
+        worksheet.Cell(currentRow, 3).Value = entry.AccountNumber;
+        worksheet.Cell(currentRow, 4).Value = entry.Description;
+        worksheet.Cell(currentRow, 5).Value = entry.DrAmount;
+        worksheet.Cell(currentRow, 6).Value = entry.CrAmount;
+        worksheet.Cell(currentRow, 7).Value = entry.CurrentBalance;
 
         currentRow++;
     }
