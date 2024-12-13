@@ -1894,7 +1894,7 @@ public ActionResult PrintGeneralLedgerOfAccount()
         AddLetterhead(worksheet, accounts);
 
         // Process each ledger account
-        int currentRow = 18; // Start data after letterhead
+        int currentRow = 9; // Start data after letterhead
         foreach (var ledger in accounts.LedgerDetails)
         {
             currentRow = AddLedgerHeader(worksheet, ledger, accounts, currentRow);
@@ -1946,14 +1946,14 @@ private int AddLedgerHeader(IXLWorksheet worksheet, LedgerDetails ledger, Accoun
     // Add ledger title
     var titleCell = worksheet.Cell(startRow, 1);
     titleCell.Value = $"Entries of {ledger.AccountNumber} - {ledger.AccountName} ({accounts.FromDate:dd-MMM-yyyy} to {accounts.ToDate:dd-MMM-yyyy})";
-    var titleRange = worksheet.Range(startRow, 3, startRow, 8);
+    var titleRange = worksheet.Range(startRow, 1, startRow, 5);
     titleRange.Merge().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
     titleRange.Style.Font.Bold = true;
     titleRange.Style.Font.FontSize = 14;
     titleRange.Style.Fill.BackgroundColor = XLColor.LightGray;
-
-    // Add account summary
-    worksheet.Cell(startRow + 2, 1).Value = "Account Number:";
+            //titleRange.Border.OutsideBorder = XLBorderStyleValues.Thin;
+            // Add account summary
+            worksheet.Cell(startRow + 2, 1).Value = "Account Number:";
     worksheet.Cell(startRow + 2, 2).Value = ledger.AccountNumber;
     worksheet.Cell(startRow + 3, 1).Value = "Account Name:";
     worksheet.Cell(startRow + 3, 2).Value = ledger.AccountName;
@@ -1966,9 +1966,9 @@ private int AddLedgerEntries(IXLWorksheet worksheet, LedgerDetails ledger, int s
     // Add column headers
     var headers = new[] 
     { 
-        "Entry DateTime", "Reference", "Description", 
-        "Account Name", "Account Number", 
-        "Debit Balance", "Credit Balance", "Current Balance" 
+        "Entry DateTime", "Reference", "Account Number","Description", 
+         
+        "Debit", "Credit ", "Balance" 
     };
 
     for (int i = 0; i < headers.Length; i++)
