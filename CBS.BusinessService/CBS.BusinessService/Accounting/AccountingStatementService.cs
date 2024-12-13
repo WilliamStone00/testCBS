@@ -46,10 +46,10 @@ namespace CBS.BusinessService.Accounting
                             Reference = entry.ReferenceID,
                             Debit  = entry.EntryType == "DEBIT" ? entry.DrAmount.ToString() : "0",
                             Credit = entry.EntryType == "CREDIT" ? entry.CrAmount.ToString() : "0",
-                            EntryDatetime = entry.EntryDate.ToString(),
+                            EntryDateTime = entry.EntryDate.ToString(),
             
                         };
-            return query.OrderByDescending(n => n.EntryDatetime).ToList();
+            return query.OrderByDescending(n => n.EntryDateTime).ToList();
         }
         public async Task<List<BranchLiaisonLedgerEntry>> GenerateLiasonAccountBranchLiaison(SystemQuery model)
         {

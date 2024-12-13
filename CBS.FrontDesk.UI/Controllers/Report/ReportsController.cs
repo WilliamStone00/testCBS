@@ -1985,7 +1985,7 @@ private int AddLedgerEntries(IXLWorksheet worksheet, LedgerDetails ledger, int s
     int currentRow = startRow + 1;
     foreach (var entry in ledger.AccountingEntries)
     {
-        worksheet.Cell(currentRow, 1).Value = entry.EntryDatetime;
+        worksheet.Cell(currentRow, 1).Value = entry.EntryDateTime;
         worksheet.Cell(currentRow, 2).Value = entry.ReferenceID;     
         worksheet.Cell(currentRow, 3).Value = entry.AccountNumber;
         worksheet.Cell(currentRow, 4).Value = entry.Description;
