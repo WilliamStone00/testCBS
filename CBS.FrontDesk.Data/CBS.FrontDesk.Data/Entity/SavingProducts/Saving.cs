@@ -576,6 +576,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string MobileMoneyAlertMessageInEnglish { get; set; }
 
         public List<TransactionHistory> Transactions { get; set; }
+        public string MapMobileMoneyToNoneMemberMobileMoneyReference { get; set; }
 
         // Constructor
         public Teller()
@@ -596,6 +597,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     public class MobileMoneyTellerConfigurationCommand
     {
         public string Id { get; set; }
+
+        [Required(ErrorMessage = "Please provide a 16-digit account number for processing M/O transactions for non-members.")]
+        public string MapMobileMoneyToNoneMemberMobileMoneyReference { get; set; }
 
         [Required(ErrorMessage = "Operation Event Code is required.")]
         public string OperationEventCode { get; set; }
@@ -1057,6 +1061,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string OperationType { get; set; }//MobileMoney
         public bool IsCashOperation { get; set; }
         public string MemberReference { get; set; }
+        public string TellerCode { get; set; }
         public CurrencyNotes CurrencyNotesRequest { get; set; }
     }
 }

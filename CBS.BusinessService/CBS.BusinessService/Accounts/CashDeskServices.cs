@@ -234,7 +234,7 @@ namespace CBS.BusinessService.Accounts
 
 
 
-    public OtherTransactionDto MapToDto(Branch branch, OtherTransaction otherTransaction)
+        public OtherTransactionDto MapToDto(Branch branch, OtherTransaction otherTransaction)
         {
             return new OtherTransactionDto
             {
@@ -304,7 +304,7 @@ namespace CBS.BusinessService.Accounts
         }
         public static List<BulkDeposit> FilterByAmountGreaterThanZero(List<BulkDeposit> deposits)
         {
-         
+
             return deposits.Where(deposit => deposit.Amount > 0 || deposit.Fee > 0 || deposit.Interest > 0 || deposit.Penalty > 0).ToList();
         }
         public async Task<ExecutionMessages> BulkDeposi(List<BulkDeposit> bulkDeposits1)
@@ -386,7 +386,7 @@ namespace CBS.BusinessService.Accounts
                     {
                         var transaction = response.ApiResponseData.Data;
                         Branch branch = RetrieveBranchFromSession();
-                        var rptSource=PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
+                        var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
                         HttpContext.Current.Session["rptSource"] = rptSource;
                         GetExecutionMessages(response, true, null, MessagesResults.Success,
                             ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
@@ -401,7 +401,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "CashInMomocashCollection")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = false, OperationType = "Deposit",DepositType= "CashInMomocashCollection" };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = false, OperationType = "Deposit", DepositType = "CashInMomocashCollection" };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -547,6 +547,7 @@ namespace CBS.BusinessService.Accounts
                         CustomerName = a.MemberName,
                         CNI = a.CNI,
                         IsCashOperation = true,
+                        TellerCode = a.TellerCode != null ? a.TellerCode : "N/A",
                         SourceType = a.SourceType,
                         BookingDirection = a.BookingDirection,
                         OperationType = a.BookingDirection,
@@ -711,7 +712,7 @@ namespace CBS.BusinessService.Accounts
             {
 
                 var cusResponseObject = await GetCustomerAccounts(customerId);
-                if (cusResponseObject==null)
+                if (cusResponseObject == null)
                 {
                     return null;
                 }
@@ -776,29 +777,32 @@ namespace CBS.BusinessService.Accounts
             try
             {
 
-               var loans = (from loan in await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = queryParameter }) select new MembersLoanDto {
-                   Id = loan.Id,
-                   LoanApplicationId = loan.LoanApplicationId,
-                   Principal = loan.Principal,
-                   LoanAmount = loan.LoanAmount,
-                   InterestRate = loan.InterestRate,
-                   Paid = loan.Paid,
-                   Balance = loan.Balance,
-                   AccrualInterest = loan.AccrualInterest,
-                   Tax = loan.Tax,
-                   Penalty = loan.Penalty,
-                   LoanDate = loan.LoanDate.ToString("dd/MM/yyyy hh:mm:ss"),
-                   IsLoanDisbursed = loan.IsLoanDisbursted,
-                   CustomerId = loan.CustomerId, DueAmount=loan.DueAmount,
-                   LoanStatus = loan.LoanStatus,
-                   BranchCode = loan.BranchCode,
-                   CustomerName = loan.CustomerName,
-                   MaturityDate = loan.MaturityDate.ToString("dd/MM/yyyy hh:mm:ss"),
-                   NumberOfInstallments = loan.NumberOfInstallments,
-                   LoanType = loan.LoanType,
-                   RepaymentCycle = loan.RepaymentCycle
+                var loans = (from loan in await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = queryParameter })
+                             select new MembersLoanDto
+                             {
+                                 Id = loan.Id,
+                                 LoanApplicationId = loan.LoanApplicationId,
+                                 Principal = loan.Principal,
+                                 LoanAmount = loan.LoanAmount,
+                                 InterestRate = loan.InterestRate,
+                                 Paid = loan.Paid,
+                                 Balance = loan.Balance,
+                                 AccrualInterest = loan.AccrualInterest,
+                                 Tax = loan.Tax,
+                                 Penalty = loan.Penalty,
+                                 LoanDate = loan.LoanDate.ToString("dd/MM/yyyy hh:mm:ss"),
+                                 IsLoanDisbursed = loan.IsLoanDisbursted,
+                                 CustomerId = loan.CustomerId,
+                                 DueAmount = loan.DueAmount,
+                                 LoanStatus = loan.LoanStatus,
+                                 BranchCode = loan.BranchCode,
+                                 CustomerName = loan.CustomerName,
+                                 MaturityDate = loan.MaturityDate.ToString("dd/MM/yyyy hh:mm:ss"),
+                                 NumberOfInstallments = loan.NumberOfInstallments,
+                                 LoanType = loan.LoanType,
+                                 RepaymentCycle = loan.RepaymentCycle
 
-               }).ToList();
+                             }).ToList();
 
                 return loans;
             }

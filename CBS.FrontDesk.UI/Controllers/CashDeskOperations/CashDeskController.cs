@@ -58,7 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             var cashDesk = await _cashDeskService.GetOtherCashDeskTransactions();
             //ViewBag.Members = _cashDeskService.LoadMembersToList(cashDesk.Customers);
             ViewBag.MemberAccounts = new SelectList(new List<StringValues>(), "None", "No-Account-Loaded");
-            await GetEventNames("FEE");
+            await GetEventNames("EXPENSE");
             //ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
             return View(cashDesk);
         }

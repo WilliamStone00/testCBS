@@ -1,5 +1,16 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CustomerManagement.IndividualProfile
 
+<style>
+    #radioButtonsContainer div.form-check {
+        display: flex;
+        align-items: center;
+        margin-right: 1rem; /* Adds spacing between items */
+    }
+
+        #radioButtonsContainer div.form-check label {
+            margin-left: 0.5rem; /* Spacing between radio button and label */
+        }
+</style>
 
 <div class="col">
     @using (Html.BeginForm("Create", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
@@ -48,8 +59,30 @@
 
                                     <div class="col-12">
                                         <div class="form-check">
-                                            @Html.CheckBoxFor(m => m.IsDailyCollector, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Check me. I am a daily saving member.</label>
+                                            @Html.CheckBoxFor(m => m.NoneMemberAccount, new { @class = "form-check-input", id = "NoneMemberAccount" })
+                                            <label class="form-check-label" for="NoneMemberAccount">None Member Account</label>
+                                        </div>
+                                    </div>
+
+                                    <div id="radioButtonsContainer" style="display: none;">
+                                        <!-- Flex container -->
+                                        <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                                            <div class="form-check">
+                                                @Html.RadioButtonFor(m => m.CustomerType, "MobileMoneyMTN", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyMTN" })
+                                                <label class="form-check-label shadow-input-boxes" for="MobileMoneyMTN">MTN Collective Account</label>
+                                            </div>
+                                            <div class="form-check">
+                                                @Html.RadioButtonFor(m => m.CustomerType, "MobileMoneyOrange", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyOrange" })
+                                                <label class="form-check-label shadow-input-boxes" for="MobileMoneyOrange">Orange Collective Account</label>
+                                            </div>
+                                            <div class="form-check">
+                                                @Html.RadioButtonFor(m => m.CustomerType, "DailyCollection", new { @class = "form-check-input shadow-input-boxes", id = "DailyCollection" })
+                                                <label class="form-check-label shadow-input-boxes" for="DailyCollection">Daily Collection Account</label>
+                                            </div>
+                                            <div class="form-check">
+                                                @Html.RadioButtonFor(m => m.CustomerType, "Remittance", new { @class = "form-check-input shadow-input-boxes", id = "Remittance" })
+                                                <label class="form-check-label shadow-input-boxes" for="Remittance">Remittance Collective Account</label>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -299,7 +332,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                </fieldset>
+                            </fieldset>
                         </div>
                     </div>
                 </div>
@@ -356,7 +389,8 @@
                                             <label>Salary or income</label>
                                         </div>
                                     </div>
-                                </div></fieldset>
+                                </div>
+                            </fieldset>
                         </div>
                     </div>
                 </div>
@@ -380,12 +414,12 @@
                             <fieldset class="fieldset-custom">
                                 <div class="row g-4">
                                     @*<div class="col-md-4">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.LegalForm, new SelectList(ViewBag.legalForms, "Text", "Value"), "---Select legality status---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.LegalForm, "", new { @class = "text-danger " })
-                        <label for="formValidationDob">Legal form</label>
-                    </div>
-                </div>*@
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.LegalForm, new SelectList(ViewBag.legalForms, "Text", "Value"), "---Select legality status---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.LegalForm, "", new { @class = "text-danger " })
+                                                <label for="formValidationDob">Legal form</label>
+                                            </div>
+                                        </div>*@
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.DropDownListFor(m => m.FormalOrInformalSector, new SelectList(ViewBag.formalOrInformalSectors, "Text", "Value"), "---Select sector---", new { @class = "form-control select2", @search = "true" })
@@ -401,7 +435,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                </fieldset>
+                            </fieldset>
                         </div>
 
                     </div>
@@ -445,4 +479,40 @@
 
 
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the checkbox and the container
+        const noneMemberAccountCheckbox = document.getElementById('NoneMemberAccount');
+        const radioButtonsContainer = document.getElementById('radioButtonsContainer');
+        const customerTypeHiddenInput = document.createElement('input'); // Hidden input for CustomerType
+        customerTypeHiddenInput.type = 'hidden';
+        customerTypeHiddenInput.name = 'CustomerType';
+        document.body.appendChild(customerTypeHiddenInput); // Append hidden input to the body
+
+        // Function to toggle visibility
+        function toggleRadioButtons() {
+            if (noneMemberAccountCheckbox.checked) {
+                radioButtonsContainer.style.display = 'block'; // Show the container
+                customerTypeHiddenInput.value = ''; // Clear the hidden input value
+            } else {
+                radioButtonsContainer.style.display = 'none'; // Hide the container
+                customerTypeHiddenInput.value = 'MemberAccount'; // Set the hidden input to 'MemberAccount'
+            }
+        }
+
+        // Initialize visibility on page load
+        toggleRadioButtons();
+
+        // Attach the event listener to the checkbox
+        noneMemberAccountCheckbox.addEventListener('change', toggleRadioButtons);
+
+        // Ensure the hidden input is updated if no radio button is selected
+        const radioButtons = radioButtonsContainer.querySelectorAll('input[type="radio"][name="CustomerType"]');
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', () => {
+                customerTypeHiddenInput.value = radio.checked ? radio.value : '';
+            });
+        });
+    });
+</script>
 

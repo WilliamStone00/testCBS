@@ -74,6 +74,13 @@
                         <label>CNI</label>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.AddOtherTransactionMobileMoneyCommand.TellerCode, new { @class = "form-control shadow-input-boxes", @id = "TellerCode" })
+                        @Html.ValidationMessageFor(m => m.AddOtherTransactionMobileMoneyCommand.TellerCode, "", new { @class = "text-danger " })
+                        <label>Till Code</label>
+                    </div>
+                </div>
                 <div class="table-responsive" id="cash_collected" style="width: 100%;">
                     <table class="table table-hover" id="myDataTableT">
                         <thead class="table-light">

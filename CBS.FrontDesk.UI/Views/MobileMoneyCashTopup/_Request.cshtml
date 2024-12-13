@@ -70,20 +70,20 @@
                     <label><b>Transfer Type</b></label>
                     <br />
                     <div class="border p-3 me-2">
-                        <div class="form-check form-check-inline" style="margin-right: 10px;">
+                        @*<div class="form-check form-check-inline" style="margin-right: 10px;">
                             @Html.RadioButtonFor(m => m.SourceType, "AuxillaryToBranch", new { @class = "form-check-input", @id = "otherTransfer" })
                             <label class="form-check-label" for="otherTransfer">Other Transfer</label>
-                        </div>
+                        </div>*@
                         <div class="form-check form-check-inline" style="margin-right: 10px;">
                             @Html.RadioButtonFor(m => m.SourceType, "HeadOfficeToBranch", new { @class = "form-check-input", @id = "headOffice" })
                             <label class="form-check-label" for="headOffice">Head-office to branch</label>
                         </div>
-                        <div class="form-check form-check-inline" style="margin-right: 10px;">
+                        @*<div class="form-check form-check-inline" style="margin-right: 10px;">
                             @Html.RadioButtonFor(m => m.SourceType, "BranchToBranch", new { @class = "form-check-input", @id = "wirering", @disabled = "disabled" })
                             <label class="form-check-label" for="wirering">Branch to branch</label>
-                        </div>
+                        </div>*@
                         <div class="form-check form-check-inline">
-                            @Html.RadioButtonFor(m => m.SourceType, "BranchToHeadOffice", new { @class = "form-check-input", @id = "m2Float", @disabled = "disabled" })
+                            @Html.RadioButtonFor(m => m.SourceType, "BranchToHeadOffice", new { @class = "form-check-input", @id = "m2Float" })
                             <label class="form-check-label" for="m2Float">Branch to head office</label>
                         </div>
                     </div>
