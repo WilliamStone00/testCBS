@@ -147,39 +147,39 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
 
-        //[HttpGet]
-        //public async Task<ActionResult> JournalEntries(string branchId = null)
-        //{
-        //    if (_accountingServices.IsHeadOffice())
-        //    {
-        //        if (branchId == null)
-        //        {
-        //            var listOfBranch = await _branchServices.GetBranches();
+        [HttpGet]
+        public async Task<ActionResult> JournalEntries(string branchId = null)
+        {
+            if (_accountingServices.IsHeadOffice())
+            {
+                if (branchId == null)
+                {
+                    var listOfBranch = await _branchServices.GetBranches();
 
-        //            return View(new AccountingStatementDto { Branches = listOfBranch.ToList() });
-        //        }
-        //        else
-        //        {
-        //            SystemQuery query = new SystemQuery();
-        //            query.BranchId = _branchServices.GetBranchID();
+                    return View(new AccountingStatementDto { Branches = listOfBranch.ToList() });
+                }
+                else
+                {
+                    SystemQuery query = new SystemQuery();
+                    query.BranchId = _branchServices.GetBranchID();
 
-        //                var models =await _acountServices.GenerateAccountingLedgerForAnumber(query); 
-        //            return View(new AccountingStatementDto { AccountingGeneralLedger = models });
-        //        }
-
-
-        //    }
-        //    else
-        //    {
-        //        SystemQuery query = new SystemQuery();
-        //        query.BranchId = _branchServices.GetBranchID();
-
-        //        var models = await _acountServices.GenerateAccountingLedgerForAnumber(query);
-        //        return View(new AccountingStatementDto { AccountingGeneralLedger = models });
-        //    }
+                    var models = await _acountServices.GenerateAccountingLedgerForAnumber(query);
+                    return View(new AccountingStatementDto { AccountingGeneralLedger = models });
+                }
 
 
-        //}
+            }
+            else
+            {
+                SystemQuery query = new SystemQuery();
+                query.BranchId = _branchServices.GetBranchID();
+
+                var models = await _acountServices.GenerateAccountingLedgerForAnumber(query);
+                return View(new AccountingStatementDto { AccountingGeneralLedger = models });
+            }
+
+
+        }
 
 
         [HttpGet]
@@ -265,6 +265,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
+  
+
         public async Task<ActionResult> GetAccountForABranch(string BranchId)
         {
 
@@ -385,9 +387,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         case "JE":
                             {
                                 string fileTitle = $"JournalEntries_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
-                                var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery);
+                                var account = await _acountServices.GenerateJournalEntry(new JEQuery {FromDate=model.SystemQuery.FromDate,ToDate= model.SystemQuery.ToDate,FileType=model.SystemQuery.FileType,BranchId=model.SystemQuery.BranchId });
                                 this.HttpContext.Session["rptSource"] = account;
                                 string ReportName = $"JournalEntries.rpt";
+                                if (model.SystemQuery.FileType == "PDF")
+                                {
+                                    this.HttpContext.Session["rptSource"] = account;
+                                }
+                                else
+                                {
+                                    this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                                    this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
+                                    this.HttpContext.Session["rptSource"] = (account != null) ? account : new List<JournalEntryDto>();
+                                }
+
                                 if (account == null)
                                 {
                                     this.HttpContext.Session["rptSource"] = "empty";
@@ -395,7 +408,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                                 this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
                                 this.HttpContext.Session["ReportName"] = $"{ReportName}";
-                                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/JournalEntries.rpt";
+                                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
                             }
                             break;
                         case "GL":

@@ -24,6 +24,7 @@ using DocumentFormat.OpenXml.Drawing.ChartDrawing;
 using Azure;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using CBS.FrontDesk.Helper;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -33,8 +34,10 @@ namespace CBS.FrontDesk.UI.Controllers
         private readonly EntryTempDataServices _Service;
         private readonly ChartOfAccountManagementPositionService _ChartOfAccountManagementPositionServicesServices;
         private readonly ChartOfAccountServices _chartOfAccountServices;
+        private readonly AccountCategoryServices _accountCategoryServices;
         private readonly UserManagementServices _userService;
         private readonly AccountingServices _AccountServices;
+        private readonly AccountingEntryRuleService _accountingEntryRuleService;
         private readonly BranchServices _branchService;
         private readonly AccountingRuleService _AccountingRuleServices;
 
@@ -43,11 +46,13 @@ namespace CBS.FrontDesk.UI.Controllers
             _Service = new EntryTempDataServices();
             _ChartOfAccountManagementPositionServicesServices = new ChartOfAccountManagementPositionService();
             _chartOfAccountServices = new ChartOfAccountServices();
+            _accountingEntryRuleService = new AccountingEntryRuleService();
        _AccountServices = new AccountingServices();
             _userService = new UserManagementServices();
             _branchService = new BranchServices();
             _AccountingRuleServices = new AccountingRuleService();
-        }
+            _accountCategoryServices = new AccountCategoryServices();
+                }
         // GET:
 
         public async Task<ActionResult> Index()
@@ -62,9 +67,9 @@ namespace CBS.FrontDesk.UI.Controllers
             var PostedEntries = await _Service.GetManualEntriesAsync();
             var users = await _userService.GetUsers();
             var branch = await _branchService.GetBranches();
-
             var results = (from p in PostedEntries
                            join u in users on p.CreatedBy equals u.id.ToString()
+                           join po in users on p.CreatedBy equals po.id.ToString()
                            join b in branch on u.BranchID equals b.Id.ToString()
                            select new PostedEntryX
                            {
@@ -74,7 +79,8 @@ namespace CBS.FrontDesk.UI.Controllers
                                IssuedBy = u.id.ToString(),
                                Description = p.Description,
                                CreatedDate = p.CreatedDate,
-                               
+                               ApprovedBy=po.firstName + " " + po.lastName,
+                               ApprovedDate =p.ApprovedDate,
                                Status = p.Status,
                                Id = p.Id,
                                EntryDetail = p.EntryDetail
@@ -82,21 +88,20 @@ namespace CBS.FrontDesk.UI.Controllers
 
                            }).ToList();
             this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()]= results;
-
             foreach (var item in results)
             {
                 postedCollectionEntries.Add(item.ConvertToPostedEntry(item));
-            }
-            
+            }        
             return View(new ManuallyJournalEntryDataSet { PostedEntries = postedCollectionEntries });
         }
 
         private async Task GetList()
         {
        
-            var DebitAccounts = await _AccountServices.GetAllAccounting();
+           
             var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
-            var CreditAccounts = BuildMenuViewBag(DebitAccounts);
+  
+            var CreditAccounts = BuildMenuViewBag(await GetAllAccountsExcludingOperationsAccountAsync());
             ViewBag.Accounts = CreditAccounts;
             ViewBag.BookingDirections = await GetBookingDirections();
             ViewBag.ChartOfAccountManagementPositions = BuildMenuCOAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), listAccounts.ToList());
@@ -135,8 +140,36 @@ namespace CBS.FrontDesk.UI.Controllers
             return selectListItems;
         }
 
+        private async Task<List<Data.Account>> GetAllAccountsExcludingOperationsAccountAsync()
+        {
+            var accounts = await _AccountServices.GetAllAccounting();
+            var accountingRules = (await _accountingEntryRuleService.GetAccountingEntryRules()).ToList();
 
+            return accounts.Where(account =>
+                !CheckIfAccountIsOperationsAccount(account, accountingRules).Result)
+                .ToList();
+        }
 
+        private Task<bool> CheckIfAccountIsOperationsAccount(Data.Account account, List<AccountingRuleEntry> accountingRules)
+        {
+            const string OPERATIONS_PREFIX_1 = "3";
+            const string OPERATIONS_PREFIX_2 = "571";
+
+            var virtualTellerCodes = new[] {
+        "Virtual_Teller_MTN",
+        "Virtual_Teller_Orange",
+        "Virtual_Teller_Momo_cash_Collection"
+    };
+
+            var matchingRules = accountingRules
+                .FirstOrDefault(x => x.DeterminationAccountId.Equals(account.ChartOfAccountManagementPositionId));
+
+            return Task.FromResult(
+                matchingRules != null && virtualTellerCodes.Contains(matchingRules.EventCode) ||
+                account.AccountNumber.StartsWith(OPERATIONS_PREFIX_1) ||
+                account.AccountNumber.StartsWith(OPERATIONS_PREFIX_2)
+            );
+        }
         private Task<List<System.Web.WebPages.Html.SelectListItem>> GetBookingDirections()
         {
             var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" } }.ToList();
@@ -148,11 +181,48 @@ namespace CBS.FrontDesk.UI.Controllers
             foreach (var item in debitAccounts)
             {
 
-                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.AccountNumber + "-" + item.AccountName });
+                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.AccountNumberCU + "-" + item.AccountName });
 
             }
 
             return list;
+        }
+        public async Task<Data.Account> EvaluateCurrentBalance(Data.Account account)
+        {
+            // Store last balance before any changes
+            account.LastBalance = account.CurrentBalance;
+
+            // Determine account behavior based on OHADA rules
+            bool isDebitNormal = account.AccountNumber.StartsWith("2") || // Fixed Assets
+                                account.AccountNumber.StartsWith("3") || // Inventory
+                                account.AccountNumber.StartsWith("5") || // Financial
+                                account.AccountNumber.StartsWith("6");   // Expenses
+
+            bool isCreditNormal = account.AccountNumber.StartsWith("1") || // Capital
+                                account.AccountNumber.StartsWith("7");    // Income
+
+            // Handle class 4 accounts separately
+            bool isClass4 = account.AccountNumber.StartsWith("4");
+            bool isReceivable = isClass4 && await CheckIfAccountIsReceivableAsync(account);
+            // Calculate current balance based on account type
+            if (isDebitNormal || (isClass4 && !isReceivable))
+            {
+                account.CurrentBalance = (Convert.ToDouble( account.DebitBalance )- Convert.ToDouble( account.CreditBalance)).ToString();
+            }
+            else
+            {
+                account.CurrentBalance = (Convert.ToDouble(account.CreditBalance) - Convert.ToDouble(account.DebitBalance)).ToString();
+ 
+            }
+
+
+
+            return account;
+        }
+        private async Task<bool> CheckIfAccountIsReceivableAsync(Data.Account account)
+        {
+            var model = await _accountCategoryServices.GetAccountCategory(account.AccountCategoryId);
+            return model.Name.ToLower() == "revenue";
         }
 
         public async Task<ActionResult> GetAccountBalance(string Id)
@@ -163,8 +233,26 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 var AccountData = await _AccountServices.GetAccount(Id);
 
-                var data = new ManuallyJournalEntryDataSet { Account = AccountData };
+                var data = new ManuallyJournalEntryDataSet { Account = await EvaluateCurrentBalance(AccountData) };
 
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public async Task<ActionResult> GetSequenceReference()
+        {
+
+
+            try
+            {
+                //var AccountData = await _AccountServices.GetSequenceReference();
+
+        
+                var data = $"{BaseUtilities.GenerateInsuranceUniqueNumber(12, "METRS")}-{_AccountServices.GetBranchCode()}";
 
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
@@ -358,7 +446,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 var list = modelList.Where(c=>c.System_Id == system_Id).ToList();   
                   list = await RebuildEntryBookAsync(list);
                 modelRule.AccountingRule = list;
-                modelRule.HasError = true;
+                modelRule.HasError = false;
                 return Json(modelRule, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -389,66 +477,15 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             Func<Task<ExecutionMessages>> serviceAction = null;
 
-            if (model.ServiceOption == "account")
+            if (model.ServiceOption == "CreateAccountingEntries")
             {
+               
+                    
 
-
+                    serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
+              
             }
-            else if (model.ServiceOption == "EntryTempData")
-            {
-                if (model.EntryTempData.BookingDirection == "DEBIT")
-                {
-                    if (Convert.ToDecimal(model.EntryTempData.AccountBalance) - Convert.ToDecimal(model.EntryTempData.Amount) > 0)
-                    {
-
-                    }
-                    else
-                    {
-                        return Json(new { success = false, status = false, message = $"Account Balance is insufficient." });
-                    }
-
-                }
-                else
-                {
-
-                }
-                if (model.Action == "insert")
-                {
-                    var chartOfAccount = await _AccountServices.GetAccount(model.EntryTempData.AccountId);
-                    //if (chartOfAccount == null)
-                    //{
-                    //    chartOfAccount = AccountDataSample.Accounts.Find(i => i.Id == model.EntryTempData.AccountName);
-                    //    model.EntryTempData.AccountName = chartOfAccount.AccountName;
-                    //    model.EntryTempData.Description = "xxxxxxxxxx";
-                    //}
-                    model.EntryTempData.AccountNumber = chartOfAccount.AccountNumber;
-                    model.EntryTempData.AccountName = chartOfAccount.AccountName;
-
-                    serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
-                }
-                else
-                {
-
-                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
-                }
-            }
-            else if (model.ServiceOption == "EntryDescription")
-            {
-                if (model.Action == "insert")
-                {
-                    model.EntryDescription.Reference = model.EntryTempDataResult[0].Reference;
-
-
-                    serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
-                }
-                else
-                {
-
-                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
-                }
-            }
-
-
+           
 
             if (serviceAction != null)
             {
@@ -501,6 +538,10 @@ namespace CBS.FrontDesk.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> PostAutoJournalEntries(AutomatedEventEntryCommand data)
         {
+            if (string.IsNullOrEmpty(data.Description))
+            {
+                return Json(  "Kindly fill in the transaction description");
+            }
             // Process the received data
             // For example, you can save it to the database or perform any business logic
             if (data.Entries[0].MFI_ChartOfAccountId.Contains("000000"))
@@ -515,17 +556,13 @@ namespace CBS.FrontDesk.UI.Controllers
             // Return a success response
           
         }
-        private async Task<Func<Task<ExecutionMessages>>> GetInsertServiceActionAsync(string serviceOption, ManuallyJournalEntryDataSet model)
+        private async Task<Func<Task<ExecutionMessages>>> PostAccountingEntryActionAsync(string serviceOption, ManuallyJournalEntryDataSet model)
         {
-            if (serviceOption == "EntryTempData")
+            if (serviceOption == "CreateAccountingEntries")
             {
-                return () => _Service.Create(model.EntryTempData);
+                return () => _Service.Create(model.EntryTempDatas);
             }
-            else if (serviceOption == "EntryDescription")
-            {
-                return () => _Service.PostAccountingEntry(model.EntryDescription);
-            }
-
+            
             else
             {
                 return null;
@@ -533,7 +570,7 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         private Func<Task<ExecutionMessages>> GetUpdateServiceAction(string serviceOption, ManuallyJournalEntryDataSet model)
         {
-            if (serviceOption == "EntryTempData")
+            if (serviceOption == "Create")
             {
                 return () => _Service.Update(model.EntryTempData);
             }
@@ -563,15 +600,15 @@ namespace CBS.FrontDesk.UI.Controllers
                                   join account in dataAccounts on entry.AccountNumber equals account.AccountNumber
                                   select new EntryTempDataResult
                                   {
-                                      Id = entry.Id,
+                                      Id = entry.Reference,
                                       AccountName = entry.AccountName,
                                       AccountNumber = entry.AccountNumber,
-                                      Amount = entry.Amount,
+                                      Amount =Convert.ToDecimal( entry.Amount),
                                       Reference = entry.Reference,
                                       BookingDirection = entry.BookingDirection,
-                                      SumDebit = data.Where(x => x.BookingDirection == "DEBIT").Sum(x => x.Amount),
-                                      SumCredit = data.Where(x => x.BookingDirection == "CREDIT").Sum(x => x.Amount),
-                                      Difference = (data.Where(x => x.BookingDirection == "CREDIT").Sum(x => x.Amount) - data.Where(x => x.BookingDirection == "DEBIT").Sum(x => x.Amount)),
+                                      SumDebit = data.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDecimal(x.Amount)),
+                                      SumCredit = data.Where(x => x.BookingDirection == "CREDIT").Sum(x => Convert.ToDecimal(x.Amount)),
+                                      Difference = (data.Where(x => x.BookingDirection == "CREDIT").Sum(x => Convert.ToDecimal(x.Amount)) - data.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDecimal(x.Amount))),
                                   };
                     var sysData = new ManuallyJournalEntryDataSet { EntryTempDataResult = dataset.ToList(), EntryTempDatas = data };
 

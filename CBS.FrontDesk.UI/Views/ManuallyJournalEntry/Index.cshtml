@@ -3,6 +3,7 @@
     ViewBag.Title = "ManuallyJournalEntry";
 }
 
+
 <div class="card mb-12">
     <div class="card-header">
         <h5 class="card-title mb-0">MANUAL JOURNAL ENTRY</h5>
@@ -12,11 +13,80 @@
 
             <!-- Navigation -->
             <div class="col-12 col-md-4  card-separator">
-        
-                    <div id="datalistingview_AddEntry">
-                        @Html.Partial("_AddEntry")
-                    </div>
-          
+
+                <div id="datalistingview_AddEntry">
+
+                    @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <input type="hidden" name="ServiceOption" value="EntryTempData" id="ServiceOption" />
+                        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">
+                                            Reference: @Html.TextBoxFor(m => m.EntryTempData.Reference, new { @class = "form-control shadow-input-boxes" })
+                                            @Html.ValidationMessageFor(m => m.EntryTempData.Reference, "", new { @class = "text-danger" })
+                                        </h5>
+                                    </div>
+                                    <div class="row card-body">
+                                        <div class="row mt-2 gy-4">
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.DropDownListFor(m => m.EntryTempData.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---Select Account---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
+                                                    @Html.ValidationMessageFor(m => m.EntryTempData.AccountId, "", new { @class = "text-danger" })
+                                                    <label>Account Name</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.EntryTempData.AccountBalance, new { @class = "form-control shadow-input-boxes", @value="", @readonly=true})
+                                             
+                                                    @Html.ValidationMessageFor(m => m.EntryTempData.AccountBalance, "", new { @class = "text-danger" })
+                                                    <label>Current Balance</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.DropDownListFor(m => m.EntryTempData.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select Direction---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
+                                                    @Html.ValidationMessageFor(m => m.EntryTempData.BookingDirection, "", new { @class = "text-danger" })
+                                                    <label>Booking Direction</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+
+                                                    @Html.TextBoxFor(m => m.EntryTempData.Amount, new { @class = "form-control shadow-input-boxes" })
+                                                    @Html.ValidationMessageFor(m => m.EntryTempData.Amount, "", new { @class = "text-danger" })
+                                                    <label>Amount</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextAreaFor(m => m.EntryTempData.Description, new { @class = "form-control shadow-input-boxes", @style = "height: 100px;" })
+                                                    @Html.ValidationMessageFor(m => m.EntryTempData.Description, "", new { @class = "text-danger" })
+                                                    <label>Description</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @Html.HiddenFor(m => m.EntryTempData.AccountName, new { @class = "form-control" })
+                                        @Html.HiddenFor(m => m.EntryTempData.AccountNumber, new { @class = "form-control" })
+                                        <div class="mt-4">
+                                            <button type="button" onclick="addToBasket()" class="btn btn-primary addToBasket">
+                                                Add Entry &nbsp; &nbsp; <i class="mdi mdi-plus-box-multiple"></i>
+                                            </button>
+                                            <input type="hidden" name="Action" value="insert" id="Action" />
+                                        </div>
+                                    </div>
+                                    <hr />
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+
             </div>
             <!-- Navigation Body -->
             <div class="col-12 col-md-8 ">
@@ -27,24 +97,46 @@
                 </div>
                 <div class="tab-content  card-separator">
                     <br />
-                    <div id="datalistingview_JournalEntries">
+                    <h2 id="basket_Label"></h2>
+                    <table id="DataEntrybasketTable" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Account Description</th>
+                                <th>Credit</th>
+                                <th>Debit</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Total Credit:<p id="totalCredit"></p></th>
+                                <th>Total Debit:<p id="totalDebit"></p></th>
+                                <th>Diffrence:<p id="balance"></p></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="shift-right">
+                        <button type="button" onclick="submitBasket()" class="btn btn-primary" id="saveToDB">
+                            Save Entry Rule&nbsp; &nbsp; <i class="mdi mdi-database"></i>
+                        </button>
 
+                        <br />
                     </div>
-                    <br />
-
 
                 </div>
-           
+
 
             </div>
-
         </div>
     </div>
 </div>
+    @section Scripts { @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/main.js/ManualJournalEntries.js"></script>
+    <!-- Confirmation Modal -->
 
-@section Scripts { @Scripts.Render("~/bundles/jqueryval")
-  
+    }
 
-    <script src="~/Scripts/Js/main.js/MultipleManualEntry.js"></script>
-}
 
+ 

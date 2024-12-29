@@ -1546,8 +1546,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     {
                                         UploadModel.BranchId = _AccountServices.GetBranchID();
                                     }
-                                   
-                                        var data = await  _AccountServices.Create(UploadModel);
+                                    UploadModel.IsHarmonizationActivated = model.IsHarmonizationActivated;
+                                         var data = await  _AccountServices.Create(UploadModel);
                                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data), Data= data.Data });
                                 }
                             }

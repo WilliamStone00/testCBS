@@ -203,7 +203,7 @@ namespace CBS.BusinessService.Accounting
         private JournalEntryDto BuildJournalEntry(AccountingEntry account, Branch model, JEQuery query)
         {
             JournalEntryDto dto = new JournalEntryDto();
-            dto.AccountNumber = account.AccountNumber.PadRight(6, '0');
+            dto.AccountNumber = account.DrAmount> account.CrAmount?account.DrAccountNumber: account.CrAccountNumber;
             dto.Description = account.Description;
             dto.Debit  = account.DrAmount.ToString();
             dto.Credit = account.CrAmount.ToString();

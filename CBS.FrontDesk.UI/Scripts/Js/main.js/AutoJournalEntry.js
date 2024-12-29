@@ -31,7 +31,22 @@ $(document).ready(function () {
         removeItem(data);
     });
 });
+function GetSequenceReference() {
 
+    $.ajax({
+        url: '/ManuallyJournalEntry/GetSequenceReference',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+            console.log(data);
+            $('#ReferenceId').val(data);
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
 let manuallyJournalEntryDataSet = createManuallyJournalEntryDataSet();
 function addToBasket() {
     const item = {
@@ -57,7 +72,7 @@ function addToBasket() {
     }
     basket.push(item);
     updateBasketDisplay();
-    if (basket.length>0) {
+    if (basket.length > 0) {
         $('#AccountingRule_RuleName').prop('disabled', true);
     } else {
         $('#AccountingRule_RuleName').prop('disabled', false);
@@ -128,7 +143,7 @@ function submitBasket() {
     if (basket.length === 0) {
         appalert('No Accounting entry rule has been set. Please contact administrators.', 2, 1);
         return;
-    }  
+    }
     if (validateBasketDirections(basket)) {
         alertify.confirm("T R U S T S O F T C R E D I T", "Are you sure you want to submit the element in accounting event entry rule is correct?",
             function () {
@@ -220,10 +235,10 @@ function InitiliseDataTable(serverResponse) {
             {
                 data: 'MFI_ChartOfAccountId',
                 render: function (data, type, row) {
-                    
+
                     return `<input type="hidden" class="MFI_ChartOfAccountId" value="${data}" readonly>`;
                 }
-            } 
+            }
         ],
         columnDefs: [
             { width: '70%', targets: 0 },  // AccountNumber
@@ -234,20 +249,25 @@ function InitiliseDataTable(serverResponse) {
         autoWidth: false,
         footerCallback: function (row, data, start, end, display) {
             let totalDebit = 0;
-            let totalCredit = 0;
+            let totalCredit = 1;
+     
+      
             data.forEach(row => {
                 if (row.BookingDirection.toUpperCase() === "DEBIT") {
                     totalDebit += parseFloat(row.Amount);
+                  
                 }
                 if (row.BookingDirection.toUpperCase() === "CREDIT") {
                     totalCredit += parseFloat(row.Amount);
+                  
                 }
             });
             $('#totalDebit').text(totalDebit.toFixed(2));
             $('#totalCredit').text(totalCredit.toFixed(2));
-            $('#totalBalance').text("Total:"+(totalCredit - totalDebit).toFixed(2));
+            $('#totalBalance').text("Total:" + (totalCredit - totalDebit).toFixed(2));
             // Show or hide the description row based on the totals
-            if (totalDebit === totalCredit) {
+         
+            if (totalDebit === totalCredit ) {
                 if ($('#descriptionRow').length === 0) {
                     $('#AccountingEventEntriesDataTable').append(
                         `<tr id="descriptionRow">
@@ -257,7 +277,9 @@ function InitiliseDataTable(serverResponse) {
                         </tr>`
                     );
                 }
+               
                 $('#descriptionRow').show();
+            
             } else {
                 $('#descriptionRow').hide();
             }
@@ -299,7 +321,7 @@ function updateTotals() {
 
     $('#totalDebit').text(totalDebit.toFixed(2));
     $('#totalCredit').text(totalCredit.toFixed(2));
-    $('#totalBalance').text("Total:"+(totalCredit - totalDebit).toFixed(2));
+    $('#totalBalance').text("Total:" + (totalCredit - totalDebit).toFixed(2));
     // Show or hide the description row based on the totals
     if (totalDebit === totalCredit) {
         if ($('#descriptionRow').length === 0) {
@@ -318,7 +340,8 @@ function updateTotals() {
 }
 
 
-function LoanAccountingEventEntrySystemId(system_Id, yourModalId) {
+function LoanAccountingEventEntrySystemId(system_Id, yourModalId)
+{
     if (system_Id === 0 || system_Id === null || system_Id === undefined) {
         appalert('There is no system id present on this record', 1, 2);
         return;
@@ -348,9 +371,9 @@ function openModalWithData(data, yourModalId) {
     $('#' + yourModalId).modal('show');
 }
 
- 
+
 function LoanAccountingEventEntrySystemId(system_Id) {
- 
+    GetSequenceReference();
     $.ajax({
         url: '/ManuallyJournalEntry/GetAccountingEntryEventID/',
         type: 'Get',
@@ -367,15 +390,15 @@ function LoanAccountingEventEntrySystemId(system_Id) {
 
             } else {
                 var names = "Accounting Event Entry for " + $("#" + system_Id + "-RuleName").text() + ".";
-
+                console.log(names);
                 $("#exampleModalLabel3").text(names);
                 var table;
-                InitiliseDataTable(data);
+                InitiliseDataTable(data.AccountingRule);
             }
-         
- 
-   
-        
+
+
+
+
 
 
         },
@@ -401,10 +424,10 @@ function collectAndPostData() {
         console.log(rowData);
 
         const entry = {
-      
+
             Amount: parseFloat(rowData.BookingDirection.toUpperCase() === "DEBIT" ? debitInput : creditInput),
             BookingDirection: rowData.BookingDirection,
-           
+
             MFI_ChartOfAccountId: rowData.MFI_ChartOfAccountId
         };
 
@@ -420,7 +443,10 @@ function collectAndPostData() {
         Description: operationDescription,
         ReferenceId: $('#ReferenceId').val()
     };
-
+    //const finalData = createManuallyJournalEntry();
+    //finalData.entryTempDatas = dataToSend;
+    //finalData.Description = operationDescription;
+    //finalData.ReferenceId = $('#ReferenceId').val();
     // Post the data to the server
     $.ajax({
         type: 'POST',
@@ -450,6 +476,7 @@ function submitAccountingEntries() {
         const debitInput = this.nodes().to$().find('input.debit').val();
         const creditInput = this.nodes().to$().find('input.credit').val();
         const MFI_ChartOfAccountId = this.data().MFI_ChartOfAccountId;
+       
         const entry = {
             AccountNumber: rowData.AccountNumber,
             Amount: parseFloat(rowData.BookingDirection.toUpperCase() === "DEBIT" ? debitInput : creditInput),
@@ -457,7 +484,7 @@ function submitAccountingEntries() {
             Description: rowData.Description,
             MFI_ChartOfAccountId: rowData.MFI_ChartOfAccountId
         };
-
+    
         dataToSend.push(entry);
     });
 
@@ -466,11 +493,11 @@ function submitAccountingEntries() {
     if (operationDescription === "") {
         appalert('The journal entry cannot be void of description. Please contact administrators.', 2, 1);
         return;
-    } 
+    }
     if (dataToSend.length === 0) {
         appalert('An empty journal cannot be posted. Please contact administrators.', 2, 1);
         return;
-    }  
+    }
     // Prepare the final data object
     const finalData = {
         Entries: dataToSend,
@@ -479,7 +506,7 @@ function submitAccountingEntries() {
     };
 
     console.log(finalData);
-  
+
 
     // Confirmation dialog using alertify
     alertify.confirm("T R U S T S O F T C R E D I T", "Are you sure you want to this accounting entries?",
@@ -493,14 +520,14 @@ function submitAccountingEntries() {
                 success: function (response) {
                     console.log(response);
                     console.log(response.MessageString);
- 
+
                     if (response) {
                         if (response.MessageStatus === "Exist") {
                             appalert(response.MessageString, 3, 1);
                         } else if (response.MessageStatus === "Failed") {
                             appalert(response.MessageString, 2, 1);
                         } else {
-                            appalert(response.MessageString,  1, 1);
+                            appalert(response.MessageString, 1, 1);
                         }
                     } else {
                         if (response.Result.MessageStatus === "Exist") {
@@ -522,6 +549,31 @@ function submitAccountingEntries() {
     );
 }
 
+function createManuallyJournalEntry() {
+    return {
+        entryTempData: {
+            // Add properties as needed
+        },
+        account: {
+            // Add properties as needed
+        },
+        entryDescription: {
+            // Add properties as needed
+        },
+        entryTempDatas: [],
+        postedEntries: [],
+        entryTempDataResult: [],
+        accounts: [],
+        EntryTempDatas: [],
+        EntryTempData: {
+            // Add properties as needed
+        },
+        serviceOption: "CreateAccountingEntries",
+        action: "insert",
+        key: "",
+        hasApproved: false
+    };
+}
 function LoadAccountingRuleDataSetDT(tableID) {
 
 
@@ -544,7 +596,7 @@ function LoadAccountingRuleDataSetDT(tableID) {
             /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
             { "targets": 0, "searchable": true, "orderable": true, "width": "80%" },
             { "targets": 1, "searchable": true, "orderable": true, "width": "20%" }
-            
+
 
         ],
 

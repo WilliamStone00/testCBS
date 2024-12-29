@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿
+
+$(document).ready(function () {
 
    
     LoadDataEntryDT('PostedEntriesDataTable');
@@ -89,7 +91,7 @@ function loadAccountingEntries(reference)
         data: { Id: reference },
         success: function (data) {
             // Clear existing options in the OperationEventAttributeId combo
-
+           
             $('#exampleModalLabel3').empty();
             var description = $('.' + reference + '-Description').val();
             // Append text to the modal title
@@ -98,18 +100,21 @@ function loadAccountingEntries(reference)
             // Populate the table with the fetched data
             var tableBody = $('#ReferenceEntriesDataTable tbody');
             tableBody.empty(); // Clear existing rows
+           
 
+        
             $.each(data, function (index, item) {
+                let amount = parseFloat(item.Amount);
                 var row = $('<tr>');
                 row.append($('<td>').text(item.AccountName));
                 row.append($('<td>').text(item.AccountNumber));
 
                 if (item.bookingDirection.toLowerCase() === 'debit') {
-                    row.append($('<td>').text(item.Amount.toFixed(2)));
+                    row.append($('<td>').text(amount.toFixed(2)));
                     row.append($('<td>').text('0.00'));
                 } else {
                     row.append($('<td>').text('0.00'));
-                    row.append($('<td>').text(item.Amount.toFixed(2)));
+                    row.append($('<td>').text(amount.toFixed(2)));
                 }
 
                 tableBody.append(row);

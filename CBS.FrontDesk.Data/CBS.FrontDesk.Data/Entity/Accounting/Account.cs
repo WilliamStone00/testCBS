@@ -37,6 +37,7 @@ namespace CBS.FrontDesk.Data
         public string LiaisonId { get; set; }
         public string AccountNumberManagementPosition { get; set; }
         public string TempData { get; set; }
+        public bool IsNormalCreation { get; set; }
     }
 
 
@@ -74,6 +75,7 @@ namespace CBS.FrontDesk.Data
   
         public string BranchId { get; set; }
         public List<AccountModelX> AccountModelList { get; set; }
+        public bool IsHarmonizationActivated { get; set; }
     }
     public class AccountModelX
     {

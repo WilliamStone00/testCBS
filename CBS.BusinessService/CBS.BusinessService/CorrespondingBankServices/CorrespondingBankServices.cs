@@ -2,6 +2,7 @@
 using CBS.API.Helper;
 using CBS.BusinessService.ThirdPartyBankAccount;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -12,14 +13,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CBS.BusinessService.ThirdPartyInstitutionAccount
+namespace CBS.BusinessService.CorrespondingBankAccount
 {
   
-    public class ThirdPartyInstitutionServices : BaseService
+    public class CorrespondingBankServices : BaseService
     {
         private readonly ApiCallerHelper _bankConfigApiHelper;
 
-        public ThirdPartyInstitutionServices()
+        public CorrespondingBankServices()
         {
             _bankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
         }
@@ -28,12 +29,12 @@ namespace CBS.BusinessService.ThirdPartyInstitutionAccount
         {
             try
             {
-                var objThirdPartyInstitution = await GetThirdPartyInstitution(id);
-                var inResponse = await _bankConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_ThirdPartyInstitution, id), id));
+                var objCorrespondingBank = await GetCorrespondingBank(id);
+                var inResponse = await _bankConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_CorrespondingBank, id), id));
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"{objThirdPartyInstitution.Name}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{objCorrespondingBank.Name}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
@@ -41,7 +42,7 @@ namespace CBS.BusinessService.ThirdPartyInstitutionAccount
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objThirdPartyInstitution, false, $"{objThirdPartyInstitution.Name}", MessagesResults.Failed,
+                    GetExecutionMessages(objCorrespondingBank, false, $"{objCorrespondingBank.Name}", MessagesResults.Failed,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null, null);
                 }
             }
@@ -53,20 +54,20 @@ namespace CBS.BusinessService.ThirdPartyInstitutionAccount
         }
         public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions)
         {
-            Func<Task<List<ThirdPartyInstitution>>> getDataFunc = async () => (await GetCountries()).ToList();
-            var dataTable = await DatatableHelper.GenerateDataTable<ThirdPartyInstitution>(dataTableOptions, getDataFunc);
+            Func<Task<List<CorrespondingBank>>> getDataFunc = async () => (await GetCorrespondingBank()).ToList();
+            var dataTable = await DatatableHelper.GenerateDataTable<CorrespondingBank>(dataTableOptions, getDataFunc);
             return dataTable;
         }
-        public async Task<IEnumerable<ThirdPartyInstitution>> GetCountries()
+        public async Task<IEnumerable<CorrespondingBank>> GetCorrespondingBank()
         {
             try
             {
-                var couApiResponse = await _bankConfigApiHelper.GetAsync<ResponseObject<List<ThirdPartyInstitution>>>(APICallHelper.GetAllThirdPartyInstitution);
+                var couApiResponse = await _bankConfigApiHelper.GetAsync<ResponseObject<List<CorrespondingBank>>>(APICallHelper.GetAllCorrespondingBank);
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
                 }
-                return new List<ThirdPartyInstitution>();
+                return new List<CorrespondingBank>();
             }
             catch (Exception ex)
             {
@@ -74,11 +75,11 @@ namespace CBS.BusinessService.ThirdPartyInstitutionAccount
                 throw;
             }
         }
-        public async Task<ThirdPartyInstitution> GetThirdPartyInstitution(string id)
+        public async Task<CorrespondingBank> GetCorrespondingBank(string id)
         {
             try
             {
-                var cusResponseObject = await _bankConfigApiHelper.GetAsync<ResponseObject<ThirdPartyInstitution>>(string.Format(APICallHelper.Get_Update_Delete_ThirdPartyInstitution, id));
+                var cusResponseObject = await _bankConfigApiHelper.GetAsync<ResponseObject<CorrespondingBank>>(string.Format(APICallHelper.Get_Update_Delete_CorrespondingBank, id));
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;
@@ -91,13 +92,13 @@ namespace CBS.BusinessService.ThirdPartyInstitutionAccount
                 throw ex;
             }
         }
-        public async Task<ExecutionMessages> Create(ThirdPartyInstitution model)
+        public async Task<ExecutionMessages> Create(CorrespondingBank model)
         {
             try
             {
 
                 // Make an API call to create an individual profile
-                var response = await _bankConfigApiHelper.PostAsync<ServiceResponse<ThirdPartyInstitution>>(APICallHelper.CreateThirdPartyInstitution, model);
+                var response = await _bankConfigApiHelper.PostAsync<ServiceResponse<CorrespondingBank>>(APICallHelper.CreateCorrespondingBank, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
@@ -120,17 +121,17 @@ namespace CBS.BusinessService.ThirdPartyInstitutionAccount
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> Update(ThirdPartyInstitution model)
+        public async Task<ExecutionMessages> Update(CorrespondingBank model)
         {
             try
             {
 
-                var ThirdPartyInstitution = await GetThirdPartyInstitution(model.Id);
-                if (ThirdPartyInstitution != null)
+                var CorrespondingBank = await GetCorrespondingBank(model.Id);
+                if (CorrespondingBank != null)
                 {
-                    ThirdPartyInstitution.Name = model.Name;
-                    ThirdPartyInstitution.Code = model.Code;
-                    var response = await _bankConfigApiHelper.PutAsync<ServiceResponse<ThirdPartyInstitution>>(string.Format(APICallHelper.Get_Update_Delete_ThirdPartyInstitution, model.Id), ThirdPartyInstitution);
+                    CorrespondingBank.Name = model.Name;
+                    CorrespondingBank.Code = model.Code;
+                    var response = await _bankConfigApiHelper.PutAsync<ServiceResponse<CorrespondingBank>>(string.Format(APICallHelper.Get_Update_Delete_CorrespondingBank, model.Id), CorrespondingBank);
                     if (response.IsSuccess)
                     {
                         // Successful creation

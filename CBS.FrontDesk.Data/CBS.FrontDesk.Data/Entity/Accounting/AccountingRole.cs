@@ -20,5 +20,19 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         public string OpertionType { get; set; }
     }
-   
+
+    public class MFIChartOfAccount
+    {
+        public string id { get; set; }
+        public string description { get; set; }
+        public string rootDescription { get; set; }
+        public string chartOfAccountId { get; set; }
+        public string positionNumber { get; set; }
+        public object level_Management { get; set; }
+        public string accountNumber { get; set; }
+        public string old_AccountNumber { get; set; }
+        public string new_AccountNumber { get; set; }
+    }
+
+
 }

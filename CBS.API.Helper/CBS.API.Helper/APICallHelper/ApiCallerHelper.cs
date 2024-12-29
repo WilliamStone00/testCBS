@@ -418,7 +418,7 @@ namespace CBS.API.Helper
             {
 
                 throw (EX);
-                throw (EX);
+       
             }
         }
 

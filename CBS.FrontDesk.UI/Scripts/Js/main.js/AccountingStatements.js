@@ -493,6 +493,8 @@ function openReportWindow(fileType, reportType) {
             url = "/Reports/PrintBalanceSheet";
         } else if (reportType === "GL") {
             url = "/Reports/PrintGeneralLedgerOfAccount";
+        } else if (reportType === "JE") {
+            url = "/Reports/PrintJournalEntryDtoInExcel";
         }
     } else {
         if (reportType === "BS") {
