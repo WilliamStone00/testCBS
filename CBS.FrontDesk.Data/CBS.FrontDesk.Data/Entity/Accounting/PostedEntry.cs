@@ -18,6 +18,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string IssuedBy { get; set; }
         public string BranchCode { get; set; }
         public List<EntryTempData> EntryDetail { get; set; }
+        public string ApprovedDate { get; set; }
+        public string ApprovedBy { get; set; }
 
     }
 
@@ -32,7 +34,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string CreatedBy { get; set; }
         public string IssuedBy { get; set; }
         public string BranchCode { get; set; }
-
+        public string ApprovedDate { get; set; }
+        public string ApprovedBy { get; set; }
         public List<EntryTempData> EntryDetail { get; set; } = new List<EntryTempData>();
 
         public PostedEntryX()
@@ -51,7 +54,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             postedEntry.IssuedBy = model.IssuedBy;
             postedEntry.BranchCode = model.BranchCode;
             postedEntry.EntryDetail = model.EntryDetail;
-
+            postedEntry.ApprovedDate = model.ApprovedDate;
+            postedEntry.ApprovedBy = model.ApprovedBy;
             return postedEntry;
 
         }

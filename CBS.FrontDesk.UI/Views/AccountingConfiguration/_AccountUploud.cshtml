@@ -14,7 +14,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true", @id = "branchCodeDropdown" })
                                 @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                                <label>Select accounting entry rule</label>
+                                <label>Select Branch</label>
                             </div>
                         </div>
 
@@ -29,16 +29,7 @@
                             <table class="table table-hover">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>AccountNumber</th>
-                                        <th>AccountName</th>
-                                        <th>BEG.DEBIT</th>
-                                        <th>BEG.CREDIT</th>
-                                        <th>MOV.DEBIT</th>
-                                        <th>MOV.CREDIT</th>
-                                        <th>End.DEBIT</th>
-                                        <th>End.CREDIT</th>
-
-
+                                        <th  colspan="8"><button class="btn btn-warning" id="downloadExcelButton">Download Sample Excel TrialBalance Format</button></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -70,6 +61,10 @@
                         <input name="file" type="file" class="btn btn-primary" id="uploadedFile" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button onclick="ReadExcelFile()" Id="ReadUploadedFile" class="btn btn-primary me-2">Upload File</button>
 
+                    </div>
+                    <div class="col-md-12">
+                        <input type="checkbox" class="form-check-input" id="IsHarmonizationActivated" value="false" />
+                        <label for="IsHarmonizationActivated">Check this box if you wish to harmonised your existing trial balance with the centralise accounting</label>
                     </div>
 
                 </form>

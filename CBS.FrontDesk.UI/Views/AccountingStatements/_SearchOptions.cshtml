@@ -5,10 +5,16 @@
         {
             <div class="row justify-content-center mt-2 gy-4">
 
-
+                <div class="col-md-12 mb-sm-1">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(model => model.SystemQuery.ReportType, new SelectList(ViewBag.ReportTypes == null ? "" : ViewBag.ReportTypes, "Text", "Value"), "---Select ReportTypes---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReportType" })
+                        @Html.ValidationMessageFor(model => model.SystemQuery.ReportType, "", new { @class = "text-danger" })
+                        <label>Select ReportType</label>
+                    </div>
+                </div>
                 @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
                 {
-                    <div class="col-12 mb-sm-1">
+                    <div class="col-12">
                         <div class="form-floating form-floating-outline">
                             @Html.DropDownListFor(model => model.SystemQuery.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true" })
                             @Html.ValidationMessageFor(model => model.SystemQuery.BranchId, "", new { @class = "text-danger" })
@@ -16,28 +22,34 @@
                         </div>
                     </div>
                 }
-                <div class="col-md-6 mb-sm-1">
+                <div class="col-12">
+                    <div id="AccountToHide">
+                        <div class="form-floating form-floating-outline">
+
+                            @Html.ListBoxFor(model => model.SystemQuery.AccountIds, new SelectList(ViewBag.Accounts == null ? new List<SelectListItem>() : ViewBag.Accounts, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple", @id = "SystemQuery_AccountId" })
+                            @Html.ValidationMessageFor(model => model.SystemQuery.AccountIds, "", new { @class = "text-danger" })
+                            <label>Select Account</label>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-4">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(model => model.SystemQuery.FromDate, new { @class = "form-control date-picker", placeholder = "From Date" })
                         @Html.ValidationMessageFor(model => model.SystemQuery.FromDate, "", new { @class = "text-danger" })
                         <label>From Date</label>
                     </div>
                 </div>
-                <div class="col-md-6 mb-sm-1">
+                <div class="col-md-4">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(model => model.SystemQuery.ToDate, new { @class = "form-control date-picker", placeholder = "To Date" })
                         @Html.ValidationMessageFor(model => model.SystemQuery.ToDate, "", new { @class = "text-danger" })
                         <label>To Date</label>
                     </div>
                 </div>
-                <div class="col-md-6 mb-sm-1">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(model => model.SystemQuery.ReportType, new SelectList(ViewBag.ReportTypes == null ? "" : ViewBag.ReportTypes, "Text", "Value"), "---Select ReportTypes---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReportType" })
-                        @Html.ValidationMessageFor(model => model.SystemQuery.ReportType, "", new { @class = "text-danger" })
-                        <label>Select ReportType</label>
-                    </div>
-                </div>
-                <div class="col-md-6 ">
+                <div class="col-md-4">
                     <div class="form-floating form-floating-outline">
                         @Html.DropDownListFor(model => model.SystemQuery.FileType, new SelectList(ViewBag.FileTypes == null ? "" : ViewBag.FileTypes, "Text", "Value"), "---Select FileTypes---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(model => model.SystemQuery.FileType, "", new { @class = "text-danger" })
@@ -45,16 +57,6 @@
                     </div>
                 </div>
 
-                <div class="col-12 mb-sm-1">
-                    <div id="AccountToHide">
-                        <div class="form-floating form-floating-outline">
-                       
-                            @Html.ListBoxFor(model => model.SystemQuery.AccountIds, new SelectList(ViewBag.Accounts == null ? new List<SelectListItem>() : ViewBag.Accounts, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple", @id = "SystemQuery_AccountId" })
-                            @Html.ValidationMessageFor(model => model.SystemQuery.AccountIds, "", new { @class = "text-danger" })
-                            <label>Select Account</label>
-                        </div>
-                    </div>
-                </div>
                 <input type="hidden" id="selectedBranchID" value="" />
             </div>
             <br>

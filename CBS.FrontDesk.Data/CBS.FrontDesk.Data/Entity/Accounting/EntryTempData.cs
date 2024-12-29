@@ -54,18 +54,46 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class EntryTempData
     {
         public string Id { get; set; }
+        [Required]
+        public string Reference { get; set; }
+        public string AccountBalance { get; set; }
         public string AccountId { get; set; }
         public string AccountName { get; set; }
         public string AccountNumber { get; set; }
         [Required]
         public string BookingDirection { get; set; }
         [PositiveAmountValidator]
-        public decimal Amount { get; set; }
-        public string AccountBalance { get; set; }
-
+        public string Amount { get; set; }
+        public string Credit { get; set; }
+        public string Debit { get; set; }
         public string Description { get; set; }
-        [Required]
-        public string Reference { get; set; }
+
+        public static AccountingEntryPayloadCommand ConvertToAccountingEntryPayloadCommand(List<EntryTempData> entries)
+        {
+            List<EntryTempDatas> accountingEntries = new List<EntryTempDatas>();
+            foreach (var Item in entries)
+            {
+                accountingEntries.Add(new EntryTempDatas
+                {
+                    Id = "012",
+                    AccountId = Item.AccountId,
+                    AccountName = Item.AccountName,
+                    AccountNumber = Item.AccountNumber,
+
+                    BookingDirection = Item.BookingDirection,
+
+                    Amount =Convert.ToDecimal( Item.Amount),
+                    AccountBalance = Item.AccountBalance,
+                    Description = Item.Description,
+
+                    Reference = Item.Reference,
+
+                });
+            }
+            return new AccountingEntryPayloadCommand { EntryTempDatas = accountingEntries };
+        }
+
+
     }
     public class EntryDescription
     {
@@ -74,7 +102,26 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         [Required]
         public string Reference { get; set; }
     }
+    public class EntryTempDatas
+    {
+        public string Id { get; set; }
+        public string AccountId { get; set; }
+        public string AccountName { get; set; }
+        public string AccountNumber { get; set; }
 
+        public string BookingDirection { get; set; }
+
+        public decimal Amount { get; set; }
+        public string AccountBalance { get; set; }
+        public string Description { get; set; }
+
+        public string Reference { get; set; }
+    }
+    public class AccountingEntryPayloadCommand
+    {
+        public List<EntryTempDatas> EntryTempDatas { get; set; }
+       
+    }
     public class EventEntryResponse
     {
         public string ResponseMessge { get; set; }
@@ -100,6 +147,15 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Reference { get; set; }
         public string Id { get; set; }
     }
+    public class AccountingEntrie
+    {
+        public string AccountNumber { get; set; }
+        public double Amount { get; set; }
+        public string BookingDirection { get; set; }
+        public string Description { get; set; }
+        public string MFI_ChartOfAccountId { get; set; }
+    }
+
     public class ManuallyJournalEntryDataSet
     {
         public EntryTempData EntryTempData { get; set; } = new EntryTempData();

@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "Corresponding Bank Management";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-9 col-md-12 order-12 order-md-12">
+        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+            <div class="accordion-item active">
+                <h2 class="accordion-header text-body d-flex justify-content-between"
+                    id="accordionPopoutIconThree">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accordionPopoutIcon-3"
+                            aria-expanded="true"
+                            aria-controls="accordionPopoutIcon-3">
+                        <i class="mdi mdi-bank-outline me-2"></i>
+                        Corresponding Bank Management
+                    </button>
+                </h2>
+                <div id="accordionPopoutIcon-3"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#accordionPopoutIcon">
+                    <div class="accordion-body">
+                        <div class="row justify-content-end">
+                            <div class="demo-inline-spacing text-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <!-- View List Button -->
+                                    <a href="#" type="button"
+                                       onclick="LoadDataView('CorrespondingBankManagement', 'DataTableCorrespondingBank', '_CorrespondingBankData', 'datalistingview', 0, 'correspondingBank', 'list');"
+                                       class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
+                                       data-bs-toggle="tooltip"
+                                       title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+
+                                    <!-- Add New Button -->
+                                    <a href="#"
+                                       type="button"
+                                       onclick="AddORUpdateGen(null, 'datalistingview', '_CreateCorrespondingBank', 'new', 'CorrespondingBankManagement', 'correspondingBank');"
+                                       class="btn btn-icon btn-label-secondary btn-sm btn-fab demo"
+                                       data-bs-toggle="tooltip"
+                                       title="Add New">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br />
+                        <div id="mainviewChange">
+                            <div class="change-group">
+
+
+
+                                <div id="datalistingview">
+                                    @Html.Partial("_CreateCorrespondingBank")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/main.js/CorrespondingBank.js"></script> }

@@ -27,7 +27,7 @@ namespace CBS.BusinessService.Accounting
             Currency currency = new Currency();
             return currency.CreateCurrencies();
         }
-        public async Task<ExecutionMessages> Create(EntryTempData model)
+        public async Task<ExecutionMessages> Create(List<EntryTempData> model)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace CBS.BusinessService.Accounting
                 // Make an API call to create an individual profile
 
 
-                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<EntryTempData>>(APICallHelper.Create_EntryTempData, model);
+                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.Post_AccountingEntry_Entries, EntryTempData.ConvertToAccountingEntryPayloadCommand( model));
                 if (response.IsSuccess)
                 {
                     // Successful creation
@@ -59,7 +59,7 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
         //   
-        public async Task<ExecutionMessages> PostAccountingEntry(EntryDescription model)
+        public async Task<ExecutionMessages> PostAccountingEntry(List<EntryTempData> model)
         {
             try
             {

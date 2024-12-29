@@ -7,6 +7,7 @@ using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.Service;
 using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -290,11 +291,29 @@ namespace CBS.BusinessService.Accounting
 
                 if (list.Any()) 
                 { 
-                 account = list.First();
+                   account = list.First();
                 }
                 else
                 {
-                    throw new ArgumentNullException($"There is no account {(await this.GetChartOfAccountManagementPosition(mFI_ChartOfAccountId)).AccountNumber} present in the system for {_accountingServices.GetBranchName()}");
+                    var modell = await this.GetChartOfAccountManagementPosition(mFI_ChartOfAccountId);
+                    var model = new CBS.FrontDesk.Data.Account
+                    {
+                        AccountNumberManagementPosition = modell.PositionNumber,
+                        AccountName = modell.Description + " " + GetBranchName(),// .BranchName,
+                        AccountNumber = modell.AccountNumber,
+
+                        AccountNumberNetwok = (modell.AccountNumber.PadRight(6, '0') + modell.PositionNumber.PadRight(3, '0') + GetBranchCode() + GetBranchCode()).PadRight(6, '0'),
+                        AccountNumberCU = (modell.AccountNumber.PadRight(6, '0') + modell.PositionNumber.PadRight(3, '0') + GetBranchCode()).PadRight(9, '0'),
+                        AccountCategoryId = "XXX",
+                        AccountTypeId = "",
+                        AccountOwnerId = GetBranchID(),
+                        ChartOfAccountManagementPositionId = modell.Id,
+                        BranchCode = GetBranchCode(),
+                        IsNormalCreation = false,
+
+                    };
+                    account=(CBS.FrontDesk.Data.Account) (await  _accountingServices.Create(model)).Data;
+                    //throw new ArgumentNullException($"There is no account {(await this.GetChartOfAccountManagementPosition(mFI_ChartOfAccountId)).AccountNumber} present in the system for {_accountingServices.GetBranchName()}");
                 }
                 return account;
             }

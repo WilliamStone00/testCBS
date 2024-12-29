@@ -35,6 +35,14 @@
                             <td id="status">loading ...</td>
                         </tr>
                         <tr>
+                            <td>Approved By</td>
+                            <td id="approvedBy">loading ...</td>
+                        </tr>
+                        <tr>
+                            <td>Approved Date</td>
+                            <td id="approvedDate">loading ...</td>
+                        </tr>
+                        <tr>
 
                             <td colspan="2">  <h5 class="card-title" style="text-justify:auto" id="referenceID">Journal Entries Reference:loading</h5></td>
                         </tr>
@@ -67,10 +75,10 @@
                         </h5>
                
                         <div class="modal-footer">
-                            <button type="button" id="Reject" onclick="ApproveJournalEntry(false)" class="btn btn-outline-secondary">
+                            <button type="button" id="Reject" onclick="ApprovePostedEntries(false)" class="btn btn-outline-secondary">
                                 Reject
                             </button>
-                            <button type="button" id="Approve" onclick="ApproveJournalEntry(true)" class="btn btn-primary">
+                            <button type="button" id="Approve" onclick="ApprovePostedEntries(true)" class="btn btn-primary">
                                 Approve
                             </button>
                         </div>

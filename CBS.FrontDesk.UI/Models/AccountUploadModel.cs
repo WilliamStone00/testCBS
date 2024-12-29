@@ -12,5 +12,6 @@ namespace CBS.FrontDesk.UI.Models
         [Required(ErrorMessage = "Please select an Excel file to upload.")]
         public HttpPostedFileBase ExcelFile { get; set; }
         public string BranchId { get;  set; }
+        public bool IsHarmonizationActivated { get; set; }
     }
 }

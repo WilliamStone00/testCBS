@@ -562,6 +562,7 @@
     <Compile Include="Controllers\Accounting\BranchAccountJournalEntriesQueryObject.cs" />
     <Compile Include="Controllers\Accounting\CashMovementTrackerConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\CashMovementTrackerController.cs" />
+    <Compile Include="Controllers\CorrespondingBankManagement\CorrespondingBankManagementController.cs" />
     <Compile Include="Controllers\Accounting\DocumentConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\ManagementSelectionOption.cs" />
     <Compile Include="Controllers\Accounting\ManuallyJournalEntryController.cs" />
@@ -2440,6 +2441,7 @@
     <Content Include="DataSet\Accounting\AccountingDataSet.xsc">
       <DependentUpon>AccountingDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="AppFiles\UploadedSampleTrialBalance.xlsx" />
     <None Include="DataSet\Accounting\AccountingDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -2579,6 +2581,8 @@
     <Content Include="Scripts\Js\main.js\App.js" />
     <Content Include="Scripts\Js\main.js\BankingOperations.js" />
     <Content Include="Scripts\Js\main.js\CashFlowManagement.js" />
+    <Content Include="Scripts\Js\main.js\CorrespondingBank.js" />
+    <Content Include="Scripts\Js\main.js\ManualJournalEntries.js" />
     <Content Include="Scripts\Js\main.js\MultipleManualEntry.js" />
     <Content Include="Scripts\Js\main.js\NotificationMonitor.js" />
     <Content Include="Scripts\Js\main.js\Notifications.js" />
@@ -3299,6 +3303,11 @@
     <Content Include="Views\TransactionConfiguration\_OrdinaryProductAccount.cshtml" />
     <Content Include="Views\TransactionConfiguration\GetSavingProductAccountMapping.cshtml" />
     <Content Include="Views\LoanProduct\GetLoanProductAccountMapping.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\Index.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\_CreateCorrespondingBank.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\_CorrespondingBankData.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\ManageCorrespondingBank.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\_CreateCorrespondingBankBranch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -3306,6 +3315,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\CustomerManagement\MemberActivation\" />
     <Folder Include="Hub\" />
+    <Folder Include="Views\CorrespondingBank\" />
     <Folder Include="Views\DocumentPack\" />
     <Folder Include="Views\Reports\" />
     <Folder Include="Views\Session\" />

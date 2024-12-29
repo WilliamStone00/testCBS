@@ -7,8 +7,8 @@ namespace CBS.FrontDesk.Helper
     {
         //
         public static string GetAllFinancialDocument = "/api/v1/Document";
-
-        //TrialBalanceFile
+        public static string GetlocationInforUrl = "/api/v1/Country/Location/CMR";
+        //TrialBalanceFile  
         //Get,Update,Delete TrialBalanceFile By Id
         public static string Get_Update_Delete_TrialBalanceFile = "/api/v1/TrialBalanceFile/{0}";
 
@@ -786,7 +786,7 @@ namespace CBS.FrontDesk.Helper
         public static string Url_Get_Update_delete_EntryTempData = "/api/v1/EntryTempData/{0}";
         public static string Url_Get_RefereceId = "api/v1/EntryTempDatas/{0}";
         public static string Post_AccountingEntry_Entries = "/api/v1/EntryTempData/PostManualEntries";
-        //public static string Create_EntryTempData = "/api/v1/EntryTempData";
+        public static string GetReferenceSequenceUrl = "/api/v1/EntryTempDatas/GetSequence";
         public static string Url_Get_AllPostedEntries = "/api/v1/EntryTempDatas/PostedEntry";
         //public static string Url_Get_Update_delete_EntryTempData = "/api/v1/EntryTempData/{0}";
         //public static string Url_Get_RefereceId = "api/v1/EntryTempDatas/{0}";
@@ -813,12 +813,20 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllTrailBalanceUploud = "/api/v1/TrailBalanceUplouds";
 
         //ThirdPartyBranche
-        public static string Get_Update_Delete_ThirdPartyBranche = "/api/v1/ThirdPartyBranche/{0}";
-        public static string GetAllThirdPartyBranche = "/api/v1/ThirdPartyBranches";
-        public static string CreateThirdPartyBranche = "/api/v1/ThirdPartyBranche";
+        public static string Get_Update_Delete_CorrespondingBankBranche = "/api/v1/CorrespondingBankBranch/{0}";
+        public static string GetAllCorrespondingBankBranche = "/api/v1/ThirdPartyBranches";
+        public static string CreateCorrespondingBankBranche = "/api/v1/CorrespondingBankBranch";
         //ThirdPartyBranche
-        public static string Get_Update_Delete_ThirdPartyInstitution = "/api/v1/ThirdPartyInstitution/{0}";
-        public static string GetAllThirdPartyInstitution = "/api/v1/ThirdPartyInstitution";
-        public static string CreateThirdPartyInstitution = "/api/v1/ThirdPartyInstitution";
+        //public static string Get_Update_Delete_CorrespondingBank = "/api/v1/ThirdPartyBranche/{0}";
+        //public static string GetAllThirdPartyInstitution = "/api/v1/ThirdPartyBranches";
+        //public static string CreateThirdPartyInstitution = "/api/v1/ThirdPartyInstitution";
+        ////CorrespondingBankBranche
+        //public static string Get_Update_Delete_CorrespondingBankBranche = "/api/v1/CorrespondingBankBranche/{0}";
+        //public static string GetAllCorrespondingBankBranche = "/api/v1/CorrespondingBankBranches";
+        //public static string CreateCorrespondingBankBranche = "/api/v1/CorrespondingBankBranche";
+        ////CorrespondingBankBranche
+        public static string Get_Update_Delete_CorrespondingBank = "/api/v1/ThirdPartyInstitution/{0}";
+        public static string GetAllCorrespondingBank = "/api/v1/ThirdPartyInstitutions";
+        public static string CreateCorrespondingBank = "/api/v1/ThirdPartyInstitution";
     }
 }

@@ -1310,7 +1310,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
 
                     // Apply header style
-                    var headerRange0 = worksheet.Range(12, 1, 12, 8);
+                    var headerRange0 = worksheet.Range(12, 1, 12, 6);
                     headerRange0.Style.Fill.BackgroundColor = XLColor.LightBlue;
                     headerRange0.Style.Font.FontSize = 12;
                     headerRange0.Style.Font.Bold = true;
@@ -1319,7 +1319,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     headerRange0.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
                     headerRange0.Style.Border.RightBorder = XLBorderStyleValues.Thin;
                     headerRange0.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-                    var headerRange10 = worksheet.Range(13, 1, accounts.Count() + 13, 8);
+                    var headerRange10 = worksheet.Range(13, 1, accounts.Count() + 13, 6);
                     headerRange10.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
                     headerRange10.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
                     headerRange10.Style.Border.RightBorder = XLBorderStyleValues.Thin;
@@ -1331,8 +1331,10 @@ namespace CBS.FrontDesk.UI.Controllers
                         worksheet.Cell(row, 2).Value = account.Reference;
                         worksheet.Cell(row, 3).Value = account.AccountNumber;
                         worksheet.Cell(row, 4).Value = account.Description;
-                        worksheet.Cell(row, 5).Value = account.Debit;
-                        worksheet.Cell(row, 6).Value = account.Credit;
+                        worksheet.Cell(row, 5).Value = ConvertToLong( account.Debit);
+                        worksheet.Cell(row, 5).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(row, 6).Value = ConvertToLong(account.Credit);
+                        worksheet.Cell(row, 6).Style.NumberFormat.Format = "#,##0";
 
 
                         row++;
@@ -1359,6 +1361,69 @@ namespace CBS.FrontDesk.UI.Controllers
 
             //return new EmptyResult();
         }
+        public static long ConvertToLong(object value)
+        {
+            try
+            {
+                if (value == null)
+                {
+                    // Handle null value by returning 0 or a default value.
+                    return 0;
+                }
+
+                // If the value is already a numeric type, convert directly.
+                if (value is int || value is long || value is short || value is byte)
+                {
+                    return Convert.ToInt64(value);
+                }
+
+                if (value is decimal || value is double || value is float)
+                {
+                    // Round the value before converting to avoid truncation errors.
+                    return Convert.ToInt64(Math.Round(Convert.ToDecimal(value)));
+                }
+
+                if (value is string)
+                {
+                    // Remove potential formatting characters like commas or currency symbols.
+                    string cleanedValue = value.ToString().Replace(",", "").Replace("$", "").Trim();
+
+                    if (decimal.TryParse(cleanedValue, out decimal parsedDecimal))
+                    {
+                        return Convert.ToInt64(Math.Round(parsedDecimal));
+                    }
+                    else
+                    {
+                        throw new FormatException("The string value cannot be parsed as a numeric value.");
+                    }
+                }
+
+                // Attempt to convert any other object type if possible.
+                if (value is IConvertible)
+                {
+                    return Convert.ToInt64(value);
+                }
+
+                // If none of the above conditions are met, throw an exception.
+                throw new InvalidCastException("The provided value is not convertible to a long.");
+            }
+            catch (OverflowException)
+            {
+                // Handle values that are out of range for Int64.
+                throw new OverflowException("The value is too large or too small to be converted to a long.");
+            }
+            catch (FormatException ex)
+            {
+                // Handle invalid formats.
+                throw new FormatException($"Invalid format: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Catch any other unexpected exceptions.
+                throw new Exception($"An error occurred during conversion: {ex.Message}");
+            }
+        }
+
         public ActionResult PrintTrialBalance4Column()
         {
             //new Dto();
@@ -1466,11 +1531,13 @@ namespace CBS.FrontDesk.UI.Controllers
                         worksheet.Cell(row, 1).Value = account.AccountNumber;
                         worksheet.Cell(row, 2).Value = account.AccountName;
                         worksheet.Cell(row, 3).Value = account.BeginningBalance;
-
+                        worksheet.Cell(row, 3).Style.NumberFormat.Format = "#,##0";
                         worksheet.Cell(row, 4).Value = account.DebitBalance;
+                        worksheet.Cell(row, 4).Style.NumberFormat.Format = "#,##0";
                         worksheet.Cell(row, 5).Value = account.CreditBalance;
+                        worksheet.Cell(row, 5).Style.NumberFormat.Format = "#,##0";
                         worksheet.Cell(row, 6).Value = account.EndingBalance;
-
+                        worksheet.Cell(row, 6).Style.NumberFormat.Format = "#,##0";
                         row++;
                     }
 
@@ -1626,12 +1693,18 @@ namespace CBS.FrontDesk.UI.Controllers
                     {
                         worksheet.Cell(row, 1).Value = account.accountNumber;
                         worksheet.Cell(row, 2).Value = account.accountName;
-                        worksheet.Cell(row, 3).Value = account.beginningDebitBalance;
-                        worksheet.Cell(row, 4).Value = account.beginningCreditBalance;
-                        worksheet.Cell(row, 5).Value = account.debitBalance;
-                        worksheet.Cell(row, 6).Value = account.creditBalance;
-                        worksheet.Cell(row, 7).Value = account.endDebitBalance;
-                        worksheet.Cell(row, 8).Value = account.endCreditBalance;
+                        worksheet.Cell(row, 3).Value = ConvertToLong( account.beginningDebitBalance);
+                        worksheet.Cell(row, 3).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(row, 4).Value = ConvertToLong(account.beginningCreditBalance);
+                        worksheet.Cell(row, 4).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(row, 5).Value = ConvertToLong(account.debitBalance);
+                        worksheet.Cell(row, 5).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(row, 6).Value = ConvertToLong(account.creditBalance);
+                        worksheet.Cell(row, 6).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(row, 7).Value = ConvertToLong(account.endDebitBalance);
+                        worksheet.Cell(row, 7).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(row, 8).Value = ConvertToLong(account.endCreditBalance);
+                        worksheet.Cell(row, 8).Style.NumberFormat.Format = "#,##0";
                         row++;
                     }
 
@@ -1658,12 +1731,18 @@ namespace CBS.FrontDesk.UI.Controllers
                         //var balance = accounts.Where(x => x.accountName == "Total").First();
                         // Print totals
                         worksheet.Cell(row, 2).Value = "Totals";
-                        worksheet.Cell(row, 3).Value = trialBalance.totalBeginningDebitBalance.ToString();
-                        worksheet.Cell(row, 4).Value = trialBalance.totalBeginningCreditBalance.ToString();
-                        worksheet.Cell(row, 5).Value = trialBalance.totalDebitBalance.ToString();
-                        worksheet.Cell(row, 6).Value = trialBalance.totalCreditBalance.ToString();
-                        worksheet.Cell(row, 7).Value = trialBalance.totalEndDebitBalance.ToString();
-                        worksheet.Cell(row, 8).Value = trialBalance.totalEndCreditBalance.ToString();
+                        worksheet.Cell(row, 3).Value = ConvertToLong(trialBalance.totalBeginningDebitBalance.ToString());
+                        worksheet.Cell(row, 3).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(row, 4).Value = ConvertToLong(trialBalance.totalBeginningCreditBalance.ToString());
+                        worksheet.Cell(row,4).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(row, 5).Value = ConvertToLong(trialBalance.totalDebitBalance.ToString());
+                        worksheet.Cell(row, 5).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(row, 6).Value = ConvertToLong(trialBalance.totalCreditBalance.ToString());
+                        worksheet.Cell(row, 6).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(row, 7).Value = ConvertToLong(trialBalance.totalEndDebitBalance.ToString());
+                        worksheet.Cell(row, 7).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(row, 8).Value = ConvertToLong(trialBalance.totalEndCreditBalance.ToString());
+                        worksheet.Cell(row, 8).Style.NumberFormat.Format = "#,##0";
                         //worksheet.Cell(row, 2).Value = "Totals";
                         //worksheet.Cell(row, 3).Value = trialBalance.beginningDebitBalance.ToString();
                         //worksheet.Cell(row, 4).Value = trialBalance.beginningCreditBalance.ToString();
@@ -1951,14 +2030,18 @@ private int AddLedgerHeader(IXLWorksheet worksheet, LedgerDetails ledger, Accoun
     titleRange.Style.Font.Bold = true;
     titleRange.Style.Font.FontSize = 14;
     titleRange.Style.Fill.BackgroundColor = XLColor.LightGray;
-            //titleRange.Border.OutsideBorder = XLBorderStyleValues.Thin;
-            // Add account summary
-            worksheet.Cell(startRow + 2, 1).Value = "Account Number:";
+
+  //Account Header 
+    worksheet.Cell(startRow + 2, 1).Value = "Account Number:";
     worksheet.Cell(startRow + 2, 2).Value = ledger.AccountNumber;
     worksheet.Cell(startRow + 3, 1).Value = "Account Name:";
     worksheet.Cell(startRow + 3, 2).Value = ledger.AccountName;
+    var letterheadRange = worksheet.Range(startRow + 2, 1, startRow + 3, 2);
+    letterheadRange.Style.Fill.BackgroundColor = XLColor.LightGray;
+    letterheadRange.Style.Font.Bold = true;
+    letterheadRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
-    return startRow + 5; // Move to the next section
+            return startRow + 5; // Move to the next section
 }
 
 private int AddLedgerEntries(IXLWorksheet worksheet, LedgerDetails ledger, int startRow)
@@ -1989,19 +2072,22 @@ private int AddLedgerEntries(IXLWorksheet worksheet, LedgerDetails ledger, int s
         worksheet.Cell(currentRow, 2).Value = entry.ReferenceID;     
         worksheet.Cell(currentRow, 3).Value = entry.AccountNumber;
         worksheet.Cell(currentRow, 4).Value = entry.Description;
-        worksheet.Cell(currentRow, 5).Value = entry.DrAmount;
-        worksheet.Cell(currentRow, 6).Value = entry.CrAmount;
-        worksheet.Cell(currentRow, 7).Value = entry.CurrentBalance;
+        worksheet.Cell(currentRow, 5).Value = ConvertToLong(entry.DrAmount);
+        worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
+                worksheet.Cell(currentRow, 6).Value = ConvertToLong(entry.CrAmount);
+                worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0";
+                worksheet.Cell(currentRow, 7).Value = ConvertToLong(entry.CurrentBalance);
+                worksheet.Cell(currentRow, 7).Style.NumberFormat.Format = "#,##0";
 
-        currentRow++;
+                currentRow++;
     }
 
     // Add totals
-    worksheet.Cell(currentRow, 5).Value = "Totals";
-    worksheet.Cell(currentRow, 6).Value = ledger.AccountingEntries.Sum(e => Convert.ToDouble( e.DrAmount));
-    worksheet.Cell(currentRow, 7).Value = ledger.AccountingEntries.Sum(e => Convert.ToDouble(e.CrAmount));
-
-    var totalsRange = worksheet.Range(currentRow, 5, currentRow, 7);
+    worksheet.Cell(currentRow, 4).Value = "Totals";
+    worksheet.Cell(currentRow, 5).Value = ConvertToLong(ledger.AccountingEntries.Sum(e => Convert.ToDouble( e.DrAmount)));
+    worksheet.Cell(currentRow, 6).Value = ConvertToLong(ledger.AccountingEntries.Sum(e => Convert.ToDouble(e.CrAmount)));
+ worksheet.Cell(currentRow, 6).Value = ConvertToLong(ledger.AccountingEntries[currentRow-1]);
+            var totalsRange = worksheet.Range(currentRow, 5, currentRow, 7);
     totalsRange.Style.Font.Bold = true;
     totalsRange.Style.Fill.BackgroundColor = XLColor.LightGray;
 

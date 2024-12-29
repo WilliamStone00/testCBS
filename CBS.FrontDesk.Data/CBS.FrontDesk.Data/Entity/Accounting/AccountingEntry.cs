@@ -69,6 +69,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string CrCurrentBalance { get; set; }
         public string DrCurrentBalance { get; set; }
         public string AccountNumber { get; set; }
+        public string AccountNumberReference { get; set; }
         public string CreatedBy { get; set; }
         public string CreatedDate { get; set; }
         

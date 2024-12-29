@@ -1,0 +1,113 @@
+﻿
+
+@model CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement.CorrespondingBankConfiguration
+
+
+<div class="col-12 card-body">
+    <div class="card mb-12">
+
+        @using (Html.BeginForm("AddOrUpdate", "CorrespondingBankManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            <div class="card-body">
+                <div class="text-capitalize">
+              Financial Institution :     @{
+                       @Model.CorrespondingBank.Name
+                   }
+                </div>
+                <input type="hidden" name="ServiceOption" value="correspondingBankBranch" id="ServiceOption" />
+                @Html.HiddenFor(m => m.CorrespondingBankBranch.CorrespondingBankId)
+                <div class="row mt-2 gy-4">
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CorrespondingBankBranch.BranchName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.CorrespondingBankBranch.BranchName, "", new { @class = "text-danger" })
+                            <label>Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CorrespondingBankBranch.BranchCode, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.CorrespondingBankBranch.BranchCode, "", new { @class = "text-danger" })
+                            <label>BankCode</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CorrespondingBankBranch.RegionId, new SelectList(ViewBag.Regions == null ? "" : ViewBag.Regions, "Text", "Value"), "---Select Region---", new { @class = "form-control select2", @search = "true" })
+                            @Html.ValidationMessageFor(m => m.CorrespondingBankBranch.RegionId, "", new { @class = "text-danger" })
+                            <label>Region</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CorrespondingBankBranch.DivisionId, new SelectList(ViewBag.Divisions == null ? "" : ViewBag.Divisions, "Text", "Value"), "---Select Division---", new { @class = "form-control select2", @search = "true" })
+                            @Html.ValidationMessageFor(m => m.CorrespondingBankBranch.DivisionId, "", new { @class = "text-danger" })
+                            <label>Division</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CorrespondingBankBranch.SubdivisionId, new SelectList(ViewBag.Subdivisions == null ? "" : ViewBag.Subdivisions, "Text", "Value"), "---Select Subdivision---", new { @class = "form-control select2", @search = "true" })
+                            @Html.ValidationMessageFor(m => m.CorrespondingBankBranch.SubdivisionId, "", new { @class = "text-danger" })
+                            <label>SubDivision</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CorrespondingBankBranch.TownId, new SelectList(ViewBag.Towns == null ? "" : ViewBag.Towns, "Text", "Value"), "---Select Division---", new { @class = "form-control select2", @search = "true" })
+                            @Html.ValidationMessageFor(m => m.CorrespondingBankBranch.DivisionId, "", new { @class = "text-danger" })
+                            <label>TownId</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CorrespondingBankBranch.Telephone, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.CorrespondingBankBranch.Telephone, "", new { @class = "text-danger" })
+                            <label>Telephone</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CorrespondingBankBranch.FocalPointName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.CorrespondingBankBranch.FocalPointName, "", new { @class = "text-danger" })
+                            <label>Focal Point Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CorrespondingBankBranch.FocalPointFunction, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.CorrespondingBankBranch.FocalPointFunction, "", new { @class = "text-danger" })
+                            <label>Focal Point Function</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CorrespondingBankBranch.FocalPointContact, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.CorrespondingBankBranch.FocalPointContact, "", new { @class = "text-danger" })
+                            <label>Focal Point Function</label>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="mt-4">
+                    @if (Model.CorrespondingBankBranch.Id == null)
+                    {
+                        <button type="submit" class="btn btn-primary me-2">Save</button>
+                        <input type="hidden" name="Action" value="insert" id="Action" />
+                    }
+                    else
+                    { <button type="submit" class="btn btn-primary me-2">Update</button>
+                        @Html.HiddenFor(m => m.CorrespondingBankBranch.Id)
+                        <input type="hidden" name="Action" value="update" id="Action" />
+                    }
+                </div>
+            </div>
+        }
+
+
+
+    </div>
+</div>
+

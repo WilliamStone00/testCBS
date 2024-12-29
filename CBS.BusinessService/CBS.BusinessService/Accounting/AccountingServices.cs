@@ -12,6 +12,7 @@ using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Config;
+using DocumentFormat.OpenXml.EMMA;
 
 namespace CBS.BusinessService.Accounting
 {
@@ -66,6 +67,19 @@ namespace CBS.BusinessService.Accounting
             {
                 var cusResponseObject =(await GetAllAccounting()).Where(i=>i.Id.Equals(id)).FirstOrDefault();
                 return cusResponseObject;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<string> GetSequenceReference()
+        {
+            try
+            {
+                var response = await _accountingApiCallerHelper.GetAsync<ApiResponse<string>>(APICallHelper.GetReferenceSequenceUrl);
+                return response.ApiResponseData.ApiResponseData;
             }
             catch (Exception ex)
             {

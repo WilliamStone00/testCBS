@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿let isHarmonizationActivated = false;
+$(document).ready(function () {
  
   
     // Trigger the processing simulation when needed
@@ -6,9 +7,33 @@
         simulateProcessing();
     });
  
+    $('#IsHarmonizationActivated').change(function () {
+        if ($(this).is(':checked')) {
+            isHarmonizationActivated = true;
+            console.log('Harmonization activated.');
+            // Perform actions when the checkbox is checked
+        } else {
+            isHarmonizationActivated = false;
+            console.log('Harmonization deactivated.');
+            // Perform actions when the checkbox is unchecked
+        }
+    });
 
+    $('#downloadExcelButton').click(function () {
+        // Define the file name and path relative to your domain
+        const fileName = 'UploadedSampleTrialBalance.xlsx';
+        const filePath = `/AppFiles/${fileName}`;
 
+        // Create a temporary anchor element
+        const $link = $('<a>')
+            .attr('href', filePath)  // Set the file URL
+            .attr('download', fileName); // Set the download attribute
 
+        // Append the link to the body, trigger the download, and then remove it
+        $('body').append($link);
+        $link[0].click();
+        $link.remove();
+    });
 });
 function updateProgressBar(progress) {
     var progressBar = $('.progress-bar');
@@ -39,52 +64,65 @@ function ReadExcelFile() {
     var file = $("#uploadedFile")[0].files[0];
     var branchCode = $("#branchCodeDropdown").val();
 
+    console.log(isHarmonizationActivated);
     if (branchCode === "") {
         appalert("PLEASE KINDLY SELECT YOUR BRANCH CODE", 2, 1);
         return;
     }
-
+    console.log(isHarmonizationActivated);
     formData.append("ExcelFile", file);
     formData.append("BranchId", branchCode);
-
+    formData.append("IsHarmonizationActivated", isHarmonizationActivated);
+       
     event.preventDefault();
     updateProgressBar(0);
     $('#progressBarContainer').show();
+    var messageStatus = isHarmonizationActivated
+        ? "Are you sure you want to centralise this Trial Balance with Head Office?"
+        : "Are you sure you want to keep this Trial Balance unharmonised from the Head Office?";
+    alertify.confirm("T R U S T S O F T C R E D I T ACCOUNTING Centralization", messageStatus,
+        function () {
+            // If the user confirms, proceed with the submission
+            $.ajax({
+                url: "/AccountingConfiguration/UploadAccountModel/",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                xhr: function () {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", function (evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            var progress = Math.round(percentComplete * 100);
+                            updateProgressBar(progress);
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function (response) {
+                    updateProgressBar(100);
+                    appalert("File uploaded successfully", 1, 1);
+                    displayResults(response);
 
-    $.ajax({
-        url: "/AccountingConfiguration/UploadAccountModel/",
-        type: "POST",
-        data: formData,
-        contentType: false,
-        processData: false,
-        xhr: function () {
-            var xhr = new window.XMLHttpRequest();
-            xhr.upload.addEventListener("progress", function (evt) {
-                if (evt.lengthComputable) {
-                    var percentComplete = evt.loaded / evt.total;
-                    var progress = Math.round(percentComplete * 100);
-                    updateProgressBar(progress);
+                },
+                error: function (xhr, status, error) {
+                    updateProgressBar(0);
+                    appalert("Error uploading file: " + error, 3, 1);
+
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        $('#progressBarContainer').hide();
+                    }, 2000);
                 }
-            }, false);
-            return xhr;
+            });
         },
-        success: function (response) {
-            updateProgressBar(100);
-            appalert("File uploaded successfully", 1, 1);
-            displayResults(response);
- 
-        },
-        error: function (xhr, status, error) {
-            updateProgressBar(0);
-            appalert("Error uploading file: " + error, 3, 1);
- 
-        },
-        complete: function () {
-            setTimeout(function () {
-                $('#progressBarContainer').hide();
-            }, 2000);
+        function () {
+            appalert('Transaction cancelled', 3, 1);
         }
-    });
+    );
+
 }
 
 function updateProgressBar(progress) {
