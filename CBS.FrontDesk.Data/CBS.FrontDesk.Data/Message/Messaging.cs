@@ -106,6 +106,8 @@ namespace CBS.FrontDesk.Data.Message
         CanNot_Pull_transaction_For_More_Than_3_Months = 85,
         DefaultFailedMessages = 87,
         DefaultSuccessdMessages = 89,
+        InvalidOption = 90,
+        UnknownError = 91,
     }
     public enum MessagesResults
     {

@@ -1,112 +1,73 @@
-﻿
-@{
-    ViewBag.Title = "Members-F2 F5 Series";
+﻿@{
+    ViewBag.Title = "Members - F2 & F5 Series";
 }
 
-@*<div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
-        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+<div class="container mt-4">
+    <header class="text-center mb-4">
+        <h1 class="text-primary fw-bold">F2 & F5 Members Reporting</h1>
+        <p class="text-muted">
+            The F2 & F5 Series provides users with detailed insights into member situations regarding loan and account balances, movements, and account statements.
+            This report offers network-wide access, specifically limited to the <strong>@Session["BankName"]</strong>, and is strictly read-only.
+            A list of members is first displayed, where users can click on a member to view the F2 Series for detailed information.
+        </p>
+        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+    </header>
 
-            <div class="accordion-item active">
-                <h2 class="accordion-header text-body d-flex justify-content-between"
-                    id="accordionPopoutIconThree">
-                    <button type="button"
-                            class="accordion-button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#accordionPopoutIcon-3"
-                            aria-expanded="true"
-                            aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-file-document me-2"></i>
-                        F2-F5 Members Reporting
-                    </button>
-                </h2>
-                <div id="accordionPopoutIcon-3"
-                     class="accordion-collapse collapse show"
-                     data-bs-parent="#accordionPopoutIcon">
-                    <div class="accordion-body">
-                        <div id="mainviewChange">
-                            <div class="change-group">
+    <div id="accordionMembers" class="accordion accordion-popout">
+        <div class="accordion-item active">
+            <h2 class="accordion-header" id="membersHeading">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#membersCollapse" aria-expanded="true" aria-controls="membersCollapse">
+                    <i class="mdi mdi-file-document me-2"></i> Members Overview - F2 & F5 Series
+                </button>
+            </h2>
+            <div id="membersCollapse" class="accordion-collapse collapse show" aria-labelledby="membersHeading" data-bs-parent="#accordionMembers">
+                <div class="accordion-body">
+                    <!-- Description Section -->
+                    <div class="alert alert-info mb-4">
+                        <p class="mb-0">
+                            <i class="mdi mdi-information-outline me-2"></i>
+                            <strong>How to Use This Page:</strong>
+                        </p>
+                        <ul class="mt-2">
+                            <li>Use the search bar to find specific members by entering their account number, name, or phone number.</li>
+                            <li>From the displayed list of members, click on a member to view their F2 Series details, which include account balances, loan movements, and statements.</li>
+                            <li>To load all members, click on the "View List" button.</li>
+                            <li>Repeat the process for other members as needed.</li>
+                        </ul>
+                    </div>
 
-                                <div id="datalistingview">
-
-                                </div>
-                            </div>
+                    <div class="card mb-4 shadow">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0"><i class="mdi mdi-account-circle-outline"></i> Members Overview</h5>
+                            <button type="button" onclick="LoadMembers('All')" class="btn btn-label-primary">
+                                <i class="mdi mdi-view-list me-2"></i>View List
+                            </button>
                         </div>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="card mb-4 shadow">
+                        <div class="card-body">
+                            <label for="manualSearchInput" class="form-label fw-bold">Search Members</label>
+                            <div class="input-group">
+                                <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Search by account number, member's name, or phone number..." />
+                                <button class="btn btn-primary" onclick="manualSearch()">Search</button>
+                            </div>
+                            <small class="text-muted mt-2 d-block">Example: Enter "12345", "John Doe", or "0701234567" to find a member.</small>
+                        </div>
+                    </div>
+
+                    <!-- Members Data Listing -->
+                    <div id="datalistingview">
+                        @Html.Partial("_MembersData")
                     </div>
                 </div>
             </div>
-
         </div>
-
-    </div>
-</div>*@
-
-<div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
-        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
-
-            <div class="accordion-item active">
-                <h2 class="accordion-header text-body d-flex justify-content-between"
-                    id="accordionPopoutIconThree">
-                    <button type="button"
-                            class="accordion-button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#accordionPopoutIcon-3"
-                            aria-expanded="true"
-                            aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-file-document me-2"></i>
-                        F2-F5 Members Reporting
-                    </button>
-                </h2>
-                <div id="accordionPopoutIcon-3"
-                     class="accordion-collapse collapse show"
-                     data-bs-parent="#accordionPopoutIcon">
-                    <div class="accordion-body">
-                        <div id="mainviewChange">
-                            <div class="change-group">
-                                <div class="card mb-4">
-                                    <div class="card-body d-sm-flex d-block">
-                                        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            <a type="button" onclick="LoadMembers('All')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Manual Search Bar -->
-                                <div class="card mb-4">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-8 d-flex align-items-center">
-                                                <label for="manualSearchInput" class="search-label">Search by account number or member's name or telephone number...</label>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Enter search criteria...">
-                                                    <button class="btn btn-primary" onclick="manualSearch()">Search</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="datalistingview">
-                                    @Html.Partial("_MembersData")
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
     </div>
 </div>
 
-
-
-
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/Crud/MembersFSeries/Members.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/MembersFSeries/Members.js"></script>
 }
-

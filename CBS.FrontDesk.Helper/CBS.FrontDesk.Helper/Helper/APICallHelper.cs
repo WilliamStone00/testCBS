@@ -187,6 +187,9 @@ namespace CBS.FrontDesk.Helper
         public static string CreateQuestion = "/api/v1/CreateQuestion";
         public static string GetAllQuestions = "/api/v1/Questions";
 
+
+        //
+
         //GroupType
         public static string Get_Update_Delete_GroupType = "/api/v1/GroupType/{0}";
         public static string CreateGroupType = "/api/v1/AddGroupType";
@@ -215,6 +218,10 @@ namespace CBS.FrontDesk.Helper
         public static string InitialDeposit = "/api/v1/Transaction/Initiate/{0}";
         public static string GetAllAccountsByBranchIdQuery = "/api/v1/Account/GetAllAccountsByBranchIdQuery/{0}";
         public static string GetAllAccounts = "/api/v1/Account";
+        public static string GetRemittanceAccount = "/api/v1/Remittance/Account";
+        public static string GetAllRemittanceAccounts = "/api/v1/Remittance/AccountsAsPerBranch/{0}";
+        public static string GetMemberAccountByAccountID = "/api/v1/Account/{0}";
+
         public static string MakeDepoit = "/api/v1/Transaction/Deposit";
         public static string BulkDeposit = "/api/v1/Transaction/BulkDeposit";
         public static string GetAllMembersPagginatedSummaryAccounts = "/api/v1/Account/Pagginated/MembersAccountSummary";
@@ -550,6 +557,16 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllFee = "/api/v1/Fees";
         public static string CreateFee = "/api/v1/Fee";
 
+        //Remittance
+        public static string Get_Update_Delete_Remittance = "/api/v1/Remittance/Request/{0}";
+        public static string RemittanceRequestValidation = "/api/v1/Remittance/RequestValidation/{0}";
+        public static string CreateRemittanceRequest = "/api/v1/Remittance/Request";
+        public static string GetRemittancesByQUeryParameters = "/api/v1/Remittance/GetAll";
+        public static string GetRemittanceCharge = "/api/v1/Remittance/Charge";
+        public static string GetAllRemittanceRequests = "/api/v1/Remittance/Requests";
+        public static string GenerateOTPRemittance = "/api/v1/Remittance/GenerateRemittanceOTP";
+        
+
         //GeneralDailyDashboard
         public static string GetAllGeneralDailyDashboard = "/api/v1/Dashboard/GetAllGeneralDailyDashboard";
         public static string GetGeneralDailyDashboardByBranch = "/api/v1/Dashboard/GetGeneralDailyDashboardByBranch";
@@ -562,6 +579,24 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_FeePolicy = "/api/v1/FeePolicy/{0}";
         public static string GetAllFeePolicy = "/api/v1/FeePolicys";
         public static string CreateFeePolicy = "/api/v1/FeePolicy";
+
+
+        //CMoney
+        public static string CMoneyMemberActivation = "/api/v1/cmoney/members/activate";
+        public static string CMoneyMemberResetPin = "/api/v1/cmoney/members/reset-pin";
+        public static string CMoneyMemberResepinWithSecurity= "/api/v1/cmoney/members/reset-pin-with-security";
+        public static string CMoneyMemberActivationUpdate = "/api/v1/cmoney/members/update-activation";
+        public static string CMoneyMemberDeactivation = "/api/v1/cmoney/members/deactivate";
+        public static string CMoneyMemberReactivation = "/api/v1/cmoney/members/reactivate";
+        public static string CMoneyGetMember = "/api/v1/cmoney/members/{0}";
+        public static string CMoneyGetMembers = "/api/v1/cmoney/members";
+        public static string CMoneySetMembersSecretQuestion = "/api/v1/cmoney/members/secret-question";
+        public static string CMonetGenerateOTP = "/api/v1/cmoney/members/generate-otp";
+        public static string CMoneyGetMembersPaggination = "/api/v1/cmoney/Customers/CMoneyMembersPagginationQuery";
+        public static string CMoneyChangePhoneNumber = "/api/v1/cmoney/members/change-phone-number";
+
+       
+
         //SavingProductFee
         public static string Get_Update_Delete_SavingProductFee = "/api/v1/SavingProductFee/{0}";
         public static string GetAllSavingProductFee = "/api/v1/SavingProductFees";

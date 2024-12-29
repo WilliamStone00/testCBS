@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.CMoney;
+using System;
 using System.Collections.Generic;
 
 namespace CBS.FrontDesk.Helper
@@ -191,6 +193,11 @@ namespace CBS.FrontDesk.Helper
         public static ServiceResponse<T> Return403(T data,string message)
         {
             return new ServiceResponse<T>(403,data,message, "Operation is forbidden.", "FAILED");
+        }
+
+        public static implicit operator ServiceResponse<T>(ApiResponse<ServiceResponse<CMoneyMembersActivationAccount>> v)
+        {
+            throw new NotImplementedException();
         }
     }
 

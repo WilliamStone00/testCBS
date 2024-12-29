@@ -30,13 +30,15 @@
                                                 @Html.TextBoxFor(m => m.SavingProduct.Code, new { @class = "form-control", @readonly = true })
                                                 @Html.ValidationMessageFor(m => m.SavingProduct.Code, "", new { @class = "text-danger" })
                                                 <label>Product Code</label>
+                                                <small class="form-text text-muted">The unique code assigned to @Model.SavingProduct.Name.</small>
                                             </div>
                                         </div>
                                         <div class="col-md-9">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control", @readonly = true })
                                                 @Html.ValidationMessageFor(m => m.SavingProduct.Name, "", new { @class = "text-danger" })
-                                                <label>Product name</label>
+                                                <label>Product Name</label>
+                                                <small class="form-text text-muted">The name of the product.</small>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -44,61 +46,365 @@
                                                 @Html.TextAreaFor(m => m.SavingProduct.Description, new { @class = "form-control", @style = "height: 75px;", @readonly = true })
                                                 @Html.ValidationMessageFor(m => m.SavingProduct.Description, "", new { @class = "text-danger" })
                                                 <label>Description</label>
+                                                <small class="form-text text-muted">A brief description @Model.SavingProduct.Name.</small>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdPricipalAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdPricipalAccount,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
                                                 @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdPricipalAccount, "", new { @class = "text-danger" })
-                                                <label>Capital (This is an account that holds the sum of the product.)</label>
+                                                <label>Principal Account</label>
+                                                <small class="form-text text-muted">Account used to hold the principal amount for @Model.SavingProduct.Name.</small>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdInterestAccount,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
                                                 @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestAccount, "", new { @class = "text-danger" })
-                                                <label>Interest account (This is an account that receive all interest generated from products)</label>
+                                                <label>Interest Account</label>
+                                                <small class="form-text text-muted">Tracks interest income generated from @Model.SavingProduct.Name.</small>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestExpenseAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdInterestExpenseAccount,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
                                                 @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestExpenseAccount, "", new { @class = "text-danger" })
-                                                <label>Interest expense account (This is an account that receive all interest paid out to other accounts)</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdCommissionAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdCommissionAccount, "", new { @class = "text-danger" })
-                                                <label>Commision account. (This account holds commissions generated from operations)</label>
+                                                <label>Interest Expense Account</label>
+                                                <small class="form-text text-muted">Tracks interest expenses paid to @Model.SavingProduct.Name..</small>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdLiassonAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdCashInCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdCashInCommission, "", new { @class = "text-danger" })
+                                                <label>Cash-In Commission Account</label>
+                                                <small class="form-text text-muted">Tracks commissions from cash-in operations for @Model.SavingProduct.Name.</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdCashOutCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdCashOutCommission, "", new { @class = "text-danger" })
+                                                <label>Cash-Out Commission Account</label>
+                                                <small class="form-text text-muted">Tracks commissions from cash-out operations for @Model.SavingProduct.Name.</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdLiassonAccount,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
                                                 @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdLiassonAccount, "", new { @class = "text-danger" })
-                                                <label>Liaison account. (This account is used as transit for inter-operations between branches)</label>
+                                                <label>Liaison Account</label>
+                                                <small class="form-text text-muted">Used as a transit account for inter-branch transactions for @Model.SavingProduct.Name.</small>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdWithrawalFee, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdWithrawalFee,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
                                                 @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdWithrawalFee, "", new { @class = "text-danger" })
-                                                <label>Withdrawal fee (This is an account that receive all withdrawal fee generated from this saving products)</label>
+                                                <label>Withdrawal Fee Account</label>
+                                                <small class="form-text text-muted">Tracks fees generated from withdrawal operations for @Model.SavingProduct.Name.</small>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdTransferFee, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdTransferFee,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
                                                 @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdTransferFee, "", new { @class = "text-danger" })
-                                                <label>Transfer fee (This is an account that receive all transfer fee generated from this saving products)</label>
+                                                <label>Transfer Fee Account</label>
+                                                <small class="form-text text-muted">Tracks fees generated from transfer operations for @Model.SavingProduct.Name.</small>
                                             </div>
                                         </div>
-
                                     </div>
                                 </fieldset>
+
+                                <fieldset class="fieldset-custom">
+                                    <legend>Partner sharing GL Mapping on @Model.SavingProduct.Name.</legend>
+                                    <input type="hidden" name="ServiceOption" value="accountmapping" id="ServiceOption" />
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCashInCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCashInCommission, "",
+                                                    new { @class = "text-danger" }
+                                                )
+                                                <label>Head Office Share (Cash In Commission)</label>
+                                                <small class="form-text text-muted">
+                                                    Select the account for tracking cash-in commissions at the head office on @Model.SavingProduct.Name.
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCashOutCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCashOutCommission, "",
+                                                    new { @class = "text-danger" }
+                                                )
+                                                <label>Head Office Share (Cash Out Commission)</label>
+                                                <small class="form-text text-muted">
+                                                    Select the account for tracking cash-out commissions at the head office on @Model.SavingProduct.Name.
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareTransferCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareTransferCommission, "",
+                                                    new { @class = "text-danger" }
+                                                )
+                                                <label>Head Office Share (Transfer Commission)</label>
+                                                <small class="form-text text-muted">
+                                                    Select the account for tracking transfer commissions at the head office on @Model.SavingProduct.Name.
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCashInCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCashInCommission, "",
+                                                    new { @class = "text-danger" }
+                                                )
+                                                <label>Flux and PTM Share (Cash In Commission)</label>
+                                                <small class="form-text text-muted">
+                                                    Select the account for tracking cash-in commissions for Flux and PTM share on @Model.SavingProduct.Name.
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCashOutCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCashOutCommission, "",
+                                                    new { @class = "text-danger" }
+                                                )
+                                                <label>Flux and PTM Share (Cash Out Commission)</label>
+                                                <small class="form-text text-muted">
+                                                    Select the account for tracking cash-out commissions for Flux and PTM share on @Model.SavingProduct.Name.
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareTransferCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareTransferCommission, "",
+                                                    new { @class = "text-danger" }
+                                                )
+                                                <label>Flux and PTM Share (Transfer Commission)</label>
+                                                <small class="form-text text-muted">
+                                                    Select the account for tracking transfer commissions for Flux and PTM share on @Model.SavingProduct.Name.
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdCamCCULShareCashInCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdCamCCULShareCashInCommission, "",
+                                                    new { @class = "text-danger" }
+                                                )
+                                                <label>CamCCUL Share (Cash In Commission)</label>
+                                                <small class="form-text text-muted">
+                                                    Select the account for tracking cash-in commissions for CamCCUL share on @Model.SavingProduct.Name.
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdCamCCULShareCashOutCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdCamCCULShareCashOutCommission, "",
+                                                    new { @class = "text-danger" }
+                                                )
+                                                <label>CamCCUL Share (Cash Out Commission)</label>
+                                                <small class="form-text text-muted">
+                                                    Select the account for tracking cash-out commissions for CamCCUL share on @Model.SavingProduct.Name.
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdCamCCULShareTransferCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdCamCCULShareTransferCommission, "",
+                                                    new { @class = "text-danger" }
+                                                )
+                                                <label>CamCCUL Share (Transfer Commission)</label>
+                                                <small class="form-text text-muted">
+                                                    Select the account for tracking transfer commissions for CamCCUL share on @Model.SavingProduct.Name.
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="fieldset-custom">
+                                    <legend>CMONEY sharing GL Mapping on @Model.SavingProduct.Name.</legend>
+                                    <input type="hidden" name="ServiceOption" value="accountmapping" id="ServiceOption" />
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdSourceCMoneyTransferCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdSourceCMoneyTransferCommission, "",
+                                                    new { @class = "text-danger" }
+                                                )
+                                                <label>CamCCUL Share (Transfer Commission)</label>
+                                                <small class="form-text text-muted">
+                                                    Select the account for tracking transfer commissions for source branch share on @Model.SavingProduct.Name.
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdDestinationCMoneyTransferCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdDestinationCMoneyTransferCommission, "",
+                                                    new { @class = "text-danger" }
+                                                )
+                                                <label>CamCCUL Share (Transfer Commission)</label>
+                                                <small class="form-text text-muted">
+                                                    Select the account for tracking transfer commissions for destination branch share on @Model.SavingProduct.Name.
+                                                </small>
+                                            </div>
+                                        </div>                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCMoneyTransferCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCMoneyTransferCommission, "",
+                                                    new { @class = "text-danger" }
+                                                )
+                                                <label>Flux and PTM Share (Transfer Commission)</label>
+                                                <small class="form-text text-muted">
+                                                    Select the account for tracking transfer commissions for Flux and PTM share on @Model.SavingProduct.Name.
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdCamCCULShareCMoneyTransferCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdCamCCULShareCMoneyTransferCommission, "",
+                                                    new { @class = "text-danger" }
+                                                )
+                                                <label>CamCCUL Share (Cash In Commission)</label>
+                                                <small class="form-text text-muted">
+                                                    Select the account for tracking cash-in commissions for CamCCUL share on @Model.SavingProduct.Name.
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCMoneyTransferCommission,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCMoneyTransferCommission, "",
+                                                    new { @class = "text-danger" }
+                                                )
+                                                <label>CamCCUL Share (Transfer Commission)</label>
+                                                <small class="form-text text-muted">
+                                                    Select the account for tracking transfer commissions for Headoffice share on @Model.SavingProduct.Name.
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
                                 <div class="mt-4">
                                     @if (Model.SavingProduct.Id == null)
                                     {
@@ -145,28 +451,48 @@
                                 <div class="row g-4">
                                     @Html.HiddenFor(model => model.SavingProduct.Id)
                                     <input type="hidden" name="option" value="mapformeventcharges" id="option" />
+
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control", @readonly = true })
-                                            <label>Account name</label>
+                                            <label>Account Name</label>
+                                            <small class="form-text text-muted">The name of the saving product for which charges are being mapped.</small>
                                         </div>
                                     </div>
+
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee, new SelectList(ViewBag.EventCodes, "Value", "Text"), "---Select event code---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee, "", new { @class = "text-danger " })
-                                            <label for="formValidationDob">Form fee moral person</label>
+                                            @Html.DropDownListFor(
+                                                m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee,
+                                                new SelectList(ViewBag.EventCodes, "Value", "Text"),
+                                                "---Select event code---",
+                                                new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(
+                                                m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee, "",
+                                                new { @class = "text-danger" })
+                                            <label>Form Fee for Moral Person</label>
+                                            <small class="form-text text-muted">Select the event code associated with the withdrawal form fee for moral persons.</small>
                                         </div>
                                     </div>
+
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee, new SelectList(ViewBag.EventCodes, "Value", "Text"), "---Select event code---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee, "", new { @class = "text-danger " })
-                                            <label for="formValidationDob">Form fee physical person</label>
+                                            @Html.DropDownListFor(
+                                                m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee,
+                                                new SelectList(ViewBag.EventCodes, "Value", "Text"),
+                                                "---Select event code---",
+                                                new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(
+                                                m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee, "",
+                                                new { @class = "text-danger" })
+                                            <label>Form Fee for Physical Person</label>
+                                            <small class="form-text text-muted">Select the event code associated with the withdrawal form fee for physical persons.</small>
                                         </div>
                                     </div>
+
                                     <input type="hidden" value="@Model.SavingProduct.Id" id="savingproductid" />
                                 </div>
+
                                 <div class="mt-4">
                                     @Html.HiddenFor(m => m.SavingProductFee.Id)
                                     <input type="hidden" name="Action" value="update" id="Action" />
@@ -187,7 +513,7 @@
                             data-bs-target="#collapsePaymentMethod3"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod3">
-                        Harmonize charges mapping to @Model.SavingProduct.Name
+                        Harmonize Charges Mapping to @Model.SavingProduct.Name
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod3"
@@ -203,68 +529,90 @@
                                 <div class="row g-4">
                                     @Html.HiddenFor(model => model.SavingProductFee.SavingProductId)
                                     <input type="hidden" name="option" value="addaccount" id="option" />
+
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control", @readonly = true })
-                                            <label>Account name</label>
+                                            <label>Account Name</label>
+                                            <small class="form-text text-muted">The name of the saving product being mapped.</small>
                                         </div>
                                     </div>
+
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.SavingProductFee.FeeType, new SelectList(ViewBag.FeeType, "Value", "Text"), "---Select Fee Type---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.SavingProductFee.FeeType, "", new { @class = "text-danger " })
-                                            <label for="formValidationDob">Operation type</label>
+                                            @Html.DropDownListFor(m => m.SavingProductFee.FeeType,
+                                                new SelectList(ViewBag.FeeType, "Value", "Text"), "---Select Fee Type---",
+                                                new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.SavingProductFee.FeeType, "", new { @class = "text-danger" })
+                                            <label>Operation Type</label>
+                                            <small class="form-text text-muted">Choose the type of operation for this charge mapping.</small>
                                         </div>
                                     </div>
+
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.SavingProductFee.FeeId, new SelectList(ViewBag.Fees, "Id", "Name"), "---Select Fees---", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.SavingProductFee.FeeId, "", new { @class = "text-danger " })
-                                            <label for="formValidationDob">Select fee type</label>
+                                            @Html.DropDownListFor(m => m.SavingProductFee.FeeId,
+                                                new SelectList(ViewBag.Fees, "Id", "Name"), "---Select Fees---",
+                                                new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.SavingProductFee.FeeId, "", new { @class = "text-danger" })
+                                            <label>Select Fee Type</label>
+                                            <small class="form-text text-muted">Select the fee type to map to this product.</small>
                                         </div>
                                     </div>
+
                                     <div class="col-12">
+                                        <label class="mb-2">Fee Policy Type</label>
                                         <div class="form-check">
                                             @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Local", new { @class = "form-check-input", id = "localOption" })
                                             <label class="form-check-label" for="localOption">Local</label>
+                                            <small class="form-text text-muted">Applicable for charges within the same branch.</small>
                                         </div>
                                         <div class="form-check">
                                             @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Inter_Branch", new { @class = "form-check-input", id = "interBranchOption" })
                                             <label class="form-check-label" for="interBranchOption">Inter-Branch</label>
+                                            <small class="form-text text-muted">Applicable for inter-branch transactions.</small>
                                         </div>
                                         <div class="form-check">
                                             @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Self", new { @class = "form-check-input", id = "self" })
                                             <label class="form-check-label" for="self">Self-Transfer</label>
+                                            <small class="form-text text-muted">For self-to-self transfers.</small>
+                                        </div>
+                                        <div class="form-check">
+                                            @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Incoming_International", new { @class = "form-check-input", id = "incoming_International" })
+                                            <label class="form-check-label" for="incoming_International">Incoming International</label>
+                                            <small class="form-text text-muted">For charges on incoming international transfers.</small>
+                                        </div>
+                                        <div class="form-check">
+                                            @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Outgoing_International", new { @class = "form-check-input", id = "outgoing_International" })
+                                            <label class="form-check-label" for="outgoing_International">Outgoing International</label>
+                                            <small class="form-text text-muted">For charges on outgoing international transfers.</small>
                                         </div>
                                     </div>
 
                                     <input type="hidden" value="@Model.SavingProduct.Id" id="savingproductid" />
                                 </div>
+
                                 <div class="mt-4">
                                     @Html.HiddenFor(m => m.SavingProductFee.Id)
                                     <input type="hidden" name="Action" value="insert" id="Action" />
                                     <input type="hidden" name="ServiceOption" value="fee_mapping" id="ServiceOption" />
-                                    <button type="submit" class="btn btn-primary">Map selected charge type</button>
+                                    <button type="submit" class="btn btn-primary">Map Selected Charge Type</button>
                                 </div>
                             </fieldset>
                         }
                     </div>
+
                     <div class="accordion-body">
                         <div class="demo-inline-spacing text-end mb-3">
-                            <!-- Added mb-3 for margin bottom -->
                             <a type="button" onclick="LoadProductFeeMapping('@Model.SavingProduct.Id')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                             </a>
                         </div>
                         <fieldset class="fieldset-custom">
                             <legend>Charges Mapping</legend>
-                            <div id="datalistingview_feeMapping">
-
-                            </div>
+                            <div id="datalistingview_feeMapping"></div>
                         </fieldset>
                     </div>
-
-
                 </div>
             </div>
 

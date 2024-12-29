@@ -126,17 +126,25 @@ namespace CBS.BusinessService.Accounts
                     WithdrawalLimit.SourceBrachOfficeShare = model.SourceBrachOfficeShare;
                     WithdrawalLimit.DestinationBranchOfficeShare = model.DestinationBranchOfficeShare;
                     WithdrawalLimit.HeadOfficeShare = model.HeadOfficeShare;
+                    WithdrawalLimit.FluxAndPTMShare = model.FluxAndPTMShare;
+                    WithdrawalLimit.CamCCULShare = model.CamCCULShare;
                     WithdrawalLimit.PhysicalPersonWithdrawalFormFee = model.PhysicalPersonWithdrawalFormFee;
                     WithdrawalLimit.NotificationPeriodInMonths = model.NotificationPeriodInMonths;
                     WithdrawalLimit.MustNotifyOnWithdrawal = model.MustNotifyOnWithdrawal;
                     WithdrawalLimit.MoralPersonWithdrawalFormFee = model.MoralPersonWithdrawalFormFee;
+
+                    WithdrawalLimit.CamCCULShareCMoney = model.CamCCULShareCMoney;
+                    WithdrawalLimit.DestinationBranchOfficeShareCMoney = model.DestinationBranchOfficeShareCMoney;
+                    WithdrawalLimit.FluxAndPTMShareCMoney = model.FluxAndPTMShareCMoney;
+                    WithdrawalLimit.HeadOfficeShareCMoney = model.HeadOfficeShareCMoney;
+                    WithdrawalLimit.SourceBrachOfficeShareCMoney = model.FluxAndPTMShare;
                     //WithdrawalLimit.Product = null;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<WithdrawalLimit>>(string.Format(APICallHelper.Get_Update_Delete_WithdrawalLimits, model.Id), WithdrawalLimit);
                     if (response.IsSuccess)
                     {
                         // Successful creation
                         GetExecutionMessages(response, true, null, MessagesResults.Success,
-                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, null);
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
                     else

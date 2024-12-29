@@ -82,7 +82,7 @@ function formatCurrency(amount) {
             datePattern: ['m', 'y']
         });
     }
-    
+
     // CVV
     if (cvvMask) {
         new Cleave(cvvMask, {
@@ -186,7 +186,7 @@ function FillDropDownAjaxCall(url, affectedId, defaultText, callback) {
             // Handle the data (fill the dropdown)
             console.log("Dropdown filled with data");
 
-           
+
         },
         error: function (error) {
             console.log("Error:", error);
@@ -216,8 +216,8 @@ function FillDropDownAjaxCallParam(url, affecteddropdownID, select_option) {
 
 
 }
- 
- 
+
+
 function ShowImagePreview(imageUploader, previewImage) {
 
     if (imageUploader.files && imageUploader.files[0]) {
@@ -467,7 +467,7 @@ function calculateBalance() {
 
 //    if (totalNoteAmount == 0 || totalNoteAmount == totalProvision) {
 //        document.getElementById("lblBalance").style.color = "black"; // Set black color for balance 
-        
+
 //    }
 //}
 function PrintSingleObject(controller, objectID, path, rptType) {
@@ -747,11 +747,11 @@ function DeleteWithRedirect(controller, KEY, option, url_redirect) {
 
 }
 //LoadDataTableNew("Country", "myDataTable", "InitializeData", null, "_Data", 1);
-function DeleteRecordDataTable(controller, KEY, tableID, partialView, order, divToLoadTheData,Key2,path) {
+function DeleteRecordDataTable(controller, KEY, tableID, partialView, order, divToLoadTheData, Key2, path) {
 
     alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
         function () {
-            var url = "/" + controller + "/Delete?KEY=" + KEY;
+            var url = "/" + controller + "/Delete?KEY=" + KEY + "&path=" + path;
             $.ajax({
                 type: "Get",
                 url: url,
@@ -1147,7 +1147,7 @@ function AjaxPostAndUpdate(form) {
     }
     return false;
 }
- 
+
 function AjaxPostAndUpdateValidationDecision(form) {
 
     $.validator.unobtrusive.parse(form);
@@ -1210,7 +1210,7 @@ function EditResetModal(KEY, modalBodyID, ModalcontentID, controller, actionMeth
                 appalert(err.statusText, 0, 1);
             }
         }
-        
+
     });
 }
 
@@ -1219,8 +1219,8 @@ function LoadDataGen(controller, tableID, partialView, order, datalistingview, K
     LoadDataTableNew(controller, tableID, "InitializeData", KEY, partialView, order, path, datalistingview, serviceOption);
 
 }
-function AddORUpdateGen(KEY, divToLoadData, partialView, path, controller, serviceOption,dateFrom,dateTo) {
-    EditResetMain(KEY, partialView, divToLoadData, controller, "InitializeData", null, path, null, serviceOption,dateFrom,dateTo);
+function AddORUpdateGen(KEY, divToLoadData, partialView, path, controller, serviceOption, dateFrom, dateTo) {
+    EditResetMain(KEY, partialView, divToLoadData, controller, "InitializeData", null, path, null, serviceOption, dateFrom, dateTo);
     $('.select2').select2();
     initializeDatePickers();
 }
@@ -1461,14 +1461,14 @@ function LoadDataTableNewVersion(controller, tableID, action, KEY, partialView, 
         '&partialView=' + encodeURIComponent(partialView) +
         '&serviceOption=' + encodeURIComponent(serviceOption) +
         '&path=' + encodeURIComponent(path);
-    console.log(encodedURL + " tableId= " + tableID + " divloader:" + diveToloadtheData );
+    console.log(encodedURL + " tableId= " + tableID + " divloader:" + diveToloadtheData);
 
     $.ajax({
         type: "GET",
         url: encodedURL,
         success: function (data) {
             $('#' + diveToloadtheData).html(data);
-            console.log($('#'+tableID).length);
+            console.log($('#' + tableID).length);
             LoadDGVT(tableID);
         },
         error: function (err) {
@@ -1476,8 +1476,7 @@ function LoadDataTableNewVersion(controller, tableID, action, KEY, partialView, 
         }
     });
 }
-function LoadDataTableNew(controller, tableID, action, KEY, partialView, order, path, diveToloadtheData, serviceOption)
-{
+function LoadDataTableNew(controller, tableID, action, KEY, partialView, order, path, diveToloadtheData, serviceOption) {
     var encodedURL = '/' + controller + '/' + action +
         '?KEY=' + encodeURIComponent(KEY) +
         '&partialView=' + encodeURIComponent(partialView) +
@@ -1490,7 +1489,7 @@ function LoadDataTableNew(controller, tableID, action, KEY, partialView, order, 
         url: encodedURL,
         success: function (data) {
             $('#' + diveToloadtheData).html(data);
-            console.log($('#DataTablePosition').length); 
+            console.log($('#DataTablePosition').length);
             LoadDT(tableID, order);
         },
         error: function (err) {

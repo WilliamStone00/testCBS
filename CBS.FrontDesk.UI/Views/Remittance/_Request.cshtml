@@ -1,0 +1,470 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AddRemittanceCommand
+
+
+
+
+
+@using (Html.BeginForm("Create", "Remittance", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <div class="accordion" id="remittanceAccordion">
+        <!-- Request Properties Section -->
+        <div class="accordion-item mt-2">
+            <h2 class="accordion-header" id="requestPropertiesHeader">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#requestProperties" aria-expanded="true" aria-controls="requestProperties">
+                    Request Properties
+                </button>
+            </h2>
+            <div id="requestProperties" class="accordion-collapse collapse show" aria-labelledby="requestPropertiesHeader" data-bs-parent="#remittanceAccordion">
+                <div class="accordion-body">
+                    <!-- Help Note -->
+                    <div class="mb-3">
+                        <p class="text-muted">
+                            This section allows you to configure the essential details required to initiate a remittance request.
+                            Ensure that all inputs align with the remittance's requirements and are entered accurately. This information
+                            determines the processing flow and ensures proper identification and routing of the transaction.
+                        </p>
+                    </div>
+                    <fieldset class="fieldset-custom mb-4">
+                        <legend class="text-black">Request Properties</legend>
+                        <div class="row mt-2 gy-4">
+                            <!-- Source Branch -->
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(m => m.SourceBranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select branch---", new { @class = "form-control select2", @search = "true", @onchange = "GetBranchRemittanceAccounts(this.value)", @id = "BranchId" })
+                                    @Html.ValidationMessageFor(m => m.SourceBranchId, "", new { @class = "text-danger" })
+                                    <label>Source Branch</label>
+                                </div>
+                            </div>
+
+                            <!-- Transfer Source -->
+                            <div class="col-md-12 mt-3">
+                                <label class="form-label">Transfer Source</label>
+                                <div class="d-flex align-items-center">
+                                    <!-- Local Remittance -->
+                                    <div class="form-check me-3">
+                                        @Html.RadioButtonFor(m => m.TransferSource, "Local_Remittance", new
+                                   {
+                                       @id = "transferSourceLocal",
+                                       @class = "form-check-input",
+                                       @checked = (Model.TransferSource == "Local_Remittance" || Model.TransferSource == null) ? "checked" : null,
+                                       @onchange = "HandleTransferSourceChange()"
+                                   })
+                                        <label class="form-check-label" for="transferSourceLocal">Local Remittance</label>
+                                    </div>
+
+                                    <!-- International Remittance -->
+                                    <div class="form-check">
+                                        @Html.RadioButtonFor(m => m.TransferSource, "International_Remittance", new
+                                   {
+                                       @id = "transferSourceInternational",
+                                       @class = "form-check-input",
+                                       @onchange = "HandleTransferSourceChange()"
+                                   })
+                                        <label class="form-check-label" for="transferSourceInternational">International Remittance</label>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.TransferSource, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Transfer Type (Hidden by default) -->
+                            <div id="transferTypeSection" class="col-md-12 mt-2" style="display: none;">
+                                <label class="form-label">Transfer Type</label>
+                                <div class="d-flex align-items-center">
+                                    <!-- Local Transfer -->
+                                    <div class="form-check me-3 transfer-type local">
+                                        @Html.RadioButtonFor(m => m.TransferType, "Local", new
+                                   {
+                                       @id = "transferTypeLocal",
+                                       @class = "form-check-input",
+                                   })
+                                        <label class="form-check-label" for="transferTypeLocal">Local Transfer</label>
+                                    </div>
+
+                                    <!-- Incoming International Transfer -->
+                                    <div class="form-check me-3 transfer-type international">
+                                        @Html.RadioButtonFor(m => m.TransferType, "Incoming_International", new
+                                   {
+                                       @id = "transferTypeIncoming",
+                                       @class = "form-check-input",
+                                   })
+                                        <label class="form-check-label" for="transferTypeIncoming">Incoming International Transfer</label>
+                                    </div>
+
+                                    <!-- Outgoing International Transfer -->
+                                    <div class="form-check transfer-type international">
+                                        @Html.RadioButtonFor(m => m.TransferType, "Outgoing_International", new
+                                   {
+                                       @id = "transferTypeOutgoing",
+                                       @class = "form-check-input",
+                                   })
+                                        <label class="form-check-label" for="transferTypeOutgoing">Outgoing International Transfer</label>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.TransferType, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Remittance Type -->
+                            <div class="col-md-9 mt-3">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(m => m.RemittanceType, new SelectList(ViewBag.RemittanceTypes, "AccountType", "AccountType"), "---Select remittance type---", new { @class = "form-control select2", @search = "true", @id = "RemittanceTypeId", @onchange = "GetAccountNumber(this.value)" })
+                                    @Html.ValidationMessageFor(m => m.RemittanceType, "", new { @class = "text-danger" })
+                                    <label>Remittance Type</label>
+                                </div>
+                            </div>
+
+                            <!-- Account Number -->
+                            <div class="col-md-3 mt-3">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control", placeholder = "Account Number", @id = "AccountNumberId", @readonly = true })
+                                    @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger" })
+                                    <label id="AccountName">Account Number</label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sender Information Section -->
+        <div class="accordion-item  mt-2">
+            <h2 class="accordion-header" id="senderInfoHeader">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#senderInfo" aria-expanded="false" aria-controls="senderInfo">
+                    Sender Information
+                </button>
+            </h2>
+            <div id="senderInfo" class="accordion-collapse collapse" aria-labelledby="senderInfoHeader" data-bs-parent="#remittanceAccordion">
+                <div class="accordion-body">
+                    <!-- Help Note -->
+                    <div class="mb-3">
+                        <p class="text-muted">
+                            This section captures details about the sender of the remittance. Providing accurate and complete sender information ensures
+                            the transaction is securely processed and complies with necessary identification requirements.
+                        </p>
+                    </div>
+                    <fieldset class="fieldset-custom mb-4">
+                        <legend class="text-black">Sender Information</legend>
+                        <div class="row mt-2 gy-4">
+                            <!-- Sender Name -->
+                            <div class="col-md-5">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.SenderName, new { @class = "form-control", placeholder = "Sender Name" })
+                                    @Html.ValidationMessageFor(m => m.SenderName, "", new { @class = "text-danger" })
+                                    <label>Sender Name</label>
+                                </div>
+                            </div>
+
+                            <!-- Sender Phone Number -->
+                            <div class="col-md-3">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.SenderPhoneNumber, new { @class = "form-control", placeholder = "Sender Phone Number" })
+                                    @Html.ValidationMessageFor(m => m.SenderPhoneNumber, "", new { @class = "text-danger" })
+                                    <label>Sender Phone Number</label>
+                                </div>
+                            </div>
+
+                            <!-- Sender CNI -->
+                            <div class="col-md-4">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.SenderCNI, new { @class = "form-control", placeholder = "Sender National Identity Card Information" })
+                                    @Html.ValidationMessageFor(m => m.SenderCNI, "", new { @class = "text-danger" })
+                                    <label>Sender CNI</label>
+                                </div>
+                            </div>
+
+                            <!-- Date of Issue -->
+                            <div class="col-md-3">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.DateOfIssue, new { @class = "form-control", @type = "date", placeholder = "Date of Issue" })
+                                    @Html.ValidationMessageFor(m => m.DateOfIssue, "", new { @class = "text-danger" })
+                                    <label>Date of Issue</label>
+                                </div>
+                            </div>
+
+                            <!-- Expiry Date -->
+                            <div class="col-md-3">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.ExpirationDate, new { @class = "form-control", @type = "date", placeholder = "Expiry Date" })
+                                    @Html.ValidationMessageFor(m => m.ExpirationDate, "", new { @class = "text-danger" })
+                                    <label>Expiry Date</label>
+                                </div>
+                            </div>
+
+                            <!-- Place of Issue -->
+                            <div class="col-md-6">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.PlaceOfIssue, new { @class = "form-control", placeholder = "Place of Issue" })
+                                    @Html.ValidationMessageFor(m => m.PlaceOfIssue, "", new { @class = "text-danger" })
+                                    <label>Place of Issue</label>
+                                </div>
+                            </div>
+
+                            <!-- Sender Secret Code -->
+                            <div class="col-md-3">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.SenderSecreteCode, new { @class = "form-control", placeholder = "Withdrawal Secret Code" })
+                                    @Html.ValidationMessageFor(m => m.SenderSecreteCode, "", new { @class = "text-danger" })
+                                    <label>Secret Code</label>
+                                </div>
+                            </div>
+
+                            <!-- Sender Address -->
+                            <div class="col-md-9">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.SenderAddress, new { @class = "form-control", placeholder = "Sender Address" })
+                                    @Html.ValidationMessageFor(m => m.SenderAddress, "", new { @class = "text-danger" })
+                                    <label>Sender Address</label>
+                                </div>
+                            </div>
+
+                            <!-- Sender Country -->
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.SenderCountry, new { @class = "form-control", placeholder = "Sender country" })
+                                    @Html.ValidationMessageFor(m => m.SenderCountry, "", new { @class = "text-danger" })
+                                    <label>Sender country</label>
+                                </div>
+                            </div>
+
+                            <!-- Sender Note -->
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextAreaFor(m => m.SenderNote, new { @class = "form-control", @style = "height: 150px;" })
+                                    @Html.ValidationMessageFor(m => m.SenderNote, "", new { @class = "text-danger" })
+                                    <label>Sender Note to the Receiver</label>
+                                </div>
+                            </div>
+
+                            <!-- Receiver SMS Checkbox -->
+                            <div class="col-md-12 mt-3">
+                                <div class="form-check">
+                                    @Html.CheckBoxFor(m => m.SendSMSTotReceiver, new { @class = "form-check-input", @id = "sendSmsToReceiver" })
+                                    <label class="form-check-label" for="sendSmsToReceiver">
+                                        Send SMS Notification to Receiver
+                                    </label>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.SendSMSTotReceiver, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </fieldset>
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Receiver Information Section -->
+        <div class="accordion-item mt-2">
+            <h2 class="accordion-header" id="receiverInfoHeader">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#receiverInfo" aria-expanded="true" aria-controls="receiverInfo">
+                    Receiver Information
+                </button>
+            </h2>
+            <div id="receiverInfo" class="accordion-collapse collapse" aria-labelledby="receiverInfoHeader" data-bs-parent="#remittanceAccordion">
+                <div class="accordion-body">
+                    <!-- Help Note -->
+                    <div class="mb-3">
+                        <p class="text-muted">
+                            This section captures essential details about the receiver of the remittance. Providing accurate information ensures that the receiver
+                            can securely collect the funds and that the transaction meets necessary verification requirements.
+                        </p>
+                    </div>
+                    <fieldset class="fieldset-custom mb-4">
+                        <legend class="text-black">Receiver Information</legend>
+                        <div class="row mt-2 gy-4">
+                            <!-- Receiver Name -->
+                            <div class="col-md-6">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.ReceiverName, new { @class = "form-control", placeholder = "Receiver Name" })
+                                    @Html.ValidationMessageFor(m => m.ReceiverName, "", new { @class = "text-danger" })
+                                    <label>Receiver Name</label>
+                                </div>
+                            </div>
+                            <!-- Receiver Phone Number -->
+                            <div class="col-md-6">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.ReceiverPhoneNumber, new { @class = "form-control", placeholder = "Receiver Phone Number" })
+                                    @Html.ValidationMessageFor(m => m.ReceiverPhoneNumber, "", new { @class = "text-danger" })
+                                    <label>Receiver Phone Number</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(m => m.ReceiverLanguage, new SelectList(ViewBag.Languages, "Value", "Text"), "---Select language---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(m => m.ReceiverLanguage, "", new { @class = "text-danger" })
+                                    <label>Select receiver preferred language for SMS</label>
+                                </div>
+                            </div>
+                            <!-- Sender Country -->
+                            <div class="col-md-5">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.ReceiverCountry, new { @class = "form-control", placeholder = "Receiver country" })
+                                    @Html.ValidationMessageFor(m => m.ReceiverCountry, "", new { @class = "text-danger" })
+                                    <label>Receiver country</label>
+                                </div>
+                            </div>
+                            <!-- Receiver Address -->
+                            <div class="col-md-7">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.ReceiverAddress, new { @class = "form-control", placeholder = "Receiver Address" })
+                                    @Html.ValidationMessageFor(m => m.ReceiverAddress, "", new { @class = "text-danger" })
+                                    <label>Receiver Address</label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charges Section -->
+        <div class="accordion-item mt-2">
+            <h2 class="accordion-header" id="chargesSectionHeader">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#chargesSection" aria-expanded="false" aria-controls="chargesSection">
+                    Charges Section
+                </button>
+            </h2>
+            <div id="chargesSection" class="accordion-collapse collapse" aria-labelledby="chargesSectionHeader" data-bs-parent="#remittanceAccordion">
+                <div class="accordion-body">
+                    <!-- Help Note -->
+                    <div class="mb-3">
+                        <p class="text-muted">
+                            This section outlines the charges associated with the remittance transaction. Specify whether charges are inclusive or exclusive,
+                            and review the calculated final amounts to ensure clarity for both sender and receiver.
+                        </p>
+                        <p class="text-muted">
+                            <strong>Inclusive Charges:</strong> The charges are included in the specified amount. The sender's specified amount remains unchanged,
+                            and the receiver's amount is reduced by the applicable charges.
+                        </p>
+                        <p class="text-muted">
+                            <strong>Exclusive Charges:</strong> The charges are added on top of the specified amount. The sender pays the specified amount plus
+                            the charges, while the receiver's amount remains unaffected by the charges.
+                        </p>
+                    </div>
+                    <fieldset class="fieldset-custom mb-4">
+                        <legend class="text-black">Charges Section</legend>
+                        <div class="row gy-4">
+                            <!-- Initial Amount -->
+                            <div class="col-md-3">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.InitailAmount, new { @class = "form-control", @id = "initialAmount", type = "number", step = "0.01", placeholder = "Amount" })
+                                    @Html.ValidationMessageFor(m => m.InitailAmount, "", new { @class = "text-danger" })
+                                    <label>Enter amount to transfer</label>
+                                </div>
+                            </div>
+
+                            <!-- Final Amount -->
+                            <div class="col-md-3">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", @id = "AmountId", type = "number", step = "0.01", placeholder = "Amount", ReadOnly = true })
+                                    @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
+                                    <label>Final amount to transfer</label>
+                                </div>
+                            </div>
+
+                            <!-- Charges -->
+                            <div class="col-md-2">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.Fee, new { @class = "form-control", @id = "FeeId", placeholder = "Remittance Charge", ReadOnly = true })
+                                    @Html.ValidationMessageFor(m => m.Fee, "", new { @class = "text-danger" })
+                                    <label>Charges</label>
+                                </div>
+                            </div>
+
+                            <!-- Charge Type Radio Buttons -->
+                            <div class="col-md-4">
+                                <label class="form-label">Charge Type</label>
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check me-3">
+                                        @Html.RadioButtonFor(m => m.ChargeType, "Inclussive", new
+                                   {
+                                       @id = "chargeTypeInclusive",
+                                       @class = "form-check-input",
+                                       @onchange = "GetRemittanceCharge()"
+                                   })
+                                        <label class="form-check-label" for="chargeTypeInclusive"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               title="Inclusive: Charges are included in the final amount. The specified amount remains unchanged.">
+                                            Inclusive
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        @Html.RadioButtonFor(m => m.ChargeType, "Exclussive", new
+                                   {
+                                       @id = "chargeTypeExclusive",
+                                       @class = "form-check-input",
+                                       @onchange = "GetRemittanceCharge()"
+                                   })
+                                        <label class="form-check-label" for="chargeTypeExclusive"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               title="Exclusive: Charges are added on top of the specified amount. The final amount will include additional charges.">
+                                            Exclusive
+                                        </label>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.ChargeType, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Button to Get Charges -->
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="button" id="getChargesBtn" class="btn btn-primary" onclick="GetRemittanceCharge()">Compute Charges</button>
+                            </div>
+                        </div>
+
+                        <!-- Charges Display Section -->
+                        <div class="mt-4">
+                            <div class="table-responsive mb-3" style="display: none;" id="chargesdiv">
+                                <table class="table table-hover table-bordered table-sm" id="myDataTable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Remittance Type</th>
+                                            <th>INIT Amount</th>
+                                            <th>Receiver Amount</th>
+                                            <th>Service Charge</th>
+                                            <th>Value</th>
+                                            <th>Fee Type</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td id="remittanceType"></td>
+                                            <td id="initalAmountvalue"></td>
+                                            <td id="amountValue"></td>
+                                            <td id="serviceCharge"></td>
+                                            <td id="percentageValue"></td>
+                                            <td id="feeType"></td>
+                                            <td id="totalCharges"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Transaction Summary -->
+                            <div id="transactionSummary"></div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="accordion-item  mt-2">
+            <h2 class="accordion-header" id="submitButtonHeader">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#submitButton" aria-expanded="false" aria-controls="submitButton">
+                    Submit
+                </button>
+            </h2>
+            <div id="submitButton" class="accordion-collapse collapse" aria-labelledby="submitButtonHeader" data-bs-parent="#remittanceAccordion">
+                <div class="accordion-body">
+                    <div class="mt-4 text-center">
+                        <button type="submit" id="btnSave" class="btn btn-primary px-5">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+

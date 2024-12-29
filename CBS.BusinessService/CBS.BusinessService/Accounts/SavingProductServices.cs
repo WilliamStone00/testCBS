@@ -167,6 +167,9 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.CanPeformCashOut3PP = model.CanPeformCashOut3PP;
                     SavingProduct.DisplayOrder = model.DisplayOrder;
                     SavingProduct.ActivateForMobileApp = model.ActivateForMobileApp;
+                    SavingProduct.ProductCategory = model.ProductCategory;
+                    SavingProduct.AutoVerifyRemittanceReceiver = model.AutoVerifyRemittanceReceiver;
+                    SavingProduct.AutoVerifyRemittanceSender = model.AutoVerifyRemittanceSender;
                     SavingProduct.ActivateFor3PPApp = model.ActivateFor3PPApp;
                     SavingProduct.AllowInterbranchDeposit = model.AllowInterbranchDeposit;
                     SavingProduct.AllowInterbranchTransfter = model.AllowInterbranchTransfter;
@@ -195,6 +198,12 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
+        public string ChartOfAccountIdHeadOfficeShareCMoneyTransferCommission { get; set; }
+        public string ChartOfAccountIdFluxAndPTMShareCMoneyTransferCommission { get; set; }
+        public string ChartOfAccountIdCamCCULShareCMoneyTransferCommission { get; set; }
+        public string ChartOfAccountIdSourceCMoneyTransferCommission { get; set; }
+        public string ChartOfAccountIdDestinationCMoneyTransferCommission { get; set; }
+
         public async Task<ExecutionMessages> UpdateProductAccountMapping(SavingProduct model)
         {
             try
@@ -209,8 +218,23 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.ChartOfAccountIdSavingFee = model.ChartOfAccountIdSavingFee;
                     SavingProduct.ChartOfAccountIdWithrawalFee = model.ChartOfAccountIdWithrawalFee;
                     SavingProduct.ChartOfAccountIdTransferFee = model.ChartOfAccountIdTransferFee;
-                    SavingProduct.ChartOfAccountIdCommissionAccount = model.ChartOfAccountIdCommissionAccount;
+                    SavingProduct.ChartOfAccountIdCashInCommission = model.ChartOfAccountIdCashInCommission;
+                    SavingProduct.ChartOfAccountIdCashOutCommission = model.ChartOfAccountIdCashOutCommission;
                     SavingProduct.ChartOfAccountIdLiassonAccount = model.ChartOfAccountIdLiassonAccount;
+                    SavingProduct.ChartOfAccountIdHeadOfficeShareCashInCommission = model.ChartOfAccountIdHeadOfficeShareCashInCommission;
+                    SavingProduct.ChartOfAccountIdHeadOfficeShareCashOutCommission = model.ChartOfAccountIdHeadOfficeShareCashOutCommission;
+                    SavingProduct.ChartOfAccountIdCamCCULShareCashInCommission = model.ChartOfAccountIdCamCCULShareCashInCommission;
+                    SavingProduct.ChartOfAccountIdCamCCULShareCashOutCommission = model.ChartOfAccountIdCamCCULShareCashOutCommission;
+                    SavingProduct.ChartOfAccountIdFluxAndPTMShareCashInCommission = model.ChartOfAccountIdFluxAndPTMShareCashInCommission;
+                    SavingProduct.ChartOfAccountIdFluxAndPTMShareCashOutCommission = model.ChartOfAccountIdFluxAndPTMShareCashOutCommission;
+                    SavingProduct.ChartOfAccountIdCamCCULShareTransferCommission = model.ChartOfAccountIdCamCCULShareTransferCommission;
+                    SavingProduct.ChartOfAccountIdFluxAndPTMShareTransferCommission = model.ChartOfAccountIdFluxAndPTMShareTransferCommission;
+                    SavingProduct.ChartOfAccountIdHeadOfficeShareTransferCommission = model.ChartOfAccountIdHeadOfficeShareTransferCommission;
+                    SavingProduct.ChartOfAccountIdHeadOfficeShareCMoneyTransferCommission = model.ChartOfAccountIdHeadOfficeShareCMoneyTransferCommission;
+                    SavingProduct.ChartOfAccountIdFluxAndPTMShareCMoneyTransferCommission = model.ChartOfAccountIdFluxAndPTMShareCMoneyTransferCommission;
+                    SavingProduct.ChartOfAccountIdCamCCULShareCMoneyTransferCommission = model.ChartOfAccountIdCamCCULShareCMoneyTransferCommission;
+                    SavingProduct.ChartOfAccountIdSourceCMoneyTransferCommission = model.ChartOfAccountIdSourceCMoneyTransferCommission;
+                    SavingProduct.ChartOfAccountIdDestinationCMoneyTransferCommission = model.ChartOfAccountIdDestinationCMoneyTransferCommission;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);
                     if (response.IsSuccess)
                     {

@@ -89,12 +89,21 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal MinAmount { get; set; }
         public decimal MaxAmount { get; set; }
         public string BankId { get; set; }
+        public decimal CamCCULShare { get; set; }
+        public decimal FluxAndPTMShare { get; set; }
         public decimal HeadOfficeShare { get; set; }
         public decimal PartnerShare { get; set; }
         public decimal SourceBrachOfficeShare { get; set; }
         public decimal DestinationBranchOfficeShare { get; set; }
         public string EventAttributForDepositFormFee { get; set; }
         public string EventAttributForDepositFee { get; set; }
+        public decimal SourceBrachOfficeShareCMoney { get; set; }
+        public decimal DestinationBranchOfficeShareCMoney { get; set; }
+        public decimal CamCCULShareCMoney { get; set; }
+        public decimal FluxAndPTMShareCMoney { get; set; }
+        public decimal HeadOfficeShareCMoney { get; set; }
+        public string Path { get; set; }
+
         public SavingProduct Product { get; set; }
     }
     public class TransferLimit : Sharing
@@ -117,6 +126,16 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
 
         public decimal transferFeeFlat { get; set; }
         public string bankId { get; set; }
+        public decimal CamCCULShare { get; set; }
+        public decimal FluxAndPTMShare { get; set; }
+        public decimal HeadOfficeShare { get; set; }
+        public decimal SourceBrachOfficeShareCMoney { get; set; }
+        public decimal DestinationBranchOfficeShareCMoney { get; set; }
+        public decimal CamCCULShareCMoney { get; set; }
+        public decimal FluxAndPTMShareCMoney { get; set; }
+        public decimal HeadOfficeShareCMoney { get; set; }
+        public string Path { get; set; }
+
         public SavingProduct product { get; set; }
 
     }
@@ -385,6 +404,13 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public bool CanPeformCashOut3PP { get; set; }
         public bool ActivateForMobileApp { get; set; }
         public bool ActivateFor3PPApp { get; set; }
+        [Required(ErrorMessage = "Product Category is required.")]
+        [StringLength(50, ErrorMessage = "Product Category must not exceed 50 characters.")]
+        public string ProductCategory { get; set; }
+        public bool OTPControl { get; set; }
+        public bool AutoVerifyRemittanceSender { get; set; }
+        public bool AutoVerifyRemittanceReceiver { get; set; }
+
         public int DisplayOrder { get; set; }
         public bool AllowInterbranchWithdrawal { get; set; } = false;
         public bool AllowShareing { get; set; } = false;
@@ -399,13 +425,25 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string Description { get; set; }
         [Required]
         public string ChartOfAccountIdPricipalAccount { get; set; }
-        [Required]
         public string ChartOfAccountIdInterestAccount { get; set; }
-        [Required]
         public string ChartOfAccountIdInterestExpenseAccount { get; set; }
-        [Required]
-        public string ChartOfAccountIdCommissionAccount { get; set; }
-        [Required]
+        public string ChartOfAccountIdCashInCommission { get; set; }
+        public string ChartOfAccountIdCashOutCommission { get; set; }
+        public string ChartOfAccountIdHeadOfficeShareCashInCommission { get; set; }
+        public string ChartOfAccountIdFluxAndPTMShareCashInCommission { get; set; }
+        public string ChartOfAccountIdCamCCULShareCashInCommission { get; set; }
+        public string ChartOfAccountIdHeadOfficeShareCashOutCommission { get; set; }
+        public string ChartOfAccountIdFluxAndPTMShareCashOutCommission { get; set; }
+        public string ChartOfAccountIdCamCCULShareCashOutCommission { get; set; }
+        public string ChartOfAccountIdHeadOfficeShareTransferCommission { get; set; }
+        public string ChartOfAccountIdFluxAndPTMShareTransferCommission { get; set; }
+        public string ChartOfAccountIdCamCCULShareTransferCommission { get; set; }
+        public string ChartOfAccountIdHeadOfficeShareCMoneyTransferCommission { get; set; }
+        public string ChartOfAccountIdFluxAndPTMShareCMoneyTransferCommission { get; set; }
+        public string ChartOfAccountIdCamCCULShareCMoneyTransferCommission { get; set; }
+        public string ChartOfAccountIdSourceCMoneyTransferCommission { get; set; }
+        public string ChartOfAccountIdDestinationCMoneyTransferCommission { get; set; }
+
         public string ChartOfAccountIdLiassonAccount { get; set; }
         [Required]
         public string ChartOfAccountIdSavingFee { get; set; }
@@ -455,12 +493,20 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal MoralPersonWithdrawalFormFee { get; set; } = 0;
         public int NotificationPeriodInMonths { get; set; }
         public string WithdrawalType { get; set; }
+        public decimal CamCCULShare { get; set; }
+        public decimal FluxAndPTMShare { get; set; }
         public decimal HeadOfficeShare { get; set; }
-        public decimal PartnerShare { get; set; }
         public decimal SourceBrachOfficeShare { get; set; }
         public decimal DestinationBranchOfficeShare { get; set; }
         public bool MustNotifyOnWithdrawal { get; set; }
         public string BankId { get; set; }
+        public decimal SourceBrachOfficeShareCMoney { get; set; }
+        public decimal DestinationBranchOfficeShareCMoney { get; set; }
+        public decimal CamCCULShareCMoney { get; set; }
+        public decimal FluxAndPTMShareCMoney { get; set; }
+        public decimal HeadOfficeShareCMoney { get; set; }
+        public string Path { get; set; }
+
         public SavingProduct Product { get; set; }
     }
 
@@ -774,6 +820,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<StringValues> HolidayTypes { get; set; } = new List<StringValues>();
         public List<StringValues> RecurrencePatterns { get; set; } = new List<StringValues>();
         public List<StringValues> DayOfWeeks { get; set; } = new List<StringValues>();
+        public List<StringValues> RemittanceTypes { get; set; } = new List<StringValues>();
 
     }
     public class AddCustomerAccount

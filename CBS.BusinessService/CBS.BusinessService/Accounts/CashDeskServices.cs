@@ -39,8 +39,10 @@ namespace CBS.BusinessService.Accounts
         private readonly LoanServices _loanServices;
         private readonly BranchServices _branchServices;
         private readonly ApiCallerHelper _loanConfigApiHelper;
+        private readonly RemittanceServices _remittanceServices;
+        private readonly AccountServices _accountServices;
 
-        public CashDeskServices(UserManagementServices userManagementServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, ApiCallerHelper branchConfigApiHelper = null, LoanServices loanServices = null, LoanApplicationServices loanApplicationServices = null)
+        public CashDeskServices(UserManagementServices userManagementServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, ApiCallerHelper branchConfigApiHelper = null, LoanServices loanServices = null, LoanApplicationServices loanApplicationServices = null, RemittanceServices remittanceServices = null, AccountServices accountServices = null)
         {
             _customerApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["CustomerBaseUrl"].ToString());
             _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
@@ -49,6 +51,8 @@ namespace CBS.BusinessService.Accounts
             _branchServices = branchServices;
             _loanServices = loanServices;
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
+            _remittanceServices=remittanceServices;
+            _accountServices=accountServices;
         }
 
 
@@ -382,6 +386,50 @@ namespace CBS.BusinessService.Accounts
                 {
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Deposit" };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
+                    if (response.ApiResponseData != null)
+                    {
+                        var transaction = response.ApiResponseData.Data;
+                        Branch branch = RetrieveBranchFromSession();
+                        var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
+                        HttpContext.Current.Session["rptSource"] = rptSource;
+                        GetExecutionMessages(response, true, null, MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+                else if (bulkDeposits.FirstOrDefault().OperationType == "RemittanceIN")
+                {
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Deposit", Id=bulkDeposits.FirstOrDefault().RemittanceId, DepositType="RemittanceIN" };
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
+                    if (response.ApiResponseData != null)
+                    {
+                        var transaction = response.ApiResponseData.Data;
+                        Branch branch = RetrieveBranchFromSession();
+                        var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
+                        HttpContext.Current.Session["rptSource"] = rptSource;
+                        GetExecutionMessages(response, true, null, MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+                else if (bulkDeposits.FirstOrDefault().OperationType == "RemittanceOUT")
+                {
+                    string N = "N/A";
+                    var remOut = bulkDeposits.FirstOrDefault();
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "RemittanceOUT", Id=remOut.RemittanceId, OTP=remOut.OTP, ReceiverPhoneNumber=remOut.ReceiverPhoneNumber, DepositType=N, Period=N, ReceiverAddress=remOut.ReceiverAddress, ReceiverCNI=remOut.ReceiverCNI, ReceiverCNIDateOfExpiration=remOut.ReceiverCNIDateOfExpiration, ReceiverCNIDateOfIssue=remOut.ReceiverCNIDateOfIssue, ReceiverCNIPlcaceOfIssue=remOut.ReceiverCNIPlcaceOfIssue, ReceiverName=remOut.ReceiverName, RemittanceAmount=remOut.RemittanceAmount, RemittanceDate=remOut.RemittanceDate, SenderAddress=remOut.SenderAddress, SenderName=remOut.SenderName, SenderPhoneNumber=remOut.SenderPhoneNumber, SenderSecretCode=remOut.SenderSecretCode };
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.MakeWithdrawal, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
                         var transaction = response.ApiResponseData.Data;
@@ -772,6 +820,63 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+
+        public async Task<CashDesk> GetCashDeskRemittance(Remittance remittance = null, string remittanceId = null)
+        {
+            try
+            {
+                // Fetch remittance if only the ID is provided
+                if (remittance == null && !string.IsNullOrEmpty(remittanceId))
+                {
+                    remittance = await _remittanceServices.GetRemittance(remittanceId);
+                }
+
+                if (remittance == null)
+                {
+                    return null;
+                }
+
+                // Retrieve related data
+                var account = await _accountServices.GetMemberAccounByAccounId(remittance.AccountId);
+                var accounts = new List<Account> { account };
+                var customer = await _individualProfileServices.GetSingleCustomer(account.CustomerId);
+                var branch = await _branchServices.GetBranch(remittance.SourceBranchId);
+
+                // Populate customer name
+                customer.name = $"{customer.FirstName} {customer.LastName}";
+
+                // Populate CashDesk object
+                var cashDesk = new CashDesk
+                {
+
+                    Branch = branch,
+                    MemberAccounts = accounts,
+                    BulkDeposit = new BulkDeposit
+                    {
+                        Amount = remittance.Amount, // Handles 0 by default if not set in the Remittance object
+                        CheckNumber = "N/A",
+                        CheckName = "N/A",
+                        Fee = remittance.Fee
+                    },
+                    BulkDeposits = BuidObject(accounts, remittance),
+                    Customer = customer,
+                    LoanId = null,
+                    CustomerId = customer.CustomerId,
+                    RemittanceId = remittance.Id,
+                    Remittance = remittance,
+                    GenerateRemittanceOTPCommand=new GenerateRemittanceOTPCommand { ReceiverPhoneNumber=remittance.ReceiverPhoneNumber, RemittanceReference=remittance.TransactionReference },
+                    SavingProduct=account.Product
+                };
+
+                return cashDesk;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+
         public async Task<List<MembersLoanDto>> GetMembersLoans(string customerId, string queryParameter)
         {
             try
@@ -875,6 +980,51 @@ namespace CBS.BusinessService.Accounts
                     LoanId = null,
                     Penalty = 0,
                     Total = 0
+                }).ToList();
+                return selected;
+            }
+            else
+            {
+                // Create a default BulkDeposit object
+                var defaultBulkDeposit = new BulkDeposit
+                {
+                    AccountNumber = "N/A",
+                    AccountType = "N/A",
+                    Amount = 0,
+                    Balance = 0,
+                    currencyNotes = new CurrencyNotes(),
+                    CustomerId = "N/A",
+                    Fee = 0,
+                    Interest = 0,
+                    LoanId = null,
+                    Penalty = 0,
+                    Total = 0
+                };
+
+                // Return a list containing the default BulkDeposit object
+                return new List<BulkDeposit> { defaultBulkDeposit };
+
+            }
+
+        }
+        public List<BulkDeposit> BuidObject(List<Account> accounts, Remittance remittance)
+        {
+            if (accounts.Any())
+            {
+                var selected = accounts.Select(a => new BulkDeposit
+                {
+                    AccountNumber = a.AccountNumber,
+                    AccountType = remittance.RemittanceType,
+                    Amount = remittance.Amount,
+                    Balance = a == null ? 0 : a.Balance,
+                    currencyNotes = new CurrencyNotes(),
+                    CustomerId = a.CustomerId,
+                    Fee = remittance.Fee,
+                    Interest = 0,
+                    LoanId = null,
+                    Penalty = 0,
+                    Total = 0,
+                    RemittanceId=remittance.Id
                 }).ToList();
                 return selected;
             }

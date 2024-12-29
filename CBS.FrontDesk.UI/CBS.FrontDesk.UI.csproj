@@ -579,6 +579,7 @@
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\CashDeskOperations\CashDeskController.cs" />
     <Compile Include="Controllers\CashDeskOperations\OtherTransactionController.cs" />
+    <Compile Include="Controllers\CMoney\CMoneyMembershipController.cs" />
     <Compile Include="Controllers\Commitee\LoanCommiteeController.cs" />
     <Compile Include="Controllers\BudgetManagement\BudgetManagementController.cs" />
     <Compile Include="Controllers\Configuration\Localization\CountryController.cs" />
@@ -593,6 +594,8 @@
     <Compile Include="Controllers\CustomerManagement\Policy\MemberAccountActivationPolicyController.cs" />
     <Compile Include="Controllers\Loan\Configuration\LoanDeliquencyConfigurationController.cs" />
     <Compile Include="Controllers\Loan\Configuration\LoanTermController.cs" />
+    <Compile Include="Controllers\RemittanceP\RemittanceCashDeskController.cs" />
+    <Compile Include="Controllers\RemittanceP\RemittanceController.cs" />
     <Compile Include="Controllers\Support\HelpDeskController.cs" />
     <Compile Include="Controllers\ThirdPartyBankAccount\ThirdPartyBranchController.cs" />
     <Compile Include="Controllers\ThirdPartyBankAccount\ThirdPartyInstitutionController.cs" />
@@ -2504,6 +2507,8 @@
     <Content Include="Scripts\Js\AccountEventConfigurtion\MFIChartOfAccount.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
     <Content Include="Scripts\Js\CashMovementTracker\CashMovementTracker.js" />
+    <Content Include="Scripts\Js\CMoney\cmoney.js" />
+    <Content Include="Scripts\Js\CMoney\cmMembers.js" />
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\MomocashCollection.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\ExpensesCashDesk.js" />
@@ -2518,6 +2523,9 @@
     <Content Include="Scripts\Js\Crud\Groups\Customers\MyCustomers.js" />
     <Content Include="Scripts\Js\Crud\DailyTellerAssignation\DailyTellerAssignation.js" />
     <Content Include="Scripts\Js\Crud\MemberOrdinaryAccountsF8\MembersAccount.js" />
+    <Content Include="Scripts\Js\Crud\Remittance\CashDeskOperationsRemittance.js" />
+    <Content Include="Scripts\Js\Crud\Remittance\RemittancePending.js" />
+    <Content Include="Scripts\Js\Crud\Remittance\RemittanceRequest.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Pending.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Requests.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\WithdrawalNotification.js" />
@@ -3299,6 +3307,40 @@
     <Content Include="Views\TransactionConfiguration\_OrdinaryProductAccount.cshtml" />
     <Content Include="Views\TransactionConfiguration\GetSavingProductAccountMapping.cshtml" />
     <Content Include="Views\LoanProduct\GetLoanProductAccountMapping.cshtml" />
+    <Content Include="Views\Remittance\RequestValidationForm.cshtml" />
+    <Content Include="Views\Remittance\Request.cshtml" />
+    <Content Include="Views\Remittance\PendingRequest.cshtml" />
+    <Content Include="Views\Remittance\Index.cshtml" />
+    <Content Include="Views\Remittance\_SearchBox.cshtml" />
+    <Content Include="Views\Remittance\_RequestValidationForm.cshtml" />
+    <Content Include="Views\Remittance\_Request.cshtml" />
+    <Content Include="Views\Remittance\_AwaitRequestValidationData.cshtml" />
+    <Content Include="Views\Remittance\_CashReplenishmentSubTellerData.cshtml" />
+    <Content Include="Views\RemittanceCashDesk\_CustomerCard.cshtml" />
+    <Content Include="Views\RemittanceCashDesk\_DenominationBreakDown.cshtml" />
+    <Content Include="Views\RemittanceCashDesk\_DepositerForm.cshtml" />
+    <Content Include="Views\RemittanceCashDesk\_MemberPayment.cshtml" />
+    <Content Include="Views\RemittanceCashDesk\_Note.cshtml" />
+    <Content Include="Views\RemittanceCashDesk\_OperationDesk.cshtml" />
+    <Content Include="Views\RemittanceCashDesk\_OperationForm.cshtml" />
+    <Content Include="Views\RemittanceCashDesk\_SearchBox.cshtml" />
+    <Content Include="Views\RemittanceCashDesk\_Tabs.cshtml" />
+    <Content Include="Views\RemittanceCashDesk\Index.cshtml" />
+    <Content Include="Views\CMoneyMembership\Activation.cshtml" />
+    <Content Include="Views\CMoneyMembership\_SearchBox.cshtml" />
+    <Content Include="Views\CMoneyMembership\_CustomerCard.cshtml" />
+    <Content Include="Views\CMoneyMembership\_ActivationForm.cshtml" />
+    <Content Include="Views\CMoneyMembership\_ActivationDesk.cshtml" />
+    <Content Include="Views\CMoneyMembership\ManageProfile.cshtml" />
+    <Content Include="Views\CMoneyMembership\Index.cshtml" />
+    <Content Include="Views\CMoneyMembership\_CMoneyMemberData.cshtml" />
+    <Content Include="Views\CMoneyMembership\_ManageProfileDesk.cshtml" />
+    <Content Include="Views\CMoneyMembership\_ManageProfileForm.cshtml" />
+    <Content Include="Views\Individual\_ProfileDetails.cshtml" />
+    <Content Include="Views\Individual\_SecurityManagement.cshtml" />
+    <Content Include="Views\Individual\_DocumentManagement.cshtml" />
+    <Content Include="Views\Individual\_NextOfKinManagement.cshtml" />
+    <Content Include="Views\Individual\_SignatoryManagement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

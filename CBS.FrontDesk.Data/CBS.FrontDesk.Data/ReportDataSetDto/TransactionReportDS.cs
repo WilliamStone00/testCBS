@@ -152,6 +152,9 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public string HeadOfficeWebSite { get; set; }
         public string HeadOfficeInitial { get; set; }
         public string HeadOfficeCode { get; set; }
+        public string Matricule { get; set; }
+        public string AccountConfirmationNumber { get; set; }
+
     }
     public class OpenningAnclClossingTillDto : HeadOffice
     {

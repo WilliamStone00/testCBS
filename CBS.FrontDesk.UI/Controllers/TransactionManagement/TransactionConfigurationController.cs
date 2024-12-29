@@ -843,7 +843,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 {
                     return async () =>
                     {
-                        await GetList();
+                        var conf = await _savingProductServices.GetSavingConfigurationAggregates();
+                        ViewBag.DepositLimitTypes = conf.depositTypes.ToList();
+
                         var savingProduct = await _savingProductServices.GetSavingProduct(key);
                         return PartialView(partialView, new SavingConfiguration { DepositLimit = new DepositLimit { ProductId = key }, SavingProduct = savingProduct });
                     };
@@ -852,7 +854,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 {
                     return async () =>
                     {
-                        await GetList();
+                        var conf = await _savingProductServices.GetSavingConfigurationAggregates();
+                        ViewBag.DepositLimitTypes = conf.depositTypes.ToList();
                         var data = await _depositLimitServices.GetDepositLimit(key);
                         var savingProduct = await _savingProductServices.GetSavingProduct(data.ProductId);
                         return PartialView(partialView, new SavingConfiguration { DepositLimit = data, SavingProduct = savingProduct });
@@ -884,7 +887,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 {
                     return async () =>
                     {
-                        await GetList();
+                        var conf = await _savingProductServices.GetSavingConfigurationAggregates();
+                        ViewBag.TransferLimitTypes = conf.transferTypes.ToList();
                         var savingProduct = await _savingProductServices.GetSavingProduct(key);
                         return PartialView(partialView, new SavingConfiguration { TransferLimit = new TransferLimit { productId = key }, SavingProduct = savingProduct });
                     };
@@ -893,7 +897,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 {
                     return async () =>
                     {
-                        await GetList();
+                        var conf = await _savingProductServices.GetSavingConfigurationAggregates();
+                        ViewBag.TransferLimitTypes = conf.transferTypes.ToList();
                         var data = await _transferLimitServices.GetTransferLimit(key);
                         var savingProduct = await _savingProductServices.GetSavingProduct(data.productId);
                         return PartialView(partialView, new SavingConfiguration { TransferLimit = data, SavingProduct = savingProduct });
@@ -920,6 +925,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                     }
                     return async () =>
                     {
+
                         var data = await _withdrawalLimitServices.GetWithdrawalLimits();
                         var sysData = new SavingConfiguration { WithdrawalLimits = data.ToList() };
                         return PartialView(partialView, sysData);
@@ -961,7 +967,19 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
 
         }
+        public async Task<bool> GetListConf()
+        {
+            var conf = await _savingProductServices.GetSavingConfigurationAggregates();
+            ViewBag.DepositLimitTypes = conf.depositTypes.ToList();
+            ViewBag.TransferLimitTypes = conf.transferTypes.ToList();
+            ViewBag.WithdrawalLimitTypes = conf.withdrawalTypes.ToList();
 
+            ViewBag.Products = await _savingProductServices.GetSavingProducts();
+            ViewBag.Frequences = conf.freeQuencies.ToList();
+            ViewBag.Currencies = conf.currencies.ToList();
+            ViewBag.operationAccounts = conf.operationAccounts.ToList();
+            return true;
+        }
         public async Task<bool> GetList()
         {
             var conf = await _savingProductServices.GetSavingConfigurationAggregates();

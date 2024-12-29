@@ -1,0 +1,40 @@
+﻿<div class="col-lg-12 col-md-8 col-12">
+    <div class="tab-content p-0">
+        <div class="tab-pane fade show active" id="payment" role="tabpanel">
+            <div id="accordionPayment" class="accordion">
+
+                <!-- Security Question and Answer -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordionPayment-1" aria-expanded="true"
+                                aria-controls="accordionPayment-1">
+                            Security Question and Answer
+                        </button>
+                    </h2>
+                    <div id="accordionPayment-1" class="accordion-collapse collapse show" data-bs-parent="#accordionPayment">
+                        <div class="accordion-body">
+                            @Html.Partial("_SecurityQuestionAndAnswer")
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pin Reset -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordionPayment-2" aria-controls="accordionPayment-2">
+                            Pin Reset
+                        </button>
+                    </h2>
+                    <div id="accordionPayment-2" class="accordion-collapse collapse" data-bs-parent="#accordionPayment">
+                        <div class="accordion-body">
+                            @Html.Partial("_ResetPin")
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

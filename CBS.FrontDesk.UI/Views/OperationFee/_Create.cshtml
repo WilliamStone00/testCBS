@@ -99,6 +99,63 @@
                 </div>
             </div>
 
+            <div class="row mt-3 gy-3">
+                <h5 class="border-bottom pb-2 mb-3">
+                    REMITTANCE FEE TYPE
+                    <i class="fa fa-info-circle text-muted" title="Select the applicable fee type for the remittance transaction. This fee type determines the charges associated with transferring money through different remittance services such as Western Union, MoneyGram, or other platforms."></i>
+                </h5>
+                <!-- Operation Fee Type options -->
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "WesternUnion", new { @class = "form-check-input shadow-input-boxes", id = "WesternUnion" })
+                        <label class="form-check-label" for="WesternUnion">Western Union</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "MoneyGram", new { @class = "form-check-input shadow-input-boxes", id = "MoneyGram" })
+                        <label class="form-check-label" for="MoneyGram">MoneyGram</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "Ria", new { @class = "form-check-input shadow-input-boxes", id = "Ria" })
+                        <label class="form-check-label" for="Ria">Ria</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "OFX", new { @class = "form-check-input shadow-input-boxes", id = "OFX" })
+                        <label class="form-check-label" for="OFX">OFX</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "MPesa", new { @class = "form-check-input shadow-input-boxes", id = "MPesa" })
+                        <label class="form-check-label" for="MPesa">M-Pesa</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "Payoneer", new { @class = "form-check-input shadow-input-boxes", id = "Payoneer" })
+                        <label class="form-check-label" for="Payoneer">Payoneer</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "WorldRemit", new { @class = "form-check-input shadow-input-boxes", id = "WorldRemit" })
+                        <label class="form-check-label" for="WorldRemit">World Remit</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "TrustSoftCredit", new { @class = "form-check-input shadow-input-boxes", id = "TrustSoftCredit" })
+                        <label class="form-check-label" for="TrustSoftCredit">Trust Soft Credit</label>
+                    </div>
+                </div>
+            </div>
+
+
             <!-- Additional Charges -->
             <div class="row mt-3 gy-3">
                 <h5 class="border-bottom pb-2 mb-3">

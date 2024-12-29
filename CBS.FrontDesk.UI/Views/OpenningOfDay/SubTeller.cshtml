@@ -1,14 +1,66 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.OpeningOfTheDay
 @{
-    ViewBag.Title = "OPEN OF DAY S.T";
+    ViewBag.Title = "OPEN OF DAY S.T.";
 }
 <div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-4">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-cash-multiple me-2"></i> Opening of Sub-Till
+                </h1>
+                <p class="card-text text-muted">
+                    Manage the opening process of the sub-till efficiently. Ensure all details are accurate for a smooth operation.
+                </p>
+                <p class="card-text text-danger fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-2"></i>
+                    Note: Sub-tills cannot be opened until the primary till has been opened. Ensure the primary till is operational before proceeding.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Card -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span>
+            <i class="mdi mdi-information-outline me-2"></i> HELP TIPS
+        </span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseHelpTips" class="collapse">
+        <div class="card-body">
+            <p class="text-muted mb-2">
+                Proper denomination breakdown ensures accuracy and reduces discrepancies. Follow these tips:
+            </p>
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Enter the number of notes/coins for each denomination.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Double-check the amounts entered to ensure they match the total balance.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use denominations systematically to minimize counting errors.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Verify the totals before submitting the form.</li>
+            </ul>
+            <p class="text-muted mb-2">
+                Additional notes:
+            </p>
+            <ul>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Ensure the primary till is opened before attempting to open a sub-till.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Make sure to <strong>print your Open of Day report</strong> after completing the process.</li>
+                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> If the <strong>Open of Day button is greyed out</strong>, the values entered do not match the expected totals or the primary till is not opened.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
         <div class="card">
             <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
                 <div class="accordion-item active">
-                    <h2 class="accordion-header text-body d-flex justify-content-between"
-                        id="accordionPopoutIconThree">
+                    <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconThree">
                         <button type="button"
                                 class="accordion-button"
                                 data-bs-toggle="collapse"
@@ -16,7 +68,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cash-multiple me-2"></i>
-                            OPENINGIN OF SUB-TILL.
+                            Sub-Till Opening
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -40,26 +92,11 @@
     </div>
 </div>
 
-
-
-
-
-
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script>
-    function Reprint() {
-        ReportView("OpenningOfDay", null, "GetReportReport", null, null, null, "ReportParameterLess");
-
-    }
-</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function Reprint() {
+            ReportView("OpenningOfDay", null, "GetReportReport", null, null, null, "ReportParameterLess");
+        }
+    </script>
 }
-
-
-
-
-
-
-
-
-
-
