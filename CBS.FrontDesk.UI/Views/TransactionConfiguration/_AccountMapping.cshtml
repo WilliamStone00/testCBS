@@ -115,7 +115,7 @@
                                                 <small class="form-text text-muted">Used as a transit account for inter-branch transactions for @Model.SavingProduct.Name.</small>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        @*<div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.DropDownListFor(
                                                     m => m.SavingProduct.ChartOfAccountIdWithrawalFee,
@@ -125,7 +125,7 @@
                                                 <label>Withdrawal Fee Account</label>
                                                 <small class="form-text text-muted">Tracks fees generated from withdrawal operations for @Model.SavingProduct.Name.</small>
                                             </div>
-                                        </div>
+                                        </div>*@
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.DropDownListFor(
@@ -133,8 +133,8 @@
                                                     new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
                                                     new { @class = "form-control select2", @search = "true" })
                                                 @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdTransferFee, "", new { @class = "text-danger" })
-                                                <label>Transfer Fee Account</label>
-                                                <small class="form-text text-muted">Tracks fees generated from transfer operations for @Model.SavingProduct.Name.</small>
+                                                <label>Transfer commision Account</label>
+                                                <small class="form-text text-muted">Tracks commision generated from transfer operations for @Model.SavingProduct.Name.</small>
                                             </div>
                                         </div>
                                     </div>
@@ -316,41 +316,6 @@
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdSourceCMoneyTransferCommission,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                                                    "---Select an account---",
-                                                    new { @class = "form-control select2", @search = "true" }
-                                                )
-                                                @Html.ValidationMessageFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdSourceCMoneyTransferCommission, "",
-                                                    new { @class = "text-danger" }
-                                                )
-                                                <label>CamCCUL Share (Transfer Commission)</label>
-                                                <small class="form-text text-muted">
-                                                    Select the account for tracking transfer commissions for source branch share on @Model.SavingProduct.Name.
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdDestinationCMoneyTransferCommission,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                                                    "---Select an account---",
-                                                    new { @class = "form-control select2", @search = "true" }
-                                                )
-                                                @Html.ValidationMessageFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdDestinationCMoneyTransferCommission, "",
-                                                    new { @class = "text-danger" }
-                                                )
-                                                <label>CamCCUL Share (Transfer Commission)</label>
-                                                <small class="form-text text-muted">
-                                                    Select the account for tracking transfer commissions for destination branch share on @Model.SavingProduct.Name.
-                                                </small>
-                                            </div>
-                                        </div>                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
                                                     m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCMoneyTransferCommission,
                                                     new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
                                                     "---Select an account---",
@@ -378,9 +343,9 @@
                                                     m => m.SavingProduct.ChartOfAccountIdCamCCULShareCMoneyTransferCommission, "",
                                                     new { @class = "text-danger" }
                                                 )
-                                                <label>CamCCUL Share (Cash In Commission)</label>
+                                                <label>CamCCUL Share (Transfer Commission)</label>
                                                 <small class="form-text text-muted">
-                                                    Select the account for tracking cash-in commissions for CamCCUL share on @Model.SavingProduct.Name.
+                                                    Select the account for tracking transfer commissions for CamCCUL share on @Model.SavingProduct.Name.
                                                 </small>
                                             </div>
                                         </div>
@@ -396,7 +361,7 @@
                                                     m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCMoneyTransferCommission, "",
                                                     new { @class = "text-danger" }
                                                 )
-                                                <label>CamCCUL Share (Transfer Commission)</label>
+                                                <label>Head office (Transfer Commission)</label>
                                                 <small class="form-text text-muted">
                                                     Select the account for tracking transfer commissions for Headoffice share on @Model.SavingProduct.Name.
                                                 </small>

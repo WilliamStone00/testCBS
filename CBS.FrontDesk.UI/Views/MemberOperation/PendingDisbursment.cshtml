@@ -1,54 +1,100 @@
 ﻿@{
-    ViewBag.Title = "Pending disbursement";
+    ViewBag.Title = "Pending Disbursement";
 }
+
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-4">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-cash me-2"></i> Pending Disbursement
+                </h1>
+                <p class="card-text text-muted">
+                    View and manage pending loan disbursements for <strong>@Session["BranchName"]</strong>. Ensure timely action to process or resolve disbursement issues.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span>
+            <i class="mdi mdi-information-outline me-2"></i> HELP TIPS
+        </span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseHelpTips" class="collapse">
+        <div class="card-body">
+            <p class="text-muted mb-2">Follow these tips to manage pending disbursements efficiently:</p>
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Click the refresh button to load the latest pending disbursement applications.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Verify member details before proceeding with disbursements.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all necessary approvals are in place for each application.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Regularly update the status of processed applications to keep the list current.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> If a member's application is incomplete, follow up with the member for the required details.</li>
+            </ul>
+            <p class="text-muted">Additional Notes:</p>
+            <ul>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Use the filters or search functionality to locate specific applications quickly.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Always cross-check the disbursed amount with the approved loan amount to avoid discrepancies.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Disbursements should be done in accordance with the organization's financial policies.</li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
         <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
             <div class="accordion-item active">
-                <h2 class="accordion-header text-body d-flex justify-content-between"
-                    id="accordionPopoutIconThree">
+                <h2 class="accordion-header d-flex justify-content-between align-items-center text-primary" id="accordionPopoutIconThree">
                     <button type="button"
                             class="accordion-button"
                             data-bs-toggle="collapse"
                             data-bs-target="#accordionPopoutIcon-3"
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-account me-2"></i>
-                        @Session["BranchName"] PENDING DISBURSEMENT
+                        <i class="mdi mdi-view-list me-2"></i> @Session["BranchName"] Pending Disbursements
                     </button>
                 </h2>
-                <div id="accordionPopoutIcon-3"
-                     class="accordion-collapse collapse show"
-                     data-bs-parent="#accordionPopoutIcon">
+                <div id="accordionPopoutIcon-3" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
                     <div class="accordion-body">
                         <div id="mainviewChange">
                             <div class="change-group">
+                                <!-- Action Card -->
                                 <div class="card mb-4">
-                                    <div class="card-body d-sm-flex d-block">
-                                        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            <a href="/MemberOperation/PendingDisbursment" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="Load applications from database">
-                                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                            </a>
-                                        </div>
+                                    <div class="card-body d-flex justify-content-start align-items-center">
+                                        <a href="/MemberOperation/PendingDisbursment"
+                                           class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space"
+                                           data-bs-toggle="tooltip"
+                                           title="Load applications from database">
+                                            <span class="tf-icons mdi mdi-refresh mdi-18px"></span>
+                                        </a>
+                                        <span class="ms-3 text-muted">Click to load or refresh pending disbursement applications.</span>
                                     </div>
                                 </div>
+                                <!-- Data Listing View -->
                                 <div id="datalistingview">
-
-
+                                    <!-- Data will be dynamically loaded here -->
+                                    <p class="text-muted text-center">
+                                        No data to display. Click the refresh button to load pending disbursements.
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
 </div>
 
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/Crud/OperationPanel/Loans.js"></script>
-
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/OperationPanel/Loans.js"></script>
 }
