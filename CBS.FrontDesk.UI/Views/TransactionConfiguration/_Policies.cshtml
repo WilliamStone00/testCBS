@@ -1,10 +1,9 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
 
-
 <div class="col">
     <div class="row my-4">
         <div class="accordion" id="collapsibleSection">
-            <!-- First Collapse -->
+            <!-- CASH IN Section -->
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingDeliveryAddress">
                     <button type="button"
@@ -20,13 +19,23 @@
                      class="accordion-collapse collapse show"
                      data-bs-parent="#collapsibleSection">
                     <div class="accordion-body">
-                        <!-- Deposit Content -->
-                        <div class="demo-inline-spacing text-end">
-                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit','@Model.SavingProduct.Id','depositlimit','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                        <h5 class="text-primary mb-3">Manage Cash In Configurations</h5>
+                        <p class="text-muted">
+                            Use this section to manage deposit limits and configurations for
+                            <strong>@Model.SavingProduct.Name</strong>.
+                        </p>
+                        <div class="text-end">
+                            <a type="button"
+                               onclick="LoadDataGen('TransactionConfiguration','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit','@Model.SavingProduct.Id','depositlimit','list')"
+                               class="btn btn-label-primary btn-sm me-2"
+                               data-bs-toggle="tooltip" title="View List">
+                                <i class="mdi mdi-view-list mdi-18px"></i> View List
                             </a>
-                            <a type="button" onclick="AddORUpdateGen('@Model.SavingProduct.Id','datalistingview_Deposit','_DepositConfig','new','TransactionConfiguration','depositlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                            <a type="button"
+                               onclick="AddORUpdateGen('@Model.SavingProduct.Id','datalistingview_Deposit','_DepositConfig','new','TransactionConfiguration','depositlimit')"
+                               class="btn btn-label-secondary btn-sm"
+                               data-bs-toggle="tooltip" title="Add New">
+                                <i class="mdi mdi-plus mdi-18px"></i> Add New
                             </a>
                         </div>
                         <br />
@@ -38,7 +47,8 @@
                     </div>
                 </div>
             </div>
-            <!-- Second Collapse -->
+
+            <!-- WITHDRAWAL Section -->
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingPaymentMethod3">
                     <button type="button"
@@ -47,7 +57,7 @@
                             data-bs-target="#collapsePaymentMethod3"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod3">
-                       WITHDRAWAL
+                        WITHDRAWAL
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod3"
@@ -55,13 +65,23 @@
                      aria-labelledby="headingPaymentMethod3"
                      data-bs-parent="#collapsibleSection">
                     <div class="accordion-body">
-                        <!-- Withdrawal Content -->
-                        <div class="demo-inline-spacing text-end">
-                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Withdrawal','_WithdrawalData',0,'datalistingview_Withdrawal','@Model.SavingProduct.Id','withdrawallimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                        <h5 class="text-primary mb-3">Manage Withdrawal Configurations</h5>
+                        <p class="text-muted">
+                            Configure withdrawal limits and settings for
+                            <strong>@Model.SavingProduct.Name</strong>.
+                        </p>
+                        <div class="text-end">
+                            <a type="button"
+                               onclick="LoadDataGen('TransactionConfiguration','myDataTable_Withdrawal','_WithdrawalData',0,'datalistingview_Withdrawal','@Model.SavingProduct.Id','withdrawallimit')"
+                               class="btn btn-label-primary btn-sm me-2"
+                               data-bs-toggle="tooltip" title="View List">
+                                <i class="mdi mdi-view-list mdi-18px"></i> View List
                             </a>
-                            <a type="button" onclick="AddORUpdateGen('@Model.SavingProduct.Id','datalistingview_Withdrawal','_WithdrawalConfig','new','TransactionConfiguration','withdrawallimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                            <a type="button"
+                               onclick="AddORUpdateGen('@Model.SavingProduct.Id','datalistingview_Withdrawal','_WithdrawalConfig','new','TransactionConfiguration','withdrawallimit')"
+                               class="btn btn-label-secondary btn-sm"
+                               data-bs-toggle="tooltip" title="Add New">
+                                <i class="mdi mdi-plus mdi-18px"></i> Add New
                             </a>
                         </div>
                         <br />
@@ -73,7 +93,8 @@
                     </div>
                 </div>
             </div>
-            <!-- Third Collapse -->
+
+            <!-- TRANSFER Section -->
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingPaymentMethod4">
                     <button type="button"
@@ -90,13 +111,23 @@
                      aria-labelledby="headingPaymentMethod4"
                      data-bs-parent="#collapsibleSection">
                     <div class="accordion-body">
-                        <!-- Transfer Content -->
-                        <div class="demo-inline-spacing text-end">
-                            <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_Transfer','_TransferData',0,'datalistingview_Transfer','@Model.SavingProduct.Id','transferlimit')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                        <h5 class="text-primary mb-3">Manage Transfer Configurations</h5>
+                        <p class="text-muted">
+                            Define transfer limits and configure settings for
+                            <strong>@Model.SavingProduct.Name</strong>.
+                        </p>
+                        <div class="text-end">
+                            <a type="button"
+                               onclick="LoadDataGen('TransactionConfiguration','myDataTable_Transfer','_TransferData',0,'datalistingview_Transfer','@Model.SavingProduct.Id','transferlimit')"
+                               class="btn btn-label-primary btn-sm me-2"
+                               data-bs-toggle="tooltip" title="View List">
+                                <i class="mdi mdi-view-list mdi-18px"></i> View List
                             </a>
-                            <a type="button" onclick="AddORUpdateGen('@Model.SavingProduct.Id','datalistingview_Transfer','_TransferConfig','new','TransactionConfiguration','transferlimit')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                            <a type="button"
+                               onclick="AddORUpdateGen('@Model.SavingProduct.Id','datalistingview_Transfer','_TransferConfig','new','TransactionConfiguration','transferlimit')"
+                               class="btn btn-label-secondary btn-sm"
+                               data-bs-toggle="tooltip" title="Add New">
+                                <i class="mdi mdi-plus mdi-18px"></i> Add New
                             </a>
                         </div>
                         <br />
@@ -111,6 +142,3 @@
         </div>
     </div>
 </div>
-
-
-

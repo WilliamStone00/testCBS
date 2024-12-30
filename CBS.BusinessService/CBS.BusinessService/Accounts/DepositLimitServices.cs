@@ -129,9 +129,14 @@ namespace CBS.BusinessService.Accounts
                     DepositLimit.SourceBrachOfficeShare = model.SourceBrachOfficeShare;
                     DepositLimit.DestinationBranchOfficeShare = model.DestinationBranchOfficeShare;
                     DepositLimit.HeadOfficeShare = model.HeadOfficeShare;
+                    DepositLimit.FluxAndPTMShare = model.FluxAndPTMShare;
+                    DepositLimit.CamCCULShare = model.CamCCULShare;
 
-
-
+                    DepositLimit.CamCCULShareCMoney = model.CamCCULShareCMoney;
+                    DepositLimit.DestinationBranchOfficeShareCMoney = model.DestinationBranchOfficeShareCMoney;
+                    DepositLimit.FluxAndPTMShareCMoney = model.FluxAndPTMShareCMoney;
+                    DepositLimit.HeadOfficeShareCMoney = model.HeadOfficeShareCMoney;
+                    DepositLimit.SourceBrachOfficeShareCMoney = model.FluxAndPTMShare;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<DepositLimit>>(string.Format(APICallHelper.Get_Update_Delete_DepositLimit, model.Id), DepositLimit);
                     if (response.IsSuccess)
                     {

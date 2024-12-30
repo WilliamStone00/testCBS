@@ -11,18 +11,26 @@
             <h5><b>1. Profile Details</b></h5>
             <hr class="mt-0" />
         </div>
-        <div class="col-md-6">
+
+        <div class="col-md-7">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CustomerList.FirstName, new { @class = "form-control", @placeholder = "First name" })
                 @Html.ValidationMessageFor(m => m.CustomerList.FirstName, "", new { @class = "text-danger" })
                 <label>First Name</label>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-5">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CustomerList.LastName, new { @class = "form-control", @placeholder = "Last name" })
                 @Html.ValidationMessageFor(m => m.CustomerList.LastName, "", new { @class = "text-danger" })
                 <label>Last Name</label>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.Matricule, new { @class = "form-control", @placeholder = "1234" })
+                @Html.ValidationMessageFor(m => m.CustomerList.Matricule, "", new { @class = "text-danger" })
+                <label>Members Matricule Number</label>
             </div>
         </div>
         <div class="col-md-3">
@@ -35,7 +43,7 @@
 
         <div class="col-12">
             <div class="form-check">
-                @Html.CheckBoxFor(m => m.CustomerList.IsDailyCollector, new { @class = "form-check-input" })
+                @Html.CheckBoxFor(m => m.CustomerList.IsDailyCollector, new { @class = "form-check-input", @Readonly=true })
                 <label class="form-check-label" for="isActive">Check me. I am a daily saving member.</label>
             </div>
         </div>
@@ -56,7 +64,7 @@
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.Phone, new { @class = "form-control", @placeholder = "Pnone number" })
+                @Html.TextBoxFor(m => m.CustomerList.Phone, new { @class = "form-control", @placeholder = "Pnone number", @readonly = true })
                 @Html.ValidationMessageFor(m => m.CustomerList.Phone, "", new { @class = "text-danger" })
                 <label>Phone number</label>
             </div>

@@ -1,15 +1,23 @@
-﻿
-
-@{
-    ViewBag.Title = "Ordinary accounts";
+﻿@{
+    ViewBag.Title = "Ordinary Accounts Management";
 }
-<div class="row">
 
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
         <div class="card">
+            <!-- Card Header -->
+            <div class="card-header text-center">
+                <h4 class="card-title text-primary">Ordinary Account Management</h4>
+                <p class="card-text text-muted">
+                    Manage ordinary account configurations and policies efficiently.
+                    Use the options below to view, add, or update account settings for ordinary accounts.
+                </p>
+            </div>
+
+            <!-- Accordion -->
             <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
                 <div class="accordion-item active">
-                    <h2 class="accordion-header text-body d-flex justify-content-between"
+                    <h2 class="accordion-header text-body d-flex justify-content-between align-items-center"
                         id="accordionPopoutIconThree">
                         <button type="button"
                                 class="accordion-button"
@@ -18,33 +26,43 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cog me-2"></i>
-                            Ordinary account management
+                            Ordinary Account Management
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
                          class="accordion-collapse collapse show"
                          data-bs-parent="#accordionPopoutIcon">
                         <div class="accordion-body">
+                            <!-- Main View Change -->
                             <div id="mainviewChange">
                                 <div class="change-group">
+                                    <!-- Actions Section -->
                                     <div class="card mb-4">
-                                        <div class="card-body d-sm-flex d-block">
-                                            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                                <div class="row justify-content-end">
-                                                    <div class="demo-inline-spacing text-end">
-                                                        <a type="button" onclick="LoadDataGen('TransactionConfiguration','myDataTable_product','_ProductData',0,'datalistingview',null,'savingproduct','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                                            <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                                        </a>
-                                                        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_ProductConfig','new','TransactionConfiguration','savingproduct')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                                            <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                                        </a>
-                                                    
-                                                    </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h5 class="text-success">Actions</h5>
+                                                <div class="btn-group">
+                                                    <!-- View List Button -->
+                                                    <a type="button"
+                                                       onclick="LoadDataGen('TransactionConfiguration', 'myDataTable_product', '_ProductData', 0, 'datalistingview', null, 'savingproduct', 'list')"
+                                                       class="btn btn-default btn-sm"
+                                                       data-bs-toggle="tooltip"
+                                                       title="View the list of ordinary accounts">
+                                                        <i class="mdi mdi-view-list mdi-18px"></i> View List
+                                                    </a>
+                                                    <!-- Add New Button -->
+                                                    <a type="button"
+                                                       onclick="AddORUpdateGen(null, 'datalistingview', '_ProductConfig', 'new', 'TransactionConfiguration', 'savingproduct')"
+                                                       class="btn btn-default btn-sm"
+                                                       data-bs-toggle="tooltip"
+                                                       title="Add a new ordinary account">
+                                                        <i class="mdi mdi-plus mdi-18px"></i> Add New
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
+                                    <!-- Data Listing View -->
                                     <div id="datalistingview">
                                         @Html.Partial("_ProductData")
                                     </div>
@@ -58,10 +76,7 @@
     </div>
 </div>
 
-
-
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/Crud/DropDownLoader.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/DropDownLoader.js"></script>
 }
-
-

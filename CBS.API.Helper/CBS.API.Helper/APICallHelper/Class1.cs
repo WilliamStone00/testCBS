@@ -12,6 +12,8 @@ namespace CBS.API.Helper
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
         public T ApiResponseData { get; set; }
+
+       
     }
 
     public class ServiceResponseXX<T>

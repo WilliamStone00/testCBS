@@ -69,25 +69,52 @@
                     <label>Interest posting frequency</label>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.SavingProduct.DisplayOrder, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.SavingProduct.DisplayOrder, "", new { @class = "text-danger" })
-                    <label>Order of listing/display</label>
-                </div>
-            </div>
-            <div class="col-9">
+
+            <div class="col-12">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.AutoAddToMember, new { @class = "form-check-input" })
                     <label class="form-check-label" for="activeStatus">Add to members default ordinary account.</label>
                 </div>
             </div>
+            
 
-
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextAreaFor(m => m.SavingProduct.Description, new { @class = "form-control", @style = "height: 75px;" })
+                    @Html.ValidationMessageFor(m => m.SavingProduct.Description, "", new { @class = "text-danger" })
+                    <label>Description</label>
+                </div>
+            </div>
         </div>
     </fieldset>
+
     <fieldset class="fieldset-custom">
-        <legend>Account types</legend>
+        <legend>Product Category</legend>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.ProductCategory, "Teller", new { id = "teller", @class = "form-check-input" })
+                    <label class="form-check-label" for="teller">Teller</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.ProductCategory, "OrdinaryAccount", new { id = "ordinaryAccount", @class = "form-check-input" })
+                    <label class="form-check-label" for="ordinaryAccount">Ordinary Account</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.ProductCategory, "Remittance", new { id = "remittance", @class = "form-check-input" })
+                    <label class="form-check-label" for="remittance">Remittance</label>
+                </div>
+            </div>
+        </div>
+        <!-- Validation Message -->
+        <div class="text-danger">
+            @Html.ValidationMessageFor(m => m.SavingProduct.ProductCategory)
+        </div>
+    </fieldset>
+
+
+    <fieldset class="fieldset-custom">
+        <legend>Members Ordinary Account types</legend>
         <div class="row">
             <div class="col-12">
                 <div class="form-check form-check-inline" id="accountType">
@@ -114,25 +141,29 @@
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Loan", new { id = "loan", @class = "form-check-input" })
                     <label class="form-check-label" for="loan">Loan account.</label>
                 </div>
+
                 <div class="form-check form-check-inline">
-                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Membership", new { id = "membership", @class = "form-check-input" })
-                    <label class="form-check-label" for="membership">Membership Account.</label>
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "DailyCollection", new { id = "dailyCollection", @class = "form-check-input" })
+                    <label class="form-check-label" for="dailyCollection">Daily collection.</label>
                 </div>
+                @*<div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Other", new { id = "other", @class = "form-check-input" })
+                        <label class="form-check-label" for="other">Other</label>
+                    </div>*@
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="fieldset-custom">
+        <legend>Third Parties Account types</legend>
+        <div class="row">
+            <div class="col-12">
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Atm", new { id = "atm", @class = "form-check-input" })
                     <label class="form-check-label" for="atm">Automatic Teller Machine (ATM).</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Gav", new { id = "gav", @class = "form-check-input" })
-                    <label class="form-check-label" for="gav">Guichet automatic virtuel (GAV).</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "DailyCollection", new { id = "dailyCollection", @class = "form-check-input" })
-                    <label class="form-check-label" for="dailyCollection">Daily collection.</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Teller", new { id = "teller", @class = "form-check-input" })
-                    <label class="form-check-label" for="teller">Teller account (Reserved for operations).</label>
+                    <label class="form-check-label" for="gav">Guichet Automatic Virtuel (GAV).</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "MobileMoneyMTN", new { id = "MobileMoneyMTN", @class = "form-check-input" })
@@ -142,20 +173,80 @@
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "MobileMoneyORANGE", new { id = "MobileMoneyORANGE", @class = "form-check-input" })
                     <label class="form-check-label" for="MobileMoneyORANGE">Mobile Money Orange</label>
                 </div>
-                <div class="form-check form-check-inline">
-                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Other", new { id = "other", @class = "form-check-input" })
-                    <label class="form-check-label" for="other">Other</label>
-                </div>
-                <hr />
             </div>
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextAreaFor(m => m.SavingProduct.Description, new { @class = "form-control", @style = "height: 75px;" })
-                    @Html.ValidationMessageFor(m => m.SavingProduct.Description, "", new { @class = "text-danger" })
-                    <label>Description</label>
+        </div>
+    </fieldset>
+    <fieldset class="fieldset-custom">
+        <legend>System Reserved Account types</legend>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Teller", new { id = "teller", @class = "form-check-input" })
+                    <label class="form-check-label" for="teller">Teller account (Reserved for operations).</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Membership", new { id = "membership", @class = "form-check-input" })
+                    <label class="form-check-label" for="membership">Membership Account (Reserved to manage onboarding fee once per member upon registration)</label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="fieldset-custom">
+        <legend>Remittance Account types</legend>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-check form-check-inline" id="accountType">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "WesternUnion", new { id = "westernUnion", @class = "form-check-input" })
+                    <label class="form-check-label" for="westernUnion">Western Union</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "MoneyGram", new { id = "moneyGram", @class = "form-check-input" })
+                    <label class="form-check-label" for="moneyGram">Money Gram</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Ria", new { id = "ria", @class = "form-check-input" })
+                    <label class="form-check-label" for="ria">Ria</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "OFX", new { id = "ofx", @class = "form-check-input" })
+                    <label class="form-check-label" for="ofx">OFX</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "MPesa", new { id = "mPesa", @class = "form-check-input" })
+                    <label class="form-check-label" for="mPesa">M-Pesa</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Payoneer", new { id = "payoneer", @class = "form-check-input" })
+                    <label class="form-check-label" for="payoneer">Payoneer</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "WorldRemit", new { id = "worldRemit", @class = "form-check-input" })
+                    <label class="form-check-label" for="worldRemit">World Remit</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "TrustSoftCredit", new { id = "trustSoftCredit", @class = "form-check-input" })
+                    <label class="form-check-label" for="trustSoftCredit">Trust Soft Credit</label>
                 </div>
             </div>
 
+            <div class="col-12">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.AutoVerifyRemittanceReceiver, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="autoVerifyRemittanceReceiver">Automatically verify remittance receiver information.</label>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.AutoVerifyRemittanceSender, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="autoVerifyRemittanceSender">Automatically verify remittance sender information.</label>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.SavingProduct.OTPControl, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="oTPControl">Enable OTP control for transactions.</label>
+                </div>
+            </div>
 
         </div>
     </fieldset>
@@ -237,12 +328,9 @@
             </div>
         </div>
     </fieldset>
-
- 
-
     <fieldset class="fieldset-custom">
         <legend>
-            Mobile Application Account Control
+            Mobile Application Control For C-Money
             <i class="bi bi-question-circle-fill" data-bs-toggle="tooltip" title="Control product settings for mobile application access, including activation, transfer, cashin, and cashout permissions."></i>
         </legend>
         <div class="row">
@@ -250,7 +338,7 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.ActivateForMobileApp, new { @class = "form-check-input" })
                     <label class="form-check-label" for="ActivateForMobileApp">
-                        Check to activate this product for mobile app
+                        Check to activate this product for mobile app so that it can be visible to members
                         <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Enable this option to make this product available on the mobile app."></i>
                     </label>
                 </div>
@@ -282,7 +370,7 @@
                     </label>
                 </div>
             </div>
-            <div class="col-6" id="swn">
+            <div class="col-6 mb-2" id="swn">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.ActivateSavingWithdrawalNotificationForMobileApp, new { @class = "form-check-input" })
                     <label class="form-check-label" for="ActivateSavingWithdrawalNotificationForMobileApp">
@@ -291,12 +379,19 @@
                     </label>
                 </div>
             </div>
+            <div class="col-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.SavingProduct.DisplayOrder, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SavingProduct.DisplayOrder, "", new { @class = "text-danger" })
+                    <label>Order of listing or display in C-Money App for Members Usage.</label>
+                </div>
+            </div>
         </div>
     </fieldset>
 
     <fieldset class="fieldset-custom">
         <legend>
-            Third Party Application Control
+            Third Party Application Control (Like GAV)
             <i class="bi bi-question-circle-fill" data-bs-toggle="tooltip" title="Control settings for third-party application access, including activation and transaction permissions."></i>
         </legend>
         <div class="row">

@@ -1,0 +1,114 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.ValidationOfRemittanceCommand
+
+@{
+    var totalAmountPayable = Model.Remittance.Amount + Model.Remittance.Fee;
+    var totalAmountRecevable = Model.Remittance.Amount;
+}
+
+@using (Html.BeginForm("Validate", "Remittance", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="accordion" id="remittanceAccordion">
+        <!-- Remittance Details Section -->
+        <div class="accordion-item mt-2">
+            <h2 class="accordion-header" id="remittanceDetailsHeader">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#remittanceDetails" aria-expanded="true" aria-controls="remittanceDetails">
+                    Remittance Details
+                </button>
+            </h2>
+            <div id="remittanceDetails" class="accordion-collapse collapse show" aria-labelledby="remittanceDetailsHeader" data-bs-parent="#remittanceAccordion">
+                <div class="accordion-body">
+                    <fieldset class="fieldset-custom">
+                        <legend id="select_base">Remittance Details</legend>
+                        <div class="mb-4">
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Date:</strong> @Model.Remittance.InitiationDate</p>
+                                    <p><strong>Sender:</strong> @Model.Remittance.SenderName, [Tel: @Model.Remittance.SenderPhoneNumber]</p>
+                                    <p><strong>Receiver:</strong> @Model.Remittance.ReceiverName, [Tel: @Model.Remittance.ReceiverPhoneNumber]</p>
+                                    <p><strong>Initial Amount:</strong> @Model.Remittance.InitailAmount.ToString("#,##0.0")</p>
+                                    <p><strong>Reference:</strong> @Model.Remittance.TransactionReference</p>
+                                    <p>
+                                        <strong>Charge status:</strong>
+                                        @if (Model.Remittance.ChargeType == "Inclussive")
+                                        {
+                                            <span class="badge bg-dark text-white">Charge included in amount</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-dark text-white">Charge excluded from amount</span>
+                                        }
+                                    </p>
+                                    <p><strong>Transfer source:</strong> @Model.Remittance.TransfterSource</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Requested Amount:</strong> @Model.Remittance.InitailAmount.ToString("#,##0.0")</p>
+                                    <p><strong>Initiating Branch:</strong> @Model.Remittance.SourceBranchName</p>
+                                    <p><strong>Charges:</strong> @Model.Remittance.Fee.ToString("#,##0.0")</p>
+                                    <p>
+                                        <strong>Total Amount to be Paid by Sender:</strong>
+                                        <span class="text-success">@totalAmountPayable.ToString("#,##0.0")</span>
+                                    </p>
+                                    <p>
+                                        <strong>Amount to be Received by Receiver:</strong>
+                                        <span class="text-info">@totalAmountRecevable.ToString("#,##0.0")</span>
+                                    </p>
+                                    <p><strong>Transfer type:</strong> @Model.Remittance.TransferType</p>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review and Approve Form Section -->
+        <div class="accordion-item mt-2">
+            <h2 class="accordion-header" id="reviewApproveFormHeader">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#reviewApproveForm" aria-expanded="false" aria-controls="reviewApproveForm">
+                    Review and Approve Form
+                </button>
+            </h2>
+            <div id="reviewApproveForm" class="accordion-collapse collapse" aria-labelledby="reviewApproveFormHeader" data-bs-parent="#remittanceAccordion">
+                <div class="accordion-body">
+                    <fieldset class="fieldset-custom mt-4">
+                        <legend id="select_base">Review and Approve Form</legend>
+                        <hr>
+                        <div class="row mt-2 gy-4">
+                            <!-- Status Radio Buttons -->
+                            <div class="col-md-12">
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check me-3">
+                                        @Html.RadioButtonFor(m => m.Status, "Approved", new { @id = "statusApproved", @class = "form-check-input", @checked = "checked" })
+                                        <label class="form-check-label" for="statusApproved">Approved</label>
+                                    </div>
+                                    <div class="form-check">
+                                        @Html.RadioButtonFor(m => m.Status, "Rejected", new { @id = "statusRejected", @class = "form-check-input" })
+                                        <label class="form-check-label" for="statusRejected">Rejected</label>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Approval Comment -->
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextAreaFor(m => m.ApprovalComment, new { @class = "form-control", @style = "height: 70px;" })
+                                    @Html.ValidationMessageFor(m => m.ApprovalComment, "", new { @class = "text-danger" })
+                                    <label for="formValidationDob">Approval Note</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="mt-4 text-center">
+                            <button type="submit" id="btnSave" class="btn btn-primary px-5">Submit</button>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+}

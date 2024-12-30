@@ -10,10 +10,13 @@
         <div class="row mt-2 gy-4">
             <div class="col-md-4">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Transfer.DateOfInitiation, new { @class = "form-control", @readonly = true })
+                    @Html.TextBox("DateOfInitiationFormatted",
+                        Model.Transfer.DateOfInitiation.ToString("dd/MM/yyyy") ?? "N/A",
+                        new { @class = "form-control", @readonly = "readonly" })
                     <label>Date of Initiation</label>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Transfer.TransactionRef, new { @class = "form-control", @readonly = true })

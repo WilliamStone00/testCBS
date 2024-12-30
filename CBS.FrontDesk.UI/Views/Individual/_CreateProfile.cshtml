@@ -57,10 +57,17 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12">
+                                    <div class="col-5">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.NoneMemberAccount, new { @class = "form-check-input", id = "NoneMemberAccount" })
                                             <label class="form-check-label" for="NoneMemberAccount">None Member Account</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.Matricule, new { @class = "form-control", @placeholder = "1234" })
+                                            @Html.ValidationMessageFor(m => m.Matricule, "", new { @class = "text-danger" })
+                                            <label>Members Matricule Number</label>
                                         </div>
                                     </div>
 

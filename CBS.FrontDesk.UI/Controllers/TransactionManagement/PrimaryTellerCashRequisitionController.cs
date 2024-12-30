@@ -23,7 +23,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             _services = services;
             _branchServices = branchServices;
         }
-        //RequestValidation
+        //Validation
         public async Task<ActionResult> Index()
         {
             var Branches = await _branchServices.GetBranches();
@@ -35,7 +35,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var pending = await _services.GetAllPendingPrimaryTellerCashReplenishments();
             return View(pending.ToList());
         }
-        //PendingRequest
+        //Pending
         public async Task<ActionResult> RequestValidation(string ProvisionKey)
         {
             var cashReplenishmentSub = await _services.GetCashReplenishmentPrimaryTeller(ProvisionKey);

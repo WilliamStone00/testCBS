@@ -130,6 +130,16 @@ namespace CBS.BusinessService.Accounts
                     TransferLimit.SourceBrachOfficeShare = model.SourceBrachOfficeShare;
                     TransferLimit.DestinationBranchOfficeShare = model.DestinationBranchOfficeShare;
                     TransferLimit.HeadOfficeShare = model.HeadOfficeShare;
+                    TransferLimit.CamCCULShare = model.CamCCULShare;
+                    TransferLimit.FluxAndPTMShare = model.FluxAndPTMShare;
+
+
+                    TransferLimit.CamCCULShareCMoney = model.CamCCULShareCMoney;
+                    TransferLimit.DestinationBranchOfficeShareCMoney = model.DestinationBranchOfficeShareCMoney;
+                    TransferLimit.FluxAndPTMShareCMoney = model.FluxAndPTMShareCMoney;
+                    TransferLimit.HeadOfficeShareCMoney = model.HeadOfficeShareCMoney;
+                    TransferLimit.SourceBrachOfficeShareCMoney = model.SourceBrachOfficeShareCMoney;
+
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<TransferLimit>>(string.Format(APICallHelper.Get_Update_Delete_TransferLimits, model.id), TransferLimit);
                     if (response.IsSuccess)
                     {

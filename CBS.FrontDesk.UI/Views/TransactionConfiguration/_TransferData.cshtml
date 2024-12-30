@@ -1,6 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
 <fieldset class="fieldset-custom">
-    <legend>Transfer policies data</legend>
+    <legend>TRUST CONFIG AND SHARING</legend>
     @if (Model.TransferLimits.Count == 0)
     {
         <div class="text-center my-3">
@@ -8,15 +8,18 @@
         </div>
     }
     else
-    { <div class="table-responsive mb-3">
-            <table class="table table-hover" id="myDataTable">
-                <thead class="table-light">
+    {
+        <div class="table-responsive">
+            <table class="table table-hover" id="xmyDataTable">
+                <thead>
                     <tr>
-                        <th>Product name</th>
-                        <th>Transfer type</th>
-                        <th>Min-Max Amount</th>
-                        <th>S-Share</th>
-                        <th>D-Share</th>
+                        <th>Type</th>
+                        <th>Max Amount</th>
+                        <th>Source</th>
+                        <th>Destin</th>
+                        <th>CamCCUL</th>
+                        <th>HeadOffice</th>
+                        <th>FluxPTM</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -24,14 +27,16 @@
                     @foreach (var d in Model.TransferLimits)
                     {
                         <tr>
-                            <td style="width:30%">@d.product.Name</td>
-                            <td style="width:15%">@d.transferType</td>
-                            <td style="width:20%">@d.minAmount.ToString("#,##0.0")-@d.maxAmount.ToString("#,##0.0")</td>
-                            <td style="width:10%">@d.SourceBrachOfficeShare.ToString("#,##0.0") %</td>
-                            <td style="width:10%">@d.DestinationBranchOfficeShare.ToString("#,##0.0")</td>
-                            <td style="width:15%">
+                            <td>@d.transferType</td>
+                            <td>@d.maxAmount.ToString("#,##0.0")</td>
+                            <td>@d.SourceBrachOfficeShare.ToString("#,##0") %</td>
+                            <td>@d.DestinationBranchOfficeShare.ToString("#,##0") %</td>
+                            <td>@d.CamCCULShare.ToString("#,##0") %</td>
+                            <td>@d.HeadOfficeShare.ToString("#,##0") %</td>
+                            <td>@d.FluxAndPTMShare.ToString("#,##0") %</td>
+                            <td>
                                 <a href="#" onclick="AddORUpdateGen('@d.id','datalistingview_Transfer','_TransferConfig','get','TransactionConfiguration','transferlimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.product.Name @d.transferType to edit">Edit</a> |
-                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.product.Name @d.transferType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable','_TransferData',0,'datalistingview_Transfer',null,'cash_transfer_parameter')">Delete</a>
+                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.product.Name @d.transferType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','xmyDataTable','_TransferData',0,'datalistingview_Transfer',null,'cash_transfer_parameter')">Delete</a>
                             </td>
                         </tr>
                     }
@@ -39,6 +44,45 @@
             </table>
         </div>
     }
+</fieldset>
 
-    </fieldset>
 
+<fieldset class="fieldset-custom">
+    <legend>C-MONEY SHARING</legend>
+    @if (Model.TransferLimits.Count == 0)
+    {
+        <div class="text-center my-3">
+            <p>No transfer policy is configured.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover" id="xxmyDataTable">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Source</th>
+                        <th>Destin</th>
+                        <th>CamCCUL</th>
+                        <th>HeadOffice</th>
+                        <th>FluxPTM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.TransferLimits)
+                    {
+                        <tr>
+                            <td>@d.transferType</td>
+                            <td>@d.SourceBrachOfficeShareCMoney.ToString("#,##0") %</td>
+                            <td>@d.DestinationBranchOfficeShareCMoney.ToString("#,##0") %</td>
+                            <td>@d.CamCCULShareCMoney.ToString("#,##0") %</td>
+                            <td>@d.HeadOfficeShareCMoney.ToString("#,##0") %</td>
+                            <td>@d.FluxAndPTMShareCMoney.ToString("#,##0") %</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</fieldset>

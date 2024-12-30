@@ -1,35 +1,109 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@{
+    ViewBag.Title = "Cash Desk";
+}
+<link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
+
 <fieldset class="fieldset-custom">
-    <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-        <a href="#" onclick="SearchByCustomerNumber('_CustomerCard','datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="View customer details">
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+        <!-- Display Member Name and Branch Information -->
+        <span class="fw-bold text-dark me-3">[@Model.Branch.Name.ToUpper()] : [@Model.Customer.name.ToUpper()]</span>
+
+        <!-- View Member Details -->
+        <a href="#"
+           onclick="SearchByCustomerNumber('_CustomerCard','datalistingview')"
+           class="btn btn-icon btn-label-primary btn-sm demo"
+           data-bs-toggle="tooltip"
+           title="View detailed profile for @Model.Customer.name, including account and transaction history">
             <i class="fas fa-user"></i>
         </a>
-        <a href="#" onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashin')" class="btn btn-icon btn-label-success btn-sm btn-fab demo btn-space cashin" data-bs-toggle="tooltip" title="Perform cashin operation">
+
+        <!-- Perform Cash-In Operation -->
+        <a href="#"
+           onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashin')"
+           class="btn btn-icon btn-label-success btn-sm demo"
+           data-bs-toggle="tooltip"
+           title="Record cash deposits for @Model.Customer.name">
             <i class="fas fa-money-check"></i>
         </a>
-        <a href="#" onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashout')" class="btn btn-icon btn-label-danger btn-sm btn-fab demo btn-space cashout" data-bs-toggle="tooltip" title="Perform cashout operation">
+
+        <!-- Perform Cash-Out Operation -->
+        <a href="#"
+           onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashout')"
+           class="btn btn-icon btn-label-danger btn-sm demo"
+           data-bs-toggle="tooltip"
+           title="Process cash withdrawals requested by @Model.Customer.name">
             <i class="fas fa-money-bill-wave-alt"></i>
         </a>
-        <a href="#" onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashoutsws')" class="btn btn-icon btn-label-danger btn-sm btn-fab demo btn-space cashout" data-bs-toggle="tooltip" title="Perform SWS cashout operation">
-            <i class="fas fa-hand-holding-usd"></i>
-        </a>
-        <a href="#" onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','withdrawalnotification')" class="btn btn-icon btn-label-danger btn-sm btn-fab demo btn-space cashin" data-bs-toggle="tooltip" title="Pay withdrawal notification charges">
-            <i class="fas fa-bell"></i>
-        </a>
-        <a href="#" onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','loanapplicationfeepayment')" class="btn btn-icon btn-label-success btn-sm btn-fab demo btn-space cashin" data-bs-toggle="tooltip" title="Pay Loan Application Fee">
-            <i class="fas fa-bell"></i>
-        </a>
-        <a href="#" onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','repayment')" class="btn btn-icon btn-label-dark btn-sm btn-fab demo btn-space loan-repayment" data-bs-toggle="tooltip" title="Perform loan repayment operation">
-            <i class="fas fa-hand-holding-usd"></i>
-        </a>
-        <a href="#" onclick="AddDepositor()" data-toggle="modal" data-target="#depositerModal" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="Add depositor">
-            <i class="fas fa-user"></i> <!-- Customer details icon -->
-            <i class="fas fa-money-check"></i> <!-- Depositor icon -->
-        </a>
-        <a href="#" onclick="AddNote()" data-toggle="modal" data-target="#depositerModal" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="Add note">
-            <i class="fas fa-user"></i> <!-- Customer details icon -->
-            <i class="fas fa-sticky-note"></i> <!-- Note icon -->
-        </a>
-    </div>
 
+        <!-- Perform SWS Cash-Out -->
+        <a href="#"
+           onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashoutsws')"
+           class="btn btn-icon btn-label-warning btn-sm demo"
+           data-bs-toggle="tooltip"
+           title="Process withdrawals using Special Withdrawal Slips (SWS) for @Model.Customer.name">
+            <i class="fas fa-hand-holding-usd"></i>
+        </a>
+
+        <!-- Pay Withdrawal Notification Charges -->
+        <a href="#"
+           onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','withdrawalnotification')"
+           class="btn btn-icon btn-label-danger btn-sm demo"
+           data-bs-toggle="tooltip"
+           title="Pay withdrawal notification charges for @Model.Customer.name">
+            <i class="fas fa-bell"></i>
+        </a>
+
+        <!-- Pay Loan Application Fee -->
+        <a href="#"
+           onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','loanapplicationfeepayment')"
+           class="btn btn-icon btn-label-info btn-sm demo"
+           data-bs-toggle="tooltip"
+           title="Pay the loan application fee for @Model.Customer.name">
+            <i class="fas fa-file-invoice-dollar"></i>
+        </a>
+
+        <!-- Perform Loan Repayment -->
+        <a href="#"
+           onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','repayment')"
+           class="btn btn-icon btn-label-dark btn-sm demo"
+           data-bs-toggle="tooltip"
+           title="Repay outstanding loans, including interest and penalties, for @Model.Customer.name">
+            <i class="fas fa-hand-holding-usd"></i>
+        </a>
+
+        <!-- Add Depositor -->
+        <a href="#"
+           onclick="AddDepositor()"
+           data-toggle="modal"
+           data-target="#depositerModal"
+           class="btn btn-icon btn-label-primary btn-sm demo"
+           data-bs-toggle="tooltip"
+           title="Add a representative for @Model.Customer.name operation">
+            <i class="fas fa-user-plus"></i>
+        </a>
+
+        <!-- Add Note -->
+        <a href="#"
+           onclick="AddNote()"
+           data-toggle="modal"
+           data-target="#depositerModal"
+           class="btn btn-icon btn-label-secondary btn-sm demo"
+           data-bs-toggle="tooltip"
+           title="Add a note or comment for @Model.Customer.name">
+            <i class="fas fa-sticky-note"></i>
+        </a>
+
+        <!-- Display Local or Inter-Branch Status -->
+        <span class="badge @((Session["BranchId"]?.ToString()?.ToLower() == @Model.Branch.Id?.ToLower()) ? "bg-success" : "bg-warning") text-dark">
+            @if (Session["BranchId"]?.ToString()?.ToLower() == @Model.Branch.Id?.ToLower())
+            {
+                <span><b>[Local Operation]</b></span>
+            }
+            else
+            {
+                <span><b>[Inter-Branch Operation]</b></span>
+            }
+        </span>
+    </div>
 </fieldset>

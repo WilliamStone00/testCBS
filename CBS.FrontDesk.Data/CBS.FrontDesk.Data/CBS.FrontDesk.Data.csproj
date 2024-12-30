@@ -74,6 +74,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounting\ProductAccountingBook.cs" />
+    <Compile Include="Entity\CMoney\CMoneyMembersActivationAccount.cs" />
+    <Compile Include="Enum.cs" />
     <Compile Include="CurrencyMapper.cs" />
     <Compile Include="Entity\AccountingDayObject\AccountingDay.cs" />
     <Compile Include="Entity\AccountingDayObject\BranchListing.cs" />
@@ -195,6 +197,7 @@
     <Compile Include="Entity\RoleManagement\Role.cs" />
     <Compile Include="Entity\SavingProducts\AccountOperation\AccountTransfer.cs" />
     <Compile Include="Entity\SavingProducts\AccountOperation\TransactionHistory.cs" />
+    <Compile Include="Entity\SavingProducts\Remittance.cs" />
     <Compile Include="Entity\SavingProducts\TellersEndOfDay.cs" />
     <Compile Include="Entity\StringValues.cs" />
     <Compile Include="Entity\Config\Organization\Bank.cs" />

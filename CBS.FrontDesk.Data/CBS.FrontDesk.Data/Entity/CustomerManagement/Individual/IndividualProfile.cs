@@ -26,13 +26,16 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string Occupation { get; set; }
         public string VillageOfOrigin { get; set; }
         public bool IsDailyCollector { get; set; } = false;
-
+        public string MobileLoginId { get; set; }
         public bool NoneMemberAccount { get; set; } = false;
         public string Address { get; set; }
         public string IDNumber { get; set; }
         public string IDNumberIssueDate { get; set; }
         public string IDNumberIssueAt { get; set; }
         public string BankName { get; set; }
+        public string Matricule { get; set; }
+        public string AccountConfirmationNumber { get; set; }
+
         public string MembershipApplicantDate { get; set; }
         public string MembershipApplicantProposedByReferral1 { get; set; }
         public string MembershipApplicantProposedByReferral2 { get; set; }
@@ -133,6 +136,9 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string Address { get; set; }
         public string BranchId { get; set; }
         public string PhoneNumber { get; set; }
+        public string Matricule { get; set; }
+        public string AccountConfirmationNumber { get; set; }
+
     }
     public class ReportQuerTemplate : IValidatableObject
     {

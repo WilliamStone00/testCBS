@@ -50,52 +50,6 @@ namespace CBS.BusinessService.CustomerManagement
             _memberAccountActivationPolicyServices = memberAccountActivationPolicyServices;
             _bankServices = bankServices;
         }
-        //https://localhost:7085/
-        // Other existing methods...
-        //public async Task<ExecutionMessages> UploadFiles(CustomerDocumentRequest documentRequest)
-        //{
-        //    try
-        //    {
-
-        //        // Check if files are attached
-        //        if (documentRequest.AttachedFiles[0] == null)
-        //        {
-        //            // Handle case where no files are attached
-        //            return GetExecutionMessages(documentRequest, false, documentRequest.DocumentType, MessagesResults.Failed,
-        //      ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
-        //      null);
-        //        }
-        //        var additionalParams = new Dictionary<string, string>
-        //        {
-        //            { "Id", documentRequest.CustomerID },
-        //            { "documentType", documentRequest.DocumentType },
-        //            { "serviceType", documentRequest.ServiceTypeType },
-        //        };
-
-
-
-
-
-        //        var response = await _bankConfigApiHelper.PostFilesAndParamsAsync<ServiceResponse<DocumentUploadResponse>>(APICallHelper.UploadFile, additionalParams, documentRequest.AttachedFiles);
-        //        if (response.ApiResponseData != null)
-        //        {
-        //            GetExecutionMessages(response, true, documentRequest.DocumentType, MessagesResults.Success,
-        //                ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null,
-        //                null);
-        //            return ExecutionMessage;
-        //        }
-        //        GetExecutionMessages(documentRequest, false, documentRequest.DocumentType, MessagesResults.Failed,
-        //            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
-        //            null);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
-        //            SystemMessageStatus.Failed.ToString(), ex);
-        //    }
-        //    return ExecutionMessage;
-        //}
         public async Task<ExecutionMessages> UploadFiles(CustomerDocumentRequest documentRequest)
         {
             try
@@ -285,13 +239,13 @@ namespace CBS.BusinessService.CustomerManagement
                     Logo = bank.LogoUrl,
 
                     // Head Office details
-                    HeadOfficeName = bank.Name,
+                    HeadOfficeName = bank.Name, 
                     HeadOfficeAddress = bank.Address,
                     HeadOfficeTelephone = bank.Telephone,
                     HeadOfficeEmail = bank.Email,
                     HeadOfficeWebSite = bank.WebSite,
                     HeadOfficeInitial = bank.BankInitial,
-                    HeadOfficeCode = bank.BankCode
+                    HeadOfficeCode = bank.BankCode, AccountConfirmationNumber=c.AccountConfirmationNumber, Matricule=c.Matricule
                 };
             }).ToList();
         }
@@ -471,7 +425,21 @@ namespace CBS.BusinessService.CustomerManagement
                 BankName = b == null ? "N/A" : b.Bank.Name,
                 CustomerCode = a.CustomerCode,
                 VillageOfOrigin = a.VillageOfOrigin,
-                PaginationMetadata = a.PaginationMetadata
+                PaginationMetadata = a.PaginationMetadata,
+                Matricule=a.Matricule,
+                AccountConfirmationNumber=a.AccountConfirmationNumber,
+                CustomerType=a.CustomerType,
+                ProfileType=a.ProfileType,
+                CompanyCreationDate=a.CompanyCreationDate,
+                ConditionForWithdrawal=a.ConditionForWithdrawal,
+                GroupCustomers=a.GroupCustomers,
+                IsBelongToGroup=a.IsBelongToGroup,
+                MobileLoginId=a.MobileLoginId,
+                MobileOrOnLineBankingLoginFailedAttempts=a.MobileOrOnLineBankingLoginFailedAttempts,
+                NoneMemberAccount=a.NoneMemberAccount,
+                NumberOfAttemptsOfMobileOrOnLineBankingLogin=a.NumberOfAttemptsOfMobileOrOnLineBankingLogin,
+                PlaceOfCreation=a.PlaceOfCreation,
+                RegistrationNumber=a.RegistrationNumber
             };
 
             return customer;
@@ -541,10 +509,14 @@ namespace CBS.BusinessService.CustomerManagement
             {
 
                 var cusResponseObject = await GetSingleCustomer(id);
-                var Branch = await _branchServices.GetBranch(cusResponseObject.BranchId);
-                var data = TransformToCustomerList(cusResponseObject, Branch, null);
-                var result = new IndividualCustomerProfile(data);
-                return result;
+                if (cusResponseObject!=null)
+                {
+                    var Branch = await _branchServices.GetBranch(cusResponseObject.BranchId);
+                    var data = TransformToCustomerList(cusResponseObject, Branch, null);
+                    var result = new IndividualCustomerProfile(data);
+                    return result;
+                }
+                return null;
             }
             catch (Exception ex)
             {
@@ -686,6 +658,7 @@ namespace CBS.BusinessService.CustomerManagement
 
                 model.bankId = GetBankID();
                 model.branchId = GetBranchID();
+
                 var inResponse = await _transactionApiHelper.PostAsync<ServiceResponse<CustomerAccount>>(APICallHelper.AddCustomerSavingAccount, model);
                 if (inResponse.IsSuccess)
                 {
@@ -730,9 +703,11 @@ namespace CBS.BusinessService.CustomerManagement
                 customer.Email = objCustomerProfile.CustomerList.Email;
                 customer.Address = objCustomerProfile.CustomerList.Address;
                 customer.BankName = GetBranchName();
+                customer.branchCode = GetBranchCode();
                 customer.Language = objCustomerProfile.CustomerList.Language;
                 customer.VillageOfOrigin = objCustomerProfile.CustomerList.VillageOfOrigin;
                 customer.Gender = objCustomerProfile.CustomerList.Gender;
+                customer.Matricule = objCustomerProfile.CustomerList.Matricule;
                 customer.Phone = objCustomerProfile.CustomerList.Phone;
                 customer.TaxIdentificationNumber = objCustomerProfile.CustomerList.TaxIdentificationNumber;
                 customer.EconomicActivitiesId = objCustomerProfile.CustomerList.EconomicActivitiesId;
@@ -806,6 +781,7 @@ namespace CBS.BusinessService.CustomerManagement
                 customer.MembershipApprovalStatus = objCustomerProfile.CustomerList.MembershipApprovalStatus;
                 customer.MembershipApprovalBy = GetUserFullName();
                 customer.MembershipApprovedDate = DateTime.Now.ToString();
+                customer.branchCode=GetBranchCode();
                 if (customer.VillageOfOrigin == null)
                 {
                     customer.VillageOfOrigin = "N/A";
@@ -908,7 +884,7 @@ namespace CBS.BusinessService.CustomerManagement
                 model.IsDailyCollector = model.CustomerType == "DailyCollector" ? true : false;
                 model.CustomerType = model.NoneMemberAccount ? model.CustomerType : "MemberAccount";
                 model.EmployerTelephone = tel;
-                model.MembershipApprovalStatus = model.NoneMemberAccount ? "Approved":"Awaits_Validation";
+                model.MembershipApprovalStatus = model.NoneMemberAccount ? "Approved" : "Awaits_Validation";
                 model.BankName = GetBranchName();
                 model.Email = model.Email ?? "fluxdefault@trustcredit.com";
                 model.MembershipApplicantDate = DateTime.Now.ToString();

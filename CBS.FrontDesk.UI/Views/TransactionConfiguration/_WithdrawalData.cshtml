@@ -9,16 +9,20 @@
     }
     else
     {
-        <div class="table-responsive mb-3">
-            <table class="table table-hover" id="myDataTable">
-                <thead class="table-light">
+        <div class="table-responsive">
+            <table class="table table-hover" id="xmyDataTable">
+                <thead>
                     <tr>
-                        <th>Product name</th>
-                        <th>type</th>
-                        <th>Min-Max Amount</th>
-                        <th>Form Fee MP</th>
-                        <th>Form Fee PP</th>
-                        <th>Notification on Withdrawal</th>
+                        <th>Type</th>
+                        <th>Max Amount</th>
+                        <th>Form M</th>
+                        <th>From P</th>
+                        <th>Source</th>
+                        <th>Destin</th>
+                        <th>CamCCUL</th>
+                        <th>HeadOffice</th>
+                        <th>FluxPTM</th>
+                        <th>SWN</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -26,12 +30,16 @@
                     @foreach (var d in Model.WithdrawalLimits)
                     {
                         <tr>
-                            <td style="width:20%">@d.Product.Name</td>
-                            <td style="width:15%">@d.WithdrawalType</td>
-                            <td style="width:20%">@d.MinAmount.ToString("#,##0.0")-@d.MaxAmount.ToString("#,##0.0")</td>
-                            <td style="width:10%">@d.MoralPersonWithdrawalFormFee.ToString("#,##0.0")</td>
-                            <td style="width:10%">@d.PhysicalPersonWithdrawalFormFee.ToString("#,##0.0")</td>
-                            <td style="width:10%">
+                            <td>@d.WithdrawalType</td>
+                            <td>@d.MaxAmount.ToString("#,##0.0")</td>
+                            <td>@d.MoralPersonWithdrawalFormFee.ToString("#,##0.0")</td>
+                            <td>@d.PhysicalPersonWithdrawalFormFee.ToString("#,##0.0")</td>
+                            <td>@d.SourceBrachOfficeShare.ToString("#,##0") %</td>
+                            <td>@d.DestinationBranchOfficeShare.ToString("#,##0") %</td>
+                            <td>@d.CamCCULShare.ToString("#,##0") %</td>
+                            <td>@d.HeadOfficeShare.ToString("#,##0") %</td>
+                            <td>@d.FluxAndPTMShare.ToString("#,##0") %</td>
+                            <td>
                                 @if (d.MustNotifyOnWithdrawal)
                                 {
                                     <span class="badge bg-info">Yes</span>
@@ -41,9 +49,9 @@
                                     <span class="badge bg-warning">No</span>
                                 }
                             </td>
-                            <td style="width:15%">
+                            <td>
                                 <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Withdrawal','_WithdrawalConfig','get','TransactionConfiguration','withdrawallimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Product.Name @d.WithdrawalType to edit">Edit</a> |
-                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Product.Name @d.WithdrawalType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','myDataTable','_WithdrawalData',0,'datalistingview_Withdrawal',null,'cash_withdrawal_parameter')">Delete</a>
+                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Product.Name @d.WithdrawalType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','xmyDataTable','_WithdrawalData',0,'datalistingview_Withdrawal',null,'cash_withdrawal_parameter')">Delete</a>
                             </td>
                         </tr>
                     }
@@ -51,7 +59,4 @@
             </table>
         </div>
     }
-
-
-
 </fieldset>

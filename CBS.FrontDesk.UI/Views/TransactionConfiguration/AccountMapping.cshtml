@@ -1,23 +1,29 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
 
 @{
-    ViewBag.Title = "Account mapping";
+    ViewBag.Title = "Account Mapping";
 }
-<div class="row">
 
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
         <div class="card">
-            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+            <div class="card-header text-center">
+                <h4 class="card-title text-primary">Account Mapping for @Model.SavingProduct.Name</h4>
+                <p class="card-text text-muted">
+                    Use this section to map chart of account configurations to the saving product. This ensures accurate tracking of transactions related to the product.
+                </p>
+            </div>
+            <div id="accordionPopoutIcon" class="accordion accordion-popout">
                 <div class="accordion-item active">
-                    <h2 class="accordion-header text-body d-flex justify-content-between"
+                    <h2 class="accordion-header d-flex justify-content-between align-items-center"
                         id="accordionPopoutIconThree">
                         <button type="button"
-                                class="accordion-button"
+                                class="accordion-button text-primary"
                                 data-bs-toggle="collapse"
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-cog me-2"></i>
+                            <i class="mdi mdi-cog me-2"></i> Ordinary Account Mapping
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -27,10 +33,16 @@
                             <div id="mainviewChange">
                                 <div class="change-group">
                                     <div class="card mb-4">
-                                        <div class="card-body d-sm-flex d-block">
-                                            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                                Ordinary account mapping for @Model.SavingProduct.Name
-                                            </div>
+                                        <div class="card-body">
+                                            <h5 class="text-success">
+                                                Configure account mappings for transactions related to
+                                                <strong>@Model.SavingProduct.Name</strong>.
+                                            </h5>
+                                            <p class="text-muted">
+                                                Account mapping ensures that all financial operations for this product
+                                                are accurately reflected in the appropriate accounts.
+                                                Please review and map the accounts carefully.
+                                            </p>
                                         </div>
                                     </div>
                                     <div id="datalistingview">
@@ -46,10 +58,8 @@
     </div>
 </div>
 
-
-
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/Crud/TransactionConfiguration/SavingProductFeeMapping.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/TransactionConfiguration/SavingProductFeeMapping.js"></script>
 }
-
 

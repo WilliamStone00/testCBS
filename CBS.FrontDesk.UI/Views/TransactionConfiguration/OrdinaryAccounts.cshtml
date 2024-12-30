@@ -1,21 +1,35 @@
-﻿
-
-@{
-    ViewBag.Title = "Ordinary accounts";
+﻿@{
+    ViewBag.Title = "Ordinary Accounts";
 }
 <style>
     .fieldset-legend {
         font-weight: normal;
     }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .card-text {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
 </style>
 
 <div class="row">
-
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+    <div class="col-xl-12 col-lg-12 col-md-12">
         <div class="card">
+            <div class="card-header text-center">
+                <h4 class="card-title text-primary">Ordinary Account Policy Setup</h4>
+                <p class="card-text">
+                    Configure policies for ordinary accounts to ensure proper mapping and handling of transactions.
+                    This setup helps streamline account management and maintain consistency.
+                </p>
+            </div>
             <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
                 <div class="accordion-item active">
-                    <h2 class="accordion-header text-body d-flex justify-content-between"
+                    <h2 class="accordion-header text-body d-flex justify-content-between align-items-center"
                         id="accordionPopoutIconThree">
                         <button type="button"
                                 class="accordion-button"
@@ -24,16 +38,26 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cog me-2"></i>
-                            Ordinary account policy setup.
+                            Ordinary Account Policy Setup
                         </button>
                     </h2>
-                
                     <div id="accordionPopoutIcon-3"
                          class="accordion-collapse collapse show"
                          data-bs-parent="#accordionPopoutIcon">
                         <div class="accordion-body">
                             <div id="mainviewChange">
                                 <div class="change-group">
+                                    <div class="card mb-4">
+                                        <div class="card-body">
+                                            <h5 class="text-success">
+                                                Manage Ordinary Account Policies
+                                            </h5>
+                                            <p class="text-muted">
+                                                This section allows you to configure, update, and review policies for ordinary accounts.
+                                                Ensure all required mappings are properly defined for smooth account operation.
+                                            </p>
+                                        </div>
+                                    </div>
                                     <div id="datalistingview">
                                         @Html.Partial("_OrdinaryAccountData")
                                     </div>
@@ -47,10 +71,7 @@
     </div>
 </div>
 
-
-
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/Crud/DropDownLoader.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/DropDownLoader.js"></script>
 }
-
-

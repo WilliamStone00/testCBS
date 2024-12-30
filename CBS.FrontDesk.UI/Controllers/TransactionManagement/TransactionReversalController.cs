@@ -22,7 +22,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {
             _services = services;
         }
-        //RequestValidation
+        //Validation
         public async Task<ActionResult> Index()
         {
             return View();

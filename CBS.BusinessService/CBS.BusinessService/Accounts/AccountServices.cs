@@ -28,6 +28,8 @@ using CBS.BusinessService.Config;
 using System.IO;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
+using CBS.FrontDesk.Data;
+using Account = CBS.FrontDesk.Data.Entity.SavingProducts.Account;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -334,7 +336,83 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
+        public async Task<IEnumerable<CustomerAccount>> GetAllRemittanceAccounts(string branchid)
+        {
+            try
+            {
+                var accounts = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(string.Format(APICallHelper.GetAllRemittanceAccounts, branchid));
+                if (accounts.ApiResponseData!=null)
+                {
+                    return accounts.ApiResponseData.Data;
 
+                }
+                return new List<CustomerAccount>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+        public async Task<SelectList> GetAllRemittanceAccountsDroupDown(List<CustomerAccount> customerAccounts, string transfterType)
+        {
+            try
+            {
+                var accounts = new List<CustomerAccount>();
+                if (transfterType=="Local_Remittance")
+                {
+                    accounts=customerAccounts.Where(x => x.accountType==RemittanceTypes.TrustSoftCredit.ToString()).ToList();
+                }
+                else
+                {
+                    accounts=customerAccounts.Where(x => x.accountType!=RemittanceTypes.TrustSoftCredit.ToString()).ToList();
+                }
+                // Filter and map the data to the list of SelectListItem
+                var values = accounts
+                    .Select(x => new SelectListItem
+                    {
+                        Text = $"[Remittance Type: {x.accountType}], [Account Number: {x.accountNumber}], [Balance: {x.balance}]",
+                        Value = x.accountType
+                    })
+                    .ToList();
+
+                // Default selected value (adjust as per your needs)
+                var defaultSelectedValue = "default-value";
+
+                // Return the SelectList
+                return new SelectList(values, "Value", "Text", defaultSelectedValue);
+
+               
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // _logger.LogError(ex, "An error occurred while getting the loan products dropdown.");
+
+                // Handle the exception accordingly
+                throw; // Re-throw the exception after logging
+            }
+        }
+
+        public async Task<CustomerAccount> GetRemittanceAccountByTypeQuery(string branchid, string accountType)
+        {
+            try
+            {
+                GetRemittanceAccountByTypeQuery getRemittanceAccountByType = new GetRemittanceAccountByTypeQuery { AccountType=accountType, BranchId=branchid };
+                var apiResponse = await _transactionApiHelper.PostAsync<ResponseObject<CustomerAccount>>(APICallHelper.GetRemittanceAccount, getRemittanceAccountByType);
+                if (apiResponse != null)
+                {
+                    return apiResponse.ApiResponseData.Data;
+                }
+                return new CustomerAccount();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<List<TransactionHistory>> GetTransactionsAsync(GetAllTransactionsByDatesAndBranchQuery allTransactionsByDatesAndBranchQuery)
         {
             try
@@ -378,7 +456,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
 
-                var accounts = MapTransactionHistoryToExport(transactionHistories,null);
+                var accounts = MapTransactionHistoryToExport(transactionHistories, null);
                 return accounts;
             }
             catch (Exception ex)
@@ -396,7 +474,8 @@ namespace CBS.BusinessService.Accounts
                 var transactionExport = new TransactionHistoryExport
                 {
                     MemberName = transaction.Account?.CustomerName, // Assuming AccountName is from AccountNumber
-                    AccountNumber = transaction.AccountNumber, AccountType= transaction.Account?.AccountType,
+                    AccountNumber = transaction.AccountNumber,
+                    AccountType= transaction.Account?.AccountType,
                     CustomerReference = transaction.CustomerId,
                     Date = transaction.CreatedDate,
                     AccountingDate = transaction.AccountingDate, // Update this as required if there's a specific accounting date
@@ -478,11 +557,16 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-        public async Task<AccountBalance> GetAccountBalanceByAccountNumber(string accountNumber)
+        public async Task<Account> GetMemberAccounByAccounId(string accountid)
         {
             try
             {
-                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<AccountBalance>>(string.Format(APICallHelper.GetAccountBalanceByAccountNumber, accountNumber));
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<Account>>(string.Format(APICallHelper.GetMemberAccountByAccountID, accountid));
+                if (cusResponseObject.ApiResponseData==null)
+                {
+                    return new Account();
+
+                }
                 return cusResponseObject.ApiResponseData.Data;
             }
             catch (Exception ex)
@@ -491,7 +575,26 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-        public async Task<EndOfTheDay> GetTellerAccount(GetTellerAccountBalanceQuery getTellerAccountBalanceQuery, bool isOpen=true)
+        public async Task<AccountBalance> GetAccountBalanceByAccountNumber(string accountNumber)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<AccountBalance>>(string.Format(APICallHelper.GetAccountBalanceByAccountNumber, accountNumber));
+                if (cusResponseObject.ApiResponseData==null)
+                {
+                    return new AccountBalance();
+
+                }
+                return cusResponseObject.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+
+        public async Task<EndOfTheDay> GetTellerAccount(GetTellerAccountBalanceQuery getTellerAccountBalanceQuery, bool isOpen = true)
         {
             try
             {
@@ -519,7 +622,7 @@ namespace CBS.BusinessService.Accounts
                             return endofDay;
                         }
                     }
-                 
+
 
                 }
                 return new EndOfTheDay { CashAtHand = 0, HasError = true, ErrorMessage = $"{cusResponseObject.Message}" };
@@ -662,7 +765,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-       
+
         public async Task<List<CustomerAccount>> GetCustomerAccounts(string customerID)
         {
             try

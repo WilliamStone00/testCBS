@@ -1,20 +1,24 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
-<fieldset class="fieldset-custom">
+﻿<fieldset class="fieldset-custom">
     <legend>Deposit policies data</legend>
     @if (Model.DepositLimits.Count == 0)
     {
         <div class="text-center my-3">
-            <p>No depostit policy is configured.</p>
+            <p>No deposit policy is configured.</p>
         </div>
     }
     else
-    { <div class="table-responsive mb-3">
-            <table class="table table-hover" id="myDataTable">
-                <thead class="table-light">
+    {
+        <div class="table-responsive mb-3">
+            <table class="table table-hover" id="myDataTable_Deposit">
+                <thead>
                     <tr>
-                        <th>Product name</th>
-                        <th>Deposit type</th>
-                        <th>Min-Max Amount</th>
+                        <th>Type</th>
+                        <th>Max Amount</th>
+                        <th>Source</th>
+                        <th>Destin</th>
+                        <th>CamCCUL</th>
+                        <th>HeadOffce</th>
+                        <th>FluxPTM</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -22,11 +26,15 @@
                     @foreach (var d in Model.DepositLimits)
                     {
                         <tr>
-                            <td style="width:50%">@d.Product.Name</td>
-                            <td style="width:15%">@d.DepositType</td>
-                            <td style="width:20%">@d.MinAmount.ToString("#,##0.0")-@d.MaxAmount.ToString("#,##0.0")</td>
-                            <td style="width:15%">
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','myDataTable','_DepositConfig','get','TransactionConfiguration','depositlimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Product.Name @d.DepositType to edit">Edit</a> |
+                            <td>@d.DepositType</td>
+                            <td>@d.MaxAmount.ToString("#,##0.0")</td>
+                            <td>@d.SourceBrachOfficeShare.ToString("#,##0") %</td>
+                            <td>@d.DestinationBranchOfficeShare.ToString("#,##0") %</td>
+                            <td>@d.CamCCULShare.ToString("#,##0") %</td>
+                            <td>@d.HeadOfficeShare.ToString("#,##0") %</td>
+                            <td>@d.FluxAndPTMShare.ToString("#,##0") %</td>
+                            <td>
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','myDataTable_Deposit','_DepositConfig','get','TransactionConfiguration','depositlimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Product.Name @d.DepositType to edit">Edit</a> |
                                 <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Product.Name @d.DepositType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit',null,'cash_deposit_parameter')">Delete</a>
                             </td>
                         </tr>
@@ -35,6 +43,4 @@
             </table>
         </div>
     }
-
-
 </fieldset>

@@ -39,14 +39,21 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public IndividualProfile Customer { get; set; } = new IndividualProfile();
         public List<LoanApplicationFee> LoanApplicationFees { get; set; } = new List<LoanApplicationFee>();
         public List<CustomerAccount> Accounts { get; set; } = new List<CustomerAccount>();
+        public List<Account> MemberAccounts { get; set; } = new List<Account>();
         public List<Loan> Loans { get; set; } = new List<Loan>();
         public List<Refund> Refunds { get; set; } = new List<Refund>();
         public List<IndividualProfile> Customers { get; set; } = new List<IndividualProfile>();
         public List<TransactionHistory> Transactions { get; set; } = new List<TransactionHistory>();
         public OtherTransaction OtherTransaction { get; set; }
+        public GenerateRemittanceOTPCommand GenerateRemittanceOTPCommand { get; set; } = new GenerateRemittanceOTPCommand();
         public AddOtherTransactionMobileMoneyCommand AddOtherTransactionMobileMoneyCommand { get; set; } = new AddOtherTransactionMobileMoneyCommand();
         public List<OtherTransaction> OtherTransactions { get; set; } = new List<OtherTransaction>();
         public string Action { get; set; }
+        public SavingProduct SavingProduct { get; set; }
+        public string RemittanceId { get; set; }
+
+        public Remittance Remittance { get; set; } = new Remittance();
+        public List<Remittance> Remittances { get; set; } = new List<Remittance>();
         public string ServiceOption { get; set; }
     }
     public class PrintDate
@@ -63,7 +70,21 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string Period { get; set; }
         public string OperationType { get; set; }
         public bool IsCashOperation { get; set; }
-
+        public string Id { get; set; }
+        public string ReceiverCNI { get; set; }
+        public string ReceiverName { get; set; }
+        public string ReceiverCNIDateOfIssue { get; set; }
+        public string ReceiverCNIDateOfExpiration { get; set; }
+        public string ReceiverCNIPlcaceOfIssue { get; set; }
+        public string OTP { get; set; }
+        public string SenderName { get; set; }
+        public string SenderPhoneNumber { get; set; }
+        public string ReceiverPhoneNumber { get; set; }
+        public string SenderSecretCode { get; set; }
+        public string SenderAddress { get; set; }
+        public string ReceiverAddress { get; set; }
+        public decimal RemittanceAmount { get; set; }
+        public DateTime? RemittanceDate { get; set; }
         public BulkOperation()
         {
             DepositType = "Normal";
@@ -85,6 +106,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
 
         public string AccountType { get; set; }
         public string LoanId { get; set; }
+        public string RemittanceId { get; set; }
         public string LoanApplicationId { get; set; }
         public string Note { get; set; }
         public string EventCode { get; set; }
@@ -106,6 +128,22 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public decimal Tax { get; set; }
         public decimal Principal { get; set; }
         public string PaymentChannel { get; set; }
+
+
+        public string ReceiverCNI { get; set; }
+        public string ReceiverName { get; set; }
+        public string ReceiverCNIDateOfIssue { get; set; }
+        public string ReceiverCNIDateOfExpiration { get; set; }
+        public string ReceiverCNIPlcaceOfIssue { get; set; }
+        public string OTP { get; set; }
+        public string SenderName { get; set; }
+        public string SenderPhoneNumber { get; set; }
+        public string ReceiverPhoneNumber { get; set; }
+        public string SenderSecretCode { get; set; }
+        public string SenderAddress { get; set; }
+        public string ReceiverAddress { get; set; }
+        public decimal RemittanceAmount { get; set; }
+        public DateTime? RemittanceDate { get; set; }
 
         public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
         public Depositer Depositer { get; set; } = new Depositer();

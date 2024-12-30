@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "CMoney Members";
+}
+
+<div class="container mt-4">
+    <header class="text-center mb-4">
+        <h1 class="text-primary fw-bold">C-MONEY MEMBERS</h1>
+        <p class="text-muted">Manage and search C-Money members efficiently using this interface.</p>
+        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+    </header>
+
+    <div class="accordion" id="cmoneyAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="membersHeading">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#membersCollapse" aria-expanded="true" aria-controls="membersCollapse">
+                    <i class="mdi mdi-account-group me-2"></i> Manage CMoney Members
+                </button>
+            </h2>
+            <div id="membersCollapse" class="accordion-collapse collapse show" aria-labelledby="membersHeading" data-bs-parent="#cmoneyAccordion">
+                <div class="accordion-body">
+                    <div class="card mb-4">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <button type="button" onclick="LoadCMoneyMembers()" class="btn btn-label-primary">
+                                <i class="mdi mdi-view-list me-2"></i>View List
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Search Section -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Search Members</h5>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <input type="text" id="manualSearchInput" class="form-control shadow-sm" placeholder="Search by account number, name, or phone number...">
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary w-100" onclick="manualSearch()">
+                                        <i class="mdi mdi-magnify me-2"></i>Search
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Listing View -->
+                    <div id="datalistingview">
+                        @Html.Partial("_CMoneyMemberData")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/CMoney/cmMembers.js"></script>
+}
