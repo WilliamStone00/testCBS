@@ -1,5 +1,33 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
 
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> HELP TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseHelpTips" class="collapse">
+        <div class="card-body">
+            <p class="text-muted mb-2">Follow these tips for a smooth disbursement process:</p>
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure that the loan has been approved before proceeding with disbursement.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the dropdown to select the correct account for crediting the disbursed amount.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Check the "Already Managed" box if the money has already been disbursed, to prevent double disbursement.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Include detailed comments for better tracking and record-keeping.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Verify all entered details, including account numbers and customer information, before submitting.</li>
+            </ul>
+            <p class="text-muted">Additional Notes:</p>
+            <ul>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> The system will automatically update the loan status once disbursement is completed.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Ensure compliance with the organization's loan disbursement policies.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> For any discrepancies, consult the Loan Manager immediately.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 <div class="col-12">
     <div class="row my-4">
         <div class="accordion" id="collapsibleSection">
@@ -38,7 +66,6 @@
                                             </label>
                                         </div>
                                     </div>
-
 
                                     <!-- Status Dropdown -->
                                     <div class="col-md-12">
@@ -114,10 +141,7 @@ For inquiries, please contact the Loan Manager or the Branch Admin.
         `.trim();
     }
 
-    // Set default text when the page loads
-    //document.addEventListener("DOMContentLoaded", updateComment);
     window.onload = function () {
         updateComment();
     };
 </script>
-

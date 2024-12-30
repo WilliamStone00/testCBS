@@ -175,8 +175,6 @@ namespace CBS.BusinessService.CustomerManagement
                 var fullUrl = $"{APICallHelper.SearchByAnyCriterialQuery}?{queryString}";
                 var individualProfiles = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(fullUrl);
 
-
-
                 //GetCustomersWithPagination
                 //var individualProfiles = await _customerApiHelper.PostAsync<ResponseObject<List<IndividualProfile>>>(APICallHelper.SearchByAnyCriterialQuery, resource);
 
