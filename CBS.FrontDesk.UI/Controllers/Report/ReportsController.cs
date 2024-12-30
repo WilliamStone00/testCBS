@@ -2074,19 +2074,18 @@ private int AddLedgerEntries(IXLWorksheet worksheet, LedgerDetails ledger, int s
         worksheet.Cell(currentRow, 4).Value = entry.Description;
         worksheet.Cell(currentRow, 5).Value = ConvertToLong(entry.DrAmount);
         worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
-                worksheet.Cell(currentRow, 6).Value = ConvertToLong(entry.CrAmount);
-                worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0";
-                worksheet.Cell(currentRow, 7).Value = ConvertToLong(entry.CurrentBalance);
-                worksheet.Cell(currentRow, 7).Style.NumberFormat.Format = "#,##0";
-
-                currentRow++;
+        worksheet.Cell(currentRow, 6).Value = ConvertToLong(entry.CrAmount);
+        worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0";
+        worksheet.Cell(currentRow, 7).Value = ConvertToLong(entry.CurrentBalance);
+        worksheet.Cell(currentRow, 7).Style.NumberFormat.Format = "#,##0";
+        currentRow++;
     }
 
     // Add totals
     worksheet.Cell(currentRow, 4).Value = "Totals";
     worksheet.Cell(currentRow, 5).Value = ConvertToLong(ledger.AccountingEntries.Sum(e => Convert.ToDouble( e.DrAmount)));
     worksheet.Cell(currentRow, 6).Value = ConvertToLong(ledger.AccountingEntries.Sum(e => Convert.ToDouble(e.CrAmount)));
- worksheet.Cell(currentRow, 6).Value = ConvertToLong(ledger.AccountingEntries[currentRow-1]);
+ //worksheet.Cell(currentRow, 6).Value = ConvertToLong(ledger.AccountingEntries[currentRow-1]);
             var totalsRange = worksheet.Range(currentRow, 5, currentRow, 7);
     totalsRange.Style.Font.Bold = true;
     totalsRange.Style.Fill.BackgroundColor = XLColor.LightGray;

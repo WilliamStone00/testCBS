@@ -3308,6 +3308,7 @@
     <Content Include="Views\CorrespondingBankManagement\_CorrespondingBankData.cshtml" />
     <Content Include="Views\CorrespondingBankManagement\ManageCorrespondingBank.cshtml" />
     <Content Include="Views\CorrespondingBankManagement\_CreateCorrespondingBankBranch.cshtml" />
+    <Content Include="Views\AccountingStatements\_ReportFileListing.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
