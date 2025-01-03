@@ -12,11 +12,16 @@ namespace CBS.FrontDesk.Helper
         //Get,Update,Delete TrialBalanceFile By Id
         public static string Get_Update_Delete_TrialBalanceFile = "/api/v1/TrialBalanceFile/{0}";
 
+        public static string GetAllUserDownLoads = "/api/v1/DownloadFileByUserIdQuery/{0}";
+        public static string DownloadLoanFile = "/api/v1/FileDownloadInfos/download/{0}";
+        public static string Get_Delete_ReportDownLoad = "/api/v1/ReportDownLoad/{0}";
+        public static string GetAllReportDownLoad = "/api/v1/ReportDownLoads";
         public static string Get_TrialBalanceFile = "/api/v1/TrialBalanceFiles";
+        public static string Get_DownloadedFile = "/api/v1/DownloadFileByIdQuery/{0}";
         /// <summary>
         /// CashMovementTracker
         /// </summary>
-                //Get,Update,Delete AccountClass By Id
+        //Get,Update,Delete AccountClass By Id
         public static string Get_CashMovementTracker = "/api/v1/CashMovementTracker/GetCashMovementTrackerQuery/{0}";
         //Get All AccountClass
         public static string Update_CashMovementTracker = "/api/v1/CashMovementTracker/UpdateCashMovementTrackerCommand/{0}";
@@ -471,7 +476,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllBulkDownloadInfosLoan = "/api/v1/FileDownloadInfos";
         public static string GelLoansSearchByAnyCriterialQuery = "/api/v1/Loan/SearchByAnyCriterialQuery";
         public static string GetAllBulkDownloadInfosLoanPerUser = "/api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{0}";
-        public static string DownloadLoanFile = "/api/v1/FileDownloadInfos/download/{0}";
+        public static string DownloadFileByIdQuery = "/api/v1/FileDownloadInfos/download/{0}";
 
 
 
@@ -784,6 +789,9 @@ namespace CBS.FrontDesk.Helper
         public static string DepositNotificationUrl = "/api/v1/BankingOperation/AddDepositNotificationCommand";
         public static string ApproveDepositNotificationUrl = "/api/v1/BankingOperation/AddDepositApprovalCommand";
         public static string BalanceSheet_EntriesUrl = "/api/v1/AccountingEntries/GenerateBalanceSheet";
+
+
+        public static string JournalEntryUrl = "/api/v1/AccountingEntry/JournalEntry";
 
         public static string UpdateCashReplenishmentRequest = "/api/v1/BankingOperation/UpdateRequestForCashReplenishment/{0}";
         public static string CashReplenishmentResponse = "/api/v1/BankingOperation/ResponseToCashReplenishment";

@@ -6,6 +6,9 @@ using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
@@ -48,7 +51,58 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             var listBranches = (await _branchServices.GetBranches()).ToList();
             listBranches.Add(new Branch { Id = "XXXXXX", Name = "ALL" });
             ViewBag.Branches = BuildDropDown(GenerateBranchListView(listBranches));
-            return View();
+            var reportData = await _accountingServices.GetAllFileDownloadInfoPerUser();
+            return View(new AccountingEntryQuery { ReportDownloadInfo = reportData.OrderByDescending(x=>x.CreatedDate).ToList() });
+        }
+        public async Task<ActionResult> DownloadById(string fileId)
+        {
+            try
+            {
+                var couApiResponse = await _accountingServices.GetFileDownloadById(fileId);
+                if (string.IsNullOrEmpty(fileId))
+                {
+                    var reportData = await _accountingServices.GetAllFileDownloadInfoPerUser();
+                    var Branches = await _branchServices.GetBranches();
+                    ViewBag.Branches = Branches;
+                    return View(new AccountingEntryQuery { ReportDownloadInfo = reportData.OrderByDescending(x => x.CreatedDate).ToList() });
+                }
+
+                try
+                {
+                    // Call the service to download the file
+                    var response = await _accountingServices.GetFileDownloadedByFileId(fileId);
+
+                    if (response.FileData != null)
+                    {
+                        // If response is successful, return the file
+                        return File(response.FileData, response.ContentType, response.FileName);
+                    }
+                    else
+                    {
+                        // If the response is null or contains errors, return an error view
+
+                        return View("Error", new HandleErrorInfo(new Exception(response.ErrorMessage), "ControllerName", "ActionName"));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle exception and return an error view
+                    Console.WriteLine($"Error downloading file: {ex.Message}");
+                    return View("Error", new HandleErrorInfo(ex, "ControllerName", "ActionName"));
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+
+        public async Task<ActionResult> Delete(string id)
+        {
+            var data = await _accountingServices.DeleteReportDto(id);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
 
         private IEnumerable<StringValues> GenerateAccountsListView(List<Account> accounts)
@@ -582,7 +636,113 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
        
         }
+        public async Task<ActionResult> DownloadFiles(string fileId = null)
+        {
+            if (string.IsNullOrEmpty(fileId))
+            {
+                var downloadInfo = await _accountingServices.GetAllFileDownloadInfoPerUser();
+                var Branches = await _branchServices.GetBranches();
+                ViewBag.Branches = Branches;
+                return View(new AccountingEntryQuery { ReportDownloadInfo = downloadInfo.ToList() });
+            }
 
+            try
+            {
+                // Call the service to download the file
+                var response = await _accountingServices.GetFileDownloadedByFileId(fileId);
+
+                if (response != null)
+                {
+                    // If response is successful, return the file
+                    return File(response.FileData, response.ContentType, response.FileName);
+                }
+                else
+                {
+                    // If the response is null or contains errors, return an error view
+
+                    return View("Error", new HandleErrorInfo(new Exception(response.ErrorMessage), "ControllerName", "ActionName"));
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception and return an error view
+                Console.WriteLine($"Error downloading file: {ex.Message}");
+                return View("Error", new HandleErrorInfo(ex, "ControllerName", "ActionName"));
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> PostSearchJquery(AccountingEntryQuery model)
+        {
+            try
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    model.SystemQuery.BranchId = _accountingServices.IsHeadOffice() ? model.SystemQuery.BranchId : _accountingServices.GetBranchID();
+
+                    // Process the data
+                    // Generate the report or prepare the data
+                    switch (model.SystemQuery.ReportType)
+                    {
+                        case "JE":
+                            {
+                                var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId });
+
+                            }
+                            break;
+                        case "GL":
+                            {
+                           
+                            }
+                            break;
+                        case "LL":
+                            {
+                            
+                            }
+                            break;
+                        case "TB4":
+                            {
+                               
+
+                            }
+                            break;
+                        case "TB6":
+                            {
+                                
+                            }
+                            break;
+                        case "BS":
+                            {
+                                 
+                            }
+                            break;
+                        case "PANDL":
+                            {
+                                
+                            }
+                            break;
+                    }
+
+                    return Json(new { success = true, message = "Report generated successfully" }, JsonRequestBehavior.AllowGet);
+                    // Return a JSON result
+
+                }
+                else
+                {
+                    // Handle non-AJAX requests if needed
+                    // You might want to redirect here or return a view
+                    return RedirectToAction("Index");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+
+        }
         [HttpGet]
         public async Task<ActionResult> GenerateGLByBranchId(string branchId,string fileType)
         {

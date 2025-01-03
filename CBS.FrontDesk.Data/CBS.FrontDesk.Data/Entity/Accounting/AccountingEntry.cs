@@ -21,8 +21,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public AccountingEntryDto AccountingEntry { get; set; }
         public List<Branch> Branchs { get; set; }
         public SystemQuery SystemQuery { get; set; }
-
+ 
+        public List<ReportInfo> ReportDownloadInfo { get; set; } = new List<ReportInfo>();
     }
+
+
 
     public class AccountEntry
     {
@@ -113,7 +116,19 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<string> AccountIds { get; set; }
         public string BranchId { get; set; }
     }
-
+    public class ReportDto
+    {
+        public string Id { get; set; }
+        public string ReportType { get; set; }
+        public string Extension { get; set; }
+        public string DownloadPath { get; set; }
+        public string Size { get; set; }
+        public string FullPath { get; set; }
+        public string FileName { get; set; }
+        public string FileType { get; set; }
+        public string BranchName { get; set; }
+        public string Username { get; set; }
+    }
     public static class BSCartegory
     {
 

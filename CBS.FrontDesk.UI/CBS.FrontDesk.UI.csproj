@@ -3350,7 +3350,7 @@
     <Content Include="Views\Individual\_DocumentManagement.cshtml" />
     <Content Include="Views\Individual\_NextOfKinManagement.cshtml" />
     <Content Include="Views\Individual\_SignatoryManagement.cshtml" />
-    <Content Include="Views\AccountingStatements\_ReportFileListing.cshtml" />
+    <Content Include="Views\AccountingStatements\_DownloadedReportData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
