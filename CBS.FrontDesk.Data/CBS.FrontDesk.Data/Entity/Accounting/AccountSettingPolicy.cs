@@ -10,6 +10,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class AccountPolicy
     {
         [Required]
+        public string PolicyOwner { get; set; }
+        [Required]
         public string AccountId { get; set; }
         [Required]
         public decimal MaximumAlert { get; set; }

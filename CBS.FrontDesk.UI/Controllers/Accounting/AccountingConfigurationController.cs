@@ -113,21 +113,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
             ViewBag.ChartOfAccountManagementPositions = BuildMenuAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), listAccounts.ToList());
-
+            ViewBag.Branches = BuildViewBagBranch((await _branchService.GetBranches()).ToList());
             return View(new AccountingConfiguration());
         }
 
         private async Task GetList()
         {
             ViewBag.AccountTypes = await GetAccountTypesAsync();
-
+         
             var DebitAccounts = await _AccountServices.GetAllAccounting();
             var CreditAccounts = BuildMenuViewBag(DebitAccounts);
             ViewBag.Accounts = CreditAccounts;
             var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
             ViewBag.OperationEvent = await _OperationEventService.GetOperationEvents();
             ViewBag.ChartOfAccountManagementPositions = BuildMenuAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), listAccounts.ToList());
-            ViewBag.BranchCode = BuildMenuISViewBagBranch((await _branchService.GetBranches()).ToList());
+            ViewBag.BranchCode = BuildMenuISViewBag((await _branchService.GetBranches()).ToList());
             ViewBag.ChartOfAccounts = BuildMenuAccountViewBag(listAccounts.ToList());
             ViewBag.AccountingRuleEntries = BuildAccountingRuleEntryViewBag((await _accountingEntryRuleService.GetAccountingRuleEntries()).ToList());
             ViewBag.BookingDirections = await this.GetBookingDirections();
@@ -162,15 +162,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
  
         }
 
-        private dynamic BuildMenuISViewBagBranch(List<Branch> listOfItems)
+        private dynamic BuildViewBagBranch(List<Branch> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select BranchCode" });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select Branch" });
             foreach (var item in listOfItems)
             {
                 if (!item.BranchCode.Equals("000"))
                 {
-                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.BranchCode, Value = $"{item.BranchCode} - {item.Name}" });
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.BranchCode} - {item.Name}" });
                 }
 
             }

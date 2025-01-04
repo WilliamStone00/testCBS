@@ -9,7 +9,13 @@
                 @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                 {<input type="hidden" name="ServiceOption" value="accountPolicy" id="ServiceOption" />
                  <div class="row mt-2 gy-4">
-
+                     <div class="col-md-12">
+                         <div class="form-floating form-floating-outline">
+                             @Html.DropDownListFor(m => m.AccountPolicy.PolicyOwner, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true" })
+                             @Html.ValidationMessageFor(m => m.AccountPolicy.PolicyOwner, "", new { @class = "text-danger" })
+                             <label>Branch</label>
+                         </div>
+                     </div>
                      <div class="col-md-6">
                          <div class="form-floating form-floating-outline">
                              @Html.DropDownListFor(m => m.AccountPolicy.AccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---Select Account---", new { @class = "form-control select2", @search = "true" })
