@@ -109,6 +109,7 @@ namespace CBS.BusinessService.Application
 
                 // Make an API call to create an individual profile
                 model.BranchId = GetBranchID();
+               
                 //model.LoanApplicationType = "Normal";
                 //model.AmortizationType = "Constant_Amortization";
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<LoanApplication>>(APICallHelper.CreateLoanApplication, model);

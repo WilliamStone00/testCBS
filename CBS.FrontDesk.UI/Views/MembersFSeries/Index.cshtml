@@ -13,6 +13,27 @@
         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
     </header>
 
+    <!-- Tips Section -->
+    <div class="card mb-4">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span><i class="mdi mdi-information-outline me-2"></i> IMPORTANT TIPS</span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseTips" class="collapse">
+            <div class="card-body">
+                <ul>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the search bar to quickly find members by their account number, name, or phone number.</li>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure you select the correct member to view their F2 Series for accurate insights.</li>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Click on "View List" to load all members before performing specific searches.</li>
+                    <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Only authorized personnel are allowed to access this data as it is strictly read-only.</li>
+                    <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Ensure all interactions comply with the organization's data privacy policies.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div id="accordionMembers" class="accordion accordion-popout">
         <div class="accordion-item active">
             <h2 class="accordion-header" id="membersHeading">
@@ -22,19 +43,6 @@
             </h2>
             <div id="membersCollapse" class="accordion-collapse collapse show" aria-labelledby="membersHeading" data-bs-parent="#accordionMembers">
                 <div class="accordion-body">
-                    <!-- Description Section -->
-                    <div class="alert alert-info mb-4">
-                        <p class="mb-0">
-                            <i class="mdi mdi-information-outline me-2"></i>
-                            <strong>How to Use This Page:</strong>
-                        </p>
-                        <ul class="mt-2">
-                            <li>Use the search bar to find specific members by entering their account number, name, or phone number.</li>
-                            <li>From the displayed list of members, click on a member to view their F2 Series details, which include account balances, loan movements, and statements.</li>
-                            <li>To load all members, click on the "View List" button.</li>
-                            <li>Repeat the process for other members as needed.</li>
-                        </ul>
-                    </div>
 
                     <div class="card mb-4 shadow">
                         <div class="card-body d-flex justify-content-between align-items-center">

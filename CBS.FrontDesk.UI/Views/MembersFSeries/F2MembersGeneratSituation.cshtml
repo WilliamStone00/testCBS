@@ -4,7 +4,7 @@
     ViewBag.Title = "F2-F5 Series - General Situation";
 }
 
-<div class="container mt-4">
+<div class="container">
     <header class="text-center mb-4">
         <h1 class="text-primary fw-bold">F2-F5 Members General Situation</h1>
         <p class="text-muted">
@@ -13,6 +13,26 @@
         </p>
         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
     </header>
+
+    <!-- Tips Section -->
+    <div class="card mb-4">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span><i class="mdi mdi-information-outline me-2"></i> IMPORTANT TIPS</span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseTips" class="collapse">
+            <div class="card-body">
+                <ul>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the tabs below to navigate between member profiles, accounts, and transaction details.</li>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> To print account statements, specify the date range in the modal and click "Print".</li>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Loan details can be accessed by clicking on individual loans within the profile.</li>
+                    <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Ensure all actions comply with the organization's data privacy policies and are for authorized personnel only.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
     <div id="accordionPopoutIcon" class="accordion accordion-popout">
         <div class="accordion-item active">
@@ -24,19 +44,6 @@
             </h2>
             <div id="accordionPopoutIcon-3" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
                 <div class="accordion-body">
-                    <!-- Instructions Section -->
-                    <div class="alert alert-info mb-4">
-                        <p class="mb-0">
-                            <i class="mdi mdi-information-outline me-2"></i>
-                            <strong>How to Use This Page:</strong>
-                        </p>
-                        <ul class="mt-2">
-                            <li>Click on the respective tabs below to view member profile details, accounts, and transactions.</li>
-                            <li>Each tab provides detailed and specific insights into the selected member's data.</li>
-                            <li>All actions on this page are read-only, and data is limited to the network under <strong>@Session["BankName"]</strong>.</li>
-                        </ul>
-                    </div>
-
                     <!-- Members Overview -->
                     <div class="card mb-4 shadow">
                         <div class="card-body">
@@ -91,6 +98,25 @@
                     </div>
 
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Loan Detail Modal -->
+<div class="modal fade" id="loanDetailModal" tabindex="-1" aria-labelledby="loanDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loanDetailModalLabel">Loan Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="loanDetailsContent">
+                    <!-- Loan details will be dynamically injected here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

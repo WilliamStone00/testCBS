@@ -1,6 +1,78 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
 
 
+<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Loan Application Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanTips" aria-expanded="false" aria-controls="collapseLoanTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseLoanTips" class="collapse">
+        <div class="card-body">
+            <p class="text-muted mb-2">Follow these tips to ensure a successful loan application process:</p>
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all loan details, including loan type, term, and repayment cycle, are accurately selected.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Validate the member's eligibility before proceeding. Check if the member meets the minimum shares and savings requirements.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the "Override Balance" section responsibly during loan refinancing or rescheduling and ensure proper documentation is provided.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Verify the co-obligor's account balance if the loan requires a co-obligor. Co-obligor accounts must have sufficient balances to assure the loan.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Ensure that all blocked accounts used as guarantees are compliant with loan policies.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Risk mitigation measures, such as collateral and guarantors, should be accurately detailed in the application.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all required documents for loan approval are uploaded to avoid rejection.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Validate that all fees, including processing and inspection fees, are clearly defined and approved by the Loan Manager.</li>
+            </ul>
+            <p class="text-muted">Additional Notes:</p>
+            <ul>
+                <li>
+                    <i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Trust will not grant a loan if the member does not meet the requirements set by the Loan Management Board. These requirements include:
+                    <ul>
+                        <li>Minimum Shares: e.g., 75,000</li>
+                        <li>Minimum Savings: e.g., 20% of the loan amount</li>
+                    </ul>
+                </li>
+                <li>
+                    <i class="mdi mdi-alert-circle-outline text-danger me-2"></i> If a down payment is required, it must be fulfilled as per the board's criteria. Down payment typically covers:
+                    <ul>
+                        <li>Savings account</li>
+                        <li>Ordinary shares</li>
+                        <li>Deposit account</li>
+                        <li>Salary account</li>
+                    </ul>
+                    Default loan requirements: 20% from savings and 75,000 in shares.
+                </li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Co-obligors must be provided for Special Saving Facility (SSF) loans. The co-obligor must have sufficient balance to assure the loan.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Accounts used as guarantees are blocked until the loan is fully settled.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-0">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-danger">
+        <span><i class="mdi mdi-alert-circle-outline me-2"></i> Important Notices</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNotices" aria-expanded="false" aria-controls="collapseNotices">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseNotices" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> The "Override Balance" section should only be used when refinancing or rescheduling a loan, with proper documentation and approval.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Any changes to loan balances, interest rates, or penalties must be supported by valid evidence and authorized by the Loan Manager.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Any change in balance information will override the existing balance information. Proceed with caution and ensure values are accurate before saving.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> VAT is calculated automatically based on the interest inputted. Ensure the interest rate is accurate to avoid discrepancies.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Changes made to balance information cannot be undone. Verify all inputs before finalizing the application.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Every loan process requires supporting documentation. Ensure all necessary documents are uploaded before submitting the loan application.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Ensure all mandatory fields, including loan amount, repayment schedule, and risk mitigation measures, are accurately completed to avoid delays.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> For loans requiring upfront fees, ensure the fees are paid before processing or disbursement to prevent rejection.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Loan approval and processing are subject to verification of borrower credentials and compliance with regulatory requirements.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
 @using (Html.BeginForm("Create", "MemberOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
     @Html.HiddenFor(m => m.AddLoanApplicationCommand.CustomerId)
@@ -71,8 +143,34 @@ By carefully selecting the appropriate loan product and terms in this section, y
                                 </div>
                                 <!-- Adjusted row -->
                                 <div id="loandiv" style="display:none;">
-                                    <label id="loanlable"></label>
-                                    <hr />
+                                    <h5 id="repaymentHeader">Select loan to refinance</h5>
+                                    <div class="card mb-4">
+                                        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                                            <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+                                            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
+                                                <i class="mdi mdi-chevron-down"></i>
+                                            </button>
+                                        </h6>
+                                        <div id="collapseHelpTips" class="collapse">
+                                            <div class="card-body">
+                                                <p class="text-muted mb-2">Follow these tips to ensure a smooth refinancing process:</p>
+                                                <ul>
+                                                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Select the loan to refinance from the dropdown. Ensure the member's loan list is up-to-date.</li>
+                                                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the "Override Balance" section only if necessary, and verify amounts before proceeding.</li>
+                                                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Enable "Stop further interest calculations" only when the loan has been fully settled or adjusted.</li>
+                                                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Fill out the repayment details accurately to avoid mismatches in the system.</li>
+                                                    <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Any changes in the loan balance, interest, VAT, or penalties must be justified with proper documentation.</li>
+                                                </ul>
+                                                <p class="text-muted">Additional Notes:</p>
+                                                <ul>
+                                                    <li><i class="mdi mdi-information-outline text-primary me-2"></i> Ensure all repayment details, including capital, interest, and penalty amounts, match the agreement.</li>
+                                                    <li><i class="mdi mdi-information-outline text-primary me-2"></i> Verify the loan reference before finalizing the refinancing process.</li>
+                                                    <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> For any discrepancies, consult the Loan Manager before submission.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-12 mb-4">
                                         <div class="form-floating form-floating-outline">
                                             @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanId, new SelectList(ViewBag.MembersLoan, "Value", "Text"), "---Select loan---", new { @class = "form-control select2", @search = "true", @id = "loanid", @onchange = "GetLoan(this.value)" })
@@ -80,46 +178,102 @@ By carefully selecting the appropriate loan product and terms in this section, y
                                             <label>Member current loans</label>
                                         </div>
                                     </div>
+
                                     <!-- Balance, Interest, VAT, Penalty inputs -->
                                     <div class="col-md-12 mb-4">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsOverRightOldLoanInterestAndBalance, new { @class = "form-check-input", @id = "IsOverRightOldLoanInterestAndBalance" })
-                                            <label class="form-check-label" for="IsOverRightOldLoanInterestAndBalance">Check me to override selected loan information</label>
+                                            <label class="form-check-label" for="IsOverRightOldLoanInterestAndBalance">Override loan balance & Process Repayment</label>
                                         </div>
                                     </div>
+
                                     <div class="row" id="loanoveride" style="display:none;">
-                                        <div class="col-md-3">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewBalance, new { @class = "form-control", @id = "NewBalance" })
-                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewBalance, "", new { @class = "text-danger" })
-                                                <label for="NewBalance">Override Balance</label>
+                                        <div style="display:none">
+                                            <div class="col-md-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewBalance, new { @class = "form-control", @id = "NewBalance" })
+                                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewBalance, "", new { @class = "text-danger" })
+                                                    <label for="NewBalance">Override Balance</label>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewInterest, new { @class = "form-control", @id = "NewInterest" })
-                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewInterest, "", new { @class = "text-danger" })
-                                                <label for="NewInterest">Override Interest</label>
+                                            <div class="col-md-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewInterest, new { @class = "form-control", @id = "NewInterest" })
+                                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewInterest, "", new { @class = "text-danger" })
+                                                    <label for="NewInterest">Override Interest</label>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewVAT, new { @class = "form-control", @id = "NewVAT" })
-                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewVAT, "", new { @class = "text-danger" })
-                                                <label for="NewVAT">Override VAT</label>
+                                            <div class="col-md-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewVAT, new { @class = "form-control", @id = "NewVAT" })
+                                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewVAT, "", new { @class = "text-danger" })
+                                                    <label for="NewVAT">Override VAT</label>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-3 mb-3">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewPenalty, new { @class = "form-control", @id = "NewPenalty" })
-                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewPenalty, "", new { @class = "text-danger" })
-                                                <label for="NewPenalty">Override Penalty</label>
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewPenalty, new { @class = "form-control", @id = "NewPenalty" })
+                                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewPenalty, "", new { @class = "text-danger" })
+                                                    <label for="NewPenalty">Override Penalty</label>
+                                                </div>
                                             </div>
+
                                         </div>
                                         <div class="col-md-12 mb-4">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.StopInterestCalculation, new { @class = "form-check-input", @id = "StopInterestCalculation" })
-                                                <label class="form-check-label" for="StopInterestCalculation">Check me to stop interest calculation for this loan.</label>
+                                                <label class="form-check-label" for="StopInterestCalculation">Stop further interest calculations.</label>
+                                            </div>
+                                        </div>
+                                        <!-- Repayment Details -->
+                                        <h5>Repayment Details</h5>
+                                        <div class="col-md-3 mb-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Capital, new { @class = "form-control", @id = "oldLoanCapital", @onchange = "calculateVATAndTotal()" })
+                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Capital, "", new { @class = "text-danger" })
+                                                <label for="oldLoanCapital">Capital</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Interest, new { @class = "form-control", @id = "oldLoanInterest", @onchange = "calculateVATAndTotal()" })
+                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Interest, "", new { @class = "text-danger" })
+                                                <label for="oldLoanInterest">Interest</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.VatRate, new { @class = "form-control", @id = "oldLoanvatRate", @readonly = "readonly" })
+                                                <label for="oldLoanvatRate">V.Rate</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.VAT, new { @class = "form-control", @id = "oldLoanVAT", @readonly = "readonly" })
+                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.VAT, "", new { @class = "text-danger" })
+                                                <label for="oldLoanVAT">VAT</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 mb-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Amount, new { @class = "form-control", @id = "oldLoanAmount", @readonly = "readonly" })
+                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Amount, "", new { @class = "text-danger" })
+                                                <label for="oldLoanAmount">D.Amount</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3 mb-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Penalty, new { @class = "form-control", @id = "oldLoanPenalty", @onchange = "calculateVATAndTotal()" })
+                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Penalty, "", new { @class = "text-danger" })
+                                                <label for="oldLoanPenalty">Penalty</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9 mb-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.LoanId, new { @class = "form-control", @id = "oldLoanLoanId", @readonly = "readonly" })
+                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.LoanId, "", new { @class = "text-danger" })
+                                                <label for="oldLoanLoanId">Loan Reference</label>
                                             </div>
                                         </div>
                                     </div>
@@ -373,19 +527,7 @@ By accurately specifying these details, you can ensure transparency and clarity 
                                         <label id="interest">Interest in rate</label>
                                     </div>
                                 </div>
-                                @*<div class="col-md-12" id="ApplyInterestWaiverDiv">
-                                        <div class="form-check">
-                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsInterestWaiverApplied, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Apply interest waiver to this application ?</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12" id="WaiverDiv">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.InterestWaiverPercentage, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.InterestWaiverPercentage, "", new { @class = "text-danger" })
-                                            <label id="waiverranges">waiver rate (%)</label>
-                                        </div>
-                                    </div>*@
+
                             </div>
                         </fieldset>
                     </div>

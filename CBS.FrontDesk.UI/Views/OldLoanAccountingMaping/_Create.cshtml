@@ -1,7 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.OldLoanAccountingMaping
 <div class="card-body">
     @using (Html.BeginForm("Create", "OldLoanAccountingMaping", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-    {<fieldset class="fieldset-custom">
+    {
+        <fieldset class="fieldset-custom">
             <legend>Old Loans Accounting Maping</legend>
             @Html.HiddenFor(model => model.Id)
             <div class="row mt-2 gy-4">
@@ -34,13 +35,37 @@
                         <label>Select account ledger for vat amount</label>
                     </div>
                 </div>
-                @*<div class="col-md-12">
+
+                <!-- Added Missing Fields -->
+                <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select Branch---", new { @class = "form-control select2", id = "BranchId", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                        <label>Select branch</label>
+                        @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionMoreThanOneYear, new SelectList(ViewBag.AccountLedgers, "Value", "Text"), "---Select account ledger---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanOneYear, "", new { @class = "text-danger " })
+                        <label>Select account ledger for provision more than one year</label>
                     </div>
-                </div>*@
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionMoreThanTwoYear, new SelectList(ViewBag.AccountLedgers, "Value", "Text"), "---Select account ledger---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanTwoYear, "", new { @class = "text-danger " })
+                        <label>Select account ledger for provision more than two years</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionMoreThanThreeYear, new SelectList(ViewBag.AccountLedgers, "Value", "Text"), "---Select account ledger---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanThreeYear, "", new { @class = "text-danger " })
+                        <label>Select account ledger for provision more than three years</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionMoreThanFourYear, new SelectList(ViewBag.AccountLedgers, "Value", "Text"), "---Select account ledger---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanFourYear, "", new { @class = "text-danger " })
+                        <label>Select account ledger for provision more than four years</label>
+                    </div>
+                </div>
+
             </div>
             <div class="mt-4">
                 @if (ViewBag.Key != null)
@@ -51,7 +76,6 @@
                 {
                     <button type="submit" class="btn btn-primary me-2">Save</button>
                     <button type="reset" class="btn btn-outline-secondary">Reset</button>
-
                 }
             </div>
         </fieldset>

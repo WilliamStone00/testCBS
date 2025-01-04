@@ -2,9 +2,9 @@
     ViewBag.Title = "Members in " + Session["BranchName"];
 }
 
-<div class="container mt-4">
-    <header class="text-center mb-4">
-        <h1 class="text-primary fw-bold">Members Listing</h1>
+<div class="container">
+    <header class="text-center">
+        <h1 class="text-primary fw-bold">MEMBERS LISTING</h1>
         <p class="text-muted">
             This page provides an overview of all members in your branch: <strong>@Session["BranchName"]</strong>.
             You can search for specific members using their Reference number such as 010000365, name, or phone number. Use the tools below to manage and view member details efficiently.
@@ -12,29 +12,35 @@
         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
     </header>
 
+    <!-- Tips Section -->
+    <div class="card mb-1">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span><i class="mdi mdi-information-outline me-2"></i> IMPORTANT TIPS</span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseTips" class="collapse">
+            <div class="card-body">
+                <ul>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the search bar to find specific members quickly by their Reference number, name, or phone number.</li>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Click on a member's profile in the list to view and update details, such as contact information or account status.</li>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Load all members in your branch by clicking the "View List" button.</li>
+                    <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Always confirm member details before making any changes.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div id="accordionMembers" class="accordion accordion-popout">
         <div class="accordion-item active">
             <h2 class="accordion-header" id="membersHeading">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#membersCollapse" aria-expanded="true" aria-controls="membersCollapse">
-                    <i class="mdi mdi-account-group me-2"></i> Members in Branch: <strong>@Session["BranchName"]</strong>
+                    <i class="mdi mdi-account-group me-2"></i> Members in: <strong> [@Session["BranchName"]]</strong>
                 </button>
             </h2>
             <div id="membersCollapse" class="accordion-collapse collapse show" aria-labelledby="membersHeading" data-bs-parent="#accordionMembers">
                 <div class="accordion-body">
-                    <!-- Description Section -->
-                    <div class="alert alert-info mb-4">
-                        <p class="mb-0">
-                            <i class="mdi mdi-information-outline me-2"></i>
-                            <strong>How to Use This Page:</strong>
-                        </p>
-                        <ul class="mt-2">
-                            <li>Use the search bar to find specific members by entering their account number, name, or phone number.</li>
-                            <li>From the displayed list of searched members, click on a member's profile to view and modify their details, such as contact information and account status.</li>
-                            <li>To see all members, click on the "View List" button to load all members in the branch.</li>
-                            <li>Repeat step 2 to modify other members' accounts as needed.</li>
-                        </ul>
-                    </div>
-
                     <div class="card mb-4 shadow">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <h5 class="card-title mb-0"><i class="mdi mdi-account-circle-outline"></i> Members Overview</h5>
