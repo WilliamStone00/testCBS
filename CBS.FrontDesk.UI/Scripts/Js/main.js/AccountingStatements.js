@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     
+    LoadDownloadedReportByUser("myDataTable");
     LoadBranchAndAccountDataSetDT("BranchDataTable");
     LoadAccountDataSetDT("AccountDataTable");
     $('#AccountToHide').hide();
@@ -166,8 +167,9 @@ function AjaxPostSearch(form) {
                     url: form.action,
                     data: new FormData(form),
                     success: function (response) {
-                        openReportWindow(model.FileType, model.ReportType);
-
+                        //  openReportWindow(model.FileType, model.ReportType);
+                        console.log(response);
+                        window.location.reload();
                     }
                     , error: function (err) {
                         console.log(err.statusText);
@@ -289,7 +291,38 @@ function DownLoadGLByAccount(FileType) {
     });
 }
 
+function LoadDownloadedReportByUser(tableID) {
 
+
+    var T = '#' + tableID;
+    var dataThumbView = $(T).DataTable({
+        responsive: false,
+        "columns": [
+           
+        ],
+        "columnDefs": [
+            /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
+            { "targets": 0, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 2, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 3, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 4, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 5, "searchable": true, "orderable": true, "width": "10%" },
+        ],
+
+        oLanguage: {
+            sLengthMenu: "_MENU_",
+            sSearch: ""
+        },
+        aLengthMenu: [[10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
+
+
+        order: [[0, "asc"]],
+        bInfo: true,
+        pageLength: 10
+
+    });
+}
 
 function DownLoadJE(fileType) {
     var BranchId = $('#selectedBranchId').val();

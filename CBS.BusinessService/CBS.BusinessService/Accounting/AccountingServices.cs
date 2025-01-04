@@ -13,6 +13,8 @@ using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Config;
 using DocumentFormat.OpenXml.EMMA;
+using CBS.FrontDesk.Data.Entity.LoanConf;
+using System.IO.Packaging;
 
 namespace CBS.BusinessService.Accounting
 {
@@ -26,7 +28,45 @@ namespace CBS.BusinessService.Accounting
 
         }
 
+        public async Task<List<ReportInfo>> GetAllFileDownloadInfoPerUser()
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ReportInfo>>>(string.Format(APICallHelper.GetAllUserDownLoads, GetUserID()));
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<ReportInfo>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+       
+        public async Task<FileReportInfoDto> GetFileDownloadedByFileId(string fileId)
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<FileReportInfoDto>>(string.Format(APICallHelper.Get_DownloadedFile,fileId));
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData != null)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
 
+                }
+                return new FileReportInfoDto();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
         public async Task<ExecutionMessages> Create(Account model)
         {
             try
@@ -72,6 +112,45 @@ namespace CBS.BusinessService.Accounting
             {
                 // Log and handle exception
                 throw ex;
+            }
+        }
+        public async Task<ReportInfo> GetReportById(string Id)
+        {
+            try
+            {
+                var couApiResponse = (await GetAllReportInfo()).Find(x=>x.Id.Equals(Id));
+                if (couApiResponse!=null)
+                {
+                    return couApiResponse;
+
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+        public async Task<List<ReportInfo>> GetAllReportInfo()
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ReportInfo>>>(APICallHelper.GetAllReportDownLoad);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData != null)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<ReportInfo>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
             }
         }
         public async Task<string> GetSequenceReference()
@@ -358,8 +437,36 @@ namespace CBS.BusinessService.Accounting
             }
             return null;
         }
- 
 
+        public async Task<ExecutionMessages> DeleteReportDto(string id)
+        {
+            try
+            {
+                var account = await GetReportById(id);
+                var inResponse = await _accountingApiCallerHelper.DeleteAsync<ResponseObject<bool>>(string.Format(APICallHelper.Get_Delete_ReportDownLoad, id));
+                if (inResponse.IsSuccess)
+                {
+
+
+                    return GetExecutionMessages(inResponse, true, $"{account.ReportType + " " + account.FileName}", MessagesResults.Success,
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
+
+
+                }
+                else
+                {
+                    // Handle failure scenario
+                    return GetExecutionMessages(account, false, $"{account.ReportType + " " + account.ReportType}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+            }
+            return null;
+        }
 
         public async Task<ExecutionMessages> Create(UploadAccount list)
         {
@@ -409,5 +516,42 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
+     
+        public async Task<ExecutionMessages> PostJE(JEQuery model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<ReportDto>>(APICallHelper.JournalEntryUrl, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task<ReportInfo> GetFileDownloadById(string fileId)
+        {
+            return (await GetAllReportInfo()).Find(x=>x.Equals(fileId));
+        }
     }
 }

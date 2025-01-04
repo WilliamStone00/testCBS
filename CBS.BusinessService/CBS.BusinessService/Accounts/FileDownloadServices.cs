@@ -154,7 +154,7 @@ namespace CBS.BusinessService
         {
             try
             {
-                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<FileDownloadDto>>(string.Format(APICallHelper.DownloadLoanFile, fileId));
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<FileDownloadDto>>(string.Format(APICallHelper.DownloadFileByIdQuery, fileId));
 
                 if (couApiResponse.IsSuccess)
                 {

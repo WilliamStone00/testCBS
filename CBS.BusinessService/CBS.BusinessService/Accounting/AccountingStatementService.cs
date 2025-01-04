@@ -3,6 +3,7 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -243,6 +244,13 @@ namespace CBS.BusinessService.Accounting
         {
             List<AccountingEntry> filteredEntries = new List<AccountingEntry>();
             return await _Service.RetrieveIncomeAndExpenseEntries(model);
+        }
+
+    
+
+        public async Task DownloadFile(string fileId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

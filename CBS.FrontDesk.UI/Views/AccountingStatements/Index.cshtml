@@ -1,4 +1,4 @@
-﻿
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingEntryQuery
 @{
     ViewBag.Title = "ACCOUNTING REPORT";
 }
@@ -26,17 +26,17 @@
                     <div class="accordion-body">
                         <div id="mainviewChange">
                             <div class="change-group">
-                                 
-                                    <div class="card-body d-sm-flex d-block">
-                                        <div class=" me-3 mb-3 mb-sm-0">
-                                            
-                                           @Html.Partial("_SearchOptions")
-                                        </div>
-                                    </div>
-                                 
-                                    <div id="datalistingview">
 
-                                    </div>
+                                <div class="card-body d-sm-flex d-block">
+
+
+                                    @Html.Partial("_SearchOptions")
+
+                                </div>
+                                <div id="datalistingview">
+                                    @Html.Partial("_DownloadedReportData")
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -50,6 +50,6 @@
 
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
- 
+
 <script src="~/Scripts/Js/main.js/AccountingStatements.js"></script>
 }
