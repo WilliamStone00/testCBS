@@ -7,13 +7,6 @@
                 <div class="row justify-content-center mt-2 gy-4">
                     @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
                     {
-                        <div class="col-md-6 mb-sm-1">
-                            <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(model => model.SystemQuery.ReportType, new SelectList(ViewBag.ReportTypes == null ? "" : ViewBag.ReportTypes, "Text", "Value"), "---Select ReportTypes---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReportType" })
-                                @Html.ValidationMessageFor(model => model.SystemQuery.ReportType, "", new { @class = "text-danger" })
-                                <label>Select ReportType</label>
-                            </div>
-                        </div>
                         <div class="col-6 mb-sm-1">
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(model => model.SystemQuery.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true" })
@@ -21,6 +14,14 @@
                                 <label>Branch Office</label>
                             </div>
                         </div>
+                        <div class="col-md-6 mb-sm-1">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(model => model.SystemQuery.ReportType, new SelectList(ViewBag.ReportTypes == null ? "" : ViewBag.ReportTypes, "Text", "Value"), "---Select ReportTypes---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReportType" })
+                                @Html.ValidationMessageFor(model => model.SystemQuery.ReportType, "", new { @class = "text-danger" })
+                                <label>Select ReportType</label>
+                            </div>
+                        </div>
+
                         <div class="col-12">
                             <div id="AccountToHide">
                                 <div class="form-floating form-floating-outline">

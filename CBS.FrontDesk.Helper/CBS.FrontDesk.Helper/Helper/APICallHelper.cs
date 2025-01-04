@@ -789,8 +789,9 @@ namespace CBS.FrontDesk.Helper
         public static string DepositNotificationUrl = "/api/v1/BankingOperation/AddDepositNotificationCommand";
         public static string ApproveDepositNotificationUrl = "/api/v1/BankingOperation/AddDepositApprovalCommand";
         public static string BalanceSheet_EntriesUrl = "/api/v1/AccountingEntries/GenerateBalanceSheet";
-
-
+       
+        public static string GeneralLedgerStatementUrl = "/api/v1/AccountingEntry/GetAccountStatementEntry";
+        public static string GeneralLedgerStatementDetailUrl = "/api/v1/AccountingEntry/GetAccountGLEntry";
         public static string JournalEntryUrl = "/api/v1/AccountingEntry/JournalEntry";
 
         public static string UpdateCashReplenishmentRequest = "/api/v1/BankingOperation/UpdateRequestForCashReplenishment/{0}";
@@ -871,5 +872,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_CorrespondingBank = "/api/v1/ThirdPartyInstitution/{0}";
         public static string GetAllCorrespondingBank = "/api/v1/ThirdPartyInstitutions";
         public static string CreateCorrespondingBank = "/api/v1/ThirdPartyInstitution";
+
+
     }
 }

@@ -517,7 +517,7 @@ namespace CBS.BusinessService.Accounting
         }
 
      
-        public async Task<ExecutionMessages> PostJE(JEQuery model)
+        public async Task<ExecutionMessages> PostJE(JEQuery model,string url)
         {
             try
             {
@@ -525,7 +525,7 @@ namespace CBS.BusinessService.Accounting
                 // Make an API call to create an individual profile
 
 
-                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<ReportDto>>(APICallHelper.JournalEntryUrl, model);
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<ReportDto>>(url, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
@@ -549,6 +549,37 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
+        public async Task<ExecutionMessages> PostJE(SystemQuery model, string url)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<ReportDto>>(url, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
         public async Task<ReportInfo> GetFileDownloadById(string fileId)
         {
             return (await GetAllReportInfo()).Find(x=>x.Equals(fileId));

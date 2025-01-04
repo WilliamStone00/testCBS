@@ -122,7 +122,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             foreach (var branch in branches)
             {
 
-                stringValues.Add(new StringValues(branch.Id, branch.Name));
+                stringValues.Add(new StringValues(branch.Id, branch.BranchCode+"-"+branch.Name));
             }
             return stringValues;
         }
@@ -138,7 +138,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private IEnumerable<StringValues> GenerateReportType()
         {
             List<StringValues> stringValues = new List<StringValues>();
-            stringValues.Add(new StringValues("GL", "General Ledger"));
+            stringValues.Add(new StringValues("GLD", "General Ledger"));
+            stringValues.Add(new StringValues("GL", "Detail General Ledger"));
             stringValues.Add(new StringValues("JE", "Journal Entries"));
             stringValues.Add(new StringValues("LL", "Liaison Ledger"));
             stringValues.Add(new StringValues("LLA", "Liaison Ledger An Account"));
@@ -686,13 +687,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     {
                         case "JE":
                             {
-                                var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId });
+                                var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId }, APICallHelper.JournalEntryUrl);
 
                             }
                             break;
                         case "GL":
                             {
-                           
+                                  var account = await _accountingServices.PostJE(model.SystemQuery, APICallHelper.GeneralLedgerStatementDetailUrl);//new SystemQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType, AccountIds = model.SystemQuery.AccountIds, FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate });
+
+                            }
+                            break;
+                        case "GLD":
+                            {
+                                var account = await _accountingServices.PostJE(model.SystemQuery, APICallHelper.GeneralLedgerStatementUrl);//new SystemQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType, AccountIds = model.SystemQuery.AccountIds, FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate });
+
                             }
                             break;
                         case "LL":
@@ -702,13 +710,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             break;
                         case "TB4":
                             {
-                               
+                                var account = await _accountingServices.PostJE(model.SystemQuery, APICallHelper.AccountingEntry_Generate4ColumnTrialBalance);//new SystemQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType, AccountIds = model.SystemQuery.AccountIds, FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate });
 
+                             
                             }
                             break;
                         case "TB6":
                             {
-                                
+                                var account = await _accountingServices.PostJE(model.SystemQuery, APICallHelper.AccountingEntry_Generate6ColumnTrialBalance);//new SystemQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType, AccountIds = model.SystemQuery.AccountIds, FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate });
+
                             }
                             break;
                         case "BS":
