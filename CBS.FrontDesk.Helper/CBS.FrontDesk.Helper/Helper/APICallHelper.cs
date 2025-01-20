@@ -72,10 +72,30 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllHolyDay = "/api/v1/HolyDays";
         public static string CreateHolyDay = "/api/v1/HolyDay";
 
+        public static string Get_Vault = "/api/v1/Vault/{0}";
+        public static string Update_Vault = "/api/v1/Vault/update";
+        public static string GetAllVaultByBranch = "/api/v1/Vault/branch/{0}";
+        public static string GetAllVault = "/api/v1/Vault/all";
+        public static string CreateVault = "/api/v1/Vault/create";
+        public static string VaultInitialize = "/api/v1/Vault/initialize";
+
+
+        public static string Get_CashCeilingRequest = "/api/v1/CashCeilingRequest/{0}";
+        public static string Delete_CashCeilingRequest = "/api/v1/CashCeilingRequest/{0}";
+        public static string Update_CashCeilingRequest = "/api/v1/CashCeilingRequest/update";
+        public static string GetAllCashCeilingRequest = "/api/v1/CashCeilingRequest/all";
+        public static string CreateCashCeilingRequest = "/api/v1/CashCeilingRequest/create";
+        public static string ValidateCashCeilingRequest = "/api/v1/CashCeilingRequest/validate";
+
         public static string Get_Update_Delete_HolyDayRecurring = "/api/v1/HolyDayRecurring/{0}";
         public static string GetAllHolyDayRecurring = "/api/v1/HolyDayRecurrings";
         public static string CreateHolyDayRecurring = "/api/v1/HolyDayRecurring";
 
+        public static string DenominationCashChangePrimaryTeller = "/api/v1/CashChange/primary-teller";
+        public static string DenominationCashChangeSubTeller = "/api/v1/CashChange/sub-teller";
+        public static string DenominationCashChangeVault = "/api/v1/CashChange/vault";
+        public static string GetDenominationHistories = "/api/v1/CashChange/history";
+        public static string GetDenominationHistoryById = "/api/v1/CashChange/{0}";
         //User
         public static string GetUserByID = "/api/User/{0}";
         public static string DeleteUser = "/api/User/{0}";
@@ -294,6 +314,7 @@ namespace CBS.FrontDesk.Helper
         public static string CreateTeller = "/api/v1/Teller";
         //DailyTeller
         public static string Get_Update_Delete_DailyTeller = "/api/v1/DailyTeller/{0}";
+        public static string GetDailyTellerUser = "/api/v1/DailyTeller/User";
         public static string GetAllDailyTeller = "/api/v1/DailyTeller/All";
         public static string GetAllDailyTellerByBranch = "/api/v1/DailyTeller/Branch";
         public static string CreateDailyTeller = "/api/v1/DailyTeller";

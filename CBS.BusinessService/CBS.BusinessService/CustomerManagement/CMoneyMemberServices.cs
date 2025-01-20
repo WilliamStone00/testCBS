@@ -74,6 +74,10 @@ namespace CBS.BusinessService.CustomerManagement
         }
         public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string searchCriterial, bool isByBranch = true)
         {
+            if (IsHeadOffice())
+            {
+                isByBranch=false;
+            }
             var customerParam = new PagginationResource
             {
                 OrderBy = "CustomerId",

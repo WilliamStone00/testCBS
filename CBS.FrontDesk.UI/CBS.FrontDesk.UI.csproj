@@ -600,9 +600,12 @@
     <Compile Include="Controllers\Support\HelpDeskController.cs" />
     <Compile Include="Controllers\ThirdPartyBankAccount\ThirdPartyBranchController.cs" />
     <Compile Include="Controllers\ThirdPartyBankAccount\ThirdPartyInstitutionController.cs" />
+    <Compile Include="Controllers\TransactionManagement\CashChangeManagementController.cs" />
     <Compile Include="Controllers\TransactionManagement\ChargesWaivedController.cs" />
     <Compile Include="Controllers\TransactionManagement\AccountingDayController.cs" />
     <Compile Include="Controllers\TransactionManagement\DailyTellerAssignationController.cs" />
+    <Compile Include="Controllers\TransactionManagement\CashCeilingRequestController.cs" />
+    <Compile Include="Controllers\TransactionManagement\VaultController.cs" />
     <Compile Include="Controllers\TransactionManagement\HolidayRecurringController.cs" />
     <Compile Include="Controllers\TransactionManagement\HolidayController.cs" />
     <Compile Include="Controllers\TransactionManagement\MigrationController.cs" />
@@ -3078,7 +3081,6 @@
     <Content Include="Views\DailyTellerAssignation\_SearchBox.cshtml" />
     <Content Include="Views\TellerProvissioing\Index.cshtml" />
     <Content Include="Views\TellerProvissioing\_SearchBox.cshtml" />
-    <Content Include="Views\TellerProvissioing\_AwaitCashReplenishmentPrimaryTellerData.cshtml" />
     <Content Include="Views\TellerProvissioing\Primary.cshtml" />
     <Content Include="Views\TellerProvissioing\_Details.cshtml" />
     <Content Include="Views\SubTellerCashRequisition\Index.cshtml" />
@@ -3351,6 +3353,30 @@
     <Content Include="Views\Individual\_NextOfKinManagement.cshtml" />
     <Content Include="Views\Individual\_SignatoryManagement.cshtml" />
     <Content Include="Views\AccountingStatements\_DownloadedReportData.cshtml" />
+    <Content Include="Views\MemberOperation\_LoanApplicationCancellation.cshtml" />
+    <Content Include="Views\Vault\_Create.cshtml" />
+    <Content Include="Views\Vault\_Data.cshtml" />
+    <Content Include="Views\Vault\Index.cshtml" />
+    <Content Include="Views\Vault\_VaultDetailsPartial.cshtml" />
+    <Content Include="Views\CashCeilingRequest\_Create.cshtml" />
+    <Content Include="Views\CashCeilingRequest\_Data.cshtml" />
+    <Content Include="Views\CashCeilingRequest\_VaultDetailsPartial.cshtml" />
+    <Content Include="Views\CashCeilingRequest\CashToVault.cshtml" />
+    <Content Include="Views\CashCeilingRequest\_RequestValidation.cshtml" />
+    <Content Include="Views\CashCeilingRequest\RequestValidation.cshtml" />
+    <Content Include="Views\CashCeilingRequest\_InitiatorData.cshtml" />
+    <Content Include="Views\CashCeilingRequest\InitiatorListing.cshtml" />
+    <Content Include="Views\CashCeilingRequest\Validation.cshtml" />
+    <Content Include="Views\Vault\_VaultInitializationForm.cshtml" />
+    <Content Include="Views\Vault\Initilization.cshtml" />
+    <Content Include="Views\CashCeilingRequest\SubTillToPrimaryTill.cshtml" />
+    <Content Include="Views\CashCeilingRequest\Index.cshtml" />
+    <Content Include="Views\CashChangeManagement\_ChangeDenomination.cshtml" />
+    <Content Include="Views\CashChangeManagement\_Data.cshtml" />
+    <Content Include="Views\CashChangeManagement\Index.cshtml" />
+    <Content Include="Views\CashChangeManagement\ChangeDenominationVault.cshtml" />
+    <Content Include="Views\CashChangeManagement\ChangeDenominationPrimaryTeller.cshtml" />
+    <Content Include="Views\CashChangeManagement\ChangeDenominationSubTeller.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -76,7 +76,7 @@
                     <label class="form-check-label" for="activeStatus">Add to members default ordinary account.</label>
                 </div>
             </div>
-            
+
 
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
@@ -388,6 +388,25 @@
             </div>
         </div>
     </fieldset>
+
+   if (Model.SavingProduct.AccountType=="Saving")
+    {
+        <fieldset class="fieldset-custom">
+            <legend>
+                Third Party Saving Withdrawal Form Charge
+                <i class="bi bi-question-circle-fill" data-bs-toggle="tooltip" title="Set the form charge for withdrawaing from saving account"></i>
+            </legend>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.SavingProduct.WithdrawalFormSavingFormFeeFor3PP, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.SavingProduct.WithdrawalFormSavingFormFeeFor3PP, "", new { @class = "text-danger" })
+                        <label>Form Charge</label>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    }
 
     <fieldset class="fieldset-custom">
         <legend>

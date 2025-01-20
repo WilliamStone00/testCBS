@@ -1,0 +1,128 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.CashCeilingManagement.CashCeilingRequest>
+<fieldset class="fieldset-custom">
+    <legend id="select_base">Cash Ceiling Requests</legend>
+    @if (!Model.Any())
+    {
+        <div class="text-center my-3">
+            <p class="text-muted">No cash ceiling requests have been made yet.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mb-3">
+            <table class="table table-hover table-bordered text-center" id="myDataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 20%;">Branch</th>
+                        <th style="width: 15%;">Requested By</th>
+                        <th style="width: 15%;">Request Type</th>
+                        <th style="width: 15%;">Amount</th>
+                        <th style="width: 15%;">Status</th>
+                        <th style="width: 20%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var request in Model)
+                    {
+                        <tr>
+                            <td>@request.BranchName</td>
+                            <td>@request.RequestedBy</td>
+                            <td>
+                                @if (request.RequestType == "Cash_To_Vault")
+                                {
+                                    <span class="badge bg-primary">Cash to Vault</span>
+                                }
+                                else if (request.RequestType == "Subteller_Cash_To_PrimaryTeller")
+                                {
+                                    <span class="badge bg-warning">Sub-Teller to Primary Teller</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Unknown</span>
+                                }
+                            </td>
+                            <td>@request.CashoutRequestAmount.ToString("#,##0.0") FCFA</td>
+                            <td>
+                                @if (request.ApprovedStatus == "Pending")
+                                {
+                                    <span class="badge bg-warning">Pending</span>
+                                }
+                                else if (request.ApprovedStatus == "Approved")
+                                {
+                                    <span class="badge bg-success">Approved</span>
+                                }
+                                else if (request.ApprovedStatus == "Rejected")
+                                {
+                                    <span class="badge bg-danger">Rejected</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Unknown</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center align-items-center gap-2">
+                                    <!-- Validate Button -->
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-primary"
+                                            onclick="validateRequest('@request.Id')"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="Validate Request">
+                                        <i class="fas fa-check"></i> Validate
+                                    </button>
+
+                                    <!-- Details Button -->
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-info"
+                                            onclick="showRequestDetails('@request.Id')"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="View Details">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</fieldset>
+
+<script>
+    function validateRequest(requestId) {
+        $('#vaultDetailsModal').modal('show');
+        $('#vaultDetailsContent').html('<p>Loading validation form...</p>');
+
+        $.ajax({
+            url: '/CashCeiling/ValidateRequest',
+            type: 'GET',
+            data: { id: requestId },
+            success: function (data) {
+                $('#vaultDetailsContent').html(data);
+            },
+            error: function () {
+                $('#vaultDetailsContent').html('<p class="text-danger">Error loading validation form.</p>');
+            }
+        });
+    }
+
+    function showRequestDetails(requestId) {
+        $('#vaultDetailsModal').modal('show');
+        $('#vaultDetailsContent').html('<p>Loading request details...</p>');
+
+        $.ajax({
+            url: '/CashCeiling/GetRequestDetails',
+            type: 'GET',
+            data: { id: requestId },
+            success: function (data) {
+                $('#vaultDetailsContent').html(data);
+            },
+            error: function () {
+                $('#vaultDetailsContent').html('<p class="text-danger">Error loading request details.</p>');
+            }
+        });
+    }
+</script>

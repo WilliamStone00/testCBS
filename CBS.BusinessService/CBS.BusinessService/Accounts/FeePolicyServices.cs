@@ -122,6 +122,10 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
+                if (model.BranchId=="0")
+                {
+                    model.IsCentralised=true;
+                }
                 
                 // Make an API call to create an individual profile
                 var response = await _transactionApiHelper.PostAsync<ServiceResponse<FeePolicy>>(APICallHelper.CreateFeePolicy, model);

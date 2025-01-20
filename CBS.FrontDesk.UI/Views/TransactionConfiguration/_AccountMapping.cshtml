@@ -116,16 +116,16 @@
                                             </div>
                                         </div>
                                         @*<div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdWithrawalFee,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdWithrawalFee, "", new { @class = "text-danger" })
-                                                <label>Withdrawal Fee Account</label>
-                                                <small class="form-text text-muted">Tracks fees generated from withdrawal operations for @Model.SavingProduct.Name.</small>
-                                            </div>
-                                        </div>*@
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(
+                                                m => m.SavingProduct.ChartOfAccountIdWithrawalFee,
+                                                new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdWithrawalFee, "", new { @class = "text-danger" })
+                                            <label>Withdrawal Fee Account</label>
+                                            <small class="form-text text-muted">Tracks fees generated from withdrawal operations for @Model.SavingProduct.Name.</small>
+                                        </div>
+                                    </div>*@
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.DropDownListFor(
@@ -358,7 +358,7 @@
                                                     new { @class = "form-control select2", @search = "true" }
                                                 )
                                                 @Html.ValidationMessageFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCMoneyTransferCommission, "",
+                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCMoneyTransferCommission, "",
                                                     new { @class = "text-danger" }
                                                 )
                                                 <label>Head office (Transfer Commission)</label>
@@ -392,83 +392,171 @@
 
             </div>
 
-            <div class="card accordion-item mb-3">
-                <h2 class="accordion-header" id="headingPaymentMethod4">
-                    <button type="button"
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapsePaymentMethod4"
-                            aria-expanded="false"
-                            aria-controls="collapsePaymentMethod4">
-                        Mapping withdrawal form charges of @Model.SavingProduct.Name to chart of account events
-                    </button>
-                </h2>
-                <div id="collapsePaymentMethod4"
-                     class="accordion-collapse collapse"
-                     aria-labelledby="headingPaymentMethod4"
-                     data-bs-parent="#collapsibleSection">
+            @if (Model.SavingProduct.AccountType=="Saving")
+            {
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingPaymentMethod4">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePaymentMethod4"
+                                aria-expanded="false"
+                                aria-controls="collapsePaymentMethod4">
+                            Mapping withdrawal form charges of @Model.SavingProduct.Name to chart of account events
+                        </button>
+                    </h2>
+                    <div id="collapsePaymentMethod4"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPaymentMethod4"
+                         data-bs-parent="#collapsibleSection">
 
-                    <div class="accordion-body">
-                        @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-                        {
-                            <fieldset class="fieldset-custom">
-                                <legend>Form Charges Mapping</legend>
-                                <div class="row g-4">
-                                    @Html.HiddenFor(model => model.SavingProduct.Id)
-                                    <input type="hidden" name="option" value="mapformeventcharges" id="option" />
+                        <div class="accordion-body">
+                            @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            {
+                                <fieldset class="fieldset-custom">
+                                    <legend>Form Charges Mapping</legend>
+                                    <div class="row g-4">
+                                        @Html.HiddenFor(model => model.SavingProduct.Id)
+                                        <input type="hidden" name="option" value="mapformeventcharges" id="option" />
 
-                                    <div class="col-md-12">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control", @readonly = true })
-                                            <label>Account Name</label>
-                                            <small class="form-text text-muted">The name of the saving product for which charges are being mapped.</small>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control", @readonly = true })
+                                                <label>Account Name</label>
+                                                <small class="form-text text-muted">The name of the saving product for which charges are being mapped.</small>
+                                            </div>
                                         </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee,
+                                                    new SelectList(ViewBag.EventCodes, "Value", "Text"),
+                                                    "---Select event code---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee, "",
+                                                    new { @class = "text-danger" })
+                                                <label>Form Fee for Moral Person</label>
+                                                <small class="form-text text-muted">Select the event code associated with the withdrawal form fee for moral persons.</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee,
+                                                    new SelectList(ViewBag.EventCodes, "Value", "Text"),
+                                                    "---Select event code---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee, "",
+                                                    new { @class = "text-danger" })
+                                                <label>Form Fee for Physical Person</label>
+                                                <small class="form-text text-muted">Select the event code associated with the withdrawal form fee for physical persons.</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.EventCodeWithdrawalFormSavingFormFeeFor3PP,
+                                                    new SelectList(ViewBag.EventCodes, "Value", "Text"),
+                                                    "---Select event code---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.EventCodeWithdrawalFormSavingFormFeeFor3PP, "",
+                                                    new { @class = "text-danger" })
+                                                <label>Form Fee for C-MONEY</label>
+                                                <small class="form-text text-muted">Select the event code associated with the withdrawal form fee for third party application.</small>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" value="@Model.SavingProduct.Id" id="savingproductid" />
                                     </div>
 
-                                    <div class="col-md-12">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(
-                                                m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee,
-                                                new SelectList(ViewBag.EventCodes, "Value", "Text"),
-                                                "---Select event code---",
-                                                new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(
-                                                m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee, "",
-                                                new { @class = "text-danger" })
-                                            <label>Form Fee for Moral Person</label>
-                                            <small class="form-text text-muted">Select the event code associated with the withdrawal form fee for moral persons.</small>
-                                        </div>
+                                    <div class="mt-4">
+                                        @Html.HiddenFor(m => m.SavingProductFee.Id)
+                                        <input type="hidden" name="Action" value="update" id="Action" />
+                                        <input type="hidden" name="ServiceOption" value="mapformeventcharges" id="ServiceOption" />
+                                        <button type="submit" class="btn btn-primary">Map Events</button>
                                     </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(
-                                                m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee,
-                                                new SelectList(ViewBag.EventCodes, "Value", "Text"),
-                                                "---Select event code---",
-                                                new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(
-                                                m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee, "",
-                                                new { @class = "text-danger" })
-                                            <label>Form Fee for Physical Person</label>
-                                            <small class="form-text text-muted">Select the event code associated with the withdrawal form fee for physical persons.</small>
-                                        </div>
-                                    </div>
-
-                                    <input type="hidden" value="@Model.SavingProduct.Id" id="savingproductid" />
-                                </div>
-
-                                <div class="mt-4">
-                                    @Html.HiddenFor(m => m.SavingProductFee.Id)
-                                    <input type="hidden" name="Action" value="update" id="Action" />
-                                    <input type="hidden" name="ServiceOption" value="mapformeventcharges" id="ServiceOption" />
-                                    <button type="submit" class="btn btn-primary">Map Events</button>
-                                </div>
-                            </fieldset>
-                        }
+                                </fieldset>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
+
+            }
+
+            @if (Model.SavingProduct.AccountType.Contains("Salary"))
+            {
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingPaymentMethod4">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePaymentMethod4"
+                                aria-expanded="false"
+                                aria-controls="collapsePaymentMethod4">
+                            Mapping withdrawal form charges of @Model.SavingProduct.Name to chart of account events
+                        </button>
+                    </h2>
+                    <div id="collapsePaymentMethod4"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPaymentMethod4"
+                         data-bs-parent="#collapsibleSection">
+
+                        <div class="accordion-body">
+                            @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            {
+                                <fieldset class="fieldset-custom">
+                                    <legend>Form Charges Mapping for Salaries</legend>
+                                    <div class="row g-4">
+                                        @Html.HiddenFor(model => model.SavingProduct.Id)
+                                        <input type="hidden" name="option" value="mapformeventcharges" id="option" />
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control", @readonly = true })
+                                                <label>Account Name</label>
+                                                <small class="form-text text-muted">The name of the saving product for which charges are being mapped.</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.EventCodeAdvanceOfSalaryFormFee,
+                                                    new SelectList(ViewBag.EventCodes, "Value", "Text"),
+                                                    "---Select event code---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(
+                                                    m => m.SavingProduct.EventCodeAdvanceOfSalaryFormFee, "",
+                                                    new { @class = "text-danger" })
+                                                <label>Form Fee for Moral Person</label>
+                                                <small class="form-text text-muted">Select the event code associated with the withdrawal form fee for salary.</small>
+                                            </div>
+                                        </div>
+
+                                        
+
+                                        <input type="hidden" value="@Model.SavingProduct.Id" id="savingproductid" />
+                                    </div>
+
+                                    <div class="mt-4">
+                                        @Html.HiddenFor(m => m.SavingProductFee.Id)
+                                        <input type="hidden" name="Action" value="update" id="Action" />
+                                        <input type="hidden" name="ServiceOption" value="mapformeventchargessalaries" id="ServiceOption" />
+                                        <button type="submit" class="btn btn-primary">Map Events</button>
+                                    </div>
+                                </fieldset>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            }
 
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingPaymentMethod3">

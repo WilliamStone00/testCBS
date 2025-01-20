@@ -51,10 +51,17 @@ namespace CBS.FrontDesk.Data.Entity.Config
         public Bank Bank { get; set; }
         public List<SubDivision> Subdivisions { get; set; }
         public List<Town> Towns { get; set; }
+        // New display property
+        public string DisplayName => $"{BranchCode} ({Name})";
         public Branch()
         {
             ImageVirtualPath = "~/AppFiles/Images/noimage.jpg";
         }
     }
+    public class BranchDropdownDto
+    {
 
+        public string Id { get; set; }
+        public string Name { get; set; }
+    }
 }

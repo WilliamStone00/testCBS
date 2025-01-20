@@ -3,6 +3,7 @@ using CBS.API.Helper;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.CashCeilingManagement;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
@@ -433,6 +434,26 @@ namespace CBS.BusinessService.Accounts
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<DailyTeller> GetDailyTellerUser(string tellerType)
+        {
+            try
+            {
+                GetDailyTellerByUserIdQuery allCashCeilingRequestsQuery = new GetDailyTellerByUserIdQuery { TellerType=tellerType, UserId=GetUserID() };
+                var queryString = ToQueryString(allCashCeilingRequestsQuery);
+                var fullUrl = $"{APICallHelper.GetDailyTellerUser}?{queryString}";
+                var response = await _transactionBaseConfigApiHelper.GetAsync<ResponseObject<DailyTeller>>(fullUrl);
+                if (response.IsSuccess)
+                {
+                    return response.ApiResponseData.Data;
                 }
                 return null;
             }

@@ -74,7 +74,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounting\ProductAccountingBook.cs" />
+    <Compile Include="Entity\CashCeilingManagement\CashCeilingRequest.cs" />
+    <Compile Include="Entity\CashChangeManagement\CashChangeHistory.cs" />
     <Compile Include="Entity\CMoney\CMoneyMembersActivationAccount.cs" />
+    <Compile Include="Entity\VaultManagement\VaultAuthorisedPersonP\VaultAuthorisedPerson.cs" />
+    <Compile Include="Entity\VaultManagement\VaultOperationP\VaultOperation.cs" />
+    <Compile Include="Entity\VaultManagement\VaultP\Vault.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="CurrencyMapper.cs" />
     <Compile Include="Entity\AccountingDayObject\AccountingDay.cs" />
