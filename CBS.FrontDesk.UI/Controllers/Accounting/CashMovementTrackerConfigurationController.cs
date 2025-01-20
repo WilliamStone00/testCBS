@@ -1,10 +1,14 @@
 ﻿using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
+using CBS.BusinessService.CorrespondingBankAccount;
+using CBS.BusinessService.Services;
+using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.CashMovementTracker;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement;
 using CBS.FrontDesk.Data.Message;
 using System;
 using System.Collections.Generic;
@@ -20,11 +24,19 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
     {
         private readonly BranchServices _branchService;
         private readonly CashMovementTrackingConfigurationServices _cashMovementTrackingConfigurationServices;
-
+        private readonly CorrespondingBankBranchServices _correspondingBankBranchServices;
+        private readonly CorrespondingBankServices _correspondingBankServices;
+        private readonly UserManagementServices _userService;
+        private readonly BankingZoneServices _bankingZoneServices;
+        private readonly BankZoneBranchServices _bankZoneBranchServices;
         public CashMovementTrackerConfigurationController()
         {
             _branchService = new BranchServices();
             _cashMovementTrackingConfigurationServices = new CashMovementTrackingConfigurationServices();
+            _correspondingBankBranchServices = new CorrespondingBankBranchServices();
+            _correspondingBankServices = new CorrespondingBankServices();
+            _bankingZoneServices = new BankingZoneServices();
+            _bankZoneBranchServices = new BankZoneBranchServices();
         }
         // GET: CashMovementTrackerConfiguration
         public async Task<ActionResult> Index()
@@ -33,7 +45,32 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             return View(new CashMovementConfiguration());
         }
+        public List<StringValues> GetBankingZone(List<BankingZoneDto> bankBranches)
+        {
+            List<StringValues> selectListItems = new List<StringValues>();
 
+            var collections = GetUniqueZoneName(bankBranches);
+            foreach (var item in collections)
+            {
+                selectListItems.Add(new StringValues { Text = item.Id, Value = item.Name });
+            }
+
+
+            return selectListItems;
+        }
+        private List<BankingZoneDto> GetUniqueZoneName(List<BankingZoneDto> bankBranches)
+        {
+            List<BankingZoneDto> List = new List<BankingZoneDto>();
+            foreach (var item in bankBranches)
+            {
+                if (List.Find(x => x.Name.Equals(item.Name)) == null)
+                {
+                    List.Add(item);
+                }
+
+            }
+            return List;
+        }
         public async Task<ActionResult> AddOrUpdate(CashMovementConfiguration model)
         {
 
@@ -120,7 +157,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
             new System.Web.WebPages.Html.SelectListItem {Text  = "Branch-To-Branch", Value = "Branch To Branch" },
             new System.Web.WebPages.Html.SelectListItem { Text = "Branch-To-Bank", Value = "Branch To Bank" },
-
+                        new System.Web.WebPages.Html.SelectListItem { Text = "Bank-To-Branch", Value = "Bank To Branch" },
             };
             return selectListItems;
         }
@@ -128,6 +165,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             ViewBag.MovementTypes = BuildMovemenType();
             ViewBag.Branches = BuildBranch((await _branchService.GetBranches()).ToList());
+            ViewBag.BankingZoneId = GetBankingZone(await _bankingZoneServices.GetBankingZone());
         }
         private dynamic BuildBranch(List<Branch> listOfItems)
         {

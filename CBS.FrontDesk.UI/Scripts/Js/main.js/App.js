@@ -503,64 +503,49 @@ function PrintSingleObject(controller, objectID, path, rptType) {
 
 
 }
-
 function LoadDT(tableID, order) {
-
-    if (order === "desc") {
-        var T = '#' + tableID;
-        console.log(T);
-        var dataThumbView = $(T).DataTable({
-            responsive: false,
-            columnDefs: [
-                {
-                    orderable: true,
-                    targets: 0
-
-                }
-            ],
-            oLanguage: {
-                sLengthMenu: "_MENU_",
-                sSearch: ""
-            },
-            aLengthMenu: [[4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
-
-
-            order: [[order, "desc"]],
-            bInfo: true,
-            pageLength: 4
-
-        });
+    // Ensure tableID is valid
+    if (!tableID) {
+        console.error('TableID is required');
+        return;
     }
 
-    else {
-        var T = '#' + tableID;
-        var dataThumbView = $(T).DataTable({
-            responsive: false,
-            columnDefs: [
-                {
-                    orderable: true,
-                    targets: 0
+    const tableSelector = '#' + tableID;
 
-                }
-            ],
-            oLanguage: {
-                sLengthMenu: "_MENU_",
-                sSearch: ""
-            },
-            aLengthMenu: [[4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
-
-
-            order: [[order, "asc"]],
-            bInfo: true,
-            pageLength: 4
-
-        });
+    // Destroy existing DataTable instance if it exists
+    if ($.fn.DataTable.isDataTable(tableSelector)) {
+        $(tableSelector).DataTable().destroy();
+        $(tableSelector).empty(); // Clear the table contents
     }
 
+    // Common configuration options
+    const config = {
+        responsive: false,
+        columnDefs: [{
+            orderable: true,
+            targets: 0
+        }],
+        oLanguage: {
+            sLengthMenu: "_MENU_",
+            sSearch: ""
+        },
+        aLengthMenu: [[10, 15, 20, 100, 500, 1000, 2000, 5000, 10000],
+        [10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
+        bInfo: true,
+        pageLength: 4
+    };
 
+    // Set order based on parameter
+    config.order = [[order, order === "desc" ? "desc" : "asc"]];
 
-
-
+    try {
+        // Initialize DataTable with configuration
+        const dataTable = $(tableSelector).DataTable(config);
+        return dataTable; // Return the instance for further manipulation if needed
+    } catch (error) {
+        console.error('Error initializing DataTable:', error);
+        return null;
+    }
 }
 
 function InfinitiySroll(iTable, iAction, iParams) {

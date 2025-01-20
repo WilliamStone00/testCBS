@@ -127,7 +127,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
             ViewBag.OperationEvent = await _OperationEventService.GetOperationEvents();
             ViewBag.ChartOfAccountManagementPositions = BuildMenuAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), listAccounts.ToList());
-            ViewBag.BranchCode = BuildMenuISViewBag((await _branchService.GetBranches()).ToList());
+            ViewBag.BranchCode = BuildBranchCode((await _branchService.GetBranches()).ToList());
             ViewBag.ChartOfAccounts = BuildMenuAccountViewBag(listAccounts.ToList());
             ViewBag.AccountingRuleEntries = BuildAccountingRuleEntryViewBag((await _accountingEntryRuleService.GetAccountingRuleEntries()).ToList());
             ViewBag.BookingDirections = await this.GetBookingDirections();
@@ -144,8 +144,22 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.ProvisionExceptionAccount = BuildMenuAccountViewBag(listAccounts.ToList());
         }
 
+        private dynamic BuildBranchCode(List<Branch> listOfItems)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select BranchCode" });
+            foreach (var item in listOfItems)
+            {
+                if (!item.BranchCode.Equals("000"))
+                {
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.BranchCode, Value = $"{item.BranchCode} - {item.Name}" });
+                }
 
- 
+            }
+            return selectListItems;
+
+        }
+
         private dynamic BuildMenuISViewBag(List<Branch> listOfItems)
         {
            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
@@ -161,7 +175,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return selectListItems;
  
         }
+        public async Task<ActionResult> LoadBranches()
+        {
 
+
+
+            try
+            {
+                var dataList =   ViewBag.Branches = BuildMenuISViewBag((await _branchService.GetBranches()).ToList());
+                return Json(dataList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
         private dynamic BuildViewBagBranch(List<Branch> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
@@ -268,6 +296,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             return selectListItems;
         }
+
         private List<StringValues> BuildStringValuesViewBag(List<ChartOfAccount> ListchartOfAccounts)
         {
             List<StringValues> selectListItems = new List<StringValues>();
@@ -738,9 +767,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     model.Account.AccountCategoryId = chartOfAccount.AccountCartegoryId;
                 }
-                var BranchCode= (await _branchService.GetBranches()).Where(xx => xx.BranchCode.Equals(model.Account.AccountOwnerId)).FirstOrDefault();
-
-                model.Account.AccountOwnerId = BranchCode.Id;//(await _branchService.GetBranches()).Where(xx => xx.BranchCode.Equals(model.Account.AccountOwnerId)).FirstOrDefault().Id;
+                //var BranchCode = (await _branchService.GetBranches()).Where(xx => xx.BranchCode.Equals(model.Account.AccountOwnerId)).FirstOrDefault();
+                //model.Account.AccountOwnerId = BranchCode.Id;//(await _branchService.GetBranches()).Where(xx => xx.BranchCode.Equals(model.Account.AccountOwnerId)).FirstOrDefault().Id;
                 if (model.Account.AccountNumber == "45100")
                 {
                     model.Account.AccountCounterPartId = (await _branchService.GetBranches()).Where(xx => xx.BranchCode.Equals(model.Account.AccountCounterPartId)).FirstOrDefault().Id;
@@ -1585,8 +1613,26 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
  
         }
 
+        public async Task<ActionResult> CleanAccountingEntry(AccountingConfiguration accounting)
+        {
+            List<string> listOfBranchIds = accounting.BranchIds;
+            try
+            {
 
-      
+                var data = await _AccountServices.CleanAccountingEntry(listOfBranchIds);
+                return Json(new { success = data, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw(ex);
+            }
+         
+        }
+
+
         private List<AccountModelX> ReadExcelFile(Stream stream)
         {
             var dataList = new List<AccountModelX>();

@@ -649,8 +649,11 @@ namespace CBS.FrontDesk.Helper
         // POST  Create a AccountingRule
         public static string CreateAccounOnUploadie = "/api/v1/Account/UploadAccountCommand";
         //AccountingRuleEntry
-        //Get,Update,Delete AccountingRuleEntry By Id
+        //Get,Update,Delete AccountingRuleEntry By Id/api/v1/AccountingRuleEntry/GetAccountingRuleEntryByEventCodeQuery/Vault_To_Liaison
         public static string Get_Update_Delete_AccountingRuleEntry = "/api/v1/AccountingRuleEntry/{0}";
+
+        //Get,Update,Delete AccountingRuleEntry By Id/api/v1/AccountingRuleEntry/GetAccountingRuleEntryByEventCodeQuery/Vault_To_Liaison
+        public static string Get_AccountingRuleEntryByEventCode = "/api/v1/AccountingRuleEntry/GetAccountingRuleEntryByEventCodeQuery/{0}";
         //Get All OperationEventAttribute
         public static string GetAllAccountingRuleEntry = "/api/v1/AccountingRuleEntry";
         // POST  Create a OperationEventAttribute
@@ -799,6 +802,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllCashReplenishmentRequests = "/api/v1/BankingOperation/GetAllCashReplenishmentRequests";
         public static string GetAllCashReplenishmentQueryAsBranch = "/api/v1/BankingOperation/GetAllCashReplenishmentQueryAsBranch/{0}";
         public static string GetAllCashRequestApprovalQuery = "/api/v1/BankingOperation/GetAllCashRequestApprovalQuery";
+        public static string GetAccountByEvenCodeUrl= "/api/v1/Account/GetAccountByEventCodeQuery";
         public static string BranchToBranchTransferUrl = "/api/v1/AccountingEntry/BranchToBranchTransferCommand";
         public static string CashClearingTransferUrl = "/api/v1/AccountingEntry/CashClearingTransferCommand";
         public static string GetCashReplenishmentRequestByBranchId = "/api/v1/BankingOperation/GetCashReplenishmentRequestByBranchId/{0}";
@@ -826,7 +830,7 @@ namespace CBS.FrontDesk.Helper
         public static string CheckIfTransactionReversalRequestByReferenceIdExist = "/api/v1/BankingOperation/CheckIfTransactionReversalRequestByReferenceIdExist/{0}";
 
         public static string Create_EntryTempData = "/api/v1/EntryTempData";
-
+        public static string CleanAccountingEntryUrl = "/api/v1/AccountingEntry/CleanAccountAndAccountingEntriesCommand";
         public static string Url_Get_Update_delete_EntryTempData = "/api/v1/EntryTempData/{0}";
         public static string Url_Get_RefereceId = "api/v1/EntryTempDatas/{0}";
         public static string Post_AccountingEntry_Entries = "/api/v1/EntryTempData/PostManualEntries";
@@ -859,7 +863,7 @@ namespace CBS.FrontDesk.Helper
         //ThirdPartyBranche
         public static string Get_Update_Delete_CorrespondingBankBranche = "/api/v1/CorrespondingBankBranch/{0}";
         public static string GetAllCorrespondingBankBranche = "/api/v1/ThirdPartyBranches";
-        public static string CreateCorrespondingBankBranche = "/api/v1/CorrespondingBankBranch";
+        public static string CreateCorrespondingBankBranche = "/api/v1/ThirdPartyBranche";
         //ThirdPartyBranche
         //public static string Get_Update_Delete_CorrespondingBank = "/api/v1/ThirdPartyBranche/{0}";
         //public static string GetAllThirdPartyInstitution = "/api/v1/ThirdPartyBranches";
@@ -867,12 +871,20 @@ namespace CBS.FrontDesk.Helper
         ////CorrespondingBankBranche
         //public static string Get_Update_Delete_CorrespondingBankBranche = "/api/v1/CorrespondingBankBranche/{0}";
         //public static string GetAllCorrespondingBankBranche = "/api/v1/CorrespondingBankBranches";
-        //public static string CreateCorrespondingBankBranche = "/api/v1/CorrespondingBankBranche";
+        //public static string CreateCorrespondingBankBranche = "/api/v1/CorrespondingBankBranche";/api/v1//{id}
         ////CorrespondingBankBranche
         public static string Get_Update_Delete_CorrespondingBank = "/api/v1/ThirdPartyInstitution/{0}";
         public static string GetAllCorrespondingBank = "/api/v1/ThirdPartyInstitutions";
         public static string CreateCorrespondingBank = "/api/v1/ThirdPartyInstitution";
+        //BankingZone
+        public static string Get_Update_Delete_BankingZone = "/api/v1/BankingZone/{0}";
+        public static string GetAllBankingZone = "/api/v1/BankingZones";
+        public static string CreateBankingZone = "/api/v1/BankingZone";
 
-
+        //BankZoneBranch
+        public static string Get_Update_Delete_BankZoneBranch = "/api/v1/BankZoneBranch/{0}";
+        public static string Get_BankZoneBranch_by_ZoneID = "/api/v1/BankZoneBranch/{0}";
+        public static string GetAllBankZoneBranch = "/api/v1/BankZoneBranchs";
+        public static string CreateBankZoneBranch = "/api/v1/BankZoneBranch";
     }
 }

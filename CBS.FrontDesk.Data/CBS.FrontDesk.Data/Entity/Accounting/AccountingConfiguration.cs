@@ -58,7 +58,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public Branch Branch { get; set; }
         public List<AccountPolicy> AccountPolicies { get; set; } = new List<AccountPolicy>();
         public AccountPolicy AccountPolicy { get; set; } = new AccountPolicy();
- 
+        public List<string> BranchIds { get; set; } = new List<string>();
         public string BranchId { get; set; }
         public string ManualOperationCode { get; set; }
         public string ManualOperationName { get; set; }

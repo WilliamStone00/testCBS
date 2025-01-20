@@ -34,7 +34,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public decimal AmountRequested { get; set; }
         public string RequestMessage { get; set; }
         [Required]
-        public decimal AmountApproved { get; set; }
+        public string AmountApproved { get; set; }
         [Required]
         public string CurrentOpenOfDayHistoryId { get; set; }
         public string CorrespondingBranchId { get; set; }
@@ -110,7 +110,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 Id = this.Id,
                 Status = this.Status,
                 CorrespondingBranchId = this.CorrespondingBranchId,
-                ApprovedAmount = this.AmountApproved,
+                ApprovedAmount = Convert.ToDecimal(this.AmountApproved),
                 BranchId = this.BranchId,
                 CashRequisitionType = this.CashRequisitionType,
                 BranchCode= BranchCode
@@ -147,7 +147,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 IsApproved = DetermineApprovalStatus(),
                 Id = this.Id,
                 CorrespondingBranchId = this.CorrespondingBranchId,
-                ApprovedAmount = this.AmountApproved,
+                ApprovedAmount = Convert.ToDecimal(this.AmountApproved),
                 BranchId = this.BranchId,
                 BranchCode = BranchCode
             };

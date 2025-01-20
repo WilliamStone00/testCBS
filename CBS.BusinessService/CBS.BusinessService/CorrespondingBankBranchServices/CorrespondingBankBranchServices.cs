@@ -32,11 +32,11 @@ namespace CBS.BusinessService.Services
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
 
             selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "MICROFINANCE", Value = "MICROFINANCE" });
-            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "p", Value = "BANK" });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "BANK", Value = "BANK" });
             return selectListItems;
         }
 
-
+     
         public async Task<List<StringValues>> GetValueOption(string switch_on, string Id = "0")
         {
             List<StringValues> selectListItems = new List<StringValues>();
@@ -86,6 +86,56 @@ namespace CBS.BusinessService.Services
 
             return selectListItems;
         }
+        public async Task<List<StringValues>> GetLocationValueOption(string switch_on, string Id = "0")
+        {
+            switch_on = Id;
+            List<StringValues> selectListItems = new List<StringValues>();
+            var LocationDto = await this.GetLocationInfo();
+            switch (switch_on)
+            {
+                case "REGION":
+                    {
+
+                        foreach (var item in LocationDto.Regions)
+                        {
+                            selectListItems.Add(new StringValues { Text = item.Id, Value = item.Name });
+                        }
+                    }
+                    break;
+                case "DIVISION":
+                    {
+                        var modelList = LocationDto.Divisions;
+                        foreach (var item in modelList)
+                        {
+                            selectListItems.Add(new StringValues { Text = item.Id, Value = item.Name });
+                        }
+                    }
+                    break;
+                case "SUBDIVISION":
+                    {
+                        var modelList = LocationDto.Subdivisions;
+                        foreach (var item in modelList)
+                        {
+                            selectListItems.Add(new StringValues { Text = item.Id, Value = item.Name });
+                        }
+                    }
+                    break;
+                case "TOWN":
+                    {
+                        var modelList = LocationDto.Towns;
+                        foreach (var item in modelList)
+                        {
+                            selectListItems.Add(new StringValues { Text = item.Id, Value = item.Name });
+                        }
+                    }
+                    break;
+
+
+                default: break;
+            }
+
+            return selectListItems;
+        }
         public async Task<ExecutionMessages> Delete(string id)
         {
             try
@@ -119,7 +169,7 @@ namespace CBS.BusinessService.Services
             var dataTable = await DatatableHelper.GenerateDataTable<CorrespondingBankBranch>(dataTableOptions, getDataFunc);
             return dataTable;
         }
-        public async Task<IEnumerable<CorrespondingBankBranch>> GetCorrespondingBankBranch()
+        public async Task<List<CorrespondingBankBranch>> GetCorrespondingBankBranch()
         {
             try
             {
@@ -176,7 +226,7 @@ namespace CBS.BusinessService.Services
             try
             {
                 var dataList = await GetCorrespondingBankBranch();
-                return dataList.Where(x=>x.CorrespondingBankId==id).ToList();
+                return dataList.Where(x=>x.ThirdPartyInstitutionId==id).ToList();
             }
             catch (Exception ex)
             {
@@ -189,7 +239,7 @@ namespace CBS.BusinessService.Services
         {
             try
             {
-
+                model.TownId = model.SubdivisionId;
                 // Make an API call to create an individual profile
                 var response = await _bankConfigApiHelper.PostAsync<ServiceResponse<CorrespondingBankBranch>>(APICallHelper.CreateCorrespondingBankBranche, model);
                 if (response.IsSuccess)

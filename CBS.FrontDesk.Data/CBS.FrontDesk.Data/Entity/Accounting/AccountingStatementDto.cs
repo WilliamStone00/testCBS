@@ -19,6 +19,25 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public Account Account  { get; set; } = new Account();
    
     }
+    public class InfoAccount
+    {
+        public string Id { get; set; }
+        // Account Number
+        public string AccountNumber { get; set; }
+        // Account Holder
+        public string AccountName { get; set; }
+        public string Type { get; set; }
+        public string CurrentBalance { get; set; }
+    }
+    public class EventRequest
+    {
+        /// <summary>
+        /// Gets or sets the unique identifier of the AccountCategory to be retrieved.
+        /// </summary>
+        public string EventCode { get; set; }
+        public string ToBranchCode { get; set; }
+        public string ToBranchId { get; set; }
+    }
     public class ReportInfo
     {
         public string Id { get; set; }

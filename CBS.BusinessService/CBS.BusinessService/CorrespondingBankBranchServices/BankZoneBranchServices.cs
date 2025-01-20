@@ -1,26 +1,24 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
-using CBS.BusinessService.ThirdPartyBankAccount;
-using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
-using System;
 using System.Collections.Generic;
+using System;
 using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CBS.BusinessService.CorrespondingBankAccount
+namespace CBS.BusinessService.Services
 {
-  
-    public class CorrespondingBankServices : BaseService
+
+    public class BankZoneBranchServices : BaseService
     {
         private readonly ApiCallerHelper _bankConfigApiHelper;
 
-        public CorrespondingBankServices()
+        public BankZoneBranchServices()
         {
             _bankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
         }
@@ -29,12 +27,12 @@ namespace CBS.BusinessService.CorrespondingBankAccount
         {
             try
             {
-                var objCorrespondingBank = await GetCorrespondingBank(id);
-                var inResponse = await _bankConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_CorrespondingBank, id), id));
+                var objBankZoneBranch = await GetBankZoneBranch(id);
+                var inResponse = await _bankConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_BankZoneBranch, id), id));
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"{objCorrespondingBank.Name}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{objBankZoneBranch.BankingZoneId}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
@@ -42,7 +40,7 @@ namespace CBS.BusinessService.CorrespondingBankAccount
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objCorrespondingBank, false, $"{objCorrespondingBank.Name}", MessagesResults.Failed,
+                    GetExecutionMessages(objBankZoneBranch, false, $"{objBankZoneBranch.BankingZoneId}", MessagesResults.Failed,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null, null);
                 }
             }
@@ -54,20 +52,20 @@ namespace CBS.BusinessService.CorrespondingBankAccount
         }
         public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions)
         {
-            Func<Task<List<CorrespondingBank>>> getDataFunc = async () => (await GetCorrespondingBank()).ToList();
-            var dataTable = await DatatableHelper.GenerateDataTable<CorrespondingBank>(dataTableOptions, getDataFunc);
+            Func<Task<List<BankZoneBranch>>> getDataFunc = async () => (await GetBankZoneBranch()).ToList();
+            var dataTable = await DatatableHelper.GenerateDataTable<BankZoneBranch>(dataTableOptions, getDataFunc);
             return dataTable;
         }
-        public async Task<IEnumerable<CorrespondingBank>> GetCorrespondingBank()
+        public async Task<IEnumerable<BankZoneBranch>> GetBankZoneBranch()
         {
             try
             {
-                var couApiResponse = await _bankConfigApiHelper.GetAsync<ResponseObject<List<CorrespondingBank>>>(APICallHelper.GetAllCorrespondingBank);
+                var couApiResponse = await _bankConfigApiHelper.GetAsync<ResponseObject<List<BankZoneBranch>>>(APICallHelper.GetAllBankZoneBranch);
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
                 }
-                return new List<CorrespondingBank>();
+                return new List<BankZoneBranch>();
             }
             catch (Exception ex)
             {
@@ -75,11 +73,12 @@ namespace CBS.BusinessService.CorrespondingBankAccount
                 throw;
             }
         }
-        public async Task<CorrespondingBank> GetCorrespondingBank(string id)
+        
+        public async Task<BankZoneBranch> GetBankZoneBranch(string id)
         {
             try
             {
-                var cusResponseObject = await _bankConfigApiHelper.GetAsync<ResponseObject<CorrespondingBank>>(string.Format(APICallHelper.Get_Update_Delete_CorrespondingBank, id));
+                var cusResponseObject = await _bankConfigApiHelper.GetAsync<ResponseObject<BankZoneBranch>>(string.Format(APICallHelper.Get_Update_Delete_BankZoneBranch, id));
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;
@@ -92,24 +91,36 @@ namespace CBS.BusinessService.CorrespondingBankAccount
                 throw ex;
             }
         }
-        public async Task<ExecutionMessages> Create(CorrespondingBank model)
+        //public async Task<BankZoneBranchDto> GetBankZoneBranchDto(string id)
+        //{
+        //    try
+        //    {
+ 
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log and handle exception
+        //        throw ex;
+        //    }
+        //}
+        public async Task<ExecutionMessages> Create(BankZoneBranchObj model)
         {
             try
             {
 
                 // Make an API call to create an individual profile
-                var response = await _bankConfigApiHelper.PostAsync<ServiceResponse<CorrespondingBank>>(APICallHelper.CreateCorrespondingBank, model.ConvertTOelementTobePosted());
+                var response = await _bankConfigApiHelper.PostAsync<ServiceResponse<BankZoneBranchObj>>(APICallHelper.CreateBankZoneBranch, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.BankingZoneId}", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.BankingZoneId, MessagesResults.Failed,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -121,28 +132,45 @@ namespace CBS.BusinessService.CorrespondingBankAccount
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> Update(CorrespondingBank model)
+        public async Task<List<Branch3ppBranch>> GetAllBranchBankCorrespondingBranchByZoneId(string id)
+        {
+            try
+            {
+                var cusResponseObject = await _bankConfigApiHelper.GetAsync<ResponseObject<List<Branch3ppBranch>>>(string.Format(APICallHelper.Get_BankZoneBranch_by_ZoneID, id));
+                if (cusResponseObject.IsSuccess)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<ExecutionMessages> Update(BankZoneBranch model)
         {
             try
             {
 
-                var CorrespondingBank = await GetCorrespondingBank(model.Id);
-                if (CorrespondingBank != null)
+                var BankZoneBranch = await GetBankZoneBranch(model.Id);
+                if (BankZoneBranch != null)
                 {
-                    CorrespondingBank.Name = model.Name;
-                    CorrespondingBank.Code = model.Code;
-                    var response = await _bankConfigApiHelper.PutAsync<ServiceResponse<CorrespondingBank>>(string.Format(APICallHelper.Get_Update_Delete_CorrespondingBank, model.Id), CorrespondingBank);
+                    BankZoneBranch.BankingZoneId = model.BankingZoneId;
+                    BankZoneBranch.BranchId = model.BranchId;
+                    var response = await _bankConfigApiHelper.PutAsync<ServiceResponse<BankZoneBranch>>(string.Format(APICallHelper.Get_Update_Delete_BankZoneBranch, model.Id), BankZoneBranch);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"{model.BranchId}", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
+                        GetExecutionMessages(model, false, model.BranchId, MessagesResults.Failed,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }
@@ -159,3 +187,5 @@ namespace CBS.BusinessService.CorrespondingBankAccount
 
     }
 }
+
+ 

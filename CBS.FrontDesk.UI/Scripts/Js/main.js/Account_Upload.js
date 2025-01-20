@@ -34,6 +34,12 @@ $(document).ready(function () {
         $link[0].click();
         $link.remove();
     });
+
+        $('#BrancheIds').select2({
+        placeholder: "Select branches",
+        allowClear: true,
+        width: '100%'
+    });
 });
 function updateProgressBar(progress) {
     var progressBar = $('.progress-bar');
@@ -59,6 +65,73 @@ function DownloadFile(path) {
  window.open(path, "_blank");
 }
 
+ 
+function CleanAccountingData(event) {
+    if (event) {
+        event.preventDefault();
+    }
+
+    // Get selected branches
+    const selectedBranches = $('#BrancheIds').val();
+
+ 
+    // Show loading state
+    const cleanButton = document.getElementById('CleanAccountingData');
+    const originalText = cleanButton.innerHTML;
+    cleanButton.disabled = true;
+    cleanButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+
+    // Create form data
+    const formData = new FormData();
+    if (selectedBranches) {
+        formData.append('BranchIds', JSON.stringify(selectedBranches));
+    }
+
+    // Send AJAX request
+    $.ajax({
+        url: '/AccountingConfiguration/CleanAccountingEntry', // Replace with your actual endpoint
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            if (response.success) {
+                toastr.success('Accounting data cleaned successfully');
+                // Add any additional success handling here
+            } else {
+                toastr.error(response.message || 'Failed to clean accounting data');
+            }
+        },
+        error: function (xhr, status, error) {
+            toastr.error('An error occurred while cleaning accounting data');
+            console.error('Error:', error);
+        },
+        complete: function () {
+            // Reset button state
+            cleanButton.disabled = false;
+            cleanButton.innerHTML = originalText;
+        }
+    });
+
+    return false;
+}
+
+// Add validation to prevent form submission if validation fails
+$('form').on('submit', function (e) {
+    e.preventDefault();
+    return CleanAccountingData();
+});
+// Initialize select2 for branch selection
+$(document).ready(function () {
+    $('#BrancheIds').select2({
+        placeholder: "Select branches",
+        allowClear: true
+    });
+
+    // Add event listener to the clean button
+    //document.getElementById('CleanAccountingData')
+    //    .addEventListener('click', CleanAccountingData);
+});
 function ReadExcelFile() {
     var formData = new FormData();
     var file = $("#uploadedFile")[0].files[0];

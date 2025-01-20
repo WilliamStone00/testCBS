@@ -7,7 +7,7 @@
     <div class="col-xl-12 col-lg-9 col-md-12 order-12 order-md-12">
         <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
-            <div class="accordion-item active">
+            <div class="accordion-item">
                 <h2 class="accordion-header text-body d-flex justify-content-between"
                     id="accordionPopoutIconThree">
                     <button type="button"
@@ -17,11 +17,11 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-bank-outline me-2"></i>
-                        Corresponding Bank Management
+                        3pp Bank Management
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
-                     class="accordion-collapse collapse show"
+                     class="accordion-collapse collapse"
                      data-bs-parent="#accordionPopoutIcon">
                     <div class="accordion-body">
                         <div class="row justify-content-end">
@@ -29,7 +29,7 @@
                                 <div class="demo-inline-spacing text-end">
                                     <!-- View List Button -->
                                     <a href="#" type="button"
-                                       onclick="LoadDataView('CorrespondingBankManagement', 'DataTableCorrespondingBank', '_CorrespondingBankData', 'datalistingview', 0, 'correspondingBank', 'list');"
+                                       onclick="LoadDataView('CorrespondingBankManagement', 'myDataTable', '_CorrespondingBankData', 'datalistingview_bank', 0, 'correspondingBank', 'list');"
                                        class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
                                        data-bs-toggle="tooltip"
                                        title="View List">
@@ -39,10 +39,10 @@
                                     <!-- Add New Button -->
                                     <a href="#"
                                        type="button"
-                                       onclick="AddORUpdateGen(null, 'datalistingview', '_CreateCorrespondingBank', 'new', 'CorrespondingBankManagement', 'correspondingBank');"
+                                       onclick="AddORUpdateGen(null, 'datalistingview_bank', '_CreateCorrespondingBank', 'new', 'CorrespondingBankManagement', 'correspondingBank');"
                                        class="btn btn-icon btn-label-secondary btn-sm btn-fab demo"
                                        data-bs-toggle="tooltip"
-                                       title="Add New">
+                                       title="Add New Corresponding Bank">
                                         <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                     </a>
                                 </div>
@@ -55,7 +55,7 @@
 
 
 
-                                <div id="datalistingview">
+                                <div id="datalistingview_bank">
                                     @Html.Partial("_CreateCorrespondingBank")
                                 </div>
                             </div>
@@ -65,11 +65,190 @@
             </div>
 
         </div>
+        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
+            <div class="accordion-item">
+                <h2 class="accordion-header text-body d-flex justify-content-between"
+                    id="accordionPopoutIconFour">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accordionPopoutIcon-4"
+                            aria-expanded="true"
+                            aria-controls="accordionPopoutIcon-4">
+                        <i class="mdi mdi-bank-circle-outline me-2"></i>
+                        3pp Bank Branch Management
+                    </button>
+                </h2>
+                <div id="accordionPopoutIcon-4"
+                     class="accordion-collapse collapse"
+                     data-bs-parent="#accordionPopoutIcon">
+                    <div class="accordion-body">
+                        <div class="row justify-content-end">
+                            <div class="demo-inline-spacing text-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <!-- View List Button -->
+                                    <a href="#" type="button"
+                                       onclick="LoadDataView('CorrespondingBankManagement', 'myDataTable', '_CorrespondingBankBranchData', 'datalistingview_branch', 0, 'correspondingBankBranch', 'list');"
+                                       class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
+                                       data-bs-toggle="tooltip"
+                                       title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+
+                                    <!-- Add New Button -->
+                                    <a href="#"
+                                       type="button"
+                                       onclick="AddORUpdateGen(null, 'datalistingview_branch', '_CreateCorrespondingBankBranch', 'new', 'CorrespondingBankManagement', 'correspondingBankBranch');"
+                                       class="btn btn-icon btn-label-secondary btn-sm btn-fab demo"
+                                       data-bs-toggle="tooltip"
+                                       title="Add New 3PP Bank Branch">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br />
+                        <div id="mainviewChange">
+                            <div class="change-group">
+
+
+
+                                <div id="datalistingview_branch">
+                                    @Html.Partial("_CreateCorrespondingBankBranch")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+            <div class="accordion-item">
+                <h2 class="accordion-header text-body d-flex justify-content-between"
+                    id="accordionPopoutIconFive">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accordionPopoutIcon-5"
+                            aria-expanded="true"
+                            aria-controls="accordionPopoutIcon-5">
+                        <i class="mdi mdi-map-outline me-2"></i>
+                        Banking Zone Management
+                    </button>
+                </h2>
+                <div id="accordionPopoutIcon-5"
+                     class="accordion-collapse collapse"
+                     data-bs-parent="#accordionPopoutIcon">
+                    <div class="accordion-body">
+                        <div class="row justify-content-end">
+                            <div class="demo-inline-spacing text-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <!-- View List Button -->
+                                    <a href="#" type="button"
+                                       onclick="LoadDataView('CorrespondingBankManagement', 'myDataTable', '_BankingZoneData', 'datalistingview_bankingZone', 0, 'bankingZone', 'list');"
+                                       class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
+                                       data-bs-toggle="tooltip"
+                                       title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+
+                                    <!-- Add New Button -->
+                                    <a href="#"
+                                       type="button"
+                                       onclick="AddORUpdateGen(null, 'datalistingview_bankingZone', '_CreateBankingZone', 'new', 'CorrespondingBankManagement', 'bankingZone');"
+                                       class="btn btn-icon btn-label-secondary btn-sm btn-fab demo"
+                                       data-bs-toggle="tooltip"
+                                       title="Add New BankingZone">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br />
+                        <div id="mainviewChange">
+                            <div class="change-group">
+
+
+
+                                <div id="datalistingview_bankingZone">
+                                    @Html.Partial("_CreateBankingZone")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+            <div class="accordion-item">
+                <h2 class="accordion-header text-body d-flex justify-content-between"
+                    id="accordionPopoutIconSix">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accordionPopoutIcon-6"
+                            aria-expanded="true"
+                            aria-controls="accordionPopoutIcon-6">
+                        <i class="mdi mdi-hexagon-outline me-2"></i>
+                        Management of Banking Zone Branches
+                    </button>
+                </h2>
+                <div id="accordionPopoutIcon-6"
+                     class="accordion-collapse collapse"
+                     data-bs-parent="#accordionPopoutIcon">
+                    <div class="accordion-body">
+                        <div class="row justify-content-end">
+                            <div class="demo-inline-spacing text-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <!-- View List Button -->
+                                    <a href="#" type="button"
+                                       onclick="LoadDataView('CorrespondingBankManagement', 'myDataTable', '_BankZoneBranchData', 'datalistingview_bankZoneBranch', 0, 'bankZoneBranch', 'list');"
+                                       class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
+                                       data-bs-toggle="tooltip"
+                                       title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+
+                                    <!-- Add New Button -->
+                                    <a href="#"
+                                       type="button"
+                                       onclick="AddORUpdateGen(null, 'datalistingview_bankZoneBranch', '_CreateBankZoneBranch', 'new', 'CorrespondingBankManagement', 'bankZoneBranch');"
+                                       class="btn btn-icon btn-label-secondary btn-sm btn-fab demo"
+                                       data-bs-toggle="tooltip"
+                                       title="Add New Branch in Zone">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br />
+                        <div id="mainviewChange">
+                            <div class="change-group">
+
+
+
+                                <div id="datalistingview_bankZoneBranch">
+                                    @Html.Partial("_CreateBankZoneBranch")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
-
-</div>
+ 
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
 <script src="~/Scripts/Js/main.js/CorrespondingBank.js"></script> }
+ 

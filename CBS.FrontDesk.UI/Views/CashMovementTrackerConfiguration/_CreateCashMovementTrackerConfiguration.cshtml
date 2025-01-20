@@ -11,23 +11,19 @@
                     <input type="hidden" name="ServiceOption" value="cashMovementTrackerConfiguration" id="ServiceOption" />
                     <div class="row mt-2 gy-4">
                         <div class="col-md-6">
-                             
                             <div class="form-floating form-floating-outline">
-                                @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.Duration, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.Duration, "", new { @class = "text-danger" })
-                                <label>Duration for Movement (In minutes)</label>
-
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.BankingZoneId, new SelectList(ViewBag.BankingZoneId == null ? "" : ViewBag.BankingZoneId, "Text", "Value"), "---Select Movement---", new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.BankingZoneId, "", new { @class = "text-danger" })
+                                <label>Select Banking Zone</label>
                             </div>
-                             
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.MovementType, new SelectList(ViewBag.MovementTypes == null ? "" : ViewBag.MovementTypes, "Text", "Value"), "---Select Movement---", new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.MovementType, "", new { @class = "text-danger" })
-                                <label>Movement Type</label>
+                                <label>Select Movement Type</label>
                             </div>
                         </div>
-                        <input type="hidden" name="MovementTypeOption" value="" id="MovementTypeOption" />
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.From, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true" })
@@ -42,7 +38,25 @@
                                 <label>Select Destination Branch</label>
                             </div>
                         </div>
-                
+
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.Duration, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.Duration, "", new { @class = "text-danger" })
+                                <label>Duration for Movement (In minutes)</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.Distance, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.Distance, "", new { @class = "text-danger" })
+                                <label>Distance to cover (In Kilometers)</label>
+                            </div>
+
+                        </div>
+                        <input type="hidden" name="MovementTypeOption" value="" id="zoneId" />
+
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.AlertTimeBefore, new { @class = "form-control" })

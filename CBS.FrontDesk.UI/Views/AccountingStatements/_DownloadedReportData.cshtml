@@ -28,14 +28,20 @@
                             <td style="width:10%">@d.Size</td>
                             <td style="width:20%">
                                 <a href="/AccountingStatements/DownloadById?fileId=@d.Id" onclick="" class="mr-2 btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.FileName to download">Download</a> |
-                                <a href="#" class="mr-2 btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete @d.FileName" onclick="DeleteRecordThenReloadPage('AccountingStatements','@d.Id')">Delete</a>
-
+                                <a href="#"
+                                   class="mr-2 btn btn-danger"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   title="Delete @d.FileName"
+                                   onclick="DeleteRecordPage('AccountingStatements', '@d.Id', '_DownloadedReportData')">
+                                    Delete
+                                </a>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-
+    
 
         </fieldset>
 

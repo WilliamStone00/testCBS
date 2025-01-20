@@ -279,7 +279,7 @@ namespace CBS.BusinessService
                 if (OperationEvent != null)
                 {
 
-                    OperationEvent.Amount = model.Amount;
+                    OperationEvent.Amount = model.Amount.ToString();
                     OperationEvent.Message = model.Message;
 
                     OperationEvent.Id = model.Id;

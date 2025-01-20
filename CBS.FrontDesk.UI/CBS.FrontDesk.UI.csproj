@@ -3351,6 +3351,12 @@
     <Content Include="Views\Individual\_NextOfKinManagement.cshtml" />
     <Content Include="Views\Individual\_SignatoryManagement.cshtml" />
     <Content Include="Views\AccountingStatements\_DownloadedReportData.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\_CorrespondingBankBranchData.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\_CreateBankZoneBranch.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\_BankZoneBranchData.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\_BankingZoneData.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\_CreateBankingZone.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CleanAccountingEntries.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

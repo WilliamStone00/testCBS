@@ -30,14 +30,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
     [CheckSessionTimeOutAttribute]
     public class CashFlowManagementController : BaseController
     {
+        private const string EventCode = "Vault_To_Liaison";
         private readonly AccountingServices _AccountServices;
         private readonly AccountingEntryServices _accountingEntryServices;
         private readonly BranchServices branchServices;
+        private readonly AccountingEntryRuleService _Service;
         public CashFlowManagementController()
         {
             _AccountServices = new AccountingServices();
             _accountingEntryServices = new AccountingEntryServices();
             branchServices = new BranchServices();
+            _Service = new AccountingEntryRuleService();
         }
         // GET: BankingOperation
 
@@ -46,7 +49,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             var DebitAccounts = new List<Data.Account>();
             var listBranch = await branchServices.GetBranches();
-            ViewBag.Branches = BuildDropDown(GenerateBranchListView(listBranch.ToList()));
+            ViewBag.Branches = BuildDropDown(GenerateBranchBranchCode(listBranch.ToList()));
 
             ViewBag.Accounts = BuildDropDown(GenerateAccountListView(DebitAccounts));
             ViewBag.Decisions = BuildMenuViewBag();
@@ -68,7 +71,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             foreach (var branch in branches)
             {
 
-                stringValues.Add(new StringValues(branch.Id, branch.Name));
+                stringValues.Add(new StringValues(branch.Id,branch.BranchCode+"-"+ branch.Name));
+            }
+            return stringValues;
+        }
+        private IEnumerable<StringValues> GenerateBranchBranchCode(List<Branch> branches)
+        {
+            List<StringValues> stringValues = new List<StringValues>();
+            foreach (var branch in branches)
+            {
+
+                stringValues.Add(new StringValues(branch.BranchCode,  branch.Name));
             }
             return stringValues;
         }
@@ -324,7 +337,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             var datas = await _accountingEntryServices.GetCashReplenimentRequest(referenceId);
             var BankCashOut = new BankCashOut();
             BankCashOut.ReferenceId = referenceId;
-            BankCashOut.Amount = datas.AmountApproved;
+            BankCashOut.Amount = Convert.ToDecimal(datas.AmountApproved);
             ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
             return View(new CashDemandDataEntity { BankCashOut = BankCashOut });
         }
@@ -687,11 +700,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 cashDemandDataEntity.BankCashOut = new BankCashOut();
                 cashDemandDataEntity.BankCashOut.ReferenceId = OperationEventAttribute.Id;
                 cashDemandDataEntity.BankCashOut.ToAccountId = account.Id;
-                cashDemandDataEntity.BankCashOut.Amount = OperationEventAttribute.AmountApproved;
+                cashDemandDataEntity.BankCashOut.Amount =Convert.ToDecimal( OperationEventAttribute.AmountApproved);
                 var user = await _accountingEntryServices.GetUser(OperationEventAttribute.ApprovedBy);
                 cashDemandDataEntity.BankCashOut.ApprovedBy = $"{user.firstName} {user.lastName}";
                 cashDemandDataEntity.BankCashOut.ApprovedDate = OperationEventAttribute.ApprovedDate.ToString();
-                cashDemandDataEntity.BankCashOut.Description = $"I {_AccountServices.GetUserFullName()} was authorized to withdraw {OperationEventAttribute.AmountApproved.ToString("N")} from the bank in favour" +
+                cashDemandDataEntity.BankCashOut.Description = $"I {_AccountServices.GetUserFullName()} was authorized to withdraw {(Convert.ToDecimal(OperationEventAttribute.AmountApproved).ToString("N"))} from the bank in favour" +
                 $" of Vault of {_AccountServices.GetBranchName()}";
                 if (branchServices.IsHeadOffice())
                 {
@@ -718,14 +731,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (path == "BranchToBranchTransfer")
             {
-                var Accountnumber = "571010" + "000"+_AccountServices.GetBranchCode();
-                var account = (await _AccountServices.GetAccountByAccountNumber(Accountnumber));
+            
+        
                 var listBranch = await branchServices.GetLiaison();
                 ViewBag.Liaisons = BuildDropDown(GenerateBranchListView(listBranch.ToList()));
                 var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
-
+             
                 cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
+
+                var destinationBranchInfo = listBranch.Where(x => x.Id == cashDemandDataEntity.CashReplenimentRequestdto.BranchId).FirstOrDefault();
+                var accountList = (await _AccountServices.GetAccountInfoByEventCode(new EventRequest { EventCode = "Vault_To_Liaison", ToBranchCode = destinationBranchInfo.BranchCode, ToBranchId=destinationBranchInfo.Id }));
                 var user = await _accountingEntryServices.GetUser(OperationEventAttribute.ApprovedBy);
                 cashDemandDataEntity.CashReplenimentRequestdto.ApprovedBy = user.name + "," + user.phoneNumber + " ";
                 var DestinationBranch = await branchServices.GetBranch(cashDemandDataEntity.CashReplenimentRequestdto.BranchId);
@@ -745,22 +761,19 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                 string name, balance = string.Empty;
                 string Id = "", idB = "";
-                if (account.AccountNumber != null)
+                var liaisonAccount = accountList.Where(x => x.Type.ToLower() == "destination").FirstOrDefault();
+                var sourceAccount = accountList.Where(x => x.Type.ToLower() == "source").FirstOrDefault();
+                if (liaisonAccount != null&& sourceAccount!=null)
                 {
-                    var acc = account;
-                    var AccountnumberCD = $"451000{SourceBranch.BranchCode}{DestinationBranch.BranchCode}";
-                    var accountb = (await _AccountServices.GetAccountByAccountNumber(AccountnumberCD));
-                    if (accountb.AccountNumber==null)
-                    {
-                        ViewBag.IsSystemError = true;
-                        ViewBag.Error = _AccountServices.GetUserFullName() + ", there is no liaison account : 451000 between " + _AccountServices.GetBranchName() + " and "+ DestinationBranch.Name+ " please kindly contact the head office ";
-
-                    }
-                    name = $"{acc.AccountNumberCU}-{acc.AccountName}>>450000{SourceBranch.BranchCode}{DestinationBranch.BranchCode}-{accountb.AccountName}";
-                    balance = acc.CurrentBalance;
-                    Id = acc.Id;
-                    idB = accountb.Id;
-
+                  
+                    //var AccountnumberCD = $"451000{SourceBranch.BranchCode}{DestinationBranch.BranchCode}";
+                    //var accountb = (await _AccountServices.GetAccountByAccountNumber(AccountnumberCD));
+      
+                    name =$"{sourceAccount.AccountNumber}-{sourceAccount.AccountName}>>{liaisonAccount.AccountNumber}-{liaisonAccount.AccountName}";
+                    balance = liaisonAccount.CurrentBalance;
+                    Id = liaisonAccount.Id;
+                    //idB = accountb.Id;
+                    
 
                 }
                 else
@@ -776,7 +789,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 mOdelsd.Accountinfor = name;
                 mOdelsd.FromAccountId = Id;
                 mOdelsd.ReferenceId = cashDemandDataEntity.CashReplenimentRequestdto.Id;
-                mOdelsd.ToAccountId = idB;
+                mOdelsd.ToAccountId = liaisonAccount.Id;
                 cashDemandDataEntity.BranchToBranchTransfer = mOdelsd;
                 cashDemandDataEntity.BranchToBranchTransfer.Description = $"I {_AccountServices.GetUserFullName()} is performing this operation authorized by {cashDemandDataEntity.CashReplenimentRequestdto.ApprovedBy}";
                 return PartialView(partialView, cashDemandDataEntity);
@@ -788,47 +801,29 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 var branch = await branchServices.GetBranch(OperationEventAttribute.CorrespondingBranchId);
-                var liaisonnumber = "451000" + branch.BranchCode + _AccountServices.GetBranchCode();
-                var account = (await _AccountServices.GetAllLiaisonAccount()).Where(pp => pp.AccountNumberCU == liaisonnumber);
+                //var liaisonnumber = "451000" + branch.BranchCode + _AccountServices.GetBranchCode();
+                //var account = (await _AccountServices.GetAllLiaisonAccount()).Where(pp => pp.AccountNumberCU == liaisonnumber);
+                var accountList = (await _AccountServices.GetAccountInfoByEventCode(new EventRequest { EventCode = "Liaison_To_Vault", ToBranchCode = branch.BranchCode, ToBranchId = branch.Id }));
+                var SourceBranch = await branchServices.GetBranch(cashDemandDataEntity.CashReplenimentRequestdto.CorrespondingBranchId);
                 if (branchServices.GetBranchID() != OperationEventAttribute.BranchId)
                 {
                     ViewBag.IsAuthourized = false;
                     ViewBag.Error = _AccountServices.GetUserFullName() + ", You are not authourized to perform this transaction kindly contact the " + (await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name;
-
-             
-
                     return PartialView(partialView, cashDemandDataEntity);
                 }
                 ViewBag.IsAuthourized = true;
+                var liaisonAccount = accountList.Where(x => x.Type.ToLower() == "source").FirstOrDefault();
+                var sourceAccount = accountList.Where(x => x.Type.ToLower() == "destination").FirstOrDefault();
 
                 string name, balance = string.Empty;
                 string Id = string.Empty;
                 string IdAcc = string.Empty;
-                if (account.Any())
+                if (liaisonAccount != null && sourceAccount != null)
                 {
-                    var acc = account.FirstOrDefault();
-
-                    balance = (account.Sum(ff => Convert.ToDecimal(ff.CurrentBalance))).ToString();
-                    Id = acc.Id;
-                    var AccountnumberBB = "571010" + _AccountServices.GetBranchCode() + "000";
-                    var accountAcc = (await _AccountServices.GetAccountByAccountNumber(AccountnumberBB));
-                    if (accountAcc.AccountNumberCU == "" && accountAcc.AccountName == null)
-                    {
-                        name = $"{acc.AccountNumberCU}:{branch.Name}-{acc.AccountName}>>There is no vault account for {_AccountServices.GetBranchName()}";
-                        if (accountAcc.AccountNumber == null)
-                        {
-                            ViewBag.IsSystemError = true;
-                            ViewBag.Error = _AccountServices.GetUserFullName() + ", There is no vault account:57101 existing  for " + _AccountServices.GetBranchName() + ". Please kindly contact the head office ";
-
-                        }
-
-                    }
-                    else
-                    {
-                        name = $"{acc.AccountNumberCU}:{branch.Name}-{acc.AccountName}>>{accountAcc.AccountNumberCU}-{accountAcc.AccountName}";
-                    }
-
-                    IdAcc = accountAcc.Id;
+                    balance = (Convert.ToDecimal(liaisonAccount.CurrentBalance)).ToString();
+                    Id = liaisonAccount.Id;
+                    name = $"{liaisonAccount.AccountNumber}-{liaisonAccount.AccountName}>>{sourceAccount.AccountNumber}-{sourceAccount.AccountName}";
+                    IdAcc = sourceAccount.Id;
                 }
                 else
                 {
@@ -843,7 +838,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 mOdelsd.ExpectedAmount = Convert.ToDecimal(balance) > 0 ? Convert.ToDecimal(balance).ToString("N") : $"({(Math.Abs(Convert.ToDecimal(balance))).ToString("N")})";
                 mOdelsd.AccountInfo = name;
                 mOdelsd.ReferenceId = KEY;
-                mOdelsd.AmountExpected = OperationEventAttribute.AmountApproved;
+                mOdelsd.AmountExpected = Convert.ToDecimal(OperationEventAttribute.AmountApproved);
                 mOdelsd.FromAccountId = Id;
                 mOdelsd.ToAccountId = IdAcc;
                 cashDemandDataEntity.CashClearing = mOdelsd;
