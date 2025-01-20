@@ -125,13 +125,17 @@ function LoadRefinancing(KEY, path, affectedID) {
     if (showLoanDiv) {
         KEY = document.getElementById('customerid').value;
         loandiv.style.display = "block";
-        dataPath = "Select loan to " + dataPath;
-        $('#loanlable').html(dataPath);
+
+        // Dynamically update the header with dataPath
+        dataPath = "Select Loan To " + dataPath;
+        $('#repaymentHeader').html(dataPath);
+
         var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
         FillDropDownAjaxCallParam(url, affectedID, dataPath);
     } else {
         loandiv.style.display = "none";
     }
+
 
     // Call function to toggle input fields and divs based on application type
     toggleInputFields();
@@ -194,18 +198,19 @@ function toggleInputFields() {
         "RAmountDiv",
         "loanTypeDiv",
         "loanProductDiv",
-        "WaiverDiv",
+    /*    "WaiverDiv",*/
         "TargetPopulationDiv",
         "LoanCategoryDive",
         "RepaymentDiv",
-        "IncludeChargeDiv",
-        "ApplyInterestWaiverDiv",
+        //"ApplyInterestWaiverDiv",
         "purposeAndActivitiesDiv"
     ];
 
     // Hide or show divs based on "Reschedule" status
     divsToToggle.forEach(function (divId) {
         var divElement = document.getElementById(divId);
+        console.log(divId);
+        console.log(divElement);
         if (isReschedule) {
             divElement.style.display = "none";
         } else {
@@ -278,23 +283,58 @@ function GetLoanApplication(KEY) {
 
 
 function GetLoan(loanid) {
+    if (!loanid) {
+        console.error("Loan ID is required.");
+        return;
+    }
+
     $.ajax({
         type: "GET",
-        url: '/MemberOperation/GetLoan?Key=' + loanid,
-        success: function (data) {
-            // Assuming 'data' is an object containing the loan details
-            $('#NewBalance').val(data.Balance);
-            $('#NewInterest').val(data.AccrualInterest);
-            $('#NewVAT').val(data.Tax);
-            $('#NewPenalty').val(data.Penalty);
+        url: `/MemberOperation/GetLoanForRefinancing?Key=${loanid}`,
+        success: function (response) {
+            // Adjust to match the actual response format
+            if (response.success === false) {
+                console.error(response.message);
+                alert(response.message);
+                return;
+            }
 
-            // Show the loan div if hidden
-            //$('#loandiv').show();
+            const data = response.data || response; // Use raw data if no 'data' property exists
+
+            // Populate form fields with the loan data
+            $('#oldLoanAmount').val(data.DueAmount);
+            $('#oldLoanCapital').val(data.Principal);
+            $('#oldLoanInterest').val(data.AccrualInterest);
+            $('#oldLoanVAT').val(data.Tax);
+            $('#oldLoanPenalty').val(data.Penalty);
+            $('#oldLoanLoanId').val(data.Id);
+            $('#oldLoanvatRate').val(data.VatRate);
         },
-        error: function (err) {
-            appalert(err.statusText, 1, 3);
+        error: function (xhr, status, error) {
+            console.error("Error fetching loan data:", error, "Response:", xhr.responseText);
+            appalert("An error occurred while fetching loan details. Please try again." + xhr.responseText + " Error: " + error + ". Status: " + status , 0, 1);
         }
     });
+}
+
+function calculateVATAndTotal() {
+    // Get the values from the input fields
+    const oldLoanCapital = parseFloat($('#oldLoanCapital').val()) || 0;
+    const oldLoanInterest = parseFloat($('#oldLoanInterest').val()) || 0;
+    const oldLoanPenalty = parseFloat($('#oldLoanPenalty').val()) || 0;
+    const oldLoanvatRate = parseFloat($('#oldLoanvatRate').val()) || 0;
+    
+    // Calculate VAT (assume VAT rate is 15% for this example)
+    const oldLoanVAT = oldLoanInterest * oldLoanvatRate;
+
+    // Update the VAT field
+    $('#oldLoanVAT').val(oldLoanVAT.toFixed(2));
+
+    // Calculate the total loan amount
+    const totalAmount = oldLoanCapital + oldLoanInterest + oldLoanPenalty + oldLoanVAT;
+
+    // Update the total amount field
+    $('#oldLoanAmount').val(totalAmount.toFixed(2));
 }
 
 function EditReset(KEY, partialView) {

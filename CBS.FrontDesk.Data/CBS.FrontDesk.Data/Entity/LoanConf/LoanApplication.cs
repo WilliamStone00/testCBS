@@ -178,7 +178,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required(ErrorMessage = "New Overide Penalty amount is required.")]
         [Range(0, double.MaxValue, ErrorMessage = "New penalty must be zero or greater.")]
         public decimal NewPenalty { get; set; }
-
+        public decimal VatRate { get; set; }
         public bool IsThereGuarantor { get; set; }
 
 
@@ -295,7 +295,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
         [Range(0, int.MaxValue, ErrorMessage = "Number of days to apply charges must be a non-negative number.")]
         public int NumberOfDaysToApplyCharges { get; set; }
-
+        public OldLoanPayment OldLoanPayment { get; set; }
         public AddLoanApplicationCommand()
         {
             Amount = 0;
@@ -309,7 +309,17 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             AmortizationType = "Constant_Amortization";
             LoanApplicationType = "Normal";
             LoanCategory = "Main_Loan";
+            OldLoanPayment=new OldLoanPayment();
         }
+    }
+    public class OldLoanPayment
+    {
+        public decimal Amount { get; set; }
+        public decimal Capital { get; set; }
+        public decimal VAT { get; set; }
+        public decimal Interest { get; set; }
+        public decimal Penalty { get; set; }
+        public string LoanId { get; set; }
     }
     // Custom Validation Attributes
     public class ValidateAmountAttribute : ValidationAttribute
@@ -389,6 +399,17 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string CustomerId { get; set; }
         public string QueryParameter { get; set; }
     }
+    public class LoanData
+    {
+        public decimal DueAmount { get; set; }
+        public decimal Principal { get; set; }
+        public decimal AccrualInterest { get; set; }
+        public decimal Tax { get; set; }
+        public decimal Penalty { get; set; }
+        public string Id { get; set; }
+        public decimal VatRate { get; set; }
+    }
+
     public class Loan
     {
         public string Id { get; set; }
@@ -444,6 +465,28 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string LoanCategory { get; set; }//Main_Loan OR Special_Saving_Facilities
         public string AccountNumber { get; set; }
         public bool IsUpload { get; set; }
+        public decimal RequestedAmount { get; set; }
+        public decimal RestructuredBalance { get; set; }
+        public OldLoanPayment OldLoanPayment { get; set; }
+        public decimal DeliquentInterest { get; set; }
+        public int AdvancedPaymentDays { get; set; }
+        public int DeliquentDays { get; set; }
+        public decimal AdvancedPaymentAmount { get; set; }
+        public decimal DeliquentAmount { get; set; }
+        public string LoanStructuringStatus { get; set; }
+        public DateTime LoanStructuringDate { get; set; }
+        public decimal OldCapital { get; set; }
+        public decimal OldInterest { get; set; }
+        public decimal OldVAT { get; set; }
+        public decimal OldPenalty { get; set; }
+        public decimal OldBalance { get; set; }
+        public decimal OldDueAmount { get; set; }
+        public string DeliquentStatus { get; set; }
+        public bool StopInterestCalculation { get; set; } = false;
+        public string StoppedBy { get; set; } = "Normal";
+        public DateTime? DateInterestWastStoped { get; set; } = DateTime.MinValue;
+        public DateTime? LastDeliquecyProcessedDate { get; set; } // Nullable to support unprocessed loans
+
 
 
         public int NumberOfInstallments { get; set; }
@@ -457,6 +500,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public virtual ICollection<LoanAmortization> LoanAmortizations { get; set; }
         public List<DisburstedLoan> DisburstedLoans { get; set; }
         public List<DailyInterestCalculation> DailyInterestCalculations { get; set; }
+
 
     }
     public class MembersLoanDto
@@ -482,6 +526,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string LoanType { get; set; }
         public decimal DueAmount { get; set; }
         public string RepaymentCycle { get; set; }
+        public string LoanJourneyStatus { get; set; }
     }
     public class InitiateLoanDownloadCommand
     {
@@ -547,6 +592,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IsCurrentLoan { get; set; }
         public string CustomerId { get; set; }
         public string Id { get; set; }
+        public string LoanJourneyStatus { get; set; }
     }
     public class DailyInterestCalculation
     {

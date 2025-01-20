@@ -19,6 +19,8 @@ using CBS.BusinessService;
 using CBS.BusinessService.LoanCommitee;
 using System.IO;
 using DocumentFormat.OpenXml.Bibliography;
+using Microsoft.Owin.Logging;
+using System.Net;
 
 namespace CBS.FrontDesk.UI.Controllers.MemberOperation
 {
@@ -467,7 +469,11 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         return JsonValidationErrorResponse();
 
                     }
-
+                    if (model.AddLoanApplicationCommand.LoanApplicationType=="Normal")
+                    {
+                        model.AddLoanApplicationCommand.LoanId="N/A";
+                        model.AddLoanApplicationCommand.OldLoanPayment.LoanId="N/A";
+                    }
                     // Proceed with processing the valid command
                     var data = await _loanApplicationServices.Create(model.AddLoanApplicationCommand);
                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
@@ -590,8 +596,49 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         }
         public async Task<ActionResult> GetLoan(string Key)
         {
-            var data = await _loanservices.GetLoan(Key);
-            return Json(data, JsonRequestBehavior.AllowGet);
+            try
+            {
+                if (string.IsNullOrWhiteSpace(Key))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid loan key.");
+                }
+
+                var data = await _loanservices.GetLoan(Key);
+                if (data == null)
+                {
+                    return Json(null, JsonRequestBehavior.AllowGet);
+                }
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "An error occurred while fetching loan details.");
+            }
+        }
+
+        public async Task<ActionResult> GetLoanForRefinancing(string Key)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(Key))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid loan key.");
+                }
+
+                var data = await _loanservices.GetLoan(Key);
+               
+                if (data == null)
+                {
+                    return Json(null, JsonRequestBehavior.AllowGet);
+                }
+                var newData = _loanservices.MapLoan(data);
+                return Json(newData, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "An error occurred while fetching loan details.");
+            }
         }
         public async Task<ActionResult> GetObject(string Key)
         {

@@ -248,6 +248,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
 
             return Json(loans, JsonRequestBehavior.AllowGet);
         }
+        
 
     }
 }

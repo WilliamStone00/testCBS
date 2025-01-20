@@ -153,6 +153,10 @@ namespace CBS.BusinessService.Accounts
                     oldLoanAccountingMaping.ChartOfAccountIdForCapital = model.ChartOfAccountIdForCapital;
                     oldLoanAccountingMaping.ChartOfAccountIdForVAT = model.ChartOfAccountIdForVAT;
                     oldLoanAccountingMaping.ChartOfAccountIdForInterest = model.ChartOfAccountIdForInterest;
+                    oldLoanAccountingMaping.ChartOfAccountIdForProvisionMoreThanOneYear = model.ChartOfAccountIdForProvisionMoreThanOneYear;
+                    oldLoanAccountingMaping.ChartOfAccountIdForProvisionMoreThanTwoYear = model.ChartOfAccountIdForProvisionMoreThanTwoYear;
+                    oldLoanAccountingMaping.ChartOfAccountIdForProvisionMoreThanThreeYear = model.ChartOfAccountIdForProvisionMoreThanThreeYear;
+                    oldLoanAccountingMaping.ChartOfAccountIdForProvisionMoreThanFourYear = model.ChartOfAccountIdForProvisionMoreThanFourYear;
                     //oldLoanAccountingMaping.BranchId = model.BranchId;
                     var response = await _transactionApiHelper.PutAsync<ServiceResponse<OldLoanAccountingMaping>>(string.Format(APICallHelper.Get_Update_Delete_OldLoanAccountingMaping, model.Id), oldLoanAccountingMaping);
                     if (response.IsSuccess)

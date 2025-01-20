@@ -1,5 +1,9 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
 
+@{
+    ViewBag.Title = "Loan Application Approval";
+}
+
 <div class="col-12">
     <div class="row my-4">
         <div class="accordion" id="collapsibleSection">
@@ -21,6 +25,26 @@
                      class="accordion-collapse collapse show"
                      data-bs-parent="#collapsibleSection">
                     <div class="accordion-body">
+                        <div class="card mb-4">
+                            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                                <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+                                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanApprovalTips" aria-expanded="false" aria-controls="collapseLoanApprovalTips">
+                                    <i class="mdi mdi-chevron-down"></i>
+                                </button>
+                            </h6>
+                            <div id="collapseLoanApprovalTips" class="collapse">
+                                <div class="card-body">
+                                    <ul>
+                                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure the OTP code matches the one sent to the member.</li>
+                                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Verify the approval status carefully before submission.</li>
+                                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Add detailed comments to provide context for the approval or rejection decision.</li>
+                                        <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Changes made to the loan application are final once submitted.</li>
+                                        <li><i class="mdi mdi-information-outline text-primary me-2"></i> Use tooltips for additional guidance on specific fields.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
                         <hr />
                         @Html.Partial("_SendOTP")
                         <hr />
@@ -82,6 +106,24 @@
                      aria-labelledby="headingCommiteeActions"
                      data-bs-parent="#collapsibleSection">
                     <div class="accordion-body">
+                        <div class="card mb-4">
+                            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                                <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+                                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommiteeActionsTips" aria-expanded="false" aria-controls="collapseCommiteeActionsTips">
+                                    <i class="mdi mdi-chevron-down"></i>
+                                </button>
+                            </h6>
+                            <div id="collapseCommiteeActionsTips" class="collapse">
+                                <div class="card-body">
+                                    <ul>
+                                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Review all committee comments and validations before taking further action.</li>
+                                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all committee members' approvals are recorded correctly.</li>
+                                        <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Any discrepancies or missing approvals should be flagged for clarification.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row g-4">
                             @Html.Partial("_LoanCommiteeValidationData")
                         </div>

@@ -103,12 +103,12 @@ function loadLoans(memberId) {
                     var balance = typeof loan.Balance === 'number' ? loan.Balance.toLocaleString() : '0';
                     var loanAmount = typeof loan.LoanAmount === 'number' ? loan.LoanAmount.toLocaleString() : '0';
                     var dueAmount = typeof loan.DueAmount === 'number' ? loan.DueAmount.toLocaleString() : '0';
-
+                    var loanStatus = loan.LoanStatus;
+                    var loanJourneyStatus = loan.LoanJourneyStatus;
                     var row = `
                         <tr>
                             <td>${loanDate}</td>
                             <td>${loanAmount}</td>
-                            <td>${principal}</td>
                             <td>${interestRate}</td>
                             <td>${accrualInterest}</td>
                             <td>${penalty}</td>
@@ -116,7 +116,11 @@ function loadLoans(memberId) {
                             <td>${paid}</td>
                             <td>${balance}</td>
                             <td>${dueAmount}</td>
-                            <td><a href="/Loan/Details?KEY=${loan.Id}" target="_blank">Details</a></td>
+                            <td>${loanStatus}</td>
+                            <td>${loanJourneyStatus}</td>
+                            <td>
+                            <a href="/Loan/Details?KEY=${loan.Id}" target="_blank">Details</a>
+                            </td>
                         </tr>`;
 
                     $('#myDataTable tbody').append(row);
@@ -134,25 +138,65 @@ function loadLoans(memberId) {
                 $('#noLoansMessage').show();
             }
 
-            //// Reinitialize the DataTable only if there is data
-            //if ($.fn.DataTable.isDataTable('#myDataTable')) {
-            //    $('#myDataTable').DataTable().clear().destroy();
-            //}
-            //// Initialize DataTable
-            //if (response.length > 0) {
-            //    $('#myDataTable').DataTable({
-            //        "paging": true,
-            //        "ordering": true,
-            //        "info": true,
-            //        "searching": true,
-            //        "autoWidth": false
-            //    });
-            //}
         },
         error: function (xhr, status, error) {
             console.error('Error fetching data:', xhr.responseText, 'Status:', status, 'Error:', error);
             $('#loansTableContainer').hide();
             $('#noLoansMessage').text('Error fetching data').show();  // Show error message
+        }
+    });
+}
+function showLoanDetails(loanId) {
+    // Fetch loan details using AJAX
+    $.ajax({
+        type: "GET",
+        url: `/MemberOperation/GetLoan?Key=${loanId}`,
+        success: function (data) {
+            if (data) {
+                // Build the loan detail view dynamically
+                let loanDetailsHtml = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Loan ID:</h6> <p>${data.Id}</p>
+                            <h6>Customer Name:</h6> <p>${data.CustomerName}</p>
+                            <h6>Loan Amount:</h6> <p>${data.LoanAmount.toLocaleString()}</p>
+                            <h6>Principal:</h6> <p>${data.Principal.toLocaleString()}</p>
+                            <h6>Interest Rate:</h6> <p>${data.InterestRate}%</p>
+                            <h6>Disbursement Date:</h6> <p>${new Date(data.DisbursementDate).toLocaleDateString()}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Balance:</h6> <p>${data.Balance.toLocaleString()}</p>
+                            <h6>Due Amount:</h6> <p>${data.DueAmount.toLocaleString()}</p>
+                            <h6>Penalty:</h6> <p>${data.Penalty.toLocaleString()}</p>
+                            <h6>Tax:</h6> <p>${data.Tax.toLocaleString()}</p>
+                            <h6>Loan Status:</h6> <p>${data.LoanStatus}</p>
+                            <h6>Maturity Date:</h6> <p>${new Date(data.MaturityDate).toLocaleDateString()}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <h5>Additional Information</h5>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p><strong>Loan Type:</strong> ${data.LoanType}</p>
+                            <p><strong>Loan Category:</strong> ${data.LoanCategory}</p>
+                            <p><strong>Delinquent Status:</strong> ${data.DeliquentStatus || "N/A"}</p>
+                            <p><strong>Last Payment:</strong> ${data.LastPayment.toLocaleString()}</p>
+                            <p><strong>Advanced Payment Amount:</strong> ${data.AdvancedPaymentAmount.toLocaleString()}</p>
+                        </div>
+                    </div>
+                `;
+
+                // Inject the details into the modal
+                $("#loanDetailsContent").html(loanDetailsHtml);
+
+                // Show the modal
+                $("#loanDetailModal").modal("show");
+            } else {
+                alert("No loan details found for the specified loan ID.");
+            }
+        },
+        error: function (err) {
+            alert(`Error fetching loan details: ${err.statusText}`);
         }
     });
 }

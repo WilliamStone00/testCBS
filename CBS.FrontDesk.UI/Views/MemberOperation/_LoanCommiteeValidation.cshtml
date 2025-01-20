@@ -1,10 +1,35 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
 
-
-
 <div class="col">
     <div class="row my-4">
+        <!-- Tips Section -->
+        <div class="card mb-4">
+            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                <span><i class="mdi mdi-information-outline me-2"></i> VALIDATION TIPS</span>
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseValidationTips" aria-expanded="false" aria-controls="collapseValidationTips">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </h6>
+            <div id="collapseValidationTips" class="collapse">
+                <div class="card-body">
+                    <ul>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Loan duration must match the borrower's repayment ability and comply with the loan policy.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Repayment cycles should align with the member's income frequency to ensure smooth repayments.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Interest rates must follow loan product guidelines and be documented in case of variances.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> The first installment date must adhere to the defined grace period policy.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all mandatory fees are recorded correctly, and VAT rates are applied automatically.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> All loan products have specific rules; ensure the borrower's savings and shares meet the requirements.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Grace periods must be verified against policy limits before approval.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Attached documents are mandatory for loan validation and approval processes.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Changes to approval status must reflect the actual progress of the application and be justified.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
         <div class="accordion" id="collapsibleSection">
+            <!-- Loan Application Validation Section -->
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingDeliveryAddress">
                     <button type="button"
@@ -13,13 +38,12 @@
                             data-bs-target="#collapseDeliveryAddress"
                             aria-expanded="true"
                             aria-controls="collapseDeliveryAddress">
-                        Loan application validation
+                        Loan Application Validation
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
                      class="accordion-collapse collapse show"
                      data-bs-parent="#collapsibleSection">
-
                     <div class="accordion-body">
                         @using (Html.BeginForm("Create", "MemberOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
@@ -41,14 +65,15 @@
                                 </div>
                             </div>
                             <div class="mt-4">
-                                <button type="submit" class="btn btn-primary me-2">Add validation</button>
+                                <button type="submit" class="btn btn-primary me-2">Add Validation</button>
                                 <input type="hidden" name="ServiceOption" value="loan_commitee_validation_history" id="ServiceOption" />
                             </div>
                         }
                     </div>
                 </div>
             </div>
-            
+
+            <!-- Loan Term Section -->
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingPaymentMethod3">
                     <button type="button"
@@ -57,7 +82,7 @@
                             data-bs-target="#collapsePaymentMethod3"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod3">
-                        Loan term
+                        Loan Term
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod3"
@@ -71,37 +96,37 @@
                     </div>
                 </div>
             </div>
-            <div class="card accordion-item mb-3">
-            <h2 class="accordion-header" id="headingPaymentMethod4">
-                <button type="button"
-                        class="accordion-button collapsed"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapsePaymentMethod4"
-                        aria-expanded="false"
-                        aria-controls="collapsePaymentMethod4">
-                    Loan schedule
-                </button>
-            </h2>
-            <div id="collapsePaymentMethod4"
-                 class="accordion-collapse collapse"
-                 aria-labelledby="headingPaymentMethod4"
-                 data-bs-parent="#collapsibleSection">
-                <div class="accordion-body">
-                    <div class="row g-4">
-                        <div id="datalistingview">
-                            @Html.Partial("_MakeLoanSimulation")
-                        </div>
-                        <div class="accordion-body">
-                            <div id="amortization_schedule_data_div">
 
+            <!-- Loan Schedule Section -->
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingPaymentMethod4">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePaymentMethod4"
+                            aria-expanded="false"
+                            aria-controls="collapsePaymentMethod4">
+                        Loan Schedule
+                    </button>
+                </h2>
+                <div id="collapsePaymentMethod4"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingPaymentMethod4"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div class="row g-4">
+                            <div id="datalistingview">
+                                @Html.Partial("_MakeLoanSimulation")
+                            </div>
+                            <div class="accordion-body">
+                                <div id="amortization_schedule_data_div"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
+            <!-- Loan Collateral Section -->
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingDeliveryOptions">
                     <button type="button"
@@ -124,6 +149,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Guarantor Section -->
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingPaymentMethod">
                     <button type="button"
@@ -144,9 +171,10 @@
                             @Html.Partial("_AddLoanGuarantorData")
                         </div>
                     </div>
-
                 </div>
             </div>
+
+            <!-- Attached Files Section -->
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingPaymentMethod7">
                     <button type="button"
@@ -162,15 +190,15 @@
                      class="accordion-collapse collapse"
                      aria-labelledby="headingPaymentMethod7"
                      data-bs-parent="#collapsibleSection">
-
                     <div class="accordion-body">
                         <div class="row g-4">
                             @Html.Partial("_AttachedFileData")
                         </div>
                     </div>
-
                 </div>
             </div>
+
+            <!-- Committee Validations Section -->
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingPaymentMethod8">
                     <button type="button"
@@ -179,28 +207,20 @@
                             data-bs-target="#collapsePaymentMethod8"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod8">
-                        Commitee validations
+                        Committee Validations
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod8"
                      class="accordion-collapse collapse"
                      aria-labelledby="headingPaymentMethod8"
                      data-bs-parent="#collapsibleSection">
-
                     <div class="accordion-body">
                         <div class="row g-4">
-
                             @Html.Partial("_LoanCommiteeValidationData")
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
-
     </div>
-
-
-
 </div>

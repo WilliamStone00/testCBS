@@ -357,7 +357,7 @@ namespace CBS.BusinessService
         {
             var values = loans.Select(a => new StringValues
             {
-                Text = $"[Date: {a.LoanDate.ToString("dd MM yyyy")}][Amount: {CurrencyFormatter(a.LoanAmount)}][A.Int: {CurrencyFormatter(a.AccrualInterest)}][Balance: {CurrencyFormatter(a.Balance)}][D.Amt: {CurrencyFormatter(a.DueAmount)}]",
+                Text = $"[REF: {a.Id} ][Date: {a.LoanDate.ToString("dd/MM/yyyy")}][Amount: {CurrencyFormatter(a.LoanAmount)}][A.Int: {CurrencyFormatter(a.AccrualInterest)}][Balance: {CurrencyFormatter(a.Balance)}][D.Amt: {CurrencyFormatter(a.DueAmount)}]",
                 Value = a.Id
             });
             var defaultSelectedValue = "default-value";
@@ -381,6 +381,11 @@ namespace CBS.BusinessService
                 // Log and handle exception
                 throw ex;
             }
+        }
+        public LoanData MapLoan(Loan loan)
+        {
+            LoanData loanData = new LoanData { AccrualInterest=loan.AccrualInterest, DueAmount=loan.DueAmount, Id=loan.Id, Penalty=loan.Penalty, Principal=loan.Principal, Tax=loan.Tax, VatRate=loan.VatRate };
+            return loanData;
         }
         public async Task<Loan> GetLoanWithCustomerAndBranch(string customerId)
         {

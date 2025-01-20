@@ -890,7 +890,7 @@ namespace CBS.BusinessService.Accounts
                                  Principal = loan.Principal,
                                  LoanAmount = loan.LoanAmount,
                                  InterestRate = loan.InterestRate,
-                                 Paid = loan.Paid,
+                                 Paid = loan.Paid, 
                                  Balance = loan.Balance,
                                  AccrualInterest = loan.AccrualInterest,
                                  Tax = loan.Tax,
