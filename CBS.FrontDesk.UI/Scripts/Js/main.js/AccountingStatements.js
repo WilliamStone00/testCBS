@@ -168,7 +168,8 @@ function AjaxPostSearch(form) {
                     data: new FormData(form),
                     success: function (response) {
                         //  openReportWindow(model.FileType, model.ReportType);
-                        console.log(response);
+                        appalert("Report [" + getReportTitle(model.ReportType) +"] has been generated successfully", 1, 1);
+                        //LoadDataGen('AccountingStatements', 'myDataTable', '_DownloadedReportData', null, null, null, null, 'list');
                         window.location.reload();
                     }
                     , error: function (err) {
@@ -195,6 +196,41 @@ function AjaxPostSearch(form) {
 
 
 }
+
+function DeleteRecordPage(controller, KEY, partialview)
+{
+    console.log(controller + " " + KEY + " " + partialview);
+    alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
+        function () {
+            var url = "/" + controller + "/Delete?id=" + KEY;
+            $.ajax({
+                type: "Get",
+                url: url,
+                success: function (response) {
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        console.log(response);
+                        windows.location.reload();
+                       // LoadDataGen(controller, 'myDataTable', partialview, null, null, null, null, 'list');
+                    }
+                    else {
+                        appalert(response.message, 3, 1);
+                    }
+
+                }, error: function (err) {
+
+                    appalert(err.statusText, 3, 1);
+                }
+            });
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
+
+        });
+
+
+}
+
 
 function formatDate(dateString) {
 /*    if (!dateString) return 'Not defined';*/

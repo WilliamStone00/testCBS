@@ -12,6 +12,7 @@ using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Wordprocessing;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -102,7 +103,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public async Task<ActionResult> Delete(string id)
         {
             var data = await _accountingServices.DeleteReportDto(id);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+            return Json(new { success = "Data deleted successfully", status = "Success", message = "Data deleted successfully" }, JsonRequestBehavior.AllowGet);
         }
 
         private IEnumerable<StringValues> GenerateAccountsListView(List<Account> accounts)
@@ -408,16 +409,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             try
             {
-                ViewBag.KEY = KEY;
-                if (path == "export_generalLedger")
-                {
                
-                }
-                else
-                { 
-                }
+                    var reportData = await _accountingServices.GetAllFileDownloadInfoPerUser();
+              
 
-                return PartialView(KEY, partialView);
+                return PartialView(partialView, new AccountingEntryQuery { ReportDownloadInfo = reportData.OrderByDescending(x => x.CreatedDate).ToList() });
             }
             catch (Exception ex)
             {

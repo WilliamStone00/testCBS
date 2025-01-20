@@ -181,7 +181,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             var model = TOAccounts.Where(x => x.Account5.Equals("57101")).First();
             cashDemandDataEntity.CashReplenimentRequest = OperationEventAttribute;
             cashDemandDataEntity.BankCashOut.ReferenceId = Key;
-            cashDemandDataEntity.BankCashOut.Amount = datas.AmountApproved;
+            cashDemandDataEntity.BankCashOut.Amount = Convert.ToDecimal(datas.AmountApproved);
             cashDemandDataEntity.BankCashOut.ToAccountId = model.Id;
             ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
             return View(cashDemandDataEntity);
@@ -359,11 +359,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 cashDemandDataEntity.BankCashOut = new BankCashOut();
                 cashDemandDataEntity.BankCashOut.ReferenceId = OperationEventAttribute.Id;
                 cashDemandDataEntity.BankCashOut.ToAccountId = account.Id;
-                cashDemandDataEntity.BankCashOut.Amount = OperationEventAttribute.AmountApproved;
+                cashDemandDataEntity.BankCashOut.Amount = Convert.ToDecimal(OperationEventAttribute.AmountApproved);
                 var user = await _accountingEntryServices.GetUser(OperationEventAttribute.ApprovedBy);
                 cashDemandDataEntity.BankCashOut.ApprovedBy = $"{user.firstName} {user.lastName}";
                 cashDemandDataEntity.BankCashOut.ApprovedDate = OperationEventAttribute.ApprovedDate.ToString();
-                cashDemandDataEntity.BankCashOut.Description = $"I {_AccountServices.GetUserFullName()} was authorized to withdraw {OperationEventAttribute.AmountApproved.ToString("N")} from the bank in favour" +
+                cashDemandDataEntity.BankCashOut.Description = $"I {_AccountServices.GetUserFullName()} was authorized to withdraw {OperationEventAttribute.AmountApproved} from the bank in favour" +
                 $" of Vault of {_AccountServices.GetBranchName()}";
 
                 if (OperationEventAttribute.CashRequisitionType.Equals("REQUEST"))
@@ -470,7 +470,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 mOdelsd.ExpectedAmount = Convert.ToDecimal(balance) > 0 ? Convert.ToDecimal(balance).ToString("N") : $"({(Math.Abs(Convert.ToDecimal(balance))).ToString("N")})";
                 mOdelsd.AccountInfo = name;
                 mOdelsd.ReferenceId = KEY;
-                mOdelsd.AmountExpected = OperationEventAttribute.AmountApproved;
+                mOdelsd.AmountExpected = Convert.ToDecimal(OperationEventAttribute.AmountApproved);
                 mOdelsd.FromAccountId = Id;
                 mOdelsd.ToAccountId = IdAcc;
                 cashDemandDataEntity.CashClearing = mOdelsd;
@@ -658,7 +658,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             mOdelsd.ExpectedAmount = Convert.ToDecimal(balance) > 0 ? Convert.ToDecimal(balance).ToString("N") : $"({(Math.Abs(Convert.ToDecimal(balance))).ToString("N")})";
             mOdelsd.AccountInfo = name;
             mOdelsd.ReferenceId = KEY;
-            mOdelsd.AmountExpected = OperationEventAttribute.AmountApproved;
+            mOdelsd.AmountExpected = Convert.ToDecimal(OperationEventAttribute.AmountApproved);
             mOdelsd.FromAccountId = Id;
             mOdelsd.ToAccountId = IdAcc;
             cashDemandDataEntity.CashClearing = mOdelsd;

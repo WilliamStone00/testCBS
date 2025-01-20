@@ -15,6 +15,8 @@ using CBS.FrontDesk.Data.Entity.Config;
 using DocumentFormat.OpenXml.EMMA;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using System.IO.Packaging;
+using System.Security.Policy;
+using System.Web.Helpers;
 
 namespace CBS.BusinessService.Accounting
 {
@@ -45,12 +47,12 @@ namespace CBS.BusinessService.Accounting
                 throw;
             }
         }
-       
+
         public async Task<FileReportInfoDto> GetFileDownloadedByFileId(string fileId)
         {
             try
             {
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<FileReportInfoDto>>(string.Format(APICallHelper.Get_DownloadedFile,fileId));
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<FileReportInfoDto>>(string.Format(APICallHelper.Get_DownloadedFile, fileId));
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData != null)
@@ -72,12 +74,12 @@ namespace CBS.BusinessService.Accounting
             try
             {
                 model.AccountNumberNetwok = "xxxxx";
-                model.AccountTypeId = model.AccountNumber.Equals("45100")? model.AccountCounterPartId:"YYYYYY" ;
+                model.AccountTypeId = model.AccountNumber.Equals("45100") ? model.AccountCounterPartId : "YYYYYY";
                 model.AccountNumberManagementPosition = "0";
-              
+
                 // Make an API call to create an individual profile
 
-               // model.AccountOwnerId=GetBranchID();
+                // model.AccountOwnerId=GetBranchID();
                 var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.CreateAccount, model);
                 if (response.IsSuccess)
                 {
@@ -105,7 +107,7 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                var cusResponseObject =(await GetAllAccounting()).Where(i=>i.Id.Equals(id)).FirstOrDefault();
+                var cusResponseObject = (await GetAllAccounting()).Where(i => i.Id.Equals(id)).FirstOrDefault();
                 return cusResponseObject;
             }
             catch (Exception ex)
@@ -118,8 +120,8 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                var couApiResponse = (await GetAllReportInfo()).Find(x=>x.Id.Equals(Id));
-                if (couApiResponse!=null)
+                var couApiResponse = (await GetAllReportInfo()).Find(x => x.Id.Equals(Id));
+                if (couApiResponse != null)
                 {
                     return couApiResponse;
 
@@ -181,7 +183,7 @@ namespace CBS.BusinessService.Accounting
                     }
 
                 }
-                return new  Account ();
+                return new Account();
             }
             catch (Exception ex)
             {
@@ -253,7 +255,7 @@ namespace CBS.BusinessService.Accounting
             catch (Exception ex)
             {
                 // Log and handle exception
-                throw(ex);
+                throw (ex);
             }
         }
         public async Task<List<Account>> GetAllLiaisonAccount()
@@ -281,7 +283,7 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<Account>>>(string.Format(APICallHelper.GetAllAccountByBranch,branchId));
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<Account>>>(string.Format(APICallHelper.GetAllAccountByBranch, branchId));
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData != null)
@@ -420,7 +422,7 @@ namespace CBS.BusinessService.Accounting
 
                     return GetExecutionMessages(inResponse, true, $"{account.AccountNumber + " " + account.AccountName}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
-                   
+
 
                 }
                 else
@@ -429,7 +431,7 @@ namespace CBS.BusinessService.Accounting
                     return GetExecutionMessages(account, false, $"{account.AccountNumber + " " + account.AccountName}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -473,7 +475,7 @@ namespace CBS.BusinessService.Accounting
             try
             {
 
-                if (list.AccountModelList.Count()==0)
+                if (list.AccountModelList.Count() == 0)
                 {
                     // Failed creation
                     GetExecutionMessages(list, true, $"NO element was seen in the file", MessagesResults.Failed,
@@ -482,7 +484,7 @@ namespace CBS.BusinessService.Accounting
 
 
                 var response = await _accountingApiCallerHelper.PostUploadAccountResultResponseAsync(APICallHelper.CreateAccounOnUploadie, list);
-                if (response!=null)
+                if (response != null)
                 {
                     if (response.isSuccess)
                     {
@@ -498,7 +500,7 @@ namespace CBS.BusinessService.Accounting
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.message);
                     }
                     // Successful creation
-              
+
                 }
                 else
                 {
@@ -516,8 +518,8 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
-     
-        public async Task<ExecutionMessages> PostJE(JEQuery model,string url)
+
+        public async Task<ExecutionMessages> PostJE(JEQuery model, string url)
         {
             try
             {
@@ -582,7 +584,94 @@ namespace CBS.BusinessService.Accounting
         }
         public async Task<ReportInfo> GetFileDownloadById(string fileId)
         {
-            return (await GetAllReportInfo()).Find(x=>x.Equals(fileId));
+            return (await GetAllReportInfo()).Find(x => x.Equals(fileId));
+        }
+
+
+
+        public async Task<List<InfoAccount>> GetAccountInfoByEventCode(EventRequest model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+
+                // model.AccountOwnerId=GetBranchID();
+                var response = await _accountingApiCallerHelper.PostServicesAsync<ApiResponse<List<InfoAccount>>>(string.Format(APICallHelper.GetAccountByEvenCodeUrl, model.EventCode), model);
+                if (response.IsSuccess)
+                {
+                    return response.ApiResponseData;
+                }
+                else
+                {
+                    // Failed creation
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return null;
+        }
+
+        public async Task<IExecutionMessages> CleanAccountingEntry(List<string> listOfBranchIds)
+        {
+
+            try
+            {
+
+                if (listOfBranchIds.Count() == 0)
+                {
+                    // Failed creation
+                    GetExecutionMessages(listOfBranchIds, true, $"No branchId was selected ", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"No branchId was selected");
+                }
+
+                var model = new { BranchIds =Newtonsoft.Json. JsonConvert.DeserializeObject< List<string> > (listOfBranchIds[0]) };
+                var response = await _accountingApiCallerHelper.PostUploadAccountResultResponseAsync(APICallHelper.CleanAccountingEntryUrl, model);
+                if (response != null)
+                {
+                    if (response.isSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"The AccountingEntries and the account of the following branches has been cleared.{GetBranchinformations(listOfBranchIds)}", MessagesResults.Success,
+                   ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(response, true, $"Accounting entries cleaning has failed.", MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.message);
+                    }
+                    // Successful creation
+
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(response, true, $"Accounting entries cleaning has failed.", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"Accounting entries cleaning has failed.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+
+
+        }
+
+        private object GetBranchinformations(List<string> listOfBranchIds)
+        {
+            throw new NotImplementedException();
         }
     }
 }
+

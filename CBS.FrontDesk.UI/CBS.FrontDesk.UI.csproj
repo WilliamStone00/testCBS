@@ -3377,6 +3377,12 @@
     <Content Include="Views\CashChangeManagement\ChangeDenominationVault.cshtml" />
     <Content Include="Views\CashChangeManagement\ChangeDenominationPrimaryTeller.cshtml" />
     <Content Include="Views\CashChangeManagement\ChangeDenominationSubTeller.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\_CorrespondingBankBranchData.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\_CreateBankZoneBranch.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\_BankZoneBranchData.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\_BankingZoneData.cshtml" />
+    <Content Include="Views\CorrespondingBankManagement\_CreateBankingZone.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CleanAccountingEntries.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

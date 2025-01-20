@@ -32,6 +32,16 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Action { get; set; }
     }
 
+
+    public class EventCodeQuery 
+    {
+        /// <summary>
+        /// Gets or sets the unique identifier of the AccountCategory to be retrieved.
+        /// </summary>
+        public string EventCode { get; set; }
+        public string ToBranchCode { get; set; }
+        public string ToBranchId { get; set; }
+    }
     public class UploadBankRecieptDto
     {
         public string id { get; set; }

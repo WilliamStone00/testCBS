@@ -5,13 +5,16 @@
     $(document).on('change', '#CashMovementTrackingConfiguration_MovementType', function () {
 
         // Get the selected value
+        var ZoneID = $("#zoneId").val();
         var selectedValue = $(this).val();
-        loadAppropriateDestination(selectedValue);
+        loadLocalBranchesDestination(ZoneID);
+        loadAppropriateDestination(selectedValue,ZoneID);
     });
 
 });
 
-function loadAppropriateDestination(selectedValue) {
+function loadAppropriateDestination(selectedValue, ZoneID)
+{
     var endPoint = selectedValue === "Branch-To-Bank" ? '/CashMovementTrackerConfiguration/GetBuildThirdPartyBank' : '/CashMovementTrackerConfiguration/GetBuildBranches';
     console.log(endPoint);
     $.ajax({
@@ -35,7 +38,35 @@ function loadAppropriateDestination(selectedValue) {
     });
 }
 
-//
+function loadLocalBranchesDestination(selectedValue) {
+    var endPoint = "CorrespondingBankManagement/GetZoneBankBranch"; //: '/CashMovementTrackerConfiguration/GetBuildBranches';
+    console.log(endPoint);
+    $.ajax({
+        url: endPoint,
+        type: 'GET',
+        dataType: 'json',
+        data: { ZoneID: selectedValue },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo 
+            $('#CashMovementTrackingConfiguration_To').empty();
+            $('#CashMovementTrackingConfiguration_From').empty();
+
+            $.each(data, function (index, item) {
+                $('#CashMovementTrackingConfiguration_To').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
+     
+            $.each(data, function (index, item) {
+                $('#CashMovementTrackingConfiguration_From').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
+            // Add new options based on the fetched data
+            console.log(data);
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
 function LoadCashMovementDataDTHO(tableID) {
 
 

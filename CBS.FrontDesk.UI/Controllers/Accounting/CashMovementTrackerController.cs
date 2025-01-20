@@ -42,39 +42,44 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         // GET: CashMovementTracker
         public async Task<ActionResult> Index()
         {
-                  return View(new CashMovementConfiguration { CashMovementDtos= await CashMovementData()});
+            var model = await CashMovementData();
+                  return View(new CashMovementConfiguration { CashMovementDtos= model .Item1, CashReplenimentRequestDtos= model.Item2, DepositNotificationDto =model.Item3});
         }
 
-        public async Task<List<CashMovement>> CashMovementData()
+        public async Task<(List<CashMovement>, List<CashReplenimentRequestDto>, List<DepositNotificationDto>)> CashMovementData()
         {
-
+            IEnumerable<CashReplenimentRequestDto> result  = new List<CashReplenimentRequestDto>();
             List < CashMovement > CashMovementDtos = new List<CashMovement> ();
             IEnumerable<DepositNotificationDto> dataReqs = new List<DepositNotificationDto>();
             var datas = await _accountingEntryServices.GetAllCashReplenimentRequest();
-            var dataUser = (await _accountingEntryServices.GetUserList()).ToList();
-            var branches = (await _branchService.GetBranches()).ToList();
-            var result = from request in datas
-                         join user in dataUser on request.IssuedBy equals user.id.ToString()
-                         join userA in dataUser on request.ApprovedBy equals userA.id.ToString()
-                         join branch in branches on request.BranchId equals branch.Id
-                         select new CashReplenimentRequestDto
-                         {
-                             Id = request.Id,
-                             ReferenceId = request.ReferenceId,
-                             IsOwner = request.BranchId == _accountingEntryServices.GetBranchID(),
-                             AmountRequested = request.AmountRequested,
-                             BranchOffice = branch.Name,
-                             RequestMessage = request.RequestMessage,
-                             IssuedBy = user.name + "," + user.phoneNumber,
-                             IssuedDate = request.IssuedDate,
-                             AmountApproved = request.AmountApproved,
-                             ApprovedBy = userA.name + "," + userA.phoneNumber,
-                             ApprovedDate = request.ApprovedDate,
-                             IsApproved = request.IsApproved,
-                             CurrencyCode = request.CurrencyCode,
-                             Status = request.Status,
-                             ApprovedMessage = request.ApprovedMessage
-                         };
+            if (datas.Count()>0)
+            {
+                var dataUser = (await _accountingEntryServices.GetUserList()).ToList();
+                var branches = (await _branchService.GetBranches()).ToList();
+                   result = from request in datas
+                             join user in dataUser on request.IssuedBy equals user.id.ToString()
+                             join userA in dataUser on request.ApprovedBy equals userA.id.ToString()
+                             join branch in branches on request.BranchId equals branch.Id
+                             select new CashReplenimentRequestDto
+                             {
+                                 Id = request.Id,
+                                 ReferenceId = request.ReferenceId,
+                                 IsOwner = request.BranchId == _accountingEntryServices.GetBranchID(),
+                                 AmountRequested = request.AmountRequested,
+                                 BranchOffice = branch.Name,
+                                 RequestMessage = request.RequestMessage,
+                                 IssuedBy = user.name + "," + user.phoneNumber,
+                                 IssuedDate = request.IssuedDate,
+                                 AmountApproved = (Convert.ToDecimal(request.AmountApproved)).ToString("#,##0.0"),
+                                 ApprovedBy = userA.name + "," + userA.phoneNumber,
+                                 ApprovedDate = request.ApprovedDate,
+                                 IsApproved = request.IsApproved,
+                                 CurrencyCode = request.CurrencyCode,
+                                 Status = request.Status,
+                                 ApprovedMessage = request.ApprovedMessage
+                             };
+            }
+          
             if (_accountingEntryServices.IsHeadOffice())
             {
                 dataReqs = (await _accountingEntryServices.GetAllDepositNotificationRequest());
@@ -83,24 +88,26 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 dataReqs = (await _accountingEntryServices.GetAllDepositNotificationRequest()).Where(pi => pi.BranchId.Equals(_accountingEntryServices.GetBranchID()) && pi.Status == CashReplishmentRequestStatus.Approve.ToString());
             }
-            var dataUserc = (await _accountingEntryServices.GetUserList()).ToList();   
+            var dataUserc = (await _accountingEntryServices.GetUserList()).ToList();
+            var branchesx = (await _branchService.GetBranches()).ToList();
             var resultc = from request in dataReqs
-                          join branch in branches on request.BranchId equals branch.Id
-                          join user in dataUser on request.ApprovedBy equals user.id.ToString()
-                         select new DepositNotificationDto
+                          join branch in branchesx on request.BranchId equals branch.Id
+                          join user in dataUserc on request.ApprovedBy equals user.id.ToString()
+                          join userx in dataUserc on request.IssuedBy equals userx.id.ToString()
+                          select new DepositNotificationDto
                          {
                              Id = request.Id,
 
                        
-                             IssuedBy = request.IssuedBy,
-                       
-                             ApprovedBy = request.ApprovedBy,
+                              ApprovedBy = user.firstName + " " + user.lastName,
+
+                              IssuedBy = userx.firstName+" "+userx.lastName,
                              IsApproved = request.IsApproved,
-                             Amount = request.Amount,
-                             ApprovedDate = request.ApprovedDate,
+                             Amount =(Convert.ToDecimal( request.Amount)).ToString("#,##0.0"),
+                              ApprovedDate = request.ApprovedDate,
                              Status = request.Status,
                              BranchId = request.BranchId,
-                             BranchOffice = request.BranchOffice,
+                             BranchOffice = branch.Name,
                              ApprovedMessage = request.ApprovedMessage
                          };
             foreach (var item in resultc)
@@ -118,6 +125,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             foreach (var item0 in result)
             {
+                //(,
                 CashMovementDtos.Add(new CashMovement
                 {
                     Id = item0.Id,
@@ -129,7 +137,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                 });
             }
-            return   CashMovementDtos  ;
+            return   (CashMovementDtos, result.ToList(), resultc.ToList()) ;
         }
         public async Task<ActionResult> SettingCashTracker()
         {
@@ -229,7 +237,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                  MovementType = config.MovementType,
                                  BranchName = branchFrom.BranchCode + "-" + branchFrom.Name,
                                  DoneBy = user.lastName+" " +user.firstName,
-                                 Amount = req.AmountApproved,
+                                 Amount =Convert.ToDecimal( req.AmountApproved),
                                  Destination = branch.Name,
                                  DoneAt = move.StartTime,
                                  ExpiresAt = move.EndTime,
@@ -248,8 +256,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
 
 
-                var movements = (await _cashMovementTrackingConfigurationServices.GetCashMovementTrackingConfiguration(KEY));
-                return PartialView(partialView, new CashMovementConfiguration { CashMovementTrackingConfiguration = movements });
+                var movement = (await _cashMovementTrackerServices.GetCashMovementTracker(KEY));
+                return PartialView(partialView, new CashMovementConfiguration { CashMovementTracker = movement });
             }
         }
 

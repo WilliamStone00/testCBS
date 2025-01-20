@@ -245,6 +245,8 @@
     <Compile Include="Accounts\OperationFeeServices.cs" />
     <Compile Include="Accounts\SysConfigurationServices.cs" />
     <Compile Include="Accounts\SavingProductFeeServices.cs" />
+    <Compile Include="CorrespondingBankBranchServices\BankZoneBranchServices.cs" />
+    <Compile Include="CorrespondingBankBranchServices\BankingZoneServices.cs" />
     <Compile Include="CustomerManagement\CMoneyMemberServices.cs" />
     <Compile Include="Loan\Config\LoanProductCategoryServices.cs" />
     <Compile Include="PaymentReceiptMapping.cs" />
@@ -348,7 +350,9 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="BankZone\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

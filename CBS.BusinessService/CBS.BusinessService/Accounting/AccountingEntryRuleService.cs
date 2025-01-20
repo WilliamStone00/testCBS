@@ -114,6 +114,23 @@ namespace CBS.BusinessService.Accounting
                 throw ex;
             }
         }
+        public async Task<AccountingRuleEntry> GetAccountingRuleEntryByEventCOde(string id)
+        {
+            try
+            {
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<AccountingRuleEntry>>(string.Format(APICallHelper.Get_AccountingRuleEntryByEventCode, id));
+                if (cusResponseObject.IsSuccess)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
         public async Task<ExecutionMessages> Create(AccountingRuleEntry model)
         {
             try

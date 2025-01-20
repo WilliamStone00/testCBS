@@ -43,7 +43,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class DepositNotificationDto
     {
         public string Id { get; set; }
-        public decimal Amount { get; set; }
+        public string Amount { get; set; }
 
         public string ApprovalKey { get; set; }
         public string Message { get; set; }

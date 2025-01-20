@@ -18,9 +18,43 @@
         loadValues("TOWN", selectedValue, "CorrespondingBankBranch_TownId");
 
     });
-  
+    //
+    $(document).on('change', '#BankingZone_LocationType', function () {
+        var selectedValue = $(this).val();
+        console.log(selectedValue);
+        loadValues(selectedValue, selectedValue, "BankingZoneLocationIds");
+
+    });
+    $(document).on('change', '#BankZoneBranchObj_Type', function () {
+        var selectedValue = $(this).val();
+        console.log(selectedValue);
+        loadBankZoneBranchType(selectedValue,'BankZoneBranch_BranchId');
+
+    });
 });
- 
+
+function loadBankZoneBranchType(zone, loadKey) {
+    console.log(zone);
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/CorrespondingBankManagement/loadBankZoneBranchType',
+        type: 'GET',
+        dataType: 'json',
+        data: { option: zone },
+        success: function (data) {
+
+            $('#' + loadKey).empty();
+            console.log(data);
+
+            $.each(data, function (index, item) {
+                $('#' + loadKey).append($('<option>').text(item.Value).attr('value', item.Text));
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
 function loadValues(zone,Key,loadKey) {
     console.log(zone + " " + Key);
     // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
@@ -30,10 +64,10 @@ function loadValues(zone,Key,loadKey) {
         dataType: 'json',
         data: { switch_on: zone, Id:Key },
         success: function (data) {
-            // Clear existing options in the OperationEventAttributeId combo
+         
             $('#' + loadKey).empty();
+            console.log(data);
 
-            // Add new options based on the fetched data
             $.each(data, function (index, item) {
                 $('#' + loadKey).append($('<option>').text(item.Value).attr('value', item.Text));
             });

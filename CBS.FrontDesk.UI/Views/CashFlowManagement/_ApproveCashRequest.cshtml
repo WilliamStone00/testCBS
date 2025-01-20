@@ -101,7 +101,7 @@
                             {
                                 <div class="alert alert-outline-success" role="alert">
                                     <h6 class="alert-heading mb-1">The cash replenishment request of @Model.CashReplenimentRequestdto.TempId1  is already been approved by @Model.CashReplenimentRequestdto.TempId2.</h6>
-                                    <p class="mb-0">@Model.CashReplenimentRequestdto.AmountApproved.ToString("N") was replenished</p>
+                                    <p class="mb-0">@{(Convert.ToDecimal(Model.CashReplenimentRequestdto.AmountApproved)).ToString("N");} was replenished</p>
                                 </div>
                             }
                             else

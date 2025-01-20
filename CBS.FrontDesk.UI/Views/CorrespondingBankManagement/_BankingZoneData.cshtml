@@ -1,0 +1,32 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement.CorrespondingBankConfiguration
+
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Type</th>
+            <th>Location</th>
+     
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.BankingZones)
+        {
+            <tr>
+                <td style="width:20%">@d.Name</td>
+                <td style="width:20%">@d.Code</td>
+                <td style="width:20%">@d.LocationType</td>
+                <td style="width:20%">@d.LocationId</td>
+            
+                <td style="width:20%">
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_BankingZone','_CreateBankingZone','update','CorrespondingBankManagement','bankingZone')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a>
+                    |<a href="#" class="mr-2 btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteDataConfiguration('CorrespondingBankManagement','@d.Id','myDataTable','_BankingZoneData',0,'datalistingview_BankingZone','bankingZone')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+ 

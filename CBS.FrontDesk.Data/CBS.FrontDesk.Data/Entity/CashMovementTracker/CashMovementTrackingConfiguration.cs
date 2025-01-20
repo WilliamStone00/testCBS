@@ -44,7 +44,7 @@ namespace CBS.FrontDesk.Data.Entity.CashMovementTracker
         public string BranchName { get; set; }
         public string OperationType { get; set; }
         public string RequestedBy { get; set; }
-        public decimal Amount { get; set; }
+        public string Amount { get; set; }
         public string ApprovedBy { get; set; }
       
     }
@@ -55,7 +55,8 @@ namespace CBS.FrontDesk.Data.Entity.CashMovementTracker
         public string Name { get; set; }
         public string MovementType { get; set; }
         public string Duration { get; set; }
-
+        public string Distance { get; set; }
+        public string BankingZoneId { get; set; }
         public string AlertTimeBefore { get; set; }
         public string MessageBeforeAlertTime { get; set; }
         public string AlertTimeAfter { get; set; }
