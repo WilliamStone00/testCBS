@@ -1,0 +1,133 @@
+﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+@{
+    ViewBag.Title = "Salary Summary";
+}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+        <div class="card">
+            <!-- Page Header -->
+            <div class="card-header text-center bg-light">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-file-cabinet me-2"></i> SALARY SUMMARY
+                </h1>
+                <p class="card-text text-muted">
+                    View, analyze, and manage employee salary summaries efficiently. Use the tools below to analyze salary data or view existing records.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+
+            <!-- Tips Section -->
+            <div class="card mb-2">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> TIPS</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSalarySummaryTips" aria-expanded="false" aria-controls="collapseSalarySummaryTips">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseSalarySummaryTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><i class="mdi mdi-file-document-outline text-primary me-2"></i> Use the <strong>"Run Salary Analysis"</strong> button to analyze uploaded salary data.</li>
+                            <li><i class="mdi mdi-eye-outline text-primary me-2"></i> Click the <strong>"View Result Of Analyzed Salary"</strong> button to check previously analyzed results.</li>
+                            <li><i class="mdi mdi-alert-outline text-warning me-2"></i> Ensure all uploaded salary files are accurate and in the correct format (e.g., Excel, CSV).</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Regularly verify analyzed results against payroll to ensure accuracy.</li>
+                            <li><i class="mdi mdi-database-search-outline text-primary me-2"></i> Use search filters to quickly locate specific employee salary records.</li>
+                            <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i> Address anomalies like overpayments or missing records promptly.</li>
+                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> Edit analyzed salary records for corrections or updates when necessary.</li>
+                            <li><i class="mdi mdi-delete-outline text-danger me-2"></i> Delete invalid uploads to maintain clean and accurate records.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Section -->
+            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+                <div class="accordion-item active">
+                    <h2 class="accordion-header text-body d-flex justify-content-between"
+                        id="accordionPopoutIconThree">
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionPopoutIcon-3"
+                                aria-expanded="true"
+                                aria-controls="accordionPopoutIcon-3">
+                            <i class="mdi mdi-chart-bar me-1"></i> Salary Analysis
+                        </button>
+                    </h2>
+                    <div id="accordionPopoutIcon-3"
+                         class="accordion-collapse collapse show"
+                         data-bs-parent="#accordionPopoutIcon">
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+                                <div class="change-group">
+                                    <div class="card mb-3">
+                                        <div class="card-body d-flex justify-content-end align-items-center">
+                                            <!-- Run Salary Analysis -->
+                                            <a type="button" href="#" class="btn btn-label-secondary btn-sm me-2"
+                                               data-bs-toggle="tooltip" title="Run Salary Analysis"
+                                               onclick="runAnalysis('@Model.SalaryUploadModelSummaryDto.FileUploadId')">
+                                                <i class="mdi mdi-play-box-outline mdi-18px"></i> Run Analysis
+                                            </a>
+
+                                            <!-- View Analyzed Results -->
+                                            <a type="button" href="/SalaryUpload/SalaryAnalysisResultSummary?fileUploadid=@Model.SalaryUploadModelSummaryDto.FileUploadId" target="_blank" class="btn btn-label-primary btn-sm" data-bs-toggle="tooltip" title="View Analyzed Results">
+                                                <i class="mdi mdi-file-eye-outline mdi-18px"></i> View Results
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                    <div id="datalistingview">
+                                        @Html.Partial("_SalaryUploadData")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function runAnalysis(fileUploadId) {
+
+            
+            alertify.confirm("RUN SALARY ANALYSIS WARNING!!!", "Are you sure you want to run the salary analysis?\nThis action cannot be reverted!",
+                function () {
+                    var url = "/SalaryUpload/ExecuteAnalysis";
+                    console.log("Executing analysis at URL: " + url);
+
+                    // Prepare data for the request
+                    var data = {
+                        FileUploadId: fileUploadId
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        contentType: "application/json",
+                        data: JSON.stringify(data),
+                        success: function (response) {
+                            if (response.success) {
+                                appalert(response.message, 1, 1);
+                                // Optionally reload or update the page
+                                location.reload();
+                            } else {
+                                appalert(response.message, 3, 1);
+                            }
+                        },
+                        error: function (err) {
+                            appalert(err.statusText, 3, 1);
+                        }
+                    });
+                },
+                function () {
+                    appalert('Analysis cancelled', 3, 1);
+                });
+        }
+
+    </script>
+}

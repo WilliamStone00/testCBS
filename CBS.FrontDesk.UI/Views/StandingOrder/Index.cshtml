@@ -1,0 +1,194 @@
+﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.StandingOrderCarrier
+@{
+    ViewBag.Title = "Standing Order Management";
+}
+
+<link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
+<div class="row mb-1">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-cash-outline me-2"></i>STANDING ORDER MANAGEMENT
+                </h1>
+                <p class="card-text text-muted">
+                    Easily create, view, and manage standing orders for members.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Tips Section -->
+<div class="card mb-2">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStandingOrderTips" aria-expanded="false" aria-controls="collapseStandingOrderTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseStandingOrderTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-magnify text-primary me-2"></i> **Search Members Efficiently**: Use the search box to find a member and create or manage standing orders by entering the member's account reference number. This ensures you quickly locate the relevant record.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> **Create New Orders**: Click on the "Add New Request" button to initiate a standing order for a member directly from this page.</li>
+                <li><i class="mdi mdi-pencil-outline text-success me-2"></i> **Edit Existing Orders**: Locate the standing order using the search tool and click the "Edit" button to make updates or changes.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> **Review Before Deleting**: Ensure you verify the member's details and purpose of the standing order before proceeding with deletion to avoid unintentional data loss.</li>
+                <li><i class="mdi mdi-calendar-search text-primary me-2"></i> **Track Start and End Dates**: Regularly check the start and end dates of standing orders to ensure timely renewals or cancellations as needed.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> **System Notifications**: Use the notifications or reminders (if available) to keep track of pending or failed standing orders.</li>
+                <li><i class="mdi mdi-account-cash-outline text-success me-2"></i> **Member Communication**: Inform members about their active standing orders and encourage them to review details periodically.</li>
+                <li><i class="mdi mdi-database-search text-primary me-2"></i> **No Records Found?**: If no records are displayed, ensure you’ve entered the correct details in the search box or consider creating a new standing order if appropriate.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="accordion" id="standingOrderAccordion">
+            <!-- Standing Order Section -->
+            <div class="accordion-item mb-3 shadow">
+                <h2 class="accordion-header" id="headingStandingOrder">
+                    <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseStandingOrder" aria-expanded="true" aria-controls="collapseStandingOrder">
+                        <i class="mdi mdi-account-cash-outline me-2"></i>
+                        STANDING ORDER MANAGEMENT
+                    </button>
+                </h2>
+                <div id="collapseStandingOrder" class="accordion-collapse collapse show" data-bs-parent="#standingOrderAccordion">
+                    <div class="accordion-body">
+                        <!-- Search Box -->
+                        @Html.Partial("_SearchBox")
+                        <!-- Data Listing View -->
+                        <div id="datalistingview">
+                            <p class="text-muted">No standing orders found. Use the search box to find existing standing orders or create a new one.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Sections Can Be Added Below -->
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="standingOrderDetailsModal" tabindex="-1" aria-labelledby="standingOrderDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header p-2">
+                <header class="w-100 text-center">
+                    <h4 class="text-primary fw-bold mb-1">
+                        <i class="mdi mdi-receipt me-2"></i> STANDING ORDER DETAILS
+                    </h4>
+                    <p class="text-muted mb-0">
+                        View and manage details of the standing order.
+                    </p>
+                    <hr style="border: 1px solid rgba(128, 128, 128, 0.5);" />
+                </header>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-2">
+                <div id="standingOrderDetailsContent">
+                    <!-- Dynamic content or partial view will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*@section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+        <script src="~/Scripts/Js/CMoney/cmoney.js"></script>
+    }*@
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="~/Scripts/Js/SalaryManagement/StandingOrder/StandingOrder.js"></script>
+@*<script src="~/Scripts/Js/Crud/Operation/Operation.js"></script>*@
+
+}
+
+<style>
+    /* Custom Styles */
+    .accordion-button {
+        font-weight: bold;
+        color: #0056b3;
+        background-color: #f8f9fa;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        font-size: 1rem;
+    }
+
+    .upload-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 300px;
+        border: 2px dashed #ccc;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+        .upload-container .image-preview img {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+    .custom-file-upload {
+        cursor: pointer;
+    }
+
+    /*.btn-primary {
+        margin-top: 10px;
+    }*/
+
+    .badge i {
+        font-size: 1.2rem;
+    }
+
+    .accordion-button:hover {
+        background-color: #e9ecef;
+        color: #00376d;
+    }
+
+    .accordion-button i {
+        font-size: 1.2rem;
+    }
+
+    .accordion-body {
+        background-color: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-top: none;
+        padding: 1.5rem;
+    }
+
+    hr {
+        border: 1px solid rgba(128, 128, 128, 0.5);
+        margin: 1rem 0;
+    }
+
+    header h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    header p {
+        font-size: 1rem;
+    }
+</style>

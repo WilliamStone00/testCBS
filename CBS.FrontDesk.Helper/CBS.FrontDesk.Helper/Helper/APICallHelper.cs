@@ -79,13 +79,33 @@ namespace CBS.FrontDesk.Helper
         public static string CreateVault = "/api/v1/Vault/create";
         public static string VaultInitialize = "/api/v1/Vault/initialize";
 
-
+        //CashCeilingRequest
         public static string Get_CashCeilingRequest = "/api/v1/CashCeilingRequest/{0}";
         public static string Delete_CashCeilingRequest = "/api/v1/CashCeilingRequest/{0}";
         public static string Update_CashCeilingRequest = "/api/v1/CashCeilingRequest/update";
         public static string GetAllCashCeilingRequest = "/api/v1/CashCeilingRequest/all";
         public static string CreateCashCeilingRequest = "/api/v1/CashCeilingRequest/create";
         public static string ValidateCashCeilingRequest = "/api/v1/CashCeilingRequest/validate";
+
+        //StandingOrder
+        public static string Get_StandingOrder = "/api/v1/StandingOrder/{0}";
+        public static string Delete_StandingOrder = "/api/v1/StandingOrder/{0}";
+        public static string Update_StandingOrder = "/api/v1/StandingOrder/update";
+        public static string GetAllStandingOrder = "/api/v1/StandingOrder/all";
+        public static string CreateStandingOrder = "/api/v1/StandingOrder/create";
+        public static string Get_StandingOrderByMemberId = "/api/v1/StandingOrder/member/{0}";
+
+        //SalaryUpload
+        public static string Delete_SalaryUpload = "/api/v1/SalaryUpload/{0}";
+        public static string GetAllSalaryUploadByFileCategory = "/api/v1/SalaryUpload/all/{0}";
+        public static string GetAllSalaryUploadByFileUploadId = "/api/v1/SalaryUpload/all";
+        public static string CreateSalaryUpload = "/api/v1/SalaryUpload/upload";
+
+        //SalaryAnalysis
+        public static string Delete_SalaryAnalysis = "/api/v1/SalaryAnalysis/{0}";
+        public static string GetSalaryAnalysisByFileUploadId = "/api/v1/SalaryAnalysis/by-file-upload-id/{0}";
+        public static string GetSalaryAnalysisById = "/api/v1/SalaryAnalysis/{0}";
+        public static string ExecuteSalaryAnalysis = "/api/v1/SalaryAnalysis/analyze";
 
         public static string Get_Update_Delete_HolyDayRecurring = "/api/v1/HolyDayRecurring/{0}";
         public static string GetAllHolyDayRecurring = "/api/v1/HolyDayRecurrings";

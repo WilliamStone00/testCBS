@@ -6,15 +6,6 @@
 
     <fieldset class="fieldset-custom">
         <div class="row mt-2 gy-4">
-            <!-- Cash in Vault -->
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.VaultInitializationCommand.AmountInVault, new { @class = "form-control formatted-amount shadow-box", @id = "AmountInVault", @oninput = "calculateTotalAmount()" })
-                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.AmountInVault, "", new { @class = "text-danger" })
-                    <label for="AmountInVault">Cash in Vault</label>
-                </div>
-            </div>
-
             <!-- Cash in Hand -->
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
@@ -23,6 +14,16 @@
                     <label for="AmountInHand">Cash in Hand</label>
                 </div>
             </div>
+            <!-- Cash in Vault -->
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.AmountInVault, new { @class = "form-control formatted-amount shadow-box", @id = "AmountInVault", @oninput = "calculateTotalAmount()",@readonly=true })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.AmountInVault, "", new { @class = "text-danger" })
+                    <label for="AmountInVault">Cash in Vault</label>
+                </div>
+            </div>
+
+
             <!-- Total Amount -->
             <div class="col-md-6" style="display:none">
                 <div class="form-floating form-floating-outline">
@@ -142,6 +143,13 @@
                     @Html.TextAreaFor(m => m.VaultInitializationCommand.Note, new { @class = "form-control", @style = "height: 90px;" })
                     @Html.ValidationMessageFor(m => m.VaultInitializationCommand.Note, "", new { @class = "text-danger " })
                     <label for="formValidationDob">Drop a note</label>
+                </div>
+            </div>
+            <!-- Checkbox for CanProceed -->
+            <div class="col-md-12 d-flex align-items-center">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.VaultInitializationCommand.CanProceed, new { @class = "form-check-input", @id = "canProceedCheckbox", @onchange = "toggleExecution()" })
+                    <label class="form-check-label" for="canProceedCheckbox">Can Proceed to execute deficits or supplus</label>
                 </div>
             </div>
         </div>

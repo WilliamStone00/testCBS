@@ -38,6 +38,7 @@ $(document).ready(function () {
         }
     });
 });
+
 function formatCurrency(amount) {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'XAF', minimumFractionDigits: 1 }).format(amount);
 }
