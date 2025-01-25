@@ -1,0 +1,155 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.CashCeilingManagement.CashCeilingRequest>
+@{
+    ViewBag.Title = "Cash Ceiling Request Validation";
+}
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-cash-multiple me-2"></i> Cash Ceiling Request Validation
+                </h1>
+                <p class="card-text text-muted">
+                    Review and validate cash ceiling requests efficiently. Approve, reject, or mark requests as pending based on branch policies and cash limits.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Tips Section -->
+<div class="card mb-4">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseValidationTips" aria-expanded="false" aria-controls="collapseValidationTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseValidationTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure the request details are accurate before validation.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> If the request type is <strong>Cash_To_Vault</strong>, ensure the cash transfer aligns with branch vault policies.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> If the request type is <strong>Subteller_Cash_To_PrimaryTeller</strong>, ensure the balances are adjusted correctly.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Approval, rejection, or pending status changes are final and should be documented with proper notes.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Table Section -->
+@if (!Model.Any())
+{
+    <div class="text-center my-3">
+        <p class="text-muted">No cash ceiling requests to validate at the moment.</p>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered text-center">
+            <thead class="table-light">
+                <tr>
+                    <th>Branch</th>
+                    <th>Request Type</th>
+                    <th>Amount</th>
+                    <th>Requested By</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var request in Model)
+                {
+                    <tr>
+                        <td>@request.BranchName</td>
+                        <td>
+                            @if (request.RequestType == "Cash_To_Vault")
+                            {
+                                <span class="badge bg-primary">Cash to Vault</span>
+                            }
+                            else if (request.RequestType == "Subteller_Cash_To_PrimaryTeller")
+                            {
+                                <span class="badge bg-warning">Subteller to Primary Teller</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Unknown</span>
+                            }
+                        </td>
+                        <td>@request.CashoutRequestAmount.ToString("#,##0.0") FCFA</td>
+                        <td>@request.RequestedBy</td>
+                        <td>
+                            @if (request.ApprovedStatus == "Pending")
+                            {
+                                <span class="badge bg-warning">Pending</span>
+                            }
+                            else if (request.ApprovedStatus == "Approved")
+                            {
+                                <span class="badge bg-success">Approved</span>
+                            }
+                            else if (request.ApprovedStatus == "Rejected")
+                            {
+                                <span class="badge bg-danger">Rejected</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Unknown</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center gap-2">
+                                @if (request.ApprovedStatus == "Pending")
+                                {
+                                    <!-- Validate Button -->
+                                    <a type="button"
+                                       class="btn btn-sm btn-outline-primary"
+                                       href="/CashCeilingRequest/RequestValidation?Key=@request.Id&RequestType=@request.RequestType"
+                                       data-bs-toggle="tooltip"
+                                       title="Validate Request">
+                                        <i class="fas fa-check-circle"></i> Validate
+                                    </a>
+                                }
+                                <!-- View Details Button -->
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-info"
+                                        onclick="viewRequestDetails('@request.Id')"
+                                        data-bs-toggle="tooltip"
+                                        title="View Details">
+                                    <i class="fas fa-info-circle"></i> Details
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+
+        function viewRequestDetails(requestId) {
+            // Load request details in modal
+            $('#vaultDetailsModal').modal('show');
+            $('#vaultDetailsContent').html('<p>Loading...</p>');
+
+            $.ajax({
+                url: '/CashCeiling/ViewRequestDetails',
+                type: 'GET',
+                data: { id: requestId },
+                success: function (data) {
+                    $('#vaultDetailsContent').html(data);
+                },
+                error: function () {
+                    $('#vaultDetailsContent').html('<p class="text-danger">Error loading request details.</p>');
+                }
+            });
+        }
+    </script>
+}

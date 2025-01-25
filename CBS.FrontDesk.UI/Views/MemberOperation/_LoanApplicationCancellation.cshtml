@@ -1,0 +1,58 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+
+<div class="card mb-4">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanApprovalTips" aria-expanded="false" aria-controls="collapseLoanApprovalTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseLoanApprovalTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Verify that the cancellation reason is clearly stated in the comment section.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Cancellation is final and cannot be reversed once submitted.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Use this action only when a loan application must be invalidated due to errors or member requests.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Ensure proper documentation is maintained for the cancellation decision.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("Update", "MemberOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    @Html.HiddenFor(m => m.UpdateLoanApplicationStatus.Id)
+    @Html.HiddenFor(m => m.LoanApplication.Id)
+
+    <div class="row g-4">
+        <div class="col-md-12">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.UpdateLoanApplicationStatus.OTPCode, new { @class = "form-control", placeholder = "Enter OTP code", value = "0000", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.OTPCode, "", new { @class = "text-danger" })
+                <label for="UpdateLoanApplicationStatus_OTPCode">Enter OTP code from @Model.Customer.name</label>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.UpdateLoanApplicationStatus.ApprovalStatus, new { @class = "form-control", placeholder = "Cancellation", value = "Cancellation", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalStatus, "", new { @class = "text-danger" })
+                <label for="UpdateLoanApplicationStatus_ApprovalStatus">Approval Status</label>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-floating">
+                @Html.TextAreaFor(m => m.UpdateLoanApplicationStatus.ApprovalComment, new { @class = "form-control", style = "height: 200px;", placeholder = "Add a comment" })
+                @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalComment, "", new { @class = "text-danger" })
+                <label for="UpdateLoanApplicationStatus_ApprovalComment">Comment</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">
+            Cancel Application
+        </button>
+    </div>
+}

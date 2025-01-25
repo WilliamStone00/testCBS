@@ -1,0 +1,105 @@
+﻿<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-cash-multiple me-2"></i> Cash Ceiling Requests Management
+                </h1>
+                <p class="card-text text-muted">
+                    View and manage all cash ceiling requests initiated by sub-tellers and primary tellers. Ensure smooth cash flow operations by processing requests efficiently.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCashCeilingTips" aria-expanded="false" aria-controls="collapseCashCeilingTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseCashCeilingTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all requests are reviewed and processed promptly.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Monitor the request types (Cash to Vault or Subteller to Primary) for proper processing.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Use the "Status" column to track the progress of requests (Pending, Approved, or Rejected).</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Approved requests should reflect in the respective till or vault balance without delay.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="card shadow-sm">
+            <div id="accordionPopoutIcon" class="accordion accordion-popout">
+                <div class="accordion-item active">
+                    <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconThree">
+                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionPopoutIcon-3" aria-expanded="true" aria-controls="accordionPopoutIcon-3">
+                            <i class="mdi mdi-cash-multiple me-2"></i> All Cash Ceiling Requests
+                        </button>
+                    </h2>
+                    <div id="accordionPopoutIcon-3" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+                                <div class="card mb-1">
+                                    <div class="card-body d-flex justify-content-end align-items-center">
+                                        <a type="button" onclick="LoadDataGen('CashCeilingRequest','myDataTable','_AllRequestsData',0,'datalistingview',null,'Cash_To_Vault','all_requests')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View All Requests">
+                                            <i class="mdi mdi-view-list mdi-18px"></i> View All Requests
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="datalistingview">
+                                    @if (ViewBag.message != null)
+                                    {
+                                        @Html.Partial("_DataNotFound")
+                                    }
+                                    else
+                                    {
+                                        @Html.Partial("_AllRequestsData")
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cashCeilingDetailsModal" tabindex="-1" aria-labelledby="cashCeilingDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header p-2">
+                <header class="w-100 text-center">
+                    <h4 class="text-primary fw-bold mb-1">
+                        <i class="mdi mdi-cash me-2"></i> CASH CEILING DETAILS
+                    </h4>
+                    <p class="text-muted mb-0">
+                        View and manage details of all cash ceiling requests.
+                    </p>
+                    <hr style="border: 1px solid rgba(128, 128, 128, 0.5);" />
+                </header>
+            </div>
+            <div class="modal-body p-2">
+                <div id="cashCeilingDetailsContent">
+                    <!-- Partial view or dynamic content will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

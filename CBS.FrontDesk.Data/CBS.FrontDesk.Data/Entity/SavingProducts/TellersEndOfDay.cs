@@ -271,6 +271,14 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public DateTime? AccountingDay { get; set; }
         public Teller Teller { get; set; }
     }
+    public class GetDailyTellerByUserIdQuery
+    {
+        /// <summary>
+        /// Gets or sets the unique identifier of the TempAccount to be retrieved.
+        /// </summary>
+        public string UserId { get; set; }
+        public string TellerType { get; set; }
+    }
     public class DailyTeller
     {
         public string Id { get; set; }

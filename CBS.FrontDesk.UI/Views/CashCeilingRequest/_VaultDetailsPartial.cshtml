@@ -1,0 +1,237 @@
+﻿@model CBS.FrontDesk.Data.Entity.VaultManagement.Vault
+
+@{
+    var recentOperations = Model.VaultOperations.OrderByDescending(op => op.OperationDate).Take(5);
+}
+
+<div class="card-body">
+    <div class="accordion" id="vaultAccordion">
+        <!-- Details Section -->
+        <div class="accordion-item mb-2">
+            <h2 class="accordion-header" id="detailsHeader">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#detailsCollapse" aria-expanded="true" aria-controls="detailsCollapse">
+                    Vault Informations
+                </button>
+            </h2>
+            <div id="detailsCollapse" class="accordion-collapse collapse show" aria-labelledby="detailsHeader" data-bs-parent="#vaultAccordion">
+                <div class="accordion-body">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            <tr class="table-primary">
+                                <td colspan="2" class="font-weight-bold text-center">Vault Details</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Vault ID:</td>
+                                <td>@Model.Id</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Name:</td>
+                                <td>@Model.Name</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Branch ID:</td>
+                                <td>@Model.BranchId</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Branch Code:</td>
+                                <td>@Model.BranchCode</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Description:</td>
+                                <td>@Model.Description</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Location:</td>
+                                <td>@Model.Location</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Address:</td>
+                                <td>@Model.Address</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Dimensions:</td>
+                                <td>@Model.Diamention</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Maximum Capacity:</td>
+                                <td>@Model.MaximumCapacity.ToString("#,##0.0") FCFA</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Current Balance:</td>
+                                <td>@Model.CurrentBalance.ToString("#,##0.0") FCFA</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Previous Balance:</td>
+                                <td>@Model.PreviouseBalance.ToString("#,##0.0") FCFA</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Is Active:</td>
+                                <td>
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge bg-primary text-white">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger text-white">Inactive</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Last Operation:</td>
+                                <td>@Model.LastOperation</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Last Operation Amount:</td>
+                                <td>@Model.LastOperationAmount.ToString("#,##0.00") FCFA</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Denominations Section -->
+        <div class="accordion-item mb-2">
+            <h2 class="accordion-header" id="denominationsHeader">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#denominationsCollapse" aria-expanded="false" aria-controls="denominationsCollapse">
+                    Denominations
+                </button>
+            </h2>
+            <div id="denominationsCollapse" class="accordion-collapse collapse" aria-labelledby="denominationsHeader" data-bs-parent="#vaultAccordion">
+                <div class="accordion-body">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            @foreach (var denomination in new[] {
+                        new { Name = "Note 10,000", Value = Model.ClosingNote10000 },
+                        new { Name = "Note 5,000", Value = Model.ClosingNote5000 },
+                        new { Name = "Note 2,000", Value = Model.ClosingNote2000 },
+                        new { Name = "Note 1,000", Value = Model.ClosingNote1000 },
+                        new { Name = "Note 500", Value = Model.ClosingNote500 },
+                        new { Name = "Coin 500", Value = Model.ClosingCoin500 },
+                        new { Name = "Coin 100", Value = Model.ClosingCoin100 },
+                        new { Name = "Coin 50", Value = Model.ClosingCoin50 },
+                        new { Name = "Coin 25", Value = Model.ClosingCoin25 },
+                        new { Name = "Coin 10", Value = Model.ClosingCoin10 },
+                        new { Name = "Coin 5", Value = Model.ClosingCoin5 },
+                        new { Name = "Coin 1", Value = Model.ClosingCoin1 }
+                    })
+                            {
+                                <tr>
+                                    <td class="font-weight-bold">@denomination.Name:</td>
+                                    <td>@denomination.Value</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-light">
+                                <td class="font-weight-bold text-end">Current Balance:</td>
+                                <td>
+                                    @{
+                                        var total = Model.ClosingNote10000 * 10000 +
+                                                    Model.ClosingNote5000 * 5000 +
+                                                    Model.ClosingNote2000 * 2000 +
+                                                    Model.ClosingNote1000 * 1000 +
+                                                    Model.ClosingNote500 * 500 +
+                                                    Model.ClosingCoin500 * 500 +
+                                                    Model.ClosingCoin100 * 100 +
+                                                    Model.ClosingCoin50 * 50 +
+                                                    Model.ClosingCoin25 * 25 +
+                                                    Model.ClosingCoin10 * 10 +
+                                                    Model.ClosingCoin5 * 5 +
+                                                    Model.ClosingCoin1;
+                                        @total.ToString("#,##0.0 FCFA")
+                                    }
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Authorized Persons Section -->
+        <div class="accordion-item mb-2">
+            <h2 class="accordion-header" id="authorizedPersonsHeader">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#authorizedPersonsCollapse" aria-expanded="false" aria-controls="authorizedPersonsCollapse">
+                    Authorized Persons
+                </button>
+            </h2>
+            <div id="authorizedPersonsCollapse" class="accordion-collapse collapse" aria-labelledby="authorizedPersonsHeader" data-bs-parent="#vaultAccordion">
+                <div class="accordion-body">
+                    @if (Model.VaultAuthorisedPersons?.Any() == true)
+                    {
+                        <ul class="list-group">
+                            @foreach (var person in Model.VaultAuthorisedPersons)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Name:</strong> @person.Name
+                                    </div>
+                                    <span class="badge @((person.IsLeader) ? "bg-primary" : "bg-secondary") text-white">
+                                        @((person.IsLeader) ? "Leader" : "Member")
+                                    </span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No authorized persons.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Vault Operations Section -->
+        <div class="accordion-item mb-2">
+            <h2 class="accordion-header" id="vaultOperationsHeader">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#vaultOperationsCollapse" aria-expanded="false" aria-controls="vaultOperationsCollapse">
+                    Vault Operations
+                </button>
+            </h2>
+            <div id="vaultOperationsCollapse" class="accordion-collapse collapse" aria-labelledby="vaultOperationsHeader" data-bs-parent="#vaultAccordion">
+                <div class="accordion-body">
+                    @if (Model.VaultOperations.Any())
+                    {
+                        <ul class="list-group">
+
+                            @foreach (var operation in recentOperations)
+                            {
+                                <li class="list-group-item">
+                                    <strong>Operation Type:</strong> @operation.OperationType <br />
+                                    <strong>Amount:</strong> @operation.Amount.ToString("#,##0.0") FCFA <br />
+                                    <strong>Done By:</strong> @operation.DoneBy <br />
+                                    <strong>Reference:</strong> @operation.Reference
+                                </li>
+                            }
+                        </ul>
+                        if (Model.VaultOperations.Count > 5)
+                        {
+                            <div class="text-center mt-3">
+                                <button type="button" class="btn btn-outline-primary btn-sm" onclick="viewAllVaultOperations()">
+                                    View More
+                                </button>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">No operations performed.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+
+<script>
+    function viewAllVaultOperations() {
+        // Logic to load and display all operations (e.g., via AJAX or redirect)
+        alert("Load all operations logic goes here.");
+    }
+</script>

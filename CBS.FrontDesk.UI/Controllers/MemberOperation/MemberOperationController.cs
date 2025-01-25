@@ -42,7 +42,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         private readonly AttachedDocumentServices _attachedDocumentServices;
         private readonly DocumentServices _documentServices;
         private readonly LoanTermServices _loanTermServices;
-        
+
 
         public MemberOperationController(IndividualProfileServices individualProfileServices, LoanProductServices loanProductServices = null, LoanPurposeServices loanPurposeServices = null, LoanApplicationServices loanApplicationServices = null, LoanServices loanServices = null, LoanAmortizationServices loanAmortizationServices = null, LoanCommiteeValidationHistoryServices loanCommiteeValidationHistoryServices = null, LoanApplicationCollateralServices loanApplicationCollateralServices = null, LoanGuarantorServices loanGuarantorServices = null, LoanProductCollateralServices loanProductCollateralServices = null, AttachedDocumentServices services = null, DocumentServices documentServices = null, LoanTermServices loanTermServices = null)
         {
@@ -163,7 +163,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     }
                     else if (path == "loan_for_disbursed")
                     {
-                       
+
 
                         var loan = await _loanservices.GetLoan(KEY);
                         var Accounts = await _individualProfileServices.GetCustomerAccounts(loan.CustomerId);
@@ -200,7 +200,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         ViewBag.DocumentTypes = await _documentServices.GetDocumentDropDown();
                         var documentAttachedToLoans = loanApplication.DocumentAttachedToLoans;
                         var attachedDoc = new DocumentAttachedToLoan { LoanApplicationId = loanApplication.Id };
-                        return PartialView(partialView, new MemberOperationPanel { DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
+                        return PartialView(partialView, new MemberOperationPanel { DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id, OTPCode="0000", ApprovalStatus="Rejected", ApprovalComment=$"Loan Rejected By {Session["FullName"].ToString()}. Dated: {DateTime.Now}"} });
                     }
                     else if (path == "upload_document")
                     {
@@ -235,7 +235,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         var customer = await InitializeCustomerData(loanApplication.CustomerId);
                         var collateral = new LoanApplicationCollateral { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.CustomerId };
                         ViewBag.LoanProductCollaterals = await _loanProductCollateralServices.GetLoanProductCollaterals(loanApplication.LoanProduct.Id);
-                        return PartialView(partialView, new MemberOperationPanel { LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
+                  
+                        return PartialView(partialView, new MemberOperationPanel {  LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
                     }
                     else if (path == "application_detail")
                     {
@@ -245,7 +246,9 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         var guarantor = new LoanGuarantor { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.CustomerId };
                         var collateral = new LoanApplicationCollateral { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.CustomerId };
                         ViewBag.LoanProductCollaterals = await _loanProductCollateralServices.GetLoanProductCollaterals(loanApplication.Id);
-                        return PartialView(partialView, new MemberOperationPanel { LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
+                        var updateLoanApplication = new UpdateLoanApplicationStatusCommand { Id=loanApplication.Id};
+
+                        return PartialView(partialView, new MemberOperationPanel { LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = updateLoanApplication });
                     }
 
                     //loan_commitee_validation_history
@@ -502,7 +505,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             var loanTerms = await _loanProductServices.GetProductTermOrDurationFromConfiguredProduct();
             var categories = await _loanProductServices.GetProductCategoryFromConfiguredProduct();
             ViewBag.LoanTypes = productEnumAgregates.LoanTypes;
-            
+
             ViewBag.EconomicActivities = agrAggregates.EconomicActivities;
             ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
             ViewBag.RepaymentCycles = productEnumAgregates.RepaymentCycles;
@@ -544,7 +547,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             var data = await _individualProfileServices.Delete(id);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
-        public async Task<ActionResult> Ajaxloader(string Key, string path,string loanTermId,string loanCategoryid, string loanCategoryValue)
+        public async Task<ActionResult> Ajaxloader(string Key, string path, string loanTermId, string loanCategoryid, string loanCategoryValue)
         {
             bool isSSF = false;
             if (loanCategoryValue == "SpecialSavingFacilityLoan")
@@ -570,7 +573,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     return Json(listing, JsonRequestBehavior.AllowGet);
 
                 }
-               
+
                 else if (path == "get_puposes")
                 {
                     var listing = await _loanPurposeServices.GetAllLoanPurpose(Key);
@@ -627,7 +630,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                 }
 
                 var data = await _loanservices.GetLoan(Key);
-               
+
                 if (data == null)
                 {
                     return Json(null, JsonRequestBehavior.AllowGet);

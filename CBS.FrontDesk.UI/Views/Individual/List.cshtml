@@ -2,70 +2,77 @@
     ViewBag.Title = "Members in " + Session["BranchName"];
 }
 
-<div class="container">
-    <header class="text-center">
-        <h1 class="text-primary fw-bold">MEMBERS LISTING</h1>
-        <p class="text-muted">
-            This page provides an overview of all members in your branch: <strong>@Session["BranchName"]</strong>.
-            You can search for specific members using their Reference number such as 010000365, name, or phone number. Use the tools below to manage and view member details efficiently.
-        </p>
-        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
-    </header>
-
-    <!-- Tips Section -->
-    <div class="card mb-1">
-        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span><i class="mdi mdi-information-outline me-2"></i> IMPORTANT TIPS</span>
-            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
-                <i class="mdi mdi-chevron-down"></i>
-            </button>
-        </h6>
-        <div id="collapseTips" class="collapse">
-            <div class="card-body">
-                <ul>
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the search bar to find specific members quickly by their Reference number, name, or phone number.</li>
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Click on a member's profile in the list to view and update details, such as contact information or account status.</li>
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Load all members in your branch by clicking the "View List" button.</li>
-                    <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Always confirm member details before making any changes.</li>
-                </ul>
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-group-outline me-2"></i> MEMBERS LISTING
+                </h1>
+                <p class="card-text text-muted">
+                    This page provides an overview of all members in your branch: <strong>@Session["BranchName"]</strong>.
+                    You can search for specific members using their Reference number such as 010000365, name, or phone number. Use the tools below to manage and view member details efficiently.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
+</div>
 
-    <div id="accordionMembers" class="accordion accordion-popout">
-        <div class="accordion-item active">
-            <h2 class="accordion-header" id="membersHeading">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#membersCollapse" aria-expanded="true" aria-controls="membersCollapse">
-                    <i class="mdi mdi-account-group me-2"></i> Members in: <strong> [@Session["BranchName"]]</strong>
-                </button>
-            </h2>
-            <div id="membersCollapse" class="accordion-collapse collapse show" aria-labelledby="membersHeading" data-bs-parent="#accordionMembers">
-                <div class="accordion-body">
-                    <div class="card mb-4 shadow">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0"><i class="mdi mdi-account-circle-outline"></i> Members Overview</h5>
-                            <button type="button" onclick="LoadUsers()" class="btn btn-label-primary">
-                                <i class="mdi mdi-view-list me-2"></i>View List
-                            </button>
+<!-- Tips Section -->
+<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> IMPORTANT TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the search bar to find specific members quickly by their Reference number, name, or phone number.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Click on a member's profile in the list to view and update details, such as contact information or account status.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Load all members in your branch by clicking the "View List" button.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Always confirm member details before making any changes.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="accordionMembers" class="accordion accordion-popout">
+    <div class="accordion-item active">
+        <h2 class="accordion-header" id="membersHeading">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#membersCollapse" aria-expanded="true" aria-controls="membersCollapse">
+                <i class="mdi mdi-account-group me-2"></i> Members in: <strong> [@Session["BranchName"]]</strong>
+            </button>
+        </h2>
+        <div id="membersCollapse" class="accordion-collapse collapse show" aria-labelledby="membersHeading" data-bs-parent="#accordionMembers">
+            <div class="accordion-body">
+                <div class="card mb-4 shadow">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0"><i class="mdi mdi-account-circle-outline"></i> Members Overview</h5>
+                        <button type="button" onclick="LoadUsers()" class="btn btn-label-primary">
+                            <i class="mdi mdi-view-list me-2"></i>View List
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="card mb-4 shadow">
+                    <div class="card-body">
+                        <label for="manualSearchInput" class="form-label fw-bold">Search Members</label>
+                        <div class="input-group">
+                            <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Search by account number, member's name, or phone number..." />
+                            <button class="btn btn-primary" onclick="manualSearch()">Search</button>
                         </div>
+                        <small class="text-muted mt-2 d-block">Example: Enter "12345", "John Doe", or "0701234567" to find a member.</small>
                     </div>
+                </div>
 
-                    <!-- Search Bar -->
-                    <div class="card mb-4 shadow">
-                        <div class="card-body">
-                            <label for="manualSearchInput" class="form-label fw-bold">Search Members</label>
-                            <div class="input-group">
-                                <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Search by account number, member's name, or phone number..." />
-                                <button class="btn btn-primary" onclick="manualSearch()">Search</button>
-                            </div>
-                            <small class="text-muted mt-2 d-block">Example: Enter "12345", "John Doe", or "0701234567" to find a member.</small>
-                        </div>
-                    </div>
-
-                    <!-- Members Data Listing -->
-                    <div id="datalistingview">
-                        @Html.Partial("_IndividualData")
-                    </div>
+                <!-- Members Data Listing -->
+                <div id="datalistingview">
+                    @Html.Partial("_IndividualData")
                 </div>
             </div>
         </div>

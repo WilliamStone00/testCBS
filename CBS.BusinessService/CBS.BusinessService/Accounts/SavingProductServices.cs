@@ -145,6 +145,7 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.CurrencyId = model.CurrencyId;
                     SavingProduct.MaxAmount = model.MaxAmount;
                     SavingProduct.MinAmount = model.MinAmount;
+                    SavingProduct.WithdrawalFormSavingFormFeeFor3PP = model.WithdrawalFormSavingFormFeeFor3PP;
                     SavingProduct.ActiveStatus = model.ActiveStatus;
                     SavingProduct.IsTermProduct = model.IsTermProduct;
                     SavingProduct.IsUsedForTellerProvisioning = model.IsUsedForTellerProvisioning;
@@ -198,11 +199,6 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-        public string ChartOfAccountIdHeadOfficeShareCMoneyTransferCommission { get; set; }
-        public string ChartOfAccountIdFluxAndPTMShareCMoneyTransferCommission { get; set; }
-        public string ChartOfAccountIdCamCCULShareCMoneyTransferCommission { get; set; }
-        public string ChartOfAccountIdSourceCMoneyTransferCommission { get; set; }
-        public string ChartOfAccountIdDestinationCMoneyTransferCommission { get; set; }
 
         public async Task<ExecutionMessages> UpdateProductAccountMapping(SavingProduct model)
         {
@@ -267,10 +263,12 @@ namespace CBS.BusinessService.Accounts
                 var SavingProduct = await GetSavingProduct(model.Id);
                 if (SavingProduct != null)
                 {
+                   
                     SavingProduct.UpdateOption = "N/A";
                     SavingProduct.EventCodeAdvanceOfSalaryFormFee = model.EventCodeAdvanceOfSalaryFormFee;
                     SavingProduct.EventCodeMoralPersonWithdrawalFormFee = model.EventCodeMoralPersonWithdrawalFormFee;
                     SavingProduct.EventCodePhysicalPersonWithdrawalFormFee = model.EventCodePhysicalPersonWithdrawalFormFee;
+                    SavingProduct.EventCodeWithdrawalFormSavingFormFeeFor3PP = model.EventCodeWithdrawalFormSavingFormFeeFor3PP;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);
                     if (response.IsSuccess)
                     {
@@ -296,7 +294,41 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> UpdateProductEventMappingSalary(SavingProduct model)
+        {
+            try
+            {
+                var SavingProduct = await GetSavingProduct(model.Id);
+                if (SavingProduct != null)
+                {
 
+                    SavingProduct.UpdateOption = "N/A";
+                    SavingProduct.EventCodeAdvanceOfSalaryFormFee = model.EventCodeAdvanceOfSalaryFormFee;
+                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);
+                    if (response.IsSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
     }
 
 }

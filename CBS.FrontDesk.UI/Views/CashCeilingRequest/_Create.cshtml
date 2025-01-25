@@ -1,0 +1,84 @@
+﻿@model CBS.FrontDesk.Data.Entity.CashCeilingManagement.CashCeilingRequest
+
+<fieldset class="fieldset-custom">
+    <legend id="select_base">Cash Out Ceiling Request</legend>
+    <div class="card-body">
+        @using (Html.BeginForm("Create", "CashCeilingRequest", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            @Html.HiddenFor(model => model.AddCashCeilingRequestCommand.Id)
+
+        <div class="row mt-3 gy-3">
+
+            <!-- Cashout Request Amount -->
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.AddCashCeilingRequestCommand.CashoutRequestAmount, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AddCashCeilingRequestCommand.CashoutRequestAmount, "", new { @class = "text-danger" })
+                    <label for="CashoutRequestAmount">Cashout Request Amount</label>
+                </div>
+            </div>
+
+            <!-- Request Type -->
+
+
+            @if (ViewBag.RequestType=="Cash_To_Vault")
+            {
+                <div class="col-md-12">
+                    <fieldset class="form-group">
+                        <legend class="form-label">Request Type</legend>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(
+                                m => m.AddCashCeilingRequestCommand.RequestType,
+                                "Cash_To_Vault",
+                                new { @class = "form-check-input", id = "CashToVault" }
+                            )
+                            <label class="form-check-label" for="CashToVault">Cash To Vault</label>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.AddCashCeilingRequestCommand.RequestType, "", new { @class = "text-danger" })
+                    </fieldset>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12">
+                    <fieldset class="form-group">
+                        <legend class="form-label">Request Type</legend>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(
+                                m => m.AddCashCeilingRequestCommand.RequestType,
+                                "Subteller_Cash_To_PrimaryTeller",
+                                new { @class = "form-check-input", id = "SubtellerToPrimary" }
+                            )
+                            <label class="form-check-label" for="SubtellerToPrimary">Transfer cash to primary till.</label>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.AddCashCeilingRequestCommand.RequestType, "", new { @class = "text-danger" })
+                    </fieldset>
+                </div>
+            }
+            <!-- Request Comment -->
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextAreaFor(m => m.AddCashCeilingRequestCommand.Requetcomment, new { @class = "form-control", @style = "height: 200px;" })
+                    @Html.ValidationMessageFor(m => m.AddCashCeilingRequestCommand.Requetcomment, "", new { @class = "text-danger" })
+                    <label for="RequestComment">Request Comment</label>
+                </div>
+            </div>
+        </div>
+
+            <!-- Action Buttons -->
+    <div class="mt-4">
+        @if (ViewBag.Key != null)
+        {
+            <input type="hidden" name="Action" id="Action" value="update" />
+            <button type="submit" class="btn btn-primary me-2">Update</button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-primary me-2">Submit</button>
+            <button type="reset" class="btn btn-outline-secondary">Reset</button>
+        }
+    </div>
+
+        }
+    </div>
+</fieldset>

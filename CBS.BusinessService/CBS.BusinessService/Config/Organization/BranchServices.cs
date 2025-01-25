@@ -54,12 +54,7 @@ namespace CBS.BusinessService.Config
             }
             return ExecutionMessage;
         }
-        public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions)
-        {
-            Func<Task<List<Branch>>> getDataFunc = async () => (await GetBranches()).ToList();
-            var dataTable = await DatatableHelper.GenerateDataTable<Branch>(dataTableOptions, getDataFunc);
-            return dataTable;
-        }
+
         public async Task<IEnumerable<Branch>> GetBranches()
         {
             try
@@ -67,16 +62,28 @@ namespace CBS.BusinessService.Config
                 if (IsHeadOffice())
                 {
                     var couApiResponse = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
-                    return couApiResponse.ApiResponseData.Data;
 
+                    // Add concatenated Name and BranchCode
+                    return couApiResponse.ApiResponseData.Data
+                        .Select(branch =>
+                        {
+                            branch.Name = $"{branch.BranchCode} [{branch.Name}]";
+                            return branch;
+                        });
                 }
                 else
                 {
                     var couApiResponse = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
-                    return couApiResponse.ApiResponseData.Data.Where(x => x.Id == GetBranchID());
 
+                    // Filter by BranchID and add concatenated Name and BranchCode
+                    return couApiResponse.ApiResponseData.Data
+                        .Where(x => x.Id == GetBranchID())
+                        .Select(branch =>
+                        {
+                            branch.Name = $"{branch.BranchCode} [{branch.Name}]";
+                            return branch;
+                        });
                 }
-
             }
             catch (Exception ex)
             {
@@ -84,6 +91,7 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+
         public async Task<SelectList> GetBranchesByBankId(string id)
         {
             try

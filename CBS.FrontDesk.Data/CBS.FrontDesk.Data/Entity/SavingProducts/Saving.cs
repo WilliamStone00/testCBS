@@ -185,7 +185,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
 
 
 
-public class OldLoanAccountingMaping
+    public class OldLoanAccountingMaping
     {
         public string Id { get; set; }
 
@@ -308,7 +308,8 @@ public class OldLoanAccountingMaping
     {
         Withdrawal,
         Transfer,
-        Deposit
+        Deposit, 
+        Cmoney_SWN
     }
     public class CloseFeeParameter : Sharing
     {
@@ -430,6 +431,9 @@ public class OldLoanAccountingMaping
         [StringLength(50, ErrorMessage = "Product Category must not exceed 50 characters.")]
         public string ProductCategory { get; set; }
         public bool OTPControl { get; set; }
+        public decimal WithdrawalFormSavingFormFeeFor3PP { get; set; }
+        public string EventCodeWithdrawalFormSavingFormFeeFor3PP { get; set; }
+
         public bool AutoVerifyRemittanceSender { get; set; }
         public bool AutoVerifyRemittanceReceiver { get; set; }
 

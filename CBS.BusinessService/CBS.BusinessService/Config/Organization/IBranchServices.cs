@@ -14,7 +14,6 @@ namespace CBS.BusinessService.Config
         Task<Branch> GetBranch(string id);
         Task<Branch> GetBranchByBankID(string bankid);
         Task<IEnumerable<Branch>> GetBranches();
-        Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions);
         Task<ExecutionMessages> Update(Branch model);
         Task<ExecutionMessages> UploadBranchLogo(CustomerDocumentRequest attachedToLoan);
     }

@@ -35,7 +35,7 @@ namespace CBS.FrontDesk.UI.Controllers.CMoney
         {
             return View();
         }
-        public async Task<ActionResult> Activation()
+        public ActionResult Activation()
         {
             return View();
         }
@@ -46,10 +46,11 @@ namespace CBS.FrontDesk.UI.Controllers.CMoney
             var customerProfile = await _services.GetCustomerLight(cMoneyMembersActivation.CustomerId);
             cMoneyMembersActivation.Customer=customerProfile.CustomerList;
             cMoneyMembersActivation.ReactivateCMoneyMemberCommand=new ReactivateCMoneyMemberCommand { CustomerId=cMoneyMembersActivation.CustomerId };
+            cMoneyMembersActivation.DeactivateCMoneyMemberCommand=new DeactivateCMoneyMemberCommand { CustomerId=cMoneyMembersActivation.CustomerId };
             cMoneyMembersActivation.ResetCMoneyMemberPinCommand=new ResetCMoneyMemberPinCommand { CustomerId=cMoneyMembersActivation.CustomerId };
             cMoneyMembersActivation.ResetPinWithSecurityCommand=new ResetPinWithSecurityCommand {  LoginId=cMoneyMembersActivation.LoginId, SecretAnswer=cMoneyMembersActivation.SecretAnswer, SecretQuestion=cMoneyMembersActivation.SecretQuestion };
             cMoneyMembersActivation.UpdateCMoneyMemberActivationCommand=new UpdateCMoneyMemberActivationCommand {  Id=cMoneyMembersActivation.Id, IsActive=cMoneyMembersActivation.IsActive, IsSubcribed=cMoneyMembersActivation.IsSubcribed, PhoneNumber=cMoneyMembersActivation.PhoneNumber };
-            cMoneyMembersActivation.ManageSecretQuestionCommand=new ManageSecretQuestionCommand {  LoginId=cMoneyMembersActivation.LoginId, SecretQuestion=cMoneyMembersActivation.SecretQuestion, SecretAnswer=cMoneyMembersActivation.SecretAnswer };
+            cMoneyMembersActivation.ManageSecretQuestionCommand=new ManageSecretQuestionCommand {  LoginId=cMoneyMembersActivation.LoginId, SecretQuestion=cMoneyMembersActivation.SecretQuestion, SecretAnswer=cMoneyMembersActivation.SecretAnswer, };
             cMoneyMembersActivation.GenerateMemberActivationOTPCommand=new GenerateMemberActivationOTPCommand { CustomerId=cMoneyMembersActivation.CustomerId, PhoneNumber= cMoneyMembersActivation .PhoneNumber};
             cMoneyMembersActivation.ChangePhoneNumberCommand=new ChangePhoneNumberCommand { CustomerId=cMoneyMembersActivation.CustomerId, OldPhoneNumber= cMoneyMembersActivation.PhoneNumber, Language=cMoneyMembersActivation.Language, NewPhoneNumber=null, OTP=null, Reason=null };
 

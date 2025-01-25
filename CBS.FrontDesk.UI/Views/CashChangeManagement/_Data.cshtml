@@ -1,0 +1,85 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.VaultManagement.Vault>
+
+<fieldset class="fieldset-custom">
+    <legend id="select_base">VAULTS</legend>
+    @if (!Model.Any())
+    {
+        <div class="text-center my-3">
+            <p>No vaults have been configured yet.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mb-3">
+            <table class="table table-hover table-bordered" id="myDataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 32%;">Vault Name</th>
+                        <th style="width: 5%;">B.Code</th>
+                        <th style="width: 20%;" class="text-end">Maximum Capacity</th>
+                        <th style="width: 20%;" class="text-end">Current Balance</th>
+                        <th style="width: 8%;">Status</th>
+                        <th style="width: 15%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var vault in Model)
+                    {
+                        <tr>
+                            <td>@vault.Name</td>
+                            <td>@vault.BranchCode</td>
+                            <td class="text-end">@vault.MaximumCapacity.ToString("#,##0.0") FCFA</td>
+                            <td class="text-end">@vault.CurrentBalance.ToString("#,##0.0") FCFA</td>
+                            <td>
+                                @if (vault.IsActive)
+                                {
+                                    <span class="badge rounded-pill bg-success fs-6">
+                                        <i class="fas fa-check-circle"></i> Active
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge rounded-pill bg-danger fs-6">
+                                        <i class="fas fa-times-circle"></i> Inactive
+                                    </span>
+                                }
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center align-items-center gap-2">
+                                    <!-- Edit Button -->
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-primary d-flex align-items-center"
+                                            onclick="AddORUpdateGen('@vault.Id', 'datalistingview', '_Create', 'update', 'Vault', null, null)"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="Edit @vault.Name">
+                                        <i class="fas fa-edit me-1"></i> Edit
+                                    </button>
+
+                                    <!-- Delete Button -->
+                                    @*<button type="button"
+                                            class="btn btn-sm btn-outline-danger d-flex align-items-center"
+                                            onclick="DeleteRecordDataTable('Vault', '@vault.Id', 'myDataTable', '_Data', 0, 'datalistingview', null, 'list')"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="Delete @vault.Name">
+                                        <i class="fas fa-trash-alt me-1"></i> Delete
+                                    </button>*@
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-info d-flex align-items-center"
+                                            onclick="showVaultDetails('@vault.Id')"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="View Details">
+                                        <i class="fas fa-info-circle me-1"></i> Details
+                                    </button>
+
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</fieldset>

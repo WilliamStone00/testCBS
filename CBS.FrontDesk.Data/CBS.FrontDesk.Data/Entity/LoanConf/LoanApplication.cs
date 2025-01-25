@@ -106,6 +106,50 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal ChargesPercentage { get; set; }
         public string LoanApplicationType { get; set; }
         public int NumberOfDaysToApplyCharges { get; set; }
+        public decimal OldLoanAmount { get; set; }
+        public decimal OldLoanCapital { get; set; }
+        public decimal OldLoanInterest { get; set; }
+        public decimal OldLoanVat { get; set; }
+        public decimal OldLoanPenalty { get; set; }
+        public decimal RequestedAmount { get; set; }
+        public decimal RestructuredBalance { get; set; }
+        public string InterestMethod { get; set; }
+        public string InterestType { get; set; }
+        public int GracePeriod { get; set; }
+        public decimal GracePeriodRate { get; set; }
+        public decimal InsuranceCoverageRate { get; set; }
+        public decimal ShareAccountCoverageRate { get; set; }
+        public bool IsGuaranteeProvided { get; set; }
+        public bool IsCollateralProvided { get; set; }
+        public DateTime DateOfPayment { get; set; }
+        public bool IsIninitalProcessingFeePaid { get; set; }
+        public bool IsPaidAllFeeUpFront { get; set; }
+        public bool IsPaidFeeBeforeProcessing { get; set; }
+        public bool IsPaidFeeAfterProcessing { get; set; }
+
+
+        public bool RequiredDownPaymentCoverageRate { get; set; }
+
+        public decimal PreferenceShareAccountCoverageAmount { get; set; }
+        public decimal DepositAccountCoverageAmount { get; set; }
+        public decimal SalaryAccountCoverageAmount { get; set; }
+        public decimal TermDeposiAccountCoverageAmount { get; set; }
+        public bool IsPreferenceShareAccountCoverageAmount { get; set; }
+        public bool IsDepositAccountCoverageAmount { get; set; }
+        public bool IsTermDeposiAccountCoverageAmount { get; set; }
+
+
+        public decimal DownPaymentCoverageAmountProvided { get; set; }
+        public bool ApplyInterestToThisLoan { get; set; }
+        public bool ApplyFeeToThisLoan { get; set; }
+
+
+        public bool? IsUpload { get; set; }
+
+        public bool IsInterestPaidUpFront { get; set; } = true;
+
+        public bool IsInterestRunning { get; set; } = true;
+
         public List<string> FeeIds { get; set; }
         public virtual LoanProduct LoanProduct { get; set; }
         public virtual ICollection<LoanApplicationCollateral> Collateras { get; set; }

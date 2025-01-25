@@ -40,10 +40,10 @@ function LoadCMoneyMembers(search) {
             }
         ],
         "columnDefs": [
-            { "targets": 0, "searchable": true, "orderable": true, "width": "40%" },
+            { "targets": 0, "searchable": true, "orderable": true, "width": "35%" },
             { "targets": 1, "searchable": true, "orderable": true, "width": "8%" },
             { "targets": 2, "searchable": true, "orderable": true, "width": "8%" },
-            { "targets": 3, "searchable": true, "orderable": true, "width": "29%" },
+            { "targets": 3, "searchable": true, "orderable": true, "width": "34%" },
             { "targets": 4, "searchable": true, "orderable": true, "width": "8%" },
             { "targets": 5, "searchable": true, "orderable": true, "width": "7%" },
         ],

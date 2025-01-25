@@ -698,7 +698,10 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 return () => _savingProductServices.UpdateProductEventMapping(model.SavingProduct);
             }
-            //
+            else if (serviceOption == "mapformeventchargessalaries")
+            {
+                return () => _savingProductServices.UpdateProductEventMappingSalary(model.SavingProduct);
+            }
             else if (serviceOption == "transferlimit")
             {
                 return () => _transferLimitServices.Update(model.TransferLimit);
