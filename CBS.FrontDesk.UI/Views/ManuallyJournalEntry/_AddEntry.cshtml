@@ -48,7 +48,7 @@ else
                             <div class="col-md-12">
                                 <div class="form-floating form-floating-outline">
 
-                                    @Html.DropDownListFor(m => m.EntryTempData.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.DropDownListFor(m => m.EntryTempData.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2",@id= "EntryBookingDirection", @search = "true" })
                                     @Html.ValidationMessageFor(m => m.EntryTempData.BookingDirection, "", new { @class = "text-danger" })
                                     <label>BookingDirection</label>
                                 </div>

@@ -1674,7 +1674,16 @@ namespace BusinessServices
       
             return str;
         }
-      
+        public bool IsMainBranch()
+        {
+            bool str = false;
+            if (HttpContext.Current.Session["IsMainBranch"] != null)
+            {
+                str = Convert.ToBoolean(  HttpContext.Current.Session["IsMainBranch"]);
+            }
+
+            return str;
+        }
         public static string CleanTelephoneNumber(string phoneNumber)
         {
             // Remove any non-numeric characters
