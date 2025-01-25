@@ -153,11 +153,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             List<SelectListItem> list = new List<SelectListItem>();
 
-            list.Add(new SelectListItem { Text = $"Approve", Value = "Approve Bank Cash Out" });
+            if (_AccountServices.IsMainBranch())
+            {
+                list.Clear();
+                list.Add(new SelectListItem { Text = $"Approve", Value = "Approve Bank Cash Out" });
+                list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
 
-            list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
+            }
+            else
+            {
+                list.Clear();
+                list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
+                list.Add(new SelectListItem { Text = $"RedirectToBranch", Value = "Redirect-To-Branch" });
+            }
+       
 
-            list.Add(new SelectListItem { Text = $"RedirectToBranch", Value = "Redirect-To-Branch" });
             return list;
         }
 

@@ -10,7 +10,9 @@ namespace CBS.FrontDesk.Data.Entity.Config
     public class Branch
     {
         public string Id { get; set; }
-        [Required]
+
+        public bool IsMainBranch { get; set; } //""
+       [Required]
         public string BranchCode { get; set; }
         [Required]
         public string Name { get; set; }

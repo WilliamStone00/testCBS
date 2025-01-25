@@ -97,7 +97,7 @@
                             {
                                 <div class="alert alert-outline-success" role="alert">
                                     <h6 class="alert-heading mb-1">The cash replenishment request of @Model.CashReplenimentRequestdto.TempId1 is already approved by @Model.CashReplenimentRequestdto.TempId2 .</h6>
-                                    <p class="mb-0">@Model.CashReplenimentRequestdto.AmountApproved.ToString("N") was replenished</p>
+                                    <p class="mb-0">@{(Convert.ToDecimal(Model.CashReplenimentRequestdto.AmountApproved)).ToString("N");} was replenished</p>
                                 </div>
                             }
                             else
@@ -152,7 +152,7 @@
                                     <div class="form-check mb-3">
                                         <div class="form-floating form-floating-outline">
 
-                                            @Html.DropDownListFor(m => m.CashReplenimentRequestdto.TempId2, new SelectList(ViewBag.Decisions == null ? "" : ViewBag.Decisions, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
+                                            @Html.DropDownListFor(m => m.CashReplenimentRequestdto.TempId2, new SelectList(ViewBag.Decisions, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.TempId2, "", new { @class = "text-danger" })
                                             <label for="Account">Make decision</label>
                                         </div>

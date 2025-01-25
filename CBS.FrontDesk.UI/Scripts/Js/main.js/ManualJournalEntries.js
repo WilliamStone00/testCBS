@@ -61,7 +61,7 @@ $(document).ready(function ()
     // Posted entry request approval 
   
 
-    $(document).on('change', '#EntryTempData_BookingDirection', function () {
+    $(document).on('change', '#EntryBookingDirection', function () {
         var EventId = $(this).val();
 
         loadDescriptionByOperationDirection(EventId);
@@ -408,9 +408,10 @@ function createManuallyJournalEntryDataSet(basket)
     };
 }
 function validateBasketDirections(basket) {
+    console.log(basket);
     let hasCredit = false;
     let hasDebit = false;
-
+    let resultA = false;
     basket.forEach(item => {
         if (item.bookingDirection === 'CREDIT') {
             hasCredit = true;
@@ -418,8 +419,9 @@ function validateBasketDirections(basket) {
             hasDebit = true;
         }
     });
-
-    return hasCredit && hasDebit;
+    resultA = hasCredit && hasDebit;
+    resultB = checkDoubleEntryPrinciple(basket);
+    return resultA && resultB;
 }
 function updateBasketDisplay() {
     tableJE.clear();
@@ -443,7 +445,10 @@ function submitBasket() {
         appalert('No Accounting entry rule has been set. Please contact administrators.', 2, 1);
         return;
     }
-    if (validateBasketDirections(basket)) {
+
+    if (validateBasketDirections(basket))
+    {
+
         alertify.confirm("T R U S T S O F T C R E D I T", "The system is about to submit your accounting entries with referenceId : " + basket[0].reference + ".\nAre sure you want to persit this operation?",
             function () {
                 console.log(createManuallyJournalEntryDataSet(basket));
@@ -465,7 +470,7 @@ function submitBasket() {
                                 $('#DataEntrybasketTable').DataTable().clear().draw();
                        
                                 location.reload();
-                                appalert(response.message, 1, 1);
+                               /* appalert(response.message, 1, 1);*/
                             }
 
                             if (response.reloadDataView === "Yes") {
@@ -496,7 +501,7 @@ function submitBasket() {
             }
         );
     } else {
-        appalert('No Accounting entry rule must contain atleast 1 DEBIT AND 1 CREDIT booking direction. Please contact administrators for assitances.', 1, 2);
+        alertify.confirm("T R U S T S O F T C R E D I T","Your accounting entries are not balance. Please contact administrators for assitances.", 1, 2);
         return;
     }
 
@@ -689,6 +694,19 @@ function collectAndPostData() {
 $('#submitButton').on('click', function () {
     submitAccountingEntries();
 });
+
+function checkDoubleEntryPrinciple(entries) {
+    console.log(entries);
+    const debitTotal = entries
+        .filter(entry => entry.bookingDirection.toUpperCase() === 'DEBIT')
+        .reduce((sum, entry) => sum + parseFloat(entry.amount), 0);
+    const creditTotal = entries
+        .filter(entry => entry.bookingDirection.toUpperCase() === 'CREDIT')
+        .reduce((sum, entry) => sum + parseFloat(entry.amount), 0);
+    console.log(debitTotal + ' ' + creditTotal);
+    return debitTotal === creditTotal;
+}
+
 function submitAccountingEntries() {
     const table = $('#AccountingEventEntriesDataTable').DataTable();
     const dataToSend = [];
@@ -712,12 +730,17 @@ function submitAccountingEntries() {
 
     // Collect the operation description if it exists
     const operationDescription = $('#operationDescription').val() || '';
+ 
     if (operationDescription === "") {
         appalert('The journal entry cannot be void of description. Please contact administrators.', 2, 1);
         return;
     }
     if (dataToSend.length === 0) {
         appalert('An empty journal cannot be posted. Please contact administrators.', 2, 1);
+        return;
+    }
+    if (!checkDoubleEntryPrinciple(dataToSend)) {
+        appalert('Your journal entries do not balance. Please contact administrator for support', 2, 1);
         return;
     }
     // Prepare the final data object

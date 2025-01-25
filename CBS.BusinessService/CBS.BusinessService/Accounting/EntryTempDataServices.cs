@@ -97,7 +97,11 @@ namespace CBS.BusinessService.Accounting
                     return GetExecutionMessages(model, false, $"Not all the account are present in {this.GetBankName()}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"Not all the account are present in {this.GetBankName()}");
                 }
-
+                if (CheckIfDoubleEntryIsRespected(model.Entries))
+                {
+                    return GetExecutionMessages(model, false, $"The double entry principle is not respected.", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"The double entry principle is not respected.");
+                }
                 var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<EventEntryResponse>>(APICallHelper.PostAutomatedEventEntryCommand_url, model);
                 if (response.IsSuccess)
                 {
@@ -122,6 +126,10 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
+        private bool CheckIfDoubleEntryIsRespected(List<AutomatedEventEntry> entries)
+        {
+            return entries.Where(x => x.BookingDirection.ToLower().Equals("debit")).Sum(x => x.Amount) == entries.Where(x => x.BookingDirection.ToLower().Equals("credit")).Sum(x => x.Amount);
+        }
 
         public async Task<ExecutionMessages> ApproveAccountingEntry(EntryApproval model)
         {
