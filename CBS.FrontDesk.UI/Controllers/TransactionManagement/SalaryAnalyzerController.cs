@@ -1,20 +1,27 @@
 ﻿using CBS.BusinessService.Accounts;
+using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
+using Hangfire;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
     [CheckSessionTimeOutAttribute]
-    public class SalaryUploadController : BaseController
+    public class SalaryAnalyzerController : BaseController
     {
-        // GET: SalaryUpload
+        // GET: SalaryAnalyzer
         private readonly SalaryUploadServices _salaryUploadServices;
         private readonly SalaryAnalysisResultServices _salaryAnalysisResultServices;
-        public SalaryUploadController(SalaryUploadServices salaryUploadServices, SalaryAnalysisResultServices salaryAnalysisResultServices)
+        public SalaryAnalyzerController(SalaryUploadServices salaryUploadServices, SalaryAnalysisResultServices salaryAnalysisResultServices)
         {
             _salaryUploadServices = salaryUploadServices;
             _salaryAnalysisResultServices=salaryAnalysisResultServices;
@@ -30,12 +37,16 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         }
         public async Task<ActionResult> Salary(string fileUploadid)
         {
-            var salaryUploadModels = await _salaryUploadServices.GetSalaryUploads(fileUploadid);
+            var salaryUploadModels = await _salaryUploadServices.GetSalaryModelByBranchUsingFileId(fileUploadid);
             var fileUpload = await _salaryUploadServices.GetFileUpload(fileUploadid);
-            var activateSalaryFileCommand = new ActivateSalaryFileCommand { Id=fileUploadid, Status=fileUpload.IsAvalaibleForExecution};
-            var salaryUploadModelSummary = new SalaryUploadModelSummaryDto { FileUploadId=fileUploadid, 
-TotalMembers=salaryUploadModels.Count(), TotalNetSalary=salaryUploadModels.Sum(x => x.NetSalary) };
-            return View( new SalaryUploadModelCarrier { SalaryUploadModels=salaryUploadModels.ToList(), SalaryUploadModelSummaryDto=salaryUploadModelSummary, ActivateSalaryFileCommand=activateSalaryFileCommand,FileUpload=fileUpload});
+            var activateSalaryFileCommand = new ActivateSalaryFileCommand { Id=fileUploadid, Status=fileUpload.IsAvalaibleForExecution };
+            var salaryUploadModelSummary = new SalaryUploadModelSummaryDto
+            {
+                FileUploadId=fileUploadid,
+                TotalMembers=salaryUploadModels.Count(),
+                TotalNetSalary=salaryUploadModels.Sum(x => x.NetSalary)
+            };
+            return View(new SalaryUploadModelCarrier { SalaryUploadModels=salaryUploadModels.ToList(), SalaryUploadModelSummaryDto=salaryUploadModelSummary, ActivateSalaryFileCommand=activateSalaryFileCommand, FileUpload=fileUpload });
         }
         public async Task<ActionResult> Analysis(string fileUploadid)
         {
@@ -45,7 +56,7 @@ TotalMembers=salaryUploadModels.Count(), TotalNetSalary=salaryUploadModels.Sum(x
         }
         public async Task<ActionResult> DownloadFile(string fileId = null)
         {
-            
+
 
             try
             {
@@ -76,7 +87,7 @@ TotalMembers=salaryUploadModels.Count(), TotalNetSalary=salaryUploadModels.Sum(x
         public async Task<ActionResult> SalaryAnalysisResultSummary(string fileUploadid)
         {
             var salaryAnalysisResult = await _salaryAnalysisResultServices.GetSalaryAnalysisResultByFileUploadId(fileUploadid);
-            return View(new SalaryUploadModelCarrier { SalaryAnalysisResultSummary=salaryAnalysisResult, SalaryAnalysisResultDetails=salaryAnalysisResult.salaryAnalysisResultDetails.ToList(), FileUpload=salaryAnalysisResult.FileUpload});
+            return View(new SalaryUploadModelCarrier { SalaryAnalysisResultSummary=salaryAnalysisResult, SalaryAnalysisResultDetails=salaryAnalysisResult.salaryAnalysisResultDetails.ToList(), FileUpload=salaryAnalysisResult.FileUpload });
         }
 
         [HttpPost]
@@ -122,7 +133,7 @@ TotalMembers=salaryUploadModels.Count(), TotalNetSalary=salaryUploadModels.Sum(x
         {
             try
             {
-              
+
                 var data = await _salaryAnalysisResultServices.ExecuteSalaryAnalysis(model);
 
                 return Json(new
@@ -182,18 +193,10 @@ TotalMembers=salaryUploadModels.Count(), TotalNetSalary=salaryUploadModels.Sum(x
                 if (path == "list")
                 {
                     var fileUploads = await _salaryUploadServices.GetUploadDtosAsyncByStatus(
-                        new GetAllFileUploadSalaryFileActivatedQuery { Both = true, Status = true }
-                    );
-                    carrier.FileUploads = fileUploads.ToList();
-                }
-                else if (path == "branches_view")
-                {
-                    var fileUploads = await _salaryUploadServices.GetUploadDtosAsyncByStatus(
                         new GetAllFileUploadSalaryFileActivatedQuery { Both = false, Status = true }
                     );
                     carrier.FileUploads = fileUploads.ToList();
                 }
-
                 return PartialView(partialView, carrier);
             }
             catch (Exception ex)

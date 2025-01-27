@@ -38,6 +38,7 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public SalaryAnalysisResultSummary SalaryAnalysisResultSummary { get; set; }
         public List<SalaryAnalysisResultDetail> SalaryAnalysisResultDetails { get; set; }
         public SalaryAnalysisCommand SalaryAnalysisCommand { get; set; }
+        public ActivateSalaryFileCommand ActivateSalaryFileCommand { get; set; }
         public SalaryUploadModelCarrier()
         {
             SalaryAnalysisCommand=new SalaryAnalysisCommand();
@@ -49,7 +50,13 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
             SalaryUploadModel=new SalaryUploadModel();
             SalaryAnalysisResultSummary=new SalaryAnalysisResultSummary();
             SalaryAnalysisResultDetails=new List<SalaryAnalysisResultDetail>();
+            ActivateSalaryFileCommand=new ActivateSalaryFileCommand();
         }
+    }
+    public class GetAllFileUploadSalaryFileActivatedQuery
+    {
+        public bool Status { get; set; }
+        public bool Both { get; set; }
     }
     public class GetSalaryUploadModelQuery
     {
@@ -66,7 +73,14 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
 
     }
 
-public class AddSalaryUploadModelCommand
+    public class ActivateSalaryFileCommand
+    {
+
+        public bool Status { get; set; }
+        public string Id { get; set; }
+    }
+
+    public class AddSalaryUploadModelCommand
     {
         [Required(ErrorMessage = "File is required.")]
         public HttpPostedFileBase File { get; set; }
@@ -88,6 +102,11 @@ public class AddSalaryUploadModelCommand
         public string FileUploadId { get; set; } // Reference id for file tracking
         public string FileCategory { get; set; }
         public string SalaryProcessingStatus { get; set; }
+        public bool IsAvalaibleForExecution { get; set; }
+        public int TotalBranchesThatHaveExecutedPayrol { get; set; }
+        public int TotalBranchesInvolvedInPayrolProcessing { get; set; }
+        public List<SalaryUploadModel> SalaryUploadModels { get; set; }
+
 
     }
 }

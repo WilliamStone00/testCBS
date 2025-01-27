@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Salary Upload";
+    ViewBag.Title = "Salary files";
 }
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
@@ -7,10 +7,10 @@
             <!-- Page Header -->
             <div class="card-header text-center bg-light">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-upload-multiple me-2"></i> Salary Upload Management
+                    <i class="mdi mdi-upload-multiple me-2"></i> Uploaded files
                 </h1>
                 <p class="card-text text-muted">
-                    Easily manage and upload employee salary files for various groups, including Civil Servants, Private Institutions, Internal Staff, and Daily Servers. Ensure accuracy and compliance with the required formats.
+                    Upload and manage employee salary files easily and efficiently. Use the tools below to upload new salary files or view existing records.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -26,16 +26,18 @@
                 <div id="collapseSalaryUploadTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure the salary file is formatted as <strong>Salary Code, Matricule, Name, NetSalary For Cilvil Servants file</strong>.</li>
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Select the appropriate <strong>Salary Type</strong> before uploading (e.g., Civil Servants, Private Institutions, Internal Staff, or Daily Servers).</li>
-                            <li><i class="mdi mdi-view-list-outline text-primary me-2"></i> Click on the <strong>View List</strong> button to access all previously uploaded salary files.</li>
-                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Double-check files for formatting errors (e.g., invalid Matricule, missing names, or incorrect salary amounts) before submission to avoid rejections.</li>
-                            <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> Keep track of uploaded files and their processing status to ensure timely payroll execution.</li>
-                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> Use the upload form to add new salary files.</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Download Salary Files:</strong> Use the <span class="text-primary"><i class="fas fa-download"></i> Download</span> button to retrieve a copy of the uploaded file for offline review or backup.</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>View File Details:</strong> Click on the <span class="text-info"><i class="fas fa-info-circle"></i> Details</span> button to view detailed analysis and records related to the uploaded file. This opens the details in a new tab for convenience.</li>
+                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> <strong>Delete Files:</strong> Use the <span class="text-danger"><i class="fas fa-trash-alt"></i> Delete</span> button to remove files that are incorrect, outdated, or no longer needed. Ensure you confirm the action as deleted files cannot be recovered.</li>
+                            <li><i class="mdi mdi-information-outline text-primary me-2"></i> <strong>File Naming:</strong> Make sure uploaded files have meaningful names to help with easy identification during reviews.</li>
+                            <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>Regular Reviews:</strong> Regularly review uploaded files to verify their accuracy and ensure all payroll operations align with uploaded data.</li>
+                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> <strong>Editable Fields:</strong> For minor corrections, edit salary-related data after viewing the file details to align with updated requirements.</li>
+                            <li><i class="mdi mdi-account-outline text-primary me-2"></i> <strong>Track Status:</strong> Monitor the processing status of salary files through the file details page.</li>
                         </ul>
                     </div>
                 </div>
             </div>
+
 
             <!-- Main Section -->
             <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
@@ -48,7 +50,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-file-upload me-1"></i> Salary Upload
+                            <i class="mdi mdi-file-upload me-1"></i> Uploaded files
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -59,16 +61,16 @@
                                 <div class="change-group">
                                     <div class="card mb-3">
                                         <div class="card-body d-flex justify-content-end align-items-center">
-                                            <a type="button" href="/SalaryUpload/UploadedSalaryFiles" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View List">
+                                            <a type="button" onclick="LoadDataGen('SalaryUpload','myDataTable','_FileUploadData',0,'datalistingview')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View List">
                                                 <i class="mdi mdi-view-list mdi-18px"></i> View List
                                             </a>
-                                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_SalaryUploadForm','new','SalaryUpload')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="Upload New Salary File">
-                                                <i class="mdi mdi-plus mdi-18px"></i> Upload New File
+                                            <a type="button" href="/SalaryUpload" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="Add New SalaryUpload">
+                                                <i class="mdi mdi-plus mdi-18px"></i> Upload new salary file
                                             </a>
                                         </div>
                                     </div>
                                     <div id="datalistingview">
-                                        @Html.Partial("_SalaryUploadForm")
+
                                     </div>
                                 </div>
                             </div>
@@ -82,4 +84,11 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+
+            LoadDataGen('SalaryUpload', 'myDataTable', '_FileUploadData', 0, 'datalistingview')
+
+        });
+    </script>
 }

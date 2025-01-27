@@ -172,9 +172,10 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
-                                    <th>N.Salary</th>
-                                    <th>L.Capital</th>
-                                    <th>L.Interest</th>
+                                    <th>M.Ref</th>
+                                    <th>N.Sal</th>
+                                    <th>L.Cap</th>
+                                    <th>L.Int</th>
                                     <th>VAT</th>
                                     <th>Repayment</th>
                                     <th>Deposit</th>
@@ -194,6 +195,7 @@
                                     <tr>
                                         <td>@rowNumber</td>
                                         <td>@detail.MemberName</td>
+                                        <td>@detail.CustomerId</td>
                                         <td>@detail.NetSalary.ToString("N1")</td>
                                         <td>@detail.LoanCapital.ToString("N1")</td>
                                         <td>@detail.LoanInterest.ToString("N1")</td>
