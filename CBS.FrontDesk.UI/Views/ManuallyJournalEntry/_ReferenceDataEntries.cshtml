@@ -23,7 +23,8 @@
                             <td id="issuer"> loading ... </td>
                         </tr>
                         <tr>
-                            <td>Branch Code</td>
+                            <td>Posting Source</td>
+                            
                             <td id="branchCode">loading ...</td>
                         </tr>
                         <tr>
@@ -43,6 +44,10 @@
                             <td id="approvedDate">loading ...</td>
                         </tr>
                         <tr>
+                            <td>Purpose</td>
+                            <td id="description">loading ...</td>
+                        </tr>
+                        <tr>
 
                             <td colspan="2">  <h5 class="card-title" style="text-justify:auto" id="referenceID">Journal Entries Reference:loading</h5></td>
                         </tr>
@@ -52,9 +57,8 @@
                     <thead class="table-light">
                         <tr>
                             <th>Account Number</th>
-                            <th>Description</th>
-                            <th>Debit</th>
-                            <th>Credit</th>
+                            <th>Debit(XFA)</th>
+                            <th>Credit(XFA)</th>
 
                         </tr>
                     </thead>
@@ -70,12 +74,12 @@
 
                     <form id="myCommentForm">
                         <h5 class="card-title">
-                            Comment : <textarea class="form-control textbox" cols="20" data-val="true" data-val-required="The comment field is required." id="comment_description" name="EntryDescription.Description" rows="2"></textarea>
+                            DECISION STATEMENT : <textarea class="form-control textbox" cols="20" data-val="true" data-val-required="The comment field is required." id="comment_description" name="EntryDescription.Description" rows="2"></textarea>
                             <span class="field-validation-valid text-danger" data-valmsg-for="EntryDescription.Description" data-valmsg-replace="true"></span>
                         </h5>
                
                         <div class="modal-footer">
-                            <button type="button" id="Reject" onclick="ApprovePostedEntries(false)" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <button type="button" id="Reject" onclick="ApprovePostedEntries(false)" class="btn btn-danger" data-bs-dismiss="modal">
                                 Reject
                             </button>
                             <button type="button" id="Approve" onclick="ApprovePostedEntries(true)" class="btn btn-primary" data-bs-dismiss="modal">

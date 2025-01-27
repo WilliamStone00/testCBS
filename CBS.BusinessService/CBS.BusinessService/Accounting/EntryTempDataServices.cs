@@ -97,7 +97,7 @@ namespace CBS.BusinessService.Accounting
                     return GetExecutionMessages(model, false, $"Not all the account are present in {this.GetBankName()}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"Not all the account are present in {this.GetBankName()}");
                 }
-                if (CheckIfDoubleEntryIsRespected(model.Entries))
+                if (!CheckIfDoubleEntryIsRespected(model.Entries))
                 {
                     return GetExecutionMessages(model, false, $"The double entry principle is not respected.", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"The double entry principle is not respected.");
@@ -135,8 +135,13 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-
-                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.Post_ManaulEntryApproval_Entries, model);
+                var models = new
+                {
+                    Id = model.Id,
+                    HasApproved = model.HasApproved,
+                    TransactionDate = BaseUtilities.UtcToLocal()
+                };
+                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.Post_ManaulEntryApproval_Entries, models);
                 if (response.IsSuccess)
                 {
                     // Successful creation

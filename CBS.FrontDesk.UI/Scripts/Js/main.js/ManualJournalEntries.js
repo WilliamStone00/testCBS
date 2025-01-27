@@ -102,23 +102,26 @@ function loadPostedEntryByReference(reference)
             console.log(data);
             
             $('#exampleModalLabel3').empty();
-            var descriptionCell = $("#" + reference + "-Description").text();
+            var referenceCell = $("#" + reference + "-Reference").text();
             var branchCodeCell = $("#" + reference + "-BranchCode").text();
             var createdDateCell = $("#" + reference + "-CreatedDate").text();
             var createdByCell = $("#" + reference + "-CreatedBy").text();
-            var descriptionCell = $("#" + reference + "-Description").text();
+            var description = $("#" + reference + "-Description").text();
             var statusCell = $("#" + reference + "-Status").text();
-            var ApprovedDateCell = $("#" + reference + "-ApprovedDate").text();
-            var ApprovedByCell = $("#" + reference + "-ApprovedBy").text();
-            console.log(descriptionCell);
+          
+            const parts = description.split('*');
+            description = parts[0];
+            var ApprovedDateCell = parts[1];
+            var ApprovedByCell = parts[2];
             // Append text to the modal title
-            $('#exampleModalLabel3').append('Description :' + descriptionCell);
+            $('#exampleModalLabel3').append('Reference :' + referenceCell);
             $("#issuer").text(createdByCell);
             $("#branchCode").text(branchCodeCell);
             $("#dateIssued").text(createdDateCell);
             $("#status").text(statusCell);
             $("#approvedDate").text(ApprovedDateCell);
             $("#approvedBy").text(ApprovedByCell);
+            $("#description").text(description);
             $("#referenceID").text("Journal Entries Reference:" + reference);
             // Populate the table with the fetched data
             var tableBody = $('#ReferenceEntriesDataTable tbody');
@@ -301,7 +304,7 @@ function addToBasket()
 
     // Format account name and reference
     item.accountName = `${item.accountNumber}-${item.accountName}`;
-    item.reference = `TRS-${item.reference}`;
+    item.reference = `${item.reference}`;
 
     console.log('Processing item:', item);
 
@@ -316,7 +319,7 @@ function addToBasket()
             message: 'No account number has been selected. Please contact administrators for help.'
         },
         'reference': {
-            condition: !item.reference || item.reference === 'TRS-',
+            condition: !item.reference ,
             message: 'No entry reference has been set. Please contact administrators for help.'
         },
         'description': {
@@ -354,7 +357,7 @@ function addToBasket()
     // Update form state
     const isBasketEmpty = basket.length === 0;
     $('#EntryTempData_Reference, #EntryTempData_Description').prop('disabled', !isBasketEmpty);
-    $('#basket_Label').text(`TransId: ${item.reference}`);
+    $('#basket_Label').text(`Reference: ${item.reference}`);
 
     // Clear form fields
     $('#EntryTempData_BookingDirection').val('').change();
@@ -617,14 +620,14 @@ function LoadPendingPostedEntries(tableID) {
         "columnDefs": [
             /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
             { "targets": 0, "searchable": true, "orderable": true, "width": "5%" },
-            { "targets": 1, "searchable": true, "orderable": true, "width": "10%" },
-            { "targets": 2, "searchable": true, "orderable": true, "width": "15%" },
-            { "targets": 3, "searchable": true, "orderable": true, "width": "15%" },
-            { "targets": 4, "searchable": true, "orderable": true, "width": "10%" },
-            { "targets": 5, "searchable": true, "orderable": true, "width": "10%" },
-            { "targets": 6, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 2, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 3, "searchable": true, "orderable": true, "width": "19%" },
+            { "targets": 4, "searchable": true, "orderable": true, "width": "1%" },
+            { "targets": 5, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 6, "searchable": true, "orderable": true, "width": "10%" },
             { "targets": 7, "searchable": true, "orderable": true, "width": "10%" },
-            { "targets": 8, "searchable": true, "orderable": true, "width": "10%" }
+     
         ],
 
         oLanguage: {

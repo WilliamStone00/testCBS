@@ -64,12 +64,15 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             List<PostedEntry> postedCollectionEntries = new List<PostedEntry>();
             await GetList();
-            var PostedEntries = await _Service.GetManualEntriesAsync();
+            var PostedEntries = await _Service.GetManualEntriesAsync(); //()
+            var PendingPostedEntries = PostedEntries.Where(x => x.Status.ToLower().Equals("pending")).ToList();
+            var ApprovedPostedEntries = PostedEntries.Where(x => x.Status.ToLower()!=("pending")).ToList();
             var users = await _userService.GetUsers();
+            var usersx = users;
             var branch = await _branchService.GetBranches();
-            var results = (from p in PostedEntries
+            var results = (from p in PendingPostedEntries
                            join u in users on p.CreatedBy equals u.id.ToString()
-                           join po in users on p.CreatedBy equals po.id.ToString()
+                           //join po in usersx on p.ApprovedBy equals po.id.ToString()
                            join b in branch on u.BranchID equals b.Id.ToString()
                            select new PostedEntryX
                            {
@@ -79,14 +82,38 @@ namespace CBS.FrontDesk.UI.Controllers
                                IssuedBy = u.id.ToString(),
                                Description = p.Description,
                                CreatedDate = p.CreatedDate,
-                               ApprovedBy=po.firstName + " " + po.lastName,
+                               //ApprovedBy=po.firstName + " " + po.lastName,
                                ApprovedDate =p.ApprovedDate,
+                               Status = p.Status,
+                               PostingSource = p.PostingSource,
+                               Id = p.Id,
+                               EntryDetail = p.EntryDetail
+
+
+                           }).ToList();
+
+            var result0s = (from p in ApprovedPostedEntries
+                            join u in users on p.CreatedBy equals u.id.ToString()
+                           join po in usersx on p.ApprovedBy equals po.id.ToString()
+                           join b in branch on u.BranchID equals b.Id.ToString()
+                           select new PostedEntryX
+                           {
+                               Amount = Convert.ToDecimal(p.Amount.ToString("N")),
+                               BranchCode = b.BranchCode,
+                               CreatedBy = u.firstName + " " + u.lastName,
+                               IssuedBy = u.id.ToString(),
+                               PostingSource = p.PostingSource,
+                               Description = p.Description,
+                               CreatedDate = p.CreatedDate,
+                               ApprovedBy=po.firstName + " " + po.lastName,
+                               ApprovedDate = p.ApprovedDate,
                                Status = p.Status,
                                Id = p.Id,
                                EntryDetail = p.EntryDetail
 
 
                            }).ToList();
+            results.AddRange(result0s);
             this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()]= results;
             foreach (var item in results)
             {
@@ -105,7 +132,7 @@ namespace CBS.FrontDesk.UI.Controllers
             ViewBag.Accounts = CreditAccounts;
             ViewBag.BookingDirections = await GetBookingDirections();
             ViewBag.ChartOfAccountManagementPositions = BuildMenuCOAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), listAccounts.ToList());
-        
+            ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
 
         }
         private dynamic BuildMenuCOAccountViewBag(List<ChartofAccountManagementPosition> ChartofAccountManagementPositions, List<ChartOfAccount> ListchartOfAccounts)
@@ -174,6 +201,12 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" } }.ToList();
             return Task.FromResult(bookingDirections);
+        }
+
+        private Task<List<System.Web.WebPages.Html.SelectListItem>> GetDoubbleEntryValidation()
+        {
+            var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "YES", Value = "Doubble validation is mandatory" }, new System.Web.WebPages.Html.SelectListItem { Text = "NO", Value = "Doubble validation is NOT mandatory" } }.ToList();
+            return Task.FromResult(doubbleEntryValidations);
         }
         private dynamic BuildMenuViewBag(IEnumerable<Data.Account> debitAccounts)
         {
@@ -252,7 +285,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 //var AccountData = await _AccountServices.GetSequenceReference();
 
         
-                var data = $"{BaseUtilities.GenerateInsuranceUniqueNumber(12, "METRS")}-{_AccountServices.GetBranchCode()}";
+                var data = $"{BaseUtilities.GenerateInsuranceUniqueNumber(5, $"MET-{_AccountServices.GetBranchCode()}-{BaseUtilities.DayCode()}")}";
 
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
@@ -550,12 +583,21 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             else
             {
-              return Json( await _Service.PostAutomatedJournalEntry(data));
+        
+                    return Json(await _Service.PostAutomatedJournalEntry(data));
+              
+           
                 
             }
             // Return a success response
           
         }
+
+        private bool CheckIfDOubbleValidationRequired(List<AutomatedEventEntry> entries)
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task<Func<Task<ExecutionMessages>>> PostAccountingEntryActionAsync(string serviceOption, ManuallyJournalEntryDataSet model)
         {
             if (serviceOption == "CreateAccountingEntries")

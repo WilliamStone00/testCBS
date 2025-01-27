@@ -41,7 +41,6 @@ function GetSequenceReference() {
             // Clear existing options in the OperationEventAttributeId combo
             console.log(data);
             $('#ReferenceId').val(data);
-            $('.Reference').text("Reference:" + data)
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
@@ -54,7 +53,9 @@ function addToBasket() {
         ruleName: $('#AccountingRule_RuleName').val(),
         MFI_ChartOfAccountId: $('#AccountingRule_MFI_ChartOfAccountId option:selected').text(),
         bookingDirection: $('#AccountingRule_BookingDirection option:selected').text(),
-        description: $('#AccountingRule_Description').val()
+        isValidationNeed: $('#AccountingRule_IsValidationNeed option:selected').text(),
+        description: $('#AccountingRule_Description').val(),
+        systemId: $('#accountingRuleId').val()
     };
     console.log(item);
     if (item.bookingDirection === "---Select Direction---") {
@@ -67,6 +68,9 @@ function addToBasket() {
     else if (item.ruleName === "") {
         appalert('No Entry RuleName  has been set for the entry rule has been set,Please kindly contact administrators for help', 2, 1);
         return;
+    } else if (item.isValidationNeed === "") {
+        appalert('No decision has been taken if you wish the accounting entreis need to be validated or not,Please kindly contact administrators for help', 2, 1);
+        return;
     } else if (item.description === "") {
         appalert('A description must be set for the user is mandatetory,Please kindly contact administrators for help', 2, 1);
         return;
@@ -75,14 +79,17 @@ function addToBasket() {
     updateBasketDisplay();
     if (basket.length > 0) {
         $('#AccountingRule_RuleName').prop('disabled', true);
+        $('#AccountingRule_IsValidationNeed').prop('disabled', true);
     } else {
         $('#AccountingRule_RuleName').prop('disabled', false);
+        $('#AccountingRule_IsValidationNeed').prop('disabled', true);
     }
     // Clear the form fields after adding to basket
-    $('#basket_Label').text('Event Entry Rule for: ' + item.ruleName);
+    $('#basket_Label').text('Event: ' + item.ruleName);
     $('#AccountingRule_MFI_ChartOfAccountId').val('').change();
     $('#AccountingRule_BookingDirection').val('').change();
     $('#AccountingRule_Description').val('');
+
 }
 function createManuallyJournalEntryDataSet(basket) {
     return {
@@ -203,156 +210,6 @@ function submitBasket() {
 
 }
 
-function ApprovePostedEntries(response) {
-    //comment_description
-    var storedId = $("#selectedId").val();
-    var comment = $("#comment_description").val();
-
-    if (comment === "") {
-
-        appalert("Please kindly enter your decision for this entry with referenceId:" + storedId + " before you continue", 2, 1);
-        return;
-    } else {
-        var ServiceOption = "EntryTempData";
-        var message = "WARNING!!!\n";
-        message += "Are you sure you want to confirm this various account adjustment?\n";
-        ApprovePostedEntriesTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/ApproveEntries', ServiceOption, response, storedId, comment);
-
-    }
-}
-function ApprovePostedEntriesTransactions(title, message, ajaxUrl, serviceoption, Response, Id, comment) {
-    alertify.confirm(title, message,
-        function () {
-            $.ajax({
-                url: ajaxUrl,
-                type: 'GET',
-                contentType: 'application/json',
-                data: { Id: Id, HasApproved: Response, Comment: comment },
-                success: function (response) {
-
-                    appalert(response.message, 3, 1);
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 20000);
-                },
-                error: function () {
-
-                    appalert(response.message, 0, 3);
-                }
-            });
-        },
-        function () {
-            appalert('Transaction cancelled', 3, 1);
-        }
-    );
-}
-function loadPostedEntriesByReference(reference) {
-    $("#under_review").hide();
-    $("#rejected").hide();
-    $("#approved").hide();
-    $('#exampleModalLabel3').val("Loading ***");
-
-    $.ajax({
-        url: '/ManuallyJournalEntry/GetAllEntriesForJournalEntryReference',
-        type: 'GET',
-        dataType: 'json',
-        data: { Id: reference },
-        success: function (data) {
-            // Clear existing options in the OperationEventAttributeId combo
-
-            console.log(data);
-
-            $('#exampleModalLabel3').empty();
-            var referenceCell = $("#" + reference + "-Reference").text();
-            var branchCodeCell = $("#" + reference + "-BranchCode").text();
-            var createdDateCell = $("#" + reference + "-CreatedDate").text();
-            var createdByCell = $("#" + reference + "-CreatedBy").text();
-            var description = $("#" + reference + "-Description").text();
-            var statusCell = $("#" + reference + "-Status").text();
-
-            const parts = description.split('*');
-            description = parts[0];
-            var ApprovedDateCell = parts[1];
-            var ApprovedByCell = parts[2];
-
-            const cellsparts = createdByCell.split('*');
-            createdByCell = cellsparts[0];
-      
-            branchCodeCell = cellsparts[2];
-
-            // Append text to the modal title
-            $('#exampleModalLabel3').append('Reference :' + referenceCell);
-            $("#issuer").text(createdByCell);
-            $("#branchCode").text(branchCodeCell);
-            $("#dateIssued").text(createdDateCell);
-         
-            let td = $('#status');
-            let cleanStatus = statusCell.trim().toUpperCase();
-            if (cleanStatus.toUpperCase() === "PENDING") {
-                td.html(`<span class="badge rounded-pill bg-dark fs-6">
-       <i class="fas fa-check-circle"></i> ${cleanStatus.toUpperCase()}</span>`) ;
-            } else if (cleanStatus.toUpperCase() === "REJECTED") {
-                td.html(`<span class="badge rounded-pill bg-danger fs-6">
-       <i class="fas fa-times-circle"></i> ${cleanStatus.toUpperCase()}</span>`);
-            } else if (cleanStatus.toUpperCase() === "APPROVED") {
-                td.html(`<span class="badge rounded-pill bg-success fs-6">
-       <i class="fas fa-check-circle"></i> ${cleanStatus.toUpperCase()}</span>`);
-            }
-            console.log("Status:", cleanStatus);
-            $("#status").text(cleanStatus.toUpperCase());
-            $("#approvedDate").text(ApprovedDateCell);
-            $("#approvedBy").text(ApprovedByCell);
-            $("#description").text(description);
-            $("#referenceID").text("Journal Entries Reference:" + reference);
-            // Populate the table with the fetched data
-            var tableBody = $('#ReferenceEntriesDataTable tbody');
-            tableBody.empty(); // Clear existing rows
-
-            $.each(data.EntryDetail, function (index, item) {
-                let amount = parseFloat(item.Amount);
-                var row = $('<tr>');
-                row.append($('<td>').text(item.AccountName));
-                //row.append($('<td>').text(item.AccountNumber));
-
-                if (item.BookingDirection.toLowerCase() === 'debit') {
-                    row.append($('<td>').text(amount.toFixed(2)));
-                    row.append($('<td>').text('0.00'));
-                } else {
-                    row.append($('<td>').text('0.00'));
-                    row.append($('<td>').text(amount.toFixed(2)));
-                }
-
-                tableBody.append(row);
-
-            });
-
-            // Append text to the modal title
-            $('#selectedId').val(reference);
-            console.log(cleanStatus);
-            updatePageActionButton(cleanStatus);
-
-        },
-        error: function (xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-}
-
-function updatePageActionButton(status) {
-    if (status.toUpperCase() === "PENDING") {
-        $("#under_review").show();
-        $("#rejected").hide();
-        $("#approved").hide();
-    } else if (status.toUpperCase() === "REJECTED") {
-        $("#under_review").hide();
-        $("#rejected").show();
-        $("#approved").hide();
-    } else if (status.toUpperCase() === "APPROVED") {
-        $("#under_review").hide();
-        $("#rejected").hide();
-        $("#approved").show();
-    }
-}
 function InitiliseDataTable(serverResponse) {
     // Destroy the existing table instance
     if ($.fn.DataTable.isDataTable('#AccountingEventEntriesDataTable')) {
@@ -430,15 +287,17 @@ function InitiliseDataTable(serverResponse) {
                     $('#AccountingEventEntriesDataTable').append(
                         `<tr id="descriptionRow">
                             <td colspan="3">
-                                <textarea id="operationDescription" placeholder="Enter description of the operation" style="width: 100%;"></textarea>
-                            </td>
-                        </tr>`
+                               <textarea id="operationDescription" placeholder="Enter description of the operation" style="width: 100%;"></textarea>
+                               <input type="hidden" id="accountingRuleId" value="${systemId}"></input>
+                           </td>
+                       </tr>`
                     );
                 }
 
                 $('#descriptionRow').show();
 
-            } else {
+            }
+            else {
                 $('#descriptionRow').hide();
             }
         }
@@ -503,7 +362,8 @@ function LoanAccountingEventEntrySystemId(system_Id, yourModalId) {
         appalert('There is no system id present on this record', 1, 2);
         return;
     }
-
+    // Set value
+    console.log(system_Id);
     fetch('/ManuallyJournalEntry/GetAccountingEntryEventID/?system_Id=' + system_Id, {
         method: 'GET',
         headers: {
@@ -529,43 +389,7 @@ function openModalWithData(data, yourModalId) {
 }
 
 
-function LoanAccountingEventEntrySystemId(system_Id) {
-    GetSequenceReference();
-    $.ajax({
-        url: '/ManuallyJournalEntry/GetAccountingEntryEventID/',
-        type: 'Get',
-        dataType: 'json',
-        data: { system_Id: system_Id },
-        success: function (data) {
-            console.log($("#" + system_Id + "-RuleName").text());
-            $('#exampleModalLabel3').empty();
-            //var description = $("#" + branchId + "-RuleName").text();   
-            if (data.HasError == true) {
-                var names = "Your branch is missing some accounts needed to record " + $("#" + system_Id + "-RuleName").text() + " transactions.";
-                $("#exampleModalLabel3").text(names);
-                document.querySelector('#exampleModalLabel3').classList.add('text-danger');
-                //$('#elementId').append('&nbsp;');
-            } else {
-                var names = "\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0" + $("#" + system_Id + "-RuleName").text() + "accounting entries.";
-                console.log(names);
-                $("#exampleModalLabel3").text('                                                         ' + names);
-                var table;
-                InitiliseDataTable(data.AccountingRule);
-            }
-
-
-
-
-
-
-        },
-        error: function (xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-}
-
-
+ 
 
 function collectAndPostData() {
     const table = $('#AccountingEventEntriesDataTable').DataTable();
@@ -579,15 +403,15 @@ function collectAndPostData() {
         const MFI_ChartOfAccountId = this.data().MFI_ChartOfAccountId;
         const System_Id = this.data().System_Id;
         console.log(MFI_ChartOfAccountId);
-        console.log(this.data().System_Id);
+        console.log(rowData);
 
         const entry = {
 
             Amount: parseFloat(rowData.BookingDirection.toUpperCase() === "DEBIT" ? debitInput : creditInput),
             BookingDirection: rowData.BookingDirection,
 
-            MFI_ChartOfAccountId: rowData.MFI_ChartOfAccountId,
-            System_Id: rowData.System_Id
+            MFI_ChartOfAccountId: rowData.MFI_ChartOfAccountId
+            //System_Id = rowData.System_Id
         };
 
         dataToSend.push(entry);
@@ -595,13 +419,13 @@ function collectAndPostData() {
 
     // Collect the operation description if it exists
     const operationDescription = $('#operationDescription').val() || '';
-    const System = $('#System_Id').val() || '';
-    // Prepare the final data object
+
+    // Prepare the final data object""
     const finalData = {
         Entries: dataToSend,
         Description: operationDescription,
-        ReferenceId: $('#ReferenceId').val(),
-        System_Id: System
+        ReferenceId: $('#ReferenceId').val()
+       
     };
     //const finalData = createManuallyJournalEntry();
     //finalData.entryTempDatas = dataToSend;
@@ -645,12 +469,13 @@ function submitAccountingEntries() {
             MFI_ChartOfAccountId: rowData.MFI_ChartOfAccountId,
             System_Id: rowData.System_Id
         };
-
+       
         dataToSend.push(entry);
     });
 
     // Collect the operation description if it exists
     const operationDescription = $('#operationDescription').val() || '';
+    const systemId = $('#accountingRuleId').val() || '';
     if (operationDescription === "") {
         appalert('The journal entry cannot be void of description. Please contact administrators.', 2, 1);
         return;
@@ -659,11 +484,13 @@ function submitAccountingEntries() {
         appalert('An empty journal cannot be posted. Please contact administrators.', 2, 1);
         return;
     }
+    console.log(systemId);
     // Prepare the final data object
     const finalData = {
         Entries: dataToSend,
         Description: operationDescription,
-        ReferenceId: $('#ReferenceId').val()
+        ReferenceId: $('#ReferenceId').val(),
+        SystemId: systemId
     };
 
     console.log(finalData);

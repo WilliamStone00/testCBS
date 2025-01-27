@@ -121,6 +121,15 @@ namespace CBS.FrontDesk.Helper
             }
             return dateTime;
         }
+        public static string DayCode()
+        {
+            DateTime? dateTime = DateTime.UtcNow;
+            if (dateTime.HasValue && dateTime.Value.Kind == DateTimeKind.Unspecified)
+            {
+                dateTime = DateTime.SpecifyKind(dateTime.Value, DateTimeKind.Utc).ToLocalTime();
+            }
+            return dateTime.Value.ToString("yyyyMMdd");
+        }
         public static DateTime NewDate()
         {
             var dateTime = new DateTime();
