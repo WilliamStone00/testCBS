@@ -32,7 +32,7 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th>RuleName</th>
- 
+
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -41,7 +41,7 @@
                                             @foreach (var d in Model.AccountingRuleDtos)
                                             {
                                                 <tr>
-                                               
+
                                                     <td id="@d.System_Id-RuleName" style="width:80%">@d.RuleName</td>
                                                     <td style="width:20%">
                                                         <a href="#" onclick="LoanAccountingEventEntrySystemId('@d.System_Id','exLargeModal')" class="mr-2 btn btn-primary" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="Excute @d.RuleName">Execute Journal Entry</a>
@@ -52,6 +52,7 @@
                                         </tbody>
                                     </table>
                                 </div>
+                      
                                 @Html.Partial("_MultipleJournalEntryClient")
                             </div>
                         </div>

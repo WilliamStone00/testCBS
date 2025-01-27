@@ -805,6 +805,7 @@ namespace CBS.FrontDesk.Helper
         public static string AccountingEntry_Get_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdQuery/{0}";
         public static string AccountingEntry_ReverseEntry = "/api/v1/AccountingEntry/ReverseAccountingEntry";
         public static string PostAutomatedEventEntryCommand_url = "/api/v1/AccountingEntries/PostAutomatedEventEntryCommand";
+        //Post_AccountingEntry_Entries
         public static string AccountingEntry_Entries_branchId_accountId = "/api/v1/AccountingEntries/{0}/{1}";
         public static string AccountingEntry_Entries = "/api/v1/AccountingEntries";
         public static string AccountingEntry_Posting_Entries = "/api/v1/AccountingEntries/RetrieveEntries";

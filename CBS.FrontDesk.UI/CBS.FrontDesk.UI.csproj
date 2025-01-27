@@ -2566,11 +2566,12 @@
     <Content Include="Scripts\Js\Dashboard\Dailyoperations\HeadOffice.js" />
     <Content Include="Scripts\Js\Dashboard\Dailyoperations\BranchOffice.js" />
     <Content Include="Scripts\Js\Dashboard\OpenBranches.js" />
+    <Content Include="Scripts\Js\main.js\AutoJournalEntry.js" />
     <Content Include="Scripts\Js\main.js\CashFlowManagementDeposit.js" />
     <Content Include="Scripts\Js\main.js\CashTracker.js" />
     <Content Include="Scripts\Js\main.js\ConnectionMonitor.js" />
     <Content Include="Scripts\Js\main.js\Connection_checker.js" />
-    <Content Include="Scripts\Js\main.js\AutoJournalEntry.js" />
+    <Content Include="Scripts\Js\main.js\AutoJournalEntryxxx.js" />
     <Content Include="Scripts\Js\main.js\Account_Upload.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />
     <Content Include="Scripts\Js\Crud\Config\Localization\Countries.js" />

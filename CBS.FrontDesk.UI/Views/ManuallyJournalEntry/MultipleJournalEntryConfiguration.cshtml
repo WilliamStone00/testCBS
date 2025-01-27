@@ -24,11 +24,23 @@
                         <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
                             <div class="col-12">
                                 <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="card-title">
-                                            Entry Rule EventCode: @Html.TextBoxFor(m => m.AccountingRule.RuleName, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.AccountingRule.RuleName, "", new { @class = "text-danger" })
-                                        </h5>
+                                    <div class="row card-body">
+                                        <div class="row mt-2 gy-4">
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.AccountingRule.RuleName, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.RuleName, "", new { @class = "text-danger" })
+                                                    <label>Accounting Event Name </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.DropDownListFor(m => m.AccountingRule.IsValidationNeed, new SelectList(ViewBag.DoubbleEntryValidation == null ? "" : ViewBag.DoubbleEntryValidation, "Text", "Value"), "---Select Direction---", new { @class = "form-control select2", @search = "true" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.IsValidationNeed, "", new { @class = "text-danger" })
+                                                    <label>Is Validation Need?</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row card-body">
                                         <div class="row mt-2 gy-4">
@@ -36,7 +48,7 @@
                                                 <div class="form-floating form-floating-outline">
                                                     @Html.DropDownListFor(m => m.AccountingRule.MFI_ChartOfAccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---Select ChartOfAccount---", new { @class = "form-control select2", @search = "true" })
                                                     @Html.ValidationMessageFor(m => m.AccountingRule.MFI_ChartOfAccountId, "", new { @class = "text-danger" })
-                                                    <label>Accounting Entry Rule</label>
+                                                    <label>Select ChartOfAccount</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">

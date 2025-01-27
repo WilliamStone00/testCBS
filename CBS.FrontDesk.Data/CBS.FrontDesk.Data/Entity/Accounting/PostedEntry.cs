@@ -16,6 +16,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public string IssuedBy { get; set; }
+        public string PostingSource { get; set; }
         public string BranchCode { get; set; }
         public List<EntryTempData> EntryDetail { get; set; }
         public string ApprovedDate { get; set; }
@@ -25,7 +26,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
     public class PostedEntryX
     {
-
+        public string PostingSource { get; set; }
         public string Id { get; set; }
         public string Status { get; set; }
         public string Description { get; set; }
@@ -52,6 +53,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             postedEntry.CreatedDate = model.CreatedDate;
             postedEntry.CreatedBy = model.CreatedBy;
             postedEntry.IssuedBy = model.IssuedBy;
+            postedEntry.PostingSource = model.PostingSource;
             postedEntry.BranchCode = model.BranchCode;
             postedEntry.EntryDetail = model.EntryDetail;
             postedEntry.ApprovedDate = model.ApprovedDate;

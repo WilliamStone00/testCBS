@@ -11,14 +11,15 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         public List<AccountingRule> AccountingRules { get; set; } //Loan Operation xxx
         public string SystemDescription { get; set; }
+        public bool IsDoubleValidationNeeded { get; set; }
 
         public static AddAccountingRuleCommand BuildRequest(ManuallyJournalEntryDataSet model)
         {
             return new AddAccountingRuleCommand
             {
                 SystemDescription = model.AccountingRules[0].RuleName,
-                AccountingRules = BuildRequestItems(model.AccountingRules)
-              
+                AccountingRules = BuildRequestItems(model.AccountingRules),
+              IsDoubleValidationNeeded = "Doubble validation is mandatory".Equals(model.AccountingRules[0].IsValidationNeed),
             };
         }
 
@@ -40,8 +41,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class AutomatedEventEntryCommand  
     {
         public List<AutomatedEventEntry> Entries { get; set; }
+ 
         public string ReferenceId { get; set; }
         public string Description { get; set; }
+
+       
     }
      
     public class AutomatedEventEntry
@@ -50,6 +54,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string BookingDirection { get; set; }
 
         public decimal Amount { get; set; }
+        public string System_Id { get; set; }
     }
     public class EntryTempData
     {
@@ -67,7 +72,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Credit { get; set; }
         public string Debit { get; set; }
         public string Description { get; set; }
-
+        public string AccountingEventId { get; set; } = "MANUAL USER";
         public static AccountingEntryPayloadCommand ConvertToAccountingEntryPayloadCommand(List<EntryTempData> entries)
         {
             List<EntryTempDatas> accountingEntries = new List<EntryTempDatas>();
@@ -79,13 +84,13 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                     AccountId = Item.AccountId,
                     AccountName = Item.AccountName,
                     AccountNumber = Item.AccountNumber,
-
+                    AccountingEventId= Item.AccountingEventId,
                     BookingDirection = Item.BookingDirection,
 
                     Amount =Convert.ToDecimal( Item.Amount),
                     AccountBalance = Item.AccountBalance,
                     Description = Item.Description,
-
+                    
                     Reference = Item.Reference,
 
                 });
@@ -114,7 +119,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public decimal Amount { get; set; }
         public string AccountBalance { get; set; }
         public string Description { get; set; }
-
+        public string AccountingEventId { get; set; } = "MANUAL USER";
         public string Reference { get; set; }
     }
     public class AccountingEntryPayloadCommand
