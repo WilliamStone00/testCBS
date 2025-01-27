@@ -21,6 +21,7 @@ using System.IO;
 using DocumentFormat.OpenXml.Bibliography;
 using Microsoft.Owin.Logging;
 using System.Net;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace CBS.FrontDesk.UI.Controllers.MemberOperation
 {
@@ -542,11 +543,18 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             var data = await _loanApplicationServices.GenerateOTP(model.AddOTPNotificationCommand);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
         }
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete(string KEY, string path)
         {
-            var data = await _individualProfileServices.Delete(id);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+            if (path=="attached_document")
+            {
+                var data = await _attachedDocumentServices.Delete(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+            }
+            var data1 = await _individualProfileServices.Delete(KEY);
+            return Json(new { success = data1.Result, status = data1.MessageStatus, message = Messaging.MessageResult(data1) }, JsonRequestBehavior.AllowGet);
         }
+
+
         public async Task<ActionResult> Ajaxloader(string Key, string path, string loanTermId, string loanCategoryid, string loanCategoryValue)
         {
             bool isSSF = false;

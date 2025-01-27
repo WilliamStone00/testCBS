@@ -1,0 +1,82 @@
+﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+
+<fieldset class="fieldset-custom">
+    <div class="mb-3 border-2">
+        <div id="datalistingview_inner">
+            <div class="table-responsive mb-3">
+                @if (Model.FileUploads != null && Model.FileUploads.Any())
+                {
+                    <table class="table table-hover" id="myDataTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>File Name</th>
+                                <th>Uploaded By</th>
+                                <th>Uploaded On</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var file in Model.FileUploads)
+                            {
+                                <tr>
+                                    <td>@file.FileName</td>
+                                    <td>@file.UploadedBy</td>
+                                    <td>@file.UploadedOn.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(file.SalaryProcessingStatus))
+                                        {
+                                            <span class="badge bg-info">@file.SalaryProcessingStatus</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">N/A</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="d-flex justify-content-center align-items-center gap-2">
+                                            <!-- Download Button -->
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-primary d-flex align-items-center"
+                                                    onclick="DownloadFile('@file.Id')"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    title="Download @file.FileName">
+                                                <i class="fas fa-download me-1"></i> Download
+                                            </button>
+                                            <!-- Details Button -->
+                                            <a type="button"
+                                                    class="btn btn-sm btn-outline-info d-flex align-items-center"
+                                                    href="/SalaryUpload/Salary?fileUploadid=@file.Id"
+                                                    data-bs-toggle="tooltip" target="_blank"
+                                                    data-bs-placement="top"
+                                                    title="View Details">
+                                                <i class="fas fa-info-circle me-1"></i> Details
+                                            </a>
+                                            <!-- Delete Button -->
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-danger d-flex align-items-center"
+                                                    onclick="DeleteFileRecord('SalaryUpload','@file.Id','myDataTable','_FileUploadData',0,'datalistingview')"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    title="Delete @file.FileName">
+                                                <i class="fas fa-trash-alt me-1"></i> Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+
+                    <div class="text-center my-3">
+                        <p>No files uploaded yet.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</fieldset>

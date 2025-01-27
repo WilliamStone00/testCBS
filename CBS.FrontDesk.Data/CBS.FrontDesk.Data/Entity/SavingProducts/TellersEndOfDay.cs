@@ -449,7 +449,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string TellerId { get; set; }
         public bool Status { get; set; }
         public string BranchId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Amount in hand is required.")]
+        [Range(0.00, double.MaxValue, ErrorMessage = "Amount must be greater than 0.")]
         public decimal RequestedAmount { get; set; }
         [Required]
         public decimal ConfirmedAmount { get; set; }

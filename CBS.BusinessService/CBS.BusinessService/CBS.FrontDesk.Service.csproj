@@ -219,6 +219,9 @@
     <Compile Include="Accounting\OperationEventServices.cs" />
     <Compile Include="Accounting\TellerCashReplenishmentServices.cs" />
     <Compile Include="Accounting\TransactionReferenceValidator.cs" />
+    <Compile Include="Accounts\SalaryAnalysisResultServices.cs" />
+    <Compile Include="Accounts\SalaryUploadServices.cs" />
+    <Compile Include="Accounts\StandingOrderServices.cs" />
     <Compile Include="Accounts\CashChangeHistoryServices.cs" />
     <Compile Include="Accounts\CashDeskServices.cs" />
     <Compile Include="Accounts\AccountServices.cs" />

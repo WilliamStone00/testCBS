@@ -1,0 +1,224 @@
+﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+
+<fieldset class="fieldset-custom">
+    <div class="mb-3 border-2">
+        <!-- Dashboard Header -->
+        <div class="card-header bg-light">
+            <h5 class="card-title text-primary mb-0">
+                Salary Analysis Dashboard
+            </h5>
+        </div>
+        <div id="dashboardSummary" class="mb-4">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-primary">Total Members</h6>
+                            <p class="card-text fs-5 fw-bold text-info">
+                                @Model.SalaryAnalysisResultSummary.TotalMembers
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-primary">Total Net Salary</h6>
+                            <p class="card-text fs-5 fw-bold text-success">
+                                @Model.SalaryAnalysisResultSummary.TotalNetSalary.ToString("N1")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-primary">Total Capital</h6>
+                            <p class="card-text fs-5 fw-bold text-warning">
+                                @Model.SalaryAnalysisResultSummary.TotalLoanCapital.ToString("N1")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-primary">Total Interest</h6>
+                            <p class="card-text fs-5 fw-bold text-danger">
+                                @Model.SalaryAnalysisResultSummary.TotalLoanInterest.ToString("N1")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-primary">Total VAT</h6>
+                            <p class="card-text fs-5 fw-bold text-info">
+                                @Model.SalaryAnalysisResultSummary.TotalVAT.ToString("N1")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-primary">Total Repayment</h6>
+                            <p class="card-text fs-5 fw-bold text-warning">
+                                @Model.SalaryAnalysisResultSummary.TotalLoanRepayment.ToString("N1")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-primary">Total Deposit</h6>
+                            <p class="card-text fs-5 fw-bold text-success">
+                                @Model.SalaryAnalysisResultSummary.TotalDeposit.ToString("N1")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-primary">Total Savings</h6>
+                            <p class="card-text fs-5 fw-bold text-success">
+                                @Model.SalaryAnalysisResultSummary.TotalSavings.ToString("N1")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-primary">Total Charges</h6>
+                            <p class="card-text fs-5 fw-bold text-danger">
+                                @Model.SalaryAnalysisResultSummary.TotalCharges.ToString("N1")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-primary">Total Shares</h6>
+                            <p class="card-text fs-5 fw-bold text-warning">
+                                @Model.SalaryAnalysisResultSummary.TotalShares.ToString("N1")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-primary">Total Salary</h6>
+                            <p class="card-text fs-5 fw-bold text-info">
+                                @Model.SalaryAnalysisResultSummary.TotalRemainingSalary.ToString("N1")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-primary">Total Branches</h6>
+                            <p class="card-text fs-5 fw-bold text-primary">
+                                @Model.SalaryAnalysisResultSummary.TotalBranches
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Tips Section -->
+        <div class="card mb-2">
+            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                <span>
+                    <i class="mdi mdi-information-outline me-2"></i> Tips for Efficient Use
+                </span>
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </h6>
+            <div id="collapseTips" class="collapse">
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the detailed table below to view individual salary breakdowns.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Export the results to Excel for offline review and further analysis.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Review discrepancies or unusual figures and address them promptly.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Detail Table Section -->
+        <div class="card mt-4 shadow-sm border-0">
+            <div class="card-header bg-light">
+                <h5 class="card-title text-primary mb-0">
+                    Detailed Salary Analysis Results
+                </h5>
+            </div>
+            <div id="datalistingview_inner">
+                <div class="table-responsive mb-3">
+                    @if (Model.SalaryAnalysisResultDetails != null && Model.SalaryAnalysisResultDetails.Any())
+                    {
+                        <table class="table table-hover" id="myDataTable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>N.Salary</th>
+                                    <th>L.Capital</th>
+                                    <th>L.Interest</th>
+                                    <th>VAT</th>
+                                    <th>Repayment</th>
+                                    <th>Deposit</th>
+                                    <th>Savings</th>
+                                    <th>Shares</th>
+                                    <th>Charges</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int rowNumber = 0;
+                                }
+                                @foreach (var detail in Model.SalaryAnalysisResultDetails)
+                                {
+                                    ++rowNumber;
+                                    <tr>
+                                        <td>@rowNumber</td>
+                                        <td>@detail.MemberName</td>
+                                        <td>@detail.NetSalary.ToString("N1")</td>
+                                        <td>@detail.LoanCapital.ToString("N1")</td>
+                                        <td>@detail.LoanInterest.ToString("N1")</td>
+                                        <td>@detail.VAT.ToString("N1")</td>
+                                        <td>@detail.TotalLoanRepayment.ToString("N1")</td>
+                                        <td>@detail.Deposit.ToString("N1")</td>
+                                        <td>@detail.Savings.ToString("N1")</td>
+                                        <td>@detail.Shares.ToString("N1")</td>
+                                        <td>@detail.Charges.ToString("N1")</td>
+                                        <td>
+                                            <span class="badge @(detail.Status == "Approved" ? "bg-success" : "bg-warning text-dark")">@detail.Status</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center my-3">
+                            <p>No salary analysis results found.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>

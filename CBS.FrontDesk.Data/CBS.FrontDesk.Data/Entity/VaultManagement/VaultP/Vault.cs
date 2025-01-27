@@ -46,7 +46,7 @@ namespace CBS.FrontDesk.Data.Entity.VaultManagement
         }
     }
 
-public class AddVaultCommand
+  public class AddVaultCommand
     {
         public string Id { get; set; }
 
@@ -103,6 +103,8 @@ public class VaultInitializationCommand
         public decimal TotalAmount { get; set; }
         [Required(ErrorMessage = "Note is required.")]
         public string Note { get; set; }
+        public bool CanProceed { get; set; }
+
         public VaultInitializationCommand()
         {
             CurrencyNote=new CurrencyNotesRequest();

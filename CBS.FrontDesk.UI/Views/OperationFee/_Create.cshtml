@@ -54,6 +54,7 @@
                 </div>
             </div>
 
+
             <!-- Operation Fee Type -->
             <div class="row mt-3 gy-3">
                 <h5 class="border-bottom pb-2 mb-3">
@@ -95,6 +96,39 @@
                     <div class="form-check">
                         @Html.RadioButtonFor(m => m.OperationFeeType, "OrangeMoney", new { @class = "form-check-input shadow-input-boxes", id = "OrangeMoney" })
                         <label class="form-check-label" for="OrangeMoney">Orange Money</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Operation Fee Type -->
+            <div class="row mt-3 gy-3">
+                <h5 class="border-bottom pb-2 mb-3">
+                    SALARY FEE TYPE
+                    <i class="fa fa-info-circle text-muted" title="Select the type of salary fee applicable, such as Civil Servants, Private Institutions, Daily Servers Or Internal"></i>
+                </h5>
+                <!-- Operation Fee Type options -->
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "CivilServants", new { @class = "form-check-input shadow-input-boxes", id = "CivilServants" })
+                        <label class="form-check-label" for="CivilServants">Civil Servants</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "PrivateInstitutions", new { @class = "form-check-input shadow-input-boxes", id = "PrivateInstitutions" })
+                        <label class="form-check-label" for="PrivateInstitutions">Private Institutions</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "Internal", new { @class = "form-check-input shadow-input-boxes", id = "Internal" })
+                        <label class="form-check-label" for="Internal">Internal</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "DailyServers", new { @class = "form-check-input shadow-input-boxes", id = "DailyServers" })
+                        <label class="form-check-label" for="DailyServers">Daily Servers</label>
                     </div>
                 </div>
             </div>

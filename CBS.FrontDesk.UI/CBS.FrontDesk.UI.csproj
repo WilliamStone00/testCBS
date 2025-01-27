@@ -562,6 +562,7 @@
     <Compile Include="Controllers\Accounting\BranchAccountJournalEntriesQueryObject.cs" />
     <Compile Include="Controllers\Accounting\CashMovementTrackerConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\CashMovementTrackerController.cs" />
+    <Compile Include="Controllers\StandingOrderP\StandingOrderController.cs" />
     <Compile Include="Controllers\CorrespondingBankManagement\CorrespondingBankManagementController.cs" />
     <Compile Include="Controllers\Accounting\DocumentConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\ManagementSelectionOption.cs" />
@@ -605,6 +606,7 @@
     <Compile Include="Controllers\TransactionManagement\AccountingDayController.cs" />
     <Compile Include="Controllers\TransactionManagement\DailyTellerAssignationController.cs" />
     <Compile Include="Controllers\TransactionManagement\CashCeilingRequestController.cs" />
+    <Compile Include="Controllers\TransactionManagement\SalaryUploadController.cs" />
     <Compile Include="Controllers\TransactionManagement\VaultController.cs" />
     <Compile Include="Controllers\TransactionManagement\HolidayRecurringController.cs" />
     <Compile Include="Controllers\TransactionManagement\HolidayController.cs" />
@@ -2599,6 +2601,7 @@
     <Content Include="Scripts\Js\main.js\NotificationMonitor.js" />
     <Content Include="Scripts\Js\main.js\Notifications.js" />
     <Content Include="Scripts\Js\main.js\Notification_checker.js" />
+    <Content Include="Scripts\Js\SalaryManagement\StandingOrder\StandingOrder.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -3384,6 +3387,20 @@
     <Content Include="Views\CorrespondingBankManagement\_BankingZoneData.cshtml" />
     <Content Include="Views\CorrespondingBankManagement\_CreateBankingZone.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CleanAccountingEntries.cshtml" />
+    <Content Include="Views\StandingOrder\_StandingOrderDesk.cshtml" />
+    <Content Include="Views\StandingOrder\_StandingOrderForm.cshtml" />
+    <Content Include="Views\StandingOrder\_StandingOrderDataPerMember.cshtml" />
+    <Content Include="Views\StandingOrder\_CustomerCard.cshtml" />
+    <Content Include="Views\StandingOrder\_SearchBox.cshtml" />
+    <Content Include="Views\StandingOrder\Index.cshtml" />
+    <Content Include="Views\StandingOrder\_StandingOrderDetailsPartial.cshtml" />
+    <Content Include="Views\SalaryUpload\_SalaryUploadForm.cshtml" />
+    <Content Include="Views\SalaryUpload\Index.cshtml" />
+    <Content Include="Views\SalaryUpload\_FileUploadData.cshtml" />
+    <Content Include="Views\SalaryUpload\_SalaryUploadData.cshtml" />
+    <Content Include="Views\SalaryUpload\Salary.cshtml" />
+    <Content Include="Views\SalaryUpload\SalaryAnalysisResultSummary.cshtml" />
+    <Content Include="Views\SalaryUpload\_SalaryAnalysisResultSummaryData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
