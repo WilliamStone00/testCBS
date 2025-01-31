@@ -3401,6 +3401,7 @@
     <Content Include="Views\SalaryUpload\Salary.cshtml" />
     <Content Include="Views\SalaryUpload\SalaryAnalysisResultSummary.cshtml" />
     <Content Include="Views\SalaryUpload\_SalaryAnalysisResultSummaryData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\AdjustClass4AccountCartegory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

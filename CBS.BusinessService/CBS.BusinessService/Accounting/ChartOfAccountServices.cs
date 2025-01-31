@@ -239,6 +239,48 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
+        public async Task<ExecutionMessages> UpdateAccountCategory(ChartOfAccount model)
+        {
+            ChartOfAccount chartOfAccount = null;
+            try
+            {
+
+ 
+                if (model != null)
+                {
+
+                    
+                        
+
+
+                        var response = await _ConfigApiHelper.PutAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.ChartOfAccount>>(string.Format(APICallHelper.Get_Update_Delete_ChartOfAccount, model.Id), model);
+                        if (response.IsSuccess)
+                        {
+                            // Successful creation
+                            GetExecutionMessages(response, true, $"{model.AccountNumber + " " + model.LabelEn}", MessagesResults.Success,
+                                ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                            return ExecutionMessage;
+                        }
+                        else
+                        {
+                            // Failed creation
+                            GetExecutionMessages(model, false, $"{model.AccountNumber + " " + model.LabelEn}", MessagesResults.Failed,
+                                ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                            return ExecutionMessage;
+                        }
+                   
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
         public async Task<ChartOfAccount> GetChartOfAccountByAccountNumber(string accountNumber)
         {
             try

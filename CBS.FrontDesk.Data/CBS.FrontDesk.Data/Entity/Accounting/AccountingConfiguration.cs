@@ -18,7 +18,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
    
 
         public AccountTreeNode AccountTreeNode { get; set; }
-        public AccountType AccountType { get; set; } = new AccountType();
+        public AccountType AccountType { get; set; } = new AccountType(); 
         public List<ChartofAccountManagementPosition> ListChartofAccountManagementPosition { get; set; } = new List<ChartofAccountManagementPosition>();
         public ChartofAccountManagementPosition ChartofAccountManagementPosition { get; set; } = new ChartofAccountManagementPosition();
         public OperationEvent OperationEvent { get; set; } = new OperationEvent();
