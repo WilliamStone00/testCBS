@@ -58,7 +58,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly AccountPolicyServices _accountPolicyServices;
      private readonly TrialBalanceFileServices _trialBalanceFileServices;
         private readonly UserManagementServices _userService;
-        //private
         private const string CLASS_4 = "4"; //THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)
         private const string CLASS_4_Payabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)";
         private const string CLASS_4_Simple = "THIRD PARTY ACCOUNTS AND ACCRUALS";

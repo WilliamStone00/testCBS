@@ -39,12 +39,13 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
-                                                    @Html.TextBoxFor(m => m.EntryTempData.AccountBalance, new { @class = "form-control shadow-input-boxes", @value="", @readonly=true})
-                                             
+                                                    @Html.TextBoxFor(m => m.EntryTempData.AccountBalance, new { @class = "form-control shadow-input-boxes", @value = "", @readonly = true })
+
                                                     @Html.ValidationMessageFor(m => m.EntryTempData.AccountBalance, "", new { @class = "text-danger" })
                                                     <label>Current Balance</label>
                                                 </div>
                                             </div>
+                                            <input type="hidden" name="EntryTempData.AccountCategoryId"  id="EntryTempData_AccountCategoryId" value=""/>
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
                                                     @Html.DropDownListFor(m => m.EntryTempData.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select Direction---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
