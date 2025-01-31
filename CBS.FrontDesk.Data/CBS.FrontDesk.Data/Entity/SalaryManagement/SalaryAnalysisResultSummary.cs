@@ -35,6 +35,7 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
     {
         public string Id { get; set; }
         public string Matricule { get; set; }
+        public string CustomerId { get; set; }
         public string MemberName { get; set; }
         public decimal NetSalary { get; set; }
         public decimal LoanCapital { get; set; }

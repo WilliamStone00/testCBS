@@ -606,6 +606,7 @@
     <Compile Include="Controllers\TransactionManagement\AccountingDayController.cs" />
     <Compile Include="Controllers\TransactionManagement\DailyTellerAssignationController.cs" />
     <Compile Include="Controllers\TransactionManagement\CashCeilingRequestController.cs" />
+    <Compile Include="Controllers\TransactionManagement\SalaryAnalyzerController.cs" />
     <Compile Include="Controllers\TransactionManagement\SalaryUploadController.cs" />
     <Compile Include="Controllers\TransactionManagement\VaultController.cs" />
     <Compile Include="Controllers\TransactionManagement\HolidayRecurringController.cs" />
@@ -3397,11 +3398,19 @@
     <Content Include="Views\SalaryUpload\_SalaryUploadForm.cshtml" />
     <Content Include="Views\SalaryUpload\Index.cshtml" />
     <Content Include="Views\SalaryUpload\_FileUploadData.cshtml" />
-    <Content Include="Views\SalaryUpload\_SalaryUploadData.cshtml" />
+    <Content Include="Views\SalaryUpload\_SalaryDetailsData.cshtml" />
     <Content Include="Views\SalaryUpload\Salary.cshtml" />
     <Content Include="Views\SalaryUpload\SalaryAnalysisResultSummary.cshtml" />
     <Content Include="Views\SalaryUpload\_SalaryAnalysisResultSummaryData.cshtml" />
     <Content Include="Views\AccountingConfiguration\AdjustClass4AccountCartegory.cshtml" />
+    <Content Include="Views\SalaryAnalyzer\_FileUploadData.cshtml" />
+    <Content Include="Views\SalaryAnalyzer\_SalaryAnalysisResultSummaryData.cshtml" />
+    <Content Include="Views\SalaryAnalyzer\_SalaryDetailsData.cshtml" />
+    <Content Include="Views\SalaryAnalyzer\_SalaryUploadForm.cshtml" />
+    <Content Include="Views\SalaryAnalyzer\Index.cshtml" />
+    <Content Include="Views\SalaryAnalyzer\Salary.cshtml" />
+    <Content Include="Views\SalaryAnalyzer\SalaryAnalysisResultSummary.cshtml" />
+    <Content Include="Views\SalaryUpload\UploadedSalaryFiles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
