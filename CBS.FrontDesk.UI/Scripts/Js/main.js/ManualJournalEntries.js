@@ -302,7 +302,7 @@ function addToBasket()
         credit: $('#EntryTempData_Amount').val(),
         debit: $('#EntryTempData_Amount').val(),
         description: $('#EntryTempData_Description').val().trim(),
-        cartegoryId: $('#EntryTempData_AccountCategoryId').val().trim()
+        AccountCategoryId: $('#EntryTempData_AccountCategoryId').val().trim()
     };
 
     // Format account name and reference
@@ -374,20 +374,25 @@ function validateDebitTransaction(item) {
     const accountStart = item.accountNumber.substring(0, 2);
 
     // Check if account starts with specified prefixes
-    const excludedPrefixes = ['2', '5', '6', '46', '41', '42'];
-    if (excludedPrefixes.some(prefix => item.accountNumber.startsWith(prefix))) {
-        // For excluded accounts, only validate credit transactions
-        return bookingDirection === 'credit' ? (accountBalance + amount >= 0) : true;
-    }
+    //const excludedPrefixes = ['2', '5', '6', '46', '41', '42'];
+    //if (excludedPrefixes.some(prefix => item.accountNumber.startsWith(prefix))) {
+    //    // For excluded accounts, only validate credit transactions
+    //    return bookingDirection === 'credit' ? (accountBalance - amount >= 0) : true;
+    //}
 
     // For other accounts, validate debit transactions
-    if (bookingDirection === 'debit') {
+    if (bookingDirection === 'debit' && item.AccountCategoryId=='credit') {
         if (accountBalance - amount < 0) {
             console.log('Insufficient account balance for debit transaction');
             return false;
         }
     }
-
+    if (bookingDirection === 'credit' && item.AccountCategoryId == 'debit') {
+        if (accountBalance - amount < 0) {
+            console.log('Insufficient account balance for debit transaction');
+            return false;
+        }
+    }
     return true;
 }
 function createManuallyJournalEntryDataSet(basket)
