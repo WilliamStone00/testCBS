@@ -10,6 +10,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     public class LoanGuarantor
     {
         public string Id { get; set; }
+        public string GuarantorType { get; set; }
         public string LoanApplicationId { get; set; }
         [Required]
         public string GuarantorName { get; set; }

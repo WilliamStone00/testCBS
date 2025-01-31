@@ -1,0 +1,116 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+
+
+
+
+
+<fieldset class="fieldset-custom">
+    <div class="change-group">
+        <!-- Member's Name Section -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="form-floating">
+                    <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary">Member's Name: <strong>@Model.Customer.name</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <hr style="border: 1px solid green;" />
+
+        <div class="row gy-4">
+            <!-- Debit and Credit Options -->
+            <div class="col-md-6">
+                <div class="form-check border p-3 rounded">
+                    @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Debit", new { @class = "form-check-input", id = "Debit" })
+                    <label class="form-check-label" for="Debit" style="font-size: 1.1rem;">Debit Member's Account</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-check border p-3 rounded">
+                    @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Credit", new { @class = "form-check-input", id = "Credit" })
+                    <label class="form-check-label" for="Credit" style="font-size: 1.1rem;">Credit Member's Account</label>
+                </div>
+            </div>
+
+            <!-- Correspondent Account Selection -->
+            <div class="col-md-12">
+                <div class="form-floating border rounded p-3">
+                    @Html.DropDownListFor(m => m.AddMembersNoneCashOperationCommand.ChartOfAccountId, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select GL---", new { @class = "form-control select2", id = "account_number", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.ChartOfAccountId, "", new { @class = "text-danger" })
+                    <label for="account_number" style="font-size: 1.1rem;">Select Correspondent Account</label>
+                </div>
+            </div>
+
+            <!-- Reasons for Operation -->
+            <div class="col-md-12">
+                <div class="form-floating border rounded p-3">
+                    @Html.TextAreaFor(m => m.AddMembersNoneCashOperationCommand.Note, new { @class = "form-control", id = "Note", style = "height: 150px;" })
+                    @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.Note, "", new { @class = "text-danger" })
+                    <label for="Note" style="font-size: 1.1rem;">Enter reasons for the Operation</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="table-responsive rounded mt-4">
+            <table class="table table-hover" id="myDataTableT">
+                <thead class="table-light">
+                    <tr>
+                        <th style="display:none;">ProductID</th>
+                        <th>Accounts</th>
+                        <th>Balance</th>
+                        <th>Amount</th>
+                        <th style="display:none">Fee</th>
+                        <th>Total</th>
+                        <th>confirm</th>
+                        <th style="display:none">Inc</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
+                    {
+                        <tr>
+                            <td style="display:none;">@d.AccountNumber</td>
+                            <td>@d.AccountType</td>
+                            <td>@d.Balance.ToString("#,##0.0")</td>
+                            <td>
+                                <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
+                            </td>
+                            <td  style="display:none">
+                                <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee" readonly>
+                            </td>
+                            <td>
+                                <span class="total-span">@d.Total</span>
+                            </td>
+                            <td>
+                                <input type="checkbox" class="form-check-input">
+                            </td>
+                            <td style="display:none">
+                                <input type="checkbox" class="form-check-input check-inclussive" disabled>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+                        <td id="tableTotal">0</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end mt-4">
+            <input type="hidden" name="OperationType" value="MemberNoneCash" id="OperationType" />
+            <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
+
+            <button type="submit" class="btn btn-primary btn-lg me-3" onclick="PostCashIn()">
+                <i class="fas fa-money-bill-wave me-2"></i> CREATE
+            </button>
+        </div>
+    </div>
+
+    <hr style="border: 2px solid green;" />
+</fieldset>

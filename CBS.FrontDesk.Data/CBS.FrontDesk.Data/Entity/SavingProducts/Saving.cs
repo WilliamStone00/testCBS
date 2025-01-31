@@ -1137,4 +1137,12 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string TellerCode { get; set; }
         public CurrencyNotes CurrencyNotesRequest { get; set; }
     }
+    public class AddMembersNoneCashOperationCommand
+    {
+        public decimal Amount { get; set; }
+        public string ChartOfAccountId { get; set; }
+        public string BookingDirection { get; set; }
+        public string Note { get; set; }
+        public string MemberReference { get; set; }
+    }
 }

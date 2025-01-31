@@ -91,6 +91,7 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
 
     public class FileUploadDto
     {
+        public string FileCode { get; set; }
         public string Id { get; set; } // Unique Identifier for the file
         public string FileName { get; set; } // Original file name
         public string FilePath { get; set; } // Path where the file is stored

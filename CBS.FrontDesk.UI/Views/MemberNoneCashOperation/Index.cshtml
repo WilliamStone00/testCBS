@@ -1,0 +1,79 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@{
+    ViewBag.Title = "Member's None Cash Operations";
+}
+<link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
+
+<!-- Page Header -->
+<div class="row mb-0">
+    <div class="col">
+        <div class="card bg-light">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-wallet-outline me-2"></i></i> Manage Member's None Cash Operations
+                </h1>
+                <p class="card-text">
+                    Perform other none-cash transactions such as debiting or crediting members’ accounts with ease. Please note that these transactions will not take immediate effect and must undergo validation and approval before impacting member accounts.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-0">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOperationTips" aria-expanded="false" aria-controls="collapseOperationTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseOperationTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the search bar to find a member’s account by entering the 10-digit reference number (3-digit branch code followed by a 7-digit member code).</li>
+                <li><i class="mdi mdi-account-box-outline text-primary me-2"></i> Verify the member’s name and account details before proceeding with any transaction.</li>
+                <li><i class="mdi mdi-wallet-outline text-success me-2"></i> Select whether to <strong>Debit</strong> or <strong>Credit</strong> the member’s account by choosing the appropriate option in the form.</li>
+                <li><i class="mdi mdi-chart-areaspline text-primary me-2"></i> Choose the corresponding General Ledger (GL) account from the dropdown list to ensure proper booking of transactions.</li>
+                <li><i class="mdi mdi-note-edit-outline text-info me-2"></i> Provide a detailed note describing the reason for the operation. This is essential for auditing purposes.</li>
+                <li><i class="mdi mdi-cash-multiple text-warning me-2"></i> Double-check all amounts entered, including fees, totals, and balance updates. Ensure that the amounts are accurate before confirming the transaction.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> **Only one operation can be processed at a time.** Multiple entries are not allowed. Select a single ledger account and a corresponding member’s account to complete the transaction.</li>
+                <li><i class="mdi mdi-lock-outline text-danger me-2"></i> Ensure the selected ledger and member account are correct, as once submitted, the transaction cannot be modified without proper approval.</li>
+                <li><i class="mdi mdi-shield-check-outline text-success me-2"></i> Once a transaction is submitted, it **requires validation and approval** from the designated authority before taking effect.</li>
+                <li><i class="mdi mdi-clock-outline text-warning me-2"></i> The member's account will only be impacted once the validation and approval process is complete.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="row">
+    <div class="col">
+        <div class="row my-4">
+            <div class="accordion" id="collapsibleSection">
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingDeliveryAddress">
+                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionPopoutIcon-3" aria-expanded="true" aria-controls="accordionPopoutIcon-3">
+                            <i class="mdi mdi-wallet-outline me-2"></i>
+                            <span id="cashDeskOperations">MEMBER'S OTHER NONE-CASH OPERATION</span>
+                        </button>
+                    </h2>
+                    <div id="collapseDeliveryAddress" data-bs-parent="#collapsibleSection">
+                        <div class="accordion-body">
+                            <hr style="border: 2px solid blue;" />
+                            @Html.Partial("_SearchBox")
+                            <hr style="border: 2px solid blue;" />
+                            <div id="datalistingview"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/MemberNoneCashOperation/MembersNoneCashOperations.js"></script>
+}

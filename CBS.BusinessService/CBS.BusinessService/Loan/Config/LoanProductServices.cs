@@ -420,6 +420,8 @@ namespace CBS.BusinessService.Config
             }
             return ExecutionMessage;
         }
+
+
         public UpdateLoanProductCommand ProductMappingToUpdateObject(LoanProduct product, string ServiceOption, string UpdateOption)
         {
             try
@@ -431,7 +433,13 @@ namespace CBS.BusinessService.Config
                     LoanProductCategoryId = product.LoanProductCategoryId,
                     LoanProductCategory = product.LoanProductCategory ?? new LoanProductCategory { Name = "N/A" },
                     LoanProductId = product.Id,
-                    TargetType = product.TargetType, 
+                    Co_obligorMustHaveFundToGuranteeLoan=product.Co_obligorMustHaveFundToGuranteeLoan,
+                    NumberOfDaysToStopInterestCalculation=product.NumberOfDaysToStopInterestCalculation,
+                    MinimumPercentageCoverageOfShortee=product.MinimumPercentageCoverageOfShortee,
+                    MinimumPercentageRefundBeforeRefinancing=product.MinimumPercentageRefundBeforeRefinancing,
+                    ShorteeMustHaveFundToGuranteeLoan=product.ShorteeMustHaveFundToGuranteeLoan,
+                    StopInterestCalculationAtLoanMaturityDate=product.StopInterestCalculationAtLoanMaturityDate,
+                    TargetType = product.TargetType,
                     LoanTermId = product.LoanTermId,
                     IsPaidFeeBeforeProcessing = product.IsPaidFeeBeforeProcessing,
                     LoanTerm = product.LoanTerm,
@@ -548,8 +556,12 @@ namespace CBS.BusinessService.Config
                         LoanProduct.MinimumSalaryAccountBalanceRateForTheRequestAmount = model.MinimumSalaryAccountBalanceRateForTheRequestAmount;
                         LoanProduct.BlockedGuarantorAccount = model.BlockedGuarantorAccount;
                         LoanProduct.BlockedSalaryAccount = model.BlockedSalaryAccount;
-                        LoanProduct.MinimumSavingAccountBalanceRateForTheRequestAmount = model.MinimumSavingAccountBalanceRateForTheRequestAmount;
-
+                        LoanProduct.MinimumSavingAccountBalanceRateForTheRequestAmount =
+                            model.MinimumSavingAccountBalanceRateForTheRequestAmount;
+                        LoanProduct.Co_obligorMustHaveFundToGuranteeLoan=model.Co_obligorMustHaveFundToGuranteeLoan;
+                        LoanProduct.ShorteeMustHaveFundToGuranteeLoan=model.ShorteeMustHaveFundToGuranteeLoan;
+                        LoanProduct.MinimumPercentageCoverageOfShortee=model.MinimumPercentageCoverageOfShortee;
+                        
 
                     }
                     else if (model.ServiceOption == "loan_range")
@@ -564,7 +576,7 @@ namespace CBS.BusinessService.Config
                     else if (model.ServiceOption == "topup")
                     {
                         LoanProduct.HasTopUp = model.HasTopUp;
-
+                        LoanProduct.MinimumPercentageRefundBeforeRefinancing=model.MinimumPercentageRefundBeforeRefinancing;
                     }
 
                     else if (model.ServiceOption == "interest")
@@ -577,6 +589,8 @@ namespace CBS.BusinessService.Config
                         LoanProduct.MaximumInterestRate = model.MaximumInterestRate;
                         LoanProduct.StartGeneratingInterestAfterDisbustment = model.StartGeneratingInterestAfterDisbustment;
 
+                        LoanProduct.StopInterestCalculationAtLoanMaturityDate=model.StopInterestCalculationAtLoanMaturityDate;
+                        LoanProduct.NumberOfDaysToStopInterestCalculation=model.NumberOfDaysToStopInterestCalculation;
                     }
                     else if (model.ServiceOption == "duration")
                     {

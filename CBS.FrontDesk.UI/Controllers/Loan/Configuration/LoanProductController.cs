@@ -92,18 +92,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         public async Task<ActionResult> Update(LoanProductObject model)
         {
 
-            //var loanProductCategory = await _loanProductCategoryServices.GetLoanProductCategory(model.UpdateLoanProductCommand.LoanProductCategoryId); // Fetch LoanTerm details
-            //if (loanProductCategory == null)
-            //{
-            //    return Json(new
-            //    {
-            //        success = false,
-            //        status = false,
-            //        message = "The loan product category is not defined or could not be found for the selected product. Please ensure that a valid loan category is assigned before proceeding. If the issue persists, contact your system administrator for further assistance."
-            //    });
-            //}
-
-
+           
 
             if (model.ServiceOption == "set_penalty")
             {

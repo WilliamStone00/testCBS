@@ -21,7 +21,6 @@
 
 
 
-
 <div class="col">
     <div class="accordion-body">
         @using (Html.BeginForm("Create", "MemberOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostGuarantor(this);" }))
@@ -34,12 +33,40 @@
             <input type="hidden" value="@Model.LoanApplication.Id" id="loanapplicationid" />
 
             <div class="row g-4">
-                <div class="col-12">
-                    <div class="form-check">
-                        @Html.CheckBoxFor(m => m.LoanGuarantor.IsCoMember, new { @class = "form-check-input", @id = "isCoMemberCheckbox" })
-                        <label class="form-check-label" id="isCoMemberLabel" for="isCoMemberCheckbox">Guarantor</label>
+                <!-- Guarantor Type as Horizontal Radio Buttons -->
+                <div class="col-md-12">
+                    <label class="form-label">Guarantor Type</label>
+                    <div class="d-flex flex-wrap gap-4">
+                        <div class="form-check">
+                            <input type="radio" id="guarantorShotee" name="LoanGuarantor.GuarantorType" value="Shotee"
+                                   class="form-check-input" onchange="toggleAccountNumberField();" />
+                            <label for="guarantorShotee" class="form-check-label">Shotee</label>
+                            <small class="d-block text-muted">A person from the same branch or network, must have at least 80% in savings to guarantee a loan.</small>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="radio" id="guarantorCoObligor" name="LoanGuarantor.GuarantorType" value="Co_Obligor"
+                                   class="form-check-input" onchange="toggleAccountNumberField();" />
+                            <label for="guarantorCoObligor" class="form-check-label">Co-Obligor</label>
+                            <small class="d-block text-muted">A person from the same branch or network who can pledge their account for a guarantee, even if the balance is 0.</small>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="radio" id="guarantorInterCooperation" name="LoanGuarantor.GuarantorType" value="Inter_Cooperation"
+                                   class="form-check-input" onchange="toggleAccountNumberField();" />
+                            <label for="guarantorInterCooperation" class="form-check-label">Inter Cooperation</label>
+                            <small class="d-block text-muted">A guarantor from another network.</small>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="radio" id="guarantorMoralGuarantor" name="LoanGuarantor.GuarantorType" value="Moral_Guarantor"
+                                   class="form-check-input" onchange="toggleAccountNumberField();" />
+                            <label for="guarantorMoralGuarantor" class="form-check-label">Moral Guarantor</label>
+                            <small class="d-block text-muted">A guarantor from another network or an important personality.</small>
+                        </div>
                     </div>
                 </div>
+
                 <!-- Account Number (conditionally shown) -->
                 <div class="col-md-12" id="accountNumberField" style="display: none;">
                     <div class="form-floating form-floating-outline">
@@ -48,6 +75,8 @@
                         <label>Account number</label>
                     </div>
                 </div>
+
+                <!-- Other Fields -->
                 <div class="col-md-9">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.LoanGuarantor.GuarantorName, new { @class = "form-control" })
@@ -118,39 +147,26 @@
                     <button type="submit" class="btn btn-primary me-2">Add guarantor</button>
                     <button type="reset" class="btn btn-outline-secondary">Reset</button>
                     <input type="hidden" name="Path" value="insert" id="Path" />
-
                 }
                 else
                 {
                     <button type="submit" class="btn btn-primary me-2">Update</button>
                     <input type="hidden" name="Path" value="update" id="Path" />
-
                 }
             </div>
         }
     </div>
-
 </div>
 
-
-
 <script>
-    $(document).ready(function () {
-        // Function to toggle visibility and label text
-        function toggleAccountNumberField() {
-            if ($("#isCoMemberCheckbox").is(":checked")) {
-                $("#accountNumberField").show();
-                $("#isCoMemberLabel").text("Co-Obligor");
-            } else {
-                $("#accountNumberField").hide();
-                $("#isCoMemberLabel").text("Guarantor");
-            }
+    function toggleAccountNumberField() {
+        const selectedGuarantorType = document.querySelector('input[name="LoanGuarantor.GuarantorType"]:checked').value;
+        const accountNumberField = document.getElementById('accountNumberField');
+
+        if (selectedGuarantorType === 'Shotee' || selectedGuarantorType === 'Co_Obligor' || selectedGuarantorType === 'Inter_Cooperation') {
+            accountNumberField.style.display = 'block';
+        } else {
+            accountNumberField.style.display = 'none';
         }
-
-        // Initialize visibility and label text on page load
-        toggleAccountNumberField();
-
-        // Attach change event listener to the checkbox
-        $("#isCoMemberCheckbox").change(toggleAccountNumberField);
-    });
+    }
 </script>

@@ -52,6 +52,7 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public string BranchCode { get; set; }
         public string BranchId { get; set; }
         public string SalaryAnalysisResultId { get; set; }
+        public decimal PreferenceShares { get; set; }
         public SalaryAnalysisResultSummary SalaryAnalysisResult { get; set; }
     }
     public class SalaryAnalysisCommand

@@ -468,6 +468,28 @@ namespace CBS.BusinessService.Accounts
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }
+                else if (bulkDeposits.FirstOrDefault().OperationType == "MemberNoneCash")
+                {
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = false, OperationType = "Deposit", DepositType = "MemberNoneCash" };
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
+                    if (response.ApiResponseData != null)
+                    {
+                        var transaction = response.ApiResponseData.Data;
+                        Branch branch = RetrieveBranchFromSession();
+                        var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
+                        HttpContext.Current.Session["rptSource"] = rptSource;
+                        GetExecutionMessages(response, true, null, MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+                //
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepaymentMomocashCollection")
                 {
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepaymentMomocashCollection", IsCashOperation = false, OperationType = "Deposit" };

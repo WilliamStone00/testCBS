@@ -47,6 +47,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public OtherTransaction OtherTransaction { get; set; }
         public GenerateRemittanceOTPCommand GenerateRemittanceOTPCommand { get; set; } = new GenerateRemittanceOTPCommand();
         public AddOtherTransactionMobileMoneyCommand AddOtherTransactionMobileMoneyCommand { get; set; } = new AddOtherTransactionMobileMoneyCommand();
+        public AddMembersNoneCashOperationCommand AddMembersNoneCashOperationCommand { get; set; } = new AddMembersNoneCashOperationCommand();
         public List<OtherTransaction> OtherTransactions { get; set; } = new List<OtherTransaction>();
         public string Action { get; set; }
         public SavingProduct SavingProduct { get; set; }

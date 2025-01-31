@@ -174,6 +174,13 @@ Key Points:
                                             <label class="form-check-label" for="isActive">Requires salary account</label>
                                         </div>
                                     </div>
+
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.Co_obligorMustHaveFundToGuranteeLoan, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">Co-obligor must have fund to gurantee this loan.</label>
+                                        </div>
+                                    </div>
                                     <div class="col-6">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsRequiredShareAccount, new { @class = "form-check-input" })
@@ -247,6 +254,19 @@ Key Points:
                                             <label class="form-check-label" for="isActive">Blocked co-guarantors account. </label>
                                         </div>
                                     </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.ShorteeMustHaveFundToGuranteeLoan, new { @class = "form-check-input", @id = "shorteeFundCheckbox" })
+                                            <label class="form-check-label" for="shorteeFundCheckbox">Shortee must have fund to guarantee this loan.</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" id="percentageCoverageContainer" style="display: none;">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumPercentageCoverageOfShortee, new { @class = "form-control", @id = "percentageCoverageInput" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumPercentageCoverageOfShortee, "", new { @class = "text-danger" })
+                                            <label for="percentageCoverageInput">Enter shortee minimum percentage coverage.</label>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary me-2">Update</button>
@@ -291,6 +311,13 @@ Key Points:
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.HasTopUp, new { @class = "form-check-input" })
                                             <label class="form-check-label" for="isActive">Does this product reqires refinancing?</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumPercentageRefundBeforeRefinancing, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumPercentageRefundBeforeRefinancing, "", new { @class = "text-danger" })
+                                            <label>Minimum percentage that must be refunded for topping-up</label>
                                         </div>
                                     </div>
                                 </div>
@@ -340,12 +367,12 @@ Key Points:
                                 <legend>Interest settings</legend>
                                 <div class="row g-4">
                                     @*<div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.UpdateLoanProductCommand.LoanInterestPeriod, new SelectList(ViewBag.LoanInterestPeriods, "Value", "Text"), "---Select interest periods---", new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.LoanInterestPeriod, "", new { @class = "text-danger " })
-                                                <label>Interest period</label>
-                                            </div>
-                                        </div>*@
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.UpdateLoanProductCommand.LoanInterestPeriod, new SelectList(ViewBag.LoanInterestPeriods, "Value", "Text"), "---Select interest periods---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.LoanInterestPeriod, "", new { @class = "text-danger " })
+                <label>Interest period</label>
+            </div>
+        </div>*@
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumInterestRate, new { @class = "form-control" })
@@ -383,6 +410,19 @@ Key Points:
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MaximumInterestWaiver, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MaximumInterestWaiver, "", new { @class = "text-danger" })
+                                            <label>Maximum interest waiver rate (%)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.StopInterestCalculationAtLoanMaturityDate, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">Stop interest calculation at loan maturity date.</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.NumberOfDaysToStopInterestCalculation, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.NumberOfDaysToStopInterestCalculation, "", new { @class = "text-danger" })
                                             <label>Maximum interest waiver rate (%)</label>
                                         </div>
                                     </div>
@@ -816,3 +856,21 @@ Key Points:
 </div>
 
 
+<script>document.addEventListener("DOMContentLoaded", function () {
+        const checkbox = document.getElementById("shorteeFundCheckbox");
+        const percentageCoverageContainer = document.getElementById("percentageCoverageContainer");
+
+        // Show or hide the percentage coverage field based on the checkbox state
+        checkbox.addEventListener("change", function () {
+            if (checkbox.checked) {
+                percentageCoverageContainer.style.display = "block";
+            } else {
+                percentageCoverageContainer.style.display = "none";
+            }
+        });
+
+        // Hide the field by default
+        if (!checkbox.checked) {
+            percentageCoverageContainer.style.display = "none";
+        }
+    });</script>
