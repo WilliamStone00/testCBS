@@ -478,6 +478,11 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         model.AddLoanApplicationCommand.LoanId="N/A";
                         model.AddLoanApplicationCommand.OldLoanPayment.LoanId="N/A";
                     }
+                    if (model.AddLoanApplicationCommand.LoanApplicationType == "Restructure")
+                    {
+                        model.AddLoanApplicationCommand.Amount = model.AddLoanApplicationCommand.OldLoanPayment.Capital + model.AddLoanApplicationCommand.OldLoanPayment.Interest + model.AddLoanApplicationCommand.OldLoanPayment.Penalty + model.AddLoanApplicationCommand.OldLoanPayment.VAT;
+                  
+                    }
                     // Proceed with processing the valid command
                     var data = await _loanApplicationServices.Create(model.AddLoanApplicationCommand);
                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });

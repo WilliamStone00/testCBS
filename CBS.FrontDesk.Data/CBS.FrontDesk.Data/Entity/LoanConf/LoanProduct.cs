@@ -92,6 +92,12 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal MaximumInspectionFeeRate { get; set; }
         public decimal DefaultInspectionFeeRate { get; set; }
         public double MinimumCollateralPercentage { get; set; }
+        public bool StopInterestCalculationAtLoanMaturityDate { get; set; }
+        public int NumberOfDaysToStopInterestCalculation { get; set; }
+        public decimal MinimumPercentageRefundBeforeRefinancing { get; set; }
+        public bool ShorteeMustHaveFundToGuranteeLoan { get; set; }
+        public bool Co_obligorMustHaveFundToGuranteeLoan { get; set; }
+        public decimal MinimumPercentageCoverageOfShortee { get; set; }
 
         public bool IsInterestWaiverApplied { get; set; }
         public decimal MinimumInterestWaiver { get; set; }
@@ -186,6 +192,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             DefaultDurationsPeriod = 0;
             MinimumNumberOfRepayment = 0;
             MaximumNumberOfRepayment = 0;
+            NumberOfDaysToStopInterestCalculation=0;
             DefaultNumberOfRepayment = 0;
             LoanTerm = new LoanTerm();
             LoanProductCategory = new LoanProductCategory();
@@ -197,6 +204,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             DefaultLoanAmount = 0;
             FirstRepaymentAmount = 0;
             MinimumCollateralPercentage = 0;
+            MinimumPercentageCoverageOfShortee=0;
             MaximumCollateralPercentage = 0;
             DefaultCollateralPercentage = 0;
             MaxTopUpLoanAmount = 0;
@@ -233,6 +241,13 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IsInterestWaiverApplied { get; set; }
         public decimal MinimumInterestWaiver { get; set; }
         public decimal MaximumInterestWaiver { get; set; }
+        public bool StopInterestCalculationAtLoanMaturityDate { get; set; }
+
+        public int NumberOfDaysToStopInterestCalculation { get; set; }
+        public decimal MinimumPercentageRefundBeforeRefinancing { get; set; }
+        public bool ShorteeMustHaveFundToGuranteeLoan { get; set; }
+        public bool Co_obligorMustHaveFundToGuranteeLoan { get; set; }
+        public decimal MinimumPercentageCoverageOfShortee { get; set; }
 
         public bool IsChargesApplied { get; set; }
         public decimal MinimumChargesToAppliedInPercentage { get; set; }
@@ -381,6 +396,12 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string Description { get; set; }
         public decimal LoanMinimumAmount { get; set; }
         public bool IsPaidFeeBeforeProcessing { get; set; }
+        public bool StopInterestCalculationAtLoanMaturityDate { get; set; }
+        public int NumberOfDaysToStopInterestCalculation { get; set; }
+        public decimal MinimumPercentageRefundBeforeRefinancing { get; set; }
+        public bool ShorteeMustHaveFundToGuranteeLoan { get; set; }
+        public bool Co_obligorMustHaveFundToGuranteeLoan { get; set; }
+        public decimal MinimumPercentageCoverageOfShortee { get; set; }
 
         public decimal MinimumCollateralPercentage { get; set; }
         public bool IsRequiredShareAccount { get; set; }

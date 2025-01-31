@@ -4,9 +4,11 @@ using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.UI.Helper;
 using Hangfire;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -213,6 +215,56 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var data = await _salaryUploadServices.Delete(KEY);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
+
+        public async Task<ActionResult> DownloadSalaryAnalysisExcel(string fileUploadId)
+        {
+            try
+            {
+                // Fetch salary analysis details and file upload data
+                var salaryAnalysis = await _salaryAnalysisResultServices.GetSalaryAnalysisResultByFileUploadId(fileUploadId);
+
+                
+                if (salaryAnalysis.Id == null)
+                {
+                    return Json(new { success = false, message = "No salary analysis details found for the specified file upload ID." }, JsonRequestBehavior.AllowGet);
+                }
+                var salaryDetails = salaryAnalysis.salaryAnalysisResultDetails.ToList();
+                var fileUpload = await _salaryUploadServices.GetFileUpload(fileUploadId);
+
+
+
+                // Define file path and branch name
+                string branchName = fileUpload?.BranchName ?? "Unknown Branch";
+                string fileName = $"SalaryAnalysis_{branchName}_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+                string directoryPath = Server.MapPath("~/TempFiles");
+
+                // Ensure the directory exists
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                string filePath = Path.Combine(directoryPath, fileName);
+                string exportedDate = DateTime.Now.ToString();
+                string exportedBy = Session["FullName"].ToString();
+                string salaryCode = fileUpload.FileCode;
+                // Generate Excel file
+                SalaryAnalysisResultDetailExcelGenerator.GenerateSalaryAnalysisExcel(salaryDetails, branchName, filePath, exportedDate, exportedBy, salaryCode);
+
+                // Return the file for download
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                System.IO.File.Delete(filePath); // Clean up temporary file
+
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return an error response
+                Console.WriteLine($"Error generating Excel file: {ex.Message}");
+                return Json(new { success = false, message = "An error occurred while generating the Excel file." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 
 }

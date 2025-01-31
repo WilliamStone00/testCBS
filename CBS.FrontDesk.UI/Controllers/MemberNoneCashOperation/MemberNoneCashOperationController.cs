@@ -16,25 +16,21 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 {
     //[CheckSessionTimeOutAttribute]
 
-    public class CashDeskController : BaseController
+    public class MemberNoneCashOperationController : BaseController
     {
         private readonly CashDeskServices _cashDeskService;
         private readonly AccountingServices _accountingServices;
+
         private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
 
-
-        public CashDeskController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null, ChartOfAccountServicesAnnex chartOfAccountServices = null)
+        public MemberNoneCashOperationController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null, ChartOfAccountServicesAnnex chartOfAccountServices = null)
         {
             _cashDeskService = cashDeskService;
             _accountingServices = accountingServices;
             this.chartOfAccountServices=chartOfAccountServices;
         }
-        // GET: CashDesk
+        // GET: MemberNoneCashOperation
         public ActionResult Index()
-        {
-            return View();
-        }
-        public ActionResult MomocashCollection()
         {
             return View();
         }
@@ -42,36 +38,11 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             return View();
         }
-        public async Task<ActionResult> OtherCashTransactions()
+        public async Task<bool> GetChartOfAccounts()
         {
-            ViewBag.Operation = "income_expense";
-            var cashDesk = await _cashDeskService.GetOtherCashDeskTransactions();
-            //ViewBag.Members = _cashDeskService.LoadMembersToList(cashDesk.Customers);
-            ViewBag.MemberAccounts = new SelectList(new List<StringValues>(), "None", "No-Account-Loaded");
-            await GetEventNames("FEE");
-            //ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
-            return View(cashDesk);
-        }
-        public async Task<ActionResult> OtherCashMobileMoney()
-        {
-            var cashDesk = await _cashDeskService.GetOtherCashDeskMobileMoney();
-            return View(cashDesk);
-        }
-        //OtherCashMobileMoney
-        public async Task<ActionResult> ExpenseOtherPayment()
-        {
-            ViewBag.Operation = "income_expense";
-            var cashDesk = await _cashDeskService.GetOtherCashDeskTransactions();
-            //ViewBag.Members = _cashDeskService.LoadMembersToList(cashDesk.Customers);
-            ViewBag.MemberAccounts = new SelectList(new List<StringValues>(), "None", "No-Account-Loaded");
-            await GetEventNames("EXPENSE");
-            //ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
-            return View(cashDesk);
-        }
-        private async Task GetEventNames(string operationType)
-        {
-            ViewBag.EventCodes = await _accountingServices.GetEventNamesOtherCashIn(operationType);
-
+            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
+            ViewBag.chartOfAccounts = chartOfAccounts.ToList();
+            return true;
         }
         public async Task<ActionResult> Ajaxloader(string Key,string path)
         {
@@ -88,7 +59,6 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
             }
         }
-       
         //income_expense
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = "_DataNotFound", string path = null, string serviceOption = null)
         {
@@ -112,6 +82,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                         ViewBag.message = $"{KEY} was not found in the database.";
                         return PartialView("_DataNotFound", new CashDesk());
                     }
+                    await GetChartOfAccounts();
                     return PartialView(partialView, cashDesk);
 
 
@@ -131,6 +102,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                         ViewBag.message = $"{KEY} was not found in the database.";
                         return PartialView("_DataNotFound", new CashDesk());
                     }
+                    await GetChartOfAccounts();
                     ViewBag.Operation = path;
                     return PartialView(partialView, cashDesk);
 
