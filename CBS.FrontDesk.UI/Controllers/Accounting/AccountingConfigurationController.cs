@@ -59,6 +59,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
      private readonly TrialBalanceFileServices _trialBalanceFileServices;
         private readonly UserManagementServices _userService;
         //private
+        private const string CLASS_4 = "4"; //THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)
+        private const string CLASS_4_Payabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)";
+        private const string CLASS_4_Simple = "THIRD PARTY ACCOUNTS AND ACCRUALS";
+        private const string CLASS_4_Recievabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Recievables)";
         public AccountingConfigurationController()
         {
             _AccountingRuleServices = new AccountingRuleService();
@@ -81,7 +85,72 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _userService = new UserManagementServices();    
         }
         // GET: AccountingConfiguration
-        
+
+
+        public async Task<ActionResult> AdjustClass4AccountCartegory()
+        {
+            var model = new AccountingConfiguration();
+            var listAccounts = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
+           
+            model.ListChartofAccountManagementPosition =await BuildClass4AccountCartegory( listAccounts.ToList());
+          
+            return View(model);
+        }
+
+   
+
+        private async Task<List<ChartofAccountManagementPosition>> BuildClass4AccountCartegory(List<ChartofAccountManagementPosition> chartofAccountManagementPositions)
+        {
+
+            List<ChartofAccountManagementPosition> chartofAccounts = new List<ChartofAccountManagementPosition>();
+            var chartOfAccountsss = (await _chartOfAccountServices.GetAllChartOfAccounts()).Where(x=>x.AccountNumber.StartsWith(CLASS_4));
+            var accountCategories = await _AccountCategoryServices.GetAccountCategory();
+            if (accountCategories.Count() > 0)
+            {
+                var LevelManagementList = accountCategories.Where(x => x.Name == CLASS_4_Payabels || x.Name == CLASS_4_Recievabels||x.Name== CLASS_4_Simple).ToList();
+                ViewBag.LevelManagementList = BuildAccountCartegory(LevelManagementList.ToList());
+            }
+            if (chartOfAccountsss.Count()>0&& accountCategories.Count()>0)
+            {
+                foreach (var item in chartofAccountManagementPositions)
+                {
+                    // 1. Get the ChartOfAccount using the ID
+                    var ModelChart = chartOfAccountsss.Where(x => x.Id == item.ChartOfAccountId).FirstOrDefault();
+
+                    // 2. Get the AccountCategory using the ID from ChartOfAccount
+                    if (ModelChart==null)
+                    {
+                        continue;
+                    }
+                    var accountCategory = accountCategories.Where(x => x.Id == ModelChart.AccountCartegoryId).FirstOrDefault();
+                    chartofAccounts.Add(new ChartofAccountManagementPosition
+                    {
+                        Id = item.Id,
+                        ChartOfAccountId = item.ChartOfAccountId,
+                        New_AccountNumber = item.New_AccountNumber,
+                        Description = item.Description,
+                        Level_Management = accountCategory.Name
+                    });
+                } 
+            }
+            return chartofAccounts;
+
+        }
+
+        private dynamic BuildAccountCartegory(List<AccountCategory> listOfItems)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "UNDEFINE", Value = $"MIXED" });
+            foreach (var item in listOfItems)
+            {
+                 
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"{item.Name}", Value = item.Id });
+              
+
+            }
+            return selectListItems;
+        }
+
         public async Task<ActionResult> Index()
         {
             await GetList();
@@ -1544,7 +1613,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
 
         }
- 
+
+        //
         public async Task<ActionResult> UploadAccountModel(AccountUploadModel model)
         {
             var UploadModel = new UploadAccount();
@@ -1611,6 +1681,27 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return Json($"An error occurred: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
  
+        }
+
+
+
+        public async Task<ActionResult> UpdateClass4AccountCategory(string id,string category)
+        {
+        
+            try
+            {
+
+                var data = await _ChartOfAccountManagementPositionServicesServices.Update(id,category);
+                return Json(new { success = data, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+
         }
 
         public async Task<ActionResult> CleanAccountingEntry(AccountingConfiguration accounting)

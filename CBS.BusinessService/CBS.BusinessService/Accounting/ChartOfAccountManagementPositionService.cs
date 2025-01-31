@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -259,7 +260,7 @@ namespace CBS.BusinessService.Accounting
         }
 
 
-        public async Task<List<ChartofAccountManagementPosition>> GetAccountClassCategory(string id)
+        public async Task<List<ChartofAccountManagementPosition>> Get_ChartOfAccountManagementPosition(string id)
         {
             try
             {
@@ -318,5 +319,44 @@ namespace CBS.BusinessService.Accounting
                 return account;
             }
         }
+
+        public async Task<IExecutionMessages> Update(string id, string category)
+        {
+         
+            try
+            {
+                var Id = id.Split('-')[0];
+
+                var mfi_chart = await this.GetChartOfAccountManagementPosition(Id);
+              
+                if (mfi_chart != null)
+                {
+                   var model= await _chartOfAccountServices.GetChartOfAccountById(mfi_chart.ChartOfAccountId);
+                    model.AccountCartegoryId = category;
+
+                   return  await _chartOfAccountServices.UpdateAccountCategory(model);
+                }
+                else
+                {
+                    return new ExecutionMessages
+                    {
+                        MessagesResults = 0,
+                        MessageString = "Excution failed for " + id,
+                        MessageStatus =MessagesResults.NoteFound.ToString(),
+                        Data= null
+                       
+                    }; 
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
     }
+    
 }

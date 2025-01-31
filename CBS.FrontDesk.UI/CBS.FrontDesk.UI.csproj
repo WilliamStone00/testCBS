@@ -3403,6 +3403,9 @@
     <Content Include="Views\SalaryUpload\_FileUploadData.cshtml" />
     <Content Include="Views\SalaryUpload\_SalaryDetailsData.cshtml" />
     <Content Include="Views\SalaryUpload\Salary.cshtml" />
+    <Content Include="Views\SalaryUpload\SalaryAnalysisResultSummary.cshtml" />
+    <Content Include="Views\SalaryUpload\_SalaryAnalysisResultSummaryData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\AdjustClass4AccountCartegory.cshtml" />
     <Content Include="Views\SalaryAnalyzer\_FileUploadData.cshtml" />
     <Content Include="Views\SalaryAnalyzer\_SalaryAnalysisResultSummaryData.cshtml" />
     <Content Include="Views\SalaryAnalyzer\_SalaryDetailsData.cshtml" />

@@ -14,6 +14,28 @@
         }
     });
 
+
+    $('select[id$="-AccountCartegory"]').on('change', function () {
+        const selectedValue = $(this).val();
+        const selectedText = $(this).find('option:selected').text();
+        const selectId = $(this).attr('id'); // Get the full ID
+        $.ajax({
+            url: '/AccountingConfiguration/UpdateClass4AccountCategory',
+            type: 'POST',
+            data: {
+                id: selectId,
+                category: selectedValue
+            },
+            success: function (response) {
+                toastr.success(response.message);
+                window.location.reload();
+            },
+            error: function (xhr) {
+                toastr.error('Error updating category');
+            }
+        });
+    });
+
     // Trigger the processing simulation when needed
     $('#ReadUploadedFile').click(function () {
         simulateProcessing();
@@ -140,6 +162,12 @@
     });
 /*    LoadDataForEventRule();*/
 });
+
+
+function updateclass4() {
+ 
+}
+
 
 function splitStringByHyphen(inputString) {
     // Check if the input is a string
