@@ -105,7 +105,14 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllSalaryUploadByFileBaseOnStatus = "/api/v1/SalaryUpload/salary-file-uploaded";
         public static string GetSalaryFileUploadByFileId = "/api/v1/SalaryUpload/get-file-upload-byid/{0}";
         public static string GetSalaryModelForBranchByFileId = "/api/v1/SalaryAnalysis/get-salary-model-for-branch-by-fileid/{0}";
-        
+
+
+        //SalaryUpload
+        public static string Get_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation/{0}";
+        public static string Delete_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation/{0}";
+        public static string GetAll_MemberNoneCashOperations = "/api/v1/MemberNoneCashOperations";
+        public static string Create_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation";
+        public static string Validate_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation/Validate/{0}";
 
         //SalaryAnalysis
         public static string Delete_SalaryAnalysis = "/api/v1/SalaryAnalysis/{0}";

@@ -20,14 +20,16 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
     {
         private readonly CashDeskServices _cashDeskService;
         private readonly AccountingServices _accountingServices;
-
+        private readonly MemberNoneCashOperationServices _memberNoneCashOperationServices;
+        
         private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
 
-        public MemberNoneCashOperationController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null, ChartOfAccountServicesAnnex chartOfAccountServices = null)
+        public MemberNoneCashOperationController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, MemberNoneCashOperationServices memberNoneCashOperationServices = null)
         {
             _cashDeskService = cashDeskService;
             _accountingServices = accountingServices;
             this.chartOfAccountServices=chartOfAccountServices;
+            _memberNoneCashOperationServices=memberNoneCashOperationServices;
         }
         // GET: MemberNoneCashOperation
         public ActionResult Index()
@@ -130,7 +132,8 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             {
                 if (deposits != null)
                 {
-                    var data = await _cashDeskService.BulkDeposi(deposits);
+                    
+                    var data = await _memberNoneCashOperationServices.Create(deposits);
                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
                 }

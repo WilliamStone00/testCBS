@@ -22,6 +22,12 @@
                         <label>Branch name</label>
                     </div>
                 </div>
+                <div class="col-12">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.Branch.IsHavingBank, new { @class = "form-check-input" })
+                        <label class="form-check-label" for="isActive">Is this branch linked to any brank?</label>
+                    </div>
+                </div>
                 <div class="col-6">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.Branch.ActiveStatus, new { @class = "form-check-input" })

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Data.Entity.Migrations.Model.UpdateDatabaseOperation;
 
 namespace CBS.FrontDesk.Data.Entity.Config
 {
@@ -29,6 +30,8 @@ namespace CBS.FrontDesk.Data.Entity.Config
         public string Capital { get; set; }
         [Required]
         public string RegistrationNumber { get; set; }
+
+        public bool IsHavingBank { get; set; }
         public string LogoUrl { get; set; }
         [Required]
         public string ImmatriculationNumber { get; set; }
