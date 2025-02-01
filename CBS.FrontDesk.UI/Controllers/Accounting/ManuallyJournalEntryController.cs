@@ -40,7 +40,11 @@ namespace CBS.FrontDesk.UI.Controllers
         private readonly AccountingEntryRuleService _accountingEntryRuleService;
         private readonly BranchServices _branchService;
         private readonly AccountingRuleService _AccountingRuleServices;
-
+        //private
+        private const string CLASS_4 = "4"; //THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)
+        private const string CLASS_4_Payabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)";
+        private const string CLASS_4_Simple = "THIRD PARTY ACCOUNTS AND ACCRUALS";
+        private const string CLASS_4_Recievabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Recievables)";
         public ManuallyJournalEntryController()
         {
             _Service = new EntryTempDataServices();
@@ -227,7 +231,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
             // Determine account behavior based on OHADA rules
             bool isDebitNormal = account.AccountNumber.StartsWith("2") || // Fixed Assets
-                                account.AccountNumber.StartsWith("3") || // Inventory
+                    
                                 account.AccountNumber.StartsWith("5") || // Financial
                                 account.AccountNumber.StartsWith("6");   // Expenses
 
@@ -238,15 +242,15 @@ namespace CBS.FrontDesk.UI.Controllers
             bool isClass4 = account.AccountNumber.StartsWith("4");
             bool isReceivable = isClass4 && await CheckIfAccountIsReceivableAsync(account);
             // Calculate current balance based on account type
-            if (isDebitNormal || (isClass4 && !isReceivable))
-            {
-                account.CurrentBalance = (Convert.ToDouble( account.DebitBalance )- Convert.ToDouble( account.CreditBalance)).ToString();
-            }
-            else
-            {
-                account.CurrentBalance = (Convert.ToDouble(account.CreditBalance) - Convert.ToDouble(account.DebitBalance)).ToString();
+            //if (isDebitNormal || (isClass4 && !isReceivable))
+            //{
+            //    account.CurrentBalance = (Convert.ToDouble( account.DebitBalance )- Convert.ToDouble( account.CreditBalance)).ToString();
+            //}
+            //else
+            //{
+            //    account.CurrentBalance = (Convert.ToDouble(account.CreditBalance) - Convert.ToDouble(account.DebitBalance)).ToString();
  
-            }
+            //}
 
 
 
@@ -264,9 +268,9 @@ namespace CBS.FrontDesk.UI.Controllers
 
             try
             {
-                var AccountData = await _AccountServices.GetAccount(Id);
+                var AccountData = await _AccountServices.GetAccountWithAccountCartegorieStatus(Id);
 
-                var data = new ManuallyJournalEntryDataSet { Account = await EvaluateCurrentBalance(AccountData) };
+                var data = new ManuallyJournalEntryDataSet { Account = AccountData };
 
 
                 return Json(data, JsonRequestBehavior.AllowGet);

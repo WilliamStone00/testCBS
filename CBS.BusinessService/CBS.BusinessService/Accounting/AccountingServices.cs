@@ -17,19 +17,26 @@ using CBS.FrontDesk.Data.Entity.LoanConf;
 using System.IO.Packaging;
 using System.Security.Policy;
 using System.Web.Helpers;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 
 namespace CBS.BusinessService.Accounting
 {
     public class AccountingServices : BaseService
     {
         private readonly ApiCallerHelper _accountingApiCallerHelper;
+    
+        public AccountCategoryServices accountCartegorieService { get; }
 
         public AccountingServices()
         {
             _accountingApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
+            accountCartegorieService = new AccountCategoryServices();
 
         }
-
+        private const string CLASS_4 = "4"; //THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)
+        private const string CLASS_4_Payabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)";
+        private const string CLASS_4_Simple = "THIRD PARTY ACCOUNTS AND ACCRUALS";
+        private const string CLASS_4_Recievabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Recievables)";
         public async Task<List<ReportInfo>> GetAllFileDownloadInfoPerUser()
         {
             try
@@ -69,7 +76,7 @@ namespace CBS.BusinessService.Accounting
                 throw (ex);
             }
         }
-        public async Task<ExecutionMessages> Create(Account model)
+        public async Task<ExecutionMessages> Create(FrontDesk.Data.Account model)
         {
             try
             {
@@ -103,7 +110,33 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
-        public async Task<Account> GetAccount(string id)
+        public async Task<FrontDesk.Data.Account> GetAccountWithAccountCartegorieStatus(string id)
+        {
+            try
+            {
+                var listOfCategories = (await accountCartegorieService.GetAccountCategory()).ToList();
+                    var account = (await GetAllAccounting()).Where(i => i.Id.Equals(id)).FirstOrDefault();
+                var modelVal = listOfCategories.Find(x => x.Id == account.AccountCategoryId);
+                if (modelVal.Name== CLASS_4_Recievabels||account.AccountNumber.StartsWith("2") || // Fixed Assets
+                                                                                                //   || // Inventory
+                                account.AccountNumber.StartsWith("5") || // Financial
+                                account.AccountNumber.StartsWith("6") )  // Expenses)
+                {
+                    account.AccountCategoryId = "debit";
+                }
+                else
+                {
+                    account.AccountCategoryId = "credit";
+                }
+                return account;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<FrontDesk.Data.Account> GetAccount(string id)
         {
             try
             {
@@ -168,13 +201,13 @@ namespace CBS.BusinessService.Accounting
                 throw ex;
             }
         }
-        public async Task<Account> GetAccountByAccountNumber(string id)
+        public async Task<FrontDesk.Data.Account> GetAccountByAccountNumber(string id)
         {
             try
             {
 
                 string Url = string.Format(APICallHelper.GetAccountByAccountNumberUrl, id);
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<Account>>(Url);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<FrontDesk.Data.Account>>(Url);
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData != null)
@@ -183,7 +216,7 @@ namespace CBS.BusinessService.Accounting
                     }
 
                 }
-                return new Account();
+                return new FrontDesk.Data.Account();
             }
             catch (Exception ex)
             {
@@ -191,13 +224,13 @@ namespace CBS.BusinessService.Accounting
                 throw ex;
             }
         }
-        public async Task<List<Account>> GetAllLiasionAccount(string BranchId)
+        public async Task<List<FrontDesk.Data.Account>> GetAllLiasionAccount(string BranchId)
         {
             try
             {
 
                 string Url = string.Format(APICallHelper.GetSystemLiaisonAccountQueryUrl, BranchId);
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<Account>>>(Url);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(Url);
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData != null)
@@ -206,7 +239,7 @@ namespace CBS.BusinessService.Accounting
                     }
 
                 }
-                return new List<Account>();
+                return new List<FrontDesk.Data.Account>();
             }
             catch (Exception ex)
             {
@@ -214,13 +247,13 @@ namespace CBS.BusinessService.Accounting
                 throw (ex);
             }
         }
-        public async Task<List<Account>> GetAllBranchAccountUsedToCreditCashFlow(string BranchId)
+        public async Task<List<FrontDesk.Data.Account>> GetAllBranchAccountUsedToCreditCashFlow(string BranchId)
         {
             try
             {
 
                 string Url = string.Format(APICallHelper.GetAllBranchAccountUsedToCreditCashFlow, BranchId);
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<Account>>>(Url);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(Url);
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData != null)
@@ -229,7 +262,7 @@ namespace CBS.BusinessService.Accounting
                     }
 
                 }
-                return new List<Account>();
+                return new List<FrontDesk.Data.Account>();
             }
             catch (Exception ex)
             {
@@ -237,11 +270,11 @@ namespace CBS.BusinessService.Accounting
                 throw (ex);
             }
         }
-        public async Task<List<Account>> GetAllAccounting()
+        public async Task<List<FrontDesk.Data.Account>> GetAllAccounting()
         {
             try
             {
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<Account>>>(APICallHelper.GetAlAccounts);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(APICallHelper.GetAlAccounts);
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData != null)
@@ -250,7 +283,7 @@ namespace CBS.BusinessService.Accounting
                     }
 
                 }
-                return new List<Account>();
+                return new List<FrontDesk.Data.Account>();
             }
             catch (Exception ex)
             {
@@ -258,11 +291,11 @@ namespace CBS.BusinessService.Accounting
                 throw (ex);
             }
         }
-        public async Task<List<Account>> GetAllLiaisonAccount()
+        public async Task<List<FrontDesk.Data.Account>> GetAllLiaisonAccount()
         {
             try
             {
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<Account>>>(APICallHelper.GetAllLiaisonAccount);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(APICallHelper.GetAllLiaisonAccount);
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData != null)
@@ -271,7 +304,7 @@ namespace CBS.BusinessService.Accounting
                     }
 
                 }
-                return new List<Account>();
+                return new List<FrontDesk.Data.Account>();
             }
             catch (Exception ex)
             {
@@ -279,11 +312,11 @@ namespace CBS.BusinessService.Accounting
                 throw (ex);
             }
         }
-        public async Task<List<Account>> GetAllAccountForABranch(string branchId)
+        public async Task<List<FrontDesk.Data.Account>> GetAllAccountForABranch(string branchId)
         {
             try
             {
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<Account>>>(string.Format(APICallHelper.GetAllAccountByBranch, branchId));
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(string.Format(APICallHelper.GetAllAccountByBranch, branchId));
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData != null)
@@ -292,7 +325,7 @@ namespace CBS.BusinessService.Accounting
                     }
 
                 }
-                return new List<Account>();
+                return new List<FrontDesk.Data.Account>();
             }
             catch (Exception ex)
             {
@@ -379,12 +412,12 @@ namespace CBS.BusinessService.Accounting
             }
         }
 
-        public async Task<ExecutionMessages> Update(Account account)
+        public async Task<ExecutionMessages> Update(FrontDesk.Data.Account account)
         {
             try
             {
                 account.AccountOwnerId = GetBranchID();
-                var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<Account>>(string.Format(APICallHelper.PutAccount, account.Id), account);
+                var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<FrontDesk.Data.Account>>(string.Format(APICallHelper.PutAccount, account.Id), account);
                 if (response.IsSuccess)
                 {
                     // Successful creation

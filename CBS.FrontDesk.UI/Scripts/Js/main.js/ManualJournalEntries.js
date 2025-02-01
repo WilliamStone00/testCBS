@@ -221,13 +221,14 @@ function extractAccountDetails(fullObject) {
         console.error('No Account object found');
         return null;
     }
-
+    console.log(fullObject);
     // Create a new object with specified properties
     const accountDetails = {
         AccountNumberCU: fullObject.Account.AccountNumberCU || null,
         Id: fullObject.Account.Id || null,
         CurrentBalance: fullObject.Account.CurrentBalance || null,
-        AccountName: fullObject.Account.AccountName || null
+        AccountName: fullObject.Account.AccountName || null,
+        AccountCategoryId: fullObject.Account.AccountCategoryId || null,
     };
     console.log(accountDetails);
     return accountDetails;
@@ -243,11 +244,12 @@ function loadAccountById(AccountId) {
         success: function (data) {
             // Process the response data
             var model = extractAccountDetails(data);
-            // Update input fields with returned account details
+            // Update input fields with returned account details 
             $('#EntryTempData_AccountBalance').val(model.CurrentBalance);
             $('#EntryTempData_AccountName').val(model.AccountName);
             $('#EntryTempData_AccountNumber').val(model.AccountNumberCU);
             $('#EntryTempData_AccountId').val(model.Id);
+            $('#EntryTempData_AccountCategoryId').val(model.AccountCategoryId);
         },
         error: function (xhr, status, error) {
             // Log any errors from the AJAX request
@@ -299,7 +301,8 @@ function addToBasket()
         amount: $('#EntryTempData_Amount').val(),
         credit: $('#EntryTempData_Amount').val(),
         debit: $('#EntryTempData_Amount').val(),
-        description: $('#EntryTempData_Description').val().trim()
+        description: $('#EntryTempData_Description').val().trim(),
+        AccountCategoryId: $('#EntryTempData_AccountCategoryId').val().trim()
     };
 
     // Format account name and reference
@@ -367,21 +370,29 @@ function addToBasket()
 function validateDebitTransaction(item) {
     const accountBalance = parseFloat(item.accountBalance || 0);
     const amount = parseFloat(item.amount || 0);
-    const bookingDirection = item.bookingDirection; // Debit or Credit
-    console.log(amount + ' current balance =' + accountBalance);
-    // Check if booking direction is Debit
-    if (bookingDirection.toLowerCase() === 'debit') {
+    const bookingDirection = item.bookingDirection.toLowerCase();
+    const accountStart = item.accountNumber.substring(0, 2);
 
-        if (accountBalance - amount > 0) {
+    // Check if account starts with specified prefixes
+    //const excludedPrefixes = ['2', '5', '6', '46', '41', '42'];
+    //if (excludedPrefixes.some(prefix => item.accountNumber.startsWith(prefix))) {
+    //    // For excluded accounts, only validate credit transactions
+    //    return bookingDirection === 'credit' ? (accountBalance - amount >= 0) : true;
+    //}
 
-            return true; // Invalid transaction
-        } else {
-            console.log('Insufficient account balance for the debit transaction.');
+    // For other accounts, validate debit transactions
+    if (bookingDirection === 'debit' && item.AccountCategoryId=='credit') {
+        if (accountBalance - amount < 0) {
+            console.log('Insufficient account balance for debit transaction');
             return false;
         }
     }
-
-    // If all checks pass
+    if (bookingDirection === 'credit' && item.AccountCategoryId == 'debit') {
+        if (accountBalance - amount < 0) {
+            console.log('Insufficient account balance for debit transaction');
+            return false;
+        }
+    }
     return true;
 }
 function createManuallyJournalEntryDataSet(basket)
