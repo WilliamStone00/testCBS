@@ -24,6 +24,8 @@ using DocumentFormat.OpenXml.Office2010.Excel;
 using CBS.FrontDesk.Data.UserManagement;
 using DocumentFormat.OpenXml.EMMA;
 using Azure.Core;
+using CBS.BusinessService.Services;
+using CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -33,7 +35,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private const string EventCode = "Vault_To_Liaison";
         private readonly AccountingServices _AccountServices;
         private readonly AccountingEntryServices _accountingEntryServices;
-        private readonly BranchServices branchServices;
+        private readonly BranchServices branchServices; 
+                    private readonly BankZoneBranchServices _bankZoneBranchServices;
         private readonly AccountingEntryRuleService _Service;
         public CashFlowManagementController()
         {
@@ -41,6 +44,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _accountingEntryServices = new AccountingEntryServices();
             branchServices = new BranchServices();
             _Service = new AccountingEntryRuleService();
+            _bankZoneBranchServices = new BankZoneBranchServices();
         }
         // GET: BankingOperation
 
@@ -52,7 +56,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.Branches = BuildDropDown(GenerateBranchBranchCode(listBranch.ToList()));
 
             ViewBag.Accounts = BuildDropDown(GenerateAccountListView(DebitAccounts));
-            ViewBag.Decisions = BuildMenuViewBag();
+          
 
         }
         private IEnumerable<StringValues> GenerateAccountListView(List<Data.Account> accounts)
@@ -78,10 +82,31 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private IEnumerable<StringValues> GenerateBranchBranchCode(List<Branch> branches)
         {
             List<StringValues> stringValues = new List<StringValues>();
-            foreach (var branch in branches)
+            var collections = branches.Where(x => x.IsHavingBank == true);
+            foreach (var branch in collections)
             {
 
-                stringValues.Add(new StringValues(branch.BranchCode,  branch.Name));
+                stringValues.Add(new StringValues(branch.Id, branch.BranchCode + "-" + branch.Name));
+            }
+            return stringValues;
+        }
+        private async Task<IEnumerable<StringValues>> GenerateBranchInZoneCode(List<Branch3ppBranch> branches, string excludeBranchId)
+        {
+            List<StringValues> stringValues = new List<StringValues>();
+            List<Branch> allBranch =( await  branchServices.GetBranches()).ToList();
+            var finalCollection = from b in allBranch
+                                  join branch in branches on b.Id equals branch.Id
+                                  select new Branch3ppBranch
+                                  {
+                                      Id = branch.Id,
+                                      Code = branch.Code,
+                                      Name = branch.Name
+                                  };
+            foreach (var branch in finalCollection)
+            {
+                if (branch.Id == excludeBranchId)
+                    continue;
+                stringValues.Add(new StringValues(branch.Id, branch.Name));
             }
             return stringValues;
         }
@@ -149,23 +174,27 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             return list;
         }
-        private dynamic BuildMenuViewBag()
+        private dynamic BuildMenuViewBag(Branch branch)
         {
             List<SelectListItem> list = new List<SelectListItem>();
 
-            if (_AccountServices.IsMainBranch())
+            if (branch.IsHavingBank)
             {
                 list.Clear();
-                list.Add(new SelectListItem { Text = $"Approve", Value = "Approve Bank Cash Out" });
                 list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
-
+                list.Add(new SelectListItem { Text = $"RedirectToBranchBCO", Value = "Redirect for bank cash out" });
+                list.Add(new SelectListItem { Text = $"RedirectToBranchBTB", Value = "Redirect for inter-branch-transfer" });
+                list.Add(new SelectListItem { Text = $"Approved", Value = "Approve bank-cash-Out" });
             }
             else
             {
                 list.Clear();
                 list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
-                list.Add(new SelectListItem { Text = $"RedirectToBranch", Value = "Redirect-To-Branch" });
+                list.Add(new SelectListItem { Text = $"RedirectToBranchBCO", Value = "Redirect for bank-cash-out" });
+                list.Add(new SelectListItem { Text = $"RedirectToBranchBTB", Value = "Redirect for inter-branch-transfer" });
             }
+
+           
        
 
             return list;
@@ -249,7 +278,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             List<CashReplenimentRequest> cashReplenimentRequestDtos = new List<CashReplenimentRequest>();
             //CreateBankCashOut
             var Id = _AccountServices.GetBranchID();
-            var datas = (await _accountingEntryServices.GetAllCashReplenimentRequest()).Where(pi => pi.BranchId.Equals(Id) && pi.CashRequisitionType.Equals(CashRequisitionType.REQUEST.ToString()) && pi.Status.Equals(CashReplishmentRequestStatus.awaiting_corresponding_entry_posting.ToString()));
+            var datas = (await _accountingEntryServices.GetAllCashReplenimentRequest()).Where(pi => pi.BranchId.Equals(Id) && pi.CashRequisitionType.Equals(CashRequisitionType.REQUEST.ToString()) && pi.Status.Equals(CashReplishmentRequestStatus.Awaiting_Branch_CashClearing.ToString()));
 
             var dataUser = (await _accountingEntryServices.GetUserList()).ToList();
             var result = from request in datas
@@ -313,7 +342,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             List<CashReplenimentRequest> cashReplenimentRequestDtos = new List<CashReplenimentRequest>();
             //CreateBankCashOut
             var Id = _AccountServices.GetBranchID();
-            var datas = (await _accountingEntryServices.GetAllCashReplenimentRequest()).Where(pi => pi.CorrespondingBranchId.Equals(Id) && pi.Status.Equals(CashReplishmentRequestStatus.RedirectToBranch.ToString()));
+            var datas = (await _accountingEntryServices.GetAllCashReplenimentRequest()).Where(pi => pi.CorrespondingBranchId.Equals(Id) && pi.Status.Equals(CashReplishmentRequestStatus.RedirectToBranchBCO.ToString()));
 
             var dataUser = (await _accountingEntryServices.GetUserList()).ToList();
             var result = from request in datas
@@ -377,6 +406,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
         }
+
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(CashDemandDataEntity model)
         {
@@ -433,12 +463,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (model.ServiceOption.Equals("CashRequestApproval"))
             {
-                model.CashReplenimentRequestdto.IsApproved = model.CashReplenimentRequestdto.TempId2 == "RedirectToBranch" ? true : model.CashReplenimentRequestdto.TempId2 == "Approve" ? true : false;
-                model.CashReplenimentRequestdto.CashRequisitionType = (model.CashReplenimentRequestdto.TempId2 == "RedirectToBranch") ? CashRequisitionType.ORDER.ToString() : CashRequisitionType.REQUEST.ToString();
+                model.CashReplenimentRequestdto.IsApproved = model.CashReplenimentRequestdto.TempId2.Contains ("RedirectToBranch") ? true : model.CashReplenimentRequestdto.TempId2 == "Approved" ? true : false;
+                model.CashReplenimentRequestdto.CashRequisitionType = model.CashReplenimentRequestdto.TempId2.Contains("RedirectToBranch") ? CashRequisitionType.ORDER.ToString() : CashRequisitionType.REQUEST.ToString();
                 model.CashReplenimentRequestdto.Status = model.CashReplenimentRequestdto.TempId2;
                 model.CashReplenimentRequestdto.CorrespondingBranchId = (model.CashReplenimentRequestdto.CashRequisitionType == CashRequisitionType.ORDER.ToString()) ? model.CashReplenimentRequestdto.CorrespondingBranchId : _accountingEntryServices.GetBranchID();
-             
-                    var datac = await _accountingEntryServices.CreateApprovalRequest(model.CashReplenimentRequestdto.ConvertToCashApprovalResponse(_AccountServices.GetBranchCode()), model.CashReplenimentRequestdto.BranchId == _AccountServices.GetBranchID());
+                model.CashReplenimentRequestdto.TempId3= model.CashReplenimentRequestdto.TempId3;
+                var datac = await _accountingEntryServices.CreateApprovalRequest(model.CashReplenimentRequestdto.ConvertToCashApprovalResponse(_AccountServices.GetBranchCode()), model.CashReplenimentRequestdto.BranchId == _AccountServices.GetBranchID());
 
                     return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
  
@@ -686,7 +716,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 cashDemandDataEntity.CashReplenimentRequestdto.HasAccount56 = await CheckIfBranchHasBankAccountAsync(_AccountServices.GetBranchID());
                 cashDemandDataEntity.CashReplenimentRequestdto.ApprovedMessage = $"I {_AccountServices.GetUserFullName()} Approved you withdraw XAF {cashDemandDataEntity.CashReplenimentRequestdto.AmountRequested.ToString("N")} from the bank in favour" +
                                                                                  $" of Vault of {(await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name}";
-                cashDemandDataEntity.CashReplenimentRequestdto.BranchOffice = (await branchServices.GetBranches()).Where(po => po.Id.Equals(OperationEventAttribute.BranchId)).FirstOrDefault().Name;
+                var branch = (await branchServices.GetBranches()).Where(po => po.Id.Equals(OperationEventAttribute.BranchId)).FirstOrDefault();
+                cashDemandDataEntity.CashReplenimentRequestdto.BranchOffice = branch.Name;
                 if (branchServices.IsHeadOffice() == false)
                 {
                     ViewBag.IsAuthourized = false;
@@ -696,26 +727,32 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 ViewBag.IsAuthourized = true;
                 var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
                 ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
-
+                var listBranch = await _bankZoneBranchServices.GetAllBranchPresentInZoneByParticipant(cashDemandDataEntity.CashReplenimentRequestdto.BranchId, "BRANCH");
+                ViewBag.ZoneBranch = BuildDropDown(await GenerateBranchInZoneCode(listBranch, cashDemandDataEntity.CashReplenimentRequestdto.BranchId));
+                ViewBag.Decisions = BuildMenuViewBag(branch);
                 return PartialView(partialView, cashDemandDataEntity);
 
             }
             else if (path == "bankCashOutApproval")
             {
-                var AccountnumberX = "571010" + _AccountServices.GetBranchCode() + "000";
-                var account = (await _AccountServices.GetAccountByAccountNumber(AccountnumberX));
+ 
 
                 var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.BankCashOut = new BankCashOut();
                 cashDemandDataEntity.BankCashOut.ReferenceId = OperationEventAttribute.Id;
-                cashDemandDataEntity.BankCashOut.ToAccountId = account.Id;
+                cashDemandDataEntity.BankCashOut.FromAccountId = OperationEventAttribute.TempData;
+   
                 cashDemandDataEntity.BankCashOut.Amount =Convert.ToDecimal( OperationEventAttribute.AmountApproved);
                 var user = await _accountingEntryServices.GetUser(OperationEventAttribute.ApprovedBy);
                 cashDemandDataEntity.BankCashOut.ApprovedBy = $"{user.firstName} {user.lastName}";
                 cashDemandDataEntity.BankCashOut.ApprovedDate = OperationEventAttribute.ApprovedDate.ToString();
                 cashDemandDataEntity.BankCashOut.Description = $"I {_AccountServices.GetUserFullName()} was authorized to withdraw {(Convert.ToDecimal(OperationEventAttribute.AmountApproved).ToString("N"))} from the bank in favour" +
                 $" of Vault of {_AccountServices.GetBranchName()}";
+                var destinationBranchInfo = await branchServices.GetBranch(OperationEventAttribute.BranchId);
+                var accountList = (await _AccountServices.GetAccountInfoByEventCode(new EventRequest { EventCode = "Bank_To_Transit", ToBranchCode = destinationBranchInfo.BranchCode, ToBranchId = destinationBranchInfo.Id }));
+                var accountTo = accountList.Where(x => x.Type.ToLower() == "destination").FirstOrDefault();
+                cashDemandDataEntity.BankCashOut.ToAccountId = accountTo.Id;
                 if (branchServices.IsHeadOffice())
                 {
                     //ViewBag.HasError= true;
@@ -724,9 +761,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     return PartialView(partialView, cashDemandDataEntity);
                 }
                 ViewBag.IsAuthourized = true;
+                var list = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
                 if (OperationEventAttribute.CashRequisitionType.Equals("REQUEST"))
                 {
-                    var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
+                    var listOfAccounts = list;
                     ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
                 }
                 else
@@ -734,7 +772,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.CorrespondingBranchId);
                     ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
                 }
-
+                var modsx = await _AccountServices.GetAccount(cashDemandDataEntity.BankCashOut.FromAccountId);
+                cashDemandDataEntity.BankCashOut.FromAccountName = $"{modsx.AccountNumberCU} -{modsx.AccountName}:{modsx.CurrentBalance}";
 
                 return PartialView(partialView, cashDemandDataEntity);
 
@@ -749,10 +788,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
              
                 cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
-
+                var user = await _accountingEntryServices.GetUser(OperationEventAttribute.ApprovedBy);
                 var destinationBranchInfo = listBranch.Where(x => x.Id == cashDemandDataEntity.CashReplenimentRequestdto.BranchId).FirstOrDefault();
                 var accountList = (await _AccountServices.GetAccountInfoByEventCode(new EventRequest { EventCode = "Vault_To_Liaison", ToBranchCode = destinationBranchInfo.BranchCode, ToBranchId=destinationBranchInfo.Id }));
-                var user = await _accountingEntryServices.GetUser(OperationEventAttribute.ApprovedBy);
+                
                 cashDemandDataEntity.CashReplenimentRequestdto.ApprovedBy = user.name + "," + user.phoneNumber + " ";
                 var DestinationBranch = await branchServices.GetBranch(cashDemandDataEntity.CashReplenimentRequestdto.BranchId);
                 cashDemandDataEntity.CashReplenimentRequestdto.BranchOffice = DestinationBranch.Name;
@@ -861,7 +900,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 mOdelsd.CreatedDate = entry.FirstOrDefault().CreatedDate;
 
                 cashDemandDataEntity.CashClearing.Description = $"I {_AccountServices.GetUserFullName()} is performing this operation of cash clearing authorized by {cashDemandDataEntity.CashReplenimentRequest.TempId2}";
-
+                var btbDtoData = await _accountingEntryServices.GetCachedBranchToBranchTransferData(KEY);
+                cashDemandDataEntity.CashClearing.CurrencyNotes = btbDtoData.CurrencyNotesRequest;
                 return PartialView(partialView, cashDemandDataEntity);
 
 
@@ -944,7 +984,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else
             {
-                datas = (await _accountingEntryServices.GetAllDepositNotificationRequest()).Where(pi => pi.BranchId.Equals(Id) && pi.Status == CashReplishmentRequestStatus.awaiting_corresponding_entry_posting.ToString());
+                datas = (await _accountingEntryServices.GetAllDepositNotificationRequest()).Where(pi => pi.BranchId.Equals(Id) && pi.Status == CashReplishmentRequestStatus.Awaiting_uploaded_bank_deposit_receipt.ToString());
 
 
             }
@@ -1005,6 +1045,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public async Task<ActionResult> GetAllCashReplenimentRequestData()
         {
             var datasList = (await _accountingEntryServices.GetBranches()).ToList();
+     
             var datas = await _accountingEntryServices.GetAllCashReplenimentRequest();
             var dataUser = (await _accountingEntryServices.GetUserList()).ToList();
             var result = from request in datas
@@ -1018,6 +1059,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                              RequestMessage = request.RequestMessage,
                              TempId1 = user.name + "," + user.roleName,
                              IssuedDate = request.IssuedDate,
+                             IsOwner = _accountingEntryServices.GetBranchID()== request.BranchId,
+                             HasAccount56 = datasList.Find(x => x.Id == request.BranchId).IsHavingBank,
                              ApprovedBy = request.ApprovedBy,
                              ApprovedDate = request.ApprovedDate,
                              IsApproved = request.IsApproved,
@@ -1135,13 +1178,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             if (_accountingEntryServices.IsHeadOffice())
             {
                 datas = (await _accountingEntryServices.GetAllDepositNotificationRequest())
-                    .Where(x=>x.Status.Trim().Equals(CashReplishmentRequestStatus.awaiting_corresponding_entry_posting));
+                    .Where(x=>x.Status.Trim().Equals(CashReplishmentRequestStatus.Awaiting_uploaded_bank_deposit_receipt));
 
             }
             else
             {
                 datas = (await _accountingEntryServices.GetAllDepositNotificationRequest())
-                     .Where(x => x.Status.Trim().Equals(CashReplishmentRequestStatus.awaiting_corresponding_entry_posting.ToString()));
+                     .Where(x => x.Status.Trim().Equals(CashReplishmentRequestStatus.Awaiting_uploaded_bank_deposit_receipt.ToString()));
 
 
             }

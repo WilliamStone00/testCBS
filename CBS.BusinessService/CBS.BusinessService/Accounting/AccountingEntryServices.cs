@@ -747,6 +747,7 @@ namespace CBS.BusinessService
                 {
                     var user = await GetUser(couApiResponse.ApiResponseData.Data.IssuedBy);
                     couApiResponse.ApiResponseData.Data.TempId1 = user.name + "," + user.phoneNumber + " ";
+                    couApiResponse.ApiResponseData.Data.TempId3 = couApiResponse.ApiResponseData.Data.TempData;
                     if (couApiResponse.ApiResponseData.Data.Status != "Pending")
                     {
                         var userx = await GetUser(couApiResponse.ApiResponseData.Data.ApprovedBy);
@@ -1004,9 +1005,9 @@ namespace CBS.BusinessService
         {
             try
             {
+                var modal = model.ConvertToTransferData();
 
-
-                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.BranchToBranchTransferUrl, model.ConvertToTransferData());
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.BranchToBranchTransferUrl, modal);
                 if (response.IsSuccess)
                 {
                     // Successful creation
@@ -1538,6 +1539,27 @@ namespace CBS.BusinessService
                 message = message + ", ";
             }
             return message;
+        }
+
+         
+        public async Task<BranchToBranchTransferDto> GetCachedBranchToBranchTransferData(string referenceId)
+        {
+            try
+            {
+                var urlString = string.Format(APICallHelper.GetCashBranchToBranchTransferUrl, referenceId);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<BranchToBranchTransferDto>>(string.Format(urlString));
+                if (couApiResponse.IsSuccess)
+                {
+                    
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new BranchToBranchTransferDto();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
         }
     }
 

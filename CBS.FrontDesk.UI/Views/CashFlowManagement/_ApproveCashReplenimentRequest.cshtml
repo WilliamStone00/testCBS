@@ -160,7 +160,7 @@
                                     <div class="form-check mb-3" id="hideBranchID">
                                         <div class="form-floating form-floating-outline">
 
-                                            @Html.DropDownListFor(m => m.CashReplenimentRequestdto.CorrespondingBranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
+                                            @Html.DropDownListFor(m => m.CashReplenimentRequestdto.CorrespondingBranchId, new SelectList(ViewBag.ZoneBranch == null ? "" : ViewBag.ZoneBranch, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.CorrespondingBranchId, "", new { @class = "text-danger" })
                                             <label for="Account">Select Branch</label>
                                         </div>

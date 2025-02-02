@@ -141,47 +141,54 @@
                                 else
                                 {
                                     @*if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
-                                        {
-                                            <div class="form-check mb-3">
-                                                <div class="form-floating form-floating-outline">
+                    {
+                        <div class="form-check mb-3">
+                            <div class="form-floating form-floating-outline">
 
-                                                    @Html.DropDownListFor(m => m.CashReplenimentRequestdto.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
-                                                    @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.BranchId, "", new { @class = "text-danger" })
-                                                    <label for="Account">Branch Office</label>
-                                                </div>
-                                            </div>
-                                        }*@
+                                @Html.DropDownListFor(m => m.CashReplenimentRequestdto.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.BranchId, "", new { @class = "text-danger" })
+                                <label for="Account">Branch Office</label>
+                            </div>
+                        </div>
+                    }*@
 
-                                    @*<div class="form-check mb-3">
-                                            <div class="form-floating form-floating-outline">
-
-                                                @Html.DropDownListFor(m => m.CashReplenimentRequestdto.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.AccountId, "", new { @class = "text-danger" })
-                                                <label for="Account">Select debiting account</label>
-                                            </div>
-                                        </div>*@
                                     <div class="form-check mb-3">
                                         <div class="form-floating form-floating-outline">
 
-                                            @Html.DropDownListFor(m => m.CashReplenimentRequestdto.TempId2, new SelectList(ViewBag.Decisions == null ? "" : ViewBag.Decisions, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "CorrespondingBranchID" })
+                                            @Html.DropDownListFor(m => m.CashReplenimentRequestdto.TempId2, new SelectList(ViewBag.Decisions == null ? "" : ViewBag.Decisions, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "MakeDecision" })
                                             @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.ApprovedBy, "", new { @class = "text-danger" })
                                             <label for="Account">Make decision</label>
                                         </div>
                                     </div>
-                                    <div class="form-check mb-3" id="hideBranchID">
-                                        <div class="form-floating form-floating-outline">
+                                    <div id="hideBranchID">
+                                        <div class="form-check mb-3">
+                                            <div class="form-floating form-floating-outline">
 
-                                            @Html.DropDownListFor(m => m.CashReplenimentRequestdto.CorrespondingBranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.CorrespondingBranchId, "", new { @class = "text-danger" })
-                                            <label for="Account">Select Branch</label>
+                                                @Html.DropDownListFor(m => m.CashReplenimentRequestdto.CorrespondingBranchId, new SelectList(ViewBag.ZoneBranch == null ? "" : ViewBag.ZoneBranch, "Text", "Value"), "", new { @class = "form-control select2", @search = "true",  @id = "CorrespondingBranchID" })
+                                                @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.CorrespondingBranchId, "", new { @class = "text-danger" })
+                                                <label for="Account">Select Branch</label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-check mb-3">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.CashReplenimentRequestdto.AmountApproved, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.AmountApproved, "", new { @class = "text-danger" })
+                                    <div id="hideAccountId">
+                                        <div class="form-check mb-3">
+                                            <div class="form-floating form-floating-outline">
 
-                                            <label for="Description"> Approved Amount</label>
+                                                @Html.DropDownListFor(m => m.CashReplenimentRequestdto.TempId3, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.TempId3, "", new { @class = "text-danger" })
+                                                <label for="Account">Select debiting account</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="hideAmount">
+                                        <div class="form-check mb-3">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.CashReplenimentRequestdto.AmountApproved, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.AmountApproved, "", new { @class = "text-danger" })
+
+                                                <label for="Description"> Approved Amount</label>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-check mb-3">
@@ -208,7 +215,7 @@
 
 
                     </div>
-                </div>
+                                </div>
 
             </div>
         </div>

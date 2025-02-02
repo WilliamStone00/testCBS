@@ -36,6 +36,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Description { get; set; }
         public string FileUpload { get; set; }
         public string ValueDate { get; set; }
+        
+                 public CurrencyNotesRequest CurrencyNotesRequest { get; set; }
     }
 
 }

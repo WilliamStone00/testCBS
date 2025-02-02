@@ -840,7 +840,7 @@ namespace CBS.FrontDesk.Helper
         public static string DepositNotificationUrl = "/api/v1/BankingOperation/AddDepositNotificationCommand";
         public static string ApproveDepositNotificationUrl = "/api/v1/BankingOperation/AddDepositApprovalCommand";
         public static string BalanceSheet_EntriesUrl = "/api/v1/AccountingEntries/GenerateBalanceSheet";
-       
+        public static string GetCashBranchToBranchTransferUrl = "/api/v1/AccountingEntry/GetBranchToBranchTransferDto/{0}";
         public static string GeneralLedgerStatementUrl = "/api/v1/AccountingEntry/GetAccountStatementEntry";
         public static string GeneralLedgerStatementDetailUrl = "/api/v1/AccountingEntry/GetAccountGLEntry";
         public static string JournalEntryUrl = "/api/v1/AccountingEntry/JournalEntry";
@@ -929,8 +929,9 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllBankingZone = "/api/v1/BankingZones";
         public static string CreateBankingZone = "/api/v1/BankingZone";
 
-        //BankZoneBranch
+        //BankZoneBranch ///
         public static string Get_Update_Delete_BankZoneBranch = "/api/v1/BankZoneBranch/{0}";
+        public static string Get_BankZoneBranchbyBranchId = "/api/v1/BankZoneBranch/BankZoneBranchbyBranchId/{0}/{1}";
         public static string Get_BankZoneBranch_by_ZoneID = "/api/v1/BankZoneBranch/{0}";
         public static string GetAllBankZoneBranch = "/api/v1/BankZoneBranchs";
         public static string CreateBankZoneBranch = "/api/v1/BankZoneBranch";

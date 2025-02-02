@@ -11,7 +11,7 @@ namespace CBS.FrontDesk.Data.Entity.Config
     {
         public string Id { get; set; }
 
-        public bool IsMainBranch { get; set; } //""
+        public bool IsHavingBank { get; set; } //""
        [Required]
         public string BranchCode { get; set; }
         [Required]

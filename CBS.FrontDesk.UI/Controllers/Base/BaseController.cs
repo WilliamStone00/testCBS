@@ -650,6 +650,7 @@ namespace CBS.FrontDesk.UI.Controllers
             Session["BankName"] = userSession.Branch.Bank.Name;
             Session["BranchName"] = userSession.Branch.Name;
             Session["BranchCode"] = userSession.Branch.BranchCode;
+            Session["IsHavingBank"] = userSession.Branch.IsHavingBank;
             Session["BankCode"] = userSession.Branch.Bank.BankCode;
 
             if (userSession.Branch.IsHeadOffice)

@@ -17,7 +17,7 @@
 
         @Html.HiddenFor(m => m.BankCashOut.Balance)
         @Html.HiddenFor(m => m.BankCashOut.ToAccountId)
-
+        @Html.HiddenFor(m => m.BankCashOut.FromAccountId)
 
         <input type="hidden" name="ServiceOption" value="bankCashOutApproval" id="ServiceOption" />
         <fieldset class="fieldset-custom">
@@ -25,9 +25,10 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.BankCashOut.FromAccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "AccountId" })
-                        @Html.ValidationMessageFor(model => model.BankCashOut.FromAccountId, "", new { @class = "text-danger" })
-                        <label for="AccountId">Select Bank Account</label>
+
+
+                        
+                        <h5 for="AccountId">@Model.BankCashOut.FromAccountName</h5>
                     </div>
                 </div>
 
@@ -36,7 +37,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex flex-column align-items-end text-end">
-                                    <h3 class="mb-3">XAF @Model.BankCashOut.Amount</h3>
+                                    <h3 class="mb-3">XAF @Model.BankCashOut.Amount.ToString("N")</h3>
                                     <p class="mb-0">Amount authorized by @Model.BankCashOut.ApprovedBy</p>
                                     <p class="mb-0">On the @Model.BankCashOut.ApprovedDate</p>
                                 </div>

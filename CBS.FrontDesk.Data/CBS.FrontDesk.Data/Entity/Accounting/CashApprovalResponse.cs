@@ -18,7 +18,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string BranchId { get;   set; }
         
                  public string CashRequisitionType { get; set; }
-        public string BranchCode { get; internal set; }
+        public string BranchCode { get;   set; }
+        public string AccountId { get;   set; }
     }
      
  

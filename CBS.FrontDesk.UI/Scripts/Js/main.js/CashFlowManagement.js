@@ -1,23 +1,47 @@
 ﻿$(document).ready(function () {
-
+    $('#hideBranchID').hide();
+    $('#hideAmount').hide();
     
+    $('#hideAccountId').hide();
     LoadCashRequestDataBranch("CashRequestDataTable")
     //LoadCashRequestDataHo("myRequestDataTable")
     LoadCashReplenishmentDataDT("GetAllCashRequestDataTable")
     
-    $(document).on('change', '#CorrespondingBranchID', function () {
+    $(document).on('change', '#MakeDecision', function () {
  
         // Get the selected value
         var selectedValue = $(this).val();
-        if (selectedValue === 'RedirectToBranch') {
-            // Show the element
+        console.log(selectedValue);
+        if (selectedValue === 'RedirectToBranchBTB' || selectedValue === 'RedirectToBranchBCO' || selectedValue === 'Approved') {
+            // Show the element 
+            console.log(selectedValue);
             $('#hideBranchID').show();
+            $('#hideAmount').show();
+            $('#hideAccountId').hide();
+            if (selectedValue === 'RedirectToBranchBCO' || selectedValue === 'Approved') {
+                $('#hideBranchID').show();
+                $('#hideAmount').show();
+                $('#hideAccountId').show();
+                if (selectedValue === 'Approved') {
+                    $('#hideBranchID').hide();
+                    $('#hideAmount').show();
+                    $('#hideAccountId').show();
+                }
+            }
         } else {
             // Hide the element
             $('#hideBranchID').hide();
+            $('#hideAmount').hide();
+            $('#hideAccountId').hide();
         }
     });
+    $(document).on('change', '#CorrespondingBranchID', function () {
 
+        // Get the selected value
+        var selectedValue = $(this).val();
+        console.log(selectedValue);
+        loadBranchAccountUsedToCreditCashFlow(selectedValue);
+    });
     $(document).on('change', '#AccountId', function () {
 
         // Get the selected value
@@ -26,7 +50,25 @@
     });
 
 });
+//GetAllBranchAccountUsedToCreditCashFlow
 
+
+function loadBranchAccountUsedToCreditCashFlow(accountId) {
+    console.log(accountId);
+    $.ajax({
+        url: '/CashFlowManagement/GetAllBranchAccountUsedToCreditCashFlow',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId: accountId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo 
+        
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
 function loadAccountBalance(accountId) {
     console.log(accountId);
     $.ajax({

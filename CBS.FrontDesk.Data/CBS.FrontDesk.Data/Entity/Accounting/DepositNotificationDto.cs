@@ -87,6 +87,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 Message = Message, 
                 BankAccountId = BankAccountId == null ? "XXXXXX" : BankAccountId,
                 BankAccountOwner = BankAccountId==null?"XXXXXX" : branchID,
+                CurrencyNotesRequest =CurrencyNotes
             };
             
             
