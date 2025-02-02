@@ -350,10 +350,17 @@ function failureCallback(response) {
     appalert(response.message || "Your session is expired Or An error occurred while processing the transaction", 3, 1);
 }
 
-function PostCashIn() {
+function PostOperation() {
     var deposits = collectDeposits();
     if (deposits.length === 0) {
-        appalert("Please select at least one account to perform the cash-in.", 3, 1);
+        appalert("Please select at least one account to perform operation.", 3, 1);
+        return;
+    }
+
+    // Ensure only one record is selected
+    var selectedRecords = $('#myDataTableT tbody .form-check-input:checked').length;
+    if (selectedRecords !== 1) {
+        appalert("Please select exactly one account to perform the operation.", 3, 1);
         return;
     }
 
@@ -374,20 +381,42 @@ function PostCashIn() {
         return;
     }
 
-    deposits[0].currencyNotes = collectCurrencyNotes();
-    deposits[0].Depositer = collectDepositorInfo();
-
     // Check if one of the radio buttons is selected
-    var sourceType = $("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked").val();
-    if (!sourceType) {
-        appalert("Please select operator type, Either Mobile Money MTN OR Mobile Money Orange", 3, 1);
+    var bookingDirection = $("input[name='AddMembersNoneCashOperationCommand.BookingDirection']:checked").val();
+    if (!bookingDirection) {
+        appalert("Please select booking direction. Either Debit or Credit", 3, 1);
         return;
     }
 
+    // Check if a Chart of Account is selected
+    var correspondingAccountId = $('#account_number').val();
+    if (!correspondingAccountId || correspondingAccountId === "---Select GL---") {
+        appalert("Please select a valid Corresponding Account (GL).", 3, 1);
+        return;
+    }
+    var note = $('#Note').val().trim();
+    if (!note) {
+        appalert("Please enter a reason for the operation in the Note field.", 3, 1);
+        return;
+    }
+
+    // Retrieve the corresponding account name from the dropdown
+    var correspondingAccountName = $('#account_number option:selected').text().trim();
+
+    // Construct the confirmation message based on the booking direction
     var message = "";
-    message += "Are you sure you want to perform a cash-in of " + totalInfo.total + " to the selected account numbers?\n";
+    if (bookingDirection === "Debit") {
+        message += "You are about to debit the selected member account in favor of the corresponding account:\n";
+        message += "Corresponding Account: " + correspondingAccountName + "\n";
+    } else {
+        message += "You are about to credit the selected member account from the corresponding account:\n";
+        message += "Source Account (GL): " + correspondingAccountName + "\n";
+    }
+    message += "Total Amount: " + totalInfo.total + "\n";
     message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-    confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits, 'CashInMomocashCollection');
+
+    // Confirm transaction
+    confirmTransaction('Confirm ' + bookingDirection + ' Operation', message, '/CashDesk/PostRequestCash', deposits, 'CashInMomocashCollection');
 }
 
 function PostLoanRepayment() {

@@ -77,6 +77,7 @@
     <Compile Include="Entity\CashCeilingManagement\CashCeilingRequest.cs" />
     <Compile Include="Entity\CashChangeManagement\CashChangeHistory.cs" />
     <Compile Include="Entity\CMoney\CMoneyMembersActivationAccount.cs" />
+    <Compile Include="Entity\MemberNoneCashOperationsP\MemberNoneCashOperation.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryAnalysisResultSummary.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryUploadModel.cs" />
     <Compile Include="Entity\SalaryManagement\StandingOrder.cs" />

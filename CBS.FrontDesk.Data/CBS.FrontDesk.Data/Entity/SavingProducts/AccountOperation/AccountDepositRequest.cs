@@ -1,6 +1,7 @@
 ﻿using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public OtherTransaction OtherTransaction { get; set; }
         public GenerateRemittanceOTPCommand GenerateRemittanceOTPCommand { get; set; } = new GenerateRemittanceOTPCommand();
         public AddOtherTransactionMobileMoneyCommand AddOtherTransactionMobileMoneyCommand { get; set; } = new AddOtherTransactionMobileMoneyCommand();
-        public AddMembersNoneCashOperationCommand AddMembersNoneCashOperationCommand { get; set; } = new AddMembersNoneCashOperationCommand();
+        public AddMemberNoneCashOperationCommand AddMembersNoneCashOperationCommand { get; set; } = new AddMemberNoneCashOperationCommand();
         public List<OtherTransaction> OtherTransactions { get; set; } = new List<OtherTransaction>();
         public string Action { get; set; }
         public SavingProduct SavingProduct { get; set; }
@@ -104,7 +105,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public decimal Interest { get; set; }
         public decimal Total { get; set; }
         public string TellerCode { get; set; }
-
+        public string ChartOfAccountId { get; set; }
         public string AccountType { get; set; }
         public string LoanId { get; set; }
         public string RemittanceId { get; set; }
