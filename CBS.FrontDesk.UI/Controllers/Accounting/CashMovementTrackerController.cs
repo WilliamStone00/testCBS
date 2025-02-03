@@ -86,7 +86,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else
             {
-                dataReqs = (await _accountingEntryServices.GetAllDepositNotificationRequest()).Where(pi => pi.BranchId.Equals(_accountingEntryServices.GetBranchID()) && pi.Status == CashReplishmentRequestStatus.Approve.ToString());
+                dataReqs = (await _accountingEntryServices.GetAllDepositNotificationRequest()).Where(pi => pi.BranchId.Equals(_accountingEntryServices.GetBranchID()) && pi.Status == CashReplishmentRequestStatus.Approved.ToString());
             }
             var dataUserc = (await _accountingEntryServices.GetUserList()).ToList();
             var branchesx = (await _branchService.GetBranches()).ToList();

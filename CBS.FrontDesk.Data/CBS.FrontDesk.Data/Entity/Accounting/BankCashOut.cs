@@ -10,6 +10,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Id { get; set; }
         [Required]
         public string FromAccountId { get; set; }
+        
+              public string FromAccountName { get; set; }
         public string Balance { get; set; }
         [Required]
         public decimal Amount { get; set; }
@@ -40,7 +42,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         {
             try
             {
-                if (Convert.ToDecimal(Balance) - Amount > 0)
+                if (true/*Convert.ToDecimal(Balance) - Amount > 0*/)
                 {
                     return new BankTransactionModel
                     {
@@ -54,6 +56,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                         FileUpload = FileUpload,
                         Description = Description,
                         Id = Id,
+                        CurrencyNotesRequest = CurrencyNotes,
                         Balance = Balance
                     };
                 }
@@ -122,6 +125,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             {
                 FromAccountId = FromAccountId,
                 ToAccountId = ToAccountId,
+                CurrencyNotesRequest = CurrencyNotes,
                 Amount = CurrencyNotes.GetAmountValue(),
                 ReferenceId = ReferenceId,
             };
@@ -132,6 +136,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         public string Id { get; set; }
         public string AccountId { get; set; }
+        public string AccountName { get; set; }
         public string Balance { get; set; }
         public decimal Amount { get; set; }
         public string ReferenceId { get; set; }

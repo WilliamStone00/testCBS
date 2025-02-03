@@ -3422,6 +3422,7 @@
     <Content Include="Views\MemberNoneCashOperation\_ValidateMemberNoneCashOperation.cshtml" />
     <Content Include="Views\MemberNoneCashOperation\Operations.cshtml" />
     <Content Include="Views\MemberNoneCashOperation\_OperationsData.cshtml" />
+    <Content Include="Views\CashFlowManagement\GetAllDepositRequestData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

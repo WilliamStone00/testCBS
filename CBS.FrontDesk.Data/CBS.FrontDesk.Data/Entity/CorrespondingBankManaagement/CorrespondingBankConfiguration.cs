@@ -156,6 +156,11 @@ namespace CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement
         public string Name { get; set; } // Name of the banking zone
         public string LocationType { get; set; } // Type of location (e.g., Urban, Rural)
         public List<string> LocationId { get; set; } // Identifier for the location related to this zone
+
+        public object ConvertToObject()
+        {
+            return new { Code = this.Code, Name = this.Name, LocationType = this.LocationType, LocationId= this.LocationId.ToArray()[0] };
+        }
     }
 
     public class Branch3ppBranch
@@ -163,7 +168,7 @@ namespace CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement
 
         public string Code { get; set; } // Unique code representing the zone
         public string Name { get; set; } // Name of the banking zone
-        public string Type { get; set; } // Type of location (e.g., Urban, Rural)
+        public string Id { get; set; } // Type of location (e.g., Urban, Rural)
     }
     public class BankingZoneDto
     {

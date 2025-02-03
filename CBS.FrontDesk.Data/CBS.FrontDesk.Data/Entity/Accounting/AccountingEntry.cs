@@ -83,7 +83,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         }
     }
 
+    public class BranchToBranchTransferDto  
+    {
+        public string Id { get; set; }
+        public string ReferenceId { get; set; }
+        public decimal Amount { get; set; }
+        public CurrencyNotesRequest CurrencyNotesRequest { get; set; }
 
+    }
     public class AccountingEntryDto
     {
         // Unique ID number for the entry=

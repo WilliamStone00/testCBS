@@ -97,7 +97,7 @@ namespace CBS.BusinessService.Services
             {
 
                 // Make an API call to create an individual profile
-                var response = await _bankConfigApiHelper.PostAsync<ServiceResponse<BankingZone>>(APICallHelper.CreateBankingZone, model);
+                var response = await _bankConfigApiHelper.PostAsync<ServiceResponse<BankingZone>>(APICallHelper.CreateBankingZone, model.ConvertToObject());
                 if (response.IsSuccess)
                 {
                     // Successful creation

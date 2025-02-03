@@ -1677,9 +1677,9 @@ namespace BusinessServices
         public bool IsMainBranch()
         {
             bool str = false;
-            if (HttpContext.Current.Session["IsMainBranch"] != null)
+            if (HttpContext.Current.Session["IsHavingBank"] != null)
             {
-                str = Convert.ToBoolean(  HttpContext.Current.Session["IsMainBranch"]);
+                str = Convert.ToBoolean(  HttpContext.Current.Session["IsHavingBank"]);
             }
 
             return str;

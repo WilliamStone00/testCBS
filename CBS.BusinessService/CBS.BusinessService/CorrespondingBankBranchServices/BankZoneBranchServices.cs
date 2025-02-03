@@ -73,7 +73,7 @@ namespace CBS.BusinessService.Services
                 throw;
             }
         }
-        
+        //
         public async Task<BankZoneBranch> GetBankZoneBranch(string id)
         {
             try
@@ -137,6 +137,24 @@ namespace CBS.BusinessService.Services
             try
             {
                 var cusResponseObject = await _bankConfigApiHelper.GetAsync<ResponseObject<List<Branch3ppBranch>>>(string.Format(APICallHelper.Get_BankZoneBranch_by_ZoneID, id));
+                if (cusResponseObject.IsSuccess)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+
+        public async Task<List<Branch3ppBranch>> GetAllBranchPresentInZoneByParticipant(string id,string type)
+        {
+            try
+            {
+                var cusResponseObject = await _bankConfigApiHelper.GetAsync<ResponseObject<List<Branch3ppBranch>>>(string.Format(APICallHelper.Get_BankZoneBranchbyBranchId, id,type));
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;

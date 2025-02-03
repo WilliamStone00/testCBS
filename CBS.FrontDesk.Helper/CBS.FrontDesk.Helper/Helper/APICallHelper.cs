@@ -105,14 +105,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllSalaryUploadByFileBaseOnStatus = "/api/v1/SalaryUpload/salary-file-uploaded";
         public static string GetSalaryFileUploadByFileId = "/api/v1/SalaryUpload/get-file-upload-byid/{0}";
         public static string GetSalaryModelForBranchByFileId = "/api/v1/SalaryAnalysis/get-salary-model-for-branch-by-fileid/{0}";
-
-
-        //SalaryUpload
-        public static string Get_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation/{0}";
-        public static string Delete_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation/{0}";
-        public static string GetAll_MemberNoneCashOperations = "/api/v1/MemberNoneCashOperations";
-        public static string Create_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation";
-        public static string Validate_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation/Validate/{0}";
+        
 
         //SalaryAnalysis
         public static string Delete_SalaryAnalysis = "/api/v1/SalaryAnalysis/{0}";
@@ -847,7 +840,7 @@ namespace CBS.FrontDesk.Helper
         public static string DepositNotificationUrl = "/api/v1/BankingOperation/AddDepositNotificationCommand";
         public static string ApproveDepositNotificationUrl = "/api/v1/BankingOperation/AddDepositApprovalCommand";
         public static string BalanceSheet_EntriesUrl = "/api/v1/AccountingEntries/GenerateBalanceSheet";
-       
+        public static string GetCashBranchToBranchTransferUrl = "/api/v1/AccountingEntry/GetBranchToBranchTransferDto/{0}";
         public static string GeneralLedgerStatementUrl = "/api/v1/AccountingEntry/GetAccountStatementEntry";
         public static string GeneralLedgerStatementDetailUrl = "/api/v1/AccountingEntry/GetAccountGLEntry";
         public static string JournalEntryUrl = "/api/v1/AccountingEntry/JournalEntry";
@@ -936,10 +929,16 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllBankingZone = "/api/v1/BankingZones";
         public static string CreateBankingZone = "/api/v1/BankingZone";
 
-        //BankZoneBranch
+        //BankZoneBranch ///
         public static string Get_Update_Delete_BankZoneBranch = "/api/v1/BankZoneBranch/{0}";
+        public static string Get_BankZoneBranchbyBranchId = "/api/v1/BankZoneBranch/BankZoneBranchbyBranchId/{0}/{1}";
         public static string Get_BankZoneBranch_by_ZoneID = "/api/v1/BankZoneBranch/{0}";
         public static string GetAllBankZoneBranch = "/api/v1/BankZoneBranchs";
         public static string CreateBankZoneBranch = "/api/v1/BankZoneBranch";
+
+        public static object GetAll_MemberNoneCashOperations { get; set; }
+        public static string Validate_MemberNoneCashOperation { get; set; }
+        public static string Delete_MemberNoneCashOperation { get; set; }
+        public static string Create_MemberNoneCashOperation { get; set; }
     }
 }

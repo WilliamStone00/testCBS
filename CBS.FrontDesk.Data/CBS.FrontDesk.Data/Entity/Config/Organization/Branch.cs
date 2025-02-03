@@ -12,7 +12,7 @@ namespace CBS.FrontDesk.Data.Entity.Config
     {
         public string Id { get; set; }
 
-        public bool IsMainBranch { get; set; } //""
+        public bool IsHavingBank { get; set; } //""
        [Required]
         public string BranchCode { get; set; }
         [Required]
@@ -31,7 +31,7 @@ namespace CBS.FrontDesk.Data.Entity.Config
         [Required]
         public string RegistrationNumber { get; set; }
 
-        public bool IsHavingBank { get; set; }
+
         public string LogoUrl { get; set; }
         [Required]
         public string ImmatriculationNumber { get; set; }

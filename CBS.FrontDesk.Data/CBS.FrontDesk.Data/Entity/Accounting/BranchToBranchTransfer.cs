@@ -23,7 +23,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string ReferenceId { get; set; }
         public string TransferBy { get; set; }
         public string TransferDate { get; set; }
-        public CurrencyNotesRequest CurrencyNotes { get; set; }
+        public CurrencyNotesRequest CurrencyNotesRequest { get; set; }
 
         public BranchTransfer ConvertToTransferData()
         {
@@ -31,15 +31,24 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             {
                 FromAccountId = FromAccountId,
                 ToAccountId = ToAccountId,
-                CurrencyNotesRequest= CurrencyNotes,
-                Amount = CurrencyNotes.GetAmountValue(),
+                CurrencyNotesRequest= CurrencyNotesRequest,
+                Amount = CurrencyNotesRequest.GetAmountValue(),
+          
                 ReferenceId = ReferenceId,
             };
         }
 
 
     }
+    public class BranchToBranchTransferCommand  
+    {
+        public string ReferenceId { get; set; }
+        public decimal Amount { get; set; }
+        public string ToAccountId { get; set; }
+        public string FromAccountId { get; set; }
+        public CurrencyNotesRequest CurrencyNotesRequest { get; set; }
 
+    }
     public class BranchTransfer
     {
 

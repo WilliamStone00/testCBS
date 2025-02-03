@@ -10,12 +10,18 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public enum CashReplishmentRequestStatus
     {
         Pending,
-        Redirected,
-        Approve,
+        Awaiting_Branch_Transfer,
+        Awaiting_Branch_CashClearing,
+        Awaiting_Bank_CashOut,
+        CashInFusion,
+        Approved,
         PendingApproval,
-        RedirectToBranch,
+        RedirectToBranchBCO,
+        RedirectToBranchBD,
+        RedirectToBranchBTB,
         Rejected,
-        awaiting_corresponding_entry_posting,
+        Awaiting_uploaded_bank_deposit_receipt,
+ 
         Completed
     }
     public enum CashRequisitionType
@@ -50,10 +56,13 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string CashRequisitionType { get; set; } = "REQUEST";
         public string Status { get; set; }
         public bool HasAccount56 { get; set; }
+        public bool IsOwner { get; set; }
         public string ParentCashReplenishId { get; set; } = "XXXXXXXX";
         public string ApprovalCode { get; set; }
         public string TempId1 { get; set; } = "Pendding";
         public string TempId2 { get; set; } = "Pendding";
+        public string TempId3 { get; set; } = "AccountId";
+        public string TempData { get; set; } 
         public string CashReplishmentRequestStatus { get; set; } = "Pendding";
         public CashApprovalResponse ConvertToCashApprovalResponse(bool Approved)
         { return new CashApprovalResponse { ApprovedMessage =this.ApprovedMessage, IsApproved=Approved,Id= this.Id }; }
@@ -103,17 +112,19 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public bool IsRejected { get; set; }
  
         public CashApprovalResponse ConvertToCashApprovalResponse(string BranchCode)
-        { 
-            return new CashApprovalResponse { 
-                ApprovedMessage = this.ApprovedMessage, 
-                IsApproved = this.IsApproved, 
+        {
+            return new CashApprovalResponse
+            {
+                ApprovedMessage = this.ApprovedMessage,
+                IsApproved = this.IsApproved,
                 Id = this.Id,
                 Status = this.Status,
                 CorrespondingBranchId = this.CorrespondingBranchId,
                 ApprovedAmount = Convert.ToDecimal(this.AmountApproved),
                 BranchId = this.BranchId,
                 CashRequisitionType = this.CashRequisitionType,
-                BranchCode= BranchCode
+                BranchCode = BranchCode,
+                AccountId = this.TempId3
             };  
         }
 
