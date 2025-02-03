@@ -1,0 +1,103 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
+
+
+<fieldset class="fieldset-custom">
+    <div class="mb-3 border-2">
+        <div id="datalistingview_inner">
+            <div class="table-responsive mb-3">
+                @if (Model.MemberNoneCashOperations != null && Model.MemberNoneCashOperations.Any())
+                {
+                    <table class="table table-hover" id="myDataTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>M.Reference</th>
+                                <th>Member Name</th>
+                                <th>Account</th>
+                                <th>B.Direction</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var operation in Model.MemberNoneCashOperations)
+                            {
+                                <tr>
+                                    <td>@operation.MemberReference</td>
+                                    <td>@operation.MemberName</td>
+                                    <td>@operation.Account.AccountType</td>
+                                    <td>
+                                        @if (operation.BookingDirection=="Credit")
+                                        {
+                                            <span class="badge bg-success">Credit</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Debit</span>
+                                        }
+                                    </td>
+                                    <td>@operation.Amount.ToString("N1")</td>
+                                    <td>@operation.RequestDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(operation.ApprovalStatus))
+                                        {
+                                            <span class="badge bg-@(operation.ApprovalStatus == "Approved" ? "success" : "warning")">@operation.ApprovalStatus</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Pending</span>
+                                        }
+                                    </td>
+                                    <td>
+
+                                        <div class="d-flex justify-content-center align-items-center gap-2">
+
+
+
+                                            @if (ViewBag.Path=="my_requests")
+                                            {
+                                                <!-- Delete Button -->
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-danger"
+                                                        onclick="deleteOperation('@operation.Id')"
+                                                        data-bs-toggle="tooltip"
+                                                        title="Delete Operation">
+                                                    <i class="fas fa-trash-alt me-1"></i> Delete
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <!-- Approve Button -->
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-success"
+                                                        onclick="loadValidationForm('@operation.Id')"
+                                                        data-bs-toggle="tooltip"
+                                                        title="Approve or Reject Operation">
+                                                    <i class="fas fa-check-circle me-1"></i> A/R
+                                                </button>
+                                            }
+                                            <!-- Detail Button -->
+                                            <button type="button" class="btn btn-sm btn-outline-info view-details"
+                                                    data-operation-id="@operation.Id"
+                                                    data-bs-toggle="tooltip"
+                                                    title="View Details">
+                                                <i class="fas fa-info-circle me-1"></i> Details
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="text-center my-3">
+                        <p>No member none-cash operations found.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</fieldset>
