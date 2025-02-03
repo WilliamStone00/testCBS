@@ -802,7 +802,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             else if (model.ServiceOption.Equals("DepositNotificationApproval"))
             {
                 model.DepositApproval.IsApproved = model.DepositNotificationDto.ApprovedBy == "Approve" ? true : false;
-                model.DepositApproval.BankAccountOwner = model.DepositNotificationDto.BankAccountOwner;
+                model.DepositApproval.BankAccountOwner = model.DepositNotificationDto.CorrespondingBranchId;
                 model.DepositApproval.BankAccountId = model.DepositNotificationDto.BankAccountId;
                 model.DepositApproval.ApprovedMessage = model.DepositNotificationDto.ApprovedMessage;
                 model.DepositApproval.Id = model.DepositNotificationDto.Id;

@@ -11,7 +11,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-bank-plus me-2"></i>
-                CASH REQUISITION FOR VAULT
+                CASH REQUISITION 
             </button>
         </h2>
 
@@ -48,7 +48,119 @@
 
                                                 <td style="width:15%">@d.BranchOffice</td>
                                                 <td style="width:15%">@d.AmountRequested</td>
-                                                <td style="width:10%">@d.Status</td>
+
+                                                @if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
+                                                {
+                                                    if (d.IsOwner)
+                                                    {
+                                                        if (d.HasAccount56)
+                                                        {
+                                                            <td style="width:10%">
+                                                                <span class="badge rounded-pill bg-dark fs-6">
+                                                                    <i class="fas fa-money-bill-wave"></i> @d.Status.ToUpper()
+                                                                </span>
+                                                            </td>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td style="width:10%">
+                                                                <span class="badge rounded-pill bg-dark fs-6">
+                                                                    <i class="fas fa-eye"></i> @d.Status.ToUpper()
+                                                                </span>
+                                                            </td>
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <td style="width:10%">
+                                                            <span class="badge rounded-pill bg-dark fs-6">
+                                                                <i class="fas fa-money-bill-wave"></i> @d.Status.ToUpper()
+                                                            </span>
+                                                        </td>
+                                                    }
+
+                                                }
+                                                else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Awaiting_Branch_CashClearing.ToString()))
+                                                {
+
+
+                                                    if (d.IsOwner)
+                                                    {
+                                                        <td style="width:10%">
+                                                            <span class="badge rounded-pill bg-primary fs-6">
+                                                                <i class="fas fa-arrow-circle-down"></i> @d.Status.ToUpper()
+                                                            </span>
+                                                        </td>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <td style="width:10%">
+                                                            <span class="badge rounded-pill bg-dark fs-6">
+                                                                <i class="fas fa-eye"></i> @d.Status.ToUpper()
+                                                            </span>
+                                                        </td>
+                                                    }
+
+                                                }
+                                                else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Rejected.ToString()))
+                                                {
+                                                    <td style="width:10%">
+                                                        <span class="badge rounded-pill bg-danger fs-6">
+                                                            <i class="fas fa-money-bill-wave"></i> <i class="fas fa-times"></i> @d.Status.ToUpper()
+                                                        </span>
+                                                    </td>
+                                                }
+                                                else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
+                                                {
+
+                                                    <td style="width:10%">
+                                                        <span class="badge rounded-pill bg-black fs-6">
+                                                            <i class="fas fa-spinner fa-spin"></i> @d.Status.ToUpper()
+                                                        </span>
+                                                    </td>
+
+                                                }
+                                                else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
+                                                {
+                                                    <td style="width:10%">
+                                                        <span class="badge rounded-pill bg-success fs-6">
+                                                            <i class="fas fa-badge-check"></i> @d.Status.ToUpper()
+                                                        </span>
+                                                    </td>
+                                                }
+                                                else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBCO.ToString()))
+                                                {
+
+
+                                                    <td style="width:10%">
+                                                        <span class="badge rounded-pill bg-warning fs-6">
+                                                            <i class="fas fa-share text-primary"></i><i class="fas fa-hand-holding-usd text-success"></i>@d.Status.ToUpper()
+                                                        </span>
+                                                    </td>
+                                                }
+                                                else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBTB.ToString()))
+                                                {
+
+                                                    <td style="width:10%">
+                                                        <span class="badge rounded-pill bg-warning fs-6">
+                                                            <i class="fas fa-share text-primary"></i><i class="fas fa-university"></i>@d.Status.ToUpper()
+                                                        </span>
+                                                    </td>
+                                                }
+                                                else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Awaiting_Bank_CashOut.ToString()))
+                                                {
+                                                    <td style="width:10%">
+                                                        <span class="badge rounded-pill bg-primary fs-6">
+                                                            <i class="fas fa-hourglass-half text-warning"></i>
+                                                            <i class="fas fa-money-bill-wave"></i> @d.Status.ToUpper()
+                                                        </span>
+                                                    </td>
+                                                }
+
                                                 <td style="width:20%">@d.TempId1</td>
                                                 <td style="width:20%">@d.IssuedDate</td>
                                                 <td style="width:20%">
@@ -100,9 +212,19 @@
                                                     else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
                                                     {
 
-                                                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ApproveCashRequest','approve','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Approve</a>
+
+                                                        if (d.IsOwner)
+                                                        {
+                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View Status</a>
 
 
+                                                        }
+                                                        else
+                                                        {
+
+                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ApproveCashRequest','approve','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Approve</a>
+
+                                                        }
                                                     }
                                                     else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
                                                     {
@@ -111,9 +233,19 @@
                                                     }
                                                     else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBCO.ToString()))
                                                     {
-                                                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_branchToBranchTransfer','BranchToBranchTransfer','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Branch Transfer</a>
+
+                                                        if (d.IsOwner)
+                                                        {
+                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View Status</a>
 
 
+                                                        }
+                                                        else
+                                                        {
+
+                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_branchToBranchTransfer','BranchToBranchTransfer','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Branch Transfer</a>
+
+                                                        }
                                                     }
                                                     else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBTB.ToString()))
                                                     {

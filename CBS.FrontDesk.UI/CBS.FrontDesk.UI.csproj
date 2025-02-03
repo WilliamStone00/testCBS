@@ -3416,6 +3416,7 @@
     <Content Include="Views\MemberNoneCashOperation\_MemberNonCashForm.cshtml" />
     <Content Include="Views\MemberNoneCashOperation\_SearchBox.cshtml" />
     <Content Include="Views\MemberNoneCashOperation\Index.cshtml" />
+    <Content Include="Views\CashFlowManagement\GetAllDepositRequestData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

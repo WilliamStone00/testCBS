@@ -60,7 +60,7 @@
                                 <td id="IssuedDate">@Model.CashReplenimentRequestdto.IssuedDate </td>
                             </tr>
 
-                            @if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approve.ToString()))
+                            @if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
                             {
                                 <tr>
                                     <td>Status</td>
@@ -115,7 +115,7 @@
                                 {
                                     <tr>
                                         <td>Status</td>
-                                        <td class="badge bg-label-primary rounded-pill text-uppercase">
+                                        <td class="badge bg-label-primary rounded-pill">
                                             @Model.CashReplenimentRequestdto.Status,Has not yet been approved by head office
                                         </td>
                                     </tr>
@@ -126,8 +126,8 @@
                                     {
                                         <tr>
                                             <td>Status</td>
-                                            <td class="badge bg-label-success rounded-pill text-uppercase">
-                                                @Model.CashReplenimentRequestdto.Status,but  waiting for action from manager
+                                            <td class="badge bg-label-success rounded-pill">
+                                                @Model.CashReplenimentRequestdto.Status 
                                             </td>
                                         </tr>
                                         <tr>
@@ -145,12 +145,12 @@
                                     }
                                     else
                                     {
-                                        if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.awaiting_corresponding_entry_posting.ToString()))
+                                        if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBCO.ToString()))
                                         {
                                             <tr>
                                                 <td>Status</td>
                                                 <td class="badge bg-label-primary rounded-pill text-uppercase">
-                                                    @Model.CashReplenimentRequestdto.Status,Awaiting for fund transfer
+                                                    @Model.CashReplenimentRequestdto.Status,Has been redirected to @Model.CashReplenimentRequestdto.CorrespondingBranch for BANK CASH OUT
                                                 </td>
                                             </tr>
                                             <tr>
@@ -174,12 +174,13 @@
                                                 </td>
                                             </tr>
                                         }
-                                        else
+                                        else if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBTB.ToString()))
                                         {
+                                            
                                             <tr>
                                                 <td>Status</td>
                                                 <td class="badge bg-label-warning nav-pills">
-                                                    @Model.CashReplenimentRequestdto.Status awaiting for      @Model.CashReplenimentRequestdto.CorrespondingBranch
+                                                    @Model.CashReplenimentRequestdto.Status Has been redirected to @Model.CashReplenimentRequestdto.CorrespondingBranch for Branch Transfer
                                                 </td>
                                             </tr>
                                             <tr>
@@ -202,7 +203,7 @@
                             }
 
 
-                            @if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.awaiting_corresponding_entry_posting.ToString()))
+                            @if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBTB.ToString()))
                             {
                                 <tr>
                                     <td>Bank Transaction</td>

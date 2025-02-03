@@ -44,7 +44,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         public string Id { get; set; }
         public string Amount { get; set; }
-
+    
+        public string Temp3 { get; set; }
         public string ApprovalKey { get; set; }
         public string Message { get; set; }
         public string Status { get; set; }
@@ -54,7 +55,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public bool HasBankAccount { get; set; }
         public string Temp1 { get; set; }
         public string Temp2 { get; set; }
-        public string BankAccountOwner { get; set; }
+        public string CorrespondingBranchId { get; set; }
         public string BankAccountId { get; set; }
         public string ApprovedBy { get; set; }
         public DateTime ApprovedDate { get; set; }
@@ -62,6 +63,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string ApprovedMessage { get; set; }
         public string BranchOffice { get; set; }
         public string BranchId { get; set; }
+        public bool IsOwner { get; set; }
+        public bool HasAccount56 { get; set; }
     }
 
     public class DepositNotification

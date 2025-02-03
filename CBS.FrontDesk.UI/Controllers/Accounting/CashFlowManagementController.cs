@@ -82,8 +82,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private IEnumerable<StringValues> GenerateBranchBranchCode(List<Branch> branches)
         {
             List<StringValues> stringValues = new List<StringValues>();
-            var collections = branches.Where(x => x.IsHavingBank == true);
-            foreach (var branch in collections)
+            //var collections = branches.Where(x => x.IsHavingBank == true);
+            foreach (var branch in branches)
             {
 
                 stringValues.Add(new StringValues(branch.Id, branch.BranchCode + "-" + branch.Name));
@@ -168,9 +168,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             List<SelectListItem> list = new List<SelectListItem>();
 
-            list.Add(new SelectListItem { Text = $"Approve", Value = "Approve BankDeposit" });
-
+            list.Clear();
             list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
+            list.Add(new SelectListItem { Text = $"RedirectToBranchBCO", Value = "Redirected for bank deposit" });
+            list.Add(new SelectListItem { Text = $"RedirectToBranchBTB", Value = "Redirected for inter-branch-transfer" });
+            list.Add(new SelectListItem { Text = $"Approved", Value = "Approve for bank deposit" });
 
             return list;
         }
@@ -182,16 +184,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 list.Clear();
                 list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
-                list.Add(new SelectListItem { Text = $"RedirectToBranchBCO", Value = "Redirect for bank cash out" });
-                list.Add(new SelectListItem { Text = $"RedirectToBranchBTB", Value = "Redirect for inter-branch-transfer" });
-                list.Add(new SelectListItem { Text = $"Approved", Value = "Approve bank-cash-Out" });
+                list.Add(new SelectListItem { Text = $"RedirectToBranchBCO", Value = "Redirected for bank cash out" });
+                list.Add(new SelectListItem { Text = $"RedirectToBranchBTB", Value = "Redirected for inter-branch-transfer" });
+                list.Add(new SelectListItem { Text = $"Approved", Value = "Approve for bank cash Out" });
             }
             else
             {
                 list.Clear();
                 list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
-                list.Add(new SelectListItem { Text = $"RedirectToBranchBCO", Value = "Redirect for bank-cash-out" });
-                list.Add(new SelectListItem { Text = $"RedirectToBranchBTB", Value = "Redirect for inter-branch-transfer" });
+                list.Add(new SelectListItem { Text = $"RedirectToBranchBCO", Value = "Redirected for bank cash out" });
+                list.Add(new SelectListItem { Text = $"RedirectToBranchBTB", Value = "Redirected for inter branch transfer" });
             }
 
            
@@ -452,7 +454,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             else if (model.ServiceOption.Equals("DepositNotificationApproval"))
             {
                 model.DepositApproval.IsApproved = model.DepositNotificationDto.ApprovedBy == "Approve" ? true : false;
-                model.DepositApproval.BankAccountOwner = model.DepositNotificationDto.BankAccountOwner;
+                model.DepositApproval.BankAccountOwner = model.DepositNotificationDto.CorrespondingBranchId;
                 model.DepositApproval.BankAccountId = model.DepositNotificationDto.BankAccountId;
                 model.DepositApproval.ApprovedMessage = model.DepositNotificationDto.ApprovedMessage;
                 model.DepositApproval.Id = model.DepositNotificationDto.Id;
@@ -672,13 +674,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (path == "approveDepositNotification")
             {
-                var listBranch = await branchServices.GetBranches();
+               
                 ViewBag.DepositDecisions = BuildMenuViewBagDeposit();
-                ViewBag.Branches = BuildDropDown(GenerateBranchListView(listBranch.ToList()));            
-                var OperationEventAttribute = await _accountingEntryServices.GetDepositNotificationRequest(KEY);
+                     var OperationEventAttribute = await _accountingEntryServices.GetDepositNotificationRequest(KEY);
+                
+
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.DepositNotificationDto = OperationEventAttribute;
                 cashDemandDataEntity.DepositNotificationDto.BranchOffice = (await branchServices.GetBranches()).Where(po => po.Id.Equals(OperationEventAttribute.BranchId)).FirstOrDefault().Name;
+                var listBranch = await _bankZoneBranchServices.GetAllBranchPresentInZoneByParticipant(cashDemandDataEntity.CashReplenimentRequestdto.BranchId, "BRANCH");
+                ViewBag.ZoneBranch = BuildDropDown(await GenerateBranchInZoneCode(listBranch, cashDemandDataEntity.CashReplenimentRequestdto.BranchId));
                 if (branchServices.IsHeadOffice()==false)
                 {
                     ViewBag.IsAuthourized = false;
@@ -1071,6 +1076,41 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                          };
             CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
             cashDemandDataEntity.ListCashReplenimentRequest = result.ToList();
+            return View(cashDemandDataEntity);
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult> GetAllDepositRequestData()
+        {
+            var datasList = (await _accountingEntryServices.GetBranches()).ToList();
+
+            var datas = await _accountingEntryServices.GetAllDepositNotificationRequest();
+            var dataUser = (await _accountingEntryServices.GetUserList()).ToList();
+            var result = from request in datas
+                         join user in dataUser on request.IssuedBy equals user.id.ToString()
+                         select new DepositNotificationDto
+
+                         {
+                             Id = request.Id,
+                     
+                             Amount = request.Amount,
+                            
+                             Message = request.Message,
+                             IssuedBy = user.name + "," + user.roleName,
+                            IssueDate = request.IssueDate,
+                             IsOwner = _accountingEntryServices.GetBranchID() == request.BranchId,
+                             HasAccount56 = datasList.Find(x => x.Id == request.BranchId).IsHavingBank,
+                             ApprovedBy = request.ApprovedBy,
+                             ApprovedDate = request.ApprovedDate,
+                             IsApproved = request.IsApproved,
+                             //CurrencyCode = request.CurrencyCode,
+                             BranchOffice = datasList.Find(x => x.Id == request.BranchId).Name,
+                             Status = request.Status,
+                             ApprovedMessage = request.ApprovedMessage
+                         };
+            CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+            cashDemandDataEntity.ListDepositNotificationDto = result.ToList();
             return View(cashDemandDataEntity);
         }
 
