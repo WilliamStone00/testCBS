@@ -32,7 +32,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string Email { get; set; }
         [Required]
         public decimal GuaranteeAmount { get; set; }
-        public LoanApplication LoanApplication { get; set; }
+        //public LoanApplication LoanApplication { get; set; }
     }
 
 }
