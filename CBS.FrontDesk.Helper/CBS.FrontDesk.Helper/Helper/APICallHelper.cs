@@ -852,15 +852,17 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllCashRequestApprovalQuery = "/api/v1/BankingOperation/GetAllCashRequestApprovalQuery";
         public static string GetAccountByEvenCodeUrl= "/api/v1/Account/GetAccountByEventCodeQuery";
         public static string BranchToBranchTransferUrl = "/api/v1/AccountingEntry/BranchToBranchTransferCommand";
-        public static string CashClearingTransferUrl = "/api/v1/AccountingEntry/CashClearingTransferCommand";
+        public static string CashClearingTransferCashReplenishmentUrl = "/api/v1/AccountingEntry/CashClearingTransferFromCashReplenishmentCommand";
+        public static string CashClearingTransferBankDepositUrl = "/api/v1/AccountingEntry/CashClearingTransferFromBankDepositCommand";
         public static string GetCashReplenishmentRequestByBranchId = "/api/v1/BankingOperation/GetCashReplenishmentRequestByBranchId/{0}";
         public static string GetBankTransactionQueryByIdURL = "/api/v1/BankingOperation/GetBankTransactionQueryById/{0}";
         public static string GetBankTransactionQueryByReferenceIdURL = "/api/v1/BankingOperation/GetBankTransactionQueryByReferenceId/{0}";
         public static string GetCashReplenishmentRequestById = "/api/v1/BankingOperation/GetCashReplenishmentRequestById/{0}";
         public static string GetAllDepositNotificationRequestRequests = "/api/v1/BankingOperation/GetAllDepositNotificationQuery";
+        ///BankingOperation/GetAllDepositNotificationRedirectionQuery   
         public static string GetDepositNotificationRequestRequests = "/api/v1/BankingOperation/GetDepositNotificationQuery/{0}";
         public static string GetAllDepositNotificationRequestQueryAsBranch = "/api/v1/BankingOperation/GetAllCashReplenishmentQueryAsBranch/{0}";
-
+        public static string GetAllDepositNotificationRedirectionQuery = "/api/v1/BankingOperation/GetAllDepositNotificationRedirectionQuery";
         public static string UserNotificationRequestByIdUrl = "/api/v1/UsersNotification/{0}";
         public static string UserNotificationRequestUrl = "/api/v1/UsersNotifications";
         public static string GetDepositNotificationRequestById = "/api/v1/BankingOperation/GetDepositNotificationQuery/{0}";

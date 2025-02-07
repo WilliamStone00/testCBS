@@ -3417,6 +3417,7 @@
     <Content Include="Views\MemberNoneCashOperation\_SearchBox.cshtml" />
     <Content Include="Views\MemberNoneCashOperation\Index.cshtml" />
     <Content Include="Views\CashFlowManagement\GetAllDepositRequestData.cshtml" />
+    <Content Include="Views\CashFlowManagement\_BranchToBranchDepositRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -3607,7 +3608,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52456</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44345/</IISUrl>
+          <IISUrl>https://localhost:44346/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>https://localhost:44346/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

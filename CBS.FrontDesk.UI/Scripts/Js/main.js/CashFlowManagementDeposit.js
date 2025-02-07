@@ -1,18 +1,52 @@
 ﻿$(document).ready(function () {
 
-    
+    $('#hideBranchID').hide();
+    $('#hideAccountId').hide();
  
     LoadDepositRequestForHO("HeadOfficeDataTable")
     LoadDepositRequestForBO("BranchOfficeDataTable")
     console.log("Is loaded");
-    $(document).on('change', '#BranchID', function () {
- 
-        // Get the selected value
+
+    $(document).on('change', '#DepositNotificationDto_Status', function () {
+
+        // Get the selected value 
         var selectedValue = $(this).val();
         console.log(selectedValue);
-        loadBankAccountForBranch(selectedValue)
+        if (selectedValue === 'RedirectToBranchBTB' || selectedValue === 'Approved') {
+            // Show the element 
+            console.log(selectedValue);
+            $('#hideBranchID').show();
+            $('#hideAccountId').hide();
+           
+            if (selectedValue === 'Approved') {
+                $('#hideBranchID').show();
+                $('#hideAccountId').show();
+                $('#option').val(selectedValue);
+            } else {
+              
+                console.log("has taged :"+selectedValue+"for options");
+            }
+        } else {
+            // Hide the element
+            $('#hideBranchID').hide();
+            $('#hideAccountId').hide();
+        }
     });
+    $(document).on('change', '#CorrespondingBranchID', function () {
 
+        // Get the selected value
+        var selectedValue = $(this).val();
+        var selectedID = $('#option').val();
+        console.log(selectedValue);
+        console.log(selectedID);
+        if (selectedID === 'RedirectToBranchBTB') {
+            console.log("do not load bank account");
+        } else {
+            
+            loadBankAccountForBranch(selectedValue);
+        }
+
+    });
     $(document).on('change', '#AccountId', function () {
 
         // Get the selected value
@@ -29,10 +63,10 @@ function loadBankAccountForBranch(BranchId) {
         dataType: 'json',
         data: { branchId: BranchId },
         success: function (data) {
-            // Clear existing options in the OperationEventAttributeId combo 
-            $('#LoadBankAccountID').empty();
+            // Clear existing options in the OperationEventAttributeId combo  DepositNotificationDto_Temp3
+            $('#DepositNotificationDto_Temp3').empty();
             $.each(data, function (index, item) {
-                $('#LoadBankAccountID').append($('<option>').text(item.Value).attr('value', item.Text));
+                $('#DepositNotificationDto_Temp3').append($('<option>').text(item.Value).attr('value', item.Text));
             });
 
             // Add new options based on the fetched data

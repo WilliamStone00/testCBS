@@ -55,7 +55,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public bool HasBankAccount { get; set; }
         public string Temp1 { get; set; }
         public string Temp2 { get; set; }
-        public string CorrespondingBranchId { get; set; }
+        public string correpondingBranchId { get; set; }
         public string BankAccountId { get; set; }
         public string ApprovedBy { get; set; }
         public DateTime ApprovedDate { get; set; }
@@ -79,6 +79,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Message { get; set; }
 
         public CurrencyNotesRequest CurrencyNotes { get; set; }
+        public string Temp1 { get; set; }
 
         public object ConvertToTransferData(string branchID )
         {
@@ -129,9 +130,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
         public string Id { get; set; }
         public string BankAccountId { get; set; }
-        public string BankAccountOwner { get; set; }
+        public string CorrepondingBranchId { get; set; }
+        public string Status { get; set; }
         public string ApprovedMessage { get; set; }
-        public bool IsApproved { get; set; }
     }
     
 }
