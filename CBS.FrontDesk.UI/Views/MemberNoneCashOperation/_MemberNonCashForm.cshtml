@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="rounded p-2 border">
+    <div class="rounded p-2 border-primary border mb-3">
         <h6 class="mb-0 fw-bold text-dark">Booking Direction</h6>
 
         <!-- Debit and Credit Options -->
@@ -26,7 +26,62 @@
                 <label class="form-check-label" for="Credit" style="font-size: 1.1rem;">Credit Member's Account</label>
             </div>
         </div>
+        <input type="hidden" id="memberName" value="@Model.AddMembersNoneCashOperationCommand.MemberName" />
 
+    </div>
+    <div class="rounded p-2 border-primary border mb-3">
+        <h6 class="mb-0 fw-bold text-dark">Members Accounts</h6>
+        <!-- Table Section -->
+        <div class="table-responsive mt-4 mb-2">
+            <table class="table table-hover" id="myDataTableT">
+                <thead class="table-light">
+                    <tr>
+                        <th style="display:none;">ProductID</th>
+                        <th>Accounts</th>
+                        <th>Balance</th>
+                        <th>Amount</th>
+                        <th style="display:none">Fee</th>
+                        <th>Total</th>
+                        <th>confirm</th>
+                        <th style="display:none">Inc</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
+                    {
+                        <tr>
+                            <td style="display:none;">@d.AccountNumber</td>
+                            <td>@d.AccountType</td>
+                            <td>@d.Balance.ToString("#,##0.0")</td>
+                            <td>
+                                <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
+                            </td>
+                            <td style="display:none">
+                                <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee" readonly>
+                            </td>
+                            <td>
+                                <span class="total-span">@d.Total</span>
+                            </td>
+                            <td>
+                                <input type="checkbox" class="form-check-input">
+                            </td>
+                            <td style="display:none">
+                                <input type="checkbox" class="form-check-input check-inclussive" disabled>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+                        <td id="tableTotal">0</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="rounded p-2 border-primary border mb-3">
+        <h6 class="mb-0 fw-bold text-dark">Coresponding accounts</h6>
         <!-- Correspondent Account Selection -->
         <div class="col-md-12 mb-2">
             <div class="form-floating border rounded p-3">
@@ -46,55 +101,6 @@
         </div>
     </div>
 
-    <!-- Table Section -->
-    <div class="table-responsive rounded mt-4">
-        <table class="table table-hover" id="myDataTableT">
-            <thead class="table-light">
-                <tr>
-                    <th style="display:none;">ProductID</th>
-                    <th>Accounts</th>
-                    <th>Balance</th>
-                    <th>Amount</th>
-                    <th style="display:none">Fee</th>
-                    <th>Total</th>
-                    <th>confirm</th>
-                    <th style="display:none">Inc</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
-                {
-                    <tr>
-                        <td style="display:none;">@d.AccountNumber</td>
-                        <td>@d.AccountType</td>
-                        <td>@d.Balance.ToString("#,##0.0")</td>
-                        <td>
-                            <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
-                        </td>
-                        <td style="display:none">
-                            <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee" readonly>
-                        </td>
-                        <td>
-                            <span class="total-span">@d.Total</span>
-                        </td>
-                        <td>
-                            <input type="checkbox" class="form-check-input">
-                        </td>
-                        <td style="display:none">
-                            <input type="checkbox" class="form-check-input check-inclussive" disabled>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
-                    <td id="tableTotal">0</td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-
     <!-- Action Buttons -->
     <div class="d-flex justify-content-end mt-4">
         <input type="hidden" name="OperationType" value="MemberNoneCash" id="OperationType" />
@@ -104,7 +110,7 @@
             <i class="fas fa-money-bill-wave me-2"></i> Create Request
         </button>
     </div>
-    </div>
+
 
     <hr style="border: 2px solid green;" />
 </fieldset>

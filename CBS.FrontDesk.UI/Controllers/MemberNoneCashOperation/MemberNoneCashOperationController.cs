@@ -2,6 +2,7 @@
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
@@ -34,6 +35,20 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         // GET: MemberNoneCashOperation
         public ActionResult Index()
         {
+            return View();
+        }
+        public ActionResult PendingOperations()
+        {
+            return View();
+        }
+        public ActionResult Operations()
+        {
+            ViewBag.Path="all_operations";
+            return View();
+        }
+        public ActionResult MyOperations()
+        {
+            ViewBag.Path="my_requests";
             return View();
         }
         public ActionResult NoneCashOperations()
@@ -104,9 +119,43 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                         ViewBag.message = $"{KEY} was not found in the database.";
                         return PartialView("_DataNotFound", new CashDesk());
                     }
+                    cashDesk.AddMembersNoneCashOperationCommand.MemberName=cashDesk.Customer.name;
                     await GetChartOfAccounts();
                     ViewBag.Operation = path;
                     return PartialView(partialView, cashDesk);
+
+                }
+                else if (path == "pending_operations")
+                {
+                    ViewBag.Path="pending_operations";
+                    var memberNoneCashOperations = await _memberNoneCashOperationServices.GetMemberNoneCashOperations("n/a","Pending");
+               
+
+                    return PartialView(partialView, new MemberNoneCashOperationCarrier { MemberNoneCashOperations=memberNoneCashOperations.ToList() });
+
+                }
+                else if (path == "all_operations")
+                {
+                    ViewBag.Path="all_operations";
+                    var memberNoneCashOperations = await _memberNoneCashOperationServices.GetMemberNoneCashOperations("n/a", null);
+
+                    return PartialView(partialView, new MemberNoneCashOperationCarrier { MemberNoneCashOperations=memberNoneCashOperations.ToList() });
+
+                }
+                else if (path == "my_requests")
+                {
+                    ViewBag.Path="my_requests";
+                    var memberNoneCashOperations = await _memberNoneCashOperationServices.GetMemberNoneCashOperations("n/a", "my_requests");
+
+                    return PartialView(partialView, new MemberNoneCashOperationCarrier { MemberNoneCashOperations=memberNoneCashOperations.ToList() });
+
+                }
+
+                else if (path == "detail" || path=="get_validation")
+                {
+                    var memberNoneCashOperation = await _memberNoneCashOperationServices.GetMemberNoneCashOperation(KEY);
+
+                    return PartialView(partialView, new MemberNoneCashOperationCarrier { MemberNoneCashOperation=memberNoneCashOperation });
 
                 }
                 else if (path == "new_depositor")
@@ -125,6 +174,22 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 return PartialView("_NoRecordFound", new CashDesk());
             }
         }
+        
+
+         [HttpPost]
+        public async Task<ActionResult> SubmitValidation(ValidateMemberNoneCashOperationCommand command)
+        {
+            try
+            {
+                var data = await _memberNoneCashOperationServices.ValidateMemberNoneCashOperation(command);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
         [HttpPost]
         public async Task<ActionResult> PostRequestCash(List<BulkDeposit> deposits)
         {
@@ -132,7 +197,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             {
                 if (deposits != null)
                 {
-                    
+
                     var data = await _memberNoneCashOperationServices.Create(deposits);
                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 

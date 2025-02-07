@@ -243,9 +243,10 @@ function collectDeposits() {
             deposit.OperationType = $('#OperationType').val();
             deposit.IsSWS = false;
             deposit.CustomerId = $('#customerId').val();
+            deposit.MemberName = $('#memberName').val();
             deposit.LoanApplicationId = $(this).find('.loan-application-id').val();
             deposit.Period = $(this).find('.period').val();
-
+            deposit.ChartOfAccountName = $('#account_number option:selected').text().trim();
             // New captured values
             deposit.BookingDirection = $("input[name='AddMembersNoneCashOperationCommand.BookingDirection']:checked").val();
             deposit.ChartOfAccountId = $('#account_number').val();
@@ -335,8 +336,8 @@ function successCallback(response, operationType) {
     appalert(response.message, 1, 1);
     resetDepositorForm();
     switch (operationType) {
-        case 'CashInMomocashCollection':
-            GetMemberData($("#customerId").val(), '_MomocashCollectionDesk', 'datalistingview', 'cashin');
+        case 'MemberNoneCash':
+            GetMemberData($("#customerId").val(), '_MemberNonCashDesk', 'datalistingview', 'cashin');
             break;
         case 'LoanRepaymentMomocashCollection':
             GetMemberData($("#customerId").val(), '_MomocashCollectionDesk', 'datalistingview', 'repayment');
@@ -416,7 +417,7 @@ function PostOperation() {
     message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
 
     // Confirm transaction
-    confirmTransaction('Confirm ' + bookingDirection + ' Operation', message, '/CashDesk/PostRequestCash', deposits, 'CashInMomocashCollection');
+    confirmTransaction('Confirm ' + bookingDirection + ' Operation', message, '/MemberNoneCashOperation/PostRequestCash', deposits, 'CashInMomocashCollection');
 }
 
 function PostLoanRepayment() {

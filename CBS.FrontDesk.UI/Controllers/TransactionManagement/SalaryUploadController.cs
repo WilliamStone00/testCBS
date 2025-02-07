@@ -28,7 +28,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {
             return View(new SalaryUploadModelCarrier());
         }
-        public async Task<ActionResult> Salary(string fileUploadid)
+        public async Task<ActionResult> Detail(string fileUploadid)
         {
             var salaryUploadModels = await _salaryUploadServices.GetSalaryUploads(fileUploadid);
             var fileUpload = await _salaryUploadServices.GetFileUpload(fileUploadid);

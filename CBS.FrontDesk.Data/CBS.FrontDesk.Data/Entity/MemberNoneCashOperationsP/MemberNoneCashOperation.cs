@@ -11,11 +11,12 @@ namespace CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP
         public string Id { get; set; }
         public string MemberReference { get; set; }
         public string AccountNUmber { get; set; }
-        public string ChartOfAccountGLId { get; set; }
+        public string ChartOfAccountId { get; set; }
+        public string ChartOfAccountName { get; set; }
         public decimal Amount { get; set; }
         public string Note { get; set; }
         public string InitiatedByUSerId { get; set; }
-        public string OperationType { get; set; }//Deposit Or Withdrawal
+        public string BookingDirection { get; set; }
         public string InitiatedUserName { get; set; }
         public DateTime RequestDate { get; set; }
         public DateTime AccountingDate { get; set; }
@@ -31,6 +32,20 @@ namespace CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP
         public string BranchCode { get; set; }
         public string AccountId { get; set; }
         public string TransactionReference { get; set; }
+        public SavingProducts.Account Account { get; set; }
+
+    }
+    public class MemberNoneCashOperationCarrier
+    {
+        public MemberNoneCashOperation MemberNoneCashOperation { get; set; }
+        public List<MemberNoneCashOperation> MemberNoneCashOperations { get; set; }
+        public ValidateMemberNoneCashOperationCommand ValidateMemberNoneCashOperationCommand { get; set; }
+        public MemberNoneCashOperationCarrier()
+        {
+            MemberNoneCashOperation=new MemberNoneCashOperation();
+            MemberNoneCashOperations=new List<MemberNoneCashOperation>();
+            ValidateMemberNoneCashOperationCommand=new ValidateMemberNoneCashOperationCommand();
+        }
     }
     public class AddMemberNoneCashOperationCommand
     {
@@ -41,6 +56,7 @@ namespace CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP
         public string ChartOfAccountId { get; set; }
         public string BookingDirection { get; set; }
         public string MemberName { get; set; }
+        public string ChartOfAccountName { get; set; }
     }
     public class ValidateMemberNoneCashOperationCommand
     {

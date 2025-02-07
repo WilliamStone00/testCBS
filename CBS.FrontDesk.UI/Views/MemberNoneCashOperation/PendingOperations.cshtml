@@ -1,0 +1,209 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
+
+@{
+    ViewBag.Title = "Pending Member None-Cash Operations";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="row mb-0">
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-body text-center">
+                        <h1 class="card-title text-primary">
+                            <i class="mdi mdi-timer-sand me-2"></i>Pending Member None-Cash Operations
+                        </h1>
+                        <p class="card-text">
+                            View, validate, or delete pending none-cash operations for member accounts. Ensure requests are properly validated before proceeding.
+                        </p>
+                        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Tips Section -->
+        <div class="card mb-2">
+            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOperationTips" aria-expanded="false" aria-controls="collapseOperationTips">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </h6>
+            <div id="collapseOperationTips" class="collapse">
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>View Details:</strong> Use the <span class="text-info"><i class="fas fa-info-circle"></i> Details</span> button to see more information about the operation.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Validate:</strong> Validate pending operations using the <span class="text-primary"><i class="fas fa-check-circle"></i> Validate</span> button to mark them as approved.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> <strong>Delete:</strong> Use the <span class="text-danger"><i class="fas fa-trash-alt"></i> Delete</span> button to remove incorrect or unnecessary operations.</li>
+                        <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>Keep Operations Up-to-date:</strong> Regularly validate pending operations to maintain accurate records and approvals.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="datalistingview">
+            <!-- Pending Operations Table -->
+            <div class="table-responsive">
+                @*@Html.Partial("_PendingOperationsData")*@
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div class="modal fade" id="operationDetailModal" tabindex="-1" aria-labelledby="operationDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="operationDetailModalLabel">Operation Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="operationDetailContainer">
+                <!-- The partial view will be loaded here -->
+                <div class="d-flex justify-content-center align-items-center p-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="validateOperationModal" tabindex="-1" aria-labelledby="validateOperationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="validateOperationContainer">
+                 Partial view content will be loaded here 
+                <div class="d-flex justify-content-center align-items-center p-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        $(document).ready(function () {
+
+            // Load pending operations on page load
+            LoadDataGen('MemberNoneCashOperation', 'myDataTable', '_PendingOperationsData', 0, 'datalistingview', null, null, 'pending_operations');
+
+            // Helper function to show loading spinner inside a container
+            function showLoadingSpinner(container) {
+                $(container).html(
+                    '<div class="d-flex justify-content-center align-items-center p-5">' +
+                    '<div class="spinner-border text-primary" role="status">' +
+                    '<span class="visually-hidden">Loading...</span>' +
+                    '</div>' +
+                    '</div>'
+                );
+            }
+
+            // Helper function for handling AJAX errors
+            function handleAjaxError(container, message) {
+                $(container).html(`<p class="text-danger">${message}</p>`);
+            }
+
+            // View Details Handler
+            $(document).on('click', '.view-details', function () {
+                var operationId = $(this).data('operation-id');
+                showLoadingSpinner('#operationDetailContainer');
+
+                // Fetch details via AJAX
+                $.ajax({
+                    url: '/MemberNoneCashOperation/InitializeData',
+                    type: 'GET',
+                    data: {
+                        KEY: operationId,
+                        path: 'detail',
+                        partialView: '_OperationDetail'
+                    },
+                    success: function (result) {
+                        $('#operationDetailContainer').html(result);
+                        $('#operationDetailModal').modal('show');
+                    },
+                    error: function () {
+                        handleAjaxError('#operationDetailContainer', 'Failed to load operation details. Please try again.');
+                    }
+                });
+            });
+
+            // Load Validation Form Handler
+            window.loadValidationForm = function (operationId) {
+                showLoadingSpinner('#validateOperationContainer');
+
+                $.ajax({
+                    url: '/MemberNoneCashOperation/InitializeData',
+                    type: 'GET',
+                    data: {
+                        KEY: operationId,
+                        path: 'get_validation',
+                        partialView: '_ValidateMemberNoneCashOperation'
+                    },
+                    success: function (result) {
+                        $('#validateOperationContainer').html(result);
+                        $('#validateOperationModal').modal('show');
+                    },
+                    error: function () {
+                        handleAjaxError('#validateOperationContainer', 'Failed to load validation form. Please try again.');
+                    }
+                });
+            };
+
+            // Submit Validation Form
+            $(document).on('submit', '#validateOperationForm', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: '/MemberNoneCashOperation/SubmitValidation',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            $('#validateOperationModal').modal('hide');
+                            appalert(response.message, 1, 1);
+                            location.reload();  // Refresh the table to reflect changes
+                        } else {
+                            appalert(response.message, 3, 1);
+                        }
+                    },
+                    error: function () {
+                        appalert('An error occurred while processing the validation.', 3, 1);
+                    }
+                });
+            });
+
+            // Delete Operation Handler
+            window.deleteOperation = function (operationId) {
+                if (confirm("Are you sure you want to delete this operation? This action cannot be undone.")) {
+                    $.post('/MemberNoneCashOperation/DeleteOperation', { operationId: operationId })
+                        .done(function (response) {
+                            if (response.success) {
+                                appalert(response.message, 1, 1);
+                                location.reload();  // Refresh the table to reflect changes
+                            } else {
+                                alert(response.message);
+                            }
+                        })
+                        .fail(function () {
+                            appalert('Failed to delete the operation. Please try again.', 3, 1);
+
+                        });
+                }
+            };
+        });
+
+
+
+    </script>
+}

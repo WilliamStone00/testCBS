@@ -1,0 +1,149 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-bordered table-striped" id="operationDetailsTable">
+                <tbody>
+                    <!-- General Information -->
+                    <tr class="table-primary">
+                        <td colspan="2" class="font-weight-bold text-center">General Information</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Member Name:</td>
+                        <td>@Model.MemberNoneCashOperation.MemberName</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Member Reference:</td>
+                        <td>@Model.MemberNoneCashOperation.MemberReference</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Account Number:</td>
+                        <td>@Model.MemberNoneCashOperation.AccountNUmber</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Chart of Account:</td>
+                        <td>@Model.MemberNoneCashOperation.ChartOfAccountName</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Amount:</td>
+                        <td>@Model.MemberNoneCashOperation.Amount.ToString("#,##0.0") FCFA</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Booking Direction:</td>
+                        <td>
+                            @if (Model.MemberNoneCashOperation.BookingDirection == "Debit")
+                            {
+                                <span class="badge bg-danger">Debit</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">Credit</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Note:</td>
+                        <td>@Model.MemberNoneCashOperation.Note</td>
+                    </tr>
+
+                    <!-- Approval Information -->
+                    <tr class="table-primary">
+                        <td colspan="2" class="font-weight-bold text-center">Approval Information</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Approval Status:</td>
+                        <td>
+                            @if (Model.MemberNoneCashOperation.ApprovalStatus == "Approved")
+                            {
+                                <span class="badge bg-success">Approved</span>
+                            }
+                            else if (Model.MemberNoneCashOperation.ApprovalStatus == "Rejected")
+                            {
+                                <span class="badge bg-danger">Rejected</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Approved By:</td>
+                        <td>@Model.MemberNoneCashOperation.ApprovedBy</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Approval Date:</td>
+                        <td>@Model.MemberNoneCashOperation.ApprovalDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Approval Comment:</td>
+                        <td>@Model.MemberNoneCashOperation.ApprovalComment</td>
+                    </tr>
+
+                    <!-- Source and Branch Details -->
+                    <tr class="table-primary">
+                        <td colspan="2" class="font-weight-bold text-center">Source and Branch Details</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Source:</td>
+                        <td>@Model.MemberNoneCashOperation.Source</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Branch Name:</td>
+                        <td>@Model.MemberNoneCashOperation.BranchName</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Branch Code:</td>
+                        <td>@Model.MemberNoneCashOperation.BranchCode</td>
+                    </tr>
+
+                    <!-- Operation Metadata -->
+                    <tr class="table-primary">
+                        <td colspan="2" class="font-weight-bold text-center">Operation Metadata</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Initiated By:</td>
+                        <td>@Model.MemberNoneCashOperation.InitiatedUserName</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Request Date:</td>
+                        <td>@Model.MemberNoneCashOperation.RequestDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Accounting Date:</td>
+                        <td>@Model.MemberNoneCashOperation.AccountingDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Transaction Reference:</td>
+                        <td>@Model.MemberNoneCashOperation.TransactionReference</td>
+                    </tr>
+
+                    <!-- Account Details -->
+                    @if (Model.MemberNoneCashOperation.Account != null)
+                    {
+                        <tr class="table-primary">
+                            <td colspan="2" class="font-weight-bold text-center">Account Information</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Account Holder Name:</td>
+                            <td>@Model.MemberNoneCashOperation.Account.CustomerName</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Account Type:</td>
+                            <td>@Model.MemberNoneCashOperation.Account.AccountType</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Account Number:</td>
+                            <td>@Model.MemberNoneCashOperation.Account.AccountNumber</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Account Balance:</td>
+                            <td>@Model.MemberNoneCashOperation.Account.Balance.ToString("#,##0.0") FCFA</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

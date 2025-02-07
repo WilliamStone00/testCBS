@@ -590,6 +590,8 @@ namespace CBS.BusinessService.UserManagement
                 {
                     mFAActivation.Status = true;
                 }
+                mFAActivation.Email=GetUserNAme();
+                mFAActivation.Id=ConvertStringToGuid(GetUserID());
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var reUser = await ApiCallerHelper.PostAsync<ResponseObject<bool>>(APICallHelper.MFAActivation, mFAActivation);
                 if (reUser.IsSuccess)
@@ -615,7 +617,7 @@ namespace CBS.BusinessService.UserManagement
         {
             try
             {
-
+                mFAActivation.Id=ConvertStringToGuid(GetUserID());
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var reUser = await ApiCallerHelper.PostAsync<ResponseObject<bool>>(APICallHelper.MFAVerification, mFAActivation);
                 if (reUser.IsSuccess)

@@ -165,10 +165,19 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
-        public async Task<IEnumerable<MemberNoneCashOperation>> GetMemberNoneCashOperations(string branchid,string status)
+        public async Task<IEnumerable<MemberNoneCashOperation>> GetMemberNoneCashOperations(string branchid=null,string status=null)
         {
             try
             {
+                if (IsHeadOffice())
+                {
+                    branchid=null;
+                    status="all";
+                }
+                else
+                {
+                    branchid=GetBranchID();
+                }
                 GetAllMemberNoneCashOperationsQuery getAllMemberNone = new GetAllMemberNoneCashOperationsQuery(status, branchid);
 
                 var queryString = ToQueryString(getAllMemberNone);
@@ -189,7 +198,24 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
-       
+        public async Task<MemberNoneCashOperation> GetMemberNoneCashOperation(string id)
+        {
+            try
+            {
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<MemberNoneCashOperation>>(string.Format(APICallHelper.Get_MemberNoneCashOperation, id));
+
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new MemberNoneCashOperation();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public async Task<ExecutionMessages> Create(List<BulkDeposit> deposits)
         {
@@ -197,7 +223,7 @@ namespace CBS.BusinessService.Accounts
 
             {
                 var data = deposits.FirstOrDefault();
-                var model = new AddMemberNoneCashOperationCommand { AccountNUmber=data.AccountNumber, Amount=data.Amount, BookingDirection=data.BookingDirection, ChartOfAccountId=data.ChartOfAccountId, MemberReference=data.CustomerId, Note=data.Note, MemberName=data.MemberName };
+                var model = new AddMemberNoneCashOperationCommand { AccountNUmber=data.AccountNumber, Amount=data.Amount, BookingDirection=data.BookingDirection, ChartOfAccountId=data.ChartOfAccountId, MemberReference=data.CustomerId, Note=data.Note, MemberName=data.MemberName, ChartOfAccountName=data.ChartOfAccountName };
 
 
                 var response = await _transactionApiHelper.PostAsync<ServiceResponse<MemberNoneCashOperation>>(APICallHelper.Create_MemberNoneCashOperation,model);
@@ -223,9 +249,39 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-        
-       
-       
+
+        public async Task<ExecutionMessages> ValidateMemberNoneCashOperation(ValidateMemberNoneCashOperationCommand model)
+        {
+            try
+
+            {
+
+
+                var response = await _transactionApiHelper.PutAsync<ServiceResponse<MemberNoneCashOperation>>(string.Format(APICallHelper.Validate_MemberNoneCashOperation, model.OperationId),model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+
     }
 
 }
