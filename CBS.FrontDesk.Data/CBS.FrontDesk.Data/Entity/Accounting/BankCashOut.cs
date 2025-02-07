@@ -97,9 +97,39 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         }
     }
 
-    
 
-   
+    public class BankDepositCashClearing
+    {
+        public string CreatedDate { get; set; }
+        public string TransferBy { get; set; }
+        public string ToAccountId { get; set; }
+        public string FromAccountId { get; set; }
+        public string AccountInfo { get; set; }
+        [Required]
+        public string AmountExpected { get; set; }
+ 
+        [Required]
+        public decimal Amount { get; set; }
+        [Required]
+        public string  Id { get; set; }
+
+        public string Description { get; set; }
+        [Required]
+        public CurrencyNotesRequest CurrencyNotes { get; set; }
+        public BranchTransfer ConvertToTransferData()
+        {
+            return new BranchTransfer
+            {
+                FromAccountId = FromAccountId,
+                ToAccountId = ToAccountId,
+                CurrencyNotesRequest = CurrencyNotes,
+                Amount = CurrencyNotes.GetAmountValue(),
+                ReferenceId = Id,
+            };
+        }
+
+    }
+
     public class CashClearing
     {
         public string CreatedDate { get; set; }

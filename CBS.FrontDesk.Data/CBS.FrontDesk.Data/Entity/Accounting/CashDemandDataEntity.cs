@@ -12,7 +12,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public CashInfusion CashInfusionModel { get; set; } = new CashInfusion();
         public CashInfusionRequest CashInfusionRequest { get; set; } = new CashInfusionRequest();
         public Approval Approval { get; set; } = new Approval();
-        public BankCashOut BankCashOut { get; set; } = new BankCashOut();
+        public BankCashOut BankCashOut { get; set; } = new BankCashOut(); 
+                 public BankDepositCashClearing BankDepositCashClearing { get; set; } = new BankDepositCashClearing();
         public CashClearing CashClearing { get; set; } = new CashClearing();
         public BranchToBranchTransfer BranchToBranchTransfer { get; set; } = new BranchToBranchTransfer();
         public DetailsDto DetailsDto { get; set; } = new DetailsDto();

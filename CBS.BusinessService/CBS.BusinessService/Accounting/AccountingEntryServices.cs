@@ -562,7 +562,7 @@ namespace CBS.BusinessService
             }
         }
 
-
+        //BankingOperation/GetAllDepositNotificationRedirectionQuery
 
         public async Task<List<DepositNotificationDto>> GetAllDepositNotificationRequest()
         {
@@ -570,6 +570,33 @@ namespace CBS.BusinessService
             try
             {
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<DepositNotificationDto>>>(APICallHelper.GetAllDepositNotificationRequestRequests);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData == null)
+                    {
+                        return new List<DepositNotificationDto>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<DepositNotificationDto>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+
+        public async Task<List<DepositNotificationDto>> GetAllDepositNotificationRedirectionRequest()
+        {
+
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<DepositNotificationDto>>>(APICallHelper.GetAllDepositNotificationRedirectionQuery);
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData == null)
@@ -1031,13 +1058,43 @@ namespace CBS.BusinessService
             }
             return ExecutionMessage;
         }
-
+        //BankDepositCashClearing
         public async Task<IExecutionMessages> CreateCashClearingTransaction(CashClearing model)
         {
             try
             {
 
-                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.CashClearingTransferUrl, model.ConvertToTransferData());
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.CashClearingTransferCashReplenishmentUrl, model.ConvertToTransferData());
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task<IExecutionMessages> BankDepositCashClearingTransaction(BankDepositCashClearing model)
+        {
+            try
+            {
+
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.CashClearingTransferBankDepositUrl, model.ConvertToTransferData());
                 if (response.IsSuccess)
                 {
                     // Successful creation

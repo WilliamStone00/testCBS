@@ -151,8 +151,8 @@
                                         <div class="form-check mb-3">
                                             <div class="form-floating form-floating-outline">
 
-                                                @Html.DropDownListFor(m => m.DepositNotificationDto.CorrespondingBranchId, new SelectList(ViewBag.ZoneBranch == null ? "" : ViewBag.ZoneBranch, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "CorrespondingBranchID" })
-                                                @Html.ValidationMessageFor(model => model.DepositNotificationDto.CorrespondingBranchId, "", new { @class = "text-danger" })
+                                                @Html.DropDownListFor(m => m.DepositNotificationDto.correpondingBranchId, new SelectList(ViewBag.ZoneBranch == null ? "" : ViewBag.ZoneBranch, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "CorrespondingBranchID" })
+                                                @Html.ValidationMessageFor(model => model.DepositNotificationDto.correpondingBranchId, "", new { @class = "text-danger" })
                                                 <label for="Account">Select Branch</label>
                                             </div>
                                         </div>
