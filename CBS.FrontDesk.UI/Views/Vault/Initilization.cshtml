@@ -98,12 +98,32 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="vaultDetailsModal" tabindex="-1" aria-labelledby="vaultDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header p-2">
+                <header class="w-100 text-center">
+                    <h4 class="text-primary fw-bold mb-1">
+                        <i class="mdi mdi-lock me-2"></i> VAULT DETAILS
+                    </h4>
+                    <p class="text-muted mb-0">
+                        View details and manage vault-related information efficiently.
+                    </p>
+                    <hr style="border: 1px solid rgba(128, 128, 128, 0.5);" />
+                </header>
+            </div>
+            <div class="modal-body p-2">
+                <div id="vaultDetailsContent">
+                    <!-- Partial view or dynamic content will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        function Reprint() {
-            ReportView("VaultInitialization", null, "GetReportReport", null, null, null, "ReportParameterLess");
-        }
-    </script>
+  
 }

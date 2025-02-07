@@ -147,7 +147,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                 {
                     return async () =>
                     {
-                        //var data = await _LoanServices.GetLoans();
+                        //var data = await auditTrailServices.GetLoans();
                         var sysData = new MemberOperationPanel { Loans = null };
                         return PartialView(partialView, sysData);
                     };
@@ -182,7 +182,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
 
         public async Task<bool> GetList()
         {
-            //ViewBag.Groups = await _LoanServices.GetLoans();
+            //ViewBag.Groups = await auditTrailServices.GetLoans();
             var users = await _userManagementServices.GetUserDropDownList();
             ViewBag.Users = users.ToList();
             return true;

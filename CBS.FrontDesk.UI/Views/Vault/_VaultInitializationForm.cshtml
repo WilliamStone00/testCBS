@@ -17,14 +17,13 @@
             <!-- Cash in Vault -->
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.VaultInitializationCommand.AmountInVault, new { @class = "form-control formatted-amount shadow-box", @id = "AmountInVault", @oninput = "calculateTotalAmount()",@readonly=true })
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.AmountInVault, new { @class = "form-control formatted-amount shadow-box", @id = "AmountInVault", @oninput = "calculateTotalAmount()"})
                     @Html.ValidationMessageFor(m => m.VaultInitializationCommand.AmountInVault, "", new { @class = "text-danger" })
                     <label for="AmountInVault">Cash in Vault</label>
                 </div>
             </div>
-
-
-            <!-- Total Amount -->
+            
+    <!-- Total Amount -->
             <div class="col-md-6" style="display:none">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.VaultInitializationCommand.TotalAmount, new { @class = "form-control formatted-amount shadow-box", @readonly = "readonly", @id = "TotalAmount" })

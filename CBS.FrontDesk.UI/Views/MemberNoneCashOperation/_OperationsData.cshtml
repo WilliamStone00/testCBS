@@ -58,13 +58,16 @@
                                             @if (ViewBag.Path=="my_requests")
                                             {
                                                 <!-- Delete Button -->
-                                                <button type="button"
-                                                        class="btn btn-sm btn-outline-danger"
-                                                        onclick="deleteOperation('@operation.Id')"
-                                                        data-bs-toggle="tooltip"
-                                                        title="Delete Operation">
-                                                    <i class="fas fa-trash-alt me-1"></i> Delete
-                                                </button>
+                                                if (operation.ApprovalStatus!="Approved")
+                                                {
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-outline-danger"
+                                                            onclick="deleteOperation('@operation.Id')"
+                                                            data-bs-toggle="tooltip"
+                                                            title="Delete Operation">
+                                                        <i class="fas fa-trash-alt me-1"></i> Delete
+                                                    </button>
+                                                }
                                             }
                                             else
                                             {

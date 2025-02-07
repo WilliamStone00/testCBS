@@ -317,12 +317,13 @@ By carefully selecting the appropriate loan product and terms in this section, y
                                 </div>
                                 <div class="col-12" id="afterProcessingDiv">
                                     <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPaidFeeAfterProcessing, new { @class = "form-check-input", @id = "FeePaidAfterProcessing" })
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPaidFeeAfterProcessing, new { @class = "form-check-input", @id = "FeePaidAfterProcessing", @disabled = "disabled" })
                                         <label class="form-check-label" for="FeePaidAfterProcessing">
                                             The fee can either be paid upfront at the cash desk before disbursement, or deducted directly from the loan after it is disbursed to member's deposit account.
                                         </label>
                                     </div>
                                 </div>
+
                             </div>
                         </fieldset>
                     </div>

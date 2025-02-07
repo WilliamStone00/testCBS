@@ -2,16 +2,21 @@
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.UI.Helper;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Services.Description;
+using System.Web.UI.WebControls;
 
 namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 {
@@ -76,7 +81,43 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
             }
         }
-        //income_expense
+        public async Task<ActionResult> DownloadFile(string fileId,string path)
+        {
+
+
+            try
+            {
+                // Fetch salary analysis details and file upload data
+                var memberNoneCashOperations = await _memberNoneCashOperationServices.GetMemberNoneCashOperations(fileId, path);
+                // Define file path and branch name
+                string fileName = $"NoneCashOperationForMembers_{path}_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+                string directoryPath = Server.MapPath("~/TempFiles");
+
+                // Ensure the directory exists
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+                string filePath = Path.Combine(directoryPath, fileName);
+                string exportedDate = DateTime.Now.ToString();
+                string exportedBy = Session["FullName"].ToString();
+                // Generate Excel file
+                MemberNoneCashOperationExcelGenerator.GenerateOperationExcel(memberNoneCashOperations.ToList(), filePath, exportedDate, exportedBy, path);
+                // Return the file for download
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                System.IO.File.Delete(filePath); // Clean up temporary file
+
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return an error response
+                Console.WriteLine($"Error generating Excel file: {ex.Message}");
+                return Json(new { success = false, message = "An error occurred while generating the Excel file." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+       
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = "_DataNotFound", string path = null, string serviceOption = null)
         {
             try
@@ -137,7 +178,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 else if (path == "all_operations")
                 {
                     ViewBag.Path="all_operations";
-                    var memberNoneCashOperations = await _memberNoneCashOperationServices.GetMemberNoneCashOperations("n/a", null);
+                    var memberNoneCashOperations = await _memberNoneCashOperationServices.GetMemberNoneCashOperations("n/a", "all");
 
                     return PartialView(partialView, new MemberNoneCashOperationCarrier { MemberNoneCashOperations=memberNoneCashOperations.ToList() });
 
@@ -189,6 +230,11 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             {
                 return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
             }
+        }
+        public async Task<ActionResult> DeleteOperation(string KEY)
+        {
+            var data = await _memberNoneCashOperationServices.Delete(KEY);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public async Task<ActionResult> PostRequestCash(List<BulkDeposit> deposits)

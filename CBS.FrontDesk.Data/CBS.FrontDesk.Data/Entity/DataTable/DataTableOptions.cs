@@ -30,15 +30,26 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
         public object data { get; set; }
         public DataTableOptions DataTableOptions { get; set; }
 
+        // Default constructor for deserialization
+        public CustomDataTable() { }
+
+        // Parameterized constructor for manual initialization
         public CustomDataTable(int draw, int recordsTotal, int recordsFiltered, object data, DataTableOptions dataTableOptions)
         {
             this.draw = draw;
             this.recordsTotal = recordsTotal;
             this.recordsFiltered = recordsFiltered;
             this.data = data;
-            DataTableOptions = dataTableOptions;    
+            this.DataTableOptions = dataTableOptions;
         }
     }
 
+    public class GetAuditTrailsDataTableQuery
+    {
+        public DataTableOptions DataTableOptions { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string Feild { get; set; }
+    }
 
 }

@@ -1293,19 +1293,33 @@ function AddORUpdateGen(KEY, divToLoadData, partialView, path, controller, servi
     $('.select2').select2();
     initializeDatePickers();
 }
-
 function initializeDatePickers() {
-    var datepickerList = document.querySelectorAll('.date-picker');
-    if (datepickerList.length > 0) {
-        datepickerList.forEach(function (datepicker) {
-            flatpickr(datepicker, {
-                // Customize your date picker options here
-                dateFormat: "Y-m-d",
-                mode: 'range'
-            });
-        });
-    }
+    $('.date-picker').datepicker({
+        format: 'dd/mm/yyyy',      // Correct date format
+        autoclose: true,           // Close picker on date selection
+        todayHighlight: true,      // Highlight today's date
+        orientation: 'bottom auto' // Ensure it displays properly on small screens
+    }).on('show', function (e) {
+        // Fix potential issues with datepicker placement in modals or scrollable containers
+        $('.datepicker').css('z-index', 1050); // Ensure it displays above modal content if used in modals
+    });
 }
+
+//function initializeDatePickers() {
+
+ 
+
+//    var datepickerList = document.querySelectorAll('.date-picker');
+//    if (datepickerList.length > 0) {
+//        datepickerList.forEach(function (datepicker) {
+//            flatpickr(datepicker, {
+//                // Customize your date picker options here
+//                dateFormat: "Y-m-d",
+//                mode: 'range'
+//            });
+//        });
+//    }
+//}
 
 
 function navigateToDetails(url) {

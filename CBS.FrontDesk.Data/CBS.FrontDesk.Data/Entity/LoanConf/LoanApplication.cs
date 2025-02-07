@@ -53,6 +53,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal NewBalance { get; set; }
         public decimal NewVAT { get; set; }
         public decimal NewPenalty { get; set; }
+        public bool IsInterestPaidUpfront { get; set; }
+        public decimal InterestAmountUpfront { get; set; }
 
         public string Id { get; set; }
         [Required]

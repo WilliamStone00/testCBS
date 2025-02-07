@@ -441,6 +441,7 @@ namespace CBS.BusinessService.Config
                     StopInterestCalculationAtLoanMaturityDate=product.StopInterestCalculationAtLoanMaturityDate,
                     TargetType = product.TargetType,
                     LoanTermId = product.LoanTermId,
+                    InterestMustBePaidUpFront=product.InterestMustBePaidUpFront,
                     IsPaidFeeBeforeProcessing = product.IsPaidFeeBeforeProcessing,
                     LoanTerm = product.LoanTerm,
                     LoanMaximumAmount = product.LoanMaximumAmount,
@@ -561,7 +562,7 @@ namespace CBS.BusinessService.Config
                         LoanProduct.Co_obligorMustHaveFundToGuranteeLoan=model.Co_obligorMustHaveFundToGuranteeLoan;
                         LoanProduct.ShorteeMustHaveFundToGuranteeLoan=model.ShorteeMustHaveFundToGuranteeLoan;
                         LoanProduct.MinimumPercentageCoverageOfShortee=model.MinimumPercentageCoverageOfShortee;
-                        
+
 
                     }
                     else if (model.ServiceOption == "loan_range")
@@ -588,7 +589,7 @@ namespace CBS.BusinessService.Config
                         LoanProduct.MinimumInterestRate = model.MinimumInterestRate;
                         LoanProduct.MaximumInterestRate = model.MaximumInterestRate;
                         LoanProduct.StartGeneratingInterestAfterDisbustment = model.StartGeneratingInterestAfterDisbustment;
-
+                        LoanProduct.InterestMustBePaidUpFront = model.InterestMustBePaidUpFront;
                         LoanProduct.StopInterestCalculationAtLoanMaturityDate=model.StopInterestCalculationAtLoanMaturityDate;
                         LoanProduct.NumberOfDaysToStopInterestCalculation=model.NumberOfDaysToStopInterestCalculation;
                     }

@@ -936,9 +936,18 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllBankZoneBranch = "/api/v1/BankZoneBranchs";
         public static string CreateBankZoneBranch = "/api/v1/BankZoneBranch";
 
-        public static object GetAll_MemberNoneCashOperations { get; set; }
-        public static string Validate_MemberNoneCashOperation { get; set; }
-        public static string Delete_MemberNoneCashOperation { get; set; }
-        public static string Create_MemberNoneCashOperation { get; set; }
+        //MemberNoneCashOperation//
+        public static string GetAll_MemberNoneCashOperations = "/api/v1/MemberNoneCashOperations";
+        public static string Validate_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation/Validate/{0}";
+        public static string Delete_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation/{0}";
+        public static string Get_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation/{0}";
+        public static string Create_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation";
+
+        //AuditTrail//
+        public static string Get_AuditTrail = "/api/v1/AuditTrail/{0}";
+        public static string Get_AuditTrailByUserName = "/api/v1/AuditTrail/{0}";
+        public static string Delete_AuditTrail = "/api/v1/AuditTrail/{0}";
+        public static string Get_GetAuditTrailByPagging = "/api/v1/AuditTrail/pagging";
+        public static string Get_GetAuditTrailBy_DataTable_Pagging = "/api/v1/AuditTrail/datatable-pagging";
     }
 }

@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounting\ProductAccountingBook.cs" />
+    <Compile Include="Entity\AuditTralP\AuditTrailDto.cs" />
     <Compile Include="Entity\CashCeilingManagement\CashCeilingRequest.cs" />
     <Compile Include="Entity\CashChangeManagement\CashChangeHistory.cs" />
     <Compile Include="Entity\CMoney\CMoneyMembersActivationAccount.cs" />

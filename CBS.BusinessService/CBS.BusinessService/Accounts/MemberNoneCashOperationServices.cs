@@ -13,9 +13,12 @@ using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
@@ -103,68 +106,6 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-        public async Task<FileDownloadDto> DownloadFile(string fileId)
-        {
-            try
-            {
-                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<FileDownloadDto>>(string.Format(APICallHelper.DownloadSalaryUpload, fileId));
-
-                if (couApiResponse.IsSuccess)
-                {
-                    // FileDownloadDto should contain file data and metadata
-                    return couApiResponse.ApiResponseData.Data;
-                }
-                return new FileDownloadDto { ErrorMessage = couApiResponse.Message };
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public async Task<List<SalaryUploadModel>> GetSalaryModelByBranchUsingFileId(string fileId)
-        {
-            try
-            {
-                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<SalaryUploadModel>>>(string.Format(APICallHelper.GetSalaryModelForBranchByFileId, fileId));
-
-                if (couApiResponse.IsSuccess)
-                {
-                    // FileDownloadDto should contain file data and metadata
-                    return couApiResponse.ApiResponseData.Data;
-                }
-                return new List<SalaryUploadModel>();
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public async Task<IEnumerable<SalaryUploadModel>> GetSalaryUploads(string FileUploadId)
-        {
-            try
-            {
-             
-                GetSalaryUploadModelQuery allStandingOrdersQuery = new GetSalaryUploadModelQuery { FileUploadId=FileUploadId };
-                var queryString = ToQueryString(allStandingOrdersQuery);
-                var fullUrl = $"{APICallHelper.GetAllSalaryUploadByFileUploadId}?{queryString}";
-                var response = await _transactionApiHelper.GetAsync<ResponseObject<List<SalaryUploadModel>>>(fullUrl);
-                var data = new List<SalaryUploadModel>();
-                if (response.ApiResponseData != null)
-                {
-                    data = response.ApiResponseData.Data;
-                }
-                return data;
-
-            }
-            catch (Exception ex)
-            {
-                // Log and handle exception
-                throw;
-            }
-        }
-
         public async Task<IEnumerable<MemberNoneCashOperation>> GetMemberNoneCashOperations(string branchid=null,string status=null)
         {
             try

@@ -1,0 +1,223 @@
+﻿@{
+    ViewBag.Title = "Audit Trails Overview";
+}
+
+<div class="row">
+    <div class="col-12">
+
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-history me-2"></i> AUDIT TRAIL LOGS
+                </h1>
+                <p class="card-text">
+                    Track and monitor every action performed in the system, from user interactions to system-generated events. Easily search, filter, and analyze critical logs to ensure accountability and detect anomalies.
+                </p>
+                <p class="card-text text-warning fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use the date range and search filters to pinpoint key events. Export data for reporting, compliance, and audit purposes.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR EFFECTIVE AUDIT TRAIL SEARCH</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> **Refine Searches:** Choose an appropriate search option before entering search terms to find specific events easily. For example, you can search by user, action type, branch, or error messages.</li>
+
+                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> **Filter by Date Range:** Limit search results to a specific period using the “Date From” and “Date To” fields to find logs within a timeframe of interest.</li>
+
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> **Export Logs:** Use the "Export" button to download filtered logs as an Excel or CSV file for external review and reporting.</li>
+
+                <li>
+                    <i class="mdi mdi-search-web text-primary me-2"></i> **Available Search Options and Examples:**
+                    Select a search option and enter relevant search terms to filter logs effectively. Here are common options and examples:
+                    <ul>
+                        <li>
+                            <strong>User or System Action:</strong> Select this option and enter the type of action (e.g., <em>Create</em>, <em>Update</em>, <em>Delete</em>, or <em>Login</em>).
+                            <em>Example:</em> Enter <strong>Delete</strong> to view all delete operations.
+                        </li>
+                        <li>
+                            <strong>User Name (Full):</strong> Select this option to search by a user's full name.
+                            <em>Example:</em> Enter <strong>John Doe</strong> to find logs involving that user.
+                        </li>
+                        <li>
+                            <strong>Critical Level:</strong> Select this option to search by log severity, such as <em>Information</em>, <em>Warning</em>, or <em>Error</em>.
+                            <em>Example:</em> Enter <strong>Error</strong> to view logs related to failed or critical events.
+                        </li>
+                        <li>
+                            <strong>Microservice Name:</strong> Select this option to search by the microservice that triggered the log entry.
+                            <em>Example:</em> Enter <strong>PaymentService</strong> to find events related to payments.
+                        </li>
+                        <li>
+                            <strong>System Status Code:</strong> Use this option to filter logs by HTTP status codes (e.g., 200, 404, 500).
+                            <em>Example:</em> Enter <strong>500</strong> to identify server errors.
+                        </li>
+                        <li>
+                            <strong>Branch Code:</strong> Select this option to search logs by a specific branch code.
+                            <em>Example:</em> Enter <strong>001</strong> to find events associated with Branch 001.
+                        </li>
+                        <li>
+                            <strong>Request Object:</strong> Search logs containing specific details within the request payload.
+                            <em>Example:</em> Enter part of the request object or transaction details (e.g., <strong>Account12345</strong>).
+                        </li>
+                        <li>
+                            <strong>Detail Response Message:</strong> Filter logs containing specific response messages, such as errors or confirmation messages.
+                            <em>Example:</em> Enter <strong>Transaction failed</strong> to locate error logs.
+                        </li>
+                        <li>
+                            <strong>Branch Name:</strong> Select this option to filter logs by branch name.
+                            <em>Example:</em> Enter <strong>Downtown Branch</strong> to retrieve logs for that branch.
+                        </li>
+                        <li>
+                            <strong>Correlation ID or Transaction Code:</strong> Use this option to find logs by correlation ID or specific transaction codes.
+                            <em>Example:</em> Enter <strong>CorrID12345</strong> or <strong>TXN67890</strong> to locate logs for a specific transaction.
+                        </li>
+                    </ul>
+                </li>
+
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> **Monitor Critical Logs:** Review logs marked as <em>Error</em> or with status codes 500 to detect anomalies and potential issues.</li>
+
+                <li><i class="mdi mdi-eye-outline text-info me-2"></i> **View Full Details:** Click on a log entry to open a detailed view with complete information, including the affected entity and associated request/response data.</li>
+
+                <li><i class="mdi mdi-reload text-primary me-2"></i> **Refresh Regularly:** Keep the log listing updated by refreshing the page to capture newly generated entries.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div id="accordionMembers" class="accordion accordion-popout">
+    <div class="accordion-item active">
+        <h2 class="accordion-header" id="membersHeading">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#membersCollapse" aria-expanded="true" aria-controls="membersCollapse">
+                <i class="mdi mdi-history me-2"></i><strong>AUDIT-TRAIL [@Session["BranchName"]]</strong>
+            </button>
+        </h2>
+        <div id="membersCollapse" class="accordion-collapse collapse show" aria-labelledby="membersHeading" data-bs-parent="#accordionMembers">
+            <div class="accordion-body">
+                <div class="card mb-4 shadow">
+                    <div class="card-body">
+                        <label for="auditSearchInput" class="form-label fw-bold">Search and Export Logs</label>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <input type="text" id="dateFrom" class="form-control" placeholder="Date From (dd/mm/yyyy)">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" id="dateTo" class="form-control" placeholder="Date To (dd/mm/yyyy)">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" id="auditSearchInput" class="form-control" placeholder="Search by action, user, or details">
+                            </div>
+                            <div class="col-md-2 d-flex">
+                                <button id="searchButton" class="btn btn-primary me-2">
+                                    <i class="mdi mdi-magnify me-1"></i> Search
+                                </button>
+                                <button id="exportButton" class="btn btn-success" onclick="downloadAuditTrail()">
+                                    <i class="mdi mdi-file-excel me-1"></i> Export
+                                </button>
+                            </div>
+                        </div>
+                        <small class="text-muted mt-2 d-block">Use the search and date filters to refine the export results.</small>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Select Search Option</label>
+                        <div class="card p-3">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchAction" value="Action" checked />
+                                        <label class="form-check-label" for="searchAction">User Or System Action</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchFullName" value="FullName" />
+                                        <label class="form-check-label" for="searchFullName">User Name (In Full)</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchLevel" value="Level" />
+                                        <label class="form-check-label" for="searchLevel">Critical Level</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchMicroserviceName" value="MicroServiceName" />
+                                        <label class="form-check-label" for="searchMicroserviceName">Microservice Name</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchCorrolationId" value="CorrolationId" />
+                                        <label class="form-check-label" for="searchCorrolationId">Corrolation Id or Trans Code</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchBranchCode" value="BranchCode" />
+                                        <label class="form-check-label" for="searchBranchCode">Branch Code</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchStringifyObject" value="StringifyObject" />
+                                        <label class="form-check-label" for="searchStringifyObject">Request Object</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchDetailMessage" value="DetailMessage" />
+                                        <label class="form-check-label" for="searchDetailMessage">Detail Response Message</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchBranchName" value="BranchName" />
+                                        <label class="form-check-label" for="searchBranchName">Branch Name</label>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Members Data Listing -->
+                <div id="datalistingview" style="display: none;">
+                    @Html.Partial("_AuditTrailData")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Audit Trail Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detailsModalBody">
+                <!-- Details content will be loaded here dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/AuditTrail/Audits.js"></script>
+
+}

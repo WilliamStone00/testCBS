@@ -1,0 +1,206 @@
+﻿@model CBS.FrontDesk.Data.Entity.AuditTralP.AuditTrailDto
+
+@{
+    ViewBag.Title = "Audit Trail Details";
+}
+
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-history me-2"></i> AUDIT TRAIL DETAILS
+                </h1>
+                <p class="card-text">
+                    Review the details of the selected audit log entry, including user, action, and associated metadata.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> IMPORTANT TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Review key details, including user actions, entity affected, and metadata, before making decisions.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the <strong>Copy</strong> button to copy log information (e.g., messages and object details) for reporting or debugging.</li>
+                <li><i class="mdi mdi-account-outline text-primary me-2"></i> Confirm the user who performed the action and cross-check the timestamp for accuracy.</li>
+                <li><i class="mdi mdi-security-network text-danger me-2"></i> Handle sensitive data with caution. Avoid sharing log details that contain PII (personally identifiable information).</li>
+                <li><i class="mdi mdi-shield-check-outline text-warning me-2"></i> Audit entries involving critical operations should be further investigated if any irregularities are detected.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> The “Correlation ID” can be useful for tracking multiple actions or transactions within the same workflow.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="text-primary">Audit Information</h5>
+        <div class="table-responsive mb-3">
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <!-- General Information -->
+                    <tr class="table-primary">
+                        <td colspan="2" class="font-weight-bold text-uppercase text-start">General Information</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">ID:</td>
+                        <td>@Model.Id</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Action:</td>
+                        <td>@Model.Action</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Timestamp:</td>
+                        <td>@Model.Timestamp.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">User Name:</td>
+                        <td>@Model.UserName</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Full Name:</td>
+                        <td>@Model.FullName</td>
+                    </tr>
+
+                    <!-- Network Information -->
+                    <tr class="table-primary">
+                        <td colspan="2" class="font-weight-bold text-uppercase text-start">Network Information</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">IP Address:</td>
+                        <td>@Model.IPAddress</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Status Code:</td>
+                        <td>@Model.StatusCode</td>
+                    </tr>
+
+                    <!-- Microservice Information -->
+                    <tr class="table-primary">
+                        <td colspan="2" class="font-weight-bold text-uppercase text-start">Microservice Information</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">MicroService Name:</td>
+                        <td>@Model.MicroServiceName</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Level:</td>
+                        <td>
+                            @if (Model.Level == "Information")
+                            {
+                                <span class="badge bg-info text-dark">
+                                    <i class="mdi mdi-information-outline me-1"></i> Information
+                                </span>
+                            }
+                            else if (Model.Level == "Warning")
+                            {
+                                <span class="badge bg-warning text-dark">
+                                    <i class="mdi mdi-alert-outline me-1"></i> Warning
+                                </span>
+                            }
+                            else if (Model.Level == "Error")
+                            {
+                                <span class="badge bg-danger text-white">
+                                    <i class="mdi mdi-alert-circle-outline me-1"></i> Error
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">
+                                    <i class="mdi mdi-help-circle-outline me-1"></i> Unknown
+                                </span>
+                            }
+                        </td>
+                    </tr>
+
+
+                    <!-- Branch Information -->
+                    <tr class="table-primary">
+                        <td colspan="2" class="font-weight-bold text-uppercase text-start">Branch Information</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Branch ID:</td>
+                        <td>@Model.BranchID</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Branch Name:</td>
+                        <td>@Model.BranchName</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Branch Code:</td>
+                        <td>@Model.BranchCode</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Bank ID:</td>
+                        <td>@Model.BankID</td>
+                    </tr>
+
+                    <!-- Correlation Information -->
+                    <tr class="table-primary">
+                        <td colspan="2" class="font-weight-bold text-uppercase text-start">Correlation Information</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Correlation ID:</td>
+                        <td>@Model.CorrolationId</td>
+                    </tr>
+
+                    <!-- Entity Affected -->
+                    <tr class="table-primary">
+                        <td colspan="2" class="font-weight-bold text-uppercase text-start">Entity Affected</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Stringified Object:</td>
+                        <td>
+                            <div class="d-flex align-items-start">
+                                <button class="btn btn-sm btn-secondary me-2" onclick="copyToClipboard('stringifiedObject')">
+                                    <i class="mdi mdi-content-copy"></i> Copy
+                                </button>
+                                <pre id="stringifiedObject" class="bg-light p-2 rounded w-100" style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;">@Model.StringifyObject</pre>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Detail Message:</td>
+                        <td>
+                            <div class="d-flex align-items-start">
+                                <button class="btn btn-sm btn-secondary me-2" onclick="copyToClipboard('detailMessage')">
+                                    <i class="mdi mdi-content-copy"></i> Copy
+                                </button>
+                                <pre id="detailMessage" class="bg-light p-2 rounded w-100" style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;">@Model.DetailMessage</pre>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="text-center mt-4">
+                <a class="btn btn-primary" href="/AuditTrail">
+                    <i class="mdi mdi-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function copyToClipboard(elementId) {
+        const content = document.getElementById(elementId).innerText;
+        navigator.clipboard.writeText(content).then(() => {
+            alert("Copied to clipboard!");
+        }).catch(err => {
+            console.error('Error copying text: ', err);
+        });
+    }
+</script>
