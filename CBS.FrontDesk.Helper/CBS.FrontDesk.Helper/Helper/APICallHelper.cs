@@ -942,5 +942,6 @@ namespace CBS.FrontDesk.Helper
         public static string Validate_MemberNoneCashOperation { get; set; }
         public static string Delete_MemberNoneCashOperation { get; set; }
         public static string Create_MemberNoneCashOperation { get; set; }
+        public static string Get_MemberNoneCashOperation { get; set; }
     }
 }
