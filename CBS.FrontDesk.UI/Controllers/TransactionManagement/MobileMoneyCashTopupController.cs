@@ -112,7 +112,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         //{
         //    try
         //    {
-        //        var dataTable = await _LoanServices.GetDataTable(PostDataTableOptions(), searchCriteria, true);
+        //        var dataTable = await auditTrailServices.GetDataTable(PostDataTableOptions(), searchCriteria, true);
         //        return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data }, JsonRequestBehavior.AllowGet);
 
         //    }

@@ -107,7 +107,7 @@ namespace CBS.BusinessService.Accounts
                 string apiEndpoint;
                 switch (model.Action)
                 {
-                    case "vaul":
+                    case "vault":
                         apiEndpoint = APICallHelper.DenominationCashChangeVault;
                         break;
                     case "sub_teller":

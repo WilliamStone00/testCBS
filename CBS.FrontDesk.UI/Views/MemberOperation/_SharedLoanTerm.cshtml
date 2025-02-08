@@ -155,6 +155,27 @@
                             <td>@Model.LoanApplication.OldLoanPenalty.ToString("#,##0.0") FCFA</td>
                         </tr>
                     }
+                    <!-- Interest Payment Details -->
+                    @*<tr class="table-primary">
+                        <td colspan="2" class="font-weight-bold text-center">Interest Payment Details</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Must Interest Be Paid Upfront?</td>
+                        <td>
+                            @if (Model.LoanApplication.IsInterestPaidUpfront)
+                            {
+                                <span class="badge bg-primary text-white">Yes</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">No</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Interest Amount to Be Paid Upfront:</td>
+                        <td>@Model.LoanApplication.InterestAmountUpfront.ToString("#,##0.0") FCFA</td>
+                    </tr>*@
 
                     <!-- Loan Details -->
                     <tr class="table-primary">

@@ -117,6 +117,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string TargetType { get; set; }
 
         public bool ActiveStatus { get; set; }
+        public bool InterestMustBePaidUpFront { get; set; }
+
 
         public bool HasTopUp { get; set; }
 
@@ -275,6 +277,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IsRequiredCollateral { get; set; }
         public bool BlockedSavingAccount { get; set; }
         public bool BlockedGuarantorAccount { get; set; }
+        public bool InterestMustBePaidUpFront { get; set; }
+
         public bool BlockedSalaryAccount { get; set; }
         public decimal MinimumSavingAccountBalanceRateForTheRequestAmount { get; set; }
         public decimal MinimumSalaryAccountBalanceRateForTheRequestAmount { get; set; }
@@ -367,6 +371,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     {
         public string Id { get; set; }
         public string ProductCode { get; set; }
+        public bool InterestMustBePaidUpFront { get; set; }
+
         public string ProductName { get; set; }
         public string LoanInterestPeriod { get; set; }//Per Day, Per Week, Per Month, Per Year
         public decimal MinimumInterestRate { get; set; }

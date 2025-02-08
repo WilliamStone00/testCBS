@@ -44,4 +44,11 @@ namespace CBS.FrontDesk.Helper
             return new PagedList<T>(items, count, skip, pageSize);
         }
     }
+    public class PaginatedResult<T>
+    {
+        public List<T> Items { get; set; }
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public long TotalCount { get; set; }
+    }
 }

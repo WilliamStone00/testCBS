@@ -249,6 +249,7 @@
     <Compile Include="Accounts\OperationFeeServices.cs" />
     <Compile Include="Accounts\SysConfigurationServices.cs" />
     <Compile Include="Accounts\SavingProductFeeServices.cs" />
+    <Compile Include="AuditTrailP\AuditTrailServices.cs" />
     <Compile Include="CorrespondingBankBranchServices\BankZoneBranchServices.cs" />
     <Compile Include="CorrespondingBankBranchServices\BankingZoneServices.cs" />
     <Compile Include="CustomerManagement\CMoneyMemberServices.cs" />

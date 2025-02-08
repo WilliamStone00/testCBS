@@ -71,9 +71,9 @@ namespace CBS.FrontDesk.UI.Controllers
                                 filterContext.Result = new RedirectResult(mfaurl);
                                 return;
                             }
-                
+
                         }
-             
+
                     }
 
                     if (VerifyIfSessionExist("PWD"))
@@ -94,7 +94,7 @@ namespace CBS.FrontDesk.UI.Controllers
                                 filterContext.Result = new RedirectResult(PWDUrl);
                                 return;
                             }
-                       
+
                         }
                     }
                 }
@@ -158,7 +158,7 @@ namespace CBS.FrontDesk.UI.Controllers
             return false; // Session does not exist
         }
 
-       
+
 
         public UserDto GetUserDto()
         {
@@ -452,7 +452,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
 
         }
-       
+
 
         public void GetUserSession()
         {
@@ -532,14 +532,27 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             var queryParams = HttpContext.Request.QueryString;
 
+            // Ensure draw is not null or empty, default to "1" if missing
+            var draw = !string.IsNullOrWhiteSpace(queryParams["draw"]) ? queryParams["draw"] : "1";
+
+            // Retrieve the sort column name and provide a default (e.g., "Timestamp") if missing
+            var sortColumnIndex = queryParams["order[0][column]"];
+            var sortColumnName = !string.IsNullOrWhiteSpace(sortColumnIndex) && queryParams[$"columns[{sortColumnIndex}][name]"] != null
+                ? queryParams[$"columns[{sortColumnIndex}][name]"]
+                : "Timestamp";  // Default column if not provided
+
+            // Default sort direction to "asc" if missing or invalid
+            var sortDirection = queryParams["order[0][dir]"]?.ToLower() == "desc" ? "desc" : "asc";
+
             DataTableOptions dataTableOptions = new DataTableOptions
             {
-                draw = queryParams["draw"],
+                draw = draw,
                 start = int.TryParse(queryParams["start"], out var start) ? start : 0,
                 length = int.TryParse(queryParams["length"], out var length) ? length : 10,
-                sortColumnName = queryParams[$"columns[{queryParams["order[0][column]"]}][Name]"],
-                sortColumnDirection = queryParams["order[0][dir]"],
-                searchValue = queryParams["search[value]"] ?? string.Empty
+                sortColumnName = sortColumnName,
+                sortColumnDirection = sortDirection,
+                searchValue = queryParams["search[value]"] ?? string.Empty,
+                sortDirection = sortDirection
             };
 
             dataTableOptions.pageSize = dataTableOptions.length;
@@ -548,6 +561,9 @@ namespace CBS.FrontDesk.UI.Controllers
 
             return dataTableOptions;
         }
+
+
+
         public DataTableOptions PostDataTableOptions()
         {
             var form = HttpContext.Request.Form;
@@ -559,7 +575,8 @@ namespace CBS.FrontDesk.UI.Controllers
                 length = int.TryParse(form["length"], out var length) ? length : 10,
                 sortColumnName = form[$"columns[{form["order[0][column]"]}][Name]"],
                 sortColumnDirection = form["order[0][dir]"],
-                searchValue = form["search[value]"] ?? string.Empty
+                searchValue = form["search[value]"] ?? string.Empty,
+                sortDirection = form["order[0][dir]"],
             };
 
             dataTableOptions.pageSize = dataTableOptions.length;

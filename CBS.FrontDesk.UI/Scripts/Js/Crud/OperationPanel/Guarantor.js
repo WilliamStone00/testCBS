@@ -1,4 +1,33 @@
 ﻿
+//function AjaxPostGuarantor(form) {
+//    $.validator.unobtrusive.parse(form);
+
+//    if ($(form).valid()) {
+//        var formData = new FormData(form);
+
+//        $.ajax({
+//            type: 'POST',
+//            url: form.action,
+//            data: formData,
+//            contentType: false,
+//            processData: false,
+//            success: function (response) {
+//                if (response.success) {
+//                    appalert(response.message, 1, 1);
+//                    LoadCollaterals();
+//                } else {
+//                    appalert(response.message, 2, 1);
+//                }
+//            },
+//            error: function (err) {
+//                console.error("Error details:", err);
+//                appalert("Error: " + (err.responseText || err.statusText), 0, 1);
+//            }
+//        });
+//    }
+//    return false;
+//}
+
 function AjaxPostGuarantor(form) {
 
     $.validator.unobtrusive.parse(form);
@@ -11,7 +40,8 @@ function AjaxPostGuarantor(form) {
 
                 if (response.success) {
                     appalert(response.message, 1, 1);
-                    LoadGuarantors();                }
+                    LoadCollaterals();
+                }
                 else {
                     appalert(response.message, 2, 1);
 
