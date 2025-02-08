@@ -93,12 +93,7 @@
                                     <td>Approved Amount</td>
                                     <td id="ApprovedBy">@Model.CashReplenimentRequestdto.AmountApproved </td>
                                 </tr>
-                                if (@Model.CashReplenimentRequestdto.CashRequisitionType.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashRequisitionType.REQUEST.ToString()))
-                                {
-
-                                }
-                                else
-                                {
+                             
                                     <tr>
                                         <td>Bank Transaction</td>
                                         <td>
@@ -106,7 +101,7 @@
                                             <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>
                                         </td>
                                     </tr>
-                                }
+                              
 
                             }
                             else
@@ -159,7 +154,7 @@
                                             </tr>
                                             <tr>
                                                 <td>Approved By </td>
-                                                <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.ApprovedBy </td>
+                                                <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.TempId2 </td>
                                             </tr>
                                             <tr>
                                                 <td>Approved Date</td>
@@ -168,10 +163,11 @@
                                             </tr>
                                             <tr>
                                                 <td>Bank Transaction</td>
-                                                <td>
-                                                    @*  <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.ReferenceId')" class="mr-2" id="exLargeModal" data-toggle="tooltip" data-placement="top" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>*@
-                                                    <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>
+                                             
+                                                <td class="badge bg-label-warning rounded-pill">
+                                                   NOT YET COMPLETED
                                                 </td>
+                                            
                                             </tr>
                                         }
                                         else if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBTB.ToString()))

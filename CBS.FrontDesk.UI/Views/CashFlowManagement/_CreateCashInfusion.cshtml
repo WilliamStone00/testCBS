@@ -21,7 +21,10 @@
                     <div class="col-sm-12 col-lg-12">
                         <div class="d-flex justify-content-between align-items-start border-end pb-3 pb-sm-0 card-widget-6">
                             <div>
-                                <h3 class="mb-3">XAF @Model.CashClearing.AmountExpected</h3>
+                                @{
+                                    var formattedAmount = Convert.ToDecimal(Model.CashReplenimentRequest.AmountApproved).ToString("N");
+                                }
+                                <h3 class="mb-3">XAF @formattedAmount</h3>
                                 <p class="mb-0">Authorized by @Model.CashReplenimentRequest.TempId2 </p>
                                 <p class="mb-0">Transfer by @Model.CashClearing.TransferBy </p>
                                 <p class="mb-0">Transaction done on the @Model.CashClearing.CreatedDate </p>

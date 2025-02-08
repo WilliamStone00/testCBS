@@ -391,6 +391,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         [HttpGet]
         public async Task<ActionResult> GetAllBranchAccountUsedToCreditCashFlow(string branchId)
         {
+
+            branchId = (branchId == "Approved") ? _AccountServices.GetBranchID() : branchId;
             if (!string.IsNullOrEmpty(branchId))
             {
                 var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(branchId);
@@ -481,10 +483,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 model.BankCashOut.Id = BaseUtilities.GenerateInsuranceUniqueNumber(15, "BCO");
                 model.BankCashOut.Balance = (await _AccountServices.GetAccount(model.BankCashOut.FromAccountId)).CurrentBalance;
         
-                var accountList = (await _AccountServices.GetAccountInfoByEventCode(new EventRequest { EventCode = "Transit_To_Vault", ToBranchCode = _AccountServices.GetBranchCode(), ToBranchId = _AccountServices.GetBranchID() }));
+                var accountList = (await _AccountServices.GetAccountInfoByEventCode(new EventRequest { EventCode = "Bank_To_Transit", ToBranchCode = _AccountServices.GetBranchCode(), ToBranchId = _AccountServices.GetBranchID() }));
                 var fromAccount = accountList.Where(x => x.Type.ToLower() == "source").FirstOrDefault();
                 var toAccount = accountList.Where(x => x.Type.ToLower() == "destination").FirstOrDefault();
-                model.BankCashOut.FromAccountId = fromAccount.Id;
+                
                 model.BankCashOut.ToAccountId = toAccount.Id;
                 var datac = await _accountingEntryServices.CreateBankCashTransaction(model.BankCashOut);
                 return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
@@ -921,7 +923,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var mOdelsd = new BranchToBranchTransfer();
                 mOdelsd.Balance = balance.ToString();
                 mOdelsd.Accountinfor = name;
-                mOdelsd.FromAccountId = Id;
+                mOdelsd.FromAccountId = sourceAccount.Id;
                 mOdelsd.ReferenceId = cashDemandDataEntity.CashReplenimentRequestdto.Id;
                 mOdelsd.ToAccountId = liaisonAccount.Id;
                 cashDemandDataEntity.BranchToBranchTransfer = mOdelsd;
@@ -1004,19 +1006,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             else if (path == "cashreplenishmentstatus")
             {
 
-                var OperationEventAttribute = await _accountingEntryServices.GetDepositNotificationRequest(KEY);
+                var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                
-                cashDemandDataEntity.DepositNotificationDto = OperationEventAttribute;
-
-                cashDemandDataEntity.DepositNotification.Temp1 = cashDemandDataEntity.DepositNotificationDto.ApprovedBy;
+                cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
+                var user = await _accountingEntryServices.GetUser(cashDemandDataEntity.CashReplenimentRequestdto.IssuedBy);
+                cashDemandDataEntity.CashReplenimentRequestdto.TempId1 = user.firstName + " " + user.lastName + "," + user.phoneNumber;
+ 
 
                 if (OperationEventAttribute.IsApproved)
                 {
-
+                    var userc = await _accountingEntryServices.GetUser(cashDemandDataEntity.CashReplenimentRequestdto.ApprovedBy);
+                    cashDemandDataEntity.CashReplenimentRequestdto.TempId2 = userc.firstName + " " + userc.lastName + "," + userc.phoneNumber;
                     //var user = await _accountingEntryServices.GetUser(cashDemandDataEntity.DepositNotificationDto.ApprovedBy);
-                    cashDemandDataEntity.DepositNotificationDto.Temp2 = cashDemandDataEntity.DepositNotificationDto.ApprovedBy;
-
+ 
                 }
 
 

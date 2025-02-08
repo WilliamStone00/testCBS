@@ -42,7 +42,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         {
             try
             {
-                if (true/*Convert.ToDecimal(Balance) - Amount > 0*/)
+                if (Convert.ToDecimal(Amount) == CurrencyNotes.GetAmountValue())
                 {
                     return new BankTransactionModel
                     {
@@ -62,7 +62,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 }
                 else
                 {
-                    throw new Exception("The balance of bank account does not permit this cash out");
+                    throw new Exception("The denomination computed is not equal to the amount expected");
                 }
             }
             catch (Exception ex)

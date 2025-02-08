@@ -7,7 +7,7 @@
     LoadDepositRequestForBO("BranchOfficeDataTable")
     console.log("Is loaded");
 
-    $(document).on('change', '#DepositNotificationDto_Status', function () {
+    $(document).on('change', '#DepositNotificationDto_ApprovedBy', function () {
 
         // Get the selected value 
         var selectedValue = $(this).val();
@@ -19,9 +19,9 @@
             $('#hideAccountId').hide();
            
             if (selectedValue === 'Approved') {
-                $('#hideBranchID').show();
+                $('#hideBranchID').hide();
                 $('#hideAccountId').show();
-                $('#option').val(selectedValue);
+                loadBankAccountForBranch(selectedValue);
             } else {
               
                 console.log("has taged :"+selectedValue+"for options");
@@ -55,7 +55,8 @@
     });
 
 });
-function loadBankAccountForBranch(BranchId) {
+function loadBankAccountForBranch(BranchId)
+{
  
     $.ajax({
         url: '/CashFlowManagement/GetAllBranchAccountUsedToCreditCashFlow',

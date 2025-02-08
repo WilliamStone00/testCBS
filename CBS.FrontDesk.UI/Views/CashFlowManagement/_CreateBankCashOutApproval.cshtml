@@ -18,7 +18,7 @@
         @Html.HiddenFor(m => m.BankCashOut.Balance)
         @Html.HiddenFor(m => m.BankCashOut.ToAccountId)
         @Html.HiddenFor(m => m.BankCashOut.FromAccountId)
-
+        @Html.HiddenFor(m => m.BankCashOut.Amount)
         <input type="hidden" name="ServiceOption" value="bankCashOutApproval" id="ServiceOption" />
         <fieldset class="fieldset-custom">
             <legend id="select_base">Bank accounts information present</legend>
@@ -27,7 +27,6 @@
                     <div class="form-floating form-floating-outline">
 
 
-                        
                         <h5 for="AccountId">@Model.BankCashOut.FromAccountName</h5>
                     </div>
                 </div>

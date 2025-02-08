@@ -38,7 +38,7 @@
 
 
     $(document).on('change', '#CorrespondingBranchID', function () {
-
+        $('#hideAccountId').show();
         // Get the selected value
         var selectedValue = $(this).val();
         console.log(selectedValue);
@@ -64,7 +64,11 @@ function loadBranchAccountUsedToCreditCashFlow(accountId) {
         data: { branchId: accountId },
         success: function (data) {
             // Clear existing options in the OperationEventAttributeId combo 
-        
+            $('#CashReplenimentRequestdto_TempId3').empty();
+            $.each(data, function (index, item) {
+                $('#CashReplenimentRequestdto_TempId3').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
+
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
@@ -276,12 +280,12 @@ function LoadCashReplenishmentDataDT(tableID) {
         ],
         "columnDefs": [
             /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
-            { "targets": 0, "searchable": true, "orderable": true, "width": "25%" },
-            { "targets": 1, "searchable": true, "orderable": true, "width": "15%" },
-            { "targets": 2, "searchable": true, "orderable": true, "width": "10%" },
+            { "targets": 0, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 2, "searchable": true, "orderable": true, "width": "20%" },
             { "targets": 3, "searchable": true, "orderable": true, "width": "20%" },
             { "targets": 4, "searchable": true, "orderable": true, "width": "20%" },
-            { "targets": 5, "searchable": true, "orderable": true, "width": "10%" },
+            { "targets": 5, "searchable": true, "orderable": true, "width": "15%" },
         ],
 
         oLanguage: {
