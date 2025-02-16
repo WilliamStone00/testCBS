@@ -12,16 +12,19 @@
         // Get the selected value 
         var selectedValue = $(this).val();
         console.log(selectedValue);
-        if (selectedValue === 'RedirectToBranchBTB' || selectedValue === 'Approved') {
+        if (selectedValue === 'RedirectToBranchBTB' || selectedValue.includes('Approved')) {
             // Show the element 
             console.log(selectedValue);
             $('#hideBranchID').show();
             $('#hideAccountId').hide();
-           
-            if (selectedValue === 'Approved') {
+            const parts = selectedValue.split('@');
+
+            var branchId = parts[1];
+            if (parts[0].includes('Approved')) {
                 $('#hideBranchID').hide();
                 $('#hideAccountId').show();
-                loadBankAccountForBranch(selectedValue);
+               
+                loadBankAccountForBranch(branchId);
             } else {
               
                 console.log("has taged :"+selectedValue+"for options");

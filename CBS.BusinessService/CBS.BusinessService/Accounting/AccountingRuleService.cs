@@ -43,7 +43,7 @@ namespace CBS.BusinessService.Accounting
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"{objOperationEvent.RuleName}", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"{objOperationEvent.EventName}", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
@@ -51,7 +51,7 @@ namespace CBS.BusinessService.Accounting
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objOperationEvent, false, $"{objOperationEvent.RuleName}", MessagesResults.Failed,
+                    GetExecutionMessages(objOperationEvent, false, $"{objOperationEvent.EventName}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -62,16 +62,16 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
-        public async Task<IEnumerable<FrontDesk.Data.Entity.Accounting.AccountingRule>> GetAccountingRules()
+        public async Task<IEnumerable<FrontDesk.Data.Entity.Accounting.AccountingEventRule>> GetAccountingRules()
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.Accounting.AccountingRule>>>(APICallHelper.GetAllAccountingRule);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.Accounting.AccountingEventRule>>>(APICallHelper.GetAllAccountingRule);
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
                 }
-                return new List<FrontDesk.Data.Entity.Accounting.AccountingRule>();
+                return new List<FrontDesk.Data.Entity.Accounting.AccountingEventRule>();
             }
             catch (Exception ex)
             {
@@ -79,11 +79,11 @@ namespace CBS.BusinessService.Accounting
                 throw;
             }
         }
-        public async Task<FrontDesk.Data.Entity.Accounting.AccountingRule> GetAccountingRuleById(string id)
+        public async Task<FrontDesk.Data.Entity.Accounting.AccountingEventRule> GetAccountingRuleById(string id)
         {
             try
             {
-                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<FrontDesk.Data.Entity.Accounting.AccountingRule>>(string.Format(APICallHelper.Get_Update_Delete_AccountingRule, id));
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<FrontDesk.Data.Entity.Accounting.AccountingEventRule>>(string.Format(APICallHelper.Get_Update_Delete_AccountingRule, id));
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;
@@ -105,7 +105,7 @@ namespace CBS.BusinessService.Accounting
                 // Make an API call to create an individual profile
 
               
-                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.AccountingRule>>(APICallHelper.CreateAccountingRules, model);
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.AccountingEventRule>>(APICallHelper.CreateAccountingRules, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
@@ -128,7 +128,7 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> Update(FrontDesk.Data.Entity.Accounting.AccountingRule model)
+        public async Task<ExecutionMessages> Update(FrontDesk.Data.Entity.Accounting.AccountingEventRule model)
         {
             try
             {
@@ -136,21 +136,21 @@ namespace CBS.BusinessService.Accounting
                 var OperationEvent = await GetAccountingRuleById(model.Id);
                 if (OperationEvent != null)
                 {
-                    OperationEvent.RuleName = model.RuleName;
+                   
                     OperationEvent.Id = model.Id;
                 
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.AccountingRule>>(string.Format(APICallHelper.Get_Update_Delete_AccountingRule, model.Id), OperationEvent);
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.AccountingEventRule>>(string.Format(APICallHelper.Get_Update_Delete_AccountingRule, model.Id), model);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{model.RuleName}", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"{model.EventName} has been updated successfully", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, (string)model.RuleName, MessagesResults.Failed,
+                        GetExecutionMessages(model, false, (string)model.EventName +"failed to be updated" , MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }

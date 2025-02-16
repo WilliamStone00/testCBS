@@ -1,0 +1,128 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white d-flex justify-content-between">
+            <h4 class="mb-0">Configured Manual Journal Entry</h4>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <!-- Left Panel: Event Metadata -->
+                <div class="col-md-4">
+                    <fieldset class="border p-3 rounded">
+                        <legend class="w-auto text-primary">Entry Metadata</legend>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Event Name</label>
+                            <input type="text" class="form-control" value="@Model.AccountingEventRule.EventName" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Double Validation Needed</label>
+                            <input type="text" class="form-control" value="@Model.AccountingEventRule.IsDoubleValidationNeeded" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Level of Execution</label>
+                            <input type="text" class="form-control" value="@Model.AccountingEventRule.LevelOfExecution" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Created Date</label>
+                            <input type="text" class="form-control" value="@Model.AccountingEventRule.CreatedDate" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Created By</label>
+                            <input type="text" class="form-control" value="@Model.AccountingEventRule.CreatedBy" readonly>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- Right Panel: Accounting Rules Table -->
+                <div class="col-md-8">
+                    <fieldset class="border p-3 rounded">
+                        <legend class="w-auto text-primary">Accounting Entries: @Model.AccountingEventRule.EventName</legend>
+
+                        @using (Html.BeginForm("", "", FormMethod.Post, new { @id = "manualEntryForm" }))
+                        {
+                            <table id="accountingRuleTable" class="table table-bordered">
+                                <thead class="table-dark text-center">
+                                    <tr>
+                                        <th width="50%">Account Description</th>
+                                        <th width="25%">Debit (XFA)</th>
+                                        <th width="25%">Credit (XFA)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.AccountingEventRule.AccountingRules != null && Model.AccountingEventRule.AccountingRules.Any())
+                                    {
+                                        foreach (var rule in Model.AccountingEventRule.AccountingRules)
+                                        {
+                                            <tr>
+                                                <td>@rule.MFI_ChartOfAccountId</td>
+                                                <td>
+                                                    @if (rule.BookingDirection.ToLower() == "debit")
+                                                    {
+                                                        <input type="number" name="AccountingRules[@rule.Id].Debit" class="form-control text-end debitInput" value="0">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" class="form-control text-end bg-light" value="-" readonly>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (rule.BookingDirection.ToLower() == "credit")
+                                                    {
+                                                        <input type="number" name="AccountingRules[@rule.Id].Credit" class="form-control text-end creditInput" value="0">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" class="form-control text-end bg-light" value="-" readonly>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="3" class="text-center text-muted">No accounting rules available.</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr class="table-secondary">
+                                        <td class="fw-bold">TOTAL:</td>
+                                        <td class="fw-bold text-end" id="debitTotal">0</td>
+                                        <td class="fw-bold text-end" id="creditTotal">0</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="text-center">
+                                            <span id="balanceMessage" class="text-danger fw-bold"></span>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                            <!-- Description Input -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Description / Purpose of Manual Entry</label>
+                                <textarea class="form-control" id="descriptionField" rows="3" placeholder="Enter reason for manual entry..."></textarea>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <button type="submit" class="btn btn-primary px-4" id="submitButton" disabled>Submit Entry</button>
+                            </div>
+                        }
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts { @Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/main.js/AutoJournalEntryxxx.js"></script>
+ 
+}

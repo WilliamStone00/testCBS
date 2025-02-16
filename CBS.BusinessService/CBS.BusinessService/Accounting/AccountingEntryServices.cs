@@ -73,7 +73,58 @@ namespace CBS.BusinessService
                 throw (ex);
             }
         }
+        //public async Task<List<EntryTempData>> PostAutomatedEntries(ManualJournalEntryRequest model)
+        //{
+        //    bool IsAccountBalance = true;
+        //    string message = "";
+        //    List<EntryTempData> EntryTempDatas = new List<EntryTempData>() { };
+        //    var branchAccounts = await _accountServices.GetAllAccountForABranch(this.GetBranchID());
+        //    var collection = ManualJournalEntryRequest.ConvertToAccountModelData(model);
+        //    try
+        //    {
+        //        foreach (var item in collection)
+        //        {
+        //            var accountItem =   _accountServices.GetAccountItemForBranch(branchAccounts, item);
+        //            if (await _accountServices.CheckAccountBalance(accountItem, Convert.ToDecimal(item.Amount), _accountServices. GetOperationType(item)))
+        //            {
+        //                EntryTempDatas.Add(new EntryTempData
+        //                {
+        //                    AccountingEventId = item.AccountingEventId,
+        //                    AccountBalance = accountItem.CurrentBalance,
+        //                    AccountId = accountItem.Id,
+        //                    AccountName = item.AccountName,
+        //                    AccountNumber = item.AccountNumber,
+        //                    BookingDirection = item.BookingDirection,
+        //                    Debit = item.BookingDirection.ToUpper() == "DEBIT" ? (item.Amount.ToString()) : "0",
+        //                    Credit = item.BookingDirection.ToUpper() == "CREDIT" ? (item.Amount.ToString()) : "0",
+        //                    Amount = item.Amount.ToString(),
+        //                    Description = item.Description,
+        //                    Id = item.Id,
+        //                    Reference = item.Reference
 
+
+        //                });
+        //            }
+        //            else
+        //            {
+        //                IsAccountBalance = false;
+        //                message = message + $"{accountItem.AccountName}-{accountItem.AccountNumberCU}: Account will be left unstable";
+        //                continue;
+        //            }
+
+        //        }
+        //        if (IsAccountBalance)
+        //        {
+
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw;
+        //    }
+        //}
         public async Task<ExecutionMessages> CreateManualAccountingEntry(ManualAccountingEntry model)
         {
             try

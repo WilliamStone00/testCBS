@@ -164,14 +164,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return list;
         }
         //AccountPolicySetting
-        private dynamic BuildMenuViewBagDeposit()
+        private dynamic BuildMenuViewBagDeposit(string branchId)
         {
             List<SelectListItem> list = new List<SelectListItem>();
 
             list.Clear();
             list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
             list.Add(new SelectListItem { Text = $"RedirectToBranchBTB", Value = "Redirected for inter-branch-transfer" });
-            list.Add(new SelectListItem { Text = $"Approved", Value = "Approve for bank deposit" });
+            list.Add(new SelectListItem { Text = $"Approved@"+ branchId, Value = "Approve for bank deposit" });
 
             return list;
         }
@@ -454,7 +454,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (model.ServiceOption.Equals("DepositNotificationApproval"))
             {
-                model.DepositApproval.Status = model.DepositNotificationDto.ApprovedBy;
+                model.DepositApproval.Status = model.DepositNotificationDto.ApprovedBy.Split('@')[0];
                 model.DepositApproval.CorrepondingBranchId = model.DepositNotificationDto.correpondingBranchId;
                 model.DepositApproval.BankAccountId = model.DepositNotificationDto.Temp3;
                 model.DepositApproval.ApprovedMessage = model.DepositNotificationDto.ApprovedMessage;
@@ -691,10 +691,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             else if (path == "approveDepositNotification")
             {
                
-                ViewBag.DepositDecisions = BuildMenuViewBagDeposit();
+            
                      var OperationEventAttribute = await _accountingEntryServices.GetDepositNotificationRequest(KEY);
-                
 
+                ViewBag.DepositDecisions = BuildMenuViewBagDeposit(OperationEventAttribute.BranchId);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.DepositNotificationDto = OperationEventAttribute;
                 cashDemandDataEntity.DepositNotificationDto.BranchOffice = (await branchServices.GetBranches()).Where(po => po.Id.Equals(OperationEventAttribute.BranchId)).FirstOrDefault().Name;

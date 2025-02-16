@@ -17,7 +17,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-file-document-outline me-2"></i>
-                       PASSING JOURNAL ENTRY FOR  (@Session["BranchName"].ToString().ToUpper()).
+                        PASSING JOURNAL ENTRY FOR  (@Session["BranchName"].ToString().ToUpper()).
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
@@ -28,31 +28,95 @@
                             <div class="change-group">
 
                                 <div class="table-responsive mb-3">
-                                    <table class="table table-hover" id="AccountingEventxxDataTable">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>RuleName</th>
-
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            @foreach (var d in Model.AccountingRuleDtos)
-                                            {
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="AccountingEventxxDataTable">
+                                            <thead class="table-light">
                                                 <tr>
-
-                                                    <td id="@d.System_Id-RuleName" style="width:80%">@d.RuleName</td>
-                                                    <td style="width:20%">
-                                                        <a href="#" onclick="LoanAccountingEventEntrySystemId('@d.System_Id','exLargeModal')" class="mr-2 btn btn-primary" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="Excute @d.RuleName">Execute Journal Entry</a>
-
-                                                    </td>
+                                                    <th>RuleName</th>
+                                                    <th>Level of Execution</th>
+                                                    <th>Action</th>
                                                 </tr>
-                                            }
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                @if (Convert.ToBoolean(Session["IsHeadOffice"]))
+                                                {
+                                                    foreach (var d in Model.AccountingEventRules)
+                                                    {
+                                                        <tr class="align-middle">
+                                                            <td id="@d.Id-RuleName" class="w-60 text-start">@d.EventName</td>
+                                                            <td class="w-15 text-center">
+                                                                <span class="badge bg-dark fs-6 d-inline-flex align-items-center gap-1">
+                                                                    <i class="fas fa-money-bill-wave"></i>
+                                                                    <span>HEAD OFFICE</span>
+                                                                    <i class="fas fa-money-bill-wave"></i>
+                                                                </span>
+                                                            </td>
+                                                            <td class="w-25 text-end">
+                                                                <div class="d-flex justify-content-end gap-2">
+                                                                    @*<a href="#"
+           onclick="LoadAccountingEventEntrySystemId('@d.Id','exLargeModal')"
+           class="btn btn-sm btn-primary d-inline-flex align-items-center"
+           data-bs-toggle="modal"
+           data-bs-target="#exLargeModal"
+           title="">
+            <i class="fas fa-play me-1"></i>
+            <span>Execute</span>
+        </a>*@
+                                                                    <a href="/ManuallyJournalEntry/ExecuteAutomatedEntry?Key=@d.Id"
+                                                                       class="btn btn-sm btn-primary d-inline-flex align-items-center"
+                                                                       target="_blank"
+                                                                       title="Execute @d.EventName">
+                                                                        <i class="fas fa-play me-1"></i>
+                                                                        <span>Execute</span>
+                                                                    </a>
+
+                                                                    <a href="/ManuallyJournalEntry/EventEntrySystemInfo?Key=@d.Id"
+                                                                       class="btn btn-sm btn-secondary d-inline-flex align-items-center"
+                                                                       target="_blank"
+                                                                       title="Edit @d.EventName">
+                                                                        <i class="fas fa-edit me-1"></i>
+                                                                        <span>Edit</span>
+                                                                    </a>
+
+                                                                    <a href="#"
+                                                                       onclick="DeleteAccountingEventEntrySystemId('@d.Id','exLargeModal')"
+                                                                       class="btn btn-sm btn-danger d-inline-flex align-items-center"
+                                                                       data-bs-toggle="modal"
+                                                                       data-bs-target="#exLargeModal"
+                                                                       title="Delete @d.EventName">
+                                                                        <i class="fas fa-trash me-1"></i>
+                                                                        <span>Delete</span>
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    foreach (var d in Model.AccountingEventRules)
+                                                    {
+                                                        <tr>
+                                                            <td id="@d.Id-RuleName" style="width:75%">@d.EventName</td>
+                                                            <td style="width:25%">
+                                                                <a href="#"
+                                                                   onclick="LoadAccountingEventEntrySystemId('@d.Id','exLargeModal')"
+                                                                   class="btn btn-primary btn-sm d-inline-flex align-items-center"
+                                                                   data-bs-toggle="modal"
+                                                                   data-bs-target="#exLargeModal"
+                                                                   title="Execute @d.EventName">
+                                                                    <i class="fas fa-play me-1"></i>
+                                                                    <span>Execute Journal Entry</span>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                      
+
                                 @Html.Partial("_MultipleJournalEntryClient")
                             </div>
                         </div>

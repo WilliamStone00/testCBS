@@ -2609,6 +2609,7 @@
     <Content Include="Scripts\Js\main.js\BankingOperations.js" />
     <Content Include="Scripts\Js\main.js\CashFlowManagement.js" />
     <Content Include="Scripts\Js\main.js\CorrespondingBank.js" />
+    <Content Include="Scripts\Js\main.js\AutomatedEvent.js" />
     <Content Include="Scripts\Js\main.js\ManualJournalEntries.js" />
     <Content Include="Scripts\Js\main.js\MultipleManualEntry.js" />
     <Content Include="Scripts\Js\main.js\NotificationMonitor.js" />
@@ -3440,6 +3441,9 @@
     <Content Include="Views\CashDesk\_SearchBoxLoanRepaymentSimulation.cshtml" />
     <Content Include="Views\CashDesk\LoanRepaymentSimulation.cshtml" />
     <Content Include="Views\CashDesk\_LoanRepaymentSimulationForm.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\EventEntrySystemInfo.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_AccountingRuleEvent.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\ExecuteAutomatedEntry.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

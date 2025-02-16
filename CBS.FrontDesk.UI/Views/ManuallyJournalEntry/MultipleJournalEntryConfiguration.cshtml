@@ -1,131 +1,120 @@
-﻿
-@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
-
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
 
 @{
-    ViewBag.Title = "Accounting  Rule";
+    ViewBag.Title = "Accounting Rule";
 }
 
-<div class="card mb-12">
-    <div class="card-header">
+<div class="card mb-12 shadow-lg rounded">
+    <div class="card-header bg-primary text-white">
         <h5 class="card-title mb-0">Setting Accounting Event Entry Rule</h5>
     </div>
     <div class="card-body">
         <div class="row">
-
-            <!-- Navigation -->
-            <div class="col-12 col-md-4  card-separator">
-
+            <!-- Sidebar Navigation -->
+            <div class="col-12 col-md-4 border-end">
                 <div id="datalistingview_AddEntry">
-
                     @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         <input type="hidden" name="ServiceOption" value="accountingRule" id="ServiceOptionn" />
-                        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+                        <div id="accordionPopoutIcon" class="accordion mt-3">
                             <div class="col-12">
-                                <div class="card">
-                                    <div class="row card-body">
-                                        <div class="row mt-2 gy-4">
-                                            <div class="col-md-12">
-                                                <div class="form-floating form-floating-outline">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <fieldset>
+                                            <legend class="fw-bold">Event Entry Execution Metadata</legend>
+                                            <div class="row mt-2 gy-3">
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+
                                                     @Html.TextBoxFor(m => m.AccountingRule.RuleName, new { @class = "form-control" })
                                                     @Html.ValidationMessageFor(m => m.AccountingRule.RuleName, "", new { @class = "text-danger" })
-                                                    <label>Accounting Event Name </label>
+                                                    <label class="form-label">Accounting Event Name</label>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-floating form-floating-outline">
-                                                    @Html.DropDownListFor(m => m.AccountingRule.IsValidationNeed, new SelectList(ViewBag.DoubbleEntryValidation == null ? "" : ViewBag.DoubbleEntryValidation, "Text", "Value"), "---Select Direction---", new { @class = "form-control select2", @search = "true" })
-                                                    @Html.ValidationMessageFor(m => m.AccountingRule.IsValidationNeed, "", new { @class = "text-danger" })
-                                                    <label>Is Validation Need?</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row card-body">
-                                        <div class="row mt-2 gy-4">
-                                            <div class="col-md-12">
-                                                <div class="form-floating form-floating-outline">
-                                                    @Html.DropDownListFor(m => m.AccountingRule.MFI_ChartOfAccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---Select ChartOfAccount---", new { @class = "form-control select2", @search = "true" })
-                                                    @Html.ValidationMessageFor(m => m.AccountingRule.MFI_ChartOfAccountId, "", new { @class = "text-danger" })
-                                                    <label>Select ChartOfAccount</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-floating form-floating-outline">
-                                                    @Html.DropDownListFor(m => m.AccountingRule.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select Direction---", new { @class = "form-control select2", @search = "true" })
-                                                    @Html.ValidationMessageFor(m => m.AccountingRule.BookingDirection, "", new { @class = "text-danger" })
-                                                    <label>Booking Direction</label>
-                                                </div>
-                                            </div>
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
 
-                                            <div class="col-md-12">
-                                                <div class="form-floating form-floating-outline">
-                                                    @Html.TextAreaFor(m => m.AccountingRule.Description, new { @class = "form-control", @style = "height: 100px;" })
-                                                    @Html.ValidationMessageFor(m => m.AccountingRule.Description, "", new { @class = "text-danger" })
-                                                    <label>Description</label>
+                                                    @Html.DropDownListFor(m => m.AccountingRule.IsValidationNeed, new SelectList(ViewBag.DoubbleEntryValidation, "Text", "Value"), new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.IsValidationNeed, "", new { @class = "text-danger" })
+                                                    <label class="form-label">Is Validation Needed?</label>
+                                                </div>
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+
+                                                    @Html.ListBoxFor(model => model.AccountingRule.ListOfEligibleBranchId, new SelectList(ViewBag.ListOfEligibleBranch, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple" })
+                                                    @Html.ValidationMessageFor(model => model.AccountingRule.ListOfEligibleBranchId, "", new { @class = "text-danger" })
+                                                    <label class="form-label">Select Eligible Branch</label>
+                                                </div>
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+                                                    
+                                                    @Html.DropDownListFor(model => model.AccountingRule.EntryType, new SelectList(ViewBag.EntryTypes, "Text", "Value"), new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.EntryType, "", new { @class = "text-danger" })
+                                                    <label class="form-label">Select Entry Type</label>
+                                                </div>
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+
+                                                    @Html.DropDownListFor(model => model.AccountingRule.LevelOfExecution, new SelectList(ViewBag.LevelOfExecution, "Text", "Value"), new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.LevelOfExecution, "", new { @class = "text-danger" })
+                                                    <label class="form-label">Select Level of Execution</label>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="mt-4">
-                                            <button type="button" onclick="addToBasket()" class="btn btn-primary addToBasket">
-                                                Add Entry Rule&nbsp; &nbsp; <i class="mdi mdi-plus-box-multiple"></i>
-                                            </button>
-                                            <input type="hidden" name="Action" value="insert" id="Action" />
-                                        </div>
+                                        </fieldset>
                                     </div>
-                                    <hr />
+                                    <div class="card-body">
+                                        <fieldset>
+                                            <legend class="fw-bold">Expected Accounting Entry</legend>
+                                            <div class="row mt-2 gy-3">
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+                                                    @Html.DropDownListFor(m => m.AccountingRule.MFI_ChartOfAccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions, "Value", "Text"), "---Select---", new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.MFI_ChartOfAccountId, "", new { @class = "text-danger" })
+                                                    <label class="form-label">Select Chart of Account</label>
+                                                </div>
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+                                                    @Html.DropDownListFor(m => m.AccountingRule.BookingDirection, new SelectList(ViewBag.BookingDirections, "Text", "Value"), "---Select---", new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.BookingDirection, "", new { @class = "text-danger" })
+                                                    <label class="form-label">Booking Direction</label>
+
+                                                </div>
+                                            </div>
+                                            <div class="mt-4 text-center">
+                                                <button type="button" onclick="addToBasket()" class="btn btn-success">
+                                                    Add Entry Rule <i class="mdi mdi-plus-box-multiple"></i>
+                                                </button>
+                                            </div>
+                                        </fieldset>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     }
-
-
                 </div>
-
             </div>
-            <!-- Navigation Body -->
-            <div class="col-12 col-md-8 ">
-                <div class="col-12 col-md-8 ">
-
-
-
-                </div>
-                <div class="tab-content  card-separator">
-                    <br />
-                    <h2 id="basket_Label"></h2>
-                    <table id="AccountingRulebasketTable" class="display" style="width:100%">
-                        <thead>
+            <!-- Main Content -->
+            <div class="col-12 col-md-8">
+                <div class="card p-4 shadow-sm">
+                    <h3 class="text-center text-primary">Entry Rules</h3>
+                    <table id="AccountingRulebasketTable" class="table table-bordered table-hover">
+                        <thead class="bg-light">
                             <tr>
-                                <th>Rule Name</th>
                                 <th>Chart of Account</th>
                                 <th>Direction</th>
-                                <th>Description</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
-                    <div class="shift-right">
-                        <button type="button" onclick="submitBasket()" class="btn btn-primary" id="saveToDB">
-                            Save Entry Rule&nbsp; &nbsp; <i class="mdi mdi-database"></i>
+                    <div class="text-end mt-3">
+                        <button type="button" onclick="submitBasket()" class="btn btn-primary">
+                            Save Entry Rule <i class="mdi mdi-database"></i>
                         </button>
-
-                        <br />
                     </div>
-
                 </div>
-
-
             </div>
         </div>
     </div>
+</div>
 
-    @section Scripts { @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/Js/main.js/AutoJournalEntry.js"></script>
+@section Scripts { @Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/main.js/AutoJournalEntry.js"></script>
 
 
-    <!-- Confirmation Modal -->
+<!-- Confirmation Modal -->
 
-    }
+}
 
