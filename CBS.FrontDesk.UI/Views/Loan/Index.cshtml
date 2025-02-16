@@ -1,73 +1,122 @@
-﻿@{
-    ViewBag.Title = "Loan histories";
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
+@{
+    ViewBag.Title = "Loan Query Overview";
 }
 
 
-<div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
-        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+<!-- Page Header -->
+<div class="card bg-light mb-2 shadow-sm">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-finance me-2"></i> LOAN QUERY LOGS
+        </h1>
+        <p class="card-text">
+            Monitor and analyze loan applications, repayments, and delinquencies using a dynamic and powerful search and filter interface. Export and review specific loans for audits, compliance, and performance tracking.
+        </p>
+        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+    </div>
+</div>
 
-            <div class="accordion-item active">
-                <h2 class="accordion-header text-body d-flex justify-content-between"
-                    id="accordionPopoutIconThree">
-                    <button type="button"
-                            class="accordion-button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#accordionPopoutIcon-3"
-                            aria-expanded="true"
-                            aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-file-document me-2"></i>
-                        Loans
-
-                    </button>
-                </h2>
-                <div id="accordionPopoutIcon-3"
-                     class="accordion-collapse collapse show"
-                     data-bs-parent="#accordionPopoutIcon">
-                    <div class="accordion-body">
-                        <div id="mainviewChange">
-                            <div class="change-group">
-                                <div class="card mb-4">
-                                    <div class="card-body d-sm-flex d-block">
-                                        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            <a type="button" onclick="LoadLoans('All')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Manual Search Bar -->
-                                <div class="card mb-4">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-8 d-flex align-items-center">
-                                                <label for="manualSearchInput" class="search-label">Search by account number or Loan Id, Or Loan Date Or Loan Amount</label>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Enter search criteria...">
-                                                    <button class="btn btn-primary" onclick="manualSearch()">Search</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="datalistingview">
-                                    @Html.Partial("_LoanData")
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="card mb-3 shadow-sm">
+    <div class="card-header bg-light text-dark fw-bold d-flex justify-content-between align-items-center">
+        <span>
+            <i class="mdi mdi-filter-outline me-2"></i> Loan Search and Filters
+        </span>
+        <button id="toggleFilterButton" class="btn btn-sm btn-light">
+            <i class="mdi mdi-chevron-down"></i> Show Filters
+        </button>
+    </div>
+    <div class="card-body collapse" id="filterContent">
+        <!-- Row 1: Date Filters and Status Filters -->
+        <div class="row">
+            <!-- Date Filters -->
+            <div class="col-md-3">
+                <label for="dateFrom" class="form-label fw-bold">Date From:</label>
+                <input type="text" id="dateFrom" class="form-control shadow-sm" placeholder="dd/MM/yyyy" />
+            </div>
+            <div class="col-md-3">
+                <label for="dateTo" class="form-label fw-bold">Date To:</label>
+                <input type="text" id="dateTo" class="form-control shadow-sm" placeholder="dd/MM/yyyy" />
             </div>
 
+            <!-- Loan Status and Delinquency Filters -->
+            <div class="col-md-3">
+                <label for="status" class="form-label fw-bold">Loan Status:</label>
+                <select id="status" class="form-select shadow-sm">
+                    <option value="all">All</option>
+                    <option value="Open">Open</option>
+                    <option value="Closed">Closed</option>
+                    <option value="Refinanced">Refinanced</option>
+                    <option value="Restructured">Restructured</option>
+                    <option value="Rescheduled">Rescheduled</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="deliquentStatus" class="form-label fw-bold">Delinquency Status:</label>
+                <select id="deliquentStatus" class="form-select shadow-sm">
+                    <option value="all">All</option>
+                    <option value="Current">Current</option>
+                    <option value="Delinquent">Delinquent</option>
+                </select>
+            </div>
         </div>
 
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <label for="searchCriteria" class="form-label fw-bold">Search Criteria:</label>
+                <input type="text" id="searchCriteria" class="form-control shadow-sm" placeholder="Enter customer, branch, or reference..." />
+            </div>
+            <div class="col-md-4">
+                <label for="branchInput" class="form-label fw-bold">Branch:</label>
+                @Html.DropDownListFor(
+                    m => m.InitiateLoanDownloadCommand.BranchId,
+                    new SelectList(ViewBag.Branches, "Id", "Name"),
+                    "---Select All---",
+                    new { @class = "form-control shadow-sm select2", @id = "branchInput" }
+                )
+            </div>
+            <div class="col-md-4">
+                <label for="exportReportType" class="form-label fw-bold">Export Report Type:</label>
+                <select id="exportReportType" class="form-select shadow-sm">
+                    <option value="Loan_Query">List of Loans</option>
+                    <option value="Approved_Loans">List of Approved Loans</option>
+                    <option value="Paid_Loans">List of Paid Loans</option>
+                    <option value="Delinquent_Loans">List of Delinquent Loans</option>
+                    <option value="Current_Loans">List of Current Loans</option>
+                    <option value="All_Loans">All Loans</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Search & Export Buttons -->
+        <div class="row mt-3">
+            <div class="col-md-12 d-flex justify-content-end">
+                <button id="searchButton" class="btn btn-primary me-2">
+                    <i class="mdi mdi-magnify me-1"></i> Search
+                </button>
+                <button id="exportButton" class="btn btn-success" onclick="exportLoanData()">
+                    <i class="mdi mdi-file-excel me-1"></i> Export
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Data Display Section -->
+<div class="card shadow-sm" id="loanDataCard" style="display: none;">
+    <div class="card-header bg-light text-dark fw-bold">
+        <i class="mdi mdi-table me-2"></i> Loan Data Table
+    </div>
+    <div class="card-body">
+        <div id="loanDataTableContainer">
+            @Html.Partial("_LoanData")
+        </div>
     </div>
 </div>
 
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/Loan/LoanTransactions/LoanQuery.js"></script>
 
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/Crud/Loan/LoanTransactions/Loans.js"></script>
 }

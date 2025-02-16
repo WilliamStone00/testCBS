@@ -120,6 +120,37 @@ namespace CBS.BusinessService
 
 
         }
+
+        public async Task<CustomDataTable> GetDataTableAsync(GetLoansDataTableQuery loansDataTableQuery, string searchCriterial)
+        {
+            loansDataTableQuery.DataTableOptions.searchValue = searchCriterial;
+            loansDataTableQuery.DataTableOptions.search = searchCriterial;
+            loansDataTableQuery.DataTableOptions.sortColumnName = "LoanDate";
+            if (!IsHeadOffice())
+            {
+                loansDataTableQuery.BranchId=GetBranchID();
+            }
+            // Make API call to fetch the DataTable result
+            var couApiResponse = await _loanConfigApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                APICallHelper.LoaDataTablePaggination,
+                loansDataTableQuery
+            );
+
+            // Return response if successful
+            if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+            {
+                return couApiResponse.ApiResponseData.Data;
+            }
+
+            // Return an empty DataTable if the request fails
+            return new CustomDataTable(
+                draw: Convert.ToInt32(loansDataTableQuery.DataTableOptions.draw),
+                recordsTotal: 0,
+                recordsFiltered: 0,
+                data: new List<object>(), // No data
+                dataTableOptions: loansDataTableQuery.DataTableOptions
+            );
+        }
         public async Task<ExecutionMessages> ApprovePendingDisbursement(AddLoanDisbumentCommand model)
         {
             try

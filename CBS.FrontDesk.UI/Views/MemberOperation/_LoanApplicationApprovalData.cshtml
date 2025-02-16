@@ -15,7 +15,7 @@ else
             <thead class="table-light">
                 <tr>
                     <th>Date</th>
-                    <th>Customer Code</th>
+                    <th>Members References</th>
                     <th>Loan Type</th>
                     <th>Amount</th>
                     <th>Application Type</th>
@@ -67,7 +67,7 @@ else
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="actionDropdown@d.Id">
                                     <li>
-                                        <a class="dropdown-item" href="#" onclick="AddORUpdateGen('@d.Id', 'datalistingview', '_LoanApplicationApproval', 'application_detail', 'MemberOperation', 'applications')">
+                                        <a class="dropdown-item" href="#" onclick="AddORUpdateGen('@d.Id', 'datalistingview', '_LoanApplicationApproval', 'loan_approval', 'MemberOperation', 'applications')">
                                             <i class="fas fa-check-circle me-2"></i> Approve
                                         </a>
                                     </li>

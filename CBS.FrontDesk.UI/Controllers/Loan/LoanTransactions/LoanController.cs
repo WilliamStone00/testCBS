@@ -1,15 +1,24 @@
 using CBS.BusinessService;
 using CBS.BusinessService.Accounts;
+using CBS.BusinessService.AuditTrailP;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.LoanCommitee;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Config;
+using CBS.FrontDesk.Data.Entity.AuditTralP;
+using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanCommitee;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.MemberOperation;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.UI.Helper;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -35,8 +44,9 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
 
         public async Task<ActionResult> Index()
         {
-            
-            return View();
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.Branches = Branches;
+            return View(new Loan { InitiateLoanDownloadCommand=new InitiateLoanDownloadCommand()});
         }
         public async Task<ActionResult> Configuration()
         {
@@ -44,13 +54,13 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
             return View();
         }
         //
-        public async Task<ActionResult> Details(string KEY=null)
+        public async Task<ActionResult> Details(string KEY = null)
         {
             var loan = await _LoanServices.GetLoanWithCustomerAndBranch(KEY);
             return View(loan);
         }
         // Action to handle file download
-        public async Task<ActionResult> DownloadFile(string fileId=null)
+        public async Task<ActionResult> DownloadFile(string fileId = null)
         {
             if (string.IsNullOrEmpty(fileId))
             {
@@ -73,7 +83,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                 else
                 {
                     // If the response is null or contains errors, return an error view
-               
+
                     return View("Error", new HandleErrorInfo(new Exception(response.ErrorMessage), "ControllerName", "ActionName"));
                 }
             }
@@ -90,7 +100,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
             var downloadInfoLoans = await _LoanServices.GetAllFileDownloadInfoLoanPerUser();
             var Branches = await _branchServices.GetBranches();
             ViewBag.Branches = Branches;
-            return View(new Loan {FileDownloadInfoLoans= downloadInfoLoans.ToList()});
+            return View(new Loan { FileDownloadInfoLoans= downloadInfoLoans.ToList() });
         }
         [HttpPost]
         public async Task<ActionResult> DownloadFile(InitiateLoanDownloadCommand initiateLoanDownloadCommand)
@@ -100,28 +110,245 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
             ViewBag.Status = data.Result;
             var downloadInfoLoans = await _LoanServices.GetAllFileDownloadInfoLoanPerUser();
             var Branches = await _branchServices.GetBranches();
-          
+
             ViewBag.Branches = Branches;
             return View(new Loan { FileDownloadInfoLoans = downloadInfoLoans.ToList() });
         }
-        [HttpPost]
-        public async Task<ActionResult> LoadData(string searchCriteria = "All")
+        [HttpGet]
+        public async Task<ActionResult> Download(
+    string searchCriteria = "all",
+    string dateFrom = null,
+    string dateTo = null,
+    string status = "Open",
+    string deliquentstatus = "Current",
+    string branchid = null,
+    string exportReportType = "Loan Query")
         {
             try
             {
-                var dataTable = await _LoanServices.GetDataTable(PostDataTableOptions(), searchCriteria,true);
-                return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data }, JsonRequestBehavior.AllowGet);
+                DateTime? startDate = null;
+                DateTime? endDate = null;
+                var Branch = new Branch();
 
+                // Parse date strings if provided
+                if (!string.IsNullOrWhiteSpace(dateFrom))
+                {
+                    startDate = DateTime.ParseExact(dateFrom, "dd/MM/yyyy", null);
+                }
+
+                if (!string.IsNullOrWhiteSpace(dateTo))
+                {
+                    endDate = DateTime.ParseExact(dateTo, "dd/MM/yyyy", null).AddDays(1).AddTicks(-1);  // Include the whole day
+                }
+
+
+                if (!string.IsNullOrWhiteSpace(branchid))
+                {
+                    var branch = await _branchServices.GetBranch(branchid);
+                    Branch = branch;
+                }
+                if (!_branchServices.IsHeadOffice())
+                {
+                    var branch = await _branchServices.GetBranch(_branchServices.GetBranchID());
+                    Branch = branch;
+                }
+                // Prepare the DataTable query
+                var getLoansDataTableQuery = new GetLoansDataTableQuery
+                {
+                    DataTableOptions = new DataTableOptions
+                    {
+                        pageSize = 30000,  // Export large number of records
+                        start = 0,
+                        searchValue = searchCriteria
+                    },
+                    StartDate = startDate ?? DateTime.MinValue,
+                    EndDate = endDate ?? DateTime.MinValue,
+                    BranchId = branchid,
+                    DeliquentStatus = deliquentstatus,
+                    Status = status,
+                    MemberId = "n/a",
+                };
+
+                getLoansDataTableQuery.DataTableOptions = GetDataTableOptions();
+
+                if (string.IsNullOrWhiteSpace(searchCriteria))
+                {
+                    searchCriteria = "all";
+                }
+
+                getLoansDataTableQuery.DataTableOptions.pageSize = 30000;
+                getLoansDataTableQuery.DataTableOptions.start = 0;
+
+                // Fetch the data
+                var dataTable = await _LoanServices.GetDataTableAsync(getLoansDataTableQuery, searchCriteria);
+
+                // Convert dataTable.data to List<Loan>
+                var loans = JsonConvert.DeserializeObject<List<Loan>>(
+                    JsonConvert.SerializeObject(dataTable.data)
+                );
+                string exportedBy = Session["FullName"].ToString();
+
+                // Generate Excel file
+                //var exportFile = new ExportFileResult();
+                // Filter loans based on the selected `exportReportType`
+                switch (exportReportType)
+                {
+                    case "Approved_Loans":
+                        var exportFilea = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
+                        // Return file to client for download
+                        return File(exportFilea.Content, exportFilea.ContentType, exportFilea.FileName);
+                    case "Paid_Loans":
+                        var exportFilep = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
+                        // Return file to client for download
+                        return File(exportFilep.Content, exportFilep.ContentType, exportFilep.FileName);
+                    case "Delinquent_Loans":
+                        var exportFiled = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
+                        // Return file to client for download
+                        return File(exportFiled.Content, exportFiled.ContentType, exportFiled.FileName);
+                    case "Current_Loans":
+                        var exportFilec = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
+                        // Return file to client for download
+                        return File(exportFilec.Content, exportFilec.ContentType, exportFilec.FileName);
+                    case "All_Loans":
+                        var exportFile=LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
+                        // Return file to client for download
+                        return File(exportFile.Content, exportFile.ContentType, exportFile.FileName);
+                       
+                    default:
+                        var exportFiler = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
+                        // Return file to client for download
+                        return File(exportFiler.Content, exportFiler.ContentType, exportFiler.FileName);
+                }
+
+               
+
+               
             }
             catch (Exception ex)
             {
-                throw;
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error exporting data.");
             }
         }
+
+        //[HttpGet]
+        //public async Task<ActionResult> Download(string searchCriteria = "all", string dateFrom = null, string dateTo = null, string status = "Open", string deliquentstatus = "Current", string branchid = null,string exportReportType = "Loan Query")
+        //{
+        //    try
+        //    {
+        //        DateTime? startDate = null;
+        //        DateTime? endDate = null;
+        //        var Branch = new Branch();
+        //        // Parse date strings if provided
+        //        if (!string.IsNullOrWhiteSpace(dateFrom))
+        //        {
+        //            startDate = DateTime.ParseExact(dateFrom, "dd/MM/yyyy", null);
+        //        }
+
+        //        if (!string.IsNullOrWhiteSpace(dateTo))
+        //        {
+        //            endDate = DateTime.ParseExact(dateTo, "dd/MM/yyyy", null).AddDays(1).AddTicks(-1);  // Include the whole day
+        //        }
+        //        if (!string.IsNullOrWhiteSpace(branchid))
+        //        {
+        //            var branch = await _branchServices.GetBranch(branchid);
+        //            Branch=branch;
+        //        }
+
+
+        //        // Prepare the DataTable query
+        //        var getLoansDataTableQuery = new GetLoansDataTableQuery
+        //        {
+        //            DataTableOptions = new DataTableOptions
+        //            {
+        //                pageSize = 30000,  // Export large number of records
+        //                start = 0,
+        //                searchValue = searchCriteria
+        //            },
+        //            StartDate = startDate ?? DateTime.MinValue,
+        //            EndDate = endDate ?? DateTime.MinValue,
+        //            BranchId = branchid,
+        //            DeliquentStatus = deliquentstatus,
+        //            Status = status,
+        //            MemberId="n/a",
+        //        };
+        //        getLoansDataTableQuery.DataTableOptions=GetDataTableOptions();
+        //        if (searchCriteria=="")
+        //        {
+        //            searchCriteria= "all";
+        //        }
+
+        //        getLoansDataTableQuery.DataTableOptions.pageSize = 30000;  // Export large number of records
+        //        getLoansDataTableQuery.DataTableOptions.start = 0;
+        //        // Fetch the data
+        //        var dataTable = await _LoanServices.GetDataTableAsync(getLoansDataTableQuery, searchCriteria);
+
+        //        // Convert dataTable.data to List<AuditTrailDto>
+        //        var loans = JsonConvert.DeserializeObject<List<Loan>>(
+        //            JsonConvert.SerializeObject(dataTable.data)
+        //        );
+        //        string exportedBy = Session["FullName"].ToString();
+        //        // Generate Excel file
+        //        var exportFile = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
+
+        //        // Return file to client for download
+        //        return File(exportFile.Content, exportFile.ContentType, exportFile.FileName);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error exporting data.");
+        //    }
+        //}
+
+        [HttpPost]
+        public async Task<ActionResult> LoadLoanData(string searchCriteria = "all", string dateFrom = null, string dateTo = null, string status = "Open", string deliquentstatus = "Current", string branchid = null)
+        {
+            try
+            {
+                DateTime? startDate = null;
+                DateTime? endDate = null;
+
+                if (!string.IsNullOrWhiteSpace(dateFrom))
+                {
+                    startDate = DateTime.ParseExact(dateFrom, "dd/MM/yyyy", null);
+                }
+
+                if (!string.IsNullOrWhiteSpace(dateTo))
+                {
+                    endDate = DateTime.ParseExact(dateTo, "dd/MM/yyyy", null).AddDays(1).AddTicks(-1);
+                }
+
+                var query = new GetLoansDataTableQuery
+                {
+                    DataTableOptions = PostDataTableOptions(),
+                    StartDate = startDate ?? DateTime.MinValue,
+                    EndDate = endDate ?? DateTime.MinValue,
+                    BranchId = branchid,
+                    DeliquentStatus = deliquentstatus,
+                    Status = status, MemberId="n/a",
+                };
+
+                var dataTable = await _LoanServices.GetDataTableAsync(query, searchCriteria);
+                var loanList = JsonConvert.DeserializeObject<List<Loan>>(JsonConvert.SerializeObject(dataTable.data));
+
+                return Json(new
+                {
+                    draw = query.DataTableOptions.draw,
+                    recordsTotal = dataTable.recordsTotal,
+                    recordsFiltered = dataTable.recordsFiltered,
+                    data = loanList
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading loan data.");
+            }
+        }
+
+        //
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
 
         {
-         
+
             Func<Task<PartialViewResult>> serviceAction = GetServiceAction(path, partialView, KEY, serviceOption);
 
             if (serviceAction != null)
@@ -152,7 +379,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                         return PartialView(partialView, sysData);
                     };
                 }
-               
+
             }
             else if (serviceOption == "LoanCommiteeMember")
             {
@@ -176,7 +403,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                 //}
 
             }
-            
+
             return null;
         }
 

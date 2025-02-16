@@ -59,65 +59,72 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var couApiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<Teller>>>(APICallHelper.GetAllTeller);
-                var branches = await _branchServices.GetBranches();
+                // Fetch tellers from API
+                var tellerResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<Teller>>>(APICallHelper.GetAllTeller);
+                if (!tellerResponse.IsSuccess || tellerResponse.ApiResponseData == null)
+                {
+                    return new List<Teller>();
+                }
 
+                // Fetch branches only once
+                var branches = (await _branchServices.GetBranches()).ToList();
+
+                // Check if Head Office
                 if (IsHeadOffice())
                 {
-
-                    if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
-                    {
-                        var data = from teller in couApiResponse.ApiResponseData.Data
-                                   join branch in branches on teller.branchId equals branch.Id
-                                   select new Teller
-                                   {
-                                       id = teller.id,
-                                       isPrimary = teller.isPrimary,
-                                       name = teller.name,
-                                       code = teller.code,
-                                       bankId = teller.bankId,
-                                       PerformCashIn = teller.PerformCashIn,
-                                       PerformCashOut = teller.PerformCashOut,
-                                       PerformTransfer = teller.PerformTransfer,
-                                       TellerType = teller.TellerType,
-                                       branchId = teller.branchId,
-                                       MinimumAmountToManage = teller.MinimumAmountToManage,
-                                       MaximumAmountToManage = teller.MaximumAmountToManage,
-                                       MinimumDepositAmount = teller.MinimumDepositAmount,
-                                       MaximumDepositAmount = teller.MaximumDepositAmount,
-                                       MinimumWithdrawalAmount = teller.MinimumWithdrawalAmount,
-                                       MaximumWithdrawalAmount = teller.MaximumWithdrawalAmount,
-                                       MinimumTransferAmount = teller.MinimumTransferAmount,
-                                       MaximumTransferAmount = teller.MaximumTransferAmount,
-                                       Branch = branch,
-                                       MapMobileMoneyToNoneMemberMobileMoneyReference = teller.MapMobileMoneyToNoneMemberMobileMoneyReference,
-                                       inUseStatus = teller.inUseStatus,
-                                       activeStatus = teller.activeStatus,
-                                       Transactions = teller.Transactions
-                                   };
-
-                        return data;
-                    }
+                    return tellerResponse.ApiResponseData.Data
+                        .Join(branches,
+                              teller => teller.branchId,
+                              branch => branch.Id,
+                              (teller, branch) => new Teller
+                              {
+                                  id = teller.id,
+                                  isPrimary = teller.isPrimary,
+                                  name = teller.name,
+                                  code = teller.code,
+                                  bankId = teller.bankId,
+                                  PerformCashIn = teller.PerformCashIn,
+                                  PerformCashOut = teller.PerformCashOut,
+                                  PerformTransfer = teller.PerformTransfer,
+                                  TellerType = teller.TellerType,
+                                  branchId = teller.branchId,
+                                  MinimumAmountToManage = teller.MinimumAmountToManage,
+                                  MaximumAmountToManage = teller.MaximumAmountToManage,
+                                  MinimumDepositAmount = teller.MinimumDepositAmount,
+                                  MaximumDepositAmount = teller.MaximumDepositAmount,
+                                  MinimumWithdrawalAmount = teller.MinimumWithdrawalAmount,
+                                  MaximumWithdrawalAmount = teller.MaximumWithdrawalAmount,
+                                  MinimumTransferAmount = teller.MinimumTransferAmount,
+                                  MaximumTransferAmount = teller.MaximumTransferAmount,
+                                  Branch = branch, // Assign correct branch
+                                  MapMobileMoneyToNoneMemberMobileMoneyReference = teller.MapMobileMoneyToNoneMemberMobileMoneyReference,
+                                  inUseStatus = teller.inUseStatus,
+                                  activeStatus = teller.activeStatus,
+                                  Transactions = teller.Transactions
+                              })
+                        .ToList(); // Ensure it's evaluated before returning
                 }
                 else
                 {
-                    if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+                    // Get the current branch of the user
+                    var currentBranch = branches.FirstOrDefault();
+                    if (currentBranch == null)
                     {
-                        var tellers = couApiResponse.ApiResponseData.Data.Where(x => x.branchId == GetBranchID())
-                                                                        .Select(teller =>
-                                                                        {
-                                                                            teller.Branch = branches.FirstOrDefault(b => b.Id == teller.branchId);
-                                                                            return teller;
-                                                                        });
-                        return tellers;
+                        return new List<Teller>(); // No valid branch found
                     }
-                }
 
-                return new List<Teller>();
+                    return tellerResponse.ApiResponseData.Data
+                        .Select(teller =>
+                        {
+                            teller.Branch = currentBranch; // Assign branch to each teller
+                            return teller;
+                        }).Where(x=>x.branchId==currentBranch.Id)
+                        .ToList();
+                }
             }
             catch (Exception ex)
             {
-                // Log and handle exception
+                // Log the exception if necessary
                 throw;
             }
         }
@@ -129,7 +136,7 @@ namespace CBS.BusinessService.Accounts
                 var data = await GetTellers();
                 var stringValues = data.Select(a => new StringValues
                 {
-                    Text = $"[{a.name}] [{a.Branch.Name}] [{(a.isPrimary ? "Primary" : "Sub")}-Teller]",
+                    Text = $"[{a.name}] {a.Branch.Name} [{(a.isPrimary ? "Primary" : "Sub")}-Teller]",
                     Value = $"{a.id}",
                 }).ToList();
 

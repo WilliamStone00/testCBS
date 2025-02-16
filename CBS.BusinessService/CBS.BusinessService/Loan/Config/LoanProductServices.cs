@@ -83,6 +83,23 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+        public async Task<IEnumerable<StringValues>> GetStringValuesAsync()
+        {
+            try
+            {
+                var loanProducts = await GetLoanProducts();
+                var results = (from a in loanProducts
+                               select
+                             new StringValues { Text = $"[{a.ProductCode}] [{a.ProductName}]", Value = a.Id }).ToList();
+
+                return results;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<IEnumerable<StringValues>> GetLoanProductsDropDown()
         {
             try

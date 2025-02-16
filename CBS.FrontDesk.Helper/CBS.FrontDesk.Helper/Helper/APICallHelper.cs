@@ -525,6 +525,9 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllBulkDownloadInfosLoanPerUser = "/api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{0}";
         public static string DownloadFileByIdQuery = "/api/v1/FileDownloadInfos/download/{0}";
 
+        public static string LoaDataTablePaggination = "/api/v1/Loan/Paggination-DataTable";
+
+
 
 
         ///api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{userid}

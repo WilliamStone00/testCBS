@@ -105,16 +105,26 @@ namespace CBS.FrontDesk.UI.Controllers
                 string error = string.Join("<br/>", errors);
                 return Json(new { success = false, message = error });
             }
-
-            var branch = await _branchServices.GetBranch(request.BranchID.ToString());
-
-            if (branch == null)
+            var branch = new Branch();
+            if (string.IsNullOrEmpty(request.BranchID))
             {
-                return Json(new { success = false, message = "Branch not found" });
+                if (_branchServices.IsHeadOffice())
+                {
+                    request.BranchID="n/a";
+                }
+            }
+            else
+            {
+                branch = await _branchServices.GetBranch(request.BranchID.ToString());
+
+                if (branch == null)
+                {
+                    return Json(new { success = false, message = "Branch not found" });
+                }
             }
 
             var response = await _acountServices.GetTransactionsAsync(request);
-            var data = _acountServices.MapTransactionHistoryToExport(response, branch).ToList();
+            var data = await _acountServices.MapTransactionHistoryToExport(response);
 
             if (data == null || !data.Any())
             {
@@ -124,108 +134,212 @@ namespace CBS.FrontDesk.UI.Controllers
             // Create Excel file in the same action
             using (var workbook = new XLWorkbook())
             {
-                var worksheet = workbook.Worksheets.Add($"Transaction_History_{branch.BranchCode}");
+                var worksheet = workbook.Worksheets.Add($"Transactions_{branch.BranchCode}");
+                string branchName = "ALL BRANCHES";
+                string branchCode = "-";
+                string branchTel = "-";
+                string branchLocation = "-";
+                string bankName = "-";
 
-                // File title and header information merged into a single cell
-                worksheet.Cell(1, 1).Value =
-                    $"{branch.Bank.Name.ToUpper()}\n" +
-                    $"BRANCH: {branch.Name.ToUpper()}\n" +
-                    $"BRANCH CODE: {branch.BranchCode}, TEL: {branch.Telephone}\n" +
-                    $"LOCATION: {branch.Address.ToUpper()}\n" +
-                    $"TRANSACTIONS FROM {request.DateFrom:d} TO {request.DateTo:d}\n" +
-                    $"DATE PRINTED: {DateTime.Now:dd-MM-yyyy hh:mm:ss}".ToUpper() + $" BY {Session["FullName"]}";
-
-                // Merging the first six rows into one single cell (1,1) to (6,19)
-                var mergedRange = worksheet.Range(1, 1, 7, 19);
-                mergedRange.Merge();
-
-                // Set alignment
-                mergedRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                mergedRange.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-                mergedRange.Style.Alignment.WrapText = true;
-
-                // Apply font styling
-                mergedRange.Style.Font.Bold = false;
-                mergedRange.Style.Font.FontSize = 12;
-                mergedRange.Style.Font.FontName = "Bahnschrift Light";
-
-                // Apply border styling (blue border and bold)
-                mergedRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thick;
-                mergedRange.Style.Border.OutsideBorderColor = XLColor.Blue;
-
-                // Adjust all widths automatically to fit content
-                worksheet.Columns().AdjustToContents();
-
-                worksheet.Range(8, 1, 8, 19).Style.Border.OutsideBorder = XLBorderStyleValues.Thick;
-                worksheet.Range(8, 1, 8, 19).Style.Border.OutsideBorderColor = XLColor.Blue;
-
-                // Adding table headers (including AccountType)
-                var currentRow = 8; // Headers on row 8
-                worksheet.Cell(currentRow, 1).Value = "ACC.Name";
-                worksheet.Cell(currentRow, 2).Value = "ACC.Number";
-                worksheet.Cell(currentRow, 3).Value = "ACC.Type"; // Added AccountType header
-                worksheet.Cell(currentRow, 4).Value = "M.REF";
-                worksheet.Cell(currentRow, 5).Value = "Date";
-                worksheet.Cell(currentRow, 6).Value = "ACC.Date";
-                worksheet.Cell(currentRow, 7).Value = "Amount";
-                worksheet.Cell(currentRow, 8).Value = "Fee";
-                worksheet.Cell(currentRow, 9).Value = "B.Forward";
-                worksheet.Cell(currentRow, 10).Value = "Balance";
-                worksheet.Cell(currentRow, 11).Value = "Reference";
-                worksheet.Cell(currentRow, 12).Value = "Cashier";
-                worksheet.Cell(currentRow, 13).Value = "Representatives";
-                worksheet.Cell(currentRow, 14).Value = "Operation";
-                worksheet.Cell(currentRow, 15).Value = "F.Charge";
-                worksheet.Cell(currentRow, 16).Value = "S.Charge";
-                worksheet.Cell(currentRow, 17).Value = "Debit";
-                worksheet.Cell(currentRow, 18).Value = "Credit";
-                worksheet.Cell(currentRow, 19).Value = "I.B";
-
-                // Applying style to headers
-                worksheet.Range(currentRow, 1, currentRow, 19).Style.Font.Bold = true;
-                worksheet.Range(currentRow, 1, currentRow, 19).Style.Border.OutsideBorder = XLBorderStyleValues.Thick;
-                worksheet.Range(currentRow, 1, currentRow, 19).Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-                worksheet.Range(currentRow, 1, currentRow, 19).Style.Border.OutsideBorderColor = XLColor.Blue;
-
-                // Write the data rows starting from row 9
-                currentRow++; // Move to the next row for data
-                foreach (var transaction in data)
+                if (request.BranchID != "n/a")
                 {
-                    worksheet.Cell(currentRow, 1).Value = transaction.MemberName;
-                    worksheet.Cell(currentRow, 2).Value = transaction.AccountNumber;
-                    worksheet.Cell(currentRow, 3).Value = transaction.AccountType; // Added AccountType data
-                    worksheet.Cell(currentRow, 4).Value = transaction.CustomerReference;
-                    worksheet.Cell(currentRow, 5).Value = transaction.Date;
-                    worksheet.Cell(currentRow, 6).Value = transaction.AccountingDate;
-                    worksheet.Cell(currentRow, 7).Value = transaction.Amount;
-                    worksheet.Cell(currentRow, 8).Value = transaction.Fee;
-                    worksheet.Cell(currentRow, 9).Value = transaction.NewBalance;
-                    worksheet.Cell(currentRow, 10).Value = transaction.Balance;
-                    worksheet.Cell(currentRow, 11).Value = transaction.Reference;
-                    worksheet.Cell(currentRow, 12).Value = transaction.TellerName;
-                    worksheet.Cell(currentRow, 13).Value = transaction.ThirdPartyName;
-                    worksheet.Cell(currentRow, 14).Value = transaction.Operation;
-                    worksheet.Cell(currentRow, 15).Value = transaction.WithdrawalFormCharge;
-                    worksheet.Cell(currentRow, 16).Value = transaction.OperationCharge;
-                    worksheet.Cell(currentRow, 17).Value = transaction.Debit;
-                    worksheet.Cell(currentRow, 18).Value = transaction.Credit;
-                    worksheet.Cell(currentRow, 19).Value = transaction.InterBranch;
-
-                    currentRow++;
+                    var selectedBranch = data.FirstOrDefault();
+                    if (selectedBranch != null)
+                    {
+                        branchName = selectedBranch.BankName.ToUpper();
+                        branchCode = selectedBranch.BranchCode;
+                        branchTel = selectedBranch.BranchTel ?? "N/A";
+                        branchLocation = selectedBranch.BranchCode?.ToUpper() ?? "N/A";
+                        bankName = selectedBranch.BrnachName ?? "N/A";
+                    }
                 }
 
-                worksheet.Columns("F", "I").Style.NumberFormat.Format = "#,##0";
-                worksheet.Columns("Q", "R").Style.NumberFormat.Format = "#,##0";
+                // Title with File Title
+                worksheet.Cell(1, 1).Value = $"TRANSACTIONS {branchName}";
+                worksheet.Cell(1, 1).Style.Font.Bold = true;
+                worksheet.Cell(1, 1).Style.Font.FontSize = 14;
+                worksheet.Range(1, 1, 1, 19).Merge();
+                worksheet.Cell(1, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                worksheet.Cell(1, 1).Style.Font.FontName = "Bahnschrift Light";
+                worksheet.Cell(1, 1).Style.Font.FontSize = 14;
+                // Export Details with Date Range
+                worksheet.Cell(2, 1).Value = $"Date Range: {request.DateFrom.ToShortDateString()} - {request.DateTo.ToShortDateString()}";
+                worksheet.Cell(2, 1).Style.Font.Italic = true;
+                worksheet.Cell(2, 1).Style.Font.FontSize = 10;
+                worksheet.Cell(2, 1).Style.Font.FontName = "Bahnschrift Light";
+                worksheet.Range(2, 1, 2, 19).Merge();
+                worksheet.Cell(2, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
 
-                // Adding borders to the data area
-                worksheet.Range(8, 1, currentRow - 1, 19).Style.Border.OutsideBorder = XLBorderStyleValues.Thick;
-                worksheet.Range(8, 1, currentRow - 1, 19).Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-                worksheet.Range(8, 1, currentRow - 1, 19).Style.Border.OutsideBorderColor = XLColor.Blue;
+                worksheet.Cell(3, 1).Value = $"Export Date: {DateTime.Now} BY {Session["FullName"].ToString()}";
+                worksheet.Cell(3, 1).Style.Font.Italic = true;
+                worksheet.Cell(3, 1).Style.Font.FontSize = 10;
+                worksheet.Cell(3, 1).Style.Font.FontName = "Bahnschrift Light";
+                worksheet.Range(3, 3, 3, 19).Merge();
+                worksheet.Cell(3, 3).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+
+                // Summary Title
+                int summaryRow = 5;
+                worksheet.Cell(summaryRow, 1).Value = "SUMMARY";
+                worksheet.Cell(summaryRow, 1).Style.Font.Bold = true;
+                worksheet.Cell(summaryRow, 1).Style.Fill.BackgroundColor = XLColor.Chocolate;
+                worksheet.Cell(summaryRow, 1).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(1, 1).Style.Font.FontName = "Bahnschrift Light";
+                worksheet.Range(summaryRow, 1, summaryRow, 2).Merge();
+                worksheet.Cell(summaryRow, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+
+                summaryRow++;
+                // Adding summary values
+                worksheet.Cell(summaryRow, 1).Value = "Total Transactions:";
+                worksheet.Cell(summaryRow, 2).Value = data.Count();
+                worksheet.Cell(summaryRow, 2).Style.NumberFormat.Format = "#,##0";
+
+                summaryRow++;
+                worksheet.Cell(summaryRow, 1).Value = "Total Volume:";
+                worksheet.Cell(summaryRow, 2).Value = data.Sum(t => t.Amount);
+                worksheet.Cell(summaryRow, 2).Style.NumberFormat.Format = "#,##0.0";
+
+                summaryRow++;
+                worksheet.Cell(summaryRow, 1).Value = "Total Branches:";
+                worksheet.Cell(summaryRow, 2).Value = data.Select(t => t.BranchCode).Distinct().Count();
+
+                summaryRow++;
+                worksheet.Cell(summaryRow, 1).Value = "Number of Operations Groups:";
+                worksheet.Cell(summaryRow, 2).Value = data.Select(t => t.Operation).Distinct().Count();
+
+                summaryRow++;
+                worksheet.Cell(summaryRow, 1).Value = "Sum of Operations Group:";
+                worksheet.Cell(summaryRow, 2).Value = data.Sum(t => t.OperationCharge);
+                worksheet.Cell(summaryRow, 2).Style.NumberFormat.Format = "#,##0.0";
+                worksheet.Cell(summaryRow, 2).Style.Font.FontName = "Bahnschrift Light";
+                // Apply border to summary section
+                worksheet.Range(5, 1, summaryRow, 2).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                worksheet.Range(5, 1, summaryRow, 2).Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+                worksheet.Range(5, 1, summaryRow, 2).Style.Border.OutsideBorderColor = XLColor.Black;
+
+                summaryRow += 2; // Skip a row after the summary
+
+                // Headers
+                int headerRow = summaryRow;
+                worksheet.Cell(headerRow, 1).Value = "ACC.Name";
+                worksheet.Cell(headerRow, 2).Value = "ACC.Number";
+                worksheet.Cell(headerRow, 3).Value = "ACC.Type";
+                worksheet.Cell(headerRow, 4).Value = "M.REF";
+                worksheet.Cell(headerRow, 5).Value = "Date";
+                worksheet.Cell(headerRow, 6).Value = "ACC.Date";
+                worksheet.Cell(headerRow, 7).Value = "Amount";
+                worksheet.Cell(headerRow, 8).Value = "Fee";
+                worksheet.Cell(headerRow, 9).Value = "B.Forward";
+                worksheet.Cell(headerRow, 10).Value = "Balance";
+                worksheet.Cell(headerRow, 11).Value = "Reference";
+                worksheet.Cell(headerRow, 12).Value = "Cashier";
+                worksheet.Cell(headerRow, 13).Value = "Representatives";
+                worksheet.Cell(headerRow, 14).Value = "Operation";
+                worksheet.Cell(headerRow, 15).Value = "F.Charge";
+                worksheet.Cell(headerRow, 16).Value = "S.Charge";
+                worksheet.Cell(headerRow, 17).Value = "Debit";
+                worksheet.Cell(headerRow, 18).Value = "Credit";
+                worksheet.Cell(headerRow, 19).Value = "I.B";
+                worksheet.Cell(headerRow, 19).Style.Font.FontName = "Bahnschrift Light";
+                worksheet.Range(headerRow, 1, headerRow, 19).Style.Font.Bold = true;
+                worksheet.Range(headerRow, 1, headerRow, 19).Style.Border.OutsideBorder = XLBorderStyleValues.Thick;
+                worksheet.Range(headerRow, 1, headerRow, 19).Style.Border.OutsideBorderColor = XLColor.Black;
+
+
+                // Apply Borders and Formatting
+                var headerRange = worksheet.Range(headerRow, 1, headerRow, 19);
+                headerRange.Style.Font.Bold = true;
+                headerRange.Style.Font.FontSize = 12;
+                headerRange.Style.Font.FontName = "Bahnschrift";
+                headerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                headerRange.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                headerRange.Style.Fill.BackgroundColor = XLColor.LightGray; // Optional: Light Gray Background
+
+                // Apply Borders to Each Cell in Header
+                headerRange.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                headerRange.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                headerRange.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+                headerRange.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+
+
+                // Apply uppercase transformation programmatically (Alternative)
+                for (int col = 1; col <= 19; col++)
+                {
+                    var cell = worksheet.Cell(headerRow, col);
+                    cell.Value = cell.Value.ToString().ToUpper();
+                }
+
+                int dataStartRow = headerRow + 1;
+                int currentRow = dataStartRow;
+
+                foreach (var branchGroup in data.GroupBy(t => t.BrnachName))
+                {
+                    worksheet.Cell(currentRow, 1).Value = $"BRANCH: {branchGroup.Key.ToUpper()}";
+                    worksheet.Cell(currentRow, 1).Style.Font.FontName = "Bahnschrift Light";
+                    worksheet.Range(currentRow, 1, currentRow, 19).Merge();
+                    worksheet.Range(currentRow, 1, currentRow, 19).Style.Font.Bold = true;
+                    worksheet.Range(currentRow, 1, currentRow, 19).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                    worksheet.Range(currentRow, 1, currentRow, 19).Style.Fill.BackgroundColor = XLColor.LightGray;
+                    currentRow++;
+
+                    foreach (var transaction in branchGroup)
+                    {
+                        worksheet.Cell(currentRow, 1).Value = transaction.MemberName;
+                        worksheet.Cell(currentRow, 2).Value = transaction.AccountNumber;
+                        worksheet.Cell(currentRow, 3).Value = transaction.AccountType;
+                        worksheet.Cell(currentRow, 4).Value = transaction.CustomerReference;
+                        worksheet.Cell(currentRow, 5).Value = transaction.Date;
+                        worksheet.Cell(currentRow, 6).Value = transaction.AccountingDate;
+                        worksheet.Cell(currentRow, 7).Value = transaction.Amount;
+                        worksheet.Cell(currentRow, 8).Value = transaction.Fee;
+                        worksheet.Cell(currentRow, 9).Value = transaction.NewBalance;
+                        worksheet.Cell(currentRow, 10).Value = transaction.Balance;
+                        worksheet.Cell(currentRow, 11).Value = transaction.Reference;
+                        worksheet.Cell(currentRow, 12).Value = transaction.TellerBranchName;
+                        //worksheet.Cell(currentRow, 13).Value = transaction.re;
+                        worksheet.Cell(currentRow, 14).Value = transaction.Operation;
+                        worksheet.Cell(currentRow, 15).Value = transaction.WithdrawalFormCharge;
+                        worksheet.Cell(currentRow, 16).Value = transaction.OperationCharge;
+                        worksheet.Cell(currentRow, 17).Value = transaction.Debit;
+                        worksheet.Cell(currentRow, 18).Value = transaction.Credit;
+                        worksheet.Cell(currentRow, 19).Value = transaction.InterBranch;
+                        // Apply styles for current row
+                        for (int col = 1; col <= 19; col++)
+                        {
+                            worksheet.Cell(currentRow, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            worksheet.Cell(currentRow, col).Style.Font.FontName = "Bahnschrift Light";
+                            worksheet.Cell(currentRow, col).Style.NumberFormat.Format = "#,##0.0";  // Currency formatting
+                            worksheet.Cell(currentRow, col).Style.Border.OutsideBorderColor = XLColor.Black;
+                        }
+                        currentRow++;
+                    }
+
+                    worksheet.Cell(currentRow, 1).Value = $"TOTAL FOR {branchGroup.Key.ToUpper()}";
+                    worksheet.Cell(currentRow, 7).Value = branchGroup.Sum(t => t.Amount);
+                    worksheet.Cell(currentRow, 7).Style.NumberFormat.Format = "#,##0.0";
+                    worksheet.Cell(currentRow, 7).Style.Font.FontName = "Bahnschrift Light";
+                    worksheet.Range(currentRow, 1, currentRow, 6).Merge();
+                    worksheet.Range(currentRow, 1, currentRow, 19).Style.Font.Bold = true;
+                    worksheet.Range(currentRow, 1, currentRow, 19).Style.Border.OutsideBorder = XLBorderStyleValues.Thick;
+                    worksheet.Range(currentRow, 1, currentRow, 19).Style.Fill.BackgroundColor = XLColor.LightGray;
+                    currentRow++;
+                    currentRow += 1;  // Leave a blank row before the next group
+                    // Apply borders for totals
+                    for (int col = 1; col <= 19; col++)
+                    {
+                        worksheet.Cell(currentRow, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                        worksheet.Cell(currentRow, col).Style.Border.OutsideBorderColor = XLColor.Black;
+                        worksheet.Cell(currentRow, col).Style.Font.FontName = "Bahnschrift Light";
+                    }
+
+                   
+                }
 
                 worksheet.Columns().AdjustToContents();
-                var fileName = $"Transaction_His_{branch.BranchCode}_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
 
-                // Return the file as an Excel download
+                // Save the file
+                var fileName = $"Transactions_{branchCode}_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+
                 using (var stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);

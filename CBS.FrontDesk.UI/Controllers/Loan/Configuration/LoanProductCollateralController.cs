@@ -27,7 +27,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
         public async Task<ActionResult> Index()
         {
-            ViewBag.Products = await _loanProductServices.GetLoanProducts();
+            ViewBag.Products = await _loanProductServices.GetStringValuesAsync();
             ViewBag.Collaterals = await _collateralServices.GetCollaterals();
             return View();
         }

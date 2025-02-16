@@ -59,35 +59,29 @@ namespace CBS.BusinessService.Config
         {
             try
             {
-                if (IsHeadOffice())
-                {
-                    var couApiResponse = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
+                var response = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
+                var branches = response?.ApiResponseData?.Data ?? new List<Branch>();
 
-                    // Add concatenated Name and BranchCode
-                    return couApiResponse.ApiResponseData.Data
-                        .Select(branch =>
-                        {
-                            branch.Name = $"{branch.BranchCode} [{branch.Name}]";
-                            return branch;
-                        });
-                }
-                else
+                // Check if the user is in the head office
+                if (!IsHeadOffice())
                 {
-                    var couApiResponse = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
-
-                    // Filter by BranchID and add concatenated Name and BranchCode
-                    return couApiResponse.ApiResponseData.Data
-                        .Where(x => x.Id == GetBranchID())
-                        .Select(branch =>
-                        {
-                            branch.Name = $"{branch.BranchCode} [{branch.Name}]";
-                            return branch;
-                        });
+                    string currentBranchId = GetBranchID();
+                    branches = branches.Where(b => b.Id == currentBranchId).ToList();
                 }
+
+                // Format the Name and order by BranchCode
+                return branches
+                    .Select(branch =>
+                    {
+                        branch.Name = $"[{branch.BranchCode}] [{branch.Name}]";
+                        return branch;
+                    })
+                    .OrderBy(branch => branch.BranchCode)
+                    .ToList();
             }
             catch (Exception ex)
             {
-                // Log and handle exception
+                // Log the exception if necessary
                 throw;
             }
         }

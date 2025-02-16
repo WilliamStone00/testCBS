@@ -625,7 +625,6 @@
     <Compile Include="Controllers\TransactionManagement\SubTellerCashRequisitionController.cs" />
     <Compile Include="Controllers\TransactionManagement\TransactionReversalController.cs" />
     <Compile Include="Controllers\TransactionManagement\WithdrawalNotificationController.cs" />
-    <Compile Include="Controllers\UnauthorizedH\ErrorController.cs" />
     <Compile Include="Controllers\Home\DashboardController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Loan\Configuration\AlertProfileController.cs" />
@@ -659,6 +658,7 @@
     <Compile Include="Controllers\TransactionManagement\TellerManagementController.cs" />
     <Compile Include="Controllers\TransactionManagement\TellerProvissioingController.cs" />
     <Compile Include="Controllers\TransactionManagement\TransactionConfigurationController.cs" />
+    <Compile Include="Controllers\UnauthorizedH\ErrorController.cs" />
     <Compile Include="Controllers\UserManagement\MFAVerificationController.cs" />
     <Compile Include="Controllers\UserManagement\UserManagementController.cs" />
     <Compile Include="DataSet\Accounting\AccountingDataSet.cs">
@@ -690,6 +690,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Code\Helper\SessionTimeoutFilterAttribute.cs" />
+    <Compile Include="Helper\LoanExcelGenerator.cs" />
     <Compile Include="Helper\ExportUtilityAuditTrail.cs" />
     <Compile Include="Helper\MemberNoneCashOperationExcelGenerator.cs" />
     <Compile Include="Helper\SalaryAnalysisResultDetailExcelGenerator.cs" />
@@ -2524,6 +2525,8 @@
     <Content Include="Scripts\Js\CMoney\cmMembers.js" />
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\AuditTrail\Audits.js" />
+    <Content Include="Scripts\Js\Crud\CashDesk\LoanRefpaymentSimulation.js" />
+    <Content Include="Scripts\Js\Crud\Loan\LoanTransactions\LoanQuery.js" />
     <Content Include="Scripts\Js\Crud\MemberNoneCashOperation\Approvals.js" />
     <Content Include="Scripts\Js\Crud\MemberNoneCashOperation\OperationListings.js" />
     <Content Include="Scripts\Js\Crud\MemberNoneCashOperation\MembersNoneCashOperations.js" />
@@ -2613,6 +2616,13 @@
     <Content Include="Scripts\Js\main.js\Notification_checker.js" />
     <Content Include="Scripts\Js\SalaryManagement\StandingOrder\StandingOrder.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\InternalServer.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\ServiceUnavailable.cshtml" />
+    <Content Include="Views\Error\Unauthorized.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2818,9 +2828,6 @@
     <Content Include="Views\AccountingConfiguration\_OpeningOfTheDayData.cshtml" />
     <Content Include="Views\AccountingStatements\Index.cshtml" />
     <Content Include="Views\AccountingStatements\_GeneralLedgerData.cshtml" />
-    <Content Include="Views\Error\InternalServer.cshtml" />
-    <Content Include="Views\Error\NotFound.cshtml" />
-    <Content Include="Views\Error\ServiceUnavailable.cshtml" />
     <Content Include="Views\Shared\_LoginMainCover.cshtml" />
     <Content Include="Views\Authentication\Login.cshtml" />
     <Content Include="Views\Operation\_Depositer.cshtml" />
@@ -3013,8 +3020,6 @@
     <Content Include="Views\AccountingConfiguration\_AddRuleEntry.cshtml" />
     <Content Include="Views\AccountingConfiguration\_EntryRuleData.cshtml" />
     <Content Include="Views\AccountingConfiguration\AccountUpload.cshtml" />
-    <Content Include="Views\Error\Unauthorized.cshtml" />
-    <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\OperationFee\_Create.cshtml" />
     <Content Include="Views\OperationFee\_Data.cshtml" />
     <Content Include="Views\OperationFee\Index.cshtml" />
@@ -3201,8 +3206,6 @@
     <Content Include="Views\Notification\BankCashOutRequest.cshtml" />
     <Content Include="Views\Notification\_CreateBankCashOutApproval.cshtml" />
     <Content Include="Views\Notification\BankDepositApprovalRequest.cshtml" />
-    <Content Include="Views\Error\Error.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\CashDesk\_MomocashCollectionSearchBox.cshtml" />
     <Content Include="Views\CashDesk\MomocashCollection.cshtml" />
     <Content Include="Views\CashDesk\_MomocashCollectionForm.cshtml" />
@@ -3434,6 +3437,9 @@
     <Content Include="Views\AuditTrail\Index.cshtml" />
     <Content Include="Views\AuditTrail\Details.cshtml" />
     <Content Include="Views\CashFlowManagement\_BranchToBranchDepositRequest.cshtml" />
+    <Content Include="Views\CashDesk\_SearchBoxLoanRepaymentSimulation.cshtml" />
+    <Content Include="Views\CashDesk\LoanRepaymentSimulation.cshtml" />
+    <Content Include="Views\CashDesk\_LoanRepaymentSimulationForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

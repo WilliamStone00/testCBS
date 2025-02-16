@@ -164,7 +164,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             if (path == "export_tellers_transactions")
             {
                 var command = await _primaryTellerEndOfDayServices.GetDailyOperationToClose(KEY);
-                this.HttpContext.Session["rptSource"] = _acountServices.GetTransactionHistoryExports(command.TransactionHistories);
+                this.HttpContext.Session["rptSource"] = await _acountServices.GetTransactionHistoryExports(command.TransactionHistories);
                 if (!command.TransactionHistories.Any())
                 {
                     this.HttpContext.Session["rptSource"] = "empty";
