@@ -43,7 +43,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         //    return Json(new { success = false, status = false, message = "Fill the required fields." });
         //}
         [HttpPost]
-        public async Task<ActionResult> Update(AccountingRule model)
+        public async Task<ActionResult> Update(AccountingEventRule model)
         {
             if (ModelState.IsValid)
             {

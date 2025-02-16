@@ -7,19 +7,27 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
+ 
     public class AddAccountingRuleCommand  
     {
         public List<AccountingRule> AccountingRules { get; set; } //Loan Operation xxx
-        public string SystemDescription { get; set; }
-        public bool IsDoubleValidationNeeded { get; set; }
-
+        public string EventName { get; set; }
+        public string IsDoubleValidationNeeded { get; set; }
+        public string LevelOfExecution { get; set; }
+        public List<string> ListOfEligibleBranchId { get; set; }
+        public string EntryType { get; set; }
+        public string Id { get; set; }
         public static AddAccountingRuleCommand BuildRequest(ManuallyJournalEntryDataSet model)
         {
             return new AddAccountingRuleCommand
             {
-                SystemDescription = model.AccountingRules[0].RuleName,
+                EventName = model.AccountingRules[0].RuleName,
                 AccountingRules = BuildRequestItems(model.AccountingRules),
-              IsDoubleValidationNeeded = "Doubble validation is mandatory".Equals(model.AccountingRules[0].IsValidationNeed),
+                IsDoubleValidationNeeded = (model.AccountingRules[0].IsValidationNeed),
+                LevelOfExecution = model.AccountingRules[0].LevelOfExecution,
+                EntryType = model.AccountingRules[0].EntryType,
+                ListOfEligibleBranchId= model.AccountingRules[0].ListOfEligibleBranchId,
+                Id = "XXXXXX"
             };
         }
 
@@ -28,8 +36,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             List < AccountingRule > listItems = new List < AccountingRule >();
            foreach (var accountingRule in accountingRules)
             {
-                accountingRule.MFI_ChartOfAccountId = accountingRule.MFI_ChartOfAccountId.Split('-')[2];
-      //          accountingRule.AccountNumber = accountingRule.MFI_ChartOfAccountId.Split('-')[1];
+                accountingRule.MFI_ChartOfAccountId = accountingRule.MFI_ChartOfAccountId;
                 accountingRule.System_Id = "";
                 listItems.Add(accountingRule);
             }
@@ -160,6 +167,70 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Description { get; set; }
         public string MFI_ChartOfAccountId { get; set; }
     }
+    public class AccountingEventRule : BaseEntity
+    {
+        public string Id { get; set; }
+        public List<AccountingRule> AccountingRules { get; set; } //Loan Operation xxx
+        public List<string> ListOfEligibleBranchId { get; set; }
+        public string EventName { get; set; }
+        public string IsDoubleValidationNeeded { get; set; }
+        public string LevelOfExecution { get; set; }
+        public string EntryType { get; set; }
+
+        public class AccountingRule
+        {
+            public string Id { get; set; }
+            public string MFI_ChartOfAccountId { get; set; }
+            public string BookingDirection { get; set; }
+        }
+    }
+
+    public class ManualJournalEntryRequest
+    {
+        public string Description { get; set; }
+        public List<AccountingRuleEntry> AccountingRules { get; set; }
+        public string Reference { get;   set; }
+        public string AccountingEventId { get;   set; }
+
+        public class AccountingRuleEntry
+        {
+            public string AccountDescription { get; set; }
+            public decimal Debit { get; set; }
+            public decimal Credit { get; set; }
+        }
+
+        public static List<AccountModel> ConvertToAccountModelData(ManualJournalEntryRequest model)
+        {
+            List < AccountModel >  accountModels = new List < AccountModel >();
+            foreach (var item in model.AccountingRules)
+            {
+                var splitItems = item.AccountDescription.Split('-');
+                accountModels.Add(new AccountModel
+                {
+                    Id = splitItems[2],
+                    AccountName = splitItems[0],
+                    AccountNumber = splitItems[1] ,
+                    Amount = item.Credit > item.Debit ? item.Credit : item.Debit,
+                    BookingDirection = item.Credit > item.Debit ? "CREDIT" : "DEBIT",
+                    Description = model.Description,
+                    Reference= model.Reference,
+                    AccountingEventId = model.AccountingEventId
+                });
+            }
+            return accountModels;
+        }
+    }
+    public class AccountModel
+    {
+        public string Id { get; set; }
+        public string AccountName { get; set; }
+        public string AccountNumber { get; set; }
+        public decimal Amount { get; set; }
+        public string BookingDirection { get; set; }
+        public string Description { get; set; }
+        public string Reference { get; set; }
+        public string AccountingEventId { get;  set; }
+    }
 
     public class ManuallyJournalEntryDataSet
     {
@@ -175,6 +246,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<Account> Accounts { get; set; }= new List<Account>();
         public List<AccountingRule> AccountingRules { get; set; } = new List<AccountingRule>();
         public AccountingRule AccountingRule { get; set; } = new AccountingRule();
+        public AccountingEventRule AccountingEventRule { get; set; } = new AccountingEventRule();
+        public List<AccountingEventRule> AccountingEventRules { get; set; } = new List<AccountingEventRule>();
         public string ServiceOption { get; set; }
         public string Action { get; set; }
         public string Key { get; set; }

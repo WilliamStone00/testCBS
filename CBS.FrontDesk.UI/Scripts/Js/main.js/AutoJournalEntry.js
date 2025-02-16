@@ -6,10 +6,10 @@ $(document).ready(function () {
 
     tableJE = $('#AccountingRulebasketTable').DataTable({
         columns: [
-            { data: 'ruleName' },
+          /*  { data: 'ruleName' },*/
             { data: 'MFI_ChartOfAccountId' },
             { data: 'bookingDirection' },
-            { data: 'description' },
+      /*      { data: 'description' },*/
             {
                 data: null,
                 defaultContent: '<button class="btn btn-danger removeBtn">Remove</button>',
@@ -17,11 +17,11 @@ $(document).ready(function () {
             }
         ],
         columnDefs: [
-            { width: '15%', targets: 0 },  // ruleName
-            { width: '30%', targets: 1 },  // chartOfAccount
-            { width: '5%', targets: 2 },   // bookingDirection
-            { width: '40%', targets: 3 },  // description
-            { width: '5%', targets: 4 }    // remove button
+         /*   { width: '15%', targets: 0 },  // ruleName*/
+            { width: '70%', targets: 0 },  // chartOfAccount
+            { width: '15%', targets: 1 },   // bookingDirection
+          /*  { width: '40%', targets: 3 },  // description*/
+            { width: '15%', targets: 2 }    // remove button
         ],
         autoWidth: false  // This is important to enforce our custom widths
     });
@@ -54,35 +54,42 @@ function addToBasket() {
         ruleName: $('#AccountingRule_RuleName').val(),
         MFI_ChartOfAccountId: $('#AccountingRule_MFI_ChartOfAccountId option:selected').text(),
         bookingDirection: $('#AccountingRule_BookingDirection option:selected').text(),
-        description: $('#AccountingRule_Description').val()
+        IsValidationNeed: $('#AccountingRule_IsValidationNeed').val(),
+        ListOfEligibleBranchId: $('#AccountingRule_ListOfEligibleBranchId').val(),
+        EntryType: $('#AccountingRule_EntryType').val(),
+        LevelOfExecution: $('#AccountingRule_LevelOfExecution').val()
     };
+
     console.log(item);
+
+    // Validation checks
     if (item.bookingDirection === "---Select Direction---") {
-        appalert('No booking direction has been set for the entry rule has been set,Please kindly contact administrators for help', 2, 1);
+        appalert('No booking direction has been set for the entry rule. Please kindly contact administrators for help', 2, 1);
         return;
     } else if (item.MFI_ChartOfAccountId === "---Select ChartOfAccount---") {
-        appalert('No ChartOfAcccount number has been selected for the entry rule has been set,Please kindly contact administrators for help', 2, 1);
+        appalert('No ChartOfAcccount number has been selected for the entry rule. Please kindly contact administrators for help', 2, 1);
+        return;
+    } else if (item.ruleName === "") {
+        appalert('No Entry RuleName has been set for the entry rule. Please kindly contact administrators for help', 2, 1);
         return;
     }
-    else if (item.ruleName === "") {
-        appalert('No Entry RuleName  has been set for the entry rule has been set,Please kindly contact administrators for help', 2, 1);
-        return;
-    } else if (item.description === "") {
-        appalert('A description must be set for the user is mandatetory,Please kindly contact administrators for help', 2, 1);
-        return;
-    }
+
+    // Add item to basket and update display
     basket.push(item);
     updateBasketDisplay();
-    if (basket.length > 0) {
-        $('#AccountingRule_RuleName').prop('disabled', true);
-    } else {
-        $('#AccountingRule_RuleName').prop('disabled', false);
-    }
-    // Clear the form fields after adding to basket
-    $('#basket_Label').text('Event Entry Rule for: ' + item.ruleName);
+
+    // Update form state after adding to basket
+    $('#AccountingRule_RuleName').prop('disabled', true);
+    $('#AccountingRule_IsValidationNeed').prop('disabled', true);
+    $('#ListOfEligibleBranchId').prop('disabled', true);
+    $('#EntryType').prop('disabled', true);
+    $('#LevelOfExecution').prop('disabled', true);
+
+    // Update basket label and clear relevant form fields
+    $('#basket_Label').text('Event: ' + item.ruleName);
     $('#AccountingRule_MFI_ChartOfAccountId').val('').change();
     $('#AccountingRule_BookingDirection').val('').change();
-    $('#AccountingRule_Description').val('');
+ 
 }
 function createManuallyJournalEntryDataSet(basket) {
     return {
@@ -129,11 +136,10 @@ function updateBasketDisplay() {
 }
 
 function removeItem(item) {
-    const index = basket.findIndex(i =>
-        i.ruleName === item.ruleName &&
+    const index = basket.findIndex(i =>     
         i.chartOfAccount === item.chartOfAccount &&
-        i.bookingDirection === item.bookingDirection &&
-        i.description === item.description
+        i.bookingDirection === item.bookingDirection 
+     /*   &&   i.ruleName === item.ruleName &&  i.description === item.description*/
     );
     if (index > -1) {
         basket.splice(index, 1);
@@ -498,7 +504,7 @@ function updateTotals() {
 }
 
 
-function LoanAccountingEventEntrySystemId(system_Id, yourModalId) {
+function LoadAccountingEventEntrySystemId(system_Id, yourModalId) {
     if (system_Id === 0 || system_Id === null || system_Id === undefined) {
         appalert('There is no system id present on this record', 1, 2);
         return;
@@ -741,23 +747,12 @@ function LoadAccountingRuleDataSetDT(tableID) {
     var T = '#' + tableID;
     var dataThumbView = $(T).DataTable({
         responsive: false,
-        "columns": [
-            //{ "data": "ReferenceId", "name": "ReferenceId", "autoWidth": true },
-            //{ "data": "Amount", "name": "Amount", "autoWidth": true },
-            //{ "data": "RequestMessage", "name": "RequestMessage", "autoWidth": true },
-            //{ "data": "IssuedBy", "name": "IssuedBy", "autoWidth": true },
-            //{ "data": "IssuedDate", "name": "IssuedDate", "autoWidth": true },
-            //{
-            //    "data": "Id", "orderable": "false", "render": function (data) {
-            //        return "<a href='/CashFlowManagement/GetCashReplenimentRequest?KEY=" + data + " class='mr-2' data-toggle='tooltip' data-placement='top' title='View " + data + " detail'> Click to Approve</a>";
-            //    }
-            //}
-        ],
+        "columns": [   ],
         "columnDefs": [
-            /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
-            { "targets": 0, "searchable": true, "orderable": true, "width": "80%" },
-            { "targets": 1, "searchable": true, "orderable": true, "width": "20%" }
-
+ 
+            { "targets": 0, "searchable": true, "orderable": true, "width": "75%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 2, "searchable": true, "orderable": true, "width": "15%" }
 
         ],
 

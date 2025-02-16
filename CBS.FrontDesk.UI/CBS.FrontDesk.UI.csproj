@@ -2606,6 +2606,7 @@
     <Content Include="Scripts\Js\main.js\BankingOperations.js" />
     <Content Include="Scripts\Js\main.js\CashFlowManagement.js" />
     <Content Include="Scripts\Js\main.js\CorrespondingBank.js" />
+    <Content Include="Scripts\Js\main.js\AutomatedEvent.js" />
     <Content Include="Scripts\Js\main.js\ManualJournalEntries.js" />
     <Content Include="Scripts\Js\main.js\MultipleManualEntry.js" />
     <Content Include="Scripts\Js\main.js\NotificationMonitor.js" />
@@ -3434,6 +3435,9 @@
     <Content Include="Views\AuditTrail\Index.cshtml" />
     <Content Include="Views\AuditTrail\Details.cshtml" />
     <Content Include="Views\CashFlowManagement\_BranchToBranchDepositRequest.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\EventEntrySystemInfo.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_AccountingRuleEvent.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\ExecuteAutomatedEntry.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

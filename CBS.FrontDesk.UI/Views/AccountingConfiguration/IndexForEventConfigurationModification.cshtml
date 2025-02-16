@@ -3,7 +3,7 @@
     ViewBag.Title = "Accounting Configurations";
 
 }
- 
+
 <div class="card mb-12">
 
     <h2 class="me-2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Accounting Event Configuration Panel </h2>
@@ -31,7 +31,7 @@
                         <div class="accordion-body">
                             <div class="row justify-content-end">
                                 <div class="demo-inline-spacing text-end">
-                                    <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_OperationEvent','_OperationEventData','datalistingview_OperationEvent',0,'operationEvent','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_OperationEvent','_OperationEventDataModif','datalistingview_OperationEvent',0,'operationEvent','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                     </a>
 
@@ -40,6 +40,7 @@
                                     </a>
                                 </div>
                             </div>
+ 
                             <br />
                             <div id="datalistingview_OperationEvent">
                                 @Html.Partial("_CreateOperationEvent")
@@ -65,7 +66,7 @@
                         <div class="accordion-body">
                             <div class="row justify-content-end">
                                 <div class="demo-inline-spacing text-end">
-                                    <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_OperationEventAttribute','_OperationEventAttributeData','datalistingview_OperationEventAttribute',0,'operationEventAttribute','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_OperationEventAttribute','_OperationEventAttributeDataModif','datalistingview_OperationEventAttribute',0,'operationEventAttribute','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                     </a>
                                     <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEventAttribute','_CreateOperationEventAttribute','new','AccountingConfiguration','operationEventAttribute')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">

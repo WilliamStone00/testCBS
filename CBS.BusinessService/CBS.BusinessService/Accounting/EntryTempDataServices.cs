@@ -58,7 +58,9 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
-        //   
+
+ 
+
         public async Task<ExecutionMessages> PostAccountingEntry(List<EntryTempData> model)
         {
             try
@@ -296,5 +298,8 @@ namespace CBS.BusinessService.Accounting
                 throw ex;
             }
         }
+
+       
+ 
     }
 }

@@ -18,6 +18,7 @@ using System.IO.Packaging;
 using System.Security.Policy;
 using System.Web.Helpers;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.BusinessService.Accounts;
 
 namespace CBS.BusinessService.Accounting
 {
@@ -110,6 +111,66 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
+
+        /// <summary>
+        /// Updates account balances according to OHADA accounting rules
+        /// </summary>
+        public async Task<bool> CheckAccountBalance(FrontDesk.Data.Account account, decimal amount, OperationTypes operationType)
+        {
+            // Store last balance before any cha00k0es
+            account.LastBalance = account.CurrentBalance;
+
+            // Determine account behavior based on OHADA rules
+            bool isDebitNormal = account.AccountNumber.StartsWith("2") || // Fixed Assets
+                                                                          //   || // Inventory
+                                account.AccountNumber.StartsWith("5") || // Financial
+                                account.AccountNumber.StartsWith("6");    // Expenses
+
+            bool isCreditNormal = account.AccountNumber.StartsWith("1") || // Capital
+                                account.AccountNumber.StartsWith("7") ||    // Income
+                                   account.AccountNumber.StartsWith("3");
+            // Handle class 4 accounts separately
+            bool isClass4Receivable = account.AccountNumber.StartsWith("41") || account.AccountNumber.StartsWith("42") || account.AccountNumber.StartsWith("46");
+            bool isClass4Payables = account.AccountNumber.StartsWith("40") || account.AccountNumber.StartsWith("43") || account.AccountNumber.StartsWith("48") || account.AccountNumber.StartsWith("49") ||
+                account.AccountNumber.StartsWith("44") || account.AccountNumber.StartsWith("45") || account.AccountNumber.StartsWith("47");
+
+        
+            if (isDebitNormal || isClass4Receivable)
+            {
+                if (operationType == OperationTypes.DEBIT)
+                {
+
+                    // For debit-normal accounts, debit increases the balance
+                    account.DebitBalance += amount;
+                    return (Convert.ToDecimal(account.DebitBalance) - Convert.ToDecimal(account.CreditBalance)) > 0;
+                }
+                else // CREDIT
+                {
+                    account.CreditBalance += amount;
+             
+                    return (Convert.ToDecimal(account.CreditBalance) - Convert.ToDecimal(account.DebitBalance)) > 0;
+                }
+            }
+            else
+            {
+                if (operationType == OperationTypes.DEBIT)
+                {
+
+                    // For debit-normal accounts, debit increases the balance
+                    account.DebitBalance += amount;
+                    return (Convert.ToDecimal(account.DebitBalance) - Convert.ToDecimal(account.CreditBalance)) > 0;
+                }
+                else // CREDIT
+                {
+                    account.CreditBalance += amount;
+
+                    return (Convert.ToDecimal(account.CreditBalance) - Convert.ToDecimal(account.DebitBalance)) > 0;
+                }
+            }
+
+   
+        }
+
         public async Task<FrontDesk.Data.Account> GetAccountWithAccountCartegorieStatus(string id)
         {
             try
@@ -333,6 +394,9 @@ namespace CBS.BusinessService.Accounting
                 throw (ex);
             }
         }
+
+
+
         public async Task<IEnumerable<AccountingRole>> GetAccountingRoles()
         {
             try
@@ -670,7 +734,7 @@ namespace CBS.BusinessService.Accounting
                     if (response.isSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"The AccountingEntries and the account of the following branches has been cleared.{GetBranchinformations(listOfBranchIds)}", MessagesResults.Success,
+                        GetExecutionMessages(response, true, $"The AccountingEntries and the account of the following branches has been cleared", MessagesResults.Success,
                    ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.message);
                         return ExecutionMessage;
                     }
@@ -701,7 +765,17 @@ namespace CBS.BusinessService.Accounting
 
         }
 
-        private object GetBranchinformations(List<string> listOfBranchIds)
+   
+
+        public FrontDesk.Data.Account GetAccountItemForBranch(List<FrontDesk.Data.Account> branchAccounts, AccountModel item)
+        {
+            var account = branchAccounts.Where(x=>x.ChartOfAccountManagementPositionId.Equals(item.Id)).FirstOrDefault();
+
+            return account;
+
+        }
+
+        public OperationTypes GetOperationType(AccountModel item)
         {
             throw new NotImplementedException();
         }
