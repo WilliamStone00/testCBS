@@ -1313,7 +1313,49 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> Delete(string id)
+        {
+            try
+            {
+                var inResponse = await _transactionApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.Delete_Account, id));
+                if (inResponse.IsSuccess)
+                {
 
+                    GetExecutionMessages(inResponse, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
+                    return ExecutionMessage;
+
+                }
+                else
+                {
+                    // Handle failure scenario
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+            }
+            return ExecutionMessage;
+        }
+        public async Task<CustomerAccount> GetAccount(string id)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<CustomerAccount>>(string.Format(APICallHelper.GetAccount, id));
+                if (cusResponseObject.ApiResponseData != null)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return new CustomerAccount();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
         public async Task<Account> GetAccountByAccountNumber(string accountNumber)
         {
             try

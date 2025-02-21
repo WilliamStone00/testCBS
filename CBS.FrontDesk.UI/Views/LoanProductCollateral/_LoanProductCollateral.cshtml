@@ -46,19 +46,28 @@
                                         <label>Select product</label>
                                     </div>
                                 </div>
+                                @*<div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.CollateralId, new SelectList(ViewBag.Collaterals, "id", "name"), "---Select---", new { @class = "form-control select2", @id= "CollateralDropdown", @search = "true", @onchange = "updateCollateralTag()" })
+                @Html.ValidationMessageFor(m => m.CollateralId, "", new { @class = "text-danger " })
+                <label>Select collateral</label>
+            </div>
+        </div>*@
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        <select id="CollateralDropdown" class="form-control select2" onchange="updateCollateralTag()">
+                                        <select id="CollateralId" class="form-control select2" onchange="updateCollateralTag()">
                                             <option value="">---Select---</option>
                                             @foreach (var item in ViewBag.Collaterals)
                                             {
                                                 <option value="@item.id" data-name="@item.name">@item.name</option>
                                             }
                                         </select>
+                                        <input type="hidden" name="CollateralId" id="HiddenCollateralId" />
                                         @Html.ValidationMessageFor(m => m.CollateralId, "", new { @class = "text-danger " })
                                         <label>Select collateral</label>
                                     </div>
                                 </div>
+
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanProductCollateralTag, new { @class = "form-control", @readonly = "readonly", id = "LoanProductCollateralTag" })
@@ -101,17 +110,22 @@
 </div>
 
 <script>
-    // Function to update the tag input field with the selected collateral name
     function updateCollateralTag() {
         // Get references to the dropdown and tag field
-        var collateralDropdown = document.getElementById("CollateralDropdown");
+        var collateralDropdown = document.getElementById("CollateralId");
         var collateralTag = document.getElementById("LoanProductCollateralTag");
+        var hiddenCollateralId = document.getElementById("HiddenCollateralId");
 
         // Get the selected option
         var selectedOption = collateralDropdown.options[collateralDropdown.selectedIndex];
 
-        // Get the collateral name from the data attribute and set it in the tag field
+        // Get the collateral name and id
         var collateralName = selectedOption.getAttribute("data-name");
-        collateralTag.value = collateralName || ""; // Set the value or leave it blank if no selection
+        var collateralId = selectedOption.value;
+
+        // Update the fields
+        collateralTag.value = collateralName || "";
+        hiddenCollateralId.value = collateralId || "";
     }
+
 </script>

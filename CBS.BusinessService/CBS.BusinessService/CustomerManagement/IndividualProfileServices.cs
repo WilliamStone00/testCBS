@@ -20,6 +20,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.ReportDataSetDto;
+using CBS.FrontDesk.Data.Entity.SalaryManagement;
 
 namespace CBS.BusinessService.CustomerManagement
 {
@@ -120,6 +121,27 @@ namespace CBS.BusinessService.CustomerManagement
             }
             return ExecutionMessage;
         }
+
+        public async Task<IEnumerable<IndividualProfile>> GetMemberByCustomerType(string memberCategory)
+        {
+            try
+            {
+
+                var couApiResponse = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(string.Format(APICallHelper.GetMemberByCustomerType, memberCategory));
+                if (couApiResponse.IsSuccess)
+                {
+                    var data = couApiResponse.ApiResponseData.Data;
+                    return data;
+                }
+                return new List<IndividualProfile>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
 
 
 
@@ -262,7 +284,23 @@ namespace CBS.BusinessService.CustomerManagement
                 throw;
             }
         }
+        public async Task<IEnumerable<StringValues>> GetMemberByCustomerTypeDropDown(string memberCategory)
+        {
+            try
+            {
 
+                var individuals=await GetMemberByCustomerType(memberCategory);
+                var stringValuesList = individuals
+                         .Select(x => new StringValues($"[{x.CustomerId}] [{x.FirstName} {x.LastName}]", x.CustomerId))
+                         .ToList();
+                return stringValuesList;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<IEnumerable<IndividualProfile>> GetIndividualProfileByBranch()
         {
             try
@@ -879,8 +917,8 @@ namespace CBS.BusinessService.CustomerManagement
                 model.BranchId = GetBranchID();
                 model.BankId = GetBankID();
                 model.LegalForm = "Physical_Person";
-                model.IsDailyCollector = model.CustomerType == "DailyCollector" ? true : false;
-                model.CustomerType = model.NoneMemberAccount ? model.CustomerType : "MemberAccount";
+                //model.IsDailyCollector = model.CustomerType == "DailyCollector" ? true : false;
+                //model.CustomerType = model.NoneMemberAccount ? model.CustomerType : "MemberAccount";
                 model.EmployerTelephone = tel;
                 model.MembershipApprovalStatus = model.NoneMemberAccount ? "Approved" : "Awaits_Validation";
                 model.BankName = GetBranchName();

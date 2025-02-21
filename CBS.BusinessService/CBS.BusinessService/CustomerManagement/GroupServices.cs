@@ -250,6 +250,7 @@ namespace CBS.BusinessService.CustomerManagement
                         Group.GroupName = model.GroupName;
                         Group.GroupTypeId = model.GroupTypeId;
                         Group.Active = model.Active;
+                       
                         Group.RegistrationNumber = model.RegistrationNumber;
                         Group.TaxPayerNumber = model.TaxPayerNumber;
                         var response = await _customerConfigApiHelper.PutAsync<ServiceResponse<Group>>(string.Format(APICallHelper.Get_Update_Delete_Group, model.GroupId), Group);

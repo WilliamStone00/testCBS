@@ -221,6 +221,7 @@
     <Compile Include="Accounting\TransactionReferenceValidator.cs" />
     <Compile Include="Accounts\SalaryAnalysisResultServices.cs" />
     <Compile Include="Accounts\MemberNoneCashOperationServices.cs" />
+    <Compile Include="Accounts\SalaryExecutionServices.cs" />
     <Compile Include="Accounts\SalaryUploadServices.cs" />
     <Compile Include="Accounts\StandingOrderServices.cs" />
     <Compile Include="Accounts\CashChangeHistoryServices.cs" />

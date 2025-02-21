@@ -12,6 +12,7 @@ namespace CBS.FrontDesk.Data.Entity
     public class IndividualCustomerProfile
     {
         public IndividualProfile CustomerList { get; set; }
+        public CustomerAccount CustomerAccount { get; set; } = new CustomerAccount();
         public AddCustomerAccount AddCustomerAccount { get; set; }
         public Aggregrate Aggregrate { get; set; }
         public AccountBalance AccountBalance { get; set; }

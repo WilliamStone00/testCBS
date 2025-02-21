@@ -53,6 +53,10 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public string BranchId { get; set; }
         public string SalaryAnalysisResultId { get; set; }
         public decimal PreferenceShares { get; set; }
+        public string LoanId { get; set; }
+        public string LoanType { get; set; }
+        public decimal StandingOrderAmount { get; set; }
+        public string StandingOrderStatement { get; set; }
         public SalaryAnalysisResultSummary SalaryAnalysisResult { get; set; }
     }
     public class SalaryAnalysisCommand
