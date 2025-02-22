@@ -4,7 +4,7 @@ function exportLoanData() {
     alert("Export functionality to be implemented.");
     // Replace the alert with your actual export logic.
 }
-
+//
 function initializeLoanDataTable() {
     $('#myDataTable').DataTable({
         destroy: true,
