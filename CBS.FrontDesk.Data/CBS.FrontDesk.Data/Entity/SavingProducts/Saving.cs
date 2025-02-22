@@ -1069,6 +1069,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string TreatedUserName { get; set; }
         public string BranchId { get; set; }
         public string CustomerId { get; set; }
+        public string IncidentNote { get; set; }
         public string AccountId { get; set; }
         public string AccountNumber { get; set; }
         public string TellerId { get; set; }
@@ -1090,8 +1091,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     {
         public string TransactionId { get; set; }
         public string Reason { get; set; }
-        public decimal Amount { get; set; }
-        public string DebitDirection { get; set; }
+        public string IncidentNote { get; set; }
     }
     public class ApprovedReversalRequestCommand
     {

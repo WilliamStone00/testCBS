@@ -609,6 +609,7 @@
     <Compile Include="Controllers\TransactionManagement\DailyTellerAssignationController.cs" />
     <Compile Include="Controllers\TransactionManagement\CashCeilingRequestController.cs" />
     <Compile Include="Controllers\TransactionManagement\SalaryAnalyzerController.cs" />
+    <Compile Include="Controllers\TransactionManagement\SalaryExecutionController.cs" />
     <Compile Include="Controllers\TransactionManagement\SalaryUploadController.cs" />
     <Compile Include="Controllers\TransactionManagement\VaultController.cs" />
     <Compile Include="Controllers\TransactionManagement\HolidayRecurringController.cs" />
@@ -3444,6 +3445,13 @@
     <Content Include="Views\ManuallyJournalEntry\EventEntrySystemInfo.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\_AccountingRuleEvent.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\ExecuteAutomatedEntry.cshtml" />
+    <Content Include="Views\SalaryExecution\_FileUploadData.cshtml" />
+    <Content Include="Views\SalaryExecution\_SalaryDetailsData.cshtml" />
+    <Content Include="Views\SalaryExecution\_SalaryUploadForm.cshtml" />
+    <Content Include="Views\SalaryExecution\Detail.cshtml" />
+    <Content Include="Views\SalaryExecution\Index.cshtml" />
+    <Content Include="Views\SalaryExecution\UploadedSalaryFiles.cshtml" />
+    <Content Include="Views\Individual\_AccountDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -3634,9 +3642,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52456</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44346/</IISUrl>
+          <IISUrl>https://localhost:25634</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>https://localhost:44346/</IISAppRootUrl>
+          <IISAppRootUrl>https://localhost:25634</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

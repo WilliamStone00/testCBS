@@ -2,56 +2,40 @@
 
 
 
+
 @using (Html.BeginForm("Create", "TransactionReversal", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
-
-
-
     <fieldset class="fieldset-custom">
         <legend id="select_base">Request Form</legend>
         <input type="hidden" name="Option" value="create" id="Option" />
         <div class="row mt-2 gy-4">
-            <div class="col-md-8">
+            <div class="col-md-3">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.AddReversalRequestCommand.TransactionId, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.AddReversalRequestCommand.TransactionId, "", new { @class = "text-danger " })
                     <label>Enter transaction reference</label>
                 </div>
             </div>
-            <div class="col-md-4">
+            <!-- Dropdown for reasons -->
+            <div class="col-md-9">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.AddReversalRequestCommand.Amount, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.AddReversalRequestCommand.Amount, "", new { @class = "text-danger " })
-                    <label>Requested amount</label>
+                    @Html.DropDownListFor(m => m.AddReversalRequestCommand.Reason, new SelectList(ViewBag.Reasons, "Value", "Text"), "Select Reason", new { @class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.AddReversalRequestCommand.Reason, "", new { @class = "text-danger " })
+                    <label for="formValidationDob">Reason for Reversal</label>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextAreaFor(m => m.AddReversalRequestCommand.IncidentNote, new { @class = "form-control", @style = "height: 150px;" })
+                    @Html.ValidationMessageFor(m => m.AddReversalRequestCommand.IncidentNote, "", new { @class = "text-danger " })
+                    <label for="formValidationDob">Incident Note</label>
                 </div>
             </div>
         </div>
 
     </fieldset>
-    <fieldset class="fieldset-custom">
-        <legend id="select_base">Action On Members Account</legend>
-        <div class="row mt-2 gy-4">
-            <div class="col-6">
-                <div class="form-check">
-                    @Html.RadioButtonFor(m => m.AddReversalRequestCommand.DebitDirection, "Debit", new { @class = "form-check-input", id = "Debit" })
-                    <label class="form-check-label" for="Debit">Debit</label>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-check">
-                    @Html.RadioButtonFor(m => m.AddReversalRequestCommand.DebitDirection, "Credit", new { @class = "form-check-input", id = "Credit" })
-                    <label class="form-check-label" for="Credit">Credit</label>
-                </div>
-            </div>
-            <div class="col-md-12 me-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextAreaFor(m => m.AddReversalRequestCommand.Reason, new { @class = "form-control", @style = "height: 150px;" })
-                    @Html.ValidationMessageFor(m => m.AddReversalRequestCommand.Reason, "", new { @class = "text-danger " })
-                    <label for="formValidationDob">Incident Note</label>
-                </div>
-            </div>
-        </div>
-    </fieldset>
+
     <div class="mt-4">
         <button type="submit" id="btnSave" class="btn btn-primary me-2">Create Request</button>
     </div>

@@ -14,7 +14,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
 {
 
 
-
+   
     public class Account
     {
 
@@ -72,6 +72,14 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public Transfer Transfer { get; set; } = new Transfer();
         public List<Transfer> Transfers { get; set; } = new List<Transfer>();
         public string OperationType { get; set; }
+
+
+       
+        public string OpenningOfDayStatus { get; set; }
+        public DateTime? OpenningOfDayDate { get; set; } = DateTime.MinValue;
+        public string OpenningOfDayReference { get; set; }
+       
+        public List<WithdrawalNotification> WithdrawalNotifications { get; set; }
     }
 
     public class BalanceOfLoanAndSaving

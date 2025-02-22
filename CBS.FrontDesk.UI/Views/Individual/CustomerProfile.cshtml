@@ -7,22 +7,23 @@
 
 
 
+
 <div class="row">
     <div class="col-12">
         <!-- Page Header -->
-        <div class="card bg-light mb-4">
+        <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-circle me-2"></i> Member Profile Management
+                    <i class="mdi mdi-account-circle me-2"></i> Member Profile Management <strong>@Session["BranchName"]</strong>
                 </h1>
                 <p class="card-text text-muted">
                     Manage member profiles efficiently by updating personal details, security information, and account settings. Follow the tips provided below for a seamless experience.
                 </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
 </div>
-
 <div class="row invoice-preview">
     <div class="col-xl-3 col-md-4 col-12 invoice-actions">
         <fieldset class="fieldset-custom">
@@ -102,89 +103,87 @@
     </div>
     <!-- Rest of the content -->
     <div class="col-xl-9 col-md-8 col-12 mb-md-0 mb-4">
-        <fieldset class="fieldset-custom">
-            <!-- Tips Section -->
-            <div class="card mb-4">
-                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> HELP TIPS</span>
-                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
-                        <i class="mdi mdi-chevron-down"></i>
-                    </button>
-                </h6>
-                <div id="collapseHelpTips" class="collapse">
-                    <div class="card-body">
-                        <p class="text-muted mb-2">Follow these tips to manage member profiles effectively:</p>
-                        <ul>
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all member details, such as name, ID, and address, are accurate.</li>
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Member reference numbers are auto-generated unless customized.</li>
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Civil servants and salary earners must provide salary details.</li>
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Photo and signature uploads are mandatory for identification purposes.</li>
-                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Membership approval status and dates should be reviewed regularly for updates.</li>
-                        </ul>
-                        <p class="text-muted">Additional Notes:</p>
-                        <ul>
-                            <li><i class="mdi mdi-information-outline text-primary me-2"></i> Collective accounts require the "None Member Account" option to be checked.</li>
-                            <li><i class="mdi mdi-information-outline text-primary me-2"></i> Member references consist of a Branch Code and a 7-digit Member Code.</li>
-                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Ensure proper documentation is uploaded for verification purposes.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- Tabbed Content -->
-            <div class="card mb-4">
-                <div class="card-header p-0">
-                    <div class="nav-align-top">
-                        <ul class="nav nav-tabs nav-fill" role="tablist">
-                            <li class="nav-item">
-                                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-profile" aria-controls="navs-profile" aria-selected="true">
-                                    <i class="tf-icons mdi mdi-account-outline me-1"></i> Profile Details
-                                </button>
-                            </li>
-                            <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-account" aria-controls="navs-account" aria-selected="false">
-                                    <i class="tf-icons mdi mdi-account-circle-outline me-1"></i> Account View
-                                </button>
-                            </li>
-                            <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-document" aria-controls="navs-document" aria-selected="false">
-                                    <i class="tf-icons mdi mdi-file-document-outline me-1"></i> Document Management
-                                </button>
-                            </li>
-
-                            <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-nextofkin" aria-controls="navs-nextofkin" aria-selected="false">
-                                    <i class="tf-icons mdi mdi-account-multiple-outline me-1"></i> Next of Kin Management
-                                </button>
-                            </li>
-                            <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-signatory" aria-controls="navs-signatory" aria-selected="false">
-                                    <i class="tf-icons mdi mdi-pen me-1"></i> Signatory Management
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+        <!-- Tips Section -->
+        <div class="card mb-4">
+            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                <span><i class="mdi mdi-information-outline me-2"></i> HELP TIPS</span>
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </h6>
+            <div id="collapseHelpTips" class="collapse">
                 <div class="card-body">
-                    <div class="tab-content p-0">
-                        <div class="tab-pane fade show active" id="navs-profile" role="tabpanel">
-                            @Html.Partial("_ProfileDetails")
-                        </div>
-                        <div class="tab-pane fade" id="navs-account" role="tabpanel">
-                            @Html.Partial("_AccountBalance")
-                        </div>
-                        <div class="tab-pane fade" id="navs-document" role="tabpanel">
-                            @Html.Partial("_DocumentManagement")
-                        </div>
-                        <div class="tab-pane fade" id="navs-nextofkin" role="tabpanel">
-                            @Html.Partial("_NextOfKinManagement")
-                        </div>
-                        <div class="tab-pane fade" id="navs-signatory" role="tabpanel">
-                            @Html.Partial("_SignatoryManagement")
-                        </div>
+                    <p class="text-muted mb-2">Follow these tips to manage member profiles effectively:</p>
+                    <ul>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all member details, such as name, ID, and address, are accurate.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Member reference numbers are auto-generated unless customized.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Civil servants and salary earners must provide salary details.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Photo and signature uploads are mandatory for identification purposes.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Membership approval status and dates should be reviewed regularly for updates.</li>
+                    </ul>
+                    <p class="text-muted">Additional Notes:</p>
+                    <ul>
+                        <li><i class="mdi mdi-information-outline text-primary me-2"></i> Collective accounts require the "None Member Account" option to be checked.</li>
+                        <li><i class="mdi mdi-information-outline text-primary me-2"></i> Member references consist of a Branch Code and a 7-digit Member Code.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Ensure proper documentation is uploaded for verification purposes.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Tabbed Content -->
+        <div class="card mb-4">
+            <div class="card-header p-0">
+                <div class="nav-align-top">
+                    <ul class="nav nav-tabs nav-fill" role="tablist">
+                        <li class="nav-item">
+                            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-profile" aria-controls="navs-profile" aria-selected="true">
+                                <i class="tf-icons mdi mdi-account-outline me-1"></i> Profile Details
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-account" aria-controls="navs-account" aria-selected="false">
+                                <i class="tf-icons mdi mdi-account-circle-outline me-1"></i> Account View
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-document" aria-controls="navs-document" aria-selected="false">
+                                <i class="tf-icons mdi mdi-file-document-outline me-1"></i> Document Management
+                            </button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-nextofkin" aria-controls="navs-nextofkin" aria-selected="false">
+                                <i class="tf-icons mdi mdi-account-multiple-outline me-1"></i> Next of Kin Management
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-signatory" aria-controls="navs-signatory" aria-selected="false">
+                                <i class="tf-icons mdi mdi-pen me-1"></i> Signatory Management
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="tab-content p-0">
+                    <div class="tab-pane fade show active" id="navs-profile" role="tabpanel">
+                        @Html.Partial("_ProfileDetails")
+                    </div>
+                    <div class="tab-pane fade" id="navs-account" role="tabpanel">
+                        @Html.Partial("_AccountBalance")
+                    </div>
+                    <div class="tab-pane fade" id="navs-document" role="tabpanel">
+                        @Html.Partial("_DocumentManagement")
+                    </div>
+                    <div class="tab-pane fade" id="navs-nextofkin" role="tabpanel">
+                        @Html.Partial("_NextOfKinManagement")
+                    </div>
+                    <div class="tab-pane fade" id="navs-signatory" role="tabpanel">
+                        @Html.Partial("_SignatoryManagement")
                     </div>
                 </div>
             </div>
-        </fieldset>
+        </div>
     </div>
 
 </div>
@@ -234,6 +233,21 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="accountDetailModal" tabindex="-1" aria-labelledby="accountDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Account Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="accountDetailContent">
+                <!-- Account details will be loaded here -->
             </div>
         </div>
     </div>

@@ -82,6 +82,7 @@
     <Compile Include="Entity\CMoney\CMoneyMembersActivationAccount.cs" />
     <Compile Include="Entity\MemberNoneCashOperationsP\MemberNoneCashOperation.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryAnalysisResultSummary.cs" />
+    <Compile Include="Entity\SalaryManagement\SalaryExecutionModel.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryUploadModel.cs" />
     <Compile Include="Entity\SalaryManagement\StandingOrder.cs" />
     <Compile Include="Entity\VaultManagement\VaultAuthorisedPersonP\VaultAuthorisedPerson.cs" />

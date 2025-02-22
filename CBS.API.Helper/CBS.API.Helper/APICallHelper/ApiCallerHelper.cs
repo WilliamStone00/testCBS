@@ -302,7 +302,6 @@ namespace CBS.API.Helper
 
             }
         }
-
         public async Task<ApiResponse<T>> UploadSalaryFileAsync<T>(HttpPostedFileBase file, string salaryType, string apiUrl)
         {
             try

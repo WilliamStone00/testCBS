@@ -16,19 +16,19 @@
                 <label>Amount</label>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-9">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.ReversalRequest.InitiatedBy, new { @class = "form-control", @readonly = true })
                 @Html.ValidationMessageFor(m => m.ReversalRequest.InitiatedBy, "", new { @class = "text-danger " })
                 <label>Initiated By</label>
             </div>
         </div>
-        <div class="col-md-3">
+        @*<div class="col-md-3">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.ReversalRequest.ApprovedDate, new { @class = "form-control", @readonly = true })
                 <label>Approved date</label>
             </div>
-        </div>
+        </div>*@
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
                 @Html.TextAreaFor(m => m.ReversalRequest.ValidationComment, new { @class = "form-control", @style = "height: 150px;", @readonly = true })
