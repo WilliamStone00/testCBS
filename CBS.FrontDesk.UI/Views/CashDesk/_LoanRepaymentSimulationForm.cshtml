@@ -1,0 +1,165 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+
+<div class="form-wrapper">
+    <!-- Member Information Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4 p-3 bg-light rounded shadow-sm">
+        <h6 class="text-primary mb-0">Member: <span class="text-dark">@Model.Customer.name</span></h6>
+        <h6 class="text-primary mb-0">Ref No: <span class="text-dark">@Model.Customer.CustomerId</span></h6>
+        <h6 class="text-primary mb-0">Branch: <span class="text-dark">@Model.Branch.Name (@Model.Branch.BranchCode)</span></h6>
+    </div>
+
+    <!-- Dynamic Summary Section -->
+    <fieldset class="fieldset-custom mt-2">
+        <legend class="text-primary">COMPUTED DETAILS</legend>
+        <button class="btn btn-outline-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#computedDetailsSection" aria-expanded="false" aria-controls="computedDetailsSection">
+            Toggle Summary
+        </button>
+        <div class="collapse" id="computedDetailsSection">
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card shadow-sm p-3 mb-2">
+                                <h6 class="text-primary">Refund Amount (Capital)</h6>
+                                <p class="text-dark fw-bold mb-0" id="summaryCapital">0.0 XAF</p>
+                            </div>
+                            <div class="card shadow-sm p-3 mb-2">
+                                <h6 class="text-primary">Interest Amount</h6>
+                                <p class="text-dark fw-bold mb-0" id="summaryInterest">0.0 XAF</p>
+                            </div>
+                            <div class="card shadow-sm p-3">
+                                <h6 class="text-primary">Penalty Amount</h6>
+                                <p class="text-dark fw-bold mb-0" id="summaryPenalty">0.0 XAF</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card shadow-sm p-3 mb-2">
+                                <h6 class="text-primary">VAT Amount (on Interest)</h6>
+                                <p class="text-dark fw-bold mb-0" id="summaryVat">0.0 XAF</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-lg p-4 h-100 d-flex align-items-center justify-content-center" style="background-color: #e9f7fd; border-left: 5px solid #007bff;">
+                        <h5 class="text-primary fw-bold mb-2">Total Repayment Amount</h5>
+                        <p class="display-4 text-secondary fw-bold" style="font-size: 2rem;" id="summaryTotal">0.0 XAF</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<fieldset class="fieldset-custom">
+    <legend class="text-primary">LOAN REPAYMENT SIMULATION FORM</legend>
+    <hr style="border: 2px solid green;" />
+
+    <div class="change-group">
+        <div class="table-responsive" style="width: 100%;">
+            <table class="table table-hover table-bordered align-middle" id="myDataTableT">
+                <thead class="table-light">
+                    <tr>
+                        <th style="display:none;">LoanId</th>
+                        <th>Date</th>
+                        <th>Loan Amount</th>
+                        <th>Balance</th>
+                        <th>Interest</th>
+                        <th>VAT</th>
+                        <th>Penalty</th>
+                        <th>Enter Capital</th>
+                        <th>Enter Interest</th>
+                        <th>Enter Penalty</th>
+                        <th>Total</th>
+                        <th>V-INC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.Loans)
+                    {
+                        <tr id="row-@d.Id">
+                            <td style="display:none;">@d.Id</td>
+                            <td>@d.LoanDate.ToString("dd/MM/yy")</td>
+                            <td>@d.LoanAmount.ToString("N1")</td>
+                            <td>@d.Balance.ToString("N1")</td>
+                            <td>@d.AccrualInterest.ToString("N1")</td>
+                            <td>@d.Tax.ToString("N1")</td>
+                            <td>@d.Penalty.ToString("N1")</td>
+                            <td>
+                                <input type="number" class="form-control amount-input" id="capital-@d.Id" value="0" oninput="calculateTotalRepayment()">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control interest-input" id="interest-@d.Id" value="0" oninput="calculateTotalRepayment()">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control penalty-input" id="penalty-@d.Id" value="0" oninput="calculateTotalRepayment()">
+                            </td>
+                            <td>
+                                <span class="total-span" id="total-@d.Id">0.0 XAF</span>
+                            </td>
+                            <td>
+                                <input type="checkbox" class="form-check-input vat-checkbox" id="vatInclusive-@d.Id" disabled>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</fieldset>
+<!-- JavaScript for Dynamic Repayment Simulation -->
+<script>
+    function calculateTotalRepayment() {
+        // Initialize totals
+        let totalCapital = 0;
+        let totalInterest = 0;
+        let totalPenalty = 0;
+        let totalVat = 0;
+        let totalRepayment = 0;
+
+        // Loop through all table rows
+        document.querySelectorAll('#myDataTableT tbody tr').forEach(row => {
+            const loanId = row.querySelector('td:first-child').innerText;
+            const loanAmount = parseFloat(row.querySelector('td:nth-child(3)').innerText.replace(/,/g, '')) || 0;
+            const vatRate = 0.1925;  // 19.25%
+
+            // Get input values
+            const capital = parseFloat(document.getElementById(`capital-${loanId}`).value) || 0;
+            const interest = parseFloat(document.getElementById(`interest-${loanId}`).value) || 0;
+            const penalty = parseFloat(document.getElementById(`penalty-${loanId}`).value) || 0;
+            const vatInclusive = document.getElementById(`vatInclusive-${loanId}`).checked;
+
+            // Calculate VAT dynamically based on VAT inclusion/exclusion
+            let vatAmount = 0;
+            if (loanAmount >= 2000000) {
+                if (vatInclusive) {
+                    // VAT is included in the interest, calculate it but do not add it to the total
+                    vatAmount = Math.ceil(interest * vatRate / (1 + vatRate));
+                } else {
+                    // VAT is added on top of the interest
+                    vatAmount = Math.ceil(interest * vatRate);
+                }
+            }
+
+            // Calculate total repayment
+            const rowTotal = vatInclusive ? (capital + interest + penalty) : (capital + interest + penalty + vatAmount);
+
+            // Format and display the total repayment in the table row
+            document.getElementById(`total-${loanId}`).innerText = `${rowTotal.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} XAF`;
+
+            // Accumulate totals for the summary
+            totalCapital += capital;
+            totalInterest += interest;
+            totalPenalty += penalty;
+            totalVat += vatAmount;
+            totalRepayment += rowTotal;
+        });
+
+        // Update the dynamic summary section with 1 decimal place for most values and 0 decimals for VAT
+        document.getElementById('summaryCapital').innerText = `${totalCapital.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} XAF`;
+        document.getElementById('summaryInterest').innerText = `${totalInterest.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} XAF`;
+        document.getElementById('summaryPenalty').innerText = `${totalPenalty.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} XAF`;
+        document.getElementById('summaryVat').innerText = `${totalVat.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })} XAF`;
+        document.getElementById('summaryTotal').innerText = `${totalRepayment.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} XAF`;
+    }
+</script>

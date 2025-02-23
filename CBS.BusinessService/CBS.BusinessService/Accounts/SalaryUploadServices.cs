@@ -1,6 +1,7 @@
 ﻿
 using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.CashCeilingManagement;
 using CBS.FrontDesk.Data.Entity.LoanConf;
@@ -163,12 +164,37 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
+        public async Task<IEnumerable<StringValues>> GetValues(GetAllFileUploadSalaryFileActivatedQuery allFileUploadSalaryFileActivatedQuery)
+        {
+            try
+            {
+                List<StringValues> stringValues;
+
+                var fileUploads = await GetUploadDtosAsyncByStatus(allFileUploadSalaryFileActivatedQuery);
+                    stringValues = (from a in fileUploads
+                                    
+                                    select new StringValues
+                                    {
+                                        Text = $"[Salary Code: {a.FileCode}] [Execution State: {a.FileCategory}] [Name: {a.FileName}]",
+                                        Value = $"{a.Id}",
+                                    }).ToList();
+             
+
+                return stringValues;
+            }
+            catch (Exception ex)
+            {
+                // Log and rethrow exception
+                throw ex;
+            }
+        }
+
         public async Task<IEnumerable<FileUploadDto>> GetUploadDtosAsyncByStatus(GetAllFileUploadSalaryFileActivatedQuery allFileUploadSalaryFileActivatedQuery)
         {
             try
             {
 
-              
+
                 var queryString = ToQueryString(allFileUploadSalaryFileActivatedQuery);
                 var fullUrl = $"{APICallHelper.GetAllSalaryUploadByFileBaseOnStatus}?{queryString}";
                 var response = await _transactionApiHelper.GetAsync<ResponseObject<List<FileUploadDto>>>(fullUrl);
@@ -192,7 +218,6 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<FileUploadDto>>(string.Format(APICallHelper.GetSalaryFileUploadByFileId, fileId));
-
                 if (couApiResponse.IsSuccess)
                 {
                     // FileDownloadDto should contain file data and metadata

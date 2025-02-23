@@ -10,6 +10,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -48,6 +49,36 @@ namespace CBS.BusinessService.Accounts
                 // Log and handle exception
             }
             return ExecutionMessage;
+        }
+        public List<SelectListItem> GetReasons()
+        {
+            // Populate a more extensive list of predefined reasons for transaction reversal (Cash Desk Member Operations)
+            var reasons = new List<SelectListItem>
+    {
+        new SelectListItem { Text = "Transaction Error - Incorrect amount processed", Value = "Transaction Error - Incorrect amount processed" },
+        new SelectListItem { Text = "Customer Request - Cancellation of member transaction", Value = "Customer Request - Cancellation of member transaction" },
+        new SelectListItem { Text = "Overcharged - Member charged more than the allowed amount", Value = "Overcharged - Member charged more than the allowed amount" },
+        new SelectListItem { Text = "Refund Request - Member requests refund due to an issue", Value = "Refund Request - Member requests refund due to an issue" },
+        new SelectListItem { Text = "System Error - System failure during member transaction", Value = "System Error - System failure during member transaction" },
+        new SelectListItem { Text = "Duplicate Transaction - Same transaction processed twice for member", Value = "Duplicate Transaction - Same transaction processed twice for member" },
+        new SelectListItem { Text = "Authorization Failure - Member’s transaction not authorized", Value = "Authorization Failure - Member’s transaction not authorized" },
+        new SelectListItem { Text = "Fraud Detection - Suspicious activity detected in member account", Value = "Fraud Detection - Suspicious activity detected in member account" },
+        new SelectListItem { Text = "Incorrect Member Account - Transaction linked to wrong member account", Value = "Incorrect Member Account - Transaction linked to wrong member account" },
+        new SelectListItem { Text = "Transaction Reversal - Member account debited incorrectly", Value = "Transaction Reversal - Member account debited incorrectly" },
+        new SelectListItem { Text = "Member Funds Error - Insufficient funds in member account", Value = "Member Funds Error - Insufficient funds in member account" },
+        new SelectListItem { Text = "Transaction Timeout - Member transaction failed due to timeout", Value = "Transaction Timeout - Member transaction failed due to timeout" },
+        new SelectListItem { Text = "Payment Method Error - Invalid payment method used by member", Value = "Payment Method Error - Invalid payment method used by member" },
+        new SelectListItem { Text = "Cashier Input Error - Incorrect data entered by cashier for member", Value = "Cashier Input Error - Incorrect data entered by cashier for member" },
+        new SelectListItem { Text = "Member Balance Error - Incorrect member balance calculated", Value = "Member Balance Error - Incorrect member balance calculated" },
+        new SelectListItem { Text = "Reversal Request - Member requests reversal due to an operational issue", Value = "Reversal Request - Member requests reversal due to an operational issue" },
+        new SelectListItem { Text = "Account Mismatch - Member’s account information mismatch", Value = "Account Mismatch - Member’s account information mismatch" },
+        new SelectListItem { Text = "Deposit Error - Incorrect deposit recorded for member", Value = "Deposit Error - Incorrect deposit recorded for member" },
+        new SelectListItem { Text = "Withdrawal Error - Incorrect withdrawal processed for member", Value = "Withdrawal Error - Incorrect withdrawal processed for member" },
+        new SelectListItem { Text = "Currency Mismatch - Currency used does not match member account", Value = "Currency Mismatch - Currency used does not match member account" },
+        new SelectListItem { Text = "Other - Specify reason in incident note for member operation", Value = "Other - Specify reason in incident note for member operation" }
+    };
+
+            return reasons;
         }
 
         public async Task<IEnumerable<ReversalRequest>> GetReversalRequests(GetAllReversalRequestQuery getAllReversalRequestQuery)

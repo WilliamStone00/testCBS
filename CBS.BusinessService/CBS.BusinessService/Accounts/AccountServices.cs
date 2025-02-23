@@ -451,12 +451,12 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
-        public IEnumerable<TransactionHistoryExport> GetTransactionHistoryExports(List<TransactionHistory> transactionHistories)
+        public async Task<IEnumerable<TransactionHistoryExport>> GetTransactionHistoryExports(List<TransactionHistory> transactionHistories)
         {
             try
             {
 
-                var accounts = MapTransactionHistoryToExport(transactionHistories, null);
+                var accounts = await MapTransactionHistoryToExport(transactionHistories);
                 return accounts;
             }
             catch (Exception ex)
@@ -465,45 +465,46 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
-        public List<TransactionHistoryExport> MapTransactionHistoryToExport(List<TransactionHistory> transactionHistories, Branch branch)
+        public async Task<List<TransactionHistoryExport>> MapTransactionHistoryToExport(List<TransactionHistory> transactionHistories)
         {
-            var transactionHistoryExports = new List<TransactionHistoryExport>();
+            var branches = (await _branchServices.GetBranches()).ToDictionary(b => b.Id); // Dictionary for quick lookups
 
-            foreach (var transaction in transactionHistories)
-            {
-                var transactionExport = new TransactionHistoryExport
+            return transactionHistories
+                .Select(transaction =>
                 {
-                    MemberName = transaction.Account?.CustomerName, // Assuming AccountName is from AccountNumber
-                    AccountNumber = transaction.AccountNumber,
-                    AccountType= transaction.Account?.AccountType,
-                    CustomerReference = transaction.CustomerId,
-                    Date = transaction.CreatedDate,
-                    AccountingDate = transaction.AccountingDate, // Update this as required if there's a specific accounting date
-                    Amount = transaction.Amount,
-                    Fee = transaction.Fee,
-                    Balance = transaction.Balance,
-                    NewBalance = transaction.PreviousBalance,
-                    Reference = transaction.TransactionReference,
-                    TellerName = transaction.DailyTeller?.UserName, // Assuming TellerName is from TellerId
-                    TellerBranchName = transaction?.Branch?.Name, // Assuming this is the teller's branch
-                    Note = transaction.Note,
-                    ThirdPartyName = transaction.DepositorName,
-                    Operation = transaction.Operation,
-                    WithdrawalFormCharge = transaction.WithrawalFormCharge,
-                    OperationCharge = transaction.OperationCharge,
-                    Debit = transaction.Debit,
-                    Credit = transaction.Credit,
-                    InterBranch = transaction.IsInterBrachOperation ? "Yes" : "No",
-                    BankName = branch.Bank.Name, // Assuming this is the bank Name
-                    BranchCode = branch.BranchCode,
-                    BrnachName = branch.Name, // Assuming this is the branch Name
-                    BranchTel = branch.Telephone // Assuming this is the branch telephone number
-                };
+                    branches.TryGetValue(transaction.BranchId, out var branch); // Fast lookup
 
-                transactionHistoryExports.Add(transactionExport);
-            }
-
-            return transactionHistoryExports.OrderBy(t => t.Date).ToList();
+                    return new TransactionHistoryExport
+                    {
+                        MemberName = transaction.Account?.CustomerName,
+                        AccountNumber = transaction.AccountNumber,
+                        AccountType = transaction.Account?.AccountType,
+                        CustomerReference = transaction.CustomerId,
+                        Date = transaction.CreatedDate,
+                        AccountingDate = transaction.AccountingDate,
+                        Amount = transaction.Amount,
+                        Fee = transaction.Fee,
+                        Balance = transaction.Balance,
+                        NewBalance = transaction.PreviousBalance,
+                        Reference = transaction.TransactionReference,
+                        TellerName = transaction.DailyTeller?.UserName,
+                        TellerBranchName = transaction?.Branch?.Name,
+                        Note = transaction.Note,
+                        ThirdPartyName = transaction.DepositorName,
+                        Operation = transaction.Operation,
+                        WithdrawalFormCharge = transaction.WithrawalFormCharge,
+                        OperationCharge = transaction.OperationCharge,
+                        Debit = transaction.Debit,
+                        Credit = transaction.Credit,
+                        InterBranch = transaction.IsInterBrachOperation ? "Yes" : "No",
+                        BankName = branch?.Bank?.Name ?? "Unknown Bank",
+                        BranchCode = branch?.BranchCode ?? transaction?.Branch?.BranchCode,
+                        BrnachName = branch?.Name ?? transaction?.Branch?.Name,
+                        BranchTel = branch?.Telephone ?? transaction?.Branch?.Telephone
+                    };
+                })
+                .OrderBy(t => t.Date) // Sort at the end
+                .ToList();
         }
 
 
@@ -1312,7 +1313,49 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> Delete(string id)
+        {
+            try
+            {
+                var inResponse = await _transactionApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.Delete_Account, id));
+                if (inResponse.IsSuccess)
+                {
 
+                    GetExecutionMessages(inResponse, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
+                    return ExecutionMessage;
+
+                }
+                else
+                {
+                    // Handle failure scenario
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+            }
+            return ExecutionMessage;
+        }
+        public async Task<CustomerAccount> GetAccount(string id)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<CustomerAccount>>(string.Format(APICallHelper.GetAccount, id));
+                if (cusResponseObject.ApiResponseData != null)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return new CustomerAccount();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
         public async Task<Account> GetAccountByAccountNumber(string accountNumber)
         {
             try

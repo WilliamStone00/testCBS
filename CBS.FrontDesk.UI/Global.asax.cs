@@ -74,6 +74,42 @@ namespace CBS.FrontDesk.UI
                 Response.Cookies[cookieKey].SameSite = SameSiteMode.Strict; // Prevents CSRF attacks
             }
         }
+        protected void Application_AuthenticateRequest(Object sender, EventArgs e)
+        {
+            HttpCookie authCookie = Context.Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (authCookie != null)
+            {
+                FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
+                if (ticket.Expiration < DateTime.Now)
+                {
+                    FormsAuthentication.SignOut();
+                    Response.Redirect(FormsAuthentication.LoginUrl);
+                }
+            }
+        }
+        //protected void Application_Error(object sender, EventArgs e)
+        //{
+        //    var exception = Server.GetLastError();
+        //    Response.Clear();
+
+        //    // Log the exception (optional)
+        //    // Log.Error(exception);
+
+        //    // Display detailed error for local machine only (ensure it's not exposed in production)
+        //    if (HttpContext.Current.IsDebuggingEnabled)
+        //    {
+        //        // Show the error page in debug mode (locally)
+        //        Response.Write("<h2>Error Occurred</h2>");
+        //        Response.Write("<pre>" + exception.ToString() + "</pre>");
+        //        Server.ClearError();
+        //    }
+        //    else
+        //    {
+        //        // Redirect to custom error page in production
+        //        Server.ClearError();
+        //        Response.Redirect("~/Error");
+        //    }
+        //}
 
         protected void Application_Error(object sender, EventArgs e)
         {

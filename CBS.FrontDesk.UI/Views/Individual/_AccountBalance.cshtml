@@ -10,7 +10,7 @@
     }
 }
 <style>
-   /* .card {
+    /* .card {
         border-radius: 10px;
         border: none;
     }*/
@@ -38,139 +38,124 @@
     }
 </style>
 
-<div class="card-body">
-
-    <div class="col-lg-12 mb-3">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Account Balance</h5>
-            </div>
-            <div class="card-body">
-                <div class="row gy-4">
-                    <div class="balance-info text-center">
-                        <h1 class="display-4 text-success mb-1">@balance.ToString("#,##0.0 XAF")</h1>
-                        <p class="text-muted">
-                            @if (Model.CustomerList.MembershipApprovalStatus != "Approved")
+<div class="col-lg-12 mb-3">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Account Balance</h5>
+        </div>
+        <div class="card-body">
+            <div class="row gy-4">
+                <div class="balance-info text-center">
+                    <h1 class="display-4 text-success mb-1">@balance.ToString("#,##0.0 XAF")</h1>
+                    <p class="text-muted">
+                        @if (Model.CustomerList.MembershipApprovalStatus != "Approved")
+                        {
+                            <span class="badge bg-danger">Await Membership Approval</span>
+                        }
+                        else
+                        {
+                            if (balance >= 0)
                             {
-                                <span class="badge bg-danger">Await Membership Approval</span>
+                                <span class="badge bg-success">In Good Standing</span>
                             }
                             else
                             {
-                                if (balance >= 0)
-                                {
-                                    <span class="badge bg-success">In Good Standing</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-danger">Overdrawn</span>
-                                }
+                                <span class="badge bg-danger">Overdrawn</span>
                             }
-                        </p>
-                        <p class="text-muted mt-2 mb-0">
-                            <small>
-                                @if (status) // Assuming "status" represents a display condition for the total balance message
-                                {
-                                    <em>Total account balance as of today.</em>
-                                }
-                            </small>
-                        </p>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-   
-
-    <!-- Customer Accounts Section -->
-    @if (Model.CustomerAccounts != null && Model.CustomerAccounts.Any())
-    {
-        <div class="col-lg-12 mb-3">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Accounts Overview</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row gy-4">
-                        @foreach (var account in Model.CustomerAccounts)
-                        {
-                            <div class="col-lg-6 col-md-6 col-sm-12">
-                                <div class="card shadow-sm">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between">
-                                            <div class="account-details">
-                                                <h6 class="mb-1">Balance: <span class="text-success">@account.balance.ToString("#,##0.00")</span></h6>
-                                                <small>Account Name: <b>@account.product.Name</b></small><br />
-                                                <small>Account Number: <b>@account.accountNumber</b></small><br />
-                                            </div>
-                                            <div class="action-links">
-                                                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#accountDetailModal" onclick="loadAccountDetails('@account.id')">
-                                                    <i class="mdi mdi-information me-1"></i> Detail
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         }
-                    </div>
+                    </p>
+                    <p class="text-muted mt-2 mb-0">
+                        <small>
+                            @if (status) // Assuming "status" represents a display condition for the total balance message
+                            {
+                                <em>Total account balance as of today.</em>
+                            }
+                        </small>
+                    </p>
                 </div>
-            </div>
-        </div>
-    }
-    else
-    {
-        <!-- No Accounts Alert -->
-        <div class="col-lg-12 mb-3">
-            <div class="alert alert-warning text-center" role="alert">
-                <h5 class="alert-heading"><i class="mdi mdi-alert"></i> No Accounts Found</h5>
-                <p>@Model.CustomerList.name does not have any accounts associated with his/her profile.</p>
-                <hr>
-                <p class="mb-0">Please add new accounts to start managing financial transactions.</p>
-            </div>
-        </div>
-    }
-
-   
 
 
-    <!-- Add New Customer Account Section -->
-    <div class="col-lg-12 mb-3">
-        <div class="card card-action shadow-sm">
-            <div class="card-body">
-                @Html.Partial("_AddCustomerAccount")
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Profile Section -->
-    <div class="col-lg-12 mb-3">
-        <div class="card card-action shadow-sm">
-            <div class="card-body">
-                @Html.Partial("_DeleteProfile")
             </div>
         </div>
     </div>
 </div>
 
-<!-- Account Details Modal (ensure you include this modal code) -->
-<div class="modal fade" id="accountDetailsModal" tabindex="-1" aria-labelledby="accountDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="accountDetailsModalLabel">Account Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+@if (Model.CustomerAccounts != null && Model.CustomerAccounts.Any())
+{
+    <div class="col-lg-12 mb-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Accounts Overview</h5>
             </div>
-            <div class="modal-body">
-                <div id="modalContent">
-                    <p class="text-center">Loading details...</p>
+            <div class="card-body">
+                <div class="row gy-4">
+                    @foreach (var account in Model.CustomerAccounts)
+                    {
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="card shadow-sm">
+                                <div class="card-body pb-2">
+                                    <!-- Reduced bottom padding -->
+                                    <div class="account-details">
+                                        <h6 class="mb-1">
+                                            Balance: <span class="text-success">@account.balance.ToString("#,##0.00")</span>
+                                        </h6>
+                                        <small>Account Name: <b>@account.product.Name</b></small><br />
+                                        <small>Account Number: <b>@account.accountNumber</b></small><br />
+                                    </div>
+                                </div>
+                                <!-- Slimmer Card Footer -->
+                                <div class="card-footer py-2 bg-light d-flex justify-content-end gap-2">
+                                    <button class="btn btn-outline-secondary btn-sm px-2 py-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#accountDetailModal"
+                                            onclick="loadAccountDetails('@account.id')">
+                                        <i class="mdi mdi-information"></i> Detail
+                                    </button>
+                                    <button class="btn btn-danger btn-sm px-2 py-1"
+                                            onclick="removeAccount('@account.id','@account.accountNumber','@account.accountName','@account.balance')">
+                                        <i class="mdi mdi-trash-can"></i> Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!-- No Accounts Alert -->
+    <div class="col-lg-12 mb-3">
+        <div class="alert alert-warning text-center" role="alert">
+            <h5 class="alert-heading"><i class="mdi mdi-alert"></i> No Accounts Found</h5>
+            <p>@Model.CustomerList.name does not have any accounts associated with his/her profile.</p>
+            <hr>
+            <p class="mb-0">Please add new accounts to start managing financial transactions.</p>
+        </div>
+    </div>
+}
+
+
+
+
+
+<!-- Add New Customer Account Section -->
+<div class="col-lg-12 mb-3">
+    <div class="card card-action shadow-sm">
+        <div class="card-body">
+            @Html.Partial("_AddCustomerAccount")
+        </div>
+    </div>
+</div>
+
+<!-- Delete Profile Section -->
+<div class="col-lg-12 mb-3">
+    <div class="card card-action shadow-sm">
+        <div class="card-body">
+            @Html.Partial("_DeleteProfile")
         </div>
     </div>
 </div>
@@ -179,16 +164,66 @@
     // Function to load account details into the modal
     function loadAccountDetails(accountId) {
         $.ajax({
-            url: '@Url.Action("GetAccountDetails", "Individual")', // Ensure this controller action is implemented
+            url: '/Individual/AccountDetails',
             type: 'GET',
-            data: { id: accountId },
+            data: { accountid: accountId },
+            beforeSend: function () {
+                $("#accountDetailContent").html("<p class='text-center'>Loading account details...</p>");
+            },
             success: function (response) {
-                $('#modalContent').html(response);
+                if (response.trim()) { // Ensure the response is not empty
+                    $("#accountDetailContent").html(response);
+                    $("#accountDetailModal").modal("show"); // Show the modal only when content is ready
+                } else {
+                    alert("No account details found.");
+                }
             },
             error: function () {
-                $('#modalContent').html('<p class="text-danger">Failed to load account details.</p>');
+                alert("Failed to load account details.");
             }
         });
     }
+
+
+
+    function removeAccount(accountId, accountNumber, accountName, balance) {
+        // Format balance with thousand separators and append "FCFA"
+        const formattedBalance = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2 }).format(balance) + " FCFA";
+
+        alertify.confirm(
+            "ACCOUNT REMOVAL WARNING!!!",
+            `Are you sure you want to remove this account? <br><br>
+        <b>Account Number:</b> ${accountNumber} <br>
+        <b>Account Name:</b> ${accountName} <br>
+        <b>Balance:</b> ${formattedBalance} <br><br>
+        <span style="color:red;">This action cannot be undone!</span>`,
+
+            function () { // If user confirms
+                $.ajax({
+                    type: "GET",
+                    url: `/Individual/RemoveAccount?id=${accountId}`,
+                    success: function (response) {
+                        if (response.success) {
+                            appalert(response.message, 1, 1);
+                            location.reload(); // Reload the page on success
+                        } else {
+                            appalert(response.message, 3, 1);
+                        }
+                    },
+                    error: function (err) {
+                        appalert(err.statusText, 3, 1);
+                    }
+                });
+            },
+
+            function () { // If user cancels
+                appalert('Transaction cancelled', 3, 1);
+            }
+        );
+    }
+
+
+
+
 </script>
 

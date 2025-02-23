@@ -23,8 +23,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             _services = services;
         }
         //Validation
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
+    
             return View();
         }
         //InitiatedPendingRequest
@@ -86,6 +87,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         }
         public async Task<ActionResult> RequestReversalForm()
         {
+            var reasons = _services.GetReasons();
+            ViewBag.Reasons = reasons;
             return View(new TransactionReversal());
         }
         [HttpPost]

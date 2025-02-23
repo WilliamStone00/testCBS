@@ -8,6 +8,7 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping
     public class Group
     {
         public string GroupId { get; set; }
+        public string CustomerType { get; set; }
         public string GroupName { get; set; }
         public string GroupLeaderId { get; set; }
         public string GroupTypeId { get; set; }

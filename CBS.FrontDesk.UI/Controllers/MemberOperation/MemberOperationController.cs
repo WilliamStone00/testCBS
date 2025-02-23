@@ -22,6 +22,7 @@ using DocumentFormat.OpenXml.Bibliography;
 using Microsoft.Owin.Logging;
 using System.Net;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using CBS.FrontDesk.Data.Entity.CashCeilingManagement;
 
 namespace CBS.FrontDesk.UI.Controllers.MemberOperation
 {
@@ -189,7 +190,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         var data = await _loanservices.GetPendingDisbursementLoans();
                         return PartialView(partialView, new MemberOperationPanel { Loans = data.ToList() });
                     }
-                    else if (path == "application_detail")
+                    else if (path == "application_detail" || path == "loan_approval")
                     {
                         ViewBag.Value = "0";
                         ViewBag.KEY = null;
@@ -200,8 +201,15 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         ViewBag.LoanProductCollaterals = await _loanProductCollateralServices.GetLoanProductCollaterals(loanApplication.LoanProduct.Id);
                         ViewBag.DocumentTypes = await _documentServices.GetDocumentDropDown();
                         var documentAttachedToLoans = loanApplication.DocumentAttachedToLoans;
+                        string defaultComment = $"Loan Rejected By {Session["FullName"].ToString()}. Dated: {DateTime.Now}";
+                        string defaultStatus = ApprovalStatus.Rejected.ToString();
+                        if (path=="loan_approval")
+                        {
+                            defaultComment=$"Loan {ApprovalStatus.Approved.ToString()} By {Session["FullName"].ToString()}. Dated: {DateTime.Now}";
+                            defaultStatus = ApprovalStatus.Approved.ToString();
+                        }
                         var attachedDoc = new DocumentAttachedToLoan { LoanApplicationId = loanApplication.Id };
-                        return PartialView(partialView, new MemberOperationPanel { DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id, OTPCode="0000", ApprovalStatus="Rejected", ApprovalComment=$"Loan Rejected By {Session["FullName"].ToString()}. Dated: {DateTime.Now}"} });
+                        return PartialView(partialView, new MemberOperationPanel { DocumentAttachedToLoans = documentAttachedToLoans.ToList(), DocumentAttachedToLoan = attachedDoc, LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id, OTPCode="0000", ApprovalStatus=defaultStatus, ApprovalComment=defaultComment } });
                     }
                     else if (path == "upload_document")
                     {

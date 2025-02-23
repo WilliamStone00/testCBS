@@ -27,7 +27,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
         public async Task<ActionResult> Index()
         {
-            ViewBag.Products = await _loanProductServices.GetLoanProducts();
+            ViewBag.Products = await _loanProductServices.GetStringValuesAsync();
             ViewBag.Collaterals = await _collateralServices.GetCollaterals();
             return View();
         }
@@ -68,13 +68,13 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
             else if (path == "new")
             {
-                ViewBag.Products = await _loanProductServices.GetLoanProducts();
+                ViewBag.Products = await _loanProductServices.GetStringValuesAsync();
                 ViewBag.Collaterals = await _collateralServices.GetCollaterals();
                 return PartialView(partialView, new LoanProductCollateral());
             }
             else
             {
-                ViewBag.Products = await _loanProductServices.GetLoanProducts();
+                ViewBag.Products = await _loanProductServices.GetStringValuesAsync();
                 ViewBag.Collaterals = await _collateralServices.GetCollaterals();
                 ViewBag.Key = KEY;
                 var LoanProductCollateral = await _LoanProductCollateralServices.GetLoanProductCollateral(KEY);

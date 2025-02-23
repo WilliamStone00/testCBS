@@ -57,13 +57,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-5">
-                                        <div class="form-check">
-                                            @Html.CheckBoxFor(m => m.NoneMemberAccount, new { @class = "form-check-input", id = "NoneMemberAccount" })
-                                            <label class="form-check-label" for="NoneMemberAccount">None Member Account</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7">
+                                    <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.Matricule, new { @class = "form-control", @placeholder = "1234" })
                                             @Html.ValidationMessageFor(m => m.Matricule, "", new { @class = "text-danger" })
@@ -71,27 +65,24 @@
                                         </div>
                                     </div>
 
-                                    <div id="radioButtonsContainer" style="display: none;">
-                                        <!-- Flex container -->
-                                        <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
-                                            <div class="form-check">
-                                                @Html.RadioButtonFor(m => m.CustomerType, "MobileMoneyMTN", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyMTN" })
-                                                <label class="form-check-label shadow-input-boxes" for="MobileMoneyMTN">MTN Collective Account</label>
-                                            </div>
-                                            <div class="form-check">
-                                                @Html.RadioButtonFor(m => m.CustomerType, "MobileMoneyOrange", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyOrange" })
-                                                <label class="form-check-label shadow-input-boxes" for="MobileMoneyOrange">Orange Collective Account</label>
-                                            </div>
-                                            <div class="form-check">
-                                                @Html.RadioButtonFor(m => m.CustomerType, "DailyCollection", new { @class = "form-check-input shadow-input-boxes", id = "DailyCollection" })
-                                                <label class="form-check-label shadow-input-boxes" for="DailyCollection">Daily Collection Account</label>
-                                            </div>
-                                            <div class="form-check">
-                                                @Html.RadioButtonFor(m => m.CustomerType, "Remittance", new { @class = "form-check-input shadow-input-boxes", id = "Remittance" })
-                                                <label class="form-check-label shadow-input-boxes" for="Remittance">Remittance Collective Account</label>
-                                            </div>
-                                        </div>
+                                    <div class="mb-3">
+                                        <label for="CustomerType" class="form-label">Select Member Account Type</label>
+                                        @Html.DropDownListFor(m => m.CustomerType,
+                                            new List<SelectListItem>
+                                            {
+                                                new SelectListItem { Value = "MemberAccount", Text = "Regular member account", Selected = true },
+                                                new SelectListItem { Value = "AffiliateMemberSalaryAccount", Text = "Salary account for members associated to other affiliates" },
+                                                new SelectListItem { Value = "UnknownSalaryMemberAccount", Text = "Salary account for none regularized members" },
+                                                new SelectListItem { Value = "DailyCollection", Text = "Daily servers account" },
+                                                new SelectListItem { Value = "MobileMoneyMTN", Text = "MTN money collective account for none regularized members" },
+                                                new SelectListItem { Value = "MobileMoneyOrange", Text = "Orange money collective account for none regularized members" },
+                                                new SelectListItem { Value = "Remittance", Text = "Remittance collective account for none regularized members" }
+                                            },
+                                            new { @class = "form-select shadow-input-boxes", id = "CustomerType" }
+                                        )
                                     </div>
+
+
                                     <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
                                             @Html.DropDownListFor(m => m.Gender, new SelectList(ViewBag.genders, "Text", "Value"), "---Select gender---", new { @class = "form-control select2", @search = "true" })
@@ -486,7 +477,7 @@
 
 
 
-<script>
+@*<script>
     document.addEventListener('DOMContentLoaded', function () {
         // Get the checkbox and the container
         const noneMemberAccountCheckbox = document.getElementById('NoneMemberAccount');
@@ -521,5 +512,5 @@
             });
         });
     });
-</script>
+</script>*@
 

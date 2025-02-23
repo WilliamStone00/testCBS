@@ -34,6 +34,10 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             return View();
         }
+        public ActionResult LoanRepaymentSimulation()
+        {
+            return View();
+        }
         public ActionResult MomocashCollection()
         {
             return View();
@@ -42,6 +46,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             return View();
         }
+        
         public async Task<ActionResult> OtherCashTransactions()
         {
             ViewBag.Operation = "income_expense";
@@ -116,7 +121,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
 
                 }
-                else if (path == "cashin" || path == "cashout" || path == "cashoutsws" || path == "repayment" || path == "withdrawalnotification" || path== "loanapplicationfeepayment")
+                else if (path == "cashin" ||path=="repayment"|| path == "cashout" || path == "cashoutsws" || path == "repayment" || path == "withdrawalnotification" || path== "loanapplicationfeepayment")
                 {
                     if (KEY == null || KEY == "")
                     {

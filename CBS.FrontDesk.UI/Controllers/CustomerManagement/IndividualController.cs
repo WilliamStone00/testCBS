@@ -30,14 +30,16 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
     {
         // GET: Individual
         private readonly IndividualProfileServices _individualProfileServices;
+        private readonly AccountServices _accountServices;
         private readonly MemberAccountActivationServices _memberAccountActivationServices;
         private readonly BranchServices _branchServices;
 
-        public IndividualController(IndividualProfileServices individualProfileServices, MemberAccountActivationServices memberAccountActivationServices = null, BranchServices branchServices = null)
+        public IndividualController(IndividualProfileServices individualProfileServices, MemberAccountActivationServices memberAccountActivationServices = null, BranchServices branchServices = null, AccountServices accountServices = null)
         {
             _individualProfileServices = individualProfileServices;
             _memberAccountActivationServices = memberAccountActivationServices;
             _branchServices = branchServices;
+            _accountServices=accountServices;
         }
         public async Task<ActionResult> List()
         {
@@ -405,7 +407,18 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             var data = await _individualProfileServices.Delete(id);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
+        
+        public async Task<ActionResult> RemoveAccount(string id)
+        {
+            var data = await _accountServices.Delete(id);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+        }
 
+        public async Task<ActionResult> AccountDetails(string accountid)
+        {
+            var customerAccount = await _accountServices.GetAccount(accountid);
+            return PartialView("_AccountDetails", new IndividualCustomerProfile { CustomerAccount=customerAccount });
+        }
 
     }
 }

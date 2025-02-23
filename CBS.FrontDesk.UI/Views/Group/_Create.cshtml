@@ -42,6 +42,17 @@
                                             <label>Group type name</label>
                                         </div>
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="CustomerType" class="form-label">Select Member Account Type</label>
+                                        @Html.DropDownListFor(m => m.CustomerType,
+                                            new List<SelectListItem>
+                                            {
+                                                new SelectListItem { Value = "MemberAccount", Text = "Normal Member Group Account", Selected = true },
+                                                new SelectListItem { Value = "SalaryCollection", Text = "Salary Collective Account" },
+                                            },
+                                            new { @class = "form-select shadow-input-boxes", id = "CustomerType" }
+                                        )
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.RegistrationNumber, new { @class = "form-control" })
