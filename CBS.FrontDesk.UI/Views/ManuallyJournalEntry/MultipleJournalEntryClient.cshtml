@@ -1,7 +1,9 @@
 ﻿
 
 @model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
-<!-- Basic  -->
+@{
+    ViewBag.Title = "Accounting Event -Listing";
+}
 <div class="row">
 
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
@@ -29,95 +31,86 @@
 
                                 <div class="table-responsive mb-3">
                                     <div class="table-responsive mb-3">
-                                        <table class="table table-hover" id="AccountingEventxxDataTable">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>RuleName</th>
-                                                    <th>Level of Execution</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @if (Convert.ToBoolean(Session["IsHeadOffice"]))
-                                                {
-                                                    foreach (var d in Model.AccountingEventRules)
+                                        <div id="datalistingview_MultipleEntryClient">
+                                            <table class="table table-hover" id="AccountingEventxxDataTable">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>RuleName</th>
+                                                        <th>Level of Execution</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (Convert.ToBoolean(Session["IsHeadOffice"]))
                                                     {
-                                                        <tr class="align-middle">
-                                                            <td id="@d.Id-RuleName" class="w-60 text-start">@d.EventName</td>
-                                                            <td class="w-15 text-center">
-                                                                <span class="badge bg-dark fs-6 d-inline-flex align-items-center gap-1">
-                                                                    <i class="fas fa-money-bill-wave"></i>
-                                                                    <span>HEAD OFFICE</span>
-                                                                    <i class="fas fa-money-bill-wave"></i>
-                                                                </span>
-                                                            </td>
-                                                            <td class="w-25 text-end">
-                                                                <div class="d-flex justify-content-end gap-2">
-                                                                    @*<a href="#"
-           onclick="LoadAccountingEventEntrySystemId('@d.Id','exLargeModal')"
-           class="btn btn-sm btn-primary d-inline-flex align-items-center"
-           data-bs-toggle="modal"
-           data-bs-target="#exLargeModal"
-           title="">
-            <i class="fas fa-play me-1"></i>
-            <span>Execute</span>
-        </a>*@
-                                                                    <a href="/ManuallyJournalEntry/ExecuteAutomatedEntry?Key=@d.Id"
-                                                                       class="btn btn-sm btn-primary d-inline-flex align-items-center"
-                                                                       target="_blank"
-                                                                       title="Execute @d.EventName">
-                                                                        <i class="fas fa-play me-1"></i>
-                                                                        <span>Execute</span>
-                                                                    </a>
+                                                        foreach (var d in Model.AccountingEventRules)
+                                                        {
+                                                            <tr class="align-middle">
+                                                                <td id="@d.Id-RuleName" class="w-60 text-start">@d.EventName</td>
+                                                                <td class="w-15 text-center">
+                                                                    <span class="badge bg-dark-subtle fs-6 d-inline-flex align-items-center gap-1">
+                                                                        <i class="fas fa-money-bill-wave"></i>
+                                                                        <span>@d.LevelOfExecution</span>
+                                                                        <i class="fas fa-money-bill-wave"></i>
+                                                                    </span>
+                                                                </td>
+                                                                <td class="w-25 text-end">
+                                                                    <div class="d-flex justify-content-end gap-2">
 
-                                                                    <a href="/ManuallyJournalEntry/EventEntrySystemInfo?Key=@d.Id"
-                                                                       class="btn btn-sm btn-secondary d-inline-flex align-items-center"
-                                                                       target="_blank"
-                                                                       title="Edit @d.EventName">
-                                                                        <i class="fas fa-edit me-1"></i>
-                                                                        <span>Edit</span>
-                                                                    </a>
+                                                                        <a href="/ManuallyJournalEntry/ExecuteAutomatedEntry?Key=@d.Id"
+                                                                           class="btn btn-sm btn-primary d-inline-flex align-items-center"
+                                                                           target="_blank"
+                                                                           title="Execute @d.EventName">
+                                                                            <i class="fas fa-play me-1"></i>
+                                                                            <span>Execute</span>
+                                                                        </a>
 
-                                                                    <a href="#"
-                                                                       onclick="DeleteAccountingEventEntrySystemId('@d.Id','exLargeModal')"
-                                                                       class="btn btn-sm btn-danger d-inline-flex align-items-center"
-                                                                       data-bs-toggle="modal"
-                                                                       data-bs-target="#exLargeModal"
-                                                                       title="Delete @d.EventName">
-                                                                        <i class="fas fa-trash me-1"></i>
-                                                                        <span>Delete</span>
-                                                                    </a>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
+                                                                        <a href="/ManuallyJournalEntry/EventEntrySystemInfo?Key=@d.Id"
+                                                                           class="btn btn-sm btn-secondary d-inline-flex align-items-center"
+                                                                           target="_blank"
+                                                                           title="Edit @d.EventName">
+                                                                            <i class="fas fa-edit me-1"></i>
+                                                                            <span>Edit</span>
+                                                                        </a>
+                                                                        <a href="/ManuallyJournalEntry/GetAccountingEventToDelete?Key=@d.Id"
+                                                                           class="btn btn-sm btn-danger d-inline-flex align-items-center"
+                                                                           target="_blank"
+                                                                           title="Execute @d.EventName">
+                                                               
+                                                                            <i class="fas fa-trash me-1"></i>
+                                                                            <span>Delete</span>
+                                                                        </a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        }
                                                     }
-                                                }
-                                                else
-                                                {
-                                                    foreach (var d in Model.AccountingEventRules)
+                                                    else
                                                     {
-                                                        <tr>
-                                                            <td id="@d.Id-RuleName" style="width:75%">@d.EventName</td>
-                                                            <td style="width:25%">
-                                                                <a href="#"
-                                                                   onclick="LoadAccountingEventEntrySystemId('@d.Id','exLargeModal')"
-                                                                   class="btn btn-primary btn-sm d-inline-flex align-items-center"
-                                                                   data-bs-toggle="modal"
-                                                                   data-bs-target="#exLargeModal"
-                                                                   title="Execute @d.EventName">
-                                                                    <i class="fas fa-play me-1"></i>
-                                                                    <span>Execute Journal Entry</span>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
+                                                        foreach (var d in Model.AccountingEventRules)
+                                                        {
+                                                            <tr>
+                                                                <td id="@d.Id-RuleName" style="width:75%">@d.EventName</td>
+                                                                <td style="width:25%">
+                                                                    <div class="d-flex justify-content-end gap-2">
+
+                                                                        <a href="/ManuallyJournalEntry/ExecuteAutomatedEntry?Key=@d.Id"
+                                                                           class="btn btn-sm btn-primary d-inline-flex align-items-center"
+                                                                           target="_blank"
+                                                                           title="Execute @d.EventName">
+                                                                            <i class="fas fa-play me-1"></i>
+                                                                            <span>Execute</span>
+                                                                        </a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        }
                                                     }
-                                                }
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-
-                                @Html.Partial("_MultipleJournalEntryClient")
                             </div>
                         </div>
                     </div>

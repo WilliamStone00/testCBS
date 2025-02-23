@@ -1,6 +1,14 @@
 ﻿$(document).ready(function () {
+    $('#AccountingEvent').hide();
     var apiUrl = "/ManuallyJournalEntry/GetAccountMFIChartOfAccount";
+    var chainValue = $('#AccountingEventRule_IsChainEntry option:selected').text();
+    console.log(chainValue);
+    if (chainValue == "Not Chain Entry") {
 
+        $('#AccountingEvent').hide();
+    } else {
+        $('#AccountingEvent').show();
+    }
     // Function to fetch Chart of Accounts dynamically
     function fetchChartOfAccounts(callback) {
         $.ajax({
@@ -25,9 +33,16 @@
     }
 
     var bookingDirectionOptions = `
-        <option value="Credit">Credit</option>
-        <option value="Debit">Debit</option>
+        <option value="DEBIT">DEBIT</option>
+        <option value="CREDIT">CREDIT</option>
     `;
+
+    $(document).on('change', '#AccountingEventRule_AccountingEventRuleId', function () {
+        // Get the selected value AccountNumber
+        var selectedValue = $(this).val();
+     
+
+    });
 
     // Event listener for editing cells (handles new and existing rows)
     $("#AccountingRulebasketTable tbody").on("click", "td", function () {
@@ -95,7 +110,20 @@
             }
         });
     }
+    $(document).on('change', '#AccountingEventRule_IsChainEntry', function () {
 
+
+        // Get the selected value
+        var selectedValue = $(this).val();
+        console.log(selectedValue);
+
+        if (selectedValue == "True") {
+            $('#AccountingEvent').show();
+        } else {
+            $('#AccountingEvent').hide();
+        }
+
+    });
     // Function to add new entry dynamically
     $("#addEntry").on("click", function () {
         fetchChartOfAccounts(function (chartOfAccountOptions) {
@@ -121,16 +149,98 @@
     });
 });
 
+//function saveForm() {
+//    // Confirm before proceeding
+//    if (!confirm("TRUSTSOFTCREDIT-"+$("#AccountingEventRule_EventName").val() +"\nAre you sure you want to save the form data?")) {
+//        return; // Exit function if user cancels
+//    }
+
+//    var formData = {
+//        ServiceOption: $("#ServiceOptionn").val(),
+//        AccountingEventRule: {
+//            Id: $("#AccountingEventRule_Id").val(),
+//            EventName: $("#AccountingEventRule_EventName").val(),
+//            IsDoubleValidationNeeded: $("#AccountingEventRule_IsDoubleValidationNeeded").val(),
+//            ListOfEligibleBranchId: $("#AccountingEventRule_ListOfEligibleBranchId").val(),
+//            EntryType: $("#AccountingEventRule_EntryType").val(),
+//            AccountingEventRuleId: $("#AccountingEventRule_AccountingEventRuleId").val(),
+//            IsChainEntry: $("#AccountingEventRule_IsChainEntry").val(),
+//            Description: $("#AccountingEventRule_Description").val(),
+//            LevelOfExecution: $("#AccountingEventRule_LevelOfExecution").val(),
+//            AccountingRules: []
+//        }
+//    };
+
+//    // Collect data from the table
+//    $("#AccountingRulebasketTable tbody tr").each(function () {
+//        var $row = $(this);
+//        var chartOfAccountId = $row.find("td:eq(0)").data("id") || $row.find("td:eq(0)").text().trim();
+//        var bookingDirection = $row.find("td:eq(1)").text().trim();
+
+//        if (chartOfAccountId) { // Ensure valid data is collected
+//            formData.AccountingEventRule.AccountingRules.push({
+//                MFI_ChartOfAccountId: chartOfAccountId,
+//                BookingDirection: bookingDirection
+//            });
+//        }
+//    });
+
+//    console.log("Submitting Form Data: ", formData); // Debugging output
+
+//    // Send data to the server
+//    $.ajax({
+//        url: "/ManuallyJournalEntry/UpdateAccountingRule",
+//        type: "POST",
+//        contentType: "application/json",
+//        data: JSON.stringify(formData),
+//        beforeSend: function () {
+//            $("#saveButton").prop("disabled", true).text("Saving...");
+//        },
+//        success: function (response) {
+//            appalert("Accounting Rule Saved Successfully!", 1, 1);
+//            console.log("Save Success:", response);
+//        },
+//        error: function (xhr) {
+//            alert("Failed to save. Please try again.");
+//            console.error("Save Error:", xhr.responseText);
+//        },
+//        complete: function () {
+//            $("#saveButton").prop("disabled", false).text("Save");
+//        }
+//    });
+//}
+
 function saveForm() {
+    let description = $("#AccountingEventRule_Description").val();
+    let levelOfExecution = $("#AccountingEventRule_LevelOfExecution").val();
+    let isChainEntry = $("#AccountingEventRule_IsChainEntry").val();
+    let accountingEventRuleId = $("#AccountingEventRule_AccountingEventRuleId").val();
+    alert(accountingEventRuleId);
+    alertify.confirm(
+        "T R U S T S O F T C R E D I T ", // Title
+        "Are you sure you want to save this form?", // Message
+        function () {
+            proceedWithSave(description, levelOfExecution, isChainEntry === "True", accountingEventRuleId); // If confirmed, proceed
+        },
+        function () {
+            alertify.error("Submission Cancelled"); // If cancelled
+        }
+    ).set({ labels: { ok: "Save", cancel: "Cancel" } });
+}
+
+function proceedWithSave(descrip, levelOfExecution, isChainEntry, accountingEventRuleId) {
     var formData = {
         ServiceOption: $("#ServiceOptionn").val(),
         AccountingEventRule: {
             Id: $("#AccountingEventRule_Id").val(),
             EventName: $("#AccountingEventRule_EventName").val(),
-            IsDoubleValidationNeeded: $("#AccountingRule_IsValidationNeed").val(),
-            ListOfEligibleBranchId: $("#ListOfEligibleBranchId").val(),
-            EntryType: $("#EntryType").val(),
-            LevelOfExecution: $("#LevelOfExecution").val(),
+            IsDoubleValidationNeeded: $("#AccountingEventRule_IsDoubleValidationNeeded").val(),
+            ListOfEligibleBranchId: $("#AccountingEventRule_ListOfEligibleBranchId").val(),
+            EntryType: $("#AccountingEventRule_EntryType").val(),
+            AccountingEventRuleId: accountingEventRuleId,//$("#AccountingEventRule_AccountingEventRuleId").val(),
+            IsChainEntry: isChainEntry,// $("#AccountingEventRule_IsChainEntry").val(),
+            Description: descrip,// $("#AccountingEventRule_Description").text(),
+            LevelOfExecution: levelOfExecution,// $("#AccountingEventRule_LevelOfExecution").val(),
             AccountingRules: []
         }
     };
@@ -151,7 +261,7 @@ function saveForm() {
 
     console.log("Submitting Form Data: ", formData); // Debugging output
 
-    // Send data to the server
+    // Send data to the server AccountingEventRule_AccountingEventRuleId
     $.ajax({
         url: "/ManuallyJournalEntry/UpdateAccountingRule",
         type: "POST",
@@ -161,15 +271,63 @@ function saveForm() {
             $("#saveButton").prop("disabled", true).text("Saving...");
         },
         success: function (response) {
-            appalert("Accounting Rule Saved Successfully!",1,1);
-            console.log("Save Success:", response);
+            console.log("ResponseData: ", response); // Debugging output
+            if (response.success) {
+                appalert(response.message, 1, 1);
+                console.log("Save Success:", response);
+                // Optional: Reset form fields without reloading
+                $("#ServiceOptionn").val("");
+                $("#AccountingEventRule_Id").val("");
+                $("#AccountingRulebasketTable tbody").empty();
+            } else {
+                appalert(response.message, 2, 1);
+                
+            }
+          
+
+            
         },
         error: function (xhr) {
-            alert("Failed to save. Please try again.");
+            alertify.error("Failed to save. Please try again.");
+            appalert("Save Error:" +xhr.responseText, 3, 1);
             console.error("Save Error:", xhr.responseText);
         },
         complete: function () {
             $("#saveButton").prop("disabled", false).text("Save");
         }
     });
+}
+
+ 
+
+function DeleteAutomatedEntryData(controller, KEY) {
+
+    alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
+        function () {
+            var url = "/" + controller + "/DeleteAccountingRule?KEY=" + KEY;
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (response) {
+                    console.log(response.success);
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        window.location.href = '/ManuallyJournalEntry/MultipleJournalEntryClient';
+                    }
+                    else {
+                        appalert(response.message, 3, 1);
+                    }
+
+                }, error: function (err) {
+
+                    appalert(err.statusText, 3, 1);
+                }
+            });
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
+
+        });
+
+
 }

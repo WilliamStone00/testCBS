@@ -133,11 +133,7 @@ namespace CBS.BusinessService.Accounting
             try
             {
 
-                var OperationEvent = await GetAccountingRuleById(model.Id);
-                if (OperationEvent != null)
-                {
-                   
-                    OperationEvent.Id = model.Id;
+
                 
                     var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<FrontDesk.Data.Entity.Accounting.AccountingEventRule>>(string.Format(APICallHelper.Get_Update_Delete_AccountingRule, model.Id), model);
                     if (response.IsSuccess)
@@ -153,8 +149,7 @@ namespace CBS.BusinessService.Accounting
                         GetExecutionMessages(model, false, (string)model.EventName +"failed to be updated" , MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
-                }
-
+               
             }
             catch (Exception ex)
             {

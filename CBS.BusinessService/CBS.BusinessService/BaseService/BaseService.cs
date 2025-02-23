@@ -1670,6 +1670,7 @@ namespace BusinessServices
             if (HttpContext.Current.Session["BranchID"]!=null)
             {
                 str = HttpContext.Current.Session["BranchID"].ToString();
+                //str = str == "1" ? "DEFAULTID" : str;
             }
       
             return str;

@@ -2,8 +2,10 @@
 let tableJE;
 
 $(document).ready(function () {
-    LoadAccountingRuleDataSetDT("AccountingEventxxDataTable")
+    LoadAccountingRuleDataSetDT("AccountingEventxxDataTable");
 
+
+    $('#AccountingEvent').hide();
     tableJE = $('#AccountingRulebasketTable').DataTable({
         columns: [
           /*  { data: 'ruleName' },*/
@@ -25,10 +27,22 @@ $(document).ready(function () {
         ],
         autoWidth: false  // This is important to enforce our custom widths
     });
-
+    //
     $('#AccountingRulebasketTable tbody').on('click', 'button.removeBtn', function () {
         const data = tableJE.row($(this).parents('tr')).data();
         removeItem(data);
+    });
+    $(document).on('change', '#AccountingRule_IsChainEntry', function () {
+      
+        // Get the selected value
+        var selectedValue = $(this).val();
+        console.log(selectedValue);
+        if (selectedValue=="True") {
+            $('#AccountingEvent').show();
+        } else {
+            $('#AccountingEvent').hide();
+        }
+ 
     });
 });
 function GetSequenceReference() {
@@ -55,7 +69,10 @@ function addToBasket() {
         MFI_ChartOfAccountId: $('#AccountingRule_MFI_ChartOfAccountId option:selected').text(),
         bookingDirection: $('#AccountingRule_BookingDirection option:selected').text(),
         IsValidationNeed: $('#AccountingRule_IsValidationNeed').val(),
+        Description: $('#AccountingRule_Description').val(),
         ListOfEligibleBranchId: $('#AccountingRule_ListOfEligibleBranchId').val(),
+        IsChainEntry: $('#AccountingRule_IsChainEntry').val(),
+        AccountingEventRuleId: $('#AccountingRule_AccountingEventRuleId').val(),
         EntryType: $('#AccountingRule_EntryType').val(),
         LevelOfExecution: $('#AccountingRule_LevelOfExecution').val()
     };
@@ -81,10 +98,12 @@ function addToBasket() {
     // Update form state after adding to basket
     $('#AccountingRule_RuleName').prop('disabled', true);
     $('#AccountingRule_IsValidationNeed').prop('disabled', true);
-    $('#ListOfEligibleBranchId').prop('disabled', true);
-    $('#EntryType').prop('disabled', true);
-    $('#LevelOfExecution').prop('disabled', true);
-
+    $('#AccountingRule_ListOfEligibleBranchId').prop('disabled', true);
+    $('#AccountingRule_EntryType').prop('disabled', true);
+    $('#AccountingRule_LevelOfExecution').prop('disabled', true);
+    $('#AccountingRule_Description').prop('disabled', true);
+    $('#AccountingRule_IsChainEntry').prop('disabled', true);
+    $('#AccountingRule_AccountingEventRuleId').prop('disabled', true);
     // Update basket label and clear relevant form fields
     $('#basket_Label').text('Event: ' + item.ruleName);
     $('#AccountingRule_MFI_ChartOfAccountId').val('').change();
@@ -673,8 +692,7 @@ function submitAccountingEntries() {
     };
 
     console.log(finalData);
-
-
+ 
     // Confirmation dialog using alertify
     alertify.confirm("T R U S T S O F T C R E D I T", "Are you sure you want to this accounting entries?",
         function () {
@@ -695,6 +713,24 @@ function submitAccountingEntries() {
                             appalert(response.MessageString, 2, 1);
                         } else {
                             appalert(response.MessageString, 1, 1);
+                            // Clear form fields after successful submission
+                            $('#AccountingRule_MFI_ChartOfAccountId').val('').change();
+                            $('#AccountingRule_BookingDirection').val('').change();
+                            $('#AccountingRule_RuleName').val('');
+                            $('#AccountingRule_MFI_ChartOfAccountId option:selected').val('').change();
+                            $('#AccountingRule_BookingDirection option:selected').val('').change();
+                            $('#AccountingRule_IsValidationNeed').val('').change();
+                            $('#AccountingRule_Description').val('');
+                            $('#AccountingRule_ListOfEligibleBranchId').val('').change();
+                            $('#AccountingRule_IsChainEntry').val('').change();
+                            $('#AccountingRule_AccountingEventRuleId').val('').change();
+                            $('#AccountingRule_EntryType').val('').change();
+                            $('#AccountingRule_LevelOfExecution').val('').change();
+
+                            // Reset operation description and ReferenceId
+                            //$('#operationDescription').val('');
+                            //$('#ReferenceId').val('');
+
                         }
                     } else {
                         if (response.Result.MessageStatus === "Exist") {

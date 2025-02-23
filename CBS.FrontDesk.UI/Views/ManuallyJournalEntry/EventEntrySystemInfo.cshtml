@@ -1,6 +1,8 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
-
+@{
+    ViewBag.Title = "Accounting Event -Update";
+}
 
 <div class="card shadow-sm">
     <div class="card-header bg-primary text-white">
@@ -28,42 +30,54 @@
                                             @Html.TextBoxFor(m => m.AccountingEventRule.EventName, new { @class = "form-control", @placeholder = "Enter Event Name" })
                                         </div>
                                         @Html.ValidationMessageFor(m => m.AccountingEventRule.EventName, "", new { @class = "text-danger" })
-                                        @*<label class="form-label">Event Name</label>*@
+
                                     </div>
 
-                                    <div class="form-floating form-floating-outline mb-3">
+                                    <div class="col-md-12 form-floating form-floating-outline mb-4">
 
-                                        @Html.DropDownListFor(m => m.AccountingRule.IsValidationNeed, new SelectList(ViewBag.DoubbleEntryValidation == null ? "" : ViewBag.DoubbleEntryValidation, "Text", "Value"), "", new { @class = "form-control select2" })
+                                        @Html.TextAreaFor(m => m.AccountingEventRule.Description, new { @class = "form-control", @style = "height: 100px;" })
+                                        @Html.ValidationMessageFor(m => m.AccountingEventRule.Description, "", new { @class = "text-danger" })
+                                        <label>Description</label>
 
+                                    </div>
+                                    <div class="col-md-12 form-floating form-floating-outline mb-4">
+                                        
+                                        @Html.DropDownListFor(m => m.AccountingEventRule.IsDoubleValidationNeeded, new SelectList(ViewBag.DoubbleEntryValidation, "Value", "Text"), new { @class = "form-control select2" })
                                         @Html.ValidationMessageFor(m => m.AccountingEventRule.IsDoubleValidationNeeded, "", new { @class = "text-danger" })
-                                        <label class="form-label">Is Double Validation Needed?</label>
+                                        <label class="form-label">Is Validation Needed?</label>
                                     </div>
+                                    <div class="col-md-12 form-floating form-floating-outline mb-4">
 
-                                    <div class="form-floating form-floating-outline mb-4">
-
-                                        @Html.ListBoxFor(model => model.AccountingEventRule.ListOfEligibleBranchId,
-                                            new MultiSelectList(ViewBag.ListOfEligibleBranchId, "Text", "Value"),
-                                            new { @class = "form-control select2", @multiple = "multiple", @id = "ListOfEligibleBranchId" })
+                                        @Html.ListBoxFor(model => model.AccountingEventRule.ListOfEligibleBranchId, new SelectList(ViewBag.ListOfEligibleBranchId, "Value", "Text"), new { @class = "form-control select2", @multiple = "multiple" })
                                         @Html.ValidationMessageFor(model => model.AccountingEventRule.ListOfEligibleBranchId, "", new { @class = "text-danger" })
-                                        <label class="form-label">Select Eligible Branch</label>
+                                        <label class="form-label">Select Eligible Branches</label>
                                     </div>
+                                    <div class="col-md-12 form-floating form-floating-outline mb-4">
 
-                                    <div class="form-floating form-floating-outline mb-4">
-
-                                        @Html.DropDownListFor(model => model.AccountingEventRule.EntryType,
-                                            new SelectList(ViewBag.EntryTypes, "Text", "Value"),
-                                            "--- Select Entry Type ---", new { @class = "form-select", @id = "EntryType" })
-                                        @Html.ValidationMessageFor(model => model.AccountingEventRule.EntryType, "", new { @class = "text-danger" })
+                                        @Html.DropDownListFor(model => model.AccountingEventRule.EntryType, new SelectList(ViewBag.EntryTypes, "Value", "Text"), new { @class = "form-control select2" })
+                                        @Html.ValidationMessageFor(m => m.AccountingEventRule.EntryType, "", new { @class = "text-danger" })
                                         <label class="form-label">Select Entry Type</label>
                                     </div>
 
-                                    <div class="form-floating form-floating-outline mb-4">
+                                    <div class="col-md-12 form-floating form-floating-outline mb-4">
 
-                                        @Html.DropDownListFor(model => model.AccountingEventRule.LevelOfExecution,
-                                            new SelectList(ViewBag.LevelOfExecution, "Text", "Value"),
-                                            "--- Select Level of Execution ---", new { @class = "form-select", @id = "LevelOfExecution" })
-                                        @Html.ValidationMessageFor(model => model.AccountingEventRule.LevelOfExecution, "", new { @class = "text-danger" })
+                                        @Html.DropDownListFor(model => model.AccountingEventRule.LevelOfExecution, new SelectList(ViewBag.LevelOfExecution, "Value", "Text"), new { @class = "form-control select2" })
+                                        @Html.ValidationMessageFor(m => m.AccountingEventRule.LevelOfExecution, "", new { @class = "text-danger" })
                                         <label class="form-label">Select Level of Execution</label>
+                                    </div>
+                                    <div class="col-md-12 form-floating form-floating-outline mb-4">
+
+                                        @Html.DropDownListFor(model => model.AccountingEventRule.IsChainEntry, new SelectList(ViewBag.IsChainEntry, "Value", "Text"), new { @class = "form-control select2" })
+                                        @Html.ValidationMessageFor(m => m.AccountingEventRule.IsChainEntry, "", new { @class = "text-danger" })
+                                        <label class="form-label">Is a chain entry</label>
+                                    </div>
+                                    <div id="AccountingEvent">
+                                        <div class="col-md-12 form-floating form-floating-outline mb-4">
+
+                                            @Html.DropDownListFor(model => model.AccountingEventRule.AccountingEventRuleId, new SelectList(ViewBag.AccountingEventRuleIds, "Value", "Text"), new { @class = "form-control select2" })
+                                            @Html.ValidationMessageFor(m => m.AccountingEventRule.AccountingEventRuleId, "", new { @class = "text-danger" })
+                                            <label class="form-label">Select Chain Event Entry</label>
+                                        </div>
                                     </div>
                                 </fieldset>
                             </div>
@@ -71,7 +85,7 @@
                             <!-- Expected Accounting Entry -->
                             <div class="col-md-8">
                                 <fieldset class="border p-3 rounded">
-                                    <legend class="w-auto text-primary fw-bold"><i class="fas fa-file-invoice-dollar"></i> Expected Accounting Entry</legend>
+                                    <legend class="w-auto text-primary fw-bold"><i class="fas fa-file-invoice-dollar"></i> Accounting Entry Rules</legend>
 
                                     <div class="table-responsive">
                                         <table id="AccountingRulebasketTable" class="table table-hover table-bordered">
@@ -91,19 +105,19 @@
 
                                                     </tr>
                                                 }
-                                              
+
                                             </tbody>
                                         </table>
                                         @*<button type="button" id="addEntry"class="btn btn-sm btn-primary delete-entry">
-                                            <i class="fas fa-plus-circle"></i> Add Entry
-                                        </button>*@
+                                                <i class="fas fa-plus-circle"></i> Add Entry
+                                            </button>*@
                                     </div>
                                 </fieldset>
                             </div>
                         </div>
 
                         <div class="d-flex justify-content-end mt-3">
-                            <button type="submit" class="btn btn-success" onclick="saveForm()"><i class="fas fa-save"></i> Save Changes</button>
+                            <button type="reset" class="btn btn-success" onclick="saveForm()"><i class="fas fa-save"></i> Save Changes</button>
                         </div>
                     }
                 </div>

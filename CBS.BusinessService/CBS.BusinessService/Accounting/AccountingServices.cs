@@ -19,20 +19,21 @@ using System.Security.Policy;
 using System.Web.Helpers;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.BusinessService.Accounts;
+using CBS.BusinessService.Config;
 
 namespace CBS.BusinessService.Accounting
 {
     public class AccountingServices : BaseService
     {
         private readonly ApiCallerHelper _accountingApiCallerHelper;
-    
+        public BranchServices _branchService { get; }
         public AccountCategoryServices accountCartegorieService { get; }
 
         public AccountingServices()
         {
             _accountingApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
             accountCartegorieService = new AccountCategoryServices();
-
+            _branchService = new BranchServices();
         }
         private const string CLASS_4 = "4"; //THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)
         private const string CLASS_4_Payabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)";
@@ -117,8 +118,12 @@ namespace CBS.BusinessService.Accounting
         /// </summary>
         public async Task<bool> CheckAccountBalance(FrontDesk.Data.Account account, decimal amount, OperationTypes operationType)
         {
+            if (account==null)
+            {
+                return false;
+            }
             // Store last balance before any cha00k0es
-            account.LastBalance = account.CurrentBalance;
+            account.LastBalance = account.CurrentBalance.ToString();
 
             // Determine account behavior based on OHADA rules
             bool isDebitNormal = account.AccountNumber.StartsWith("2") || // Fixed Assets
@@ -142,13 +147,13 @@ namespace CBS.BusinessService.Accounting
 
                     // For debit-normal accounts, debit increases the balance
                     account.DebitBalance += amount;
-                    return (Convert.ToDecimal(account.DebitBalance) - Convert.ToDecimal(account.CreditBalance)) > 0;
+                    return (account.DebitBalance - account.CreditBalance) > 0;
                 }
                 else // CREDIT
                 {
                     account.CreditBalance += amount;
              
-                    return (Convert.ToDecimal(account.CreditBalance) - Convert.ToDecimal(account.DebitBalance)) > 0;
+                    return (account.DebitBalance - account.CreditBalance) > 0;
                 }
             }
             else
@@ -158,13 +163,13 @@ namespace CBS.BusinessService.Accounting
 
                     // For debit-normal accounts, debit increases the balance
                     account.DebitBalance += amount;
-                    return (Convert.ToDecimal(account.DebitBalance) - Convert.ToDecimal(account.CreditBalance)) > 0;
+                    return account.CreditBalance - account.DebitBalance > 0;
                 }
                 else // CREDIT
                 {
                     account.CreditBalance += amount;
 
-                    return (Convert.ToDecimal(account.CreditBalance) - Convert.ToDecimal(account.DebitBalance)) > 0;
+                    return (account.CreditBalance - account.DebitBalance) > 0;
                 }
             }
 
@@ -377,6 +382,7 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
+                  branchId = branchId.Equals("DEFAULTID") ? (await _branchService.GetBranches()).Where(x => x.BranchCode == "001").FirstOrDefault().Id:branchId;
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(string.Format(APICallHelper.GetAllAccountByBranch, branchId));
                 if (couApiResponse.IsSuccess)
                 {
@@ -777,7 +783,7 @@ namespace CBS.BusinessService.Accounting
 
         public OperationTypes GetOperationType(AccountModel item)
         {
-            throw new NotImplementedException();
+            return item.BookingDirection.ToUpper() == OperationTypes.CREDIT.ToString() ? OperationTypes.CREDIT : OperationTypes.DEBIT;
         }
     }
 }
