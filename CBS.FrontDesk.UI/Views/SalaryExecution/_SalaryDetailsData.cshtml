@@ -119,7 +119,6 @@
             </div>
         </div>
 
-        <!-- Data Listing View -->
         <div id="datalistingview_inner">
             <div class="table-responsive mb-3">
                 @if (Model.SalaryExtractes != null && Model.SalaryExtractes.Any())
@@ -131,9 +130,16 @@
                                 <th>Matricule</th>
                                 <th>Reference</th>
                                 <th>Name</th>
-                                <th>Net Salary</th>
-                                <th>Execution Date</th>
-                                <th>Executed By</th>
+                                <th>N.Salary</th> <!-- ✅ Net Salary -->
+                                <th>S.Order</th> <!-- ✅ Standing Order -->
+                                <th>Savings</th>
+                                <th>Deposit</th>
+                                <th>Shares</th>
+                                <th>P.Shares</th> <!-- ✅ Preference Shares -->
+                                <th>L.Rep</th> <!-- ✅ Loan Repayment -->
+                                <th>Charges</th> <!-- ✅ NEW: Charges Added -->
+                                <th>Salary</th> <!-- ✅ Salary remains after Charges -->
+                                <th>D.Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -148,9 +154,25 @@
                                     <td>@salary.Matricule</td>
                                     <td>@salary.MemberReference</td>
                                     <td>@salary.MemberName</td>
-                                    <td>@salary.NetSalary.ToString("N1")</td>
-                                    <td>@salary.ExecutionDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
-                                    <td>@salary.ExecutedBy</td>
+                                    <td>@salary.NetSalary.ToString("N1")</td> <!-- ✅ Net Salary -->
+                                    <td>@salary.StandingOrderAmount.ToString("N1")</td> <!-- ✅ Standing Order -->
+                                    <td>@salary.Saving.ToString("N1")</td>
+                                    <td>@salary.Deposit.ToString("N1")</td>
+                                    <td>@salary.Shares.ToString("N1")</td>
+                                    <td>@salary.PreferenceShares.ToString("N1")</td> <!-- ✅ Preference Shares -->
+                                    <td>@salary.TotalLoanRepayment.ToString("N1")</td> <!-- ✅ Loan Repayment -->
+                                    <td>@salary.Charges.ToString("N1")</td> <!-- ✅ NEW: Charges Added -->
+                                    <td>@salary.RemainingSalary.ToString("N1")</td> <!-- ✅ Salary remains after Charges -->
+                                    <td>
+                                        @if (salary.Status)
+                                        {
+                                            <span class="badge bg-success">Executed</span> <!-- ✅ Green for Executed -->
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">Pending</span> <!-- ✅ Yellow for Pending -->
+                                        }
+                                    </td>
                                 </tr>
                             }
                         </tbody>

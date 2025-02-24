@@ -197,6 +197,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
+            LoadDT("myDataTable", 0)
             $("#executeSalaryBtn").on("click", function () {
                 var memberReferenceNumber = $("#memberReferenceNumber").val();
                 var fileUploadId = $("#fileUploadId").val();

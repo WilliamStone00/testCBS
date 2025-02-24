@@ -14,6 +14,10 @@ namespace CBS.FrontDesk.UI.Helper
 
     public static class SalaryAnalysisResultDetailExcelGenerator
     {
+
+
+
+
         public static void GenerateSalaryAnalysisExcel(List<SalaryAnalysisResultDetail> salaryDetails, string branchName, string filePath, string exportDate, string exportedBy, string fileCode)
         {
             using (var workbook = new XLWorkbook())
@@ -22,51 +26,146 @@ namespace CBS.FrontDesk.UI.Helper
 
                 // Title
                 worksheet.Cell(1, 1).Value = $"SALARY ANALYSIS FOR {branchName.ToUpper()}";
+                worksheet.Cell(1, 1).Style.Font.FontName = "Bahnschrift Light";
                 worksheet.Cell(1, 1).Style.Font.Bold = true;
                 worksheet.Cell(1, 1).Style.Font.FontSize = 14;
-                worksheet.Range(1, 1, 1, 19).Merge();
-                worksheet.Cell(1, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-
+                worksheet.Range(1, 1, 1, 22).Merge();
+                worksheet.Cell(1, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+               
                 // Export Details
-                worksheet.Cell(2, 1).Value = $"Export Date: {exportDate} BY {exportedBy}";
-                worksheet.Cell(2, 1).Style.Font.Italic = true;
+                worksheet.Cell(2, 1).Value = $"Analyzed Date: {exportDate} BY {exportedBy}";
+                worksheet.Cell(2, 1).Style.Font.Italic = false;
+                worksheet.Cell(2, 1).Style.Font.FontName = "Bahnschrift Light";
                 worksheet.Cell(2, 1).Style.Font.FontSize = 10;
-                worksheet.Range(2, 1, 2, 19).Merge();
-                worksheet.Cell(2, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                worksheet.Range(2, 1, 2, 22).Merge();
+                worksheet.Cell(2, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
 
                 worksheet.Cell(3, 1).Value = $"Salary File Code: {fileCode}";
-                worksheet.Cell(3, 1).Style.Font.Italic = true;
+                worksheet.Cell(3, 1).Style.Font.Italic = false;
                 worksheet.Cell(3, 1).Style.Font.FontSize = 10;
-                worksheet.Range(3, 1, 3, 19).Merge();
-                worksheet.Cell(3, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                worksheet.Cell(3, 1).Style.Font.FontName = "Bahnschrift Light";
+                worksheet.Range(3, 1, 3, 22).Merge();
+                worksheet.Cell(3, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
 
-                // Headers
+                // **Empty Row After Title**
+                int summaryStartRow = 5;
+
+                // ======================= SUMMARY TABLE =======================
+                worksheet.Cell(summaryStartRow, 1).Value = "ANALYSIS SUMMARY";
+                worksheet.Cell(summaryStartRow, 1).Style.Font.Bold = true;
+                worksheet.Cell(summaryStartRow, 1).Style.Font.FontSize = 12;
+                worksheet.Cell(summaryStartRow, 1).Style.Font.FontName = "Bahnschrift Light";
+                worksheet.Cell(summaryStartRow, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                worksheet.Range(summaryStartRow, 1, summaryStartRow, 2).Merge();
+                worksheet.Range(summaryStartRow, 1, summaryStartRow, 2).Style.Fill.BackgroundColor = XLColor.LightGray;
+                worksheet.Range(summaryStartRow, 1, summaryStartRow, 2).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+
+                // Summary Data
+                var summaryLabels = new[]
+                {
+                    "Total Members", "Total Net Salary", "Total Standing Order", "Total Savings", "Total Deposit",
+                    "Total Ordinary Shares", "Total Preference Shares", "Total Loan Repayment", "Total Loan Capital",
+                    "Total Loan Interest", "Total VAT", "Total Charges", "Total Salary Balance",
+                    "Total Loans to be Treated", "Number of Migrated Loans"
+                };
+
+                for (int i = 0; i < summaryLabels.Length; i++)
+                {
+                    int row = summaryStartRow + i + 1;
+                    worksheet.Cell(row, 1).Value = summaryLabels[i];
+                    worksheet.Cell(row, 1).Style.Font.Bold = false;
+                    worksheet.Cell(row, 1).Style.Font.FontName = "Bahnschrift Light";
+                    worksheet.Cell(row, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                    worksheet.Cell(row, 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                    //.Style.Font.FontName = "Bahnschrift Light";
+                    // Compute summary values
+                    switch (i)
+                    {
+                        case 0:
+                            worksheet.Cell(row, 2).Value = salaryDetails.Count;
+                            break;
+                        case 1:
+                            worksheet.Cell(row, 2).FormulaA1 = $"SUM(D{summaryStartRow + 4}:D{salaryDetails.Count + summaryStartRow + 3})"; // Net Salary
+                            break;
+                        case 2:
+                            worksheet.Cell(row, 2).FormulaA1 = $"SUM(E{summaryStartRow + 4}:E{salaryDetails.Count + summaryStartRow + 3})"; // Standing Order
+                            break;
+                        case 3:
+                            worksheet.Cell(row, 2).FormulaA1 = $"SUM(F{summaryStartRow + 4}:F{salaryDetails.Count + summaryStartRow + 3})"; // Savings
+                            break;
+                        case 4:
+                            worksheet.Cell(row, 2).FormulaA1 = $"SUM(G{summaryStartRow + 4}:G{salaryDetails.Count + summaryStartRow + 3})"; // Deposit
+                            break;
+                        case 5:
+                            worksheet.Cell(row, 2).FormulaA1 = $"SUM(H{summaryStartRow + 4}:H{salaryDetails.Count + summaryStartRow + 3})"; // Ordinary Shares
+                            break;
+                        case 6:
+                            worksheet.Cell(row, 2).FormulaA1 = $"SUM(I{summaryStartRow + 4}:I{salaryDetails.Count + summaryStartRow + 3})"; // Preference Shares
+                            break;
+                        case 7:
+                            worksheet.Cell(row, 2).FormulaA1 = $"SUM(J{summaryStartRow + 4}:J{salaryDetails.Count + summaryStartRow + 3})"; // Loan Repayment
+                            break;
+                        case 8:
+                            worksheet.Cell(row, 2).FormulaA1 = $"SUM(K{summaryStartRow + 4}:K{salaryDetails.Count + summaryStartRow + 3})"; // Loan Capital
+                            break;
+                        case 9:
+                            worksheet.Cell(row, 2).FormulaA1 = $"SUM(L{summaryStartRow + 4}:L{salaryDetails.Count + summaryStartRow + 3})"; // Loan Interest
+                            break;
+                        case 10:
+                            worksheet.Cell(row, 2).FormulaA1 = $"SUM(M{summaryStartRow + 4}:M{salaryDetails.Count + summaryStartRow + 3})"; // VAT
+                            break;
+                        case 11:
+                            worksheet.Cell(row, 2).FormulaA1 = $"SUM(N{summaryStartRow + 4}:N{salaryDetails.Count + summaryStartRow + 3})"; // Charges
+                            break;
+                        case 12:
+                            worksheet.Cell(row, 2).FormulaA1 = $"SUM(O{summaryStartRow + 4}:O{salaryDetails.Count + summaryStartRow + 3})"; // Salary Balance
+                            break;
+                        case 13:
+                            worksheet.Cell(row, 2).Value = salaryDetails.Count(x => x.LoanId != "n/a");
+                            break;
+                        case 14:
+                            worksheet.Cell(row, 2).Value = salaryDetails.Count(x => x.IsOnldLoan);
+                            break;
+                  
+                    }
+
+                    worksheet.Cell(row, 2).Style.NumberFormat.Format = "#,##0.0"; // Format as currency (1 decimal, no symbol)
+                    worksheet.Cell(row, 2).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+                    worksheet.Cell(row, 2).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                    //.Style.Font.FontName = "Bahnschrift Light";
+                }
+
+                // **Empty Row after Summary Table**
+                int headersRow = summaryStartRow + summaryLabels.Length + 2;
+
+                // ======================= HEADERS =======================
                 var headers = new[]
                 {
-            "Matricule", "Member Reference", "Member Name", "Net Salary", "Standing Order", "Savings", "Deposit",
-            "Ordinary Shares", "Preference Shares", "Loan Repayment", "Loan Capital", "Loan Interest",
-            "VAT", "Charges", "Salary Balance", "Loan Id", "Loan Type", "Standing Order Statement", "Status"
-        };
+                    "Matricule", "Member Reference", "Member Name", "Net Salary", "Standing Order", "Savings", "Deposit",
+                    "Ordinary Shares", "Preference Shares", "Loan Repayment", "Loan Capital", "Loan Interest",
+                    "VAT", "Charges", "Salary Balance", "Loan Id", "Loan Type", "Standing Order Statement", "Status",
+                    "Is Migrated Loan?", "Loan Product Name", "Loan Product Id"
+                };
 
                 for (int i = 0; i < headers.Length; i++)
                 {
-                    worksheet.Cell(5, i + 1).Value = headers[i].ToUpper();
-                    worksheet.Cell(5, i + 1).Style.Font.Bold = true;
-                    worksheet.Cell(5, i + 1).Style.Fill.BackgroundColor = XLColor.LightGray;
-                    worksheet.Cell(5, i + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                    worksheet.Cell(5, i + 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                    worksheet.Cell(5, i + 1).Style.Border.OutsideBorderColor = XLColor.Black;
+                    worksheet.Cell(headersRow, i + 1).Value = headers[i].ToUpper();
+                    worksheet.Cell(headersRow, i + 1).Style.Font.Bold = true;
+                    worksheet.Cell(headersRow, i + 1).Style.Font.FontName = "Bahnschrift Light";
+                    worksheet.Cell(headersRow, i + 1).Style.Fill.BackgroundColor = XLColor.LightGray;
+                    worksheet.Cell(headersRow, i + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    worksheet.Cell(headersRow, i + 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                 }
 
-                // Data
-                int currentRow = 6;
+                // ======================= DATA =======================
+                int currentRow = headersRow + 1;
                 foreach (var detail in salaryDetails)
                 {
                     worksheet.Cell(currentRow, 1).Value = detail.Matricule;
                     worksheet.Cell(currentRow, 2).Value = detail.CustomerId;
                     worksheet.Cell(currentRow, 3).Value = detail.MemberName;
-                    worksheet.Cell(currentRow, 4).Value = detail.NetSalary;  // Net Salary
-                    worksheet.Cell(currentRow, 5).Value = detail.StandingOrderAmount;  // Standing Order
+                    worksheet.Cell(currentRow, 4).Value = detail.NetSalary;
+                    worksheet.Cell(currentRow, 5).Value = detail.StandingOrderAmount;
                     worksheet.Cell(currentRow, 6).Value = detail.Savings;
                     worksheet.Cell(currentRow, 7).Value = detail.Deposit;
                     worksheet.Cell(currentRow, 8).Value = detail.Shares;
@@ -77,19 +176,23 @@ namespace CBS.FrontDesk.UI.Helper
                     worksheet.Cell(currentRow, 13).Value = detail.VAT;
                     worksheet.Cell(currentRow, 14).Value = detail.Charges;
                     worksheet.Cell(currentRow, 15).Value = detail.RemainingSalary;
-                    worksheet.Cell(currentRow, 16).Value = detail.LoanId;  // Loan Id
-                    worksheet.Cell(currentRow, 17).Value = detail.LoanType;  // Loan Type
-                    worksheet.Cell(currentRow, 18).Value = detail.StandingOrderStatement;  // Standing Order Statement
-                    worksheet.Cell(currentRow, 19).Value = detail.Status;  // Status
+                    worksheet.Cell(currentRow, 16).Value = detail.LoanId;
+                    worksheet.Cell(currentRow, 17).Value = detail.LoanType;
+                    worksheet.Cell(currentRow, 18).Value = detail.StandingOrderStatement;
+                    worksheet.Cell(currentRow, 19).Value = detail.Status;
+                    worksheet.Cell(currentRow, 20).Value = detail.IsOnldLoan ? "Yes" : "No"; // Boolean to Yes/No
+                    worksheet.Cell(currentRow, 21).Value = detail.LoanProductName;
+                    worksheet.Cell(currentRow, 22).Value = detail.LoanProductId;
 
-                    for (int col = 1; col <= 19; col++) // Now we have 19 columns
+                    for (int col = 1; col <= 22; col++) // Now we have 22 columns
                     {
                         worksheet.Cell(currentRow, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         worksheet.Cell(currentRow, col).Style.Border.OutsideBorderColor = XLColor.Black;
+                        worksheet.Cell(currentRow, col).Style.Font.FontName = "Bahnschrift Light";
                     }
 
                     // Format currency values
-                    for (int col = 4; col <= 15; col++)  // Format the necessary columns (Net Salary, Standing Order, etc.)
+                    for (int col = 4; col <= 15; col++)  // Format the necessary columns
                     {
                         worksheet.Cell(currentRow, col).Style.NumberFormat.Format = "#,##0.0";
                     }
@@ -99,20 +202,22 @@ namespace CBS.FrontDesk.UI.Helper
 
                     currentRow++;
                 }
-
+                //.Style.Font.FontName = "Bahnschrift Light";
                 // Footer
                 worksheet.Cell(currentRow, 1).Value = "TOTAL";
                 worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+                worksheet.Cell(currentRow, 1).Style.Font.FontName = "Bahnschrift Light";
                 worksheet.Cell(currentRow, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                 worksheet.Range(currentRow, 1, currentRow, 3).Merge();
                 worksheet.Range(currentRow, 1, currentRow, 3).Style.Fill.BackgroundColor = XLColor.LightGray;
                 worksheet.Range(currentRow, 1, currentRow, 3).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                 worksheet.Range(currentRow, 1, currentRow, 3).Style.Border.OutsideBorderColor = XLColor.Black;
 
-                for (int i = 4; i <= 19; i++) // Now we calculate the totals for 19 columns
+                for (int i = 4; i <= 22; i++) // Total calculations for numeric columns
                 {
                     worksheet.Cell(currentRow, i).FormulaA1 = $"SUM({worksheet.Cell(6, i).Address}:{worksheet.Cell(currentRow - 1, i).Address})";
                     worksheet.Cell(currentRow, i).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, i).Style.Font.FontName = "Bahnschrift Light";
                     worksheet.Cell(currentRow, i).Style.NumberFormat.Format = "#,##0.0";
                     worksheet.Cell(currentRow, i).Style.Fill.BackgroundColor = XLColor.LightGray;
                     worksheet.Cell(currentRow, i).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
@@ -124,9 +229,10 @@ namespace CBS.FrontDesk.UI.Helper
                 // Footer Signature
                 worksheet.Cell(currentRow, 1).Value = "@Trust Soft Credit.";
                 worksheet.Cell(currentRow, 1).Style.Font.Italic = true;
+                worksheet.Cell(currentRow, 1).Style.Font.FontName = "Bahnschrift Light";
                 worksheet.Cell(currentRow, 1).Style.Font.FontSize = 10;
                 worksheet.Cell(currentRow, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                worksheet.Range(currentRow, 1, currentRow, 19).Merge();
+                worksheet.Range(currentRow, 1, currentRow, 22).Merge();
 
                 // Adjust column widths
                 worksheet.Columns().AdjustToContents();
