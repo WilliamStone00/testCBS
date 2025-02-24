@@ -264,7 +264,8 @@ namespace CBS.BusinessService.Accounting
                             Description = item.Description,
                             Id = item.Id,
                             Reference = item.Reference,
-                            BranchId= accountItem.AccountOwnerId
+                            BranchId= accountItem.AccountOwnerId,
+                            ExternalBranchId = accountItem.LiaisonId
                         });
                     }
                     else
@@ -289,7 +290,7 @@ namespace CBS.BusinessService.Accounting
                     //accountingEventRule.IsDoubleValidationNeeded
                  var eventEntreis=   new AutomatedEventEntriesCommand { EntryTempDatas = EntryTempDatas, IsSystem = accountingEventRule. IsDoubleValidationNeeded = accountingEventRule.IsDoubleValidationNeeded, BranchId = await GetBranchByIDAsync(GetBranchID()),
                      ListOfBranchIds= accountingEventRule.ListOfEligibleBranchId, 
-                     AccountingEventRuleId= accountingEventRule.IsChainEntry==false?null: accountingEventRule.AccountingEventRuleId };
+                     AccountingEventRuleId= accountingEventRule.IsChainEntry==false?null: accountingEventRule.AccountingEventRuleId,IsInterBranchTransaction= accountingEventRule .IsInterBranchTransaction,ExternalBranchId=null};
                     return await PostAccountingEntry(eventEntreis);
                     
                 }

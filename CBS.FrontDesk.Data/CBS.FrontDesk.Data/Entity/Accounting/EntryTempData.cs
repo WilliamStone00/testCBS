@@ -18,6 +18,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string EntryType { get; set; }
         public string Id { get; set; }
         public bool IsChainEntry { get; set; }
+        public bool IsInterBranchTransaction { get; set; }
         public string AccountingEventRuleId { get; set; }
         public string Description { get; set; }
 
@@ -34,6 +35,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 AccountingEventRuleId = model.AccountingRules[0].AccountingEventRuleId,
                 Description = model.AccountingRules[0].Description,
                 IsChainEntry = ("True".Equals(model.AccountingRules[0].IsValidationNeed)),
+                IsInterBranchTransaction = ("TRUE".Equals(model.AccountingRules[0].IsInterBranchTransaction)),
                 Id = "XXXXXX"
             };
         }
@@ -56,8 +58,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<EntryTempData> EntryTempDatas { get; set; }
 
         public bool IsDoubleValidationNeeded { get; set; }
+        public bool IsInterBranchTransaction { get; set; }
         public bool IsSystem { get; set; }
         public string BranchId { get; set; }
+        public string ExternalBranchId { get; set; }
         public List<string> ListOfBranchIds { get; set; }
         public string AccountingEventRuleId { get; set; }
     }
@@ -97,7 +101,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Description { get; set; }
         public string AccountingEventId { get; set; } = "MANUAL USER";
         public string BranchId { get; set; }
-
+        public string ExternalBranchId { get; set; }
+        public bool IsInterBranchTransaction { get; set; }
         public static AccountingEntryPayloadCommand ConvertToAccountingEntryPayloadCommand(List<EntryTempData> entries)
         {
             List<EntryTempDatas> accountingEntries = new List<EntryTempDatas>();
@@ -201,6 +206,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string EntryType { get; set; }
         public bool IsChainEntry { get; set; }
         public string AccountingEventRuleId { get; set; }
+        public bool IsInterBranchTransaction { get; set; }
         public class AccountingRule
         {
             public string Id { get; set; }

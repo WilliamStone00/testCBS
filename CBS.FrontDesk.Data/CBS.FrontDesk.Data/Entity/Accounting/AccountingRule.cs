@@ -24,7 +24,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string LevelOfExecution { get; set; }
         public bool IsChainEntry { get; set; }
         public string AccountingEventRuleId { get; set; }
-
+        public bool IsInterBranchTransaction { get; set; }
     }
     public class AccountingModelRule
     {

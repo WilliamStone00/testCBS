@@ -37,7 +37,7 @@
 
                                                 </div>
                                                 <div class="col-md-12 form-floating form-floating-outline mb-4">
-
+                              
                                                     @Html.DropDownListFor(m => m.AccountingRule.IsValidationNeed, new SelectList(ViewBag.DoubbleEntryValidation, "Value", "Text"), new { @class = "form-control select2" })
                                                     @Html.ValidationMessageFor(m => m.AccountingRule.IsValidationNeed, "", new { @class = "text-danger" })
                                                     <label class="form-label">Is Validation Needed?</label>
@@ -55,6 +55,12 @@
                                                     <label class="form-label">Select Entry Type</label>
                                                 </div>
 
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+
+                                                    @Html.DropDownListFor(model => model.AccountingRule.IsInterBranchTransaction, new SelectList(ViewBag.IsInterBranchTransaction, "Value", "Text"), new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.IsInterBranchTransaction, "", new { @class = "text-danger" })
+                                                    <label class="form-label">Select Transaction</label>
+                                                </div>
                                                 <div class="col-md-12 form-floating form-floating-outline mb-4">
 
                                                     @Html.DropDownListFor(model => model.AccountingRule.LevelOfExecution, new SelectList(ViewBag.LevelOfExecution, "Value", "Text"), new { @class = "form-control select2" })
@@ -113,7 +119,7 @@
             <div class="col-12 col-md-8">
                 <div class="card p-4 shadow-sm">
                     <fieldset class="border p-3 rounded">
-                        <legend class="w-auto text-primary fw-bold"><i class="fas fa-file-invoice-dollar"></i> Account Entry Rule</legend>
+                        <legend class="w-auto text-primary fw-bold"><i class="fas fa-file-invoice-dollar"></i> Accounting Entry Rule</legend>
                         <table id="AccountingRulebasketTable" class="table table-bordered table-hover">
                             <thead class="bg-light">
                                 <tr>

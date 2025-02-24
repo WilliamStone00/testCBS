@@ -144,8 +144,19 @@ namespace CBS.FrontDesk.UI.Controllers
             ViewBag.ListOfEligibleBranch = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
             ViewBag.EntryTypes = BuildEntryTypesViewBag();
             ViewBag.LevelOfExecution = BuildLevelOfExecutionViewBag();
+            ViewBag.IsInterBranchTransaction = BuildIsInterBranchTransactionViewBag();
             ViewBag.IsChainEntry = await GetEntrySystem();
             ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
+        }
+
+        private dynamic BuildIsInterBranchTransactionViewBag()
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+
+
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = "TRUE", Text = $"InterBranchTransaction" });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = "FLASE", Text = $"Local" });
+            return selectListItems;
         }
 
         private dynamic BuildAccountingRuleViewBag(List<AccountingEventRule> listOfItems)
@@ -180,7 +191,7 @@ namespace CBS.FrontDesk.UI.Controllers
         private dynamic BuildBranchViewBag(  List<Branch> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-            listOfItems.Remove(listOfItems.Where(x => x.BranchCode == "000").FirstOrDefault());
+       //     listOfItems.Remove(listOfItems.Where(x => x.BranchCode == "000").FirstOrDefault());
             foreach (var item in listOfItems)
             {
                 selectListItems.Add(new System.Web.WebPages.Html.SelectListItem {  Value= item.Id,  Text= $"{item.Name}" });
@@ -368,7 +379,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
             try
             {
-    
+              
       
                 return View(new ManuallyJournalEntryDataSet { });
             }
@@ -513,6 +524,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 ViewBag.LevelOfExecution = BuildLevelOfExecutionViewBag();
                   ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
                 ViewBag.IsChainEntry = await GetEntrySystem();
+                ViewBag.IsInterBranchTransaction = BuildIsInterBranchTransactionViewBag();
                 ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
               
                 return View(new ManuallyJournalEntryDataSet { AccountingEventRule = model });
@@ -593,7 +605,7 @@ namespace CBS.FrontDesk.UI.Controllers
                         var EventRuleId = await _AccountingRuleServices.GetAccountingRuleById(model.AccountingEventRuleId);
                         model.AccountingEventRuleId = $"{EventRuleId.EventName}[{EventRuleId.Description}]";
                     }
-                   
+                    ViewBag.IsAuthourized = true;
                     return View(new ManuallyJournalEntryDataSet { AccountingEventRule = model });
                 }
                 else
@@ -891,7 +903,7 @@ namespace CBS.FrontDesk.UI.Controllers
         {
           var AccountingEventRule=(AccountingEventRule)this.HttpContext.Session["EventEntrySystemInfo" + this.HttpContext.Session.SessionID + _AccountingRuleServices.GetUserID()] ;
 
-            return Json(await _Service.PostAutomatedEntries(model, AccountingEventRule)) ;
+                return Json(await _Service.PostAutomatedEntries(model, AccountingEventRule)) ;
 
         }
         private async Task<Func<Task<ExecutionMessages>>> PostAccountingEntryActionAsync(string serviceOption, ManuallyJournalEntryDataSet model)
