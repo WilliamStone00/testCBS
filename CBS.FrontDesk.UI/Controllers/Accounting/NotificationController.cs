@@ -408,7 +408,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     var AccountnumberCD = $"451000{SourceBranch.BranchCode}{DestinationBranch.BranchCode}";
                     var accountb = (await _AccountServices.GetAccountByAccountNumber(AccountnumberCD));
                     name = $"{acc.AccountNumberCU}-{acc.AccountName}>>450000{SourceBranch.BranchCode}{DestinationBranch.BranchCode}-{accountb.AccountName}";
-                    balance = acc.CurrentBalance;
+                    balance = acc.CurrentBalance.ToString();
                     Id = acc.Id;
                     idB = accountb.Id;
 
@@ -576,7 +576,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var AccountnumberCD = $"451000{SourceBranch.BranchCode}{DestinationBranch.BranchCode}";
                 var accountb = (await _AccountServices.GetAccountByAccountNumber(AccountnumberCD));
                 name = $"{acc.AccountNumberCU}-{acc.AccountName}>>450000{SourceBranch.BranchCode}{DestinationBranch.BranchCode}-{accountb.AccountName}";
-                balance = acc.CurrentBalance;
+                balance = acc.CurrentBalance.ToString();
                 Id = acc.Id;
                 idB = accountb.Id;
 
@@ -709,7 +709,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             if (branchServices.IsHeadOffice())
             {
                 ViewBag.IsAuthourized = false;
-                ViewBag.Error = _AccountServices.GetUserFullName() + ", You are not authourized to perform this transaction kindly contact the " + (await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name;
+                ViewBag.Error = _AccountServices.GetUserFullName() + ", You are not authorized to perform this transaction kindly contact the " + (await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name;
                 return View(cashDemandDataEntity);
             }
             ViewBag.IsAuthourized = true;
@@ -727,7 +727,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             if (branchServices.IsHeadOffice() == false)
             {
                 ViewBag.IsAuthourized = false;
-                ViewBag.Error = _AccountServices.GetUserFullName() + ", You are not authourized to perform this transaction kindly contact the head office ";
+                ViewBag.Error = _AccountServices.GetUserFullName() + ", You are not authorized to perform this transaction kindly contact the head office ";
 
 
             }
@@ -826,7 +826,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 model.BankCashOut.TransactionType = "CASH OUT";
                 model.BankCashOut.Id = BaseUtilities.GenerateInsuranceUniqueNumber(15, "BCO");
-                model.BankCashOut.Balance = (await _AccountServices.GetAccount(model.BankCashOut.FromAccountId)).CurrentBalance;
+                model.BankCashOut.Balance = (await _AccountServices.GetAccount(model.BankCashOut.FromAccountId)).CurrentBalance.ToString();
                 var datac = await _accountingEntryServices.CreateBankCashTransaction(model.BankCashOut);
 
                 return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });

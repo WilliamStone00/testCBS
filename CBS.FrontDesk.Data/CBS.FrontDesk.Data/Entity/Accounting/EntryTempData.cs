@@ -7,54 +7,74 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
- 
-    public class AddAccountingRuleCommand  
+
+    public class AddAccountingRuleCommand
     {
         public List<AccountingRule> AccountingRules { get; set; } //Loan Operation xxx
         public string EventName { get; set; }
-        public string IsDoubleValidationNeeded { get; set; }
+        public bool IsDoubleValidationNeeded { get; set; }
         public string LevelOfExecution { get; set; }
         public List<string> ListOfEligibleBranchId { get; set; }
         public string EntryType { get; set; }
         public string Id { get; set; }
+        public bool IsChainEntry { get; set; }
+        public bool IsInterBranchTransaction { get; set; }
+        public string AccountingEventRuleId { get; set; }
+        public string Description { get; set; }
+
         public static AddAccountingRuleCommand BuildRequest(ManuallyJournalEntryDataSet model)
         {
             return new AddAccountingRuleCommand
             {
                 EventName = model.AccountingRules[0].RuleName,
                 AccountingRules = BuildRequestItems(model.AccountingRules),
-                IsDoubleValidationNeeded = (model.AccountingRules[0].IsValidationNeed),
+                IsDoubleValidationNeeded = ("True".Equals(model.AccountingRules[0].IsValidationNeed)),
                 LevelOfExecution = model.AccountingRules[0].LevelOfExecution,
                 EntryType = model.AccountingRules[0].EntryType,
-                ListOfEligibleBranchId= model.AccountingRules[0].ListOfEligibleBranchId,
+                ListOfEligibleBranchId = model.AccountingRules[0].ListOfEligibleBranchId,
+                AccountingEventRuleId = model.AccountingRules[0].AccountingEventRuleId,
+                Description = model.AccountingRules[0].Description,
+                IsChainEntry = ("True".Equals(model.AccountingRules[0].IsValidationNeed)),
+                IsInterBranchTransaction = ("TRUE".Equals(model.AccountingRules[0].IsInterBranchTransaction)),
                 Id = "XXXXXX"
             };
         }
 
         private static List<AccountingRule> BuildRequestItems(List<AccountingRule> accountingRules)
         {
-            List < AccountingRule > listItems = new List < AccountingRule >();
-           foreach (var accountingRule in accountingRules)
+            List<AccountingRule> listItems = new List<AccountingRule>();
+            foreach (var accountingRule in accountingRules)
             {
                 accountingRule.MFI_ChartOfAccountId = accountingRule.MFI_ChartOfAccountId;
                 accountingRule.System_Id = "";
                 listItems.Add(accountingRule);
             }
-           return listItems;
+            return listItems;
         }
     }
 
+    public class AutomatedEventEntriesCommand
+    {
+        public List<EntryTempData> EntryTempDatas { get; set; }
 
-    public class AutomatedEventEntryCommand  
+        public bool IsDoubleValidationNeeded { get; set; }
+        public bool IsInterBranchTransaction { get; set; }
+        public bool IsSystem { get; set; }
+        public string BranchId { get; set; }
+        public string ExternalBranchId { get; set; }
+        public List<string> ListOfBranchIds { get; set; }
+        public string AccountingEventRuleId { get; set; }
+    }
+    public class AutomatedEventEntryCommand
     {
         public List<AutomatedEventEntry> Entries { get; set; }
- 
+
         public string ReferenceId { get; set; }
         public string Description { get; set; }
 
-       
+
     }
-     
+
     public class AutomatedEventEntry
     {
         public string MFI_ChartOfAccountId { get; set; }
@@ -80,6 +100,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Debit { get; set; }
         public string Description { get; set; }
         public string AccountingEventId { get; set; } = "MANUAL USER";
+        public string BranchId { get; set; }
+        public string ExternalBranchId { get; set; }
+        public bool IsInterBranchTransaction { get; set; }
         public static AccountingEntryPayloadCommand ConvertToAccountingEntryPayloadCommand(List<EntryTempData> entries)
         {
             List<EntryTempDatas> accountingEntries = new List<EntryTempDatas>();
@@ -91,13 +114,13 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                     AccountId = Item.AccountId,
                     AccountName = Item.AccountName,
                     AccountNumber = Item.AccountNumber,
-                    AccountingEventId= Item.AccountingEventId,
+                    AccountingEventId = Item.AccountingEventId,
                     BookingDirection = Item.BookingDirection,
 
-                    Amount =Convert.ToDecimal( Item.Amount),
+                    Amount = Convert.ToDecimal(Item.Amount),
                     AccountBalance = Item.AccountBalance,
                     Description = Item.Description,
-                    
+
                     Reference = Item.Reference,
 
                 });
@@ -128,23 +151,27 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Description { get; set; }
         public string AccountingEventId { get; set; } = "MANUAL USER";
         public string Reference { get; set; }
+        public string BranchId { get; set; }
     }
     public class AccountingEntryPayloadCommand
     {
         public List<EntryTempDatas> EntryTempDatas { get; set; }
-       
+
     }
     public class EventEntryResponse
     {
         public string ResponseMessge { get; set; }
         public bool Status { get; set; }
 
-    }    public class EntryApproval
+    }
+    public class EntryApproval
     {
 
         public string Id { get; set; }
 
         public bool HasApproved { get; set; }
+        public bool ValidationIsNotRequired { get; set; }
+        public string BranchId { get; internal set; }
     }
     public class EntryTempDataResult
     {
@@ -173,10 +200,13 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<AccountingRule> AccountingRules { get; set; } //Loan Operation xxx
         public List<string> ListOfEligibleBranchId { get; set; }
         public string EventName { get; set; }
-        public string IsDoubleValidationNeeded { get; set; }
+        public string Description { get; set; }
+        public bool IsDoubleValidationNeeded { get; set; }
         public string LevelOfExecution { get; set; }
         public string EntryType { get; set; }
-
+        public bool IsChainEntry { get; set; }
+        public string AccountingEventRuleId { get; set; }
+        public bool IsInterBranchTransaction { get; set; }
         public class AccountingRule
         {
             public string Id { get; set; }
@@ -189,8 +219,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         public string Description { get; set; }
         public List<AccountingRuleEntry> AccountingRules { get; set; }
-        public string Reference { get;   set; }
-        public string AccountingEventId { get;   set; }
+        public string Reference { get; set; }
+        public string AccountingEventId { get; set; }
 
         public class AccountingRuleEntry
         {
@@ -201,21 +231,41 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
         public static List<AccountModel> ConvertToAccountModelData(ManualJournalEntryRequest model)
         {
-            List < AccountModel >  accountModels = new List < AccountModel >();
+            List<AccountModel> accountModels = new List<AccountModel>();
             foreach (var item in model.AccountingRules)
             {
                 var splitItems = item.AccountDescription.Split('-');
-                accountModels.Add(new AccountModel
+                var number = splitItems.Length;
+                if (number > 3)
                 {
-                    Id = splitItems[2],
-                    AccountName = splitItems[0],
-                    AccountNumber = splitItems[1] ,
-                    Amount = item.Credit > item.Debit ? item.Credit : item.Debit,
-                    BookingDirection = item.Credit > item.Debit ? "CREDIT" : "DEBIT",
-                    Description = model.Description,
-                    Reference= model.Reference,
-                    AccountingEventId = model.AccountingEventId
-                });
+                    accountModels.Add(new AccountModel
+                    {
+                        Id = splitItems[splitItems.Length - 1],
+                        AccountName = splitItems[0] + " " + splitItems[1],
+                        AccountNumber = splitItems[2],
+                        Amount = item.Credit > item.Debit ? item.Credit : item.Debit,
+                        BookingDirection = item.Credit > item.Debit ? "CREDIT" : "DEBIT",
+                        Description = model.Description,
+                        Reference = model.Reference,
+                        AccountingEventId = model.AccountingEventId
+                    });
+
+                }
+                else
+                {
+                    accountModels.Add(new AccountModel
+                    {
+                        Id = splitItems[2],
+                        AccountName = splitItems[0],
+                        AccountNumber = splitItems[1],
+                        Amount = item.Credit > item.Debit ? item.Credit : item.Debit,
+                        BookingDirection = item.Credit > item.Debit ? "CREDIT" : "DEBIT",
+                        Description = model.Description,
+                        Reference = model.Reference,
+                        AccountingEventId = model.AccountingEventId
+                    });
+                }
+
             }
             return accountModels;
         }
@@ -229,21 +279,22 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string BookingDirection { get; set; }
         public string Description { get; set; }
         public string Reference { get; set; }
-        public string AccountingEventId { get;  set; }
+        public string AccountingEventId { get; set; }
     }
 
     public class ManuallyJournalEntryDataSet
     {
         public EntryTempData EntryTempData { get; set; } = new EntryTempData();
-        public Data.Account Account { get; set; }= new Account();
+        public Data.Account Account { get; set; } = new Account();
         public EntryDescription EntryDescription { get; set; } = new EntryDescription();
-        public List<EntryTempData> EntryTempDatas { get; set; }= new List<EntryTempData>(){ };
+        public List<EntryTempData> EntryTempDatas { get; set; } = new List<EntryTempData>() { };
         public List<AccountingRuleDtos> AccountingRuleDtos = new List<AccountingRuleDtos>();
-        public List<PostedEntry> PostedEntries { get; set; }= new List<PostedEntry>();
-        public List<EntryTempDataResult> EntryTempDataResult { get; set; } = new List<EntryTempDataResult> { 
-    
-        };   
-        public List<Account> Accounts { get; set; }= new List<Account>();
+        public List<PostedEntry> PostedEntries { get; set; } = new List<PostedEntry>();
+        public List<EntryTempDataResult> EntryTempDataResult { get; set; } = new List<EntryTempDataResult>
+        {
+
+        };
+        public List<Account> Accounts { get; set; } = new List<Account>();
         public List<AccountingRule> AccountingRules { get; set; } = new List<AccountingRule>();
         public AccountingRule AccountingRule { get; set; } = new AccountingRule();
         public AccountingEventRule AccountingEventRule { get; set; } = new AccountingEventRule();

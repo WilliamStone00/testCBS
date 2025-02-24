@@ -15,13 +15,16 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string System_Id { get; set; }
         public string BookingDirection { get; set; }
         public List<string> ListOfEligibleBranchId { get; set; }
-        public string IsValidationNeed { get; set; }
+        public bool IsValidationNeed { get; set; }
         public string MFI_ChartOfAccountId { get; set; }
         public string AccountNumber { get; set; }
         public double Amount { get; set; }
         public string AccountName { get; set; }
         public string EntryType { get; set; }
         public string LevelOfExecution { get; set; }
+        public bool IsChainEntry { get; set; }
+        public string AccountingEventRuleId { get; set; }
+        public bool IsInterBranchTransaction { get; set; }
     }
     public class AccountingModelRule
     {

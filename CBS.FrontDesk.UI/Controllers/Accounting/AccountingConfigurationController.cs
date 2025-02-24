@@ -234,10 +234,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select BranchCode" });
             foreach (var item in listOfItems)
             {
-                if (!item.BranchCode.Equals("000"))
-                {
-                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.BranchCode} - {item.Name}" });
-                }
+              
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $" {item.Name}" });
+           
                
             }
             return selectListItems;

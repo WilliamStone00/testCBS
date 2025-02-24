@@ -1,8 +1,11 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Microsoft.AspNet.SignalR.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,18 +18,21 @@ namespace CBS.BusinessService.Accounting
     public class EntryTempDataServices : BaseService
     {
         private readonly ApiCallerHelper _accountingApiCallerHelper;
-        private List<Currency> _currencies;
+        //private List<Currency> _currencies;
+        private BranchServices _branchService;
 
+        private AccountingServices _accountServices { get; set; }
         public EntryTempDataServices()
         {
             _accountingApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
-
+            _accountServices = new AccountingServices();
+            _branchService = new BranchServices();
         }
-        public List<Currency> Currencies()
-        {
-            Currency currency = new Currency();
-            return currency.CreateCurrencies();
-        }
+        //public List<Currency> Currencies()
+        //{
+        //    Currency currency = new Currency();
+        //    return currency.CreateCurrencies();
+        //}
         public async Task<ExecutionMessages> Create(List<EntryTempData> model)
         {
             try
@@ -61,7 +67,7 @@ namespace CBS.BusinessService.Accounting
 
  
 
-        public async Task<ExecutionMessages> PostAccountingEntry(List<EntryTempData> model)
+        public async Task<ExecutionMessages> PostAccountingEntry(AutomatedEventEntriesCommand model)
         {
             try
             {
@@ -70,15 +76,15 @@ namespace CBS.BusinessService.Accounting
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, response.Message, MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    GetExecutionMessages(response, true, "Your manual entry was successfully registered", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, "Your manual entry was successfully registered");
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, response.Message, MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    GetExecutionMessages(model, false, "Your manual entry was failed to be registered", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Your manual entry was failed to be registered");
                 }
             }
             catch (Exception ex)
@@ -141,7 +147,9 @@ namespace CBS.BusinessService.Accounting
                 {
                     Id = model.Id,
                     HasApproved = model.HasApproved,
-                    TransactionDate = BaseUtilities.UtcToLocal()
+                    TransactionDate = BaseUtilities.UtcToLocal(),
+                    BranchId = await GetBranchByIDAsync(GetBranchID()),
+                    ValidationIsNotRequired = false
                 };
                 var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.Post_ManaulEntryApproval_Entries, models);
                 if (response.IsSuccess)
@@ -227,6 +235,86 @@ namespace CBS.BusinessService.Accounting
                 // Log and handle exception
             }
             return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages>  PostAutomatedEntries(ManualJournalEntryRequest model, AccountingEventRule accountingEventRule)
+        {
+            bool IsAccountBalance = true;
+            string message = "";
+            List<EntryTempData> EntryTempDatas = new List<EntryTempData>() { };
+            var branchAccounts = await _accountServices.GetAllAccountForABranch(this.GetBranchID());
+            var collection = ManualJournalEntryRequest.ConvertToAccountModelData(model);
+            try
+            {//PostAccountingEntry(List<EntryTempData> model)
+                foreach (var item in collection)
+                {
+                    var accountItem = _accountServices.GetAccountItemForBranch(branchAccounts, item);
+                    if (await _accountServices.CheckAccountBalance(accountItem, Convert.ToDecimal(item.Amount), _accountServices.GetOperationType(item)))
+                    {
+                        EntryTempDatas.Add(new EntryTempData
+                        {
+                            AccountingEventId = item.AccountingEventId,
+                            AccountBalance = accountItem.CurrentBalance.ToString(),
+                            AccountId = accountItem.Id,
+                            AccountName = item.AccountName,
+                            AccountNumber = item.AccountNumber,
+                            BookingDirection = item.BookingDirection,
+                            Debit = item.BookingDirection.ToUpper() == "DEBIT" ? (item.Amount.ToString()) : "0",
+                            Credit = item.BookingDirection.ToUpper() == "CREDIT" ? (item.Amount.ToString()) : "0",
+                            Amount = item.Amount.ToString(),
+                            Description = item.Description,
+                            Id = item.Id,
+                            Reference = item.Reference,
+                            BranchId= accountItem.AccountOwnerId,
+                            ExternalBranchId = accountItem.LiaisonId
+                        });
+                    }
+                    else
+                    {
+                        if (accountItem!=null)
+                        {
+                            IsAccountBalance = false;
+                            message = message + $"{accountItem.AccountName}-{accountItem.AccountNumberCU}: Account will be left with a negative balance";
+                            continue;
+                        }
+                        else
+                        {
+                            IsAccountBalance = false;
+                            message = $"There is no account  {item.AccountName}-{item.AccountNumber} present in your branch please contact system admin"; 
+                            break;
+                        }
+                    }
+
+                }
+                if (IsAccountBalance)
+                {
+                    //accountingEventRule.IsDoubleValidationNeeded
+                 var eventEntreis=   new AutomatedEventEntriesCommand { EntryTempDatas = EntryTempDatas, IsSystem = accountingEventRule. IsDoubleValidationNeeded = accountingEventRule.IsDoubleValidationNeeded, BranchId = await GetBranchByIDAsync(GetBranchID()),
+                     ListOfBranchIds= accountingEventRule.ListOfEligibleBranchId, 
+                     AccountingEventRuleId= accountingEventRule.IsChainEntry==false?null: accountingEventRule.AccountingEventRuleId,IsInterBranchTransaction= accountingEventRule .IsInterBranchTransaction,ExternalBranchId=null};
+                    return await PostAccountingEntry(eventEntreis);
+                    
+                }
+                else
+                {
+                    GetExecutionMessages(EntryTempDatas, false, message, MessagesResults.Failed,
+                           ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, message);
+                    return ExecutionMessage;
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                GetExecutionMessages(ex, false, ex.Message, MessagesResults.Failed,
+                          ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, ex.Message);
+                return ExecutionMessage;
+            }
+        }
+
+        private async Task<string> GetBranchByIDAsync(string branchId)
+        {
+            branchId = branchId.Equals("DEFAULTID") ? (await _branchService.GetBranches()).Where(x => x.BranchCode == "001").FirstOrDefault().Id : branchId;
+            return branchId;
         }
 
         public async Task<List<EntryTempData>> GetAllEntriesForJournalEntryReference(string Id)

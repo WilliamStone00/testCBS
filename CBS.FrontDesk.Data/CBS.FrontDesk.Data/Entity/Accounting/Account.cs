@@ -16,10 +16,10 @@ namespace CBS.FrontDesk.Data
         public string AccountName { get; set; }
         public string AccountTypeId { get; set; }
         public string BeginningBalance { get; set; }
-        public string DebitBalance { get; set; }
-        public string CreditBalance { get; set; }
+        public decimal DebitBalance { get; set; }
+        public decimal CreditBalance { get; set; }
         public string LastBalance { get; set; }
-        public string CurrentBalance { get; set; }
+        public decimal CurrentBalance { get; set; }
         public string ChartOfAccountManagementPositionId { get; set; }
         public string AccountCategoryId { get; set; }
         public string AccountOwnerId { get; set; }

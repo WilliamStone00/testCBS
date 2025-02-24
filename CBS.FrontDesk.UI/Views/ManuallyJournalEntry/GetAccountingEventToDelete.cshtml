@@ -1,0 +1,84 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+@{
+    ViewBag.Title = "Accounting Event -DELETE";
+}
+
+
+
+<style>
+    .red-text {
+        color: red;
+    }
+</style>
+
+<div class="row">
+    <!-- Context Menu -->
+    <div class="col-12 card-body">
+        <div class="card col-12 alert alert-outline-danger">
+            <h3>
+                You have requested to delete the accounting event rule with the following details:
+            </h3>
+            <ul>
+                <li><strong>Event Name:</strong> @Model.AccountingEventRule.EventName</li>
+                <li><strong>Description:</strong> @Model.AccountingEventRule.Description</li>
+                <li><strong>Entry Type:</strong> @Model.AccountingEventRule.EntryType</li>
+                <li><strong>Level of Execution:</strong> @Model.AccountingEventRule.LevelOfExecution</li>
+                <li><strong>Double Validation Needed:</strong> @(Model.AccountingEventRule.IsDoubleValidationNeeded ? "Yes" : "No")</li>
+                <li><strong>Chain Entry:</strong> @(Model.AccountingEventRule.IsChainEntry ? "Yes" : "No")</li>
+
+            </ul>
+            <table id="accountingRuleTable" class="table table-bordered">
+                <thead class="table-dark text-center">
+                    <tr>
+
+                        <th>Branch's eligible for the execution of @Model.AccountingEventRule.EventName</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var rule in Model.AccountingEventRule.ListOfEligibleBranchId)
+                    {
+                        <tr>
+                            <td class="accountDesc">@rule</td>
+
+                        </tr>
+                    }
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="accountDesc"> List of accounting entries involve</td>
+
+                    </tr>
+                    @foreach (var rule in Model.AccountingEventRule.AccountingRules)
+                    {
+                        <tr>
+                            <td class="accountDesc">@rule.MFI_ChartOfAccountId</td>
+
+                        </tr>
+                    }
+                </tfoot>
+            </table>
+            <p class="red-text">
+                Please confirm that you would like to permanently delete this accounting event rule and its associated data.
+                This action cannot be undone.
+            </p>
+            <div class="col-md-12 col-12">
+                <button onclick="DeleteAutomatedEntryData('ManuallyJournalEntry', '@Model.AccountingEventRule.Id')" class="btn btn-danger waves-effect waves-light mdi-bag-checked">YES</button>
+            </div>
+            @*<div class="col-md-12 col-12">
+                    <button onclick="DeleteData('ManuallyJournalEntry', '@Model.AccountingEventRule.Id')" class="btn btn-danger waves-effect waves-light mdi-bag-checked">YES</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+
+@section Scripts { @Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/Js/main.js/AutomatedEvent.js"></script>
+}
+
+

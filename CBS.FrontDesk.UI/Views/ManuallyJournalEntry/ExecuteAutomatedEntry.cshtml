@@ -1,9 +1,11 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
-
+@{
+    ViewBag.Title = "Accounting Event -Execution";
+}
 <div class="container mt-4">
     <div class="card shadow-lg">
-        <div class="card-header bg-primary text-white d-flex justify-content-between">
-            <h4 class="mb-0">Configured Manual Journal Entry</h4>
+        <div class="card-header bg-primary text-white text-center">
+            <h4 class="mb-0 w-100">Configured Manual Journal Entry</h4>
         </div>
 
         <div class="card-body">
@@ -20,22 +22,21 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Double Validation Needed</label>
-                            <input type="text" class="form-control" value="@Model.AccountingEventRule.IsDoubleValidationNeeded" readonly>
+                            <input type="text" class="form-control" value="@(Model.AccountingEventRule.IsDoubleValidationNeeded ? "Double Validation is required" : "Double Validation is not required")" readonly>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label fw-bold">Level of Execution</label>
-                            <input type="text" class="form-control" value="@Model.AccountingEventRule.LevelOfExecution" readonly>
+                            <input type="text" class="form-control" id="LevelOfExecution" value="@Model.AccountingEventRule.LevelOfExecution" readonly>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Created Date</label>
-                            <input type="text" class="form-control" value="@Model.AccountingEventRule.CreatedDate" readonly>
+                            <label class="form-label fw-bold">Is Chain Execution</label>
+                            <input type="text" class="form-control" value="@(Model.AccountingEventRule.IsChainEntry ? "Chain execution is set" : "Chain execution is not set")" readonly>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Created By</label>
-                            <input type="text" class="form-control" value="@Model.AccountingEventRule.CreatedBy" readonly>
+                            <label class="form-label fw-bold">Next Accounting Event</label>
+                            <input type="text" class="form-control" value="@(Model.AccountingEventRule.IsChainEntry ? Model.AccountingEventRule.AccountingEventRuleId : "Chain execution is not set")" readonly>
                         </div>
                     </fieldset>
                 </div>
@@ -45,8 +46,19 @@
                     <fieldset class="border p-3 rounded">
                         <legend class="w-auto text-primary">Accounting Entries: @Model.AccountingEventRule.EventName</legend>
 
+
                         @using (Html.BeginForm("", "", FormMethod.Post, new { @id = "manualEntryForm" }))
                         {
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Transaction Reference</label>
+                                <input type="text" class="form-control" id="Reference" value="" readonly>
+                            </div>
+                            <input type="hidden" class="form-control" id="AccountingEventId" value="@Model.AccountingEventRule.Id" readonly>
+                            if (Convert.ToBoolean(ViewBag.IsAuthourized) == false)
+                            {
+                                @Html.Partial("_GeneralErrorDiv")
+                            }
+
                             <table id="accountingRuleTable" class="table table-bordered">
                                 <thead class="table-dark text-center">
                                     <tr>
@@ -61,7 +73,7 @@
                                         foreach (var rule in Model.AccountingEventRule.AccountingRules)
                                         {
                                             <tr>
-                                                <td>@rule.MFI_ChartOfAccountId</td>
+                                                <td class="accountDesc">@rule.MFI_ChartOfAccountId</td>
                                                 <td>
                                                     @if (rule.BookingDirection.ToLower() == "debit")
                                                     {
@@ -123,6 +135,5 @@
 </div>
 
 @section Scripts { @Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/main.js/AutoJournalEntryxxx.js"></script>
- 
+<script src="~/Scripts/Js/main.js/StaticAutomatedJournalEntry.js"></script>
 }

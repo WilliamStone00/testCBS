@@ -18,6 +18,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Old_AccountNumber { get; set; }
         public string New_AccountNumber { get; set; }
         public bool IsHeadOfficeAccount { get; set; }
+        public string TempData { get; set; }
     }
 
 
@@ -50,5 +51,6 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string PositionNumber { get;   set; }
         public string Description { get;   set; }
         public object GeneralRepresentation { get;   set; }
+        public string TempData { get; set; }
     }
 }

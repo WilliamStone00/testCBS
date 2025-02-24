@@ -319,7 +319,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 var acc = account;
                 name = $"{acc.AccountNumber}-{acc.AccountName}";
-                balance = acc.CurrentBalance;
+                balance = acc.CurrentBalance.ToString();
                 Id = acc.Id;
             }
             else
@@ -481,7 +481,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 model.BankCashOut.TransactionType = "CASH OUT";
                 model.BankCashOut.Id = BaseUtilities.GenerateInsuranceUniqueNumber(15, "BCO");
-                model.BankCashOut.Balance = (await _AccountServices.GetAccount(model.BankCashOut.FromAccountId)).CurrentBalance;
+                model.BankCashOut.Balance = (await _AccountServices.GetAccount(model.BankCashOut.FromAccountId)).CurrentBalance.ToString();
         
                 var accountList = (await _AccountServices.GetAccountInfoByEventCode(new EventRequest { EventCode = "Bank_To_Transit", ToBranchCode = _AccountServices.GetBranchCode(), ToBranchId = _AccountServices.GetBranchID() }));
                 var fromAccount = accountList.Where(x => x.Type.ToLower() == "source").FirstOrDefault();
@@ -736,7 +736,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
                 cashDemandDataEntity.CashReplenimentRequestdto.HasAccount56 = await CheckIfBranchHasBankAccountAsync(_AccountServices.GetBranchID());
                 cashDemandDataEntity.CashReplenimentRequestdto.ApprovedMessage = $"I {_AccountServices.GetUserFullName()} Approved you withdraw XAF {cashDemandDataEntity.CashReplenimentRequestdto.AmountRequested.ToString("N")} from the bank in favour" +
-                                                                                 $" of Vault of {(await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name}";
+                    $" of Vault of {(await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name}";
                 var branch = (await branchServices.GetBranches()).Where(po => po.Id.Equals(OperationEventAttribute.BranchId)).FirstOrDefault();
                 cashDemandDataEntity.CashReplenimentRequestdto.BranchOffice = branch.Name;
                 if (branchServices.IsHeadOffice() == false)
