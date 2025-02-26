@@ -57,6 +57,9 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public string LoanType { get; set; }
         public decimal StandingOrderAmount { get; set; }
         public string StandingOrderStatement { get; set; }
+        public string LoanProductId { get; set; }
+        public string LoanProductName { get; set; }
+        public bool IsOnldLoan { get; set; }
         public SalaryAnalysisResultSummary SalaryAnalysisResult { get; set; }
     }
     public class SalaryAnalysisCommand
