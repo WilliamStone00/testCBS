@@ -137,6 +137,9 @@
                                 <th>Shares</th>
                                 <th>P.Shares</th> <!-- ✅ Preference Shares -->
                                 <th>L.Rep</th> <!-- ✅ Loan Repayment -->
+                                <th>L.C</th> <!-- ✅ Loan Repayment -->
+                                <th>L.INT</th> <!-- ✅ Loan Repayment -->
+                                <th>L.VAT</th> <!-- ✅ Loan Repayment -->
                                 <th>Charges</th> <!-- ✅ NEW: Charges Added -->
                                 <th>Salary</th> <!-- ✅ Salary remains after Charges -->
                                 <th>D.Status</th>
@@ -161,6 +164,9 @@
                                     <td>@salary.Shares.ToString("N1")</td>
                                     <td>@salary.PreferenceShares.ToString("N1")</td> <!-- ✅ Preference Shares -->
                                     <td>@salary.TotalLoanRepayment.ToString("N1")</td> <!-- ✅ Loan Repayment -->
+                                    <td>@salary.LoanCapital.ToString("N1")</td> <!-- ✅ Loan Repayment -->
+                                    <td>@salary.LoanInterest.ToString("N1")</td> <!-- ✅ Loan Repayment -->
+                                    <td>@salary.VAT.ToString("N1")</td> <!-- ✅ Loan Repayment -->
                                     <td>@salary.Charges.ToString("N1")</td> <!-- ✅ NEW: Charges Added -->
                                     <td>@salary.RemainingSalary.ToString("N1")</td> <!-- ✅ Salary remains after Charges -->
                                     <td>

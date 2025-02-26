@@ -234,7 +234,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
 
                 // Define file path and branch name
-                string branchName = fileUpload?.BranchName ?? "Unknown Branch";
+                string branchName = Session["BranchName"].ToString();
                 string fileName = $"SalaryAnalysis_{branchName}_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
                 string directoryPath = Server.MapPath("~/TempFiles");
 

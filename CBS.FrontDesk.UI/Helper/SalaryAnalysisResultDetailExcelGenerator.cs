@@ -138,6 +138,7 @@ namespace CBS.FrontDesk.UI.Helper
                 // **Empty Row after Summary Table**
                 int headersRow = summaryStartRow + summaryLabels.Length + 2;
 
+               
                 // ======================= HEADERS =======================
                 var headers = new[]
                 {
@@ -155,6 +156,16 @@ namespace CBS.FrontDesk.UI.Helper
                     worksheet.Cell(headersRow, i + 1).Style.Fill.BackgroundColor = XLColor.LightGray;
                     worksheet.Cell(headersRow, i + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     worksheet.Cell(headersRow, i + 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+
+                    // Lock all cells except VAT (column 13), Interest (column 12), and Capital (column 11)
+                    if (i != 10 && i != 11 && i != 12)
+                    {
+                        worksheet.Column(i + 1).Style.Protection.Locked = true;
+                    }
+                    else
+                    {
+                        worksheet.Column(i + 1).Style.Protection.Locked = false;
+                    }
                 }
 
                 // ======================= DATA =======================
@@ -171,9 +182,9 @@ namespace CBS.FrontDesk.UI.Helper
                     worksheet.Cell(currentRow, 8).Value = detail.Shares;
                     worksheet.Cell(currentRow, 9).Value = detail.PreferenceShares;
                     worksheet.Cell(currentRow, 10).Value = detail.TotalLoanRepayment;
-                    worksheet.Cell(currentRow, 11).Value = detail.LoanCapital;
-                    worksheet.Cell(currentRow, 12).Value = detail.LoanInterest;
-                    worksheet.Cell(currentRow, 13).Value = detail.VAT;
+                    worksheet.Cell(currentRow, 11).Value = detail.LoanCapital;  // Editable
+                    worksheet.Cell(currentRow, 12).Value = detail.LoanInterest; // Editable
+                    worksheet.Cell(currentRow, 13).Value = detail.VAT;          // Editable
                     worksheet.Cell(currentRow, 14).Value = detail.Charges;
                     worksheet.Cell(currentRow, 15).Value = detail.RemainingSalary;
                     worksheet.Cell(currentRow, 16).Value = detail.LoanId;
@@ -184,26 +195,33 @@ namespace CBS.FrontDesk.UI.Helper
                     worksheet.Cell(currentRow, 21).Value = detail.LoanProductName;
                     worksheet.Cell(currentRow, 22).Value = detail.LoanProductId;
 
-                    for (int col = 1; col <= 22; col++) // Now we have 22 columns
+                    // Apply border and font styles
+                    for (int col = 1; col <= 22; col++)
                     {
                         worksheet.Cell(currentRow, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                        worksheet.Cell(currentRow, col).Style.Border.OutsideBorderColor = XLColor.Black;
                         worksheet.Cell(currentRow, col).Style.Font.FontName = "Bahnschrift Light";
                     }
 
                     // Format currency values
-                    for (int col = 4; col <= 15; col++)  // Format the necessary columns
+                    for (int col = 4; col <= 15; col++)
                     {
                         worksheet.Cell(currentRow, col).Style.NumberFormat.Format = "#,##0.0";
                     }
 
-                    // Format Standing Order as currency (Column 5)
-                    worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0.0";
+                    // Highlight row in red if any value is negative
+                    for (int col = 4; col <= 15; col++)
+                    {
+                        if (worksheet.Cell(currentRow, col).GetDouble() < 0)
+                        {
+                            worksheet.Row(currentRow).Style.Fill.BackgroundColor = XLColor.Red;
+                            break;
+                        }
+                    }
 
                     currentRow++;
                 }
-                //.Style.Font.FontName = "Bahnschrift Light";
-                // Footer
+
+                // ======================= FOOTER =======================
                 worksheet.Cell(currentRow, 1).Value = "TOTAL";
                 worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
                 worksheet.Cell(currentRow, 1).Style.Font.FontName = "Bahnschrift Light";
@@ -211,17 +229,15 @@ namespace CBS.FrontDesk.UI.Helper
                 worksheet.Range(currentRow, 1, currentRow, 3).Merge();
                 worksheet.Range(currentRow, 1, currentRow, 3).Style.Fill.BackgroundColor = XLColor.LightGray;
                 worksheet.Range(currentRow, 1, currentRow, 3).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                worksheet.Range(currentRow, 1, currentRow, 3).Style.Border.OutsideBorderColor = XLColor.Black;
 
-                for (int i = 4; i <= 22; i++) // Total calculations for numeric columns
+                for (int i = 4; i <= 22; i++)
                 {
-                    worksheet.Cell(currentRow, i).FormulaA1 = $"SUM({worksheet.Cell(6, i).Address}:{worksheet.Cell(currentRow - 1, i).Address})";
+                    worksheet.Cell(currentRow, i).FormulaA1 = $"SUM({worksheet.Cell(7, i).Address}:{worksheet.Cell(currentRow - 1, i).Address})";
                     worksheet.Cell(currentRow, i).Style.Font.Bold = true;
                     worksheet.Cell(currentRow, i).Style.Font.FontName = "Bahnschrift Light";
                     worksheet.Cell(currentRow, i).Style.NumberFormat.Format = "#,##0.0";
                     worksheet.Cell(currentRow, i).Style.Fill.BackgroundColor = XLColor.LightGray;
                     worksheet.Cell(currentRow, i).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                    worksheet.Cell(currentRow, i).Style.Border.OutsideBorderColor = XLColor.Black;
                 }
 
                 currentRow++;
