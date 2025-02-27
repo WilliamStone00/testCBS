@@ -131,12 +131,14 @@
 
             const newRow = `
                 <tr">
-                    <td width="75%" class="data-old-id">
+                    <td width="50%" class="data-old-id">
                         <select class="form-control form-control-sm editable-dropdown">${chartOfAccountOptions}</select>
                     </td>
                     <td width="25%" class="data-old-id">
                         <select class="form-control form-control-sm editable-dropdown">${bookingDirectionOptions}</select>
-                    </td>
+                    </td> 
+                       <td width="25%" class="data-old-id" id=""><button type="button" id="deleteEntry" class="btn btn-sm btn-danger delete-entry m-4 right">
+                         <i class="fas fa-minu-circle"></i> Remove</button></td>
                 </tr>
             `;
 

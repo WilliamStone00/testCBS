@@ -171,7 +171,27 @@ namespace CBS.FrontDesk.Data.Message
             Executionfailed = $"Execution failed;";
             ExecutionfailedWithError = $"Execution failed, Error:";
         }
-        
+        public static ExecutionMessages StaticGetExecutionMessages(object data, bool Result, string ObjectName, MessagesResults MessagesResults, ExecutionProcessOption ExecutionProcessOption, string messageStatus, Exception ex = null, string errorMessage = null, string SessionID = null)
+        {
+            ExecutionMessages ExecutionMessage = new ExecutionMessages();
+            ExecutionMessage.Result = Result;
+            ExecutionMessage.ObjectName = ObjectName;
+            ExecutionMessage.MessagesResults = MessagesResults;
+            ExecutionMessage.ProcessOption = ExecutionProcessOption;
+            ExecutionMessage.MessageStatus = messageStatus;
+            ExecutionMessage.Data = data;
+
+            if (ex != null)
+            {
+                ExecutionMessage.MessageString = ex.Message.ToString();
+            }
+            else
+            {
+                ExecutionMessage.MessageString = errorMessage;
+            }
+            ExecutionMessage.SessionID = SessionID;
+            return ExecutionMessage;
+        }
     }
 
     public class Messaging

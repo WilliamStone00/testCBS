@@ -2615,6 +2615,7 @@
     <Content Include="Scripts\Js\main.js\NotificationMonitor.js" />
     <Content Include="Scripts\Js\main.js\Notifications.js" />
     <Content Include="Scripts\Js\main.js\Notification_checker.js" />
+    <Content Include="Scripts\Js\main.js\UpdateAccountingRules.js" />
     <Content Include="Scripts\Js\SalaryManagement\StandingOrder\StandingOrder.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Views\Error\Error.cshtml" />
@@ -3450,6 +3451,7 @@
     <Content Include="Views\SalaryExecution\_FileUploadData.cshtml" />
     <Content Include="Views\SalaryExecution\_SalaryDetailsData.cshtml" />
     <Content Include="Views\SalaryExecution\_SalaryUploadForm.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\EventEntrySystemInfo - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
