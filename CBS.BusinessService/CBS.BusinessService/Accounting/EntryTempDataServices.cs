@@ -41,7 +41,7 @@ namespace CBS.BusinessService.Accounting
                 // Make an API call to create an individual profile
 
 
-                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.Post_AccountingEntry_Entries, EntryTempData.ConvertToAccountingEntryPayloadCommand( model));
+                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.Post_AccountingEntry_Entries, EntryTempData.ConvertToAccountingEntryPayloadCommand( model,GetBranchID()));
                 if (response.IsSuccess)
                 {
                     // Successful creation

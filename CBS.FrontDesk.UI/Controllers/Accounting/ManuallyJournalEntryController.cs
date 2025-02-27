@@ -28,6 +28,7 @@ using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.Data.Entity.Config;
 using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -537,6 +538,24 @@ namespace CBS.FrontDesk.UI.Controllers
 
         }
 
+        [HttpGet] //ExecuteAutomatedEntry
+        public async Task<ActionResult> GetAccountingRules()
+        {
+            try
+            {
+              var  model = (AccountingEventRule) this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()] ;
+                return Json(model.AccountingRules, JsonRequestBehavior.AllowGet);
+
+         
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred" });
+            }
+
+
+        }
+
         private List<AccountingEventRule.AccountingRule> SetAccountRuleId(AccountingEventRule model)
         {
             List<AccountingEventRule.AccountingRule> list = new List<AccountingEventRule.AccountingRule>();
@@ -610,7 +629,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 }
                 else
                 {
-                    if (model.LevelOfExecution.ToUpper()== LevelOfExecution.HEAD_OFFICE.ToString())
+                    if (model.LevelOfExecution.ToUpper()== LevelOfExecution.HEAD_OFFICE.ToString() && _AccountingRuleServices.IsHeadOffice())
                     {
                         var tempData = model;
                         ViewBag.IsAuthourized = true;
@@ -899,13 +918,60 @@ namespace CBS.FrontDesk.UI.Controllers
         }
 
         [HttpPost]
+ 
         public async Task<ActionResult> SubmitManualEntry(ManualJournalEntryRequest model)
         {
-          var AccountingEventRule=(AccountingEventRule)this.HttpContext.Session["EventEntrySystemInfo" + this.HttpContext.Session.SessionID + _AccountingRuleServices.GetUserID()] ;
+            try
+            {
+                // Retrieve AccountingEventRule from session
+                var sessionKey = "EventEntrySystemInfo" + HttpContext.Session.SessionID + _AccountingRuleServices.GetUserID();
+                var accountingEventRule = HttpContext.Session[sessionKey] as AccountingEventRule;
 
-                return Json(await _Service.PostAutomatedEntries(model, AccountingEventRule)) ;
+                // Validate if session object exists
+                if (accountingEventRule == null)
+                {
+                    return Json(ExecutionMessages.StaticGetExecutionMessages(model, false,
+                        "Session data not found or expired. Please re-authenticate.",
+                        MessagesResults.Failed, ExecutionProcessOption.DefaultFailedMessages,
+                        SystemMessageStatus.Failed.ToString(), null, "Session data is missing."));
+                }
 
+            
+               
+                // Determine processing path based on branch count
+                bool isBatchProcessingRequired = accountingEventRule.ListOfEligibleBranchId.Count() > 8;
+
+                // Process entries based on rule
+                var response = await _Service.PostAutomatedEntries(model, accountingEventRule);
+
+                if (isBatchProcessingRequired)
+                {
+                    string message = "The size of data to be processed exceeds the amount required for real-time processing. " +
+                                     "Processing will continue as background processes.";
+
+                    // Log batch processing decision
+                  
+                    return Json(ExecutionMessages.StaticGetExecutionMessages(model, false, message,
+                        MessagesResults.Failed, ExecutionProcessOption.DefaultFailedMessages,
+                        SystemMessageStatus.Failed.ToString(), null, message));
+                }
+
+                // Log successful processing
+               
+                return Json(ExecutionMessages.StaticGetExecutionMessages(response, true, response.MessageString,
+                    MessagesResults.Success, ExecutionProcessOption.InsertObject,
+                    SystemMessageStatus.Success.ToString(), null, response.MessageString));
+            }
+            catch (Exception ex)
+            {
+                // Log error
+       
+                return Json(ExecutionMessages.StaticGetExecutionMessages(model, false,
+                    "An error occurred while processing the request.", MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, ex.Message));
+            }
         }
+
         private async Task<Func<Task<ExecutionMessages>>> PostAccountingEntryActionAsync(string serviceOption, ManuallyJournalEntryDataSet model)
         {
 

@@ -76,7 +76,7 @@
                                                                            class="btn btn-sm btn-danger d-inline-flex align-items-center"
                                                                            target="_blank"
                                                                            title="Execute @d.EventName">
-                                                               
+
                                                                             <i class="fas fa-trash me-1"></i>
                                                                             <span>Delete</span>
                                                                         </a>
@@ -89,9 +89,16 @@
                                                     {
                                                         foreach (var d in Model.AccountingEventRules)
                                                         {
-                                                            <tr>
-                                                                <td id="@d.Id-RuleName" style="width:75%">@d.EventName</td>
-                                                                <td style="width:25%">
+                                                            <tr class="align-middle">
+                                                                <td id="@d.Id-RuleName" class="w-60 text-start">@d.EventName</td>
+                                                                <td class="w-15 text-center">
+                                                                    <span class="badge bg-dark-subtle fs-6 d-inline-flex align-items-center gap-1">
+                                                                        <i class="fas fa-money-bill-wave"></i>
+                                                                        <span>@d.LevelOfExecution</span>
+                                                                        <i class="fas fa-money-bill-wave"></i>
+                                                                    </span>
+                                                                </td>
+                                                                <td class="w-25 text-end">
                                                                     <div class="d-flex justify-content-end gap-2">
 
                                                                         <a href="/ManuallyJournalEntry/ExecuteAutomatedEntry?Key=@d.Id"
@@ -101,6 +108,8 @@
                                                                             <i class="fas fa-play me-1"></i>
                                                                             <span>Execute</span>
                                                                         </a>
+
+                                                                      
                                                                     </div>
                                                                 </td>
                                                             </tr>

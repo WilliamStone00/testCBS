@@ -103,7 +103,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string BranchId { get; set; }
         public string ExternalBranchId { get; set; }
         public bool IsInterBranchTransaction { get; set; }
-        public static AccountingEntryPayloadCommand ConvertToAccountingEntryPayloadCommand(List<EntryTempData> entries)
+        public static AccountingEntryPayloadCommand ConvertToAccountingEntryPayloadCommand(List<EntryTempData> entries,string branchId)
         {
             List<EntryTempDatas> accountingEntries = new List<EntryTempDatas>();
             foreach (var Item in entries)
@@ -116,16 +116,26 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                     AccountNumber = Item.AccountNumber,
                     AccountingEventId = Item.AccountingEventId,
                     BookingDirection = Item.BookingDirection,
-
+                   BranchId = branchId,
                     Amount = Convert.ToDecimal(Item.Amount),
-                    AccountBalance = Item.AccountBalance,
+                    AccountBalance =  Item.AccountBalance??"0",
                     Description = Item.Description,
-
+                    ExternalBranchId = branchId,
                     Reference = Item.Reference,
 
                 });
             }
-            return new AccountingEntryPayloadCommand { EntryTempDatas = accountingEntries };
+            return new AccountingEntryPayloadCommand
+            { 
+                EntryTempDatas = accountingEntries, 
+                BranchId = branchId,
+                ExternalBranchId = branchId,
+                AccountingEventRuleId = null, 
+                IsDoubleValidationNeeded = true,
+                IsInterBranchTransaction = false,
+                IsSystem = false,
+                ListOfBranchIds = new List<string> { branchId}
+            };
         }
 
 
@@ -152,11 +162,18 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string AccountingEventId { get; set; } = "MANUAL USER";
         public string Reference { get; set; }
         public string BranchId { get; set; }
+        public string ExternalBranchId { get; set; }
     }
     public class AccountingEntryPayloadCommand
     {
         public List<EntryTempDatas> EntryTempDatas { get; set; }
-
+        public bool IsDoubleValidationNeeded { get; set; }  
+        public bool IsSystem { get; set; }
+        public string BranchId { get; set; }
+        public string AccountingEventRuleId { get; set; }
+        public List<string> ListOfBranchIds { get; set; }
+        public string ExternalBranchId { get; set; }
+        public bool? IsInterBranchTransaction { get; set; }
     }
     public class EventEntryResponse
     {
