@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
+    public class AccountEventRule
+    {
+        public string Id { get; set; }
+        public string MFI_ChartOfAccountId { get; set; }
+        public string BookingDirection { get; set; }
+    }
     public class AccountingRule
     {
         public string Id { get; set; }
@@ -14,6 +20,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string EventName { get; set; }
         public string System_Id { get; set; }
         public string BookingDirection { get; set; }
+        public List<AccountEventRule> AccountingRules { get; set; } = new List<AccountEventRule>();
         public List<string> ListOfEligibleBranchId { get; set; }
         public bool IsValidationNeed { get; set; }
         public string MFI_ChartOfAccountId { get; set; }

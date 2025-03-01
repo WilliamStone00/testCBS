@@ -20,13 +20,14 @@ namespace CBS.BusinessService.Accounting
         private readonly ApiCallerHelper _accountingApiCallerHelper;
         //private List<Currency> _currencies;
         private BranchServices _branchService;
-
+        public ChartOfAccountManagementPositionService _chartofaccountService { get; }
         private AccountingServices _accountServices { get; set; }
         public EntryTempDataServices()
         {
             _accountingApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
             _accountServices = new AccountingServices();
             _branchService = new BranchServices();
+            _chartofaccountService = new ChartOfAccountManagementPositionService();
         }
         //public List<Currency> Currencies()
         //{
@@ -242,12 +243,13 @@ namespace CBS.BusinessService.Accounting
             string message = "";
             List<EntryTempData> EntryTempDatas = new List<EntryTempData>() { };
             var branchAccounts = await _accountServices.GetAllAccountForABranch(this.GetBranchID());
+            var chartOfAccountMps= await _chartofaccountService.GetChartOfAccountManagementPositions();
             var collection = ManualJournalEntryRequest.ConvertToAccountModelData(model);
             try
             {//PostAccountingEntry(List<EntryTempData> model)
                 foreach (var item in collection)
                 {
-                    var accountItem = _accountServices.GetAccountItemForBranch(branchAccounts, item);
+                    var accountItem = await _accountServices.GetAccountItemForBranch(branchAccounts, chartOfAccountMps.ToList(), item);
                     if (await _accountServices.CheckAccountBalance(accountItem, Convert.ToDecimal(item.Amount), _accountServices.GetOperationType(item)))
                     {
                         EntryTempDatas.Add(new EntryTempData

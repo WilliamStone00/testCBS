@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.Accounting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,9 +39,18 @@ namespace CBS.FrontDesk.Data
         public string AccountNumberManagementPosition { get; set; }
         public string TempData { get; set; }
         public bool IsNormalCreation { get; set; }
+        public string OwnerBranchCode { get; set; }
+        public string LiaisonBranchCode { get; set; }
     }
 
+    public class AccountResponseDto
+    {
+        public string Id { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
 
+
+    }
     public class AccountDto
     {
         //public string BranchName { get; set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,14 +29,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             {
                 EventName = model.AccountingRules[0].RuleName,
                 AccountingRules = BuildRequestItems(model.AccountingRules),
-                IsDoubleValidationNeeded = ("True".Equals(model.AccountingRules[0].IsValidationNeed)),
+                IsDoubleValidationNeeded =model.AccountingRules[0].IsValidationNeed,
                 LevelOfExecution = model.AccountingRules[0].LevelOfExecution,
                 EntryType = model.AccountingRules[0].EntryType,
                 ListOfEligibleBranchId = model.AccountingRules[0].ListOfEligibleBranchId,
                 AccountingEventRuleId = model.AccountingRules[0].AccountingEventRuleId,
                 Description = model.AccountingRules[0].Description,
-                IsChainEntry = ("True".Equals(model.AccountingRules[0].IsValidationNeed)),
-                IsInterBranchTransaction = ("TRUE".Equals(model.AccountingRules[0].IsInterBranchTransaction)),
+                IsChainEntry = model.AccountingRules[0].IsChainEntry,
+                IsInterBranchTransaction = model.AccountingRules[0].IsInterBranchTransaction,
                 Id = "XXXXXX"
             };
         }
@@ -229,6 +230,39 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             public string Id { get; set; }
             public string MFI_ChartOfAccountId { get; set; }
             public string BookingDirection { get; set; }
+            //public string System_Id { get; internal set; }
+        }
+   
+        public static AccountingEventRule BuildRequest(ManuallyJournalEntryDataSet model)
+        {
+            return new AccountingEventRule
+            {
+                EventName = model.AccountingRules[0].RuleName,
+                AccountingRules = BuildRequestItems(model.AccountingRules),
+                IsDoubleValidationNeeded = model.AccountingRules[0].IsValidationNeed,
+                LevelOfExecution = model.AccountingRules[0].LevelOfExecution,
+                EntryType = model.AccountingRules[0].EntryType,
+                ListOfEligibleBranchId = model.AccountingRules[0].ListOfEligibleBranchId,
+                AccountingEventRuleId = model.AccountingRules[0].AccountingEventRuleId,
+                Description = model.AccountingRules[0].Description,
+                IsChainEntry = model.AccountingRules[0].IsChainEntry,
+                IsInterBranchTransaction = model.AccountingRules[0].IsInterBranchTransaction,
+                Id = "XXXXXX"
+            };
+        }
+
+        private static List<AccountingEventRule.AccountingRule> BuildRequestItems(List<Accounting.AccountingRule> accountingRules)
+        {
+            List<AccountingEventRule.AccountingRule> listItems = new List<AccountingEventRule.AccountingRule>();
+            foreach (var accountingRule in accountingRules)
+            {
+              
+                accountingRule.MFI_ChartOfAccountId = accountingRule.MFI_ChartOfAccountId;
+                accountingRule.BookingDirection = accountingRule.BookingDirection;
+                accountingRule.Id = "";
+                listItems.Add(new AccountingEventRule.AccountingRule { BookingDirection=accountingRule.BookingDirection,MFI_ChartOfAccountId=accountingRule.MFI_ChartOfAccountId,Id=accountingRule.Id});
+            }
+            return listItems;
         }
     }
 
@@ -260,6 +294,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                         Id = splitItems[splitItems.Length - 1],
                         AccountName = splitItems[0] + " " + splitItems[1],
                         AccountNumber = splitItems[2],
+                        BranchCode = splitItems[2].Substring(splitItems[2].Length-3),
                         Amount = item.Credit > item.Debit ? item.Credit : item.Debit,
                         BookingDirection = item.Credit > item.Debit ? "CREDIT" : "DEBIT",
                         Description = model.Description,
@@ -297,6 +332,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Description { get; set; }
         public string Reference { get; set; }
         public string AccountingEventId { get; set; }
+        public string BranchCode { get; set; }
     }
 
     public class ManuallyJournalEntryDataSet

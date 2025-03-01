@@ -153,10 +153,8 @@ namespace CBS.FrontDesk.UI.Controllers
         private dynamic BuildIsInterBranchTransactionViewBag()
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-
-
-            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = "TRUE", Text = $"InterBranchTransaction" });
-            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = "FLASE", Text = $"Local" });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = "true", Text = $"InterBranchTransaction" });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = "false", Text = $"Local" });
             return selectListItems;
         }
 
@@ -235,7 +233,7 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 if (item.AccountNumber.Equals("451000"))
                 {
-                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = item.Id, Text = $"{item.Description} - {item.AccountNumber}{item.PositionNumber}-{item.TempData}" });
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = item.Id, Text = $"{item.Description} - {item.AccountNumber}{item.PositionNumber}-{item.Id}" });
 
                 }
                 else
@@ -295,12 +293,14 @@ namespace CBS.FrontDesk.UI.Controllers
 
         private Task<List<System.Web.WebPages.Html.SelectListItem>> GetDoubbleEntryValidation()
         {
-            var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "Doubble validation is mandatory", Value = "True" }, new System.Web.WebPages.Html.SelectListItem { Text = "Doubble validation is NOT mandatory", Value = "False" } }.ToList();
+            var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[] 
+            { new System.Web.WebPages.Html.SelectListItem { Text = "Doubble validation is mandatory", Value = "true" }, 
+                new System.Web.WebPages.Html.SelectListItem { Text = "Doubble validation is NOT mandatory", Value = "false" } }.ToList();
             return Task.FromResult(doubbleEntryValidations);
         }
         private Task<List<System.Web.WebPages.Html.SelectListItem>> GetEntrySystem()
         {
-            var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "Chain Entry", Value = "True" }, new System.Web.WebPages.Html.SelectListItem { Text = "Not Chain Entry", Value = "False" } }.ToList();
+            var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "Chain Entry", Value = "true" }, new System.Web.WebPages.Html.SelectListItem { Text = "Not Chain Entry", Value = "false" } }.ToList();
             return Task.FromResult(doubbleEntryValidations);
         }
         private dynamic BuildMenuViewBag(IEnumerable<Data.Account> debitAccounts)
@@ -376,12 +376,12 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         public async Task<ActionResult> MultipleJournalEntryConfiguration()
         {
-           await GetList();
+           
 
             try
             {
-              
-      
+                await GetList();
+
                 return View(new ManuallyJournalEntryDataSet { });
             }
             catch (Exception ex)
@@ -833,15 +833,24 @@ namespace CBS.FrontDesk.UI.Controllers
         public async Task<ActionResult> AddOrUpdate(ManuallyJournalEntryDataSet model)
         {
             Func<Task<ExecutionMessages>> serviceAction = null;
-
-            if (model.ServiceOption == "CreateAccountingEntries")
+            if (model.Action == "insert")
             {
-               
-                    
-
-                    serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
-              
+                serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
             }
+            else
+            {
+
+                serviceAction = await GetUpdateServiceAction(model.ServiceOption, model);
+            }
+            //if (model.ServiceOption == "CreateAccountingEntries")
+            //{
+            //        serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
+            //}
+            //else if (model.ServiceOption == "accountingEventRule")
+            //{
+            //    AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
+            //    serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
+            //}
            
 
             if (serviceAction != null)
@@ -950,10 +959,12 @@ namespace CBS.FrontDesk.UI.Controllers
                                      "Processing will continue as background processes.";
 
                     // Log batch processing decision
-                  
-                    return Json(ExecutionMessages.StaticGetExecutionMessages(model, false, message,
-                        MessagesResults.Failed, ExecutionProcessOption.DefaultFailedMessages,
-                        SystemMessageStatus.Failed.ToString(), null, message));
+                    return Json(ExecutionMessages.StaticGetExecutionMessages(response, true, response.MessageString,
+            MessagesResults.Success, ExecutionProcessOption.InsertObject,
+            SystemMessageStatus.Success.ToString(), null, response.MessageString));
+                    //return Json(ExecutionMessages.StaticGetExecutionMessages(model, false, message,
+                    //    MessagesResults.Failed, ExecutionProcessOption.DefaultFailedMessages,
+                    //    SystemMessageStatus.Failed.ToString(), null, message));
                 }
 
                 // Log successful processing
@@ -979,23 +990,134 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 return () => _Service.Create(model.EntryTempDatas);
             }
-            
+            else if (model.ServiceOption == "accountingEventRule")
+            {
+                if (true)
+                {
+                    AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
+                    return () => _AccountingRuleServices.Creating(modelRequest); 
+                }
+             
+            }
             else
             {
                 return null;
             }
         }
-        private Func<Task<ExecutionMessages>> GetUpdateServiceAction(string serviceOption, ManuallyJournalEntryDataSet model)
+
+        private async Task<Func<Task<ExecutionMessages>>> GetInsertServiceActionAsync(string serviceOption, ManuallyJournalEntryDataSet model)
         {
-            if (serviceOption == "Create")
+
+            if (serviceOption == "CreateAccountingEntries")
             {
-                return () => _Service.Update(model.EntryTempData);
+
+                return () => _Service.Create(model.EntryTempDatas);
+            }
+            else if (model.ServiceOption == "accountingEventRule")
+            {
+                AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
+                return () => _AccountingRuleServices.Creating(modelRequest);
+
             }
             else
             {
                 return null;
             }
         }
+
+
+        private async Task<Func<Task<ExecutionMessages>>> GetUpdateServiceAction(string serviceOption, ManuallyJournalEntryDataSet model)
+        {
+            if (serviceOption == "CreateAccountingEntries")
+            {
+
+                return () => _Service.Create(model.EntryTempDatas);
+            }
+            else if (serviceOption == "accountingEventRule")
+            {
+
+                AccountingEventRule modelRequest = AccountingEventRule.BuildRequest(model);
+                var objec=   (AccountingEventRule)this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()] ;
+                modelRequest.Id = objec.Id;
+                return () => _AccountingRuleServices.Update(modelRequest);
+
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        //[HttpPost]
+        //public async Task<ActionResult> AddOrUpdate(ManuallyJournalEntryDataSet model)
+        //{
+
+        //    Func<Task<ExecutionMessages>> serviceAction = null;
+        //    if (model.ServiceOption == "CreateAccountingEntries")
+        //    {
+        //        if (model.Action == "insert")
+        //        {
+        //            serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+        //        }
+        //        else
+        //        {
+
+        //            serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+        //        }
+        //    }
+        //    else if (model.ServiceOption == "accountingEventRule")
+        //    {
+        //        if (model.Action == "insert")
+        //        {
+        //            serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+        //        }
+        //        else
+        //        {
+
+        //            serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+        //        }
+        //    }
+
+
+        //    if (model.ServiceOption == "CreateAccountingEntries")
+        //    {
+
+
+
+        //        serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
+
+        //    }
+        //    else if (model.ServiceOption == "accountingEventRule")
+        //    {
+        //        AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
+        //        serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
+        //    }
+
+
+        //    if (serviceAction != null)
+        //    {
+        //        try
+        //        {
+        //            var data = await serviceAction();
+        //            if (data.Result)
+        //            {
+        //                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+        //            }
+        //            else
+        //            {
+        //                return Json(new { success = false, status = false, message = data.MessageString });
+        //            }
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+        //        }
+        //    }
+
+        //    return Json(new { success = false, status = false, message = "Invalid option selected." });
+        //}
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
             await GetList();
@@ -1063,6 +1185,57 @@ namespace CBS.FrontDesk.UI.Controllers
 
 
             }
+            else if (serviceOption == "accountingEventRule")
+            {
+       
+                if (path == "list")
+                {
+                    var model = new ManuallyJournalEntryDataSet();
+                    model.AccountingRuleDtos = new List<AccountingRuleDtos>();
+                   
+                        var ResponseList = await _AccountingRuleServices.GetAccountingRules();
+                        model.AccountingEventRules = ResponseList.ToList();
+               
+                   
+                    return PartialView(partialView, model);
+
+                }
+                else if (path == "new")
+                {
+                  
+                    return PartialView(partialView, new ManuallyJournalEntryDataSet { });
+                }
+                else
+                {
+                    try
+                    {
+                        var model = await _AccountingRuleServices.GetAccountingRuleById(key);
+                        this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()] = model;
+
+
+                        var Branches = GetSetOfBranchesActivatedForEvents((await _branchService.GetBranches()).ToList(), model.ListOfEligibleBranchId);
+                        // model.AccountingRules = GetSetOfAccountsUsed((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), model.AccountingRules);        
+                        model.AccountingRules = SetAccountRuleId(model);
+                        ViewBag.ListOfEligibleBranchId = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
+                        ViewBag.EntryTypes = BuildEntryTypesViewBag();
+                        ViewBag.LevelOfExecution = BuildLevelOfExecutionViewBag();
+                        ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
+                        ViewBag.IsChainEntry = await GetEntrySystem();
+                        ViewBag.IsInterBranchTransaction = BuildIsInterBranchTransactionViewBag();
+                        ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
+                        AccountingRule AccountingRule = SetAccountingRules(model);
+                        return PartialView(partialView,new ManuallyJournalEntryDataSet { AccountingRule = AccountingRule });
+                    }
+                    catch (Exception ex)
+                    {
+                        throw (ex);
+                    }
+
+
+                }
+
+
+            }
             else if (serviceOption == "EntryDescription")
             {
                 var data = await _Service.GetAllEntriesForJournalEntryReference(key);
@@ -1071,6 +1244,37 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             return null;
         }
+
+        private AccountingRule SetAccountingRules(AccountingEventRule model)
+        {
+            AccountingRule accountingRule = new AccountingRule();
+            accountingRule.Id = model.Id;
+            accountingRule.RuleName = model.EventName;
+            accountingRule.IsChainEntry = model.IsChainEntry;
+            accountingRule.ListOfEligibleBranchId = model.ListOfEligibleBranchId;
+            accountingRule.LevelOfExecution = model.LevelOfExecution;
+            accountingRule.Description = model.Description;
+            accountingRule.AccountingRules = GetAllAccountingRules(model.AccountingRules);
+            accountingRule.IsChainEntry = model.IsChainEntry;
+            accountingRule.AccountingEventRuleId = model.AccountingEventRuleId;
+            accountingRule.IsValidationNeed = model.IsDoubleValidationNeeded;
+            accountingRule.IsInterBranchTransaction = model.IsInterBranchTransaction;
+            return accountingRule;
+        }
+
+        private List<AccountEventRule> GetAllAccountingRules(List<AccountingEventRule.AccountingRule> accountingRules)
+        {
+            var list = from item in accountingRules
+                       select new AccountEventRule
+                       {
+                           Id= item.Id,
+                           MFI_ChartOfAccountId=item.MFI_ChartOfAccountId,
+                           BookingDirection= item.BookingDirection
+
+                       };
+            return list.Any() ? list.ToList() : new List<AccountEventRule>();
+        }
+
         public List<OperationEventAttributeDto> ConvertToOperationEventAttributeDtos(List<OperationEventAttribute> attributes, List<OperationEvent> events)
         {
             return (from a in attributes

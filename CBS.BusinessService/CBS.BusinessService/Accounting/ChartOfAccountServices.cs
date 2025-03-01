@@ -90,7 +90,7 @@ namespace CBS.BusinessService.Accounting
                     if (couApiResponse.IsSuccess)
                     {
                       
-                        couApiResponse.ApiResponseData.Data.RemoveAll(x => x.LabelEn.Contains(x.AccountNumber));
+                    //    couApiResponse.ApiResponseData.Data.RemoveAll(x => x.LabelEn.Contains(x.AccountNumber));
                         return couApiResponse.ApiResponseData.Data;
                     }
                     return new List<ChartOfAccount>();

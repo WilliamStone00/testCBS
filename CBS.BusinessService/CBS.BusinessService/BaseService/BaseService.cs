@@ -106,8 +106,8 @@ namespace BusinessServices
             MainBank = "MFI";
             StringCurrentMonth = CurrentDate.ToString("MMMM");
             InCurrentMonth = CurrentDate.Month;
-            StringCurrentDay = CurrentDate.DayOfWeek.ToString();
-            InCurrentMonth = CurrentDate.Day;
+            //StringCurrentDay = CurrentDate.DayOfWeek.ToString();
+            //InCurrentMonth = CurrentDate.Day;
         }
         public string ToQueryString<T>(T obj)
         {

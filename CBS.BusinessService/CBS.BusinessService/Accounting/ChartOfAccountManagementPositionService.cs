@@ -31,9 +31,9 @@ namespace CBS.BusinessService.Accounting
         public ChartOfAccountManagementPositionService()
         {
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
-            this.BranchId = GetBranchID();
-            this.BankId = GetBankID();
-            this.OrganizationId = GetOrganizationID();
+            //this.BranchId = GetBranchID();
+            //this.BankId = GetBankID();
+            //this.OrganizationId = GetOrganizationID();
             _chartOfAccountServices = new ChartOfAccountServices();
             _accountingServices = new AccountingServices();
         }

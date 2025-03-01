@@ -20,8 +20,8 @@ namespace CBS.FrontDesk.Service
 
         public BaseApiServices()
         {
-            _BankAPIConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
-            _AccountingAPIConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
+            //_BankAPIConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
+            //_AccountingAPIConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
         }
 
         public async Task<IEnumerable<Branch>> GetAllBranchesByBankId(string Id)

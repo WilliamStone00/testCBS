@@ -3452,6 +3452,9 @@
     <Content Include="Views\SalaryExecution\_SalaryDetailsData.cshtml" />
     <Content Include="Views\SalaryExecution\_SalaryUploadForm.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\EventEntrySystemInfo - Copy.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_CreateAccountingEventRule.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_ExecuteAutomatedEntry_Data.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_MultipleJournalEntryClientData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

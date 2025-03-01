@@ -26,30 +26,61 @@ $(document).ready(function () {
 
     function addRow(id = null, chartOfAccountId = '', bookingDirection = '') {
         $.ajax({
-            url: '/api/getChartOfAccounts',
+            url: '/ManuallyJournalEntry/GetAccountMFIChartOfAccount',
             type: 'GET',
             success: function (accounts) {
-                let options = accounts.map(coa => `<option value="${coa.Value}" ${coa.Value == chartOfAccountId ? 'selected' : ''}>${coa.Text}</option>`).join('');
+                let options = '';
+
+                // Check if accounts is an array and has map function
+                if (Array.isArray(accounts) && typeof accounts.map === 'function') {
+                    options = accounts.map(coa =>
+                        `<option value="${coa.Value}" ${coa.Value == chartOfAccountId ? 'selected' : ''}>${coa.Text}</option>`
+                    ).join('');
+                } else {
+                    // Handle case where accounts is not an array or doesn't have map
+                    // Convert to array if possible or process differently
+                    if (typeof accounts === 'object') {
+                        // If accounts is an object with data property that's an array
+                        if (Array.isArray(accounts.data)) {
+                            options = accounts.data.map(coa =>
+                                `<option value="${coa.Value}" ${coa.Value == chartOfAccountId ? 'selected' : ''}>${coa.Text}</option>`
+                            ).join('');
+                        } else {
+                            // If it's just an object, convert to array if possible
+                            const accountArray = Object.values(accounts);
+                            if (accountArray.length > 0) {
+                                options = accountArray.map(coa =>
+                                    `<option value="${coa.Value}" ${coa.Value == chartOfAccountId ? 'selected' : ''}>${coa.Text}</option>`
+                                ).join('');
+                            }
+                        }
+                    }
+                }
+
                 let row = `
-                        <tr data-id="${id}">
-                            <td>
-                                <select class="form-control">${options}</select>
-                            </td>
-                            <td>
-                                <select class="form-control">
-                                    <option value="Debit" ${bookingDirection == 'Debit' ? 'selected' : ''}>Debit</option>
-                                    <option value="Credit" ${bookingDirection == 'Credit' ? 'selected' : ''}>Credit</option>
-                                </select>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm delete-entry">
-                                    <i class="fas fa-minus-circle"></i> Remove
-                                </button>
-                            </td>
-                        </tr>`;
+                <tr data-id="${id}">
+                    <td>
+                        <select class="form-control">${options}</select>
+                    </td>
+                    <td>
+                        <select class="form-control">
+                            <option value="Debit" ${bookingDirection == 'Debit' ? 'selected' : ''}>Debit</option>
+                            <option value="Credit" ${bookingDirection == 'Credit' ? 'selected' : ''}>Credit</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm delete-entry">
+                            <i class="fas fa-minus-circle"></i> Remove
+                        </button>
+                    </td>
+                </tr>`;
                 $('#AccountingRulebasketTable tbody').append(row);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching chart of accounts:', error);
             }
         });
+    }
     }
 
     $('#addEntry').click(function () {
