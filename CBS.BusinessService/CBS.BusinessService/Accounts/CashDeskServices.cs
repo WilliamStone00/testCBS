@@ -878,7 +878,8 @@ namespace CBS.BusinessService.Accounts
                         Amount = remittance.Amount, // Handles 0 by default if not set in the Remittance object
                         CheckNumber = "N/A",
                         CheckName = "N/A",
-                        Fee = remittance.Fee
+                        IsPaid=remittance.Status=="Paid" ? true : false,
+                        Fee = remittance.Status=="Paid" ? 0 : remittance.Fee
                     },
                     BulkDeposits = BuidObject(accounts, remittance),
                     Customer = customer,
@@ -912,7 +913,7 @@ namespace CBS.BusinessService.Accounts
                                  Principal = loan.Principal,
                                  LoanAmount = loan.LoanAmount,
                                  InterestRate = loan.InterestRate,
-                                 Paid = loan.Paid, 
+                                 Paid = loan.Paid,
                                  Balance = loan.Balance,
                                  AccrualInterest = loan.AccrualInterest,
                                  Tax = loan.Tax,
@@ -1033,22 +1034,46 @@ namespace CBS.BusinessService.Accounts
         {
             if (accounts.Any())
             {
-                var selected = accounts.Select(a => new BulkDeposit
+
+                if (remittance.Status=="Paid")
                 {
-                    AccountNumber = a.AccountNumber,
-                    AccountType = remittance.RemittanceType,
-                    Amount = remittance.Amount,
-                    Balance = a == null ? 0 : a.Balance,
-                    currencyNotes = new CurrencyNotes(),
-                    CustomerId = a.CustomerId,
-                    Fee = remittance.Fee,
-                    Interest = 0,
-                    LoanId = null,
-                    Penalty = 0,
-                    Total = 0,
-                    RemittanceId=remittance.Id
-                }).ToList();
-                return selected;
+                    var selected = accounts.Select(a => new BulkDeposit
+                    {
+                        AccountNumber = a.AccountNumber,
+                        AccountType = remittance.RemittanceType,
+                        Amount = remittance.ChargeType!="Exclussive" ? remittance.Amount-remittance.Fee : remittance.Amount,
+                        Balance = a == null ? 0 : a.Balance,
+                        currencyNotes = new CurrencyNotes(),
+                        CustomerId = a.CustomerId,
+                        Fee = 0,
+                        Interest = 0,
+                        LoanId = null,
+                        Penalty = 0,
+                        Total = 0,
+                        RemittanceId=remittance.Id
+                    }).ToList();
+                    return selected;
+                }
+                else
+                {
+                    var selected = accounts.Select(a => new BulkDeposit
+                    {
+                        AccountNumber = a.AccountNumber,
+                        AccountType = remittance.RemittanceType,
+                        Amount = remittance.Amount,
+                        Balance = a == null ? 0 : a.Balance,
+                        currencyNotes = new CurrencyNotes(),
+                        CustomerId = a.CustomerId,
+                        Fee = remittance.Fee,
+                        Interest = 0,
+                        LoanId = null,
+                        Penalty = 0,
+                        Total = 0,
+                        RemittanceId=remittance.Id
+                    }).ToList();
+                    return selected;
+                }
+               
             }
             else
             {
@@ -1074,7 +1099,6 @@ namespace CBS.BusinessService.Accounts
             }
 
         }
-
 
         public async Task<SelectList> LoadMembersAccountByMemberReference(string customerid)
         {

@@ -61,9 +61,18 @@ namespace CBS.FrontDesk.UI.Controllers.RemittanceP
                         return PartialView("_DataNotFound", new CashDesk());
 
                     }
-                    ViewBag.Operation = path;
-                    cashDesk = await _cashDeskService.GetCashDeskRemittance(remittances.FirstOrDefault());
-                    return PartialView(partialView, cashDesk);
+                    if (remittances.FirstOrDefault().Status!="Paid")
+                    {
+                        ViewBag.Operation = path;
+                        cashDesk = await _cashDeskService.GetCashDeskRemittance(remittances.FirstOrDefault());
+                        return PartialView(partialView, cashDesk);
+                    }
+                    else
+                    {
+                        ViewBag.Operation = "cashout";
+                        cashDesk = await _cashDeskService.GetCashDeskRemittance(remittances.FirstOrDefault());
+                        return PartialView(partialView, cashDesk);
+                    }
                 }
                 if (path == "search")
                 {

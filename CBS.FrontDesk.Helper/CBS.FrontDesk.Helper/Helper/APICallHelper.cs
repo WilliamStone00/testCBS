@@ -519,6 +519,7 @@ namespace CBS.FrontDesk.Helper
         public static string GenerateAmortizationSchedule = "/api/LoanAmortization/Loan/Simulation";
         public static string Disbursed = "/api/v1/Loan/Disbursed";
         public static string GenerateOTP = "/api/v1/OTPNotification";
+        public static string GetLoanApplicationDatatable = "/api/v1/LoanApplication/Paggination-DataTable";
         //
 
         //LOAN

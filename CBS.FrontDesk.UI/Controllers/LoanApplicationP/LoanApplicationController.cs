@@ -1,5 +1,6 @@
 using CBS.BusinessService;
 using CBS.BusinessService.Accounts;
+using CBS.BusinessService.Application;
 using CBS.BusinessService.AuditTrailP;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.LoanCommitee;
@@ -22,19 +23,19 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
+namespace CBS.FrontDesk.UI.Controllers.LoanApplicationP
 {
     [CheckSessionTimeOutAttribute]
 
-    public class LoanController : BaseController
+    public class LoanApplicationController : BaseController
     {
         // GET: Loan
 
-        private readonly LoanServices _LoanServices;
+        private readonly LoanApplicationServices _LoanServices;
         private readonly LoanCommiteeMemberServices _loanCommiteeMember;
         private readonly UserManagementServices _userManagementServices;
         private readonly BranchServices _branchServices;
-        public LoanController(LoanServices LoanServices, LoanCommiteeMemberServices loanCommiteeMember, UserManagementServices userManagementServices, BranchServices branchServices = null)
+        public LoanApplicationController(LoanApplicationServices LoanServices, LoanCommiteeMemberServices loanCommiteeMember, UserManagementServices userManagementServices, BranchServices branchServices = null)
         {
             _LoanServices = LoanServices;
             _loanCommiteeMember = loanCommiteeMember;
@@ -53,76 +54,21 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
 
             return View();
         }
-        //
         public async Task<ActionResult> Details(string KEY = null)
         {
             var loan = await _LoanServices.GetLoanWithCustomerAndBranch(KEY);
             return View(loan);
         }
-        // Action to handle file download
-        public async Task<ActionResult> DownloadFile(string fileId = null)
-        {
-            if (string.IsNullOrEmpty(fileId))
-            {
-                var downloadInfoLoans = await _LoanServices.GetAllFileDownloadInfoLoanPerUser();
-                var Branches = await _branchServices.GetBranches();
-                ViewBag.Branches = Branches;
-                return View(new Loan { FileDownloadInfoLoans = downloadInfoLoans.ToList() });
-            }
-
-            try
-            {
-                // Call the service to download the file
-                var response = await _LoanServices.DownloadFile(fileId);
-
-                if (response != null)
-                {
-                    // If response is successful, return the file
-                    return File(response.FileData, response.ContentType, response.FileName);
-                }
-                else
-                {
-                    // If the response is null or contains errors, return an error view
-
-                    return View("Error", new HandleErrorInfo(new Exception(response.ErrorMessage), "ControllerName", "ActionName"));
-                }
-            }
-            catch (Exception ex)
-            {
-                // Handle exception and return an error view
-                Console.WriteLine($"Error downloading file: {ex.Message}");
-                return View("Error", new HandleErrorInfo(ex, "ControllerName", "ActionName"));
-            }
-        }
-
-        public async Task<ActionResult> LoanReportGeneration()
-        {
-            var downloadInfoLoans = await _LoanServices.GetAllFileDownloadInfoLoanPerUser();
-            var Branches = await _branchServices.GetBranches();
-            ViewBag.Branches = Branches;
-            return View(new Loan { FileDownloadInfoLoans= downloadInfoLoans.ToList() });
-        }
-        [HttpPost]
-        public async Task<ActionResult> DownloadFile(InitiateLoanDownloadCommand initiateLoanDownloadCommand)
-        {
-            var data = await _LoanServices.InitiateBulkDownloadLoansBranch(initiateLoanDownloadCommand);
-            ViewBag.Message = Messaging.MessageResult(data);
-            ViewBag.Status = data.Result;
-            var downloadInfoLoans = await _LoanServices.GetAllFileDownloadInfoLoanPerUser();
-            var Branches = await _branchServices.GetBranches();
-
-            ViewBag.Branches = Branches;
-            return View(new Loan { FileDownloadInfoLoans = downloadInfoLoans.ToList() });
-        }
+    
         [HttpGet]
         public async Task<ActionResult> Download(
-            string searchCriteria = "all",
-            string dateFrom = null,
-            string dateTo = null,
-            string status = "Open",
-            string deliquentstatus = "Current",
-            string branchid = null,
-            string exportReportType = "Loan Query")
+    string searchCriteria = "all",
+    string dateFrom = null,
+    string dateTo = null,
+    string status = "Open",
+    string deliquentstatus = "Current",
+    string branchid = null,
+    string exportReportType = "Loan Query")
         {
             try
             {
@@ -153,7 +99,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                     Branch = branch;
                 }
                 // Prepare the DataTable query
-                var getLoansDataTableQuery = new GetLoansDataTableQuery
+                var getLoansDataTableQuery = new GetLoanApplicationsDataTableQuery
                 {
                     DataTableOptions = new DataTableOptions
                     {
@@ -164,7 +110,6 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                     StartDate = startDate ?? DateTime.MinValue,
                     EndDate = endDate ?? DateTime.MinValue,
                     BranchId = branchid,
-                    DeliquentStatus = deliquentstatus,
                     Status = status,
                     MemberId = "n/a",
                 };
@@ -249,13 +194,12 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                     endDate = DateTime.ParseExact(dateTo, "dd/MM/yyyy", null).AddDays(1).AddTicks(-1);
                 }
 
-                var query = new GetLoansDataTableQuery
+                var query = new GetLoanApplicationsDataTableQuery
                 {
                     DataTableOptions = PostDataTableOptions(),
                     StartDate = startDate ?? DateTime.MinValue,
                     EndDate = endDate ?? DateTime.MinValue,
                     BranchId = branchid,
-                    DeliquentStatus = deliquentstatus,
                     Status = status, MemberId="n/a",
                 };
 

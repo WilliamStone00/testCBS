@@ -119,7 +119,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string Period { get; set; }
         public bool IsSWS { get; set; } = false;
         public string ChartOfAccountName { get; set; }
-
+        public bool IsPaid { get; set; }
         public string CheckNumber { get; set; }
         public string BookingDirection { get; set; }
         public string CheckName { get; set; }
