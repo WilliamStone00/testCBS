@@ -202,7 +202,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var inResponse = await _transactionApiHelper.PostAsync<ServiceResponse<SalaryProcessingDto>>(APICallHelper.ExecuteSalary, model);
+                var inResponse = await _transactionApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.ExecuteSalary, model);
                 if (inResponse.IsSuccess)
                 {
 
