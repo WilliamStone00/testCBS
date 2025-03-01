@@ -27,6 +27,7 @@ namespace CBS.BusinessService.Accounting
     {
         private readonly ApiCallerHelper _accountingApiCallerHelper;
         public BranchServices _branchService { get; }
+
         public AccountCategoryServices accountCartegorieService { get; }
 
         public AccountingServices()
@@ -34,6 +35,7 @@ namespace CBS.BusinessService.Accounting
             _accountingApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
             accountCartegorieService = new AccountCategoryServices();
             _branchService = new BranchServices();
+            //_chartofaccountService = new ChartOfAccountManagementPositionService(); 
         }
         private const string CLASS_4 = "4"; //THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)
         private const string CLASS_4_Payabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)";
@@ -113,6 +115,41 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
+        public async Task<AccountResponseDto> CreateAccountOnProcessing(FrontDesk.Data.Account model)
+        {
+            AccountResponseDto responseDto = new AccountResponseDto();
+            try
+            {
+                model.AccountNumberNetwok = "xxxxx";
+                model.AccountTypeId = model.AccountNumber.Equals("45100") ? model.AccountCounterPartId : "YYYYYY";
+                model.AccountNumberManagementPosition = "0";
+
+                // Make an API call to create an individual profile
+
+                // model.AccountOwnerId=GetBranchID();
+                var response = await _accountingApiCallerHelper.PostAccountResponseAsync<ApiResponse<AccountResponseDto>>(APICallHelper.CreateAccountMET, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    //GetExecutionMessages(response, true, $"Account {model.AccountNumber + " " + model.AccountName} has been created successfully", MessagesResults.Success,
+                    //    ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, "");
+                    responseDto= response.ApiResponseData;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Account {model.AccountNumber + " " + model.AccountName} failed to be created ", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return responseDto;
+        }
         /// <summary>
         /// Updates account balances according to OHADA accounting rules
         /// </summary>
@@ -773,11 +810,46 @@ namespace CBS.BusinessService.Accounting
 
    
 
-        public FrontDesk.Data.Account GetAccountItemForBranch(List<FrontDesk.Data.Account> branchAccounts, AccountModel item)
+        public async Task<FrontDesk.Data.Account> GetAccountItemForBranch(List<FrontDesk.Data.Account> branchAccounts, List<ChartofAccountManagementPosition> chartOfAccountMps, AccountModel item)
         {
-            var account = branchAccounts.Where(x=>x.ChartOfAccountManagementPositionId.Equals(item.Id)).FirstOrDefault();
+            FrontDesk.Data.Account accountData = new FrontDesk.Data.Account();
+            var account = branchAccounts.Where(x=>x.ChartOfAccountManagementPositionId.Equals(item.Id));
+            if (account.Any())
+            {
+                accountData = account.FirstOrDefault();
+            }
+            else
+            {
+                var modell =   chartOfAccountMps.Find(x=>x.Id==item.Id);
 
-            return account;
+                var response = await this.CreateAccountOnProcessing(new FrontDesk.Data.Account
+                {
+                    AccountNumberManagementPosition = modell.PositionNumber,
+                    AccountName = modell.Description + " " + GetBranchName(),// .BranchName,
+                    AccountNumber = modell.AccountNumber,
+
+                    AccountNumberNetwok = (modell.AccountNumber.PadRight(6, '0') + modell.PositionNumber.PadRight(3, '0') + GetBranchCode() + GetBranchCode()).PadRight(6, '0'),
+                    AccountNumberCU = (modell.AccountNumber.PadRight(6, '0') + modell.PositionNumber.PadRight(3, '0') + GetBranchCode()).PadRight(9, '0'),
+                    AccountCategoryId = "XXX",
+                    AccountTypeId = "",
+                    AccountOwnerId = GetBranchID(),
+                    ChartOfAccountManagementPositionId = modell.Id,
+                    BranchCode = GetBranchCode(),
+                    OwnerBranchCode = GetBranchCode(),
+                    
+                    Id="XXX",
+                    LiaisonBranchCode = item.AccountNumber.Substring(item.AccountNumber.Length - 3),
+
+                    IsNormalCreation = false,
+                   
+                });
+
+                accountData = await this.GetAccount(response.Id);   
+
+                return accountData;
+            }
+              //await this.CreateAccountOnProcessing(FrontDesk.Data.Account.CreateAccountModel(item))).Data: account;
+            return accountData;
 
         }
 

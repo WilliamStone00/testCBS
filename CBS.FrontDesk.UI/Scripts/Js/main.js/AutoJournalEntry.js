@@ -3,8 +3,7 @@ let tableJE;
 
 $(document).ready(function () {
     LoadAccountingRuleDataSetDT("AccountingEventxxDataTable");
-
-
+ 
     $('#AccountingEvent').hide();
     tableJE = $('#AccountingRulebasketTable').DataTable({
         columns: [
@@ -29,7 +28,19 @@ $(document).ready(function () {
     });
     //
     $('#AccountingRulebasketTable tbody').on('click', 'button.removeBtn', function () {
+      
         const data = tableJE.row($(this).parents('tr')).data();
+        console.log(data);
+        removeItem(data);
+    });
+    $(document).on('click', '.removeButton', function () {
+        // Find the parent row of the clicked button and remove it
+        $(this).closest('tr').remove();
+    });
+    $('#AccountingRulebasketTable tbody').on('click', 'button.removeButton', function () {
+
+        const data = tableJE.row($(this).parents('tr')).data();
+        console.log(data);
         removeItem(data);
     });
     $(document).on('change', '#AccountingRule_IsChainEntry', function () {
@@ -37,14 +48,108 @@ $(document).ready(function () {
         // Get the selected value
         var selectedValue = $(this).val();
         console.log(selectedValue);
-        if (selectedValue=="True") {
+        if (selectedValue=="true") {
             $('#AccountingEvent').show();
         } else {
             $('#AccountingEvent').hide();
         }
  
     });
+
+
+
+
+ 
 });
+function ReadFormData() {
+    let basket = [];
+
+    // Read table data from Accounting Entry Rule Table
+    $("#AccountingRulebasketTable tbody tr").each(function () {
+        let row = { 
+            ruleName: $('#AccountingRule_RuleName').val(),
+            MFI_ChartOfAccountId: $(this).find("td:eq(0)").text().trim(),
+            bookingDirection: $(this).find("td:eq(1)").text().trim(),
+            IsValidationNeed: $('#AccountingRule_IsValidationNeed').val(),
+            Description: $('#AccountingRule_Description').val(),
+            ListOfEligibleBranchId: $('#AccountingRule_ListOfEligibleBranchId').val(),
+            IsChainEntry: $('#AccountingRule_IsChainEntry').val(),
+            IsInterBranchTransaction: $('#AccountingRule_IsInterBranchTransaction').val(),
+            AccountingEventRuleId: $('#AccountingRule_AccountingEventRuleId').val(),
+            EntryType: $('#AccountingRule_EntryType').val(),
+            LevelOfExecution: $('#AccountingRule_LevelOfExecution').val()
+        };
+        console.log(row);
+         
+        basket.push(row);
+    });
+
+    let formData = {
+        entryTempData: {
+            ruleName: $("#AccountingRule_RuleName").val(),
+            description: $("#AccountingRule_Description").val(),
+            isValidationNeeded: $("#AccountingRule_IsValidationNeed").val(),
+            entryType: $("#AccountingRule_EntryType").val(),
+            isInterBranchTransaction: $("#AccountingRule_IsInterBranchTransaction").val(),
+            levelOfExecution: $("#AccountingRule_LevelOfExecution").val(),
+            isChainEntry: $("#AccountingRule_IsChainEntry").val(),
+            accountingEventRuleId: $("#AccountingRule_AccountingEventRuleId").val(),
+            eligibleBranches: $("#AccountingRule_ListOfEligibleBranchId").val() || []
+        },
+        account: {},
+        entryDescription: {},
+        entryTempDatas: [],
+        postedEntries: [],
+        entryTempDataResult: [],
+        accounts: [],
+        accountingRules: basket,
+        accountingRule: {},
+        serviceOption: "accountingEventRule",
+        action: "update",
+        key: "",
+        hasApproved: false
+    };
+
+    console.log("Collected Form Data:", formData);
+    return formData;
+}
+function SubmitUpdatedForm() {
+    let formData = ReadFormData();
+    console.log(formData);
+    // Send data via AJAX (modify URL to match your backend API)
+ 
+        console.log(createManuallyJournalEntryDataSet(basket,"update"));
+    if (formData.accountingRules.length === 0) {
+        appalert('No Accounting entry rule has been set. Please contact administrators.', 2, 1);
+        return;
+    }
+    if (validateBasketDirections(formData.accountingRules)) {
+        alertify.confirm("T R U S T S O F T C R E D I T", "Are you sure you want to submit the element in accounting event entry rule is correct?",
+            function () {
+                // If the user confirms, proceed with the submission
+                $.ajax({
+                    url: '/ManuallyJournalEntry/AddOrUpdate', // Replace with actual controller method
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        appalert("Form submitted successfully!", 1, 1);
+                    },
+                    error: function () {
+                        appalert("Error submitting form.");
+                    }
+                });
+            },
+            function () {
+                appalert('Transaction cancelled', 3, 1);
+            }
+        );
+    } else {
+        appalert('No Accounting entry rule must contain atleast 1 DEBIT AND 1 CREDIT booking direction. Please contact administrators for assitances.', 1, 2);
+        return;
+    }
+}
+
 function GetSequenceReference() {
 
     $.ajax({
@@ -63,7 +168,7 @@ function GetSequenceReference() {
     });
 }
 let manuallyJournalEntryDataSet = createManuallyJournalEntryDataSet();
-function addToBasket() {
+function addToBasketForInsert() {
     const item = {
         ruleName: $('#AccountingRule_RuleName').val(),
         MFI_ChartOfAccountId: $('#AccountingRule_MFI_ChartOfAccountId option:selected').text(),
@@ -72,6 +177,7 @@ function addToBasket() {
         Description: $('#AccountingRule_Description').val(),
         ListOfEligibleBranchId: $('#AccountingRule_ListOfEligibleBranchId').val(),
         IsChainEntry: $('#AccountingRule_IsChainEntry').val(),
+        IsInterBranchTransaction: $('#AccountingRule_IsInterBranchTransaction').val(),
         AccountingEventRuleId: $('#AccountingRule_AccountingEventRuleId').val(),
         EntryType: $('#AccountingRule_EntryType').val(),
         LevelOfExecution: $('#AccountingRule_LevelOfExecution').val()
@@ -79,7 +185,7 @@ function addToBasket() {
 
     console.log(item);
 
-    // Validation checks
+    // Validation checks AccountingRule_
     if (item.bookingDirection === "---Select Direction---") {
         appalert('No booking direction has been set for the entry rule. Please kindly contact administrators for help', 2, 1);
         return;
@@ -110,6 +216,64 @@ function addToBasket() {
     $('#AccountingRule_BookingDirection').val('').change();
  
 }
+
+
+function addToBasketForUpdate() {
+    const item = {
+        ruleName: $('#AccountingRule_RuleName').val(),
+        MFI_ChartOfAccountId: $('#AccountingRule_MFI_ChartOfAccountId option:selected').text(),
+        bookingDirection: $('#AccountingRule_BookingDirection option:selected').text(),
+        IsValidationNeed: $('#AccountingRule_IsValidationNeed').val(),
+        Description: $('#AccountingRule_Description').val(),
+        ListOfEligibleBranchId: $('#AccountingRule_ListOfEligibleBranchId').val(),
+        IsChainEntry: $('#AccountingRule_IsChainEntry').val(),
+        IsInterBranchTransaction: $('#AccountingRule_IsInterBranchTransaction').val(),
+        AccountingEventRuleId: $('#AccountingRule_AccountingEventRuleId').val(),
+        EntryType: $('#AccountingRule_EntryType').val(),
+        LevelOfExecution: $('#AccountingRule_LevelOfExecution').val()
+    };
+
+    console.log(item);
+
+    // Validation checks AccountingRule_
+    if (item.bookingDirection === "---Select Direction---") {
+        appalert('No booking direction has been set for the entry rule. Please kindly contact administrators for help', 2, 1);
+        return;
+    } else if (item.MFI_ChartOfAccountId === "---Select ChartOfAccount---") {
+        appalert('No ChartOfAcccount number has been selected for the entry rule. Please kindly contact administrators for help', 2, 1);
+        return;
+    } else if (item.ruleName === "") {
+        appalert('No Entry RuleName has been set for the entry rule. Please kindly contact administrators for help', 2, 1);
+        return;
+    }
+    var newRowHtml = `<tr>
+                                <td style="width:50%">${item.MFI_ChartOfAccountId}</td>
+                                <td style="width:25%">${item.bookingDirection}</td>
+                                <td style="width:25%">
+                                    <button class="btn btn-danger removeButton">Remove</button>
+                                </td>
+                              </tr>`;
+    $('#AccountingRulebasketTable tbody').append(newRowHtml);
+    // Add item to basket and update display
+    basket.push(item);
+    updateBasketDisplay();
+
+    // Update form state after adding to basket
+    $('#AccountingRule_RuleName').prop('disabled', true);
+    $('#AccountingRule_IsValidationNeed').prop('disabled', true);
+    $('#AccountingRule_ListOfEligibleBranchId').prop('disabled', true);
+    $('#AccountingRule_EntryType').prop('disabled', true);
+    $('#AccountingRule_LevelOfExecution').prop('disabled', true);
+    $('#AccountingRule_Description').prop('disabled', true);
+    $('#AccountingRule_IsChainEntry').prop('disabled', true);
+    $('#AccountingRule_AccountingEventRuleId').prop('disabled', true);
+    // Update basket label and clear relevant form fields
+    $('#basket_Label').text('Event: ' + item.ruleName);
+    $('#AccountingRule_MFI_ChartOfAccountId').val('').change();
+    $('#AccountingRule_BookingDirection').val('').change();
+
+}
+
 function createManuallyJournalEntryDataSet(basket) {
     return {
         entryTempData: {
@@ -129,8 +293,8 @@ function createManuallyJournalEntryDataSet(basket) {
         accountingRule: {
             // Add properties as needed
         },
-        serviceOption: "",
-        action: "",
+        serviceOption: "accountingEventRule",
+        action: "insert",
         key: "",
         hasApproved: false
     };
@@ -166,6 +330,7 @@ function removeItem(item) {
     }
 }
 function submitBasket() {
+ 
     if (basket.length === 0) {
         appalert('No Accounting entry rule has been set. Please contact administrators.', 2, 1);
         return;
@@ -176,7 +341,7 @@ function submitBasket() {
                 // If the user confirms, proceed with the submission
                 $.ajax({
                     type: 'POST',
-                    url: '/ManuallyJournalEntry/AddAccountingEntryRule',
+                    url: '/ManuallyJournalEntry/AddOrUpdate',
                     contentType: 'application/json',
                     data: JSON.stringify(createManuallyJournalEntryDataSet(basket)),
 
@@ -227,7 +392,69 @@ function submitBasket() {
     // Confirmation dialog using alertify
 
 }
+function submitBasketForUpdate() {
+    console.log(createManuallyJournalEntryDataSet(basket));
+    if (basket.length === 0) {
+        appalert('No Accounting entry rule has been set. Please contact administrators.', 2, 1);
+        return;
+    }
+    if (validateBasketDirections(basket)) {
+        alertify.confirm("T R U S T S O F T C R E D I T", "Are you sure you want to submit the element in accounting event entry rule is correct?",
+            function () {
+                // If the user confirms, proceed with the submission
+                $.ajax({
+                    type: 'POST',
+                    url: '/ManuallyJournalEntry/AddOrUpdate',
+                    contentType: 'application/json',
+                    data: JSON.stringify(createManuallyJournalEntryDataSet(basket)),
 
+                    success: function (response) {
+                        if (response.success) {
+
+                            if (response.status === "Exist") {
+                                appalert(response.message, 3, 1);
+                            } else if (response.status === "Failed") {
+                                appalert(response.message, 2, 1);
+                            } else {
+                                $('#AccountingRulebasketTable').DataTable().clear().draw();
+                                appalert(response.message, 1, 1);
+                            }
+
+                            if (response.reloadDataView === "Yes") {
+                                if (response.option === 'Update') {
+                                    LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                                } else if (response.optype === 'Insert') {
+                                    EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
+                                } else {
+                                    LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                                }
+                            }
+                        } else {
+                            if (response.status === "Exist") {
+                                appalert(response.message, 3, 1);
+                            } else {
+                                appalert(response.message, 2, 1);
+                            }
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err.statusText);
+                        appalert(err.statusText, 0, 1);
+                    }
+                });
+            },
+            function () {
+                appalert('Transaction cancelled', 3, 1);
+            }
+        );
+    } else {
+        appalert('No Accounting entry rule must contain atleast 1 DEBIT AND 1 CREDIT booking direction. Please contact administrators for assitances.', 1, 2);
+        return;
+    }
+
+    // Confirmation dialog using alertify
+
+}
 function ApprovePostedEntries(response) {
     //comment_description
     var storedId = $("#selectedId").val();
@@ -804,4 +1031,159 @@ function LoadAccountingRuleDataSetDT(tableID) {
         pageLength: 10
 
     });
+}
+
+
+
+
+
+
+$(document).ready(function () {
+
+    $('#document').change(function () {
+        var selectedValue = $(this).val();
+        console.log(selectedValue);
+        $.ajax({
+            url: '/AccountingConfiguration/GetDocumentType',
+            type: 'GET',
+            dataType: 'json',
+            data: { DocumentId: selectedValue },
+            success: function (data) {
+
+                IdModel = "#documentType";
+                $(IdModel).empty();
+                // Add new options based on the fetched data
+                $.each(data, function (index, item) {
+                    $('#documentType').append($('<option>').text(item.Value).attr('value', item.Text));
+                });
+
+
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+
+    });
+});
+
+
+/**
+ * Wrapper function to load data and initialize a DataTable.
+ * 
+ * @param {string} controller - The controller name for the AJAX request.
+ * @param {string} tableID - The ID of the table to be initialized as a DataTable.
+ * @param {string} partialView - The name of the partial view to be loaded.
+ * @param {string} datalistingview - The ID of the div where the loaded data will be inserted.
+ * @param {string} KEY - A key parameter for the request.
+ * @param {string} serviceOption - An option parameter for the service.
+ * @param {string} [path='list'] - A path parameter for the request, defaults to 'list'.
+ */
+function LoadDataTableGeneration(controller, tableID, partialView, datalistingview, KEY, serviceOption, path = 'list')
+{
+    // Call LoadDataTableNewVersion with predefined action "InitializeData" and other parameters
+    LoadDataTableNewVersion(
+        controller,
+        tableID,
+        "InitializeData",
+        KEY,
+        partialView,
+        path,
+        datalistingview,
+        serviceOption
+    );
+}
+
+/**
+ * Loads data into a table via AJAX and initializes it as a DataTable.
+ * 
+ * @param {string} controller - The controller name for the AJAX request.
+ * @param {string} tableID - The ID of the table to be initialized as a DataTable.
+ * @param {string} action - The action name for the AJAX request.
+ * @param {string} KEY - A key parameter for the request.
+ * @param {string} partialView - The name of the partial view to be loaded.
+ * @param {string} path - A path parameter for the request.
+ * @param {string} diveToloadtheData - The ID of the div where the loaded data will be inserted.
+ * @param {string} serviceOption - An option parameter for the service.
+ */
+function LoadDataTableNewVersion(controller, tableID, action, KEY, partialView, path, diveToloadtheData, serviceOption) {
+    // Construct the URL for the AJAX request
+    var encodedURL = '/' + controller + '/' + action +
+        '?KEY=' + encodeURIComponent(KEY) +
+        '&partialView=' + encodeURIComponent(partialView) +
+        '&serviceOption=' + encodeURIComponent(serviceOption) +
+        '&path=' + encodeURIComponent(path);
+
+    // Log the constructed URL and other details
+    console.log(encodedURL + " tableId= " + tableID + " divloader:" + diveToloadtheData);
+
+    // Perform the AJAX request
+    $.ajax({
+        type: "GET",
+        url: encodedURL,
+        success: function (data) {
+            // Insert the received data into the specified div
+            $('#' + diveToloadtheData).html(data);
+
+            // Log the presence of the table element
+            console.log($('#' + tableID).length);
+
+            // Initialize the DataTable
+            LoadData(tableID);
+        },
+        error: function (err) {
+            // Display an error alert if the request fails
+            appalert(err.statusText, 1, 3);
+        }
+    });
+}
+
+/**
+ * Initializes a DataTable with specific configuration.
+ * @param {string} tableID - The ID of the table element to be transformed into a DataTable.
+ */
+function LoadData(tableID) {
+    var tableSelector = '#' + tableID;
+    console.log("Initializing DataTable for:", tableSelector);
+
+    try {
+        // Check if the table exists
+        if ($(tableSelector).length === 0) {
+            throw new Error("Table not found: " + tableSelector);
+        }
+
+        // Get the number of columns in the table
+        var columnCount = $(tableSelector + ' thead th').length;
+        console.log("Number of columns detected:", columnCount);
+
+        // Prepare column definitions based on the actual number of columns
+        var columnDefs = [];
+        for (var i = 0; i < columnCount; i++) {
+            columnDefs.push({
+                targets: i,
+                searchable: true,
+                orderable: true
+            });
+        }
+
+        var dataThumbView = $(tableSelector).DataTable({
+            responsive: false,
+            columns: Array(columnCount).fill(null),  // Create empty column definitions
+            columnDefs: columnDefs,
+            language: {
+                lengthMenu: "_MENU_",
+                search: ""
+            },
+            lengthMenu: [[10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
+            order: [[0, "asc"]],
+            info: true,
+            pageLength: 10
+        });
+
+        console.log("DataTable initialized successfully");
+        return dataThumbView;
+    } catch (error) {
+        console.error("Error initializing DataTable:", error);
+        console.log("Table HTML:", $(tableSelector).prop('outerHTML'));
+    }
 }

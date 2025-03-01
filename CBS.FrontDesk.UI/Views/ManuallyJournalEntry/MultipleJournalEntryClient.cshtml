@@ -1,143 +1,55 @@
-﻿
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
 
-@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
 @{
-    ViewBag.Title = "Accounting Event -Listing";
+    ViewBag.Title = "Accounting Rule-Listing";
 }
-<div class="row">
 
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
-        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+<div class="card mb-12 shadow-lg rounded">
+    <div class="accordion mt-3" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button type="button"
+                        class="accordion-button collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#accordionThree"
+                        aria-expanded="false"
+                        aria-controls="accordionThree">
+                    <i class="tf-icons mdi mdi-typewriter me-7"></i>  Setting Accounting Event Entry Rule
+                </button>
+            </h2>
+            <div id="accordionThree"
+                 class="accordion-collapse collapse"
+                 aria-labelledby="headingThree"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="row justify-content-end">
+                        @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+                        {
+                            <div class="demo-inline-spacing text-end">
+                                <a type="button" onclick="LoadDataTableGeneration('ManuallyJournalEntry','AccountingEventxxDataTable','_MultipleJournalEntryClientData','datalistingview_accountingEventRule',0,'accountingEventRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                </a>
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_accountingEventRule','_CreateAccountingEventRule','new','ManuallyJournalEntry','accountingEventRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                </a>
 
-            <div class="accordion-item active">
-                <h2 class="accordion-header text-body d-flex justify-content-between"
-                    id="accordionPopoutIconThree">
-                    <button type="button"
-                            class="accordion-button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#accordionPopoutIcon-3"
-                            aria-expanded="true"
-                            aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-file-document-outline me-2"></i>
-                        PASSING JOURNAL ENTRY FOR  (@Session["BranchName"].ToString().ToUpper()).
-                    </button>
-                </h2>
-                <div id="accordionPopoutIcon-3"
-                     class="accordion-collapse collapse show"
-                     data-bs-parent="#accordionPopoutIcon">
-                    <div class="accordion-body">
-                        <div id="mainviewChange">
-                            <div class="change-group">
-
-                                <div class="table-responsive mb-3">
-                                    <div class="table-responsive mb-3">
-                                        <div id="datalistingview_MultipleEntryClient">
-                                            <table class="table table-hover" id="AccountingEventxxDataTable">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th>RuleName</th>
-                                                        <th>Level of Execution</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @if (Convert.ToBoolean(Session["IsHeadOffice"]))
-                                                    {
-                                                        foreach (var d in Model.AccountingEventRules)
-                                                        {
-                                                            <tr class="align-middle">
-                                                                <td id="@d.Id-RuleName" class="w-60 text-start">@d.EventName</td>
-                                                                <td class="w-15 text-center">
-                                                                    <span class="badge bg-dark-subtle fs-6 d-inline-flex align-items-center gap-1">
-                                                                        <i class="fas fa-money-bill-wave"></i>
-                                                                        <span>@d.LevelOfExecution</span>
-                                                                        <i class="fas fa-money-bill-wave"></i>
-                                                                    </span>
-                                                                </td>
-                                                                <td class="w-25 text-end">
-                                                                    <div class="d-flex justify-content-end gap-2">
-
-                                                                        <a href="/ManuallyJournalEntry/ExecuteAutomatedEntry?Key=@d.Id"
-                                                                           class="btn btn-sm btn-primary d-inline-flex align-items-center"
-                                                                           target="_blank"
-                                                                           title="Execute @d.EventName">
-                                                                            <i class="fas fa-play me-1"></i>
-                                                                            <span>Execute</span>
-                                                                        </a>
-
-                                                                        <a href="/ManuallyJournalEntry/EventEntrySystemInfo?Key=@d.Id"
-                                                                           class="btn btn-sm btn-secondary d-inline-flex align-items-center"
-                                                                           target="_blank"
-                                                                           title="Edit @d.EventName">
-                                                                            <i class="fas fa-edit me-1"></i>
-                                                                            <span>Edit</span>
-                                                                        </a>
-                                                                        <a href="/ManuallyJournalEntry/GetAccountingEventToDelete?Key=@d.Id"
-                                                                           class="btn btn-sm btn-danger d-inline-flex align-items-center"
-                                                                           target="_blank"
-                                                                           title="Execute @d.EventName">
-
-                                                                            <i class="fas fa-trash me-1"></i>
-                                                                            <span>Delete</span>
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        foreach (var d in Model.AccountingEventRules)
-                                                        {
-                                                            <tr class="align-middle">
-                                                                <td id="@d.Id-RuleName" class="w-60 text-start">@d.EventName</td>
-                                                                <td class="w-15 text-center">
-                                                                    <span class="badge bg-dark-subtle fs-6 d-inline-flex align-items-center gap-1">
-                                                                        <i class="fas fa-money-bill-wave"></i>
-                                                                        <span>@d.LevelOfExecution</span>
-                                                                        <i class="fas fa-money-bill-wave"></i>
-                                                                    </span>
-                                                                </td>
-                                                                <td class="w-25 text-end">
-                                                                    <div class="d-flex justify-content-end gap-2">
-
-                                                                        <a href="/ManuallyJournalEntry/ExecuteAutomatedEntry?Key=@d.Id"
-                                                                           class="btn btn-sm btn-primary d-inline-flex align-items-center"
-                                                                           target="_blank"
-                                                                           title="Execute @d.EventName">
-                                                                            <i class="fas fa-play me-1"></i>
-                                                                            <span>Execute</span>
-                                                                        </a>
-
-                                                                      
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        }
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
+                        }
+
                     </div>
-
-
-
+                    <br />
+                    <div id="datalistingview_accountingEventRule">
+                        @Html.Partial("_MultipleJournalEntryClientData")
+                    </div>
                 </div>
             </div>
-
         </div>
-
+ 
     </div>
+
 </div>
-
-
-
 @section Scripts { @Scripts.Render("~/bundles/jqueryval")
 <script src="~/Scripts/Js/main.js/AutoJournalEntry.js"></script>
-
-
 }
+
+ 

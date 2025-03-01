@@ -817,7 +817,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllLiaisonAccount = "/api/v1/Accounts/LiaisonAccount";
         public static string GetAllAccountByBranch = "/api/v1/Accounts/{0}";
         public static string GetAllBranchAccountUsedToCreditCashFlow = "/api/v1/Account/GetAccountByMFIBankAccountNumberQuery/{0}";
-        public static string CreateAccount = "/api/v1/Account";
+        public static string CreateAccount = "/api/v1/Account";///api/v1/Account/ManualEntry
+        public static string CreateAccountMET = "/api/v1/Account/ManualEntry";///api/v1/Account/ManualEntry
         public static string GetAccountUploadFiles = "/api/v1/Accounts/UploadFiles/{0}";
         public static string PutAccount = "/api/v1/Account/{0}";
         public static string GetSystemLiaisonAccountQueryUrl = "/api/v1/Account/GetSystemLiaisonAccountQuery/{0}";
