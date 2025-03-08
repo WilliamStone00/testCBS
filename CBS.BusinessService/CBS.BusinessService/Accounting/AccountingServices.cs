@@ -629,7 +629,7 @@ namespace CBS.BusinessService.Accounting
                     if (response.isSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{list.AccountModelList[0].AccountNumber}", MessagesResults.Success,
+                        GetExecutionMessages(response, true, response.message, MessagesResults.Success,
                    ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.message);
                         return ExecutionMessage;
                     }
