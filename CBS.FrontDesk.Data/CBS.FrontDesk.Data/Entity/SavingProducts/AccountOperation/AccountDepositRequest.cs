@@ -111,6 +111,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public decimal Penalty { get; set; } = 0;
         public decimal TotalAmount { get; set; } = 0;
         public string MemberRefence { get; set; }
+        public decimal Vat { get; set; }
         public string Note { get; set; }
     }
     public class BulkDeposit
@@ -151,6 +152,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public bool IsChargesInclussive { get; set; } = false;
         public string PaymentMethod { get; set; }
         public decimal Tax { get; set; }
+        public decimal VAT { get; set; }
         public decimal Principal { get; set; }
         public string PaymentChannel { get; set; }
 

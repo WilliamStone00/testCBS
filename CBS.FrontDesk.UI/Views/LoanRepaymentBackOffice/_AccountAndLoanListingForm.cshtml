@@ -1,6 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 
 <input type="hidden" id="customerId" value="@Model.Customer.CustomerId" />
+<!-- Hidden Inputs for Member and Accountant Details -->
+<input type="hidden" id="memberName" value="@Model.Customer.name" />
+<input type="hidden" id="branchName" value="@Model.Branch.Name" />
+<input type="hidden" id="branchCode" value="@Model.Branch.BranchCode" />
+<input type="hidden" id="accountantName" value="@Session["FullName"].ToString()" /> <!-- Assuming User is available -->
+
 
 <div class="form-wrapper">
     <div class="change-group">
@@ -36,7 +42,7 @@
                                 <th>Accounts</th>
                                 <th>Balance</th>
                                 <th>Amount to Debit</th>
-                                <th>Status</th>
+                                <th>AB.Validation</th>
                                 <th>Confirm</th>
                             </tr>
                         </thead>
@@ -76,7 +82,7 @@
                         <thead class="table-light">
                             <!-- Merged Header Row -->
                             <tr>
-                                <th colspan="9" class="text-center fw-bold bg-light text-dark">MEMBER'S OPENED LOANS</th>
+                                <th colspan="10" class="text-center fw-bold bg-light text-dark">MEMBER'S OPENED LOANS</th>
                             </tr>
                             <tr>
                                 <th style="display:none;">L. Ref</th>
@@ -86,6 +92,7 @@
                                 <th>Balance</th>
                                 <th>Capital</th>
                                 <th>Interest</th>
+                                <th>VAT (19%)</th> <!-- ✅ NEW VAT COLUMN -->
                                 <th>Penalty</th>
                                 <th>Total</th>
                                 <th>Conf</th>
@@ -108,6 +115,9 @@
                                         <input type="number" class="form-control interest-input" id="interest-@d.Id" value="0" oninput="updateTotals()">
                                     </td>
                                     <td>
+                                        <input type="text" class="form-control vat-input" id="vat-@d.Id" value="0" readonly> <!-- ✅ NEW VAT FIELD -->
+                                    </td>
+                                    <td>
                                         <input type="number" class="form-control penalty-input" id="penalty-@d.Id" value="0" oninput="updateTotals()">
                                     </td>
                                     <td><span class="total-span" id="total-@d.Id">0</span></td>
@@ -119,23 +129,25 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="6" style="text-align: right;"><strong>Total Repayment:</strong></td>
+                                <td colspan="7" style="text-align: right;"><strong>Total Repayment:</strong></td>
                                 <td id="totalRepaymentAmount">0</td>
                                 <td colspan="2"></td>
                             </tr>
                             <tr>
-                                <td colspan="6" style="text-align: right;">
-                                    <strong>Balance Remaining:</strong> <span id="remainingBalance">0</span>
+                                <td colspan="7" style="text-align: right;"><strong>Balance Remaining:</strong></td>
+                                <td>
+                                    <span id="remainingBalance">0</span>
                                     <span id="balanceIndicator" style="font-size: 1.5rem;"></span>
                                 </td>
                                 <td colspan="2"></td>
                             </tr>
-                            <tr>
-                                <td colspan="6" style="text-align: right;"><strong>Calculated VAT (If applicable):</strong></td>
+                            <tr style="display:none;">
+                                <td colspan="7" style="text-align: right;"><strong>Total Calculated VAT (If applicable):</strong></td>
                                 <td id="calculatedVat">0</td>
                                 <td colspan="2"></td>
                             </tr>
                         </tfoot>
+
                     </table>
                 </div>
             </div>
@@ -145,7 +157,7 @@
                 <div class="col-md-12 mt-2">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.BulkDeposit.Note,
-                            new { @class = "form-control shadow-input-boxes", @id = "Note", rows = "3", placeholder = "Enter reason for transaction...", style = "height: 70px;" })
+                            new { @class = "form-control shadow-input-boxes", @id = "Note", rows = "3", placeholder = "Enter reason for transaction...", style = "height: 90px;" })
                         @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
                         <label for="Note">Transaction Note (Reason)</label>
                     </div>
