@@ -327,7 +327,7 @@ function PostLoanRepayment() {
         🔹 Capital: ${formatCurrency(capital)}<br>
         🔹 Interest: ${formatCurrency(interest)}<br>
         🔹 Penalty: ${formatCurrency(penalty)}<br>
-        ${vat > 0 ? `🔹 VAT (19% of Interest): ${formatCurrency(vat)}<br>` : ""}
+        ${vat > 0 ? `🔹 VAT (19.25% of Interest): ${formatCurrency(vat)}<br>` : ""}
         <hr>
         <strong>Total Loan Amount to be Paid: ${formatCurrency(Math.round(totalLoanAmount))}</strong><br>
     `;
