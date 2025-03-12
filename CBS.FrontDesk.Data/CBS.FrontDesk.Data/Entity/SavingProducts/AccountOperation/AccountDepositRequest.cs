@@ -53,7 +53,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string Action { get; set; }
         public SavingProduct SavingProduct { get; set; }
         public string RemittanceId { get; set; }
-
+        public AddNoneCashMobileMoneyCommand AddNoneCashMobileMoneyCommand { get; set; }
         public Remittance Remittance { get; set; } = new Remittance();
         public List<Remittance> Remittances { get; set; } = new List<Remittance>();
         public string ServiceOption { get; set; }
@@ -68,6 +68,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
     public class  BulkOperation
     {
         public List<BulkDeposit> BulkOperations { get; set; } = new List<BulkDeposit>();
+        public List<AccountToBeDebited> AccountToBeDebiteds { get; set; } = new List<AccountToBeDebited>();
+        public List<LoanToBeRefunded> LoanToBeRefundeds { get; set; } = new List<LoanToBeRefunded>();
         public string DepositType { get; set; }
         public string Period { get; set; }
         public string OperationType { get; set; }
@@ -84,6 +86,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string ReceiverPhoneNumber { get; set; }
         public string SenderSecretCode { get; set; }
         public string SenderAddress { get; set; }
+        public string Note { get; set; }
         public string ReceiverAddress { get; set; }
         public decimal RemittanceAmount { get; set; }
         public DateTime? RemittanceDate { get; set; }
@@ -93,12 +96,32 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         }//Normal, LoanFeePayment, Disbursment, LoanRepayment
 
     }
-
+    public class AccountToBeDebited
+    {
+        public string AccountNumber { get; set; }
+        public decimal Amount { get; set; } = 0;
+        public string ProductId { get; set; }
+        public string AccountType { get; set; }
+    }
+    public class LoanToBeRefunded
+    {
+        public string LoanId { get; set; }
+        public decimal Capital { get; set; } = 0;
+        public decimal Interest { get; set; } = 0;
+        public decimal Penalty { get; set; } = 0;
+        public decimal TotalAmount { get; set; } = 0;
+        public string MemberRefence { get; set; }
+        public string Note { get; set; }
+    }
     public class BulkDeposit
     {
+        public List<AccountToBeDebited> AccountToBeDebiteds { get; set; } = new List<AccountToBeDebited>();
+        public List<LoanToBeRefunded> LoanToBeRefundeds { get; set; } = new List<LoanToBeRefunded>();
+
         public string AccountNumber { get; set; }
         public decimal Fee { get; set; }
         public string CustomerId { get; set; }
+        public string ProductId { get; set; }
         public decimal Amount { get; set; }
         public decimal Balance { get; set; }
         public decimal Penalty { get; set; }

@@ -251,6 +251,9 @@
     <Compile Include="Accounts\SysConfigurationServices.cs" />
     <Compile Include="Accounts\SavingProductFeeServices.cs" />
     <Compile Include="AuditTrailP\AuditTrailServices.cs" />
+    <Compile Include="AndriodVersioning\ChangeNumberServices.cs" />
+    <Compile Include="AndriodAppVersioning\AndriodVersionConfigurationServices.cs" />
+    <Compile Include="ChangeNumber\ChangeNumberServices.cs" />
     <Compile Include="CorrespondingBankBranchServices\BankZoneBranchServices.cs" />
     <Compile Include="CorrespondingBankBranchServices\BankingZoneServices.cs" />
     <Compile Include="CustomerManagement\CMoneyMemberServices.cs" />

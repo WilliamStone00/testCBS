@@ -60,6 +60,10 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             return View();
         }
+        public ActionResult LoanRepayment()
+        {
+            return View();
+        }
         public async Task<bool> GetChartOfAccounts()
         {
             var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();

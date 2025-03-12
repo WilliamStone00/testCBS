@@ -1,0 +1,95 @@
+﻿@model CBS.FrontDesk.Data.Entity.ChangeNumber.ChangeNumberCarrier
+
+@using (Html.BeginForm("Create", "ChangeNumber", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <!-- Hidden Field for Request ID -->
+    @Html.HiddenFor(m => m.ApprovePhoneNumberRequestCommand.PhoneNumberChangeHistoryId)
+
+    <div class="row mt-3 gy-3">
+        <!-- Request Details -->
+        <div class="col-md-6">
+            <label class="fw-bold"><i class="mdi mdi-account me-1"></i> Member Name:</label>
+            <p class="form-control-static">@Model.PhoneNumberChangeHistory.MemberName</p>
+        </div>
+
+        <div class="col-md-6">
+            <label class="fw-bold"><i class="mdi mdi-phone me-1"></i> Old Phone Number:</label>
+            <p class="form-control-static">@Model.PhoneNumberChangeHistory.OldPhoneNumber</p>
+        </div>
+
+        <div class="col-md-6">
+            <label class="fw-bold"><i class="mdi mdi-phone-plus me-1"></i> New Phone Number:</label>
+            <p class="form-control-static">@Model.PhoneNumberChangeHistory.NewPhoneNumber</p>
+        </div>
+
+        <div class="col-md-6">
+            <label class="fw-bold"><i class="mdi mdi-account-tie me-1"></i> Requested By:</label>
+            <p class="form-control-static">@Model.PhoneNumberChangeHistory.RequestBy</p>
+        </div>
+
+        <div class="col-md-6">
+            <label class="fw-bold"><i class="mdi mdi-calendar me-1"></i> Request Date:</label>
+            <p class="form-control-static">@Model.PhoneNumberChangeHistory.DateOfRequest</p>
+        </div>
+
+        <div class="col-md-6">
+            <label class="fw-bold"><i class="mdi mdi-office-building me-1"></i> Branch:</label>
+            <p class="form-control-static">(@Model.PhoneNumberChangeHistory.BranchCode) @Model.PhoneNumberChangeHistory.BranchName</p>
+        </div>
+
+        <!-- Request Note -->
+        <div class="col-md-12">
+            <label class="fw-bold"><i class="mdi mdi-note-text-outline me-1"></i> Request Note:</label>
+            <p class="form-control-static text-muted">
+                @(string.IsNullOrWhiteSpace(Model.PhoneNumberChangeHistory.RequestComment) ? "No additional notes provided." : Model.PhoneNumberChangeHistory.RequestComment)
+            </p>
+        </div>
+
+        <!-- Approval Comment -->
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextAreaFor(m => m.ApprovePhoneNumberRequestCommand.ApprovalComment, new { @class = "form-control", style = "height: 120px; width: 100%; resize: none;", rows = "3", placeholder = "Enter Approval Comment", required = "required" })
+                <label for="ApprovalComment"><i class="mdi mdi-comment-check me-1"></i> Approval Comment</label>
+            </div>
+        </div>
+
+        <!-- Approve or Reject -->
+        <div class="col-md-12">
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.ApprovePhoneNumberRequestCommand.Approved, new { @class = "form-check-input", id = "Approved", onchange = "updateApprovalStatus()" })
+                <label id="approvalLabel" class="form-check-label fw-bold text-danger" for="Approved">
+                    <i id="approvalIcon" class="mdi mdi-close-circle-outline me-1"></i> Rejected
+                </label>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="Option" value="approved" />
+
+    <!-- Action Buttons -->
+    <div class="mt-4 d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            <i class="mdi mdi-close"></i> Cancel
+        </button>
+        <button type="submit" class="btn btn-success">
+            <i class="mdi mdi-check"></i> Submit Approval
+        </button>
+    </div>
+}
+
+<script>
+    function updateApprovalStatus() {
+        var checkbox = document.getElementById("Approved");
+        var label = document.getElementById("approvalLabel");
+        var icon = document.getElementById("approvalIcon");
+
+        if (checkbox.checked) {
+            label.classList.remove("text-danger");
+            label.classList.add("text-success");
+            label.innerHTML = '<i id="approvalIcon" class="mdi mdi-check-circle-outline me-1"></i> Approved';
+        } else {
+            label.classList.remove("text-success");
+            label.classList.add("text-danger");
+            label.innerHTML = '<i id="approvalIcon" class="mdi mdi-close-circle-outline me-1"></i> Rejected';
+        }
+    }
+</script>

@@ -1,0 +1,125 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Remittance
+@{
+    ViewBag.Title = "Remittance Query Overview";
+}
+
+<!-- Page Header -->
+<div class="card bg-light mb-2 shadow-sm">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-cash-multiple me-2"></i> REMITTANCE QUERY LOGS
+        </h1>
+        <p class="card-text">
+            Track and analyze remittance transactions, monitor statuses, and review transfer details. This interface allows efficient management of remittance operations with dynamic search filters and exportable reports.
+        </p>
+        <hr class="border-secondary" />
+    </div>
+</div>
+
+<!-- Search & Filters Section -->
+<div class="card mb-3 shadow-sm">
+    <div class="card-header bg-light text-dark fw-bold d-flex justify-content-between align-items-center">
+        <span>
+            <i class="mdi mdi-filter-outline me-2"></i> Remittance Search and Filters
+        </span>
+        <button id="toggleFilterButton" class="btn btn-sm btn-light" data-bs-toggle="collapse" data-bs-target="#filterContent">
+            <i class="mdi mdi-chevron-down"></i> Show Filters
+        </button>
+    </div>
+    <div class="card-body collapse" id="filterContent">
+        <div class="row">
+            <!-- Date Filters -->
+            <div class="col-md-3">
+                <label for="dateFrom" class="form-label fw-bold">Date From:</label>
+                <input type="date" id="dateFrom" class="form-control shadow-sm" placeholder="dd/MM/yyyy" />
+            </div>
+            <div class="col-md-3">
+                <label for="dateTo" class="form-label fw-bold">Date To:</label>
+                <input type="date" id="dateTo" class="form-control shadow-sm" placeholder="dd/MM/yyyy" />
+            </div>
+            <!-- Remittance Status -->
+            <div class="col-md-3">
+                <label for="remittanceStatus" class="form-label fw-bold">Status:</label>
+                <select id="remittanceStatus" class="form-select shadow-sm">
+                    <option value="all" selected>All</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Withdrawn">Withdrawn</option>
+                </select>
+            </div>
+            <!-- Query Parameter Selection -->
+            <div class="col-md-3">
+                <label for="queryParameter" class="form-label fw-bold">Search By:</label>
+                <select id="queryParameter" class="form-select shadow-sm">
+                    <option value="all" selected>All</option>
+                    <option value="sourcebranchid">Source Branch ID</option>
+                    <option value="receivingbranchid">Receiving Branch ID</option>
+                    <option value="accountnumber">Account Number</option>
+                    <option value="sendername">Sender Name</option>
+                    <option value="receivername">Receiver Name</option>
+                    <option value="transactionreference">Transaction Reference</option>
+                    <option value="externalreference">External Reference</option>
+                    <option value="sendercni">Sender CNI</option>
+                    <option value="receivercni">Receiver CNI</option>
+                    <option value="senderphonenumber">Sender Phone Number</option>
+                    <option value="receiverphonenumber">Receiver Phone Number</option>
+                    <option value="branchid">Branch ID</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <!-- Branch Selection -->
+            <div class="col-md-9">
+                <label for="branchSelection" class="form-label fw-bold">Branch:</label>
+                @Html.DropDownListFor(
+                    m => m.SourceBranchId,
+                    new SelectList(ViewBag.Branches, "Id", "Name"),
+                    "---Select All---",
+                    new { @class = "form-control shadow-sm select2", @id = "branchSelection" }
+                )
+            </div>
+           
+            <div class="col-md-3">
+                <label for="queryValue" class="form-label fw-bold">Search Query:</label>
+                <input type="text" id="queryValue" class="form-control shadow-sm" placeholder="Enter search value..." />
+            </div>
+
+        </div>
+        <!-- Search & Reset Buttons -->
+        <div class="row mt-3">
+            <div class="col-md-12 d-flex justify-content-end">
+                <button id="searchButton" class="btn btn-primary me-2">
+                    <i class="mdi mdi-magnify me-1"></i> Search
+                </button>
+                <button id="resetButton" class="btn btn-secondary me-2">
+                    <i class="mdi mdi-refresh me-1"></i> Reset Filter
+                </button>
+                <button id="exportButton" class="btn btn-success" onclick="exportRemittanceData()">
+                    <i class="mdi mdi-file-excel me-1"></i> Export
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Remittance Transactions Table -->
+<div class="card shadow-sm mt-3" id="remittanceDataCard" style="display: none;">
+    <div class="card-header bg-light text-dark fw-bold">
+        <i class="mdi mdi-table me-2"></i> Remittance Transactions Table
+    </div>
+    <div class="card-body">
+        <div id="remittanceDataTableContainer">
+            @*@Html.Partial("_RemittanceData")*@
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/Remittance/RemittanceQuery.js"></script>
+}

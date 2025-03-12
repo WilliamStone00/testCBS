@@ -1,0 +1,118 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
+
+<fieldset class="fieldset-custom">
+    <legend>Terms</legend>
+    <hr style="border: 2px solid green;" />
+    <table class="table">
+        <tr>
+            <td><strong>Loan Code:</strong></td>
+            <td>@Model.Id</td>
+        </tr>
+        <tr>
+            <td><strong>Branch code:</strong></td>
+            <td>@Model.BranchCode</td>
+        </tr>
+        <tr>
+            <td><strong>Loan Date:</strong></td>
+            <td>@Model.LoanDate</td>
+        </tr>
+        <tr>
+            <td><strong>Loan Expiry Date:</strong></td>
+            <td>@Model.MaturityDate</td>
+        </tr>
+        <tr>
+            <td><strong>Loan type:</strong></td>
+            <td>@Model.LoanType</td>
+        </tr>
+        <tr>
+            <td><strong>Loan Amount:</strong></td>
+            <td>@Model.LoanAmount.ToString("#,##0.0")</td>
+        </tr>
+        <tr>
+            <td><strong>Interest rate:</strong></td>
+            <td>@Model.InterestRate.ToString("#,##0.0")</td>
+        </tr>
+        <tr>
+            <td><strong>Accrual interest:</strong></td>
+            <td>@Model.AccrualInterest.ToString("#,##0.0")</td>
+        </tr>
+        <tr>
+            <td><strong>Accrual paid:</strong></td>
+            <td>@Model.AccrualInterestPaid.ToString("#,##0.0")</td>
+        </tr>
+        <tr>
+            <td><strong>Interest Rate:</strong></td>
+            <td>@Model.InterestRate.ToString("#,##0.00")%</td>
+        </tr>
+        <tr>
+            <td><strong>Last calculated interest date:</strong></td>
+            <td>@Model.LastInterestCalculatedDate</td>
+        </tr>
+        <tr>
+            <td><strong>Last calculated interest:</strong></td>
+            <td>@Model.LastCalculatedInterest.ToString("#,##0.0")</td>
+        </tr>
+        <tr>
+            <td><strong>Vat rate:</strong></td>
+            <td>@Model.VatRate.ToString("#,##0.00")%</td>
+        </tr>
+        <tr>
+            <td><strong>Vat:</strong></td>
+            <td>@Model.Tax.ToString("#,##0.00")</td>
+        </tr>
+        <tr>
+            <td><strong>Vat paid:</strong></td>
+            <td>@Model.TaxPaid.ToString("#,##0.00")</td>
+        </tr>
+        <tr>
+            <td><strong>Fine:</strong></td>
+            <td>@Model.Penalty.ToString("#,##0.00")</td>
+        </tr>
+        <tr>
+            <td><strong>Fine paid:</strong></td>
+            <td>@Model.PenaltyPaid.ToString("#,##0.00")</td>
+        </tr>
+        <tr>
+            <td><strong>Total Paid:</strong></td>
+            <td>@Model.Paid.ToString("#,##0.00")</td>
+        </tr>
+        <tr>
+            <td><strong>Balance:</strong></td>
+            <td>@Model.Balance.ToString("#,##0.00")</td>
+        </tr>
+        <tr>
+            <td><strong>Last repayment date:</strong></td>
+            <td>@Model.LastRefundDate</td>
+        </tr>
+        <tr>
+            <td><strong>Last repayment:</strong></td>
+            <td>@Model.LastPayment.ToString("#,##0.00")</td>
+        </tr>
+        <tr>
+            <td><strong>Loan status:</strong></td>
+            <td>@Model.LoanStatus</td>
+        </tr>
+
+        <tr>
+            <td><strong>Loan deliquecy journey:</strong></td>
+            <td>@Model.LoanJourneyStatus</td>
+        </tr>
+        <tr>
+            <td><strong>Loan state</strong></td>
+            <td>
+                @if (@Model.IsCurrentLoan)
+                {
+                    <span class="badge bg-info">Current</span>
+                }
+                else
+                {
+                    <span class="badge bg-dark">Not Current</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Loan manager:</strong></td>
+            <td>@Model.LoanManager</td>
+        </tr>
+    </table>
+</fieldset>

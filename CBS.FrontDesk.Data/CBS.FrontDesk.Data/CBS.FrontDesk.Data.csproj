@@ -75,9 +75,11 @@
   <ItemGroup>
     <Compile Include="Accounting\ProductAccountingBook.cs" />
     <Compile Include="Entity\Accounting\Enumeration.cs" />
+    <Compile Include="Entity\AndriodApp\AndriodVersionConfiguration.cs" />
     <Compile Include="Entity\AuditTralP\AuditTrailDto.cs" />
     <Compile Include="Entity\CashCeilingManagement\CashCeilingRequest.cs" />
     <Compile Include="Entity\CashChangeManagement\CashChangeHistory.cs" />
+    <Compile Include="Entity\ChangeNumber\PhoneNumberChangeHistory.cs" />
     <Compile Include="Entity\Class1.cs" />
     <Compile Include="Entity\CMoney\CMoneyMembersActivationAccount.cs" />
     <Compile Include="Entity\MemberNoneCashOperationsP\MemberNoneCashOperation.cs" />

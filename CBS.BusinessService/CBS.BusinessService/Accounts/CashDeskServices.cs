@@ -26,6 +26,7 @@ using Irony.Parsing;
 using System.Web.Mvc;
 using CBS.BusinessService.Application;
 using DocumentFormat.OpenXml.Bibliography;
+using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -424,6 +425,10 @@ namespace CBS.BusinessService.Accounts
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }
+
+
+
+                //MobileMoneyNoneCashIn
                 else if (bulkDeposits.FirstOrDefault().OperationType == "RemittanceOUT")
                 {
                     string N = "N/A";
@@ -494,6 +499,36 @@ namespace CBS.BusinessService.Accounts
                 {
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepaymentMomocashCollection", IsCashOperation = false, OperationType = "Deposit" };
 
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
+                    if (response.ApiResponseData != null)
+                    {
+                        var transaction = response.ApiResponseData.Data;
+                        Branch branch = RetrieveBranchFromSession();
+                        var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
+                        HttpContext.Current.Session["rptSource"] = rptSource;
+                        GetExecutionMessages(response, true, null, MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+                else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepaymentByLocalAccountNoneCash")
+                {
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepaymentByLocalAccountNoneCash", IsCashOperation = false, OperationType = "Deposit" };
+                    foreach (var item in bulkDeposits)
+                    {
+                        BulkOperation.AccountToBeDebiteds.Add(new AccountToBeDebited
+                        {
+                            AccountNumber=item.AccountNumber,
+                            AccountType=item.AccountType,
+                            Amount=item.Amount
+                        });
+                    }
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -632,6 +667,28 @@ namespace CBS.BusinessService.Accounts
                         var rptSource = new List<OtherTransactionDto>();
                         rptSource.Add(rpt);
                         HttpContext.Current.Session["rptSource"] = rptSource;
+                        GetExecutionMessages(response, true, null, MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+                else if (bulkDeposits.FirstOrDefault().OperationType == "MobileMoneyNoneCashIn")
+                {
+
+
+
+                    var data = bulkDeposits.FirstOrDefault();
+                    var addNoneCashMobileMoneyCommand = new AddNoneCashMobileMoneyCommand { Amount=data.Amount, Charges=data.Fee, CustomerName=data.MemberName, MemberReference=data.CustomerId, OperationType=data.OperationType, ReceiverAccountNumber=data.AccountNumber, SourceType=data.SourceType, TelephoneNumber=data.TelephoneNumber, TellerCode=data.TellerCode, Note=data.Note };
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.MobileMoneyNoneCashCashIn, addNoneCashMobileMoneyCommand);
+                    if (response.ApiResponseData != null)
+                    {
+
                         GetExecutionMessages(response, true, null, MessagesResults.Success,
                             ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
@@ -805,6 +862,7 @@ namespace CBS.BusinessService.Accounts
                         loans = (from a in await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = "Open" }) select a).ToList();
 
                     }
+
                     else if (path == "withdrawalnotification")
                     {
 
@@ -1000,6 +1058,7 @@ namespace CBS.BusinessService.Accounts
                     CustomerId = a.customerId,
                     Fee = 0,
                     Interest = 0,
+                    ProductId=a.productId,
                     LoanId = null,
                     Penalty = 0,
                     Total = 0
@@ -1073,7 +1132,7 @@ namespace CBS.BusinessService.Accounts
                     }).ToList();
                     return selected;
                 }
-               
+
             }
             else
             {

@@ -1,11 +1,13 @@
-using CBS.BusinessService;
+﻿using CBS.BusinessService;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Application;
 using CBS.BusinessService.AuditTrailP;
 using CBS.BusinessService.Config;
+using CBS.BusinessService.CustomerManagement;
 using CBS.BusinessService.LoanCommitee;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Config;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.AuditTralP;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement;
@@ -15,6 +17,8 @@ using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.MemberOperation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.UI.Helper;
+using Microsoft.Owin.Logging;
+using MvcSiteMapProvider.Collections;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -33,141 +37,195 @@ namespace CBS.FrontDesk.UI.Controllers.LoanApplicationP
 
         private readonly LoanApplicationServices _LoanServices;
         private readonly LoanCommiteeMemberServices _loanCommiteeMember;
-        private readonly UserManagementServices _userManagementServices;
         private readonly BranchServices _branchServices;
-        public LoanApplicationController(LoanApplicationServices LoanServices, LoanCommiteeMemberServices loanCommiteeMember, UserManagementServices userManagementServices, BranchServices branchServices = null)
+        private readonly IndividualProfileServices _individualProfileServices;
+        private readonly LoanProductServices _loanProductServices;
+        private readonly LoanPurposeServices _loanPurposeServices;
+        private readonly LoanTermServices _loanTermServices;
+
+        public LoanApplicationController(LoanApplicationServices LoanServices, LoanCommiteeMemberServices loanCommiteeMember, BranchServices branchServices = null, IndividualProfileServices individualProfileServices = null, LoanProductServices loanProductServices = null, LoanPurposeServices loanPurposeServices = null, LoanTermServices loanTermServices = null)
         {
             _LoanServices = LoanServices;
             _loanCommiteeMember = loanCommiteeMember;
-            _userManagementServices = userManagementServices;
             _branchServices = branchServices;
+            _individualProfileServices=individualProfileServices;
+            _loanProductServices=loanProductServices;
+            _loanPurposeServices=loanPurposeServices;
+            _loanTermServices=loanTermServices;
         }
-
+        //EditLoanApplication
         public async Task<ActionResult> Index()
         {
             var Branches = await _branchServices.GetBranches();
             ViewBag.Branches = Branches;
-            return View(new Loan { InitiateLoanDownloadCommand=new InitiateLoanDownloadCommand()});
+            return View(new LoanApplication());
         }
-        public async Task<ActionResult> Configuration()
+        //
+        [HttpPost]
+        public async Task<ActionResult> UpdateLoanApplication(UpdateLoanApplicationCommand model)
+        {
+            
+                    if (!ModelState.IsValid)
+                    {
+                        return JsonValidationErrorResponse();
+
+                    }
+                   
+                    var data = await _LoanServices.Update(model);
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+        }
+
+        public async Task<ActionResult> EditLoanApplication(string KEY = null, string ReadOptions = null, string path = null, string group = null)
+        {
+            var loanApplication = await _LoanServices.GetLoanWithCustomerAndBranch(KEY);
+            if (loanApplication == null)
+            {
+                return View("NotFound"); // Show a Not Found view if loan is null
+            }
+            ViewBag.KEY = KEY;
+            //var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
+            //ViewBag.LoanApplicationStatus = productEnumAgregates.LoanStatuses;
+            var customer = await InitializeCustomerData(loanApplication.CustomerId);
+            ViewBag.LoanProducts = await _loanProductServices.GetLoanProductsDropDown();
+            var fees = await _loanProductServices.GetFees();
+            ViewBag.LoanFees = new MultiSelectList(
+        fees,
+        "value", // Replace with the property name for the value (e.g., ID)
+        "Text",  // Replace with the property name for the display text (e.g., Name)
+        selectedValues: null // Optionally, pass a list of selected values
+    );
+            ViewBag.MembersLoan = ViewBag.LoanFees;
+            ViewBag.KEY = KEY;
+            //await PopulateAggregatesInViewBag();
+            var LoanApplicationToCommand = _LoanServices.MapLoanApplicationToCommand(loanApplication);
+            LoanApplicationToCommand.Customer=customer.CustomerList;
+            //var customer = await InitializeCustomerData(KEY);
+            return View(LoanApplicationToCommand);
+
+
+            //var CustomerLoans = await _loanservices.GetLoanByCustomerID(KEY);
+        }
+
+        private async Task<IndividualCustomerProfile> InitializeCustomerData(string KEY)
         {
 
-            return View();
+            var results = await _individualProfileServices.GetCustomerLight(KEY);
+            return results;
         }
+        [HttpGet]
         public async Task<ActionResult> Details(string KEY = null)
         {
-            var loan = await _LoanServices.GetLoanWithCustomerAndBranch(KEY);
-            return View(loan);
+            if (string.IsNullOrEmpty(KEY))
+            {
+                return RedirectToAction("Index"); // Redirect to list page if KEY is not provided
+            }
+
+            var loanApplication = await _LoanServices.GetLoanWithCustomerAndBranch(KEY);
+            if (loanApplication == null)
+            {
+                return View("NotFound"); // Show a Not Found view if loan is null
+            }
+            var customer = await InitializeCustomerData(loanApplication.CustomerId);
+            loanApplication.Customer=customer;
+            return View(loanApplication);
         }
-    
+
+
         [HttpGet]
         public async Task<ActionResult> Download(
-    string searchCriteria = "all",
-    string dateFrom = null,
-    string dateTo = null,
-    string status = "Open",
-    string deliquentstatus = "Current",
-    string branchid = null,
-    string exportReportType = "Loan Query")
+            string searchCriteria = "all",
+            string dateFrom = null,
+            string dateTo = null,
+            string status = "Open",
+            string deliquentStatus = "Current",
+            string branchId = null,
+            string loanCategory = "all",
+            string loanTarget = "all",
+            string approvalStatus = "all")
         {
             try
             {
+           
+                Branch branch = null;
+
+                // Date Parsing with Improved Error Handling
                 DateTime? startDate = null;
                 DateTime? endDate = null;
-                var Branch = new Branch();
 
-                // Parse date strings if provided
-                if (!string.IsNullOrWhiteSpace(dateFrom))
+                if (!string.IsNullOrWhiteSpace(dateFrom) && DateTime.TryParseExact(dateFrom, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime parsedStartDate))
                 {
-                    startDate = DateTime.ParseExact(dateFrom, "dd/MM/yyyy", null);
+                    startDate = parsedStartDate;
                 }
 
-                if (!string.IsNullOrWhiteSpace(dateTo))
+                if (!string.IsNullOrWhiteSpace(dateTo) && DateTime.TryParseExact(dateTo, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime parsedEndDate))
                 {
-                    endDate = DateTime.ParseExact(dateTo, "dd/MM/yyyy", null).AddDays(1).AddTicks(-1);  // Include the whole day
+                    endDate = parsedEndDate.AddDays(1).AddTicks(-1); // Set end of the day
                 }
 
+                // ✅ Retrieve branch details efficiently
+                if (!string.IsNullOrWhiteSpace(branchId))
+                {
+                    branch = await _branchServices.GetBranch(branchId);
+                }
+                else if (!_branchServices.IsHeadOffice())
+                {
+                    branch = await _branchServices.GetBranch(_branchServices.GetBranchID());
+                }
 
-                if (!string.IsNullOrWhiteSpace(branchid))
-                {
-                    var branch = await _branchServices.GetBranch(branchid);
-                    Branch = branch;
-                }
-                if (!_branchServices.IsHeadOffice())
-                {
-                    var branch = await _branchServices.GetBranch(_branchServices.GetBranchID());
-                    Branch = branch;
-                }
-                // Prepare the DataTable query
+                // Ensure valid branch
+                branch = new Branch();
+
+                // ✅ Construct query object
                 var getLoansDataTableQuery = new GetLoanApplicationsDataTableQuery
                 {
                     DataTableOptions = new DataTableOptions
                     {
-                        pageSize = 30000,  // Export large number of records
+                        pageSize = 30000, // Export a large number of records
                         start = 0,
-                        searchValue = searchCriteria
+                        searchValue = !string.IsNullOrWhiteSpace(searchCriteria) ? searchCriteria : "all"
                     },
                     StartDate = startDate ?? DateTime.MinValue,
-                    EndDate = endDate ?? DateTime.MinValue,
-                    BranchId = branchid,
+                    EndDate = endDate ?? DateTime.MaxValue,
+                    BranchId = !string.IsNullOrWhiteSpace(branchId) ? branchId : "all",
                     Status = status,
                     MemberId = "n/a",
+                    LoanCategory = loanCategory,
+                    LoanTarget = loanTarget,
+                    ApprovalStatus = approvalStatus,
                 };
-
                 getLoansDataTableQuery.DataTableOptions = GetDataTableOptions();
 
-                if (string.IsNullOrWhiteSpace(searchCriteria))
-                {
-                    searchCriteria = "all";
-                }
+                //if (string.IsNullOrWhiteSpace(searchCriteria))
+                //{
+                //    searchCriteria = "all";
+                //}
 
                 getLoansDataTableQuery.DataTableOptions.pageSize = 30000;
                 getLoansDataTableQuery.DataTableOptions.start = 0;
 
-                // Fetch the data
+                // ✅ Fetch loan data
                 var dataTable = await _LoanServices.GetDataTableAsync(getLoansDataTableQuery, searchCriteria);
+                var loans = JsonConvert.DeserializeObject<List<LoanApplication>>(JsonConvert.SerializeObject(dataTable.data));
 
-                // Convert dataTable.data to List<Loan>
-                var loans = JsonConvert.DeserializeObject<List<Loan>>(
-                    JsonConvert.SerializeObject(dataTable.data)
-                );
-                string exportedBy = Session["FullName"].ToString();
-
-                // Generate Excel file
-                //var exportFile = new ExportFileResult();
-                // Filter loans based on the selected `exportReportType`
-                switch (exportReportType)
+                if (loans == null || loans.Count == 0)
                 {
-                    case "Approved_Loans":
-                        var exportFilea = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
-                        // Return file to client for download
-                        return File(exportFilea.Content, exportFilea.ContentType, exportFilea.FileName);
-                    case "Paid_Loans":
-                        var exportFilep = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
-                        // Return file to client for download
-                        return File(exportFilep.Content, exportFilep.ContentType, exportFilep.FileName);
-                    case "Delinquent_Loans":
-                        var exportFiled = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
-                        // Return file to client for download
-                        return File(exportFiled.Content, exportFiled.ContentType, exportFiled.FileName);
-                    case "Current_Loans":
-                        var exportFilec = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
-                        // Return file to client for download
-                        return File(exportFilec.Content, exportFilec.ContentType, exportFilec.FileName);
-                    case "All_Loans":
-                        var exportFile=LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
-                        // Return file to client for download
-                        return File(exportFile.Content, exportFile.ContentType, exportFile.FileName);
-                       
-                    default:
-                        var exportFiler = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
-                        // Return file to client for download
-                        return File(exportFiler.Content, exportFiler.ContentType, exportFiler.FileName);
+                    return new HttpStatusCodeResult(HttpStatusCode.NoContent, "No data available for export.");
                 }
 
-               
+                // ✅ Get exported by user
+                string exportedBy = Session["FullName"]?.ToString() ?? "Unknown";
 
-               
+                // ✅ Generate Excel file
+                var exportFile = LoanApplicationExcelGenerator.GenerateLoanApplicationExcel(
+                    loans,
+                    branch,
+                    exportedBy,
+                    fileTitle: "LOAN APPLICATION QUERY",
+                    dateFrom,
+                    dateTo
+                );
+
+                return File(exportFile.Content, exportFile.ContentType, exportFile.FileName);
             }
             catch (Exception ex)
             {
@@ -177,34 +235,51 @@ namespace CBS.FrontDesk.UI.Controllers.LoanApplicationP
 
 
         [HttpPost]
-        public async Task<ActionResult> LoadLoanData(string searchCriteria = "all", string dateFrom = null, string dateTo = null, string status = "Open", string deliquentstatus = "Current", string branchid = null)
+        public async Task<ActionResult> LoadLoanData(
+            string searchCriteria = "all",
+            string dateFrom = null,
+            string dateTo = null,
+            string status = "Open",
+            string deliquentStatus = "Current",
+            string branchId = null,
+            string loanCategory = "all",
+            string loanTarget = "all",
+            string approvalStatus = "all"
+        )
         {
             try
             {
+                // Date Parsing with Improved Error Handling
                 DateTime? startDate = null;
                 DateTime? endDate = null;
 
-                if (!string.IsNullOrWhiteSpace(dateFrom))
+                if (!string.IsNullOrWhiteSpace(dateFrom) && DateTime.TryParseExact(dateFrom, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime parsedStartDate))
                 {
-                    startDate = DateTime.ParseExact(dateFrom, "dd/MM/yyyy", null);
+                    startDate = parsedStartDate;
                 }
 
-                if (!string.IsNullOrWhiteSpace(dateTo))
+                if (!string.IsNullOrWhiteSpace(dateTo) && DateTime.TryParseExact(dateTo, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime parsedEndDate))
                 {
-                    endDate = DateTime.ParseExact(dateTo, "dd/MM/yyyy", null).AddDays(1).AddTicks(-1);
+                    endDate = parsedEndDate.AddDays(1).AddTicks(-1); // Set end of the day
                 }
 
+                // Construct Query Object with Additional Parameters
                 var query = new GetLoanApplicationsDataTableQuery
                 {
                     DataTableOptions = PostDataTableOptions(),
                     StartDate = startDate ?? DateTime.MinValue,
-                    EndDate = endDate ?? DateTime.MinValue,
-                    BranchId = branchid,
-                    Status = status, MemberId="n/a",
+                    EndDate = endDate ?? DateTime.MaxValue,
+                    BranchId = !string.IsNullOrWhiteSpace(branchId) ? branchId : "all",
+                    Status = status,
+                    MemberId = "n/a", 
+                    LoanCategory = loanCategory,
+                    LoanTarget = loanTarget,
+                    ApprovalStatus = approvalStatus,
                 };
 
+                // Fetch Data
                 var dataTable = await _LoanServices.GetDataTableAsync(query, searchCriteria);
-                var loanList = JsonConvert.DeserializeObject<List<Loan>>(JsonConvert.SerializeObject(dataTable.data));
+                var loanList = JsonConvert.DeserializeObject<List<LoanApplication>>(JsonConvert.SerializeObject(dataTable.data));
 
                 return Json(new
                 {
@@ -216,11 +291,10 @@ namespace CBS.FrontDesk.UI.Controllers.LoanApplicationP
             }
             catch (Exception ex)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading loan data.");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading loan data: " + ex.Message);
             }
         }
-
-        //
+        
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
 
         {
@@ -282,12 +356,42 @@ namespace CBS.FrontDesk.UI.Controllers.LoanApplicationP
 
             return null;
         }
+        private async Task PopulateAggregatesInViewBag(Aggregrate agrAggregates = null)
+        {
+            if (agrAggregates == null)
+            {
+                agrAggregates = await _individualProfileServices.GetAggregates();
+            }
+            var loanpurpose = await _loanPurposeServices.GetAllLoanPurpose();
+            var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
+            var loanTerms = await _loanProductServices.GetProductTermOrDurationFromConfiguredProduct();
+            var categories = await _loanProductServices.GetProductCategoryFromConfiguredProduct();
+            ViewBag.LoanTypes = productEnumAgregates.LoanTypes;
 
+            ViewBag.EconomicActivities = agrAggregates.EconomicActivities;
+            ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
+            ViewBag.RepaymentCycles = productEnumAgregates.RepaymentCycles;
+            ViewBag.LoanInterestMethods = productEnumAgregates.LoanInterestMethods;
+            ViewBag.LoanStatuses = productEnumAgregates.LoanStatuses;
+            ViewBag.LoanInterestTypes = productEnumAgregates.LoanInterestTypes;
+            ViewBag.LoanInterestPeriods = productEnumAgregates.LoanInterestPeriods;
+            ViewBag.LoanDurationPeriods = productEnumAgregates.LoanDurationPeriods;
+            ViewBag.RefundOrders = productEnumAgregates.RefundOrders;
+            ViewBag.LoanPurposes = loanpurpose;
+            ViewBag.LoanTypes = productEnumAgregates.LoanTypes;
+            ViewBag.AmortizationTypes = productEnumAgregates.AmortizationTypes;
+            ViewBag.LoanApplicationTypes = productEnumAgregates.LoanApplicationTypes;
+            ViewBag.LoanCommiteeValidationStatuses = productEnumAgregates.LoanCommiteeValidationStatuses;
+            ViewBag.LoanCategories = productEnumAgregates.LoanCategories;
+            ViewBag.LoanTargets = productEnumAgregates.LoanTargets;
+            ViewBag.LoanTerms = loanTerms;
+            ViewBag.Categories = categories;
+        }
         public async Task<bool> GetList()
         {
             //ViewBag.Groups = await auditTrailServices.GetLoans();
-            var users = await _userManagementServices.GetUserDropDownList();
-            ViewBag.Users = users.ToList();
+            //var users = await _userManagementServices.GetUserDropDownList();
+            //ViewBag.Users = users.ToList();
             return true;
         }
         public async Task<ActionResult> Delete(string id)

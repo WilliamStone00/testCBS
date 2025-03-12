@@ -233,7 +233,7 @@ namespace CBS.BusinessService.UserManagement
                     stringValues = (from a in newList
                                     select new StringValues
                                     {
-                                        Text = $"{a.firstName} {a.lastName}, Branch: {a.Brancch.Name}",
+                                        Text = $"{a.firstName} {a.lastName}, Branch: {a.Brancch?.Name}",
                                         Value = a.id.ToString(),
                                     }).ToList();
 

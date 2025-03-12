@@ -15,7 +15,7 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
         public string sortColumnName { get; set; } // Change type to int?
         public string sortColumnDirection { get; set; }
         public string searchValue { get; set; }
-        public int pageSize { get; set; }
+        public int pageSize { get; set; } = 30000;
         public int skip { get; set; }
         public int recordsTotal { get; set; }
         public int recordsFiltered { get; set; }
@@ -30,10 +30,8 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
         public object data { get; set; }
         public DataTableOptions DataTableOptions { get; set; }
 
-        // Default constructor for deserialization
         public CustomDataTable() { }
 
-        // Parameterized constructor for manual initialization
         public CustomDataTable(int draw, int recordsTotal, int recordsFiltered, object data, DataTableOptions dataTableOptions)
         {
             this.draw = draw;
@@ -50,6 +48,46 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Feild { get; set; }
+    }
+
+    public class GetDataTableDataQueryCommand
+    {
+        /// <summary>
+        /// DataTable options containing pagination, sorting, and search parameters.
+        /// </summary>
+        public DataTableOptions DataTableOptions { get; set; }
+
+        /// <summary>
+        /// Optional filter to retrieve data from a specific branch.
+        /// </summary>
+        public string BranchId { get; set; }
+
+        /// <summary>
+        /// Optional filter to retrieve record by  specific record id.
+        /// </summary>
+        public string KeyId { get; set; }
+
+        /// <summary>
+        /// Optional data status filter. 
+        
+        /// Use "all" to include all statuses.
+        /// </summary>
+        public string Status { get; set; }
+
+        /// <summary>
+        /// Optional start date to filter loans based on the data creation date.
+        /// Only data created on or after this date will be included.
+        /// </summary>
+        public DateTime? StartDate { get; set; }
+
+        /// <summary>
+        /// Optional end date to filter loans based on the data creation date.
+        /// Only datas created on or before this date will be included.
+        /// </summary>
+        public DateTime? EndDate { get; set; }
+
+        
+        public string OtherStatus { get; set; }
     }
 
 }

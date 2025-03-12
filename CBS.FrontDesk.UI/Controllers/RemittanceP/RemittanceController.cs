@@ -2,16 +2,23 @@
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
+using Microsoft.Owin.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IdentityModel.Protocols.WSTrust;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
-namespace CBS.FrontDesk.UI.Controllers.Remittance
+namespace CBS.FrontDesk.UI.Controllers.RemittanceP
 {
     //[CheckSessionTimeOutAttribute]
     public class RemittanceController : BaseController
@@ -39,7 +46,7 @@ namespace CBS.FrontDesk.UI.Controllers.Remittance
             {
                 branchid=Session["BranchId"].ToString();
             }
-            var remittanceQuery = new GetAllRemittanceQuery { Approved=false, ByDateRange=false, QueryParameter="sourcebranchid", QueryValue= branchid };
+            var remittanceQuery = new GetAllRemittanceQuery { Approved=false, ByDateRange=false, QueryParameter="sourcebranchid", QueryValue= branchid, BranchId=branchid, DataTableOptions=GetDataTableOptions(), Status="Pending" };
             var pending = await _services.GetRemittances(remittanceQuery);
             return View(pending.ToList());
         }
@@ -57,7 +64,27 @@ namespace CBS.FrontDesk.UI.Controllers.Remittance
             return View(validationOfRemittance);
         }
 
+        public async Task<ActionResult> RemittanceQuery()
+        {
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.Branches = Branches;
+            return View(new Remittance());
+        }
+        [HttpGet]
+        public async Task<ActionResult> Details(string KEY = null)
+        {
+            if (string.IsNullOrEmpty(KEY))
+            {
+                return RedirectToAction("Index"); // Redirect to list page if KEY is not provided
+            }
 
+            var remittance = await _services.GetRemittance(KEY);
+            if (remittance == null)
+            {
+                return View("NotFound"); // Show a Not Found view if loan is null
+            }
+            return View(remittance);
+        }
         public async Task<ActionResult> Request()
         {
             await GetList();
@@ -113,6 +140,168 @@ namespace CBS.FrontDesk.UI.Controllers.Remittance
 
             var data = await _accountServices.GetRemittanceAccountByTypeQuery(branchid, accountType);
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Download(
+    string queryParameter = "sourcebranchid",
+    string queryValue = null,
+    string dateFrom = null,
+    string dateTo = null,
+    string status = "all",
+    string branchId = null)
+        {
+            try
+            {
+                Branch branch = null;
+
+                // Date Parsing with Improved Error Handling
+                DateTime? startDate = null;
+                DateTime? endDate = null;
+
+                if (!string.IsNullOrWhiteSpace(dateFrom) && DateTime.TryParseExact(dateFrom, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime parsedStartDate))
+                {
+                    startDate = parsedStartDate;
+                }
+
+                if (!string.IsNullOrWhiteSpace(dateTo) && DateTime.TryParseExact(dateTo, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime parsedEndDate))
+                {
+                    endDate = parsedEndDate.AddDays(1).AddTicks(-1); // Set end of the day
+                }
+
+                // Retrieve branch details efficiently
+                if (!string.IsNullOrWhiteSpace(branchId))
+                {
+                    branch = await _branchServices.GetBranch(branchId);
+                }
+                else if (!_branchServices.IsHeadOffice())
+                {
+                    branch = await _branchServices.GetBranch(_branchServices.GetBranchID());
+                }
+
+                branch = new Branch(); // Ensure valid branch
+
+                // Construct query object
+                var getRemittanceDataTableQuery = new GetAllRemittanceQuery
+                {
+                    DataTableOptions = new DataTableOptions
+                    {
+
+                        start = 0,
+                        searchValue = !string.IsNullOrWhiteSpace(queryValue) ? queryValue : "all"
+                    },
+                    DateFrom = startDate ?? DateTime.MinValue,
+                    DateTo = endDate ?? DateTime.MaxValue,
+                    BranchId = !string.IsNullOrWhiteSpace(branchId) ? branchId : "all",
+                    Status = status,
+                    QueryParameter = queryParameter,
+                    QueryValue = queryValue
+                };
+                getRemittanceDataTableQuery.DataTableOptions = GetDataTableOptions();
+
+                // Fetch remittance data
+                var dataTable = await _services.GetDataTableAsync(getRemittanceDataTableQuery, queryValue);
+                var remittances = JsonConvert.DeserializeObject<List<Remittance>>(JsonConvert.SerializeObject(dataTable.data));
+
+                if (remittances == null || remittances.Count == 0)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.NoContent, "No data available for export.");
+                }
+
+                // Get exported by user
+                string exportedBy = Session["FullName"]?.ToString() ?? "Unknown";
+
+                // Generate Excel file
+                //var exportFile = RemittanceExcelGenerator.GenerateRemittanceExcel(
+                //    remittances,
+                //    branch,
+                //    exportedBy,
+                //    fileTitle: "REMITTANCE QUERY",
+                //    dateFrom,
+                //    dateTo
+                //);
+
+                //return File(exportFile.Content, exportFile.ContentType, exportFile.FileName);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error exporting data.");
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> LoadRemittanceData(
+            string queryParameter = "sourcebranchid",
+            string queryValue = null,
+            string dateFrom = null,
+            string dateTo = null,
+            string status = "all",
+            string branchId = null
+        )
+        {
+            try
+            {
+                // Debug: Log request parameters
+
+                // Validate input before proceeding
+                if (string.IsNullOrWhiteSpace(queryValue) && queryParameter != "all")
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid query value.");
+                }
+
+                // Date Parsing with Improved Error Handling
+                DateTime? startDate = null;
+                DateTime? endDate = null;
+
+                if (!string.IsNullOrWhiteSpace(dateFrom) && DateTime.TryParseExact(dateFrom, "dd/MM/yyyy", null, DateTimeStyles.None, out DateTime parsedStartDate))
+                {
+                    startDate = parsedStartDate;
+                }
+
+                if (!string.IsNullOrWhiteSpace(dateTo) && DateTime.TryParseExact(dateTo, "dd/MM/yyyy", null, DateTimeStyles.None, out DateTime parsedEndDate))
+                {
+                    endDate = parsedEndDate.AddDays(1).AddTicks(-1); // Set end of the day
+                }
+
+                // ✅ Construct Query Object
+                var query = new GetAllRemittanceQuery
+                {
+                    DataTableOptions = PostDataTableOptions(),
+                    DateFrom = startDate ?? DateTime.MinValue,
+                    DateTo = endDate ?? DateTime.MaxValue,
+                    BranchId = !string.IsNullOrWhiteSpace(branchId) ? branchId : "all",
+                    Status = status,
+                    QueryParameter = queryParameter,
+                    QueryValue = queryValue
+                };
+
+                // Debug: Log constructed query
+
+                // ✅ Fetch Data
+                var dataTable = await _services.GetDataTableAsync(query, queryValue);
+
+                if (dataTable == null || dataTable.data == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.NoContent, "No data available.");
+                }
+
+                var remittanceList = JsonConvert.DeserializeObject<List<Remittance>>(JsonConvert.SerializeObject(dataTable.data));
+
+
+                return Json(new
+                {
+                    draw = query.DataTableOptions.draw,
+                    recordsTotal = dataTable.recordsTotal,
+                    recordsFiltered = dataTable.recordsFiltered,
+                    data = remittanceList
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, $"Error loading remittance data: {ex.Message}");
+            }
         }
 
         public async Task<ActionResult> GetRemittanceCharge(string accountNumber, string accountType, string amount, string chargeType, string transferType)
@@ -175,7 +364,7 @@ namespace CBS.FrontDesk.UI.Controllers.Remittance
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<ActionResult> Ajaxloader(string Key,string transfterType)
+        public async Task<ActionResult> Ajaxloader(string Key, string transfterType)
         {
             var data = await _accountServices.GetAllRemittanceAccounts(Key);
             var listing = await _accountServices.GetAllRemittanceAccountsDroupDown(data.ToList(), transfterType);

@@ -3,6 +3,7 @@ using CBS.API.Helper;
 using CBS.BusinessService.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.MemberOperation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -30,8 +31,7 @@ namespace CBS.BusinessService.Application
         {
             try
             {
-                var objLoanApplication = await GetLoanApplication(id);
-                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_LoanApplication, id), id));
+                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.Get_Update_Delete_LoanApplication, id));
                 if (inResponse.IsSuccess)
                 {
 
@@ -43,7 +43,7 @@ namespace CBS.BusinessService.Application
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(objLoanApplication, false, $"Loan application", MessagesResults.Failed,
+                    GetExecutionMessages(null, false, $"Loan application", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }
@@ -92,12 +92,12 @@ namespace CBS.BusinessService.Application
         {
             try
             {
-                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<LoanApplication>>(string.Format(APICallHelper.GetLoan, customerId));
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<LoanApplication>>(string.Format(APICallHelper.Get_Update_Delete_LoanApplication, customerId));
                 if (cusResponseObject.IsSuccess && cusResponseObject.ApiResponseData != null)
                 {
                     var loan = cusResponseObject.ApiResponseData.Data;
-                    var individualCustomerProfile = await _individualProfileServices.GetCustomerLight(loan.CustomerId);
-                    loan.IndividualCustomer = individualCustomerProfile;
+                    //var individualCustomerProfile = await _individualProfileServices.GetCustomerLight(loan.CustomerId);
+                    //loan.IndividualCustomer = individualCustomerProfile;
                     return loan;
                 }
                 return null;
@@ -109,6 +109,33 @@ namespace CBS.BusinessService.Application
             }
 
         }
+        public UpdateLoanApplicationCommand MapLoanApplicationToCommand(LoanApplication loan)
+        {
+            if (loan == null) return null;
+
+            return new UpdateLoanApplicationCommand
+            {
+                // Convert FeeIds to a string array
+                FeeIds = loan.LoanApplicationFees?
+                            .Where(f => f.FeeRange != null)
+                            .Select(f => f.FeeRange.FeeId)
+                            .ToArray() ?? new string[0],
+
+                Amount = loan.Amount,
+                IsThereGuarantor = loan.IsThereGuarantor,
+                IsThereCollateral = loan.IsThereCollateral,
+                InterestRate = loan.InterestRate,
+                LoanDuration = loan.LoanDuration,
+                CustomerId = loan.CustomerId,
+                RequiredDownPaymentCoverageRate = loan.RequiredDownPaymentCoverageRate,
+                ShareAccountCoverageAmount = loan.ShareAccountCoverageAmount,
+                SavingAccountCoverageRate = loan.SavingAccountCoverageRate,
+                Id = loan.Id
+            };
+        }
+
+
+
         public async Task<LoanApplication> GetLoanApplication(string id)
         {
             try
@@ -126,6 +153,35 @@ namespace CBS.BusinessService.Application
                 throw ex;
             }
         }
+        public async Task<ExecutionMessages> Update(UpdateLoanApplicationCommand model)
+        {
+            try
+            {
+
+                var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanApplication>>(string.Format(APICallHelper.Get_Update_Delete_LoanApplication, model.Id), model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Loan application", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, "Loan application", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
         public async Task<ExecutionMessages> Create(AddLoanApplicationCommand model)
         {
             try
@@ -133,7 +189,7 @@ namespace CBS.BusinessService.Application
 
                 // Make an API call to create an individual profile
                 model.BranchId = GetBranchID();
-               
+
                 //model.LoanApplicationType = "Normal";
                 //model.AmortizationType = "Constant_Amortization";
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<LoanApplication>>(APICallHelper.CreateLoanApplication, model);
