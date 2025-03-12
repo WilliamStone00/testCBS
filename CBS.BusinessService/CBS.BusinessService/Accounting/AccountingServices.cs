@@ -644,9 +644,10 @@ namespace CBS.BusinessService.Accounting
                 }
                 else
                 {
+                    //throw new Exception("");
                     // Failed creation
-                    GetExecutionMessages(response, true, $"{list.AccountModelList[0].AccountNumber}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"{list.AccountModelList[0].AccountNumber}");
+                    GetExecutionMessages(response, true, $"Null reference exception", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"Null reference exception");
                 }
             }
             catch (Exception ex)

@@ -1625,7 +1625,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     if (model.ExcelFile != null && model.ExcelFile.ContentLength > 0)
                     {
                         // Check if the file is an Excel file
-                        if (Path.GetExtension(model.ExcelFile.FileName).Equals(".xls") || Path.GetExtension(model.ExcelFile.FileName).Equals(".xlsx"))
+                        if (Path.GetExtension(model.ExcelFile.FileName).Equals(".xlsx"))
                         {
                             try
                             {
@@ -1633,18 +1633,27 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 {
                                     // Call the method to read the Excel file and convert it to a list of Data objects
                                     var dataList = ReadExcelFile(stream);
-                                    UploadModel.AccountModelList = dataList;
-                                    if (_AccountServices.IsHeadOffice() == true)
+                                    if (dataList.Count()==0)
                                     {
-                                        UploadModel.BranchId = model.BranchId;
+                                        return Json(new { success = false, status = "The file structure does not respect the expected file format", message = "The file structure does not respect the expected file format", Data = "null" });
+
                                     }
                                     else
                                     {
-                                        UploadModel.BranchId = _AccountServices.GetBranchID();
+                                        UploadModel.AccountModelList = dataList;
+                                        if (_AccountServices.IsHeadOffice() == true)
+                                        {
+                                            UploadModel.BranchId = model.BranchId;
+                                        }
+                                        else
+                                        {
+                                            UploadModel.BranchId = _AccountServices.GetBranchID();
+                                        }
+                                        UploadModel.IsHarmonizationActivated = model.IsHarmonizationActivated;
+                                        var data = await _AccountServices.Create(UploadModel);
+                                        return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data), Data = data.Data });
+
                                     }
-                                    UploadModel.IsHarmonizationActivated = model.IsHarmonizationActivated;
-                                         var data = await  _AccountServices.Create(UploadModel);
-                                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data), Data= data.Data });
                                 }
                             }
                             catch (Exception ex)
@@ -1657,14 +1666,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         }
                         else
                         {
-                            throw new InvalidOperationException("Please upload a valid Excel file.");
+                            return Json($"Invalid file extension. Please check your input.{Path.GetExtension(model.ExcelFile.FileName)}", JsonRequestBehavior.AllowGet);
                         }
                     }
                     else
                     {
-                        throw new InvalidOperationException("No file was uploaded.");
+                        //throw new InvalidOperationException("No file was uploaded.");
+                        return Json($"Empty file stream No file was uploaded", JsonRequestBehavior.AllowGet);
+
                     }
-                   
+
                 }
                 else
                 {
@@ -1732,34 +1743,44 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     var worksheet = workbook.Worksheets.First();
                     foreach (var row in worksheet.RowsUsed().Skip(1)) // Skip header row
                     {
+                        
                         if (row.CellsUsed().Count() < 8) continue; // Skip rows with insufficient columns
-                        var AccountNumber = row.Cell(1).GetString();
-                        var AccountName = row.Cell(2).GetString();
-                        var   ChartofAccount = row.Cell(1).GetString().Substring(0, Math.Min(6, row.Cell(1).GetString().Length));
-                        var CreatedDate = DateTime.Today.ToString("yyyy-MM-dd");
-                        var    BeginningDebitBalance = decimal.Parse(row.Cell(3).GetString());
-                        var BeginningCreditBalance = decimal.Parse(row.Cell(4).GetString());
-                        var     BookingDirection = decimal.Parse(row.Cell(4).GetString()) == 0 ? "D" : "C";
-                        var MovementDebitBalance = decimal.Parse(row.Cell(5).GetString());
-                        var     MovementCreditBalance = decimal.Parse(row.Cell(6).GetString());
-                        var EndBalanceDebit = decimal.Parse(row.Cell(7).GetString());
-                        var      EndBalanceCredit = decimal.Parse(row.Cell(8).GetString());
-                        var data = new AccountModelX
+                        if (row.CellsUsed().Count()==8)
                         {
-                            AccountNumber = row.Cell(1).GetString(),
-                            AccountName = row.Cell(2).GetString(),
-                            ChartofAccount = row.Cell(1).GetString().Substring(0, Math.Min(6, row.Cell(1).GetString().Length)),
-                            CreatedDate = DateTime.Today.ToString("yyyy-MM-dd"),
-                            BeginningDebitBalance = decimal.Parse(row.Cell(3).GetString()),
-                            BeginningCreditBalance = decimal.Parse(row.Cell(4).GetString()),
-                          BookingDirection = decimal.Parse(row.Cell(4).GetString()) == 0 ? "D" : "C",
-                            MovementDebitBalance = decimal.Parse(row.Cell(5).GetString()),
-                            MovementCreditBalance = decimal.Parse(row.Cell(6).GetString()),
-                            EndBalanceDebit = decimal.Parse(row.Cell(7).GetString()),
-                            EndBalanceCredit = decimal.Parse(row.Cell(8).GetString())
-                        };
+                            var AccountNumber = row.Cell(1).GetString();
+                            var AccountName = row.Cell(2).GetString();
+                            var ChartofAccount = row.Cell(1).GetString().Substring(0, Math.Min(6, row.Cell(1).GetString().Length));
+                            var CreatedDate = DateTime.Today.ToString("yyyy-MM-dd");
+                            var BeginningDebitBalance = decimal.Parse(row.Cell(3).GetString());
+                            var BeginningCreditBalance = decimal.Parse(row.Cell(4).GetString());
+                            var BookingDirection = decimal.Parse(row.Cell(4).GetString()) == 0 ? "D" : "C";
+                            var MovementDebitBalance = decimal.Parse(row.Cell(5).GetString());
+                            var MovementCreditBalance = decimal.Parse(row.Cell(6).GetString());
+                            var EndBalanceDebit = decimal.Parse(row.Cell(7).GetString());
+                            var EndBalanceCredit = decimal.Parse(row.Cell(8).GetString());
+                            var data = new AccountModelX
+                            {
+                                AccountNumber = row.Cell(1).GetString(),
+                                AccountName = row.Cell(2).GetString(),
+                                ChartofAccount = row.Cell(1).GetString().Substring(0, Math.Min(6, row.Cell(1).GetString().Length)),
+                                CreatedDate = DateTime.Today.ToString("yyyy-MM-dd"),
+                                BeginningDebitBalance = decimal.Parse(row.Cell(3).GetString()),
+                                BeginningCreditBalance = decimal.Parse(row.Cell(4).GetString()),
+                                BookingDirection = decimal.Parse(row.Cell(4).GetString()) == 0 ? "D" : "C",
+                                MovementDebitBalance = decimal.Parse(row.Cell(5).GetString()),
+                                MovementCreditBalance = decimal.Parse(row.Cell(6).GetString()),
+                                EndBalanceDebit = decimal.Parse(row.Cell(7).GetString()),
+                                EndBalanceCredit = decimal.Parse(row.Cell(8).GetString())
+                            };
+                            dataList.Add(data);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                       
 
-                        dataList.Add(data);
+         
                     }
                 }
             }
