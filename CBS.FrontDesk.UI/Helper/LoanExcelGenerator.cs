@@ -207,7 +207,7 @@ namespace CBS.FrontDesk.UI.Helper
             using (var workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Loan Analysis");
-
+                string period = dateFrom==string.Empty ? $"ALL-LOANS FROM {(branch?.Name?.ToUpper() ?? "ALL BRANCH")}" : $"{dateFrom} - {dateTo}";
                 // Title with File Title
                 worksheet.Cell(1, 1).Value = $"{fileTitle.ToUpper()} - LOAN ANALYSIS FOR {(branch?.Name?.ToUpper() ?? "ALL BRANCH")}";
                 worksheet.Cell(1, 1).Style.Font.Bold = true;
@@ -217,15 +217,15 @@ namespace CBS.FrontDesk.UI.Helper
                 worksheet.Cell(1, 1).Style.Font.FontName = "Bahnschrift Light";
                 worksheet.Cell(1, 1).Style.Font.FontSize = 14;
                 // Export Details with Date Range
-                worksheet.Cell(2, 1).Value = $"Date Range: {dateFrom} - {dateTo}";
-                worksheet.Cell(2, 1).Style.Font.Italic = true;
+                worksheet.Cell(2, 1).Value = $"Date Range: {period}";
+                worksheet.Cell(2, 1).Style.Font.Italic = false;
                 worksheet.Cell(2, 1).Style.Font.FontSize = 10;
                 worksheet.Cell(1, 1).Style.Font.FontName = "Bahnschrift Light";
                 worksheet.Range(2, 1, 2, 45).Merge();
                 worksheet.Cell(2, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
 
                 worksheet.Cell(3, 1).Value = $"Export Date: {DateTime.Now} BY {exportedBy}";
-                worksheet.Cell(3, 1).Style.Font.Italic = true;
+                worksheet.Cell(3, 1).Style.Font.Italic = false;
                 worksheet.Cell(3, 1).Style.Font.FontSize = 10;
                 worksheet.Cell(1, 1).Style.Font.FontName = "Bahnschrift Light";
                 worksheet.Range(3, 1, 3, 45).Merge();
@@ -245,7 +245,7 @@ namespace CBS.FrontDesk.UI.Helper
                 var totalLoans = loanDetails.Count;
                 var totalLoanVolume = loanDetails.Sum(l => l.LoanAmount);
                 var totalAccrualInterest = loanDetails.Sum(l => l.AccrualInterest);
-                var totalDueInterest = loanDetails.Sum(l => l.DeliquentInterest);
+                var totalDeliquentInterest = loanDetails.Sum(l => l.DeliquentInterest);
                 var totalRepayment = loanDetails.Sum(l => l.Paid);
                 var totalBalance = loanDetails.Sum(l => l.Balance);
                 var totalDueAmount = loanDetails.Sum(l => l.DueAmount);
@@ -257,7 +257,7 @@ namespace CBS.FrontDesk.UI.Helper
                     ("1. Number of Loans", totalLoans, "#,##0"),
                     ("2. Volume of Loan", totalLoanVolume, "#,##0.0"),
                     ("3. Volume of Accrual Interest", totalAccrualInterest, "#,##0.0"),
-                    ("4. Volume of Due Interest", totalDueInterest, "#,##0.0"),
+                    ("4. Volume of Deliquent Interest", totalDeliquentInterest, "#,##0.0"),
                     ("5. Volume of Refund", totalRepayment, "#,##0.0"),
                     ("6. Percentage of Refund", percentageRefund, "0.0"),
                     ("7. Outstanding Loan", totalBalance, "#,##0.0"),

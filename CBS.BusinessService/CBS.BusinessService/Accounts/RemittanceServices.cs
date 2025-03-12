@@ -2,10 +2,12 @@
 using BusinessServices;
 using CBS.API.Helper;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -59,10 +61,13 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var couApiResponse = await _transactionApiHelper.PostAsync<ResponseObject<List<Remittance>>>(APICallHelper.GetAllRemittanceRequests, allRemittanceQuery);
+                var couApiResponse = await _transactionApiHelper.PostAsync<ResponseObject<CustomDataTable>>(APICallHelper.GetAllRemittanceRequests, allRemittanceQuery);
+
                 if (couApiResponse.IsSuccess)
                 {
-                    return couApiResponse.ApiResponseData.Data;
+                    var remittances = JsonConvert.DeserializeObject<List<Remittance>>(JsonConvert.SerializeObject(couApiResponse.ApiResponseData.Data.data));
+
+                    return remittances;
                 }
                 return new List<Remittance>();
             }
@@ -105,6 +110,37 @@ namespace CBS.BusinessService.Accounts
                 // Log and handle exception
                 throw;
             }
+        }
+
+        public async Task<CustomDataTable> GetDataTableAsync(GetAllRemittanceQuery loansDataTableQuery, string searchCriterial)
+        {
+            loansDataTableQuery.DataTableOptions.searchValue = searchCriterial;
+            loansDataTableQuery.DataTableOptions.search = searchCriterial;
+            loansDataTableQuery.DataTableOptions.sortColumnName = "TransactionDate";
+            if (!IsHeadOffice())
+            {
+                loansDataTableQuery.BranchId=GetBranchID();
+            }
+            // Make API call to fetch the DataTable result
+            var couApiResponse = await _transactionApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                APICallHelper.GetRemittanceDataTable,
+                loansDataTableQuery
+            );
+
+            // Return response if successful
+            if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+            {
+                return couApiResponse.ApiResponseData.Data;
+            }
+
+            // Return an empty DataTable if the request fails
+            return new CustomDataTable(
+                draw: Convert.ToInt32(loansDataTableQuery.DataTableOptions.draw),
+                recordsTotal: 0,
+                recordsFiltered: 0,
+                data: new List<object>(), // No data
+                dataTableOptions: loansDataTableQuery.DataTableOptions
+            );
         }
         public async Task<Remittance> GetRemittance(string id)
         {

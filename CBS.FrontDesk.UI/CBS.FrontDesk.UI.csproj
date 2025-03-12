@@ -562,7 +562,11 @@
     <Compile Include="Controllers\Accounting\CashMovementTrackerConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\CashMovementTrackerController.cs" />
     <Compile Include="Controllers\AuditTrailData\AuditTrailController.cs" />
+    <Compile Include="Controllers\AndriodVersioning\AndriodAppVersioningController.cs" />
+    <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
     <Compile Include="Controllers\LoanApplicationP\LoanApplicationController.cs" />
+    <Compile Include="Controllers\MemberNoneCashOperation\LoanRepaymentBackOfficeController.cs" />
+    <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MemberNoneCashOperationController.cs" />
     <Compile Include="Controllers\StandingOrderP\StandingOrderController.cs" />
     <Compile Include="Controllers\CorrespondingBankManagement\CorrespondingBankManagementController.cs" />
@@ -691,6 +695,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Code\Helper\SessionTimeoutFilterAttribute.cs" />
+    <Compile Include="Helper\LoanApplicationExcelGenerator.cs" />
     <Compile Include="Helper\LoanExcelGenerator.cs" />
     <Compile Include="Helper\ExportUtilityAuditTrail.cs" />
     <Compile Include="Helper\MemberNoneCashOperationExcelGenerator.cs" />
@@ -2527,7 +2532,12 @@
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\AuditTrail\Audits.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\LoanRefpaymentSimulation.js" />
+    <Content Include="Scripts\Js\Crud\LoanApplicationHistory\LoanApplicationQuery.js" />
+    <Content Include="Scripts\Js\Crud\LoanRepaymentBackOffice\LoanRepaymentBackOffice.js" />
     <Content Include="Scripts\Js\Crud\Loan\LoanTransactions\LoanQuery.js" />
+    <Content Include="Scripts\Js\Crud\NoneCashMobileMoney\Approvals.js" />
+    <Content Include="Scripts\Js\Crud\NoneCashMobileMoney\NoneCashMobileMoneyOperations.js" />
+    <Content Include="Scripts\Js\Crud\NoneCashMobileMoney\OperationListings.js" />
     <Content Include="Scripts\Js\Crud\MemberNoneCashOperation\Approvals.js" />
     <Content Include="Scripts\Js\Crud\MemberNoneCashOperation\OperationListings.js" />
     <Content Include="Scripts\Js\Crud\MemberNoneCashOperation\MembersNoneCashOperations.js" />
@@ -2546,6 +2556,7 @@
     <Content Include="Scripts\Js\Crud\MemberOrdinaryAccountsF8\MembersAccount.js" />
     <Content Include="Scripts\Js\Crud\Remittance\CashDeskOperationsRemittance.js" />
     <Content Include="Scripts\Js\Crud\Remittance\RemittancePending.js" />
+    <Content Include="Scripts\Js\Crud\Remittance\RemittanceQuery.js" />
     <Content Include="Scripts\Js\Crud\Remittance\RemittanceRequest.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Pending.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Requests.js" />
@@ -3456,6 +3467,36 @@
     <Content Include="Views\ManuallyJournalEntry\_CreateAccountingEventRule.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\_ExecuteAutomatedEntry_Data.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\_MultipleJournalEntryClientData.cshtml" />
+    <Content Include="Views\LoanApplication\_Details.cshtml" />
+    <Content Include="Views\LoanApplication\_LoanApplicationData.cshtml" />
+    <Content Include="Views\LoanApplication\_LoanIformation.cshtml" />
+    <Content Include="Views\LoanApplication\_RepaymentSchedle.cshtml" />
+    <Content Include="Views\LoanApplication\Details.cshtml" />
+    <Content Include="Views\LoanApplication\Index.cshtml" />
+    <Content Include="Views\LoanApplication\NotFound.cshtml" />
+    <Content Include="Views\LoanApplication\_EditLoanApplication.cshtml" />
+    <Content Include="Views\LoanApplication\EditLoanApplication.cshtml" />
+    <Content Include="Views\AndriodAppVersioning\_Create.cshtml" />
+    <Content Include="Views\AndriodAppVersioning\_Data.cshtml" />
+    <Content Include="Views\AndriodAppVersioning\_AndriodVersionConfigurationDetailsPartial.cshtml" />
+    <Content Include="Views\AndriodAppVersioning\Index.cshtml" />
+    <Content Include="Views\ChangeNumber\_AndriodVersionConfigurationDetailsPartial.cshtml" />
+    <Content Include="Views\ChangeNumber\_RequestPhoneChange.cshtml" />
+    <Content Include="Views\ChangeNumber\_Data.cshtml" />
+    <Content Include="Views\ChangeNumber\Index.cshtml" />
+    <Content Include="Views\ChangeNumber\_ApprovePhoneChange.cshtml" />
+    <Content Include="Views\ChangeNumber\_SearchMember.cshtml" />
+    <Content Include="Views\ChangeNumber\PendingRequests.cshtml" />
+    <Content Include="Views\Remittance\RemittanceQuery.cshtml" />
+    <Content Include="Views\Remittance\_RemittanceQueryData.cshtml" />
+    <Content Include="Views\MobileMoneyBackOffice\_MemberNonCashDesk.cshtml" />
+    <Content Include="Views\MobileMoneyBackOffice\_MemberNonCashForm.cshtml" />
+    <Content Include="Views\MobileMoneyBackOffice\_SearchBox.cshtml" />
+    <Content Include="Views\MobileMoneyBackOffice\Index.cshtml" />
+    <Content Include="Views\LoanRepaymentBackOffice\_AccountAndLoanListingForm.cshtml" />
+    <Content Include="Views\LoanRepaymentBackOffice\_MomocashCollectionSearchBox.cshtml" />
+    <Content Include="Views\LoanRepaymentBackOffice\_SearchBox.cshtml" />
+    <Content Include="Views\LoanRepaymentBackOffice\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -3,6 +3,7 @@ using CBS.FrontDesk.Data.Entity.LoanCommitee;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,12 +41,14 @@ namespace CBS.FrontDesk.Data.Entity.MemberOperation
         public List<Refund> Refunds { get; set; }
         public Refund Refund { get; set; }
         public Loan Loan { get; set; }
+        public UpdateLoanApplicationCommand UpdateLoanApplicationCommand { get; set; }
         public List<Loan> Loans { get; set; }
         public List<Loan> SelectLoans { get; set; }
         public string ServiceOption { get; set; }
         public string Path { get; set; }
         public MemberOperationPanel()
         {
+            UpdateLoanApplicationCommand=new UpdateLoanApplicationCommand();
             LoanCommentry = new LoanCommentry();
             LoanCommentries = new List<LoanCommentry>();
             AddLoanApplicationCommand = new AddLoanApplicationCommand();
@@ -75,6 +78,51 @@ namespace CBS.FrontDesk.Data.Entity.MemberOperation
             LoanParameter = new LoanParameters();
             SelectLoans = new List<Loan>();
         }
+    }
+    public class UpdateLoanApplicationCommand
+    {
+        public string Id { get; set; }
+
+        [Required(ErrorMessage = "Customer ID is required.")]
+        public string CustomerId { get; set; } // Member Reference ID
+
+        [Required(ErrorMessage = "Loan amount is required.")]
+        [Range(1, double.MaxValue, ErrorMessage = "Loan amount must be greater than zero.")]
+        public decimal Amount { get; set; } // Loan amount applied
+
+        [Required(ErrorMessage = "Loan duration is required.")]
+        [Range(1, 360, ErrorMessage = "Loan duration must be between 1 and 360 months.")]
+        public int LoanDuration { get; set; } // Loan term in months
+
+        [Required(ErrorMessage = "Interest rate is required.")]
+        [Range(0, 100, ErrorMessage = "Interest rate must be between 0% and 100%.")]
+        public decimal InterestRate { get; set; } // Loan interest rate
+
+        public bool RequiredDownPaymentCoverageRate { get; set; } // Determines if a down payment is required
+
+        public bool IsThereGuarantor { get; set; } // Determines if a guarantor is provided
+
+        public bool IsThereCollateral { get; set; } // Determines if a collateral is provided
+
+        [Range(0, double.MaxValue, ErrorMessage = "Ordinary share account coverage amount must be a non-negative value.")]
+        public decimal ShareAccountCoverageAmount { get; set; } // Ordinary shares used for coverage
+
+        [Range(0, 100, ErrorMessage = "Saving account coverage rate must be between 0% and 100%.")]
+        public decimal SavingAccountCoverageRate { get; set; } // Saving coverage percentage
+
+        public IndividualProfile Customer { get; set; }
+
+        [Required(ErrorMessage = "At least one fee must be selected.")]
+        [MinLength(1, ErrorMessage = "Select at least one loan fee.")]
+        public string[] FeeIds { get; set; }
+
+        public UpdateLoanApplicationCommand()
+        {
+            // Initialize FeeIds to ensure it's not null
+            FeeIds = new string[0];
+        }
+
+       
     }
 
     //public class MemberOperationPanel

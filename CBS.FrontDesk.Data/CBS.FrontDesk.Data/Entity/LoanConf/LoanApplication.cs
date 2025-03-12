@@ -919,7 +919,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IsPaidFeeBeforeProcessing { get; set; }
         public bool IsPaidFeeAfterProcessing { get; set; }
 
-
+        public string CustomerName { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
         public bool RequiredDownPaymentCoverageRate { get; set; }
 
         public decimal PreferenceShareAccountCoverageAmount { get; set; }
@@ -944,19 +946,17 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
         public List<string> FeeIds { get; set; }
         public virtual LoanProduct LoanProduct { get; set; }
-        public virtual ICollection<LoanApplicationCollateral> Collateras { get; set; }
-        public virtual ICollection<LoanGuarantor> Guarantors { get; set; }
-        public virtual ICollection<LoanCommiteeValidationHistory> LoanCommiteeValidations { get; set; }
-        public virtual ICollection<DocumentAttachedToLoan> DocumentAttachedToLoans { get; set; }
+        public List<LoanApplicationCollateral> Collateras { get; set; }
+        public List<LoanGuarantor> Guarantors { get; set; }
+        public List<LoanCommiteeValidationHistory> LoanCommiteeValidations { get; set; }
+        public List<DocumentAttachedToLoan> DocumentAttachedToLoans { get; set; }
         public virtual LoanPurpose LoanPurpose { get; set; }
-        public virtual ICollection<OTPNotification> OTPNotifications { get; set; }
+        public List<OTPNotification> OTPNotifications { get; set; }
         public List<LoanApplicationFee> LoanApplicationFees { get; set; }
-        public IndividualCustomerProfile IndividualCustomer { get; set; }
+        public IndividualCustomerProfile Customer { get; set; }
 
 
 
-
-       
         public decimal ProcessingFee { get; set; }
        
 
@@ -965,7 +965,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
 
 
-        public virtual ICollection<Loan> Loans { get; set; }
+        public List<Loan> Loans { get; set; }
 
         public LoanApplication()
         {
@@ -1495,7 +1495,13 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string MemberId { get; set; }
         public string BranchId { get; set; }
         public string Status { get; set; } // Pending, Approved, Rejected, or All
+
+        // New fields added
+        public string LoanCategory { get; set; } // Main, Special Saving Facilities, etc.
+        public string LoanTarget { get; set; } // Employee, Government, Groups, etc.
+        public string ApprovalStatus { get; set; } // Approved, Pending Approval, Rejected, All
     }
+
 
     public class DataTableLoan
     {

@@ -1,0 +1,392 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanApplication
+@{
+    ViewBag.Title = "Loan Application Details";
+    var SavingCoverage = (Model.SavingAccountCoverageRate / 100) * Model.RequestedAmount;
+    var totalRefinancing = Model.RequestedAmount + Model.RestructuredBalance;
+}
+
+<div class="card-body">
+    <table class="table table-bordered table-striped" id="myDataTable">
+        <tbody>
+            <!-- General Information -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">General Information</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Member's Code:</td>
+                <td>@Model.CustomerId</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Loan Application Code:</td>
+                <td>@Model.Id</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Loan Application Type:</td>
+                <td>
+                    @if (@Model.LoanApplicationType != "Normal")
+                    {
+                        <span class="badge bg-warning text-dark">@Model.LoanApplicationType</span>
+                        <br /><a href="/Loan/Details?KEY=@Model.LoanId" target="_blank">Details >> @Model.LoanId</a>
+                    }
+                    else
+                    {
+                        <span class="badge bg-primary text-white">New Loan</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Loan Type:</td>
+                <td>
+                    @if (Model.LoanType=="Main_Loan")
+                    {
+                        <span class="badge bg-primary text-white">@Model.LoanType</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">@Model.LoanType</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Loan category:</td>
+                <td>@Model.LoanCategory</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Targeted population:</td>
+                <td>@Model.LoanTarget</td>
+            </tr>
+
+            <!-- General Information -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Product Information</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Product code:</td>
+                <td>@Model.LoanProduct.ProductCode</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Product name:</td>
+                <td>@Model.LoanProduct.ProductName</td>
+            </tr>
+            @*<tr>
+                    <td class="font-weight-bold">Product term:</td>
+                    <td>@Model.LoanProduct.LoanTerm.Name</td>
+                </tr>*@
+
+            <!-- Application Details -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Application Details</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Application Date:</td>
+                <td>@Model.ApplicationDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Approval Date:</td>
+                <td>@Model.ApprovalDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Disbursement Date:</td>
+                <td>@Model.DisbursementDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Application Manage:</td>
+                <td>@Model.LoanManager</td>
+            </tr>
+
+            <!-- Application Details -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Migration status</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Migrated Loan:</td>
+                <td>
+                    @if (!Model.IsUpload.Value)
+                    {
+                        <span class="badge bg-primary text-white">TSC-Loan</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Migrated Loan</span>
+                    }
+                </td>
+            </tr>
+            <!-- Loan Status -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Loan Status</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Approval Status:</td>
+                <td>
+                    <span class="badge bg-@(Model.IsApproved ? "success" : "danger")">
+                        @(Model.IsApproved ? "Approved" : "Pending")
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Disbursement Status:</td>
+                <td>@(Model.IsDisbursed ? "Yes" : "No")</td>
+            </tr>
+            <!-- Refinancing Details -->
+            @if (Model.LoanApplicationType == "Refinancing")
+            {
+                <tr class="table-primary">
+                    <td colspan="2" class="font-weight-bold text-center">Refinancing Details</td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Requested Amount:</td>
+                    <td>@Model.RequestedAmount.ToString("#,##0.0") FCFA</td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Restructured Balance:</td>
+                    <td>@Model.RestructuredBalance.ToString("#,##0.0") FCFA</td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Refinanced Amount:</td>
+                    <td>@totalRefinancing.ToString("#,##0.0") FCFA</td>
+                </tr>
+                <tr class="table-secondary">
+                    <td colspan="2" class="font-weight-bold text-center">Old Loan Information</td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Old Loan Amount:</td>
+                    <td>@Model.OldLoanAmount.ToString("#,##0.0") FCFA</td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Old Loan Capital:</td>
+                    <td>@Model.OldLoanCapital.ToString("#,##0.0") FCFA</td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Old Loan Interest:</td>
+                    <td>@Model.OldLoanInterest.ToString("#,##0.0") FCFA</td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Old Loan VAT:</td>
+                    <td>@Model.OldLoanVat.ToString("#,##0.0") FCFA</td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Old Loan Penalty:</td>
+                    <td>@Model.OldLoanPenalty.ToString("#,##0.0") FCFA</td>
+                </tr>
+            }
+            <!-- Interest Payment Details -->
+            <!-- Loan Details -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Loan Details</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Loan Product ID:</td>
+                <td>@Model.LoanProductId</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Total Loan Amount:</td>
+                <td><strong>@Model.Amount.ToString("#,##0.0") FCFA</strong></td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Interest Rate:</td>
+                <td>@Model.InterestRate.ToString("#,##0.0")%</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Loan Manager:</td>
+                <td>@Model.LoanManager</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Fees:</td>
+                <td>
+                    @if (Model.LoanApplicationFees.Any())
+                    {
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var fee in Model.LoanApplicationFees)
+                            {
+                                <li>
+                                    @fee.FeeLable: @(fee.FeeAmount.ToString("#,##0.0") + " FCFA")
+                                </li>
+                            }
+                        </ul>
+                        <div>
+                            <strong>Total Fee Amount:</strong> @(Model.LoanApplicationFees.Sum(f => f.FeeAmount).ToString("#,##0.0") + " FCFA")<br />
+                            <strong>Total Amount Paid:</strong> @(Model.LoanApplicationFees.Sum(f => f.AmountPaid).ToString("#,##0.0") + " FCFA")
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No Fee Added.</span>
+                    }
+                </td>
+            </tr>
+
+            <!-- Downpayments and Coverage Section -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Downpayments and Coverage</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Total Down Payment Provided:</td>
+                <td><strong>@Model.DownPaymentCoverageAmountProvided.ToString("#,##0.0") FCFA</strong></td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Share covered amount:</td>
+                <td>@Model.ShareAccountCoverageAmount.ToString("#,##0.0") FCFA</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Saving coverage provided:</td>
+                <td>@Model.SavingAccountCoverageRate.ToString("#,##0.0")% of @Model.RequestedAmount.ToString("#,##0"): [@SavingCoverage.ToString("#,##0")] FCFA</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Was preference share account used as coverage?</td>
+                <td>
+                    @if (Model.IsPreferenceShareAccountCoverageAmount)
+                    {
+                        <span class="badge bg-primary text-white">YES, Coverage Amount: @Model.PreferenceShareAccountCoverageAmount.ToString("#,##0.0")</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">No</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Was deposit account used as coverage?</td>
+                <td>
+                    @if (Model.IsDepositAccountCoverageAmount)
+                    {
+                        <span class="badge bg-primary text-white">YES, Coverage Amount: @Model.DepositAccountCoverageAmount.ToString("#,##0.0")</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">No</span>
+                    }
+                </td>
+            </tr>
+
+
+
+            <!-- Additional Details -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Additional Details</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">VAT Rate:</td>
+                <td>@Model.VatRate.ToString("#,##0.0")%</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Grace Period Before First Installment:</td>
+                <td>@Model.GracePeriodBeforeFirstPayment months before first installment</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Grace Period After Loan Due Date:</td>
+                <td>@Model.GracePeriodAfterMaturityDate days after maturity date</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Approval Status:</td>
+                <td>
+                    @if (Model.IsApproved)
+                    {
+                        <span class="badge bg-primary text-white">@Model.ApprovalStatus</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">@Model.ApprovalStatus</span>
+                    }
+
+
+                </td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Has the loan been approved?</td>
+                <td>
+                    @if (Model.IsApproved)
+                    {
+                        <span class="badge bg-primary text-white">Approved</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    }
+                </td>
+            </tr>
+            <!-- Guarantors Section -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Guarantors</td>
+            </tr>
+            @if (Model.Guarantors?.Any() == true)
+            {
+                foreach (var guarantor in Model.Guarantors)
+                {
+                    <tr>
+                        <td class="font-weight-bold">Guarantor Name:</td>
+                        <td>@guarantor.GuarantorName</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Guarantor Relationship:</td>
+                        <td>@guarantor.Relationship</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2" class="text-center text-muted">No Guarantors Provided.</td>
+                </tr>
+            }
+
+            <!-- Collateral Section -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Collateral</td>
+            </tr>
+            @if (Model.Collateras?.Any() == true)
+            {
+                foreach (var collateral in Model.Collateras)
+                {
+                    <tr>
+                        <td class="font-weight-bold">Collateral Type:</td>
+                        <td>@collateral.Location</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Collateral Value:</td>
+                        <td>@collateral.Amount.ToString("#,##0.0") FCFA</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2" class="text-center text-muted">No Collateral Provided.</td>
+                </tr>
+            }
+
+
+            <!-- Attached Documents -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Attached Documents</td>
+            </tr>
+            @if (Model.DocumentAttachedToLoans?.Any() == true)
+            {
+                foreach (var document in Model.DocumentAttachedToLoans)
+                {
+                    <tr>
+                        <td class="font-weight-bold">Document Name:</td>
+                        <td>@document.FileName @document.FileExtension</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Uploaded Date:</td>
+                        <td>@document.Date.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Open:</td>
+                        <td><a href="@($"{document.FilePath}")" target="_blank" class="btn btn-sm btn-primary">Read content</a></td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2" class="text-center text-muted">No Documents Attached.</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>
+

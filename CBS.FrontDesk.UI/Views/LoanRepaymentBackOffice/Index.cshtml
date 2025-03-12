@@ -1,0 +1,146 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@{
+    ViewBag.Title = "Loan Repayment - Member Balances";
+}
+
+<link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
+
+<div class="container">
+    <!-- Page Header -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary">
+                        <i class="mdi mdi-bank me-2"></i> Back Office Loan Repayment Management
+                    </h1>
+                    <p class="card-text">
+                        Process loan repayments from <strong>members' balances</strong> efficiently by selecting the account(s) to debit and entering the correct loan payment details.
+                    </p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Tips Section -->
+    <div class="row mb-0">
+        <div class="col-12">
+            <div class="accordion" id="helpTipsAccordion">
+                <div class="card">
+                    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                        <span>
+                            <i class="mdi mdi-information-outline me-2"></i> HELP TIPS
+                        </span>
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h6>
+                    <div id="collapseHelpTips" class="collapse" data-bs-parent="#helpTipsAccordion">
+                        <div class="card-body">
+                            <div class="accordion" id="helpDetailsAccordion">
+                                <!-- Loan Repayment Guide -->
+                                <div class="accordion-item mt-2">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanRepaymentGuide" aria-expanded="false" aria-controls="collapseLoanRepaymentGuide">
+                                            Loan Repayment Process
+                                        </button>
+                                    </h2>
+                                    <div id="collapseLoanRepaymentGuide" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
+                                        <div class="accordion-body">
+                                            <ol>
+                                                <li>First, <strong>select and enter amounts to debit from members' accounts</strong>.</li>
+                                                <li>Ensure the <strong>total amount debited matches the loan repayment sum</strong>.</li>
+                                                <li>Next, enter the <strong>capital repayment, interest, VAT, and penalty</strong> in the loan table.</li>
+                                                <li>Click <strong>"Confirm Transaction"</strong> to validate the payment.</li>
+                                                <li>If all values match, the repayment is processed successfully.</li>
+                                            </ol>
+                                            <strong>NB:</strong> A mismatch between debited accounts and loan repayment details will prevent submission.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Loan Repayment Fees -->
+                                <div class="accordion-item mt-2">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanFees" aria-expanded="false" aria-controls="collapseLoanFees">
+                                            Loan Repayment Fees & Charges
+                                        </button>
+                                    </h2>
+                                    <div id="collapseLoanFees" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
+                                        <div class="accordion-body">
+                                            <ul>
+                                                <li><strong>Interest:</strong> Based on the outstanding balance.</li>
+                                                <li><strong>VAT:</strong> Automatically calculated from interest.</li>
+                                                <li><strong>Penalty:</strong> Applied to overdue repayments.</li>
+                                                <li><strong>Processing Fees:</strong> May apply depending on loan agreement.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Refund Policy -->
+                                <div class="accordion-item mt-2">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanRefundPolicy" aria-expanded="false" aria-controls="collapseLoanRefundPolicy">
+                                            Refund Policy for Loan Repayments
+                                        </button>
+                                    </h2>
+                                    <div id="collapseLoanRefundPolicy" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
+                                        <div class="accordion-body">
+                                            <p>Loan repayments <strong>cannot be refunded</strong>, except in cases of:</p>
+                                            <ul>
+                                                <li><strong>Overpayment:</strong> Refund request must be submitted.</li>
+                                                <li><strong>System Errors:</strong> If a duplicate transaction occurs.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- End of Help Details Accordion -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="row my-3">
+                <div class="accordion" id="collapsibleSection">
+                    <div class="card accordion-item mb-1">
+                        <h2 class="accordion-header" id="headingDeliveryAddress">
+
+                            <button type="button"
+                                    class="accordion-button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#accordionPopoutIcon-3"
+                                    aria-expanded="true"
+                                    aria-controls="accordionPopoutIcon-3">
+                                <i class="mdi mdi-bank me-2"></i>
+                                <span id="cashDeskOperations">Loan Repayment Management Back-Office</span>
+                            </button>
+                        </h2>
+                        <hr />
+                        <div id="collapseDeliveryAddress"
+                             data-bs-parent="#collapsibleSection">
+                            <div class="accordion-body">
+
+                                @Html.Partial("_SearchBox")
+                                <div id="datalistingview">
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script src="~/Scripts/Js/Crud/LoanRepaymentBackOffice/LoanRepaymentBackOffice.js"></script>
+}

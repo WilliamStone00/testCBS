@@ -27,14 +27,7 @@
                     <fieldset class="fieldset-custom mb-4">
                         <legend class="text-black">Request Properties</legend>
                         <div class="row mt-2 gy-4">
-                            <!-- Source Branch -->
-                            <div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.SourceBranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select branch---", new { @class = "form-control select2", @search = "true", @onchange = "GetBranchRemittanceAccounts(this.value)", @id = "BranchId" })
-                                    @Html.ValidationMessageFor(m => m.SourceBranchId, "", new { @class = "text-danger" })
-                                    <label>Source Branch</label>
-                                </div>
-                            </div>
+
 
                             <!-- Transfer Source -->
                             <div class="col-md-12 mt-3">
@@ -65,7 +58,14 @@
                                 </div>
                                 @Html.ValidationMessageFor(m => m.TransferSource, "", new { @class = "text-danger" })
                             </div>
-
+                            <!-- Source Branch -->
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(m => m.SourceBranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select branch---", new { @class = "form-control select2", @search = "true", @onchange = "GetBranchRemittanceAccounts(this.value)", @id = "BranchId" })
+                                    @Html.ValidationMessageFor(m => m.SourceBranchId, "", new { @class = "text-danger" })
+                                    <label>Source Branch</label>
+                                </div>
+                            </div>
                             <!-- Transfer Type (Hidden by default) -->
                             <div id="transferTypeSection" class="col-md-12 mt-2" style="display: none;">
                                 <label class="form-label">Transfer Type</label>

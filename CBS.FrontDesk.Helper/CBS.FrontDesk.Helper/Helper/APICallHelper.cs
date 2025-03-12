@@ -246,7 +246,19 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllQuestions = "/api/v1/Questions";
 
 
-        //
+        //AndroidAppVersion
+        public static string AddOrUpdateAndriodVersion = "/api/v1/androidapp/versions/add-or-update";
+        public static string DeleteAndriodVersion = "/api/v1/androidapp/versions/{0}";
+        public static string GetAndriodVersion = "/api/v1/androidapp/versions/{0}";
+        public static string GetAndriodVersionByAppCode = "/api/v1/androidapp/versions/appcode/{0}";
+        public static string GetAllAndriodVersions = "/api/v1/androidapp/versions";
+
+        //ChangeCustomerPhone
+        public static string ChangePhonuNumberRequest = "/api/v1/ChangeCustomerPhone/change-phone-number";
+        public static string ApprovePhoneNumberRequest = "/api/v1/ChangeCustomerPhone/approve-phone-number";
+        public static string GetPendingPhoneNumberChangeRequest = "/api/v1/ChangeCustomerPhone/History/{0}";
+        public static string GetChangeCustomerPhone = "/api/v1/ChangeCustomerPhone/Get-History-byid/{0}";
+        public static string DeletePhoneNumberChnageRequest = "/api/v1/ChangeCustomerPhone/{0}";
 
         //GroupType
         public static string Get_Update_Delete_GroupType = "/api/v1/GroupType/{0}";
@@ -394,6 +406,8 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_OtherTransaction = "/api/v1/OtherTransaction/{0}";
         public static string GetAllOtherTransaction = "/api/v1/OtherTransaction";
         public static string CreateOtherTransaction = "/api/v1/OtherTransaction";
+        public static string MobileMoneyNoneCashCashIn = "/api/v1/OtherTransaction/MobileMoney-None-Cash-Cash-In";
+        
         public static string CreateOtherTransactionMobileMoney = "/api/v1/OtherTransaction/MobileMoney";
         //SavingProduct
         public static string Get_Update_Delete_SavingProduct = "/api/v1/SavingProduct/{0}";
@@ -628,6 +642,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetRemittanceCharge = "/api/v1/Remittance/Charge";
         public static string GetAllRemittanceRequests = "/api/v1/Remittance/Requests";
         public static string GenerateOTPRemittance = "/api/v1/Remittance/GenerateRemittanceOTP";
+        public static string GetRemittanceDataTable = "/api/v1/datatable";
+        
         
 
         //GeneralDailyDashboard
