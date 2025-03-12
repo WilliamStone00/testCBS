@@ -175,7 +175,7 @@ function ReadExcelFile() {
                 },
                 success: function (response) {
                     updateProgressBar(100);
-                    appalert("File uploaded successfully", 1, 1);
+                    //appalert("File uploaded successfully", 1, 1);
                     displayResults(response);
 
                 },
