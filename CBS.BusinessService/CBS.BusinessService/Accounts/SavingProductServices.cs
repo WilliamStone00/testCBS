@@ -139,6 +139,7 @@ namespace CBS.BusinessService.Accounts
                 {
                     SavingProduct.Name = model.Name;
                     SavingProduct.Code = model.Code;
+                    SavingProduct.OTPControl = model.OTPControl;
                     SavingProduct.InterestAccrualFrequency = model.InterestAccrualFrequency;
                     SavingProduct.IsCapitalizeInterest = model.IsCapitalizeInterest;
                     SavingProduct.PostingFrequency = model.PostingFrequency;

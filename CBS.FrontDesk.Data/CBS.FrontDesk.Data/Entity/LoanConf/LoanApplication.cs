@@ -841,8 +841,6 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool StopInterestCalculation { get; set; }
         public DateTime? DateInterestCalaculationWasStoped { get; set; }
         public string StopedBy { get; set; }
-        //public bool IsInterestPaidUpfront { get; set; }
-        //public decimal InterestAmountUpfront { get; set; }
         public decimal NewInterest { get; set; }
         public decimal NewBalance { get; set; }
         public decimal NewVAT { get; set; }
@@ -953,6 +951,21 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public virtual LoanPurpose LoanPurpose { get; set; }
         public virtual ICollection<OTPNotification> OTPNotifications { get; set; }
         public List<LoanApplicationFee> LoanApplicationFees { get; set; }
+        public IndividualCustomerProfile IndividualCustomer { get; set; }
+
+
+
+
+       
+        public decimal ProcessingFee { get; set; }
+       
+
+
+
+
+
+
+        public virtual ICollection<Loan> Loans { get; set; }
 
         public LoanApplication()
         {
@@ -1474,6 +1487,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         /// </summary>
         public string DeliquentStatus { get; set; }
     }
+    public class GetLoanApplicationsDataTableQuery
+    {
+        public DataTableOptions DataTableOptions { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string MemberId { get; set; }
+        public string BranchId { get; set; }
+        public string Status { get; set; } // Pending, Approved, Rejected, or All
+    }
 
     public class DataTableLoan
     {
@@ -1609,7 +1631,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public Loan Loan { get; set; }
         public List<RefundDetail> RefundDetails { get; set; }
     }
-
+   
     public class LoanParameters
     {
         public decimal Amount { get; set; }

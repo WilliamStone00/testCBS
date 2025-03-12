@@ -227,7 +227,7 @@ function collectDeposits() {
             deposit.RemittanceAmount = parseFloat($('#RemittanceAmount').val());
             deposit.RemittanceDate = $('#RemittanceDate').val();
             deposit.OTP = $('#Otp').val();
-            deposit.SenderSecreteCode = $('#SenderSecreteCode').val();
+            deposit.SenderSecretCode = $('#SenderSecreteCode').val();
             deposit.PaymentMethod = 'Cash';
             deposit.PaymentChannel = 'Web_Portal';
 
@@ -238,40 +238,6 @@ function collectDeposits() {
     return deposits;
 }
 
-//function collectDeposits() {
-//    var deposits = [];
-
-//    $('#myDataTableT tbody tr').each(function () {
-//        if ($(this).find('.form-check-input').prop('checked')) {
-//            var deposit = {};
-//            deposit.AccountNumber = $(this).find('td:eq(0)').text();
-//            deposit.Amount = parseFloat($(this).find('.amount-input').val());
-//            deposit.Fee = parseFloat($(this).find('.fee-input').val());
-//            deposit.Penalty = parseFloat($(this).find('.penalty-input').val());
-//            deposit.Interest = parseFloat($(this).find('.interest-input').val());
-//            deposit.Total = parseFloat($(this).find('.total-span').text());
-//            deposit.AccountType = $(this).find('td:eq(1)').text();
-//            deposit.Note = $('#Note').val();
-//            deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
-//            deposit.IsChargesInclussive = $(this).find('.check-inclussive').prop('checked');
-//            deposit.OperationType = $('#OperationType').val();
-//            deposit.CheckName = $('#CheckName').val();
-//            deposit.CheckNumber = $('#CheckNumber').val();
-//            deposit.IsSWS = true;
-//            deposit.CustomerId = $('#customerId').val();
-//            deposit.LoanApplicationId = $(this).find('.loan-application-id').val();
-//            deposit.Period = $(this).find('.period').val();
-//            deposits.push(deposit);
-//            deposits.PaymentMethod = 'Cash';
-//            deposits.PaymentChannel = 'Web_Portal';
-//            deposit.RemittanceId = $('#remittanceID').val();
-            
-//        }
-//    });
-
-
-//    return deposits;
-//}
 
 function collectCurrencyNotes() {
     return {
@@ -406,6 +372,30 @@ function PostCashIn() {
 
 
 
+//function PostCashOut() {
+//    if (!checkTotalNotes()) return false;
+
+//    var totalNotes = parseFloat($("#totalNoteAmount").val());
+//    var totalInfo = calculateTotalAmount();
+
+//    if (!validateTotalAmount(totalInfo, totalNotes)) return;
+
+//    var deposits = collectDeposits();
+//    //if (deposits.length !== 1) {
+//    //    appalert("Cash-out can only be done from one account only. Please deselect other accounts.", 3, 1);
+//    //    return;
+//    //}
+
+//    deposits[0].currencyNotes = collectCurrencyNotes();
+//    deposits[0].Depositer = collectDepositorInfo();
+
+//    var message = "";
+//    message += "Are you sure you want to perform a cash-out of " + totalInfo.total + " from the selected account numbers?\n";
+//    message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
+//    confirmTransaction('Confirm Cash-Out Operation', message, '/CashDesk/PostRequestCash', deposits, 'Withdrawal');
+//}
+
+
 function PostCashOut() {
     if (!checkTotalNotes()) return false;
 
@@ -414,11 +404,16 @@ function PostCashOut() {
 
     if (!validateTotalAmount(totalInfo, totalNotes)) return;
 
+    // Validate Receiver Information
+    if (!validateReceiverInfo()) return;
+
     var deposits = collectDeposits();
-    //if (deposits.length !== 1) {
-    //    appalert("Cash-out can only be done from one account only. Please deselect other accounts.", 3, 1);
-    //    return;
-    //}
+
+    // Ensure only one account is selected for cash-out
+    if (deposits.length !== 1) {
+        appalert("Cash-out can only be done from one account. Please deselect other accounts.", 3, 1);
+        return;
+    }
 
     deposits[0].currencyNotes = collectCurrencyNotes();
     deposits[0].Depositer = collectDepositorInfo();
@@ -426,10 +421,67 @@ function PostCashOut() {
     var message = "";
     message += "Are you sure you want to perform a cash-out of " + totalInfo.total + " from the selected account numbers?\n";
     message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
+
     confirmTransaction('Confirm Cash-Out Operation', message, '/CashDesk/PostRequestCash', deposits, 'Withdrawal');
 }
 
+/**
+ * Validates the receiver's information before allowing cash-out.
+ * Returns false if any validation fails.
+ */
+function validateReceiverInfo() {
+    var receiverCNI = $("#ReceiverCNI").val().trim();
+    var receiverCNIPlcaceOfIssue = $("#ReceiverCNIPlcaceOfIssue").val().trim();
+    var receiverCNIDateOfIssue = $("#ReceiverCNIDateOfIssue").val();
+    var receiverCNIDateOfExpiration = $("#ReceiverCNIDateOfExpiration").val();
+    var receiverPhoneNumber = $("#ReceiverPhoneNumber").val().trim();
+    var otp = $("#Otp").val().trim();
 
+    var errors = [];
+
+    // Ensure CNI is provided
+    if (receiverCNI === "") {
+        errors.push("Receiver CNI is required.");
+    }
+
+    // Ensure CNI Place of Issue is provided
+    if (receiverCNIPlcaceOfIssue === "") {
+        errors.push("CNI Place of Issue is required.");
+    }
+
+    // Ensure CNI Date of Issue is valid
+    if (receiverCNIDateOfIssue === "") {
+        errors.push("CNI Date of Issue is required.");
+    }
+
+    // Ensure CNI Date of Expiration is valid and not expired
+    if (receiverCNIDateOfExpiration === "") {
+        errors.push("CNI Date of Expiration is required.");
+    } else {
+        var expirationDate = new Date(receiverCNIDateOfExpiration);
+        var today = new Date();
+        if (expirationDate < today) {
+            errors.push("CNI is expired. Please update it before proceeding.");
+        }
+    }
+
+    // Ensure Receiver Phone Number is provided
+    if (receiverPhoneNumber === "") {
+        errors.push("Receiver Phone Number is required.");
+    }
+
+    // Ensure OTP is provided if required
+    if (otp === "" || otp === "N/A") {
+        errors.push("OTP verification is required.");
+    }
+
+    if (errors.length > 0) {
+        appalert(errors.join("\n"), 3, 1);
+        return false;
+    }
+
+    return true;
+}
 
 
 

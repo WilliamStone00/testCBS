@@ -1,5 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -16,11 +18,12 @@ namespace CBS.BusinessService.Application
     public class LoanApplicationServices : BaseService
     {
         private readonly ApiCallerHelper _loanConfigApiHelper;
+        private readonly IndividualProfileServices _individualProfileServices;
 
-        public LoanApplicationServices()
+        public LoanApplicationServices(IndividualProfileServices individualProfileServices)
         {
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
-
+            _individualProfileServices=individualProfileServices;
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -84,6 +87,27 @@ namespace CBS.BusinessService.Application
                 // Log and handle exception
                 throw;
             }
+        }
+        public async Task<LoanApplication> GetLoanWithCustomerAndBranch(string customerId)
+        {
+            try
+            {
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<LoanApplication>>(string.Format(APICallHelper.GetLoan, customerId));
+                if (cusResponseObject.IsSuccess && cusResponseObject.ApiResponseData != null)
+                {
+                    var loan = cusResponseObject.ApiResponseData.Data;
+                    var individualCustomerProfile = await _individualProfileServices.GetCustomerLight(loan.CustomerId);
+                    loan.IndividualCustomer = individualCustomerProfile;
+                    return loan;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+
         }
         public async Task<LoanApplication> GetLoanApplication(string id)
         {
@@ -198,38 +222,36 @@ namespace CBS.BusinessService.Application
             }
             return ExecutionMessage;
         }
-        //public async Task<ExecutionMessages> ChangeLoanStaus(string LoanApplicationID,bool status)
-        //{
-        //    try
-        //    {
+        public async Task<CustomDataTable> GetDataTableAsync(GetLoanApplicationsDataTableQuery loansDataTableQuery, string searchCriterial)
+        {
+            loansDataTableQuery.DataTableOptions.searchValue = searchCriterial;
+            loansDataTableQuery.DataTableOptions.search = searchCriterial;
+            loansDataTableQuery.DataTableOptions.sortColumnName = "ApplicationDate";
+            if (!IsHeadOffice())
+            {
+                loansDataTableQuery.BranchId=GetBranchID();
+            }
+            // Make API call to fetch the DataTable result
+            var couApiResponse = await _loanConfigApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                APICallHelper.GetLoanApplicationDatatable,
+                loansDataTableQuery
+            );
 
+            // Return response if successful
+            if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+            {
+                return couApiResponse.ApiResponseData.Data;
+            }
 
-
-        //            var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanApplication>>(string.Format(APICallHelper.ApproveLoanApplication, model.id), LoanApplication);
-        //            if (response.IsSuccess)
-        //            {
-        //                // Successful creation
-        //                GetExecutionMessages(response, true, $"Loan application", MessagesResults.Success,
-        //                    ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
-        //                return ExecutionMessage;
-        //            }
-        //            else
-        //            {
-        //                // Failed creation
-        //                GetExecutionMessages(model, false, $"Loan application", MessagesResults.Failed,
-        //                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
-        //            }
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log and handle exception
-        //        GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
-        //            SystemMessageStatus.Failed.ToString(), ex);
-        //    }
-        //    return ExecutionMessage;
-        //}
+            // Return an empty DataTable if the request fails
+            return new CustomDataTable(
+                draw: Convert.ToInt32(loansDataTableQuery.DataTableOptions.draw),
+                recordsTotal: 0,
+                recordsFiltered: 0,
+                data: new List<object>(), // No data
+                dataTableOptions: loansDataTableQuery.DataTableOptions
+            );
+        }
 
     }
 

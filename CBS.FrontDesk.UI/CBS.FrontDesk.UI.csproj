@@ -562,6 +562,7 @@
     <Compile Include="Controllers\Accounting\CashMovementTrackerConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\CashMovementTrackerController.cs" />
     <Compile Include="Controllers\AuditTrailData\AuditTrailController.cs" />
+    <Compile Include="Controllers\LoanApplicationP\LoanApplicationController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MemberNoneCashOperationController.cs" />
     <Compile Include="Controllers\StandingOrderP\StandingOrderController.cs" />
     <Compile Include="Controllers\CorrespondingBankManagement\CorrespondingBankManagementController.cs" />

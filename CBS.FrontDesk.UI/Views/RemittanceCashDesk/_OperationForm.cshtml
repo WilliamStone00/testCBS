@@ -16,7 +16,7 @@
                     <input type="hidden" id="remittanceID" value="@Model.Remittance.Id" />
                     <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
+                            <span class="formatted-amount shadow-box float-start">Service: @Model.Customer.name</span>
                         </div>
                     </div>
 
@@ -281,7 +281,7 @@ else if (ViewBag.Operation == "cashout")
                                 </div>
                                 <div class="col-md-2">
                                     <label for="ReceiverPhoneNumber">OTP:</label>
-                                    <input type="text" class="form-control shadow-input-boxes" id="Otp" value="N/A">
+                                    <input type="text" class="form-control shadow-input-boxes" id="Otp" value="0000">
                                 </div>
                             </div>
                         </div>
@@ -305,14 +305,14 @@ else if (ViewBag.Operation == "cashout")
                                 <div class="row mt-2 gy-4">
                                     <div class="col-md-8">
                                         <div class="form-floating form-floating-outline">
-                                            <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
+                                            <span class="formatted-amount shadow-box float-start">Service: @Model.Customer.name</span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount"><b>Total Payable: @AmountPayable.ToString("#,##0.0")</b></span>
-                                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="@AmountPayable">
+                                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount"><b>Total Payable: @Model.Remittance.Amount.ToString("#,##0.0")</b></span>
+                                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="@Model.Remittance.Amount">
                                         </div>
                                     </div>
                                     <hr style="border: 2px solid red;" />
@@ -331,7 +331,7 @@ else if (ViewBag.Operation == "cashout")
                                                 <p><strong>Fee:</strong> @Model.Remittance.Fee.ToString("#,##0.0"), [Sender CNI: @Model.Remittance.SenderCNI]</p>
                                                 <p>
                                                     <strong>Total Amount Payable:</strong>
-                                                    @AmountPayable.ToString("#,##0.0")
+                                                    @Model.Remittance.Amount.ToString("#,##0.0")
                                                 </p>
                                                 <p>
                                                     <strong>Total Amount Receivable:</strong>
@@ -584,13 +584,7 @@ else if (ViewBag.Operation == "cashoutt")
                         </table>
 
                     </div>
-                    @*<div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id = "Note" })
-                                @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
-                                <label for="formValidationDob">Reasons for cash out</label>
-                            </div>
-                        </div>*@
+                   
                 </div>
                 <div class="header-buttons mt-4 float-end">
                     <input type="hidden" name="OperationType" value="RemittanceOUT" id="OperationType" />
