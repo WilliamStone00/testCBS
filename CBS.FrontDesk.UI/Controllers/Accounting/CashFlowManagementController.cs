@@ -739,6 +739,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     $" of Vault of {(await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name}";
                 var branch = (await branchServices.GetBranches()).Where(po => po.Id.Equals(OperationEventAttribute.BranchId)).FirstOrDefault();
                 cashDemandDataEntity.CashReplenimentRequestdto.BranchOffice = branch.Name;
+                cashDemandDataEntity.CashReplenimentRequestdto.AmountApproved = OperationEventAttribute.AmountRequested.ToString();
                 if (branchServices.IsHeadOffice() == false)
                 {
                     ViewBag.IsAuthourized = false;
@@ -813,7 +814,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 if (branchServices.GetBranchID() == OperationEventAttribute.BranchId)
                 {
                     ViewBag.IsAuthourized = false;
-                    ViewBag.Error = _AccountServices.GetUserFullName() + ", You are not authourized to perform this transaction kindly contact the " + (await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name;
+                    ViewBag.Error = _AccountServices.GetUserFullName() + ", You are not authorized to perform this transaction kindly contact the " + (await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name;
                     return PartialView(partialView, cashDemandDataEntity);
                 }
                 else
@@ -1267,7 +1268,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else
             {
-                datas = (await _accountingEntryServices.GetAllDepositNotificationRequest());//.Where(pi => pi.BranchId.Equals(Id)&&pi.Status==CashReplishmentRequestStatus.Pending.ToString());
+                //datas = (await _accountingEntryServices.GetAllDepositNotificationRequest());//.Where(pi => pi.BranchId.Equals(Id)&&pi.Status==CashReplishmentRequestStatus.Pending.ToString());
                 //Redirected request 
                 datas.AddRange((await _accountingEntryServices.GetAllDepositNotificationRedirectionRequest()).Where(x => x.correpondingBranchId.Equals(_accountingEntryServices.GetBranchID())));
 

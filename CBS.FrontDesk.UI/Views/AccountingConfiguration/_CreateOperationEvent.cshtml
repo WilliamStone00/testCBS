@@ -2,39 +2,48 @@
 <div class="card-body">
     @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {<input type="hidden" name="ServiceOption" value="operationEvent" id="ServiceOption" />
-        <div class="row mt-2 gy-4">
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.OperationEvent.OperationEventName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.OperationEvent.OperationEventName, "", new { @class = "text-danger" })
-                    <label>Name</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.OperationEvent.EventCode, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.OperationEvent.EventCode, "", new { @class = "text-danger" })
-                    <label>EventCode</label>
-                </div>
+     <div class="row mt-2 gy-4">
+         <div class="col-md-4">
+             <div class="form-floating form-floating-outline">
+                 @Html.TextBoxFor(m => m.OperationEvent.OperationEventName, new { @class = "form-control" })
+                 @Html.ValidationMessageFor(m => m.OperationEvent.OperationEventName, "", new { @class = "text-danger" })
+                 <label>Name</label>
+             </div>
+         </div>
+         <div class="col-md-4">
+             <div class="form-floating form-floating-outline">
+                 @Html.DropDownListFor(m => m.OperationEvent.OperationEventType, new SelectList(ViewBag.OperationEventType == null ? "" : ViewBag.OperationEventType, "Id", "OperationEventName"), "---Select OperationType---", new { @class = "form-control select2", @search = "true" })
 
-            </div>
+                 @Html.ValidationMessageFor(m => m.OperationEvent.OperationEventType, "", new { @class = "text-danger" })
+                 <label>Operation EventType</label>
+             </div>
 
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
+         </div>
+         <div class="col-md-4">
+             <div class="form-floating form-floating-outline">
+                 @Html.TextBoxFor(m => m.OperationEvent.EventCode, new { @class = "form-control" })
+                 @Html.ValidationMessageFor(m => m.OperationEvent.EventCode, "", new { @class = "text-danger" })
+                 <label>EventCode</label>
+             </div>
 
-                    @Html.TextAreaFor(m => m.OperationEvent.Description, new { @class = "form-control", @style = "height: 200px;" })
-                    @Html.ValidationMessageFor(m => m.OperationEvent.Description, "", new { @class = "text-danger" })
-                    <label>Description</label>
+         </div>
 
-                </div>
-            </div>
+         <div class="col-md-12">
+             <div class="form-floating form-floating-outline">
+
+                 @Html.TextAreaFor(m => m.OperationEvent.Description, new { @class = "form-control", @style = "height: 200px;" })
+                 @Html.ValidationMessageFor(m => m.OperationEvent.Description, "", new { @class = "text-danger" })
+                 <label>Description</label>
+
+             </div>
+         </div>
 
 
 
 
 
 
-        </div>
+     </div>
 
         <div class="mt-4">
             @if (Model.OperationEvent.Id == null)
