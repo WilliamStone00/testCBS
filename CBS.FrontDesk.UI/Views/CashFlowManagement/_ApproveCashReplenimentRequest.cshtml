@@ -1,8 +1,10 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 @{
-    ViewBag.Title = "View Cash Replenishment Details";
+
+    ViewBag.Title = "Cash Request- Action to be taken";
 
 }
+
 
 <div class="row invoice-preview">
     <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
@@ -137,18 +139,18 @@
                                 else
                                 {
                                     @*if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
-                    {
-                        <div class="form-check mb-3">
-                            <div class="form-floating form-floating-outline">
+                                        {
+                                            <div class="form-check mb-3">
+                                                <div class="form-floating form-floating-outline">
 
-                                @Html.DropDownListFor(m => m.CashReplenimentRequestdto.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
-                                @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.BranchId, "", new { @class = "text-danger" })
-                                <label for="Account">Branch Office</label>
-                            </div>
-                        </div>
-                    }*@
+                                                    @Html.DropDownListFor(m => m.CashReplenimentRequestdto.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
+                                                    @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.BranchId, "", new { @class = "text-danger" })
+                                                    <label for="Account">Branch Office</label>
+                                                </div>
+                                            </div>
+                                        }*@
 
-                             
+
                                     <div class="form-check mb-3">
                                         <div class="form-floating form-floating-outline">
 
@@ -207,4 +209,3 @@
 </div>
 
 
- 

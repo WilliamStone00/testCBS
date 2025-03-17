@@ -203,6 +203,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.CreditAccounts = ViewBag.ChartOfAccounts;
             ViewBag.DebitAccounts = ViewBag.ChartOfAccounts;
             ViewBag.AccountCartegories = await _AccountCategoryServices.GetAccountCategory();
+            ViewBag.OperationEventType = await BuildMenuOperationEventViewBagAsync();
             ViewBag.Document = await BuildMenuViewBagAsync();
             ViewBag.DocumentType = await BuildMenuViewBagAsync();
             ViewBag.OperationSide = BuildMenuViewBagopside();
@@ -211,7 +212,25 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.ProvisionAccount = BuildMenuAccountViewBag(listAccounts.ToList());
             ViewBag.ProvisionExceptionAccount = BuildMenuAccountViewBag(listAccounts.ToList());
         }
+        private async Task<dynamic> BuildMenuOperationEventViewBagAsync()
+        {
+            var listOfItems = new Dictionary<string, string>
+            {
+                   {"Income Operation Event","INCOME_" },
+                   {"Expense Operation Event","EXPENSE_" },
+                   {"Other Operation Event","OTHER_" }
+            };
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select Operation EventType" });
+            foreach (var item in listOfItems)
+            {
 
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Key, Value = item.Value });
+
+
+            }
+            return selectListItems;
+        }
         private dynamic BuildBranchCode(List<Branch> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
@@ -1743,8 +1762,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     var worksheet = workbook.Worksheets.First();
                     foreach (var row in worksheet.RowsUsed().Skip(1)) // Skip header row
                     {
-                        
-                        if (row.CellsUsed().Count() < 8) continue; // Skip rows with insufficient columns
+                       // Skip rows with insufficient columns
                         if (row.CellsUsed().Count()==8)
                         {
                             var AccountNumber = row.Cell(1).GetString();

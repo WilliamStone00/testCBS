@@ -16,6 +16,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string OperationEventName { get; set; }
         [Required]
         public string EventCode { get; set; }
+
+        public string OperationEventType { get; set; }
         public bool HasMultipleEntries { get; set; }
         [Required]
         public string Description { get; set; }
