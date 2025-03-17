@@ -8,13 +8,16 @@
     LoadCashReplenishmentDataDT("GetAllCashRequestDataTable")
     
     $(document).on('change', '#MakeDecision', function () {
- 
-        // Get the selected value
+
+      
+        // Get the selected value 
         var selectedValue = $(this).val();
         console.log(selectedValue);
+        $('#selectedDecision').val(selectedValue);
         if (selectedValue === 'RedirectToBranchBTB' || selectedValue === 'RedirectToBranchBCO' || selectedValue === 'Approved') {
             // Show the element 
             console.log(selectedValue);
+        
             $('#hideBranchID').show();
             $('#hideAmount').show();
             $('#hideAccountId').hide();
@@ -42,7 +45,8 @@
         // Get the selected value
         var selectedValue = $(this).val();
         console.log(selectedValue);
-        loadBranchAccountUsedToCreditCashFlow(selectedValue);
+        var data= $('#selectedDecision').val();
+        loadBranchAccountUsedToCreditCashFlow(selectedValue, data);
     });
     $(document).on('change', '#AccountId', function () {
 
@@ -55,13 +59,13 @@
 //GetAllBranchAccountUsedToCreditCashFlow
 
 
-function loadBranchAccountUsedToCreditCashFlow(accountId) {
-    console.log(accountId);
+function loadBranchAccountUsedToCreditCashFlow(branchId,option) {
+    console.log(branchId +' '+  option);
     $.ajax({
         url: '/CashFlowManagement/GetAllBranchAccountUsedToCreditCashFlow',
         type: 'GET',
         dataType: 'json',
-        data: { branchId: accountId },
+        data: { branchId: branchId, optionQuery: option },
         success: function (data) {
             // Clear existing options in the OperationEventAttributeId combo 
             $('#CashReplenimentRequestdto_TempId3').empty();

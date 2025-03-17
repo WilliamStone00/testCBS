@@ -66,7 +66,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             foreach (var branch in accounts)
             {
 
-                stringValues.Add(new StringValues(branch.Id, $"{branch.AccountNumber}-{branch.AccountName}- {branch.CurrentBalance}"));
+                stringValues.Add(new StringValues(branch.Id, $"{branch.AccountNumber}-{branch.AccountName}- {branch.CurrentBalance:N2} FCFA"));
             }
             return stringValues;
         }
@@ -390,13 +390,22 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return View(new CashDemandDataEntity());
         }
         [HttpGet]
-        public async Task<ActionResult> GetAllBranchAccountUsedToCreditCashFlow(string branchId)
+        public async Task<ActionResult> GetAllBranchAccountUsedToCreditCashFlow(string branchId,string optionQuery)
         {
 
             branchId = (branchId == "Approved") ? _AccountServices.GetBranchID() : branchId;
             if (!string.IsNullOrEmpty(branchId))
             {
                 var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(branchId);
+                if (optionQuery== "RedirectToBranchBCO")
+                {
+                    listOfAccounts = listOfAccounts.Where(c => c.Account2 == "56").ToList();
+                }
+                else if (optionQuery == "RedirectToBranchBTB")
+                {
+                    listOfAccounts = listOfAccounts.Where(c => c.AccountNumber == "57101").ToList();
+                }
+             
 
                 var data = BuildDropDown(GenerateAccountListView(listOfAccounts));
 
