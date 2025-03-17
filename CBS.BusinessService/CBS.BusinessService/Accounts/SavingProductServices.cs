@@ -200,6 +200,48 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> UpdateSalary(SavingProduct model)
+        {
+            try
+            {
+                var SavingProduct = await GetSavingProduct(model.Id);
+                if (SavingProduct != null)
+                {
+                    SavingProduct.CivilServantsSalaryDestinationPayableChartofAccountId = model.CivilServantsSalaryDestinationPayableChartofAccountId;
+                    SavingProduct.CivilServantsSalaryDestinationSalaryProductChartofAccountId = model.CivilServantsSalaryDestinationSalaryProductChartofAccountId;
+                    SavingProduct.CivilServantsSalarySourceChartofAccountId = model.CivilServantsSalarySourceChartofAccountId;
+                    SavingProduct.CivilServantsSalarySourceSalaryChartofaccountId = model.CivilServantsSalarySourceSalaryChartofaccountId;
+                    SavingProduct.PrivateInstitutionDestinationSalaryProductChartofAccountId = model.PrivateInstitutionDestinationSalaryProductChartofAccountId;
+                    SavingProduct.PrivateInstitutionSalaryDestinationPayableChartofAccountId = model.PrivateInstitutionSalaryDestinationPayableChartofAccountId;
+                    SavingProduct.PrivateInstitutionSalarySourceChartofAccountId = model.PrivateInstitutionSalarySourceChartofAccountId;
+                    SavingProduct.PrivateInstitutionSalarySourceSalaryChartofAccountId = model.PrivateInstitutionSalarySourceSalaryChartofAccountId;
+                    SavingProduct.UpdateOption = "n/a";
+                    SavingProduct.SuspenseChartOfAccountId=model.SuspenseChartOfAccountId;
+                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);
+                    if (response.IsSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
 
         public async Task<ExecutionMessages> UpdateProductAccountMapping(SavingProduct model)
         {

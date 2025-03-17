@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -25,7 +26,26 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public string Phonumber { get; set; }
         public DateTime Date { get; set; }
         public string UploadedBy { get; set; }
+        public List<BranchPayrollSummary> BranchPayrollSummaries { get; set; }
 
+    }
+   
+
+    public class SalaryUploadModelWithBranchStatisticsDto
+    {
+        public List<SalaryUploadModel> SalaryUploadModelDtos { get; set; }
+        public List<SalaryUploadModel> ReainingSalaryModelWithoutMembers { get; set; }
+        public List<BranchPayrollSummary> BranchPayrollSummaries { get; set; }
+        public List<IndividualProfile> AllSalaryEarners { get; set; }
+        public List<IndividualProfile> AllSalaryEarnersNotFoundInTheCurrentpayroll { get; set; }
+        public SalaryUploadModelWithBranchStatisticsDto()
+        {
+            SalaryUploadModelDtos=new List<SalaryUploadModel>();
+            BranchPayrollSummaries=new List<BranchPayrollSummary>();
+            ReainingSalaryModelWithoutMembers=new List<SalaryUploadModel>();
+            AllSalaryEarners=new List<IndividualProfile>();
+            AllSalaryEarnersNotFoundInTheCurrentpayroll=new List<IndividualProfile>();
+        }
     }
     public class SalaryUploadModelCarrier
     {
@@ -40,6 +60,7 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public List<SalaryAnalysisResultDetail> SalaryAnalysisResultDetails { get; set; }
         public SalaryAnalysisCommand SalaryAnalysisCommand { get; set; }
         public ActivateSalaryFileCommand ActivateSalaryFileCommand { get; set; }
+        public List<BranchPayrollSummary> BranchPayrollSummaries { get; set; }
         public SalaryUploadModelCarrier()
         {
             SalaryAnalysisCommand=new SalaryAnalysisCommand();
@@ -52,12 +73,20 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
             SalaryAnalysisResultSummary=new SalaryAnalysisResultSummary();
             SalaryAnalysisResultDetails=new List<SalaryAnalysisResultDetail>();
             ActivateSalaryFileCommand=new ActivateSalaryFileCommand();
+            BranchPayrollSummaries=new List<BranchPayrollSummary>();
         }
     }
     public class GetAllFileUploadSalaryFileActivatedQuery
     {
         public bool Status { get; set; }
         public bool Both { get; set; }
+    }
+    public class GetSalaryUploadModelWithBranchStatisticsQuery
+    {
+        public string FileUploadId { get; set; } // Required File Upload ID to filter salary uploads.
+        public bool IncludeBranchStatistics { get; set; } // Determines if branch statistics should be included.
+
+       
     }
     public class GetSalaryUploadModelQuery
     {
@@ -71,8 +100,20 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public decimal TotalNetSalary { get; set; }
         public int TotalMembers { get; set; }
         public string FileUploadId { get; set; }
+        
 
     }
+
+    public class BranchPayrollSummary
+    {
+
+        public decimal TotalNetSalary { get; set; }
+        public int TotalMembers { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+
+    }
+
 
     public class ActivateSalaryFileCommand
     {

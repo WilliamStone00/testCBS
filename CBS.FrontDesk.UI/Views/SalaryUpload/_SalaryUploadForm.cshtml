@@ -18,14 +18,14 @@
                             <input class="form-check-input" type="radio" id="salaryTypePrivate" name="AddSalaryUploadModelCommand.SalaryType" value="PrivateInstitutions" required />
                             <label class="form-check-label" for="salaryTypePrivate">Private Institutions</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        @*<div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" id="salaryTypeInternal" name="AddSalaryUploadModelCommand.SalaryType" value="InternalStaffs" required />
                             <label class="form-check-label" for="salaryTypeInternal">Internal staff</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" id="salaryTypeDaily" name="AddSalaryUploadModelCommand.SalaryType" value="DailyServers" required />
                             <label class="form-check-label" for="salaryTypeDaily">Daily Servers</label>
-                        </div>
+                        </div>*@
                     </div>
                     @Html.ValidationMessageFor(m => m.AddSalaryUploadModelCommand.SalaryType, "", new { @class = "text-danger " })
                 </div>

@@ -392,6 +392,177 @@
 
             </div>
 
+            @if (Model.SavingProduct.AccountType.Contains("Salary"))
+            {
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingPaymentMethod4x">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePaymentMethod4x"
+                                aria-expanded="false"
+                                aria-controls="collapsePaymentMethod4x">
+                            Mapping Civil Servant and Private Institution for Ordinary account @Model.SavingProduct.Name to the main chart of accounts
+                        </button>
+                    </h2>
+                    <div id="collapsePaymentMethod4x"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPaymentMethod4x"
+                         data-bs-parent="#collapsibleSection">
+
+                        <div class="accordion-body">
+                            @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            {
+                                <fieldset class="fieldset-custom">
+                                    <legend>Account Mappings</legend>
+                                    <input type="hidden" name="ServiceOption" value="salaryMapping" id="ServiceOption" />
+                                    <div class="row mt-2 gy-4">
+
+
+
+                                        <!-- Step 1: Receiving Money from UBC (Civil Servants) -->
+                                        <div class="col-md-12">
+                                            <h5>Step 1: Receiving Money from UBC (Civil Servants)</h5>
+                                            <p>This step involves debiting the UBC current account and crediting the Civil Servants Salary Payable Account.</p>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.CivilServantsSalarySourceChartofAccountId,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.CivilServantsSalarySourceChartofAccountId, "", new { @class = "text-danger" })
+                                                <label>Civil Servants Salary Source Account</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.CivilServantsSalaryDestinationPayableChartofAccountId,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.CivilServantsSalaryDestinationPayableChartofAccountId, "", new { @class = "text-danger" })
+                                                <label>Civil Servants Salary Destination Payable Account</label>
+                                            </div>
+                                        </div>
+
+                                        <!-- Step 4: Disbursement of Funds (Civil Servants) -->
+                                        <div class="col-md-12">
+                                            <h5>Step 4: Disbursement of Funds into Salary Accounts (Civil Servants)</h5>
+                                            <p>In this step, the Civil Servants Salary Payable Account is debited, and the members' salary accounts are credited.</p>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.CivilServantsSalarySourceSalaryChartofaccountId,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.CivilServantsSalarySourceSalaryChartofaccountId, "", new { @class = "text-danger" })
+                                                <label>Civil Servants Salary Source Salary Account</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.CivilServantsSalaryDestinationSalaryProductChartofAccountId,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.CivilServantsSalaryDestinationSalaryProductChartofAccountId, "", new { @class = "text-danger" })
+                                                <label>Civil Servants Salary Destination Salary Product Account</label>
+                                            </div>
+                                        </div>
+
+                                        <!-- Step 1: Receiving Money from UBC (Private Institutions) -->
+                                        <div class="col-md-12">
+                                            <h5>Step 1: Receiving Money from UBC (Private Institutions)</h5>
+                                            <p>This step involves debiting the UBC current account and crediting the Private Institutions Salary Payable Account.</p>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.PrivateInstitutionSalarySourceChartofAccountId,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.PrivateInstitutionSalarySourceChartofAccountId, "", new { @class = "text-danger" })
+                                                <label>Private Institutions Salary Source Account</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.PrivateInstitutionSalaryDestinationPayableChartofAccountId,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.PrivateInstitutionSalaryDestinationPayableChartofAccountId, "", new { @class = "text-danger" })
+                                                <label>Private Institutions Salary Destination Payable Account</label>
+                                            </div>
+                                        </div>
+
+                                        <!-- Step 4: Disbursement of Funds (Private Institutions) -->
+                                        <div class="col-md-12">
+                                            <h5>Step 4: Disbursement of Funds into Salary Accounts (Private Institutions)</h5>
+                                            <p>In this step, the Private Institutions Salary Payable Account is debited, and the members' salary accounts are credited.</p>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.PrivateInstitutionSalarySourceSalaryChartofAccountId,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.PrivateInstitutionSalarySourceSalaryChartofAccountId, "", new { @class = "text-danger" })
+                                                <label>Private Institutions Salary Source Salary Account</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.PrivateInstitutionDestinationSalaryProductChartofAccountId,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select an account---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.PrivateInstitutionDestinationSalaryProductChartofAccountId, "", new { @class = "text-danger" })
+                                                <label>Private Institutions Salary Destination Salary Product Account</label>
+                                            </div>
+                                        </div>
+                                        <!-- Shared Suspense Account -->
+                                        <div class="col-md-12">
+                                            <h5>Suspense Account for Salary Processing</h5>
+                                            <p class="text-muted">
+                                                The Suspense Account is used to temporarily hold salaries for <strong>unidentified salary earners</strong> from the list of salary disbursements provided by the state or private institutions.
+                                                This account ensures that funds are not misplaced while awaiting proper identification and allocation to the correct recipients.
+                                            </p>
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.SuspenseChartOfAccountId,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select Suspense Account---",
+                                                    new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.SuspenseChartOfAccountId, "", new { @class = "text-danger" })
+                                                <label>Suspense Account</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div class="mt-4">
+                                    @if (Model.SavingProduct.Id == null)
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Save</button>
+                                        <input type="hidden" name="Action" value="insert" id="Action" />
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Map Accounts</button>
+                                        @Html.HiddenFor(m => m.SavingProduct.Id)
+                                        <input type="hidden" name="Action" value="update" id="Action" />
+                                    }
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+           
             @if (Model.SavingProduct.AccountType=="Saving")
             {
                 <div class="card accordion-item mb-3">
@@ -539,7 +710,7 @@
                                             </div>
                                         </div>
 
-                                        
+
 
                                         <input type="hidden" value="@Model.SavingProduct.Id" id="savingproductid" />
                                     </div>

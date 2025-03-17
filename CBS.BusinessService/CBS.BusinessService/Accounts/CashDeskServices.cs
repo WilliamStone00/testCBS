@@ -613,7 +613,7 @@ namespace CBS.BusinessService.Accounts
                  : "N/A",
                         Direction = "",
                         Name = a.Period,
-                        Naration = "N/A",
+                        Naration = a.Note=string.IsNullOrEmpty(a.Note) ? "N/A": a.Note,
                         EnventName = a.EventCode,
                         EventCode = a.EventCode,
                         SourceType = a.SourceType,

@@ -30,12 +30,13 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         }
         public async Task<ActionResult> Detail(string fileUploadid)
         {
-            var salaryUploadModels = await _salaryUploadServices.GetSalaryUploads(fileUploadid);
+            var salaryUploadModelWithBranchStatistics = await _salaryUploadServices.GetSalaryUploadModelWithBranchStatistics(fileUploadid);
+            var salaryUploadModels = salaryUploadModelWithBranchStatistics.SalaryUploadModelDtos.ToList();
             var fileUpload = await _salaryUploadServices.GetFileUpload(fileUploadid);
             var activateSalaryFileCommand = new ActivateSalaryFileCommand { Id=fileUploadid, Status=fileUpload.IsAvalaibleForExecution};
             var salaryUploadModelSummary = new SalaryUploadModelSummaryDto { FileUploadId=fileUploadid, 
 TotalMembers=salaryUploadModels.Count(), TotalNetSalary=salaryUploadModels.Sum(x => x.NetSalary) };
-            return View( new SalaryUploadModelCarrier { SalaryUploadModels=salaryUploadModels.ToList(), SalaryUploadModelSummaryDto=salaryUploadModelSummary, ActivateSalaryFileCommand=activateSalaryFileCommand,FileUpload=fileUpload});
+            return View( new SalaryUploadModelCarrier { SalaryUploadModels=salaryUploadModels.ToList(), SalaryUploadModelSummaryDto=salaryUploadModelSummary, ActivateSalaryFileCommand=activateSalaryFileCommand,FileUpload=fileUpload, BranchPayrollSummaries=salaryUploadModelWithBranchStatistics.BranchPayrollSummaries});
         }
         public async Task<ActionResult> Analysis(string fileUploadid)
         {

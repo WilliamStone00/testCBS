@@ -99,6 +99,7 @@ namespace CBS.FrontDesk.Helper
         public static string Delete_SalaryUpload = "/api/v1/SalaryUpload/{0}";
         public static string GetAllSalaryUploadByFileCategory = "/api/v1/SalaryUpload/all/{0}";
         public static string GetAllSalaryUploadByFileUploadId = "/api/v1/SalaryUpload/all";
+        public static string GetAllSalaryUploadWithBranchstatisticsByFileUploadId = "/api/v1/SalaryUpload/all/salary-model-withbranchstatistics";
         public static string CreateSalaryUpload = "/api/v1/SalaryUpload/upload";
         public static string DownloadSalaryUpload = "/api/v1/SalaryUpload/download-salay-file/{0}";
         public static string ActivateSalaryUpload = "/api/v1/SalaryUpload/Activate-salary-file";
