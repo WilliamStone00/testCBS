@@ -64,7 +64,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                              {
                                  Id = request.Id,
                                  ReferenceId = request.ReferenceId,
-                                 IsOwner = request.BranchId == _accountingEntryServices.GetBranchID(),
+                                 IsOwnerOfTheRequest = request.BranchId == _accountingEntryServices.GetBranchID(),
                                  AmountRequested = request.AmountRequested,
                                  BranchOffice = branch.Name,
                                  RequestMessage = request.RequestMessage,
