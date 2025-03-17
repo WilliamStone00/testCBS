@@ -57,6 +57,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Status { get; set; }
         public bool HasAccount56 { get; set; }
         public bool IsOwner { get; set; }
+        public bool IsRedirectedTo { get; set; }
         public string ParentCashReplenishId { get; set; } = "XXXXXXXX";
         public string ApprovalCode { get; set; }
         public string TempId1 { get; set; } = "Pendding";
@@ -106,8 +107,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
 
         // to determine if request was created by a branch
-        public bool IsOwner { get; set; }
-
+        public bool IsOwnerOfTheRequest { get; set; }
+        public bool IsRedirectedTo { get; set; }
         public string BranchOffice { get; set; }
         public bool IsRejected { get; set; }
  

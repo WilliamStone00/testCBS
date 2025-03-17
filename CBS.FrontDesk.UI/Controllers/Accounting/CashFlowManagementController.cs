@@ -26,6 +26,7 @@ using DocumentFormat.OpenXml.EMMA;
 using Azure.Core;
 using CBS.BusinessService.Services;
 using CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement;
+using Hangfire.Storage.Monitoring;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -495,7 +496,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             else if (model.ServiceOption.Equals("BranchToBranchTransfer")) //(path == "")
             {
                 string reference = string.Empty;
-
+                if (model.BranchToBranchTransfer.ConvertToTransferData().Amount==0)
+                {
+                    return Json(new { success = false, status = "success", message = "You have not computed any denomination" });
+                }
                 var datac = await _accountingEntryServices.CreateBranchToBranchTransferTransaction(model.BranchToBranchTransfer);
 
                 return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
@@ -591,8 +595,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                              {
                                  Id = request.Id,
                                  ReferenceId = request.ReferenceId,
-                                 IsOwner =request.BranchId==_AccountServices.GetBranchID(),
+                                 IsOwnerOfTheRequest =request.BranchId==_AccountServices.GetBranchID(),
                                  AmountRequested = request.AmountRequested,
+                                 IsRedirectedTo = request.CorrespondingBranchId == _AccountServices.GetBranchID(),
+
                                  BranchOffice = branch.Name,
                                  RequestMessage = request.RequestMessage,
                                  IssuedBy = user.name + "," + user.phoneNumber,
@@ -1176,6 +1182,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                              TempId1 = user.name + "," + user.roleName,
                              IssuedDate = request.IssuedDate,
                              IsOwner = _accountingEntryServices.GetBranchID()== request.BranchId,
+                             IsRedirectedTo = _accountingEntryServices.GetBranchID()==request.CorrespondingBranchId,
                              HasAccount56 = datasList.Find(x => x.Id == request.BranchId).IsHavingBank,
                              ApprovedBy = request.ApprovedBy,
                              ApprovedDate = request.ApprovedDate,
@@ -1240,7 +1247,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 itemdto.HasAccount56 = await CheckIfBranchHasBankAccountAsync(itemdto.BranchId);
                 var userx = await _accountingEntryServices.GetUser(item.IssuedBy);
                 itemdto.TempId1 = userx.firstName + "," + userx.lastName;
-                itemdto.IsOwner = itemdto.BranchId == _AccountServices.GetBranchID();
+                itemdto.IsOwnerOfTheRequest = itemdto.BranchId == _AccountServices.GetBranchID();
                 if (item.IsApproved)
                 {
                     var userxc = await _accountingEntryServices.GetUser(item.ApprovedBy);
