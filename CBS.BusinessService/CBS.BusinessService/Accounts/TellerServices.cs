@@ -311,6 +311,8 @@ namespace CBS.BusinessService.Accounts
                         Teller.ToBranchFloatAccountNumberBranch_C = model.ToBranchFloatAccountNumberBranch_C;
                         Teller.FromBranchFloatAccountNumber_D = model.FromBranchFloatAccountNumber_D;
                         Teller.ToHeadOfficeFloatAccountNumber_D = model.ToHeadOfficeFloatAccountNumber_D;
+                        Teller.OperationEventCode = model.OperationEventCode;
+                        Teller.OperationEventCode = model.OperationEventCode;
                     }
                     else if (action == "float_number_profile")
                     {

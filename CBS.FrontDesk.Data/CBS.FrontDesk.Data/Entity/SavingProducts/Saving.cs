@@ -469,6 +469,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string ChartOfAccountIdCamCCULShareCMoneyTransferCommission { get; set; }
         public string ChartOfAccountIdSourceCMoneyTransferCommission { get; set; }
         public string ChartOfAccountIdDestinationCMoneyTransferCommission { get; set; }
+        public string CivilServantsSalarySourceChartofAccountId { get; set; }
+        public string CivilServantsSalaryDestinationPayableChartofAccountId { get; set; }
+        public string CivilServantsSalarySourceSalaryChartofaccountId { get; set; }
+        public string CivilServantsSalaryDestinationSalaryProductChartofAccountId { get; set; }
+        public string SuspenseChartOfAccountId { get; set; }
+        public string PrivateInstitutionSalarySourceChartofAccountId { get; set; }
+        public string PrivateInstitutionSalaryDestinationPayableChartofAccountId { get; set; }
+        public string PrivateInstitutionSalarySourceSalaryChartofAccountId { get; set; }
+        public string PrivateInstitutionDestinationSalaryProductChartofAccountId { get; set; }
 
         public string ChartOfAccountIdLiassonAccount { get; set; }
         [Required]

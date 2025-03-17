@@ -1,12 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
 
+
+
+
 @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
-    <!-- Deposit Policies Section -->
+    <!-- Withdrawal Policies Section -->
     <fieldset class="fieldset-custom mb-4">
         <legend>@Model.SavingProduct.Name Policies for Cash In</legend>
-        @Html.HiddenFor(m => m.DepositLimit.ProductId)
         <input type="hidden" name="ServiceOption" value="depositlimit" id="ServiceOption" />
+        @Html.HiddenFor(m => m.DepositLimit.ProductId)
         <div class="row g-4">
             <!-- Deposit Type -->
             <div class="col-md-12">
@@ -39,8 +42,6 @@
             </div>
         </div>
     </fieldset>
-
-    <!-- Sharing Section -->
     <fieldset class="fieldset-custom mb-4">
         <legend>Sharing TRUST SOFT CREDIT</legend>
         <p class="text-muted">
@@ -95,14 +96,24 @@
     <div class="mt-4 text-end">
         @if (Model.DepositLimit.Id == null)
         {
-            <button type="submit" class="btn btn-primary me-2">Save</button>
+            <button type="submit" class="btn btn-primary">Save</button>
             <input type="hidden" name="Action" value="insert" id="Action" />
         }
         else
         {
-            <button type="submit" class="btn btn-primary me-2">Update</button>
+            <button type="submit" class="btn btn-primary">Update</button>
             @Html.HiddenFor(m => m.DepositLimit.Id)
             <input type="hidden" name="Action" value="update" id="Action" />
         }
     </div>
 }
+
+
+
+
+
+
+
+
+
+

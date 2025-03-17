@@ -163,7 +163,30 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
+        public async Task<SalaryUploadModelWithBranchStatisticsDto> GetSalaryUploadModelWithBranchStatistics(string FileUploadId)
+        {
+            try
+            {
 
+                GetSalaryUploadModelWithBranchStatisticsQuery allStandingOrdersQuery = new GetSalaryUploadModelWithBranchStatisticsQuery { FileUploadId=FileUploadId, IncludeBranchStatistics=true };
+                var queryString = ToQueryString(allStandingOrdersQuery);
+                var fullUrl = $"{APICallHelper.GetAllSalaryUploadWithBranchstatisticsByFileUploadId}?{queryString}";
+                var response = await _transactionApiHelper.GetAsync<ResponseObject<SalaryUploadModelWithBranchStatisticsDto>>(fullUrl);
+                var data = new SalaryUploadModelWithBranchStatisticsDto();
+                if (response.ApiResponseData != null)
+                {
+                    data = response.ApiResponseData.Data;
+                }
+                return data;
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        
         public async Task<IEnumerable<StringValues>> GetValues(GetAllFileUploadSalaryFileActivatedQuery allFileUploadSalaryFileActivatedQuery)
         {
             try

@@ -690,6 +690,10 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 return () => _depositLimitServices.Update(model.DepositLimit);
             }
+            else if (serviceOption == "salaryMapping")
+            {
+                return () => _savingProductServices.UpdateSalary(model.SavingProduct);
+            }
             else if (serviceOption == "accountmapping")
             {
                 return () => _savingProductServices.UpdateProductAccountMapping(model.SavingProduct);
@@ -860,6 +864,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                         var conf = await _savingProductServices.GetSavingConfigurationAggregates();
                         ViewBag.DepositLimitTypes = conf.depositTypes.ToList();
                         var data = await _depositLimitServices.GetDepositLimit(key);
+                        ViewBag.Frequences = conf.freeQuencies.ToList();
+                        ViewBag.Currencies = conf.currencies.ToList();
                         var savingProduct = await _savingProductServices.GetSavingProduct(data.ProductId);
                         return PartialView(partialView, new SavingConfiguration { DepositLimit = data, SavingProduct = savingProduct });
                     };
