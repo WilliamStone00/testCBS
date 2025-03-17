@@ -519,16 +519,15 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepaymentByLocalAccountNoneCash")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepaymentByLocalAccountNoneCash", IsCashOperation = false, OperationType = "Deposit" };
-                    foreach (var item in bulkDeposits)
-                    {
-                        BulkOperation.AccountToBeDebiteds.Add(new AccountToBeDebited
-                        {
-                            AccountNumber=item.AccountNumber,
-                            AccountType=item.AccountType,
-                            Amount=item.Amount
-                        });
-                    }
+
+
+
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits,  DepositType = "LoanRepaymentByLocalAccountNoneCash", IsCashOperation = false, OperationType = "Deposit"
+                    , LoanToBeRefundeds= bulkDeposits.FirstOrDefault().LoanToBeRefundeds, AccountToBeDebiteds=bulkDeposits.FirstOrDefault().AccountToBeDebiteds
+
+
+                    };
+                  
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {

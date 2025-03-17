@@ -153,7 +153,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             {
                 if (accountToBeDebiteds.Any() && loanToBeRefundeds.Any())
                 {
-                    var deposits = new List<BulkDeposit> { new BulkDeposit { AccountToBeDebiteds=accountToBeDebiteds, LoanToBeRefundeds=loanToBeRefundeds } };
+                    var deposits = new List<BulkDeposit> { new BulkDeposit {Amount=loanToBeRefundeds.FirstOrDefault().Capital,  AccountToBeDebiteds=accountToBeDebiteds, LoanToBeRefundeds=loanToBeRefundeds, OperationType="LoanRepaymentByLocalAccountNoneCash", AccountNumber=loanToBeRefundeds.FirstOrDefault().LoanId, CustomerId=loanToBeRefundeds.FirstOrDefault().MemberRefence, Principal=loanToBeRefundeds.FirstOrDefault().Capital, Note=loanToBeRefundeds.FirstOrDefault().Note,LoanId=loanToBeRefundeds.FirstOrDefault().LoanId, Total=accountToBeDebiteds.Sum(x=>x.Amount), Interest=loanToBeRefundeds.FirstOrDefault().Interest,  Penalty=loanToBeRefundeds.FirstOrDefault().Penalty, Tax=Math.Abs(loanToBeRefundeds.FirstOrDefault().Vat), VAT=Math.Abs(loanToBeRefundeds.FirstOrDefault().Vat) } };
                     var data = await _cashDeskService.BulkDeposi(deposits);
                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
