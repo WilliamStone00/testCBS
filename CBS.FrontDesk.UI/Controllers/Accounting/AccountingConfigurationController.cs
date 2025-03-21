@@ -855,7 +855,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
                 //var BranchCode = (await _branchService.GetBranches()).Where(xx => xx.BranchCode.Equals(model.Account.AccountOwnerId)).FirstOrDefault();
                 //model.Account.AccountOwnerId = BranchCode.Id;//(await _branchService.GetBranches()).Where(xx => xx.BranchCode.Equals(model.Account.AccountOwnerId)).FirstOrDefault().Id;
-                if (model.Account.AccountNumber == "45100")
+                if (model.Account.AccountNumber == "451000")
                 {
                     model.Account.AccountCounterPartId = (await _branchService.GetBranches()).Where(xx => xx.BranchCode.Equals(model.Account.AccountCounterPartId)).FirstOrDefault().Id;
 

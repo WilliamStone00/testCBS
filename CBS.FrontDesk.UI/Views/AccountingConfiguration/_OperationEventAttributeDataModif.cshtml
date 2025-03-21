@@ -4,6 +4,7 @@
         <tr>
             <th>Name</th>
             <th>Operation Event</th>
+
             <th>Action</th>
         </tr>
     </thead>
@@ -13,10 +14,10 @@
             <tr>
                 <td style="width:45%">@d.Name</td>
                 <td style="width:35%">@d.OperationEventName</td>
-           
+               
                 <td style="width:25%">
                     <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_OperationEventAttribute','_CreateOperationEventAttribute','update','AccountingConfiguration','operationEventAttribute')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name"  onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_OperationEventAttribute','_OperationEventAttributeData',0,'datalistingview_OperationEventAttribute','operationEventAttribute')">Delete</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_OperationEventAttribute','_OperationEventAttributeData',0,'datalistingview_OperationEventAttribute','operationEventAttribute')">Delete</a>
                 </td>
             </tr>
         }

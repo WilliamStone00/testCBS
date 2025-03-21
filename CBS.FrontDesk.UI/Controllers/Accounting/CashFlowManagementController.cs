@@ -991,8 +991,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 mOdelsd.AccountInfo = name;
                 mOdelsd.ReferenceId = KEY;
                 mOdelsd.AmountExpected = Convert.ToDecimal(OperationEventAttribute.AmountApproved);
-                mOdelsd.FromAccountId = Id;
-                mOdelsd.ToAccountId = IdAcc;
+                mOdelsd.FromAccountId = IdAcc;
+                mOdelsd.ToAccountId = Id;
                 cashDemandDataEntity.CashClearing = mOdelsd;
                 cashDemandDataEntity.CashReplenimentRequest = OperationEventAttribute;
                 var userx = await _accountingEntryServices.GetUser(cashDemandDataEntity.CashReplenimentRequest.ApprovedBy);

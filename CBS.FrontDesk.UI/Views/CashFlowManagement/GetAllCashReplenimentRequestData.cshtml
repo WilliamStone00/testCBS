@@ -257,6 +257,14 @@
                                                                 <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View Status</a>
 
                                                             }
+                                                            else
+                                                            {
+                                                                if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+                                                                {
+                                                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View Status</a>
+
+                                                                }
+                                                            }
 
                                                         }
                                                     }
