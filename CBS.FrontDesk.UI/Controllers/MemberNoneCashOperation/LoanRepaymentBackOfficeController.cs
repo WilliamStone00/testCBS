@@ -39,8 +39,12 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             return View();
         }
-      
-       
+        public async Task<ActionResult> LedgerLoanRepayment()
+        {
+            await GetChartOfAccounts();
+            return View();
+        }
+
         public async Task<ActionResult> Ajaxloader(string Key,string path)
         {
             if (path== "getmember")
@@ -103,6 +107,10 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                     ViewBag.message = "Empty data was submited. Please enter search criterial";
                     return PartialView("_DataNotFound", new CashDesk());
                 }
+                if (path=="loan_repayment_gl")
+                {
+                    await GetChartOfAccounts();
+                }
                 path="repayment";
                 var cashDesk = await _cashDeskService.GetAccountByAccountNumberSearch(KEY, path);
                 if (cashDesk == null)
@@ -114,8 +122,6 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 cashDesk.AddMembersNoneCashOperationCommand.MemberName=cashDesk.Customer.name;
                 ViewBag.Operation = path;
                 return PartialView(partialView, cashDesk);
-                ViewBag.message = "Invalid option selected";
-                return PartialView("_NoRecordFound", new CashDesk());
 
             }
             catch (Exception ex)
@@ -199,6 +205,11 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
 
         }
-
+        public async Task<bool> GetChartOfAccounts()
+        {
+            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
+            ViewBag.chartOfAccounts = chartOfAccounts.ToList();
+            return true;
+        }
     }
 }

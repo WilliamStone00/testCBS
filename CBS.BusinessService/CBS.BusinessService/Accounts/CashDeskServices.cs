@@ -494,7 +494,7 @@ namespace CBS.BusinessService.Accounts
                 //            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 //    }
                 //}
-                //
+                // 650207592 Courage.
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepaymentMomocashCollection")
                 {
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepaymentMomocashCollection", IsCashOperation = false, OperationType = "Deposit" };

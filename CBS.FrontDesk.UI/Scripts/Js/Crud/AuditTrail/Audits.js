@@ -19,6 +19,7 @@ function LoadAudits(search) {
     const dateFrom = $('#dateFrom').val();
     const dateTo = $('#dateTo').val();
     const searchOption = $('input[name="searchOption"]:checked').val();
+    const filterByDateOnly = $('#filterByDateOnlySwitch').is(':checked'); // ✅ Capture the toggle
 
     $("#myDataTable").DataTable({
         "destroy": true,
@@ -34,6 +35,7 @@ function LoadAudits(search) {
                 "searchCriteria": search,
                 "dateFrom": dateFrom,
                 "dateTo": dateTo,
+                "filterByDateOnly": filterByDateOnly,
                 "searchOption": searchOption
             },
             "dataSrc": function (json) {
@@ -107,13 +109,19 @@ function downloadAuditTrail() {
     const dateFrom = $('#dateFrom').val();
     const dateTo = $('#dateTo').val();
     const searchOption = $('input[name="searchOption"]:checked').val();
+    const filterByDateOnly = $('#filterByDateOnlySwitch').is(':checked'); // ✅ Capture the toggle
 
-    // Build the export URL with search criteria and date range
-    const url = `/AuditTrail/Download?searchCriteria=${encodeURIComponent(searchCriteria)}&dateFrom=${encodeURIComponent(dateFrom)}&dateTo=${encodeURIComponent(dateTo)}&searchOption=${encodeURIComponent(searchOption)}`;
+    // Build the export URL with all parameters
+    const url = `/AuditTrail/Download?searchCriteria=${encodeURIComponent(filterByDateOnly ? "" : searchCriteria)}`
+        + `&dateFrom=${encodeURIComponent(dateFrom)}`
+        + `&dateTo=${encodeURIComponent(dateTo)}`
+        + `&searchOption=${encodeURIComponent(filterByDateOnly ? "" : searchOption)}`
+        + `&filterByDatesOnly=${filterByDateOnly}`; // ✅ Add this flag to query params
 
     // Trigger download
     window.location.href = url;
 }
+
 
 //function LoadAudits(search) {
 //    const dateFrom = $('#dateFrom').val();
