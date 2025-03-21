@@ -2533,6 +2533,7 @@
     <Content Include="Scripts\Js\Crud\AuditTrail\Audits.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\LoanRefpaymentSimulation.js" />
     <Content Include="Scripts\Js\Crud\LoanApplicationHistory\LoanApplicationQuery.js" />
+    <Content Include="Scripts\Js\Crud\LoanRepaymentBackOffice\LedgerLoanRepayment.js" />
     <Content Include="Scripts\Js\Crud\LoanRepaymentBackOffice\LoanRepaymentBackOffice.js" />
     <Content Include="Scripts\Js\Crud\Loan\LoanTransactions\LoanQuery.js" />
     <Content Include="Scripts\Js\Crud\NoneCashMobileMoney\Approvals.js" />
@@ -3494,9 +3495,10 @@
     <Content Include="Views\MobileMoneyBackOffice\_SearchBox.cshtml" />
     <Content Include="Views\MobileMoneyBackOffice\Index.cshtml" />
     <Content Include="Views\LoanRepaymentBackOffice\_AccountAndLoanListingForm.cshtml" />
-    <Content Include="Views\LoanRepaymentBackOffice\_MomocashCollectionSearchBox.cshtml" />
     <Content Include="Views\LoanRepaymentBackOffice\_SearchBox.cshtml" />
     <Content Include="Views\LoanRepaymentBackOffice\Index.cshtml" />
+    <Content Include="Views\LoanRepaymentBackOffice\LedgerLoanRepayment.cshtml" />
+    <Content Include="Views\LoanRepaymentBackOffice\_LedgerLoanRepaymentForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

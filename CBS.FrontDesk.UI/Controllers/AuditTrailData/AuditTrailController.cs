@@ -56,7 +56,7 @@ namespace CBS.FrontDesk.UI.Controllers.AuditTrailData
 
 
         [HttpGet]
-        public async Task<ActionResult> Download(string searchCriteria = "all", string dateFrom = null, string dateTo = null,string searchOption="Action")
+        public async Task<ActionResult> Download(string searchCriteria = "all", string dateFrom = null, string dateTo = null, string searchOption = "Action", bool filterByDatesOnly = true)
         {
             try
             {
@@ -77,6 +77,7 @@ namespace CBS.FrontDesk.UI.Controllers.AuditTrailData
                 // Prepare the DataTable query
                 var getAuditTrailsDataTable = new GetAuditTrailsDataTableQuery
                 {
+                    FilterByDatesOnly=filterByDatesOnly,
                     DataTableOptions = new DataTableOptions
                     {
                         pageSize = 10000,  // Export large number of records
@@ -84,7 +85,8 @@ namespace CBS.FrontDesk.UI.Controllers.AuditTrailData
                         searchValue = searchCriteria
                     },
                     StartDate = startDate ?? DateTime.MinValue,
-                    EndDate = endDate ?? DateTime.MaxValue, Feild=searchOption,
+                    EndDate = endDate ?? DateTime.MaxValue,
+                    Feild=searchOption,
                 };
                 getAuditTrailsDataTable.DataTableOptions=GetDataTableOptions();
                 if (searchCriteria=="")
@@ -115,7 +117,7 @@ namespace CBS.FrontDesk.UI.Controllers.AuditTrailData
         }
 
         [HttpPost]
-        public async Task<ActionResult> LoadData(string searchCriteria = "all", string dateFrom = null, string dateTo = null, string searchOption = "Action")
+        public async Task<ActionResult> LoadData(string searchCriteria = "all", string dateFrom = null, string dateTo = null, string searchOption = "Action", bool filterByDateOnly = true)
         {
             try
             {
@@ -134,6 +136,7 @@ namespace CBS.FrontDesk.UI.Controllers.AuditTrailData
 
                 var getAuditTrailsDataTable = new GetAuditTrailsDataTableQuery
                 {
+                    FilterByDatesOnly=filterByDateOnly,
                     DataTableOptions = PostDataTableOptions(),
                     StartDate = startDate ?? DateTime.MinValue,
                     EndDate = endDate ?? DateTime.MaxValue,

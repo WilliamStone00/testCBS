@@ -48,6 +48,7 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Feild { get; set; }
+        public bool FilterByDatesOnly { get; set; }
     }
 
     public class GetDataTableDataQueryCommand

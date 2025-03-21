@@ -1,0 +1,137 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@{
+    ViewBag.Title = "Loan Repayment - Ledger/Standing Order";
+}
+
+<link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
+
+<div class="container">
+    <!-- Page Header -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary">
+                        <i class="mdi mdi-bank-transfer me-2"></i> Ledger / Bank Standing Order Loan Repayment Management
+                    </h1>
+                    <p class="card-text">
+                        Process loan repayments from <strong>ledger or standing order balances</strong> by selecting the appropriate ledger account and entering loan repayment details.
+                    </p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Tips Section -->
+    <div class="row mb-0">
+        <div class="col-12">
+            <div class="accordion" id="helpTipsAccordion">
+                <div class="card">
+                    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                        <span>
+                            <i class="mdi mdi-information-outline me-2"></i> HELP TIPS
+                        </span>
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h6>
+                    <div id="collapseHelpTips" class="collapse" data-bs-parent="#helpTipsAccordion">
+                        <div class="card-body">
+                            <div class="accordion" id="helpDetailsAccordion">
+                                <!-- Loan Repayment Guide -->
+                                <div class="accordion-item mt-2">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanRepaymentGuide" aria-expanded="false" aria-controls="collapseLoanRepaymentGuide">
+                                            Ledger Loan Repayment Process
+                                        </button>
+                                    </h2>
+                                    <div id="collapseLoanRepaymentGuide" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
+                                        <div class="accordion-body">
+                                            <ol>
+                                                <li>Select the <strong>ledger or bank standing order account</strong> to debit.</li>
+                                                <li>Enter the <strong>amounts to repay for principal, interest, VAT, and penalties</strong>.</li>
+                                                <li>Ensure the <strong>ledger debit total equals the total loan repayment amount</strong>.</li>
+                                                <li>Click <strong>"Confirm Transaction"</strong> to process.</li>
+                                                <li>Check confirmation to ensure the repayment was successful.</li>
+                                            </ol>
+                                            <strong>NB:</strong> Inconsistency between selected ledger amount and repayment detail totals will block submission.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Repayment Fees -->
+                                <div class="accordion-item mt-2">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanFees" aria-expanded="false" aria-controls="collapseLoanFees">
+                                            Loan Repayment Fees & Deductions
+                                        </button>
+                                    </h2>
+                                    <div id="collapseLoanFees" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
+                                        <div class="accordion-body">
+                                            <ul>
+                                                <li><strong>Interest:</strong> Calculated on the loan's outstanding balance.</li>
+                                                <li><strong>VAT:</strong> Derived from the interest portion.</li>
+                                                <li><strong>Penalty:</strong> Applicable for overdue installments.</li>
+                                                <li><strong>Administrative Charges:</strong> May apply based on loan policy.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Refund Policy -->
+                                <div class="accordion-item mt-2">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanRefundPolicy" aria-expanded="false" aria-controls="collapseLoanRefundPolicy">
+                                            Refund Policy for Ledger-Based Repayments
+                                        </button>
+                                    </h2>
+                                    <div id="collapseLoanRefundPolicy" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
+                                        <div class="accordion-body">
+                                            <p>Repayments made from ledgers <strong>cannot be reversed</strong> except in cases of:</p>
+                                            <ul>
+                                                <li><strong>Excess Debit:</strong> Refund request to be validated by management.</li>
+                                                <li><strong>System Error:</strong> Verified duplicate transactions may be corrected.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div> <!-- End of Help Details Accordion -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="row my-3">
+                <div class="accordion" id="collapsibleSection">
+                    <div class="card accordion-item mb-1">
+                        <h2 class="accordion-header">
+                            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseLedgerRepayment" aria-expanded="true" aria-controls="collapseLedgerRepayment">
+                                <i class="mdi mdi-bank-transfer me-2"></i>
+                                <span>Ledger / Standing Order Repayment Panel</span>
+                            </button>
+                        </h2>
+                        <hr />
+                        <div id="collapseLedgerRepayment" class="collapse show" data-bs-parent="#collapsibleSection">
+                            <div class="accordion-body">
+                                @Html.Partial("_SearchBox")
+                                <div id="datalistingview">
+                                    <!-- Ledger repayment data listing appears here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/Js/Crud/LoanRepaymentBackOffice/LedgerLoanRepayment.js"></script>
+}

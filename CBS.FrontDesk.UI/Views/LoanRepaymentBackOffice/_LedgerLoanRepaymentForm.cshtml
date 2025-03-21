@@ -1,0 +1,120 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+
+<input type="hidden" id="customerId" value="@Model.Customer.CustomerId" />
+<input type="hidden" id="memberName" value="@Model.Customer.name" />
+<input type="hidden" id="branchName" value="@Model.Branch.Name" />
+<input type="hidden" id="branchCode" value="@Model.Branch.BranchCode" />
+<input type="hidden" id="accountantName" value="@Session["FullName"].ToString()" />
+
+<div class="form-wrapper">
+    <div class="change-group">
+        <div class="row mb-3 align-items-center">
+            <div class="col-md-12">
+                <div class="form-floating">
+                    <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary">
+                        <strong>Member's Name:</strong> @Model.Customer.name &nbsp; | &nbsp;
+                        <strong>Branch Name:</strong> @Model.Branch.Name &nbsp; | &nbsp;
+                        <strong>Branch Code:</strong> @Model.Branch.BranchCode
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <fieldset class="fieldset-custom">
+        <div class="container">
+            <div class="row">
+                <h6 class="mb-0 fw-bold text-dark">Source accounts</h6>
+                <div class="col-md-12 mb-2">
+                    <div class="form-floating">
+                        @Html.DropDownListFor(m => m.BulkDeposit.ChartOfAccountId, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select GL---", new { @class = "form-control select2", id = "account_number", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.BulkDeposit.ChartOfAccountId, "", new { @class = "text-danger" })
+                        <label id="accountNumberLabel">Select Source Account</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="myDataTableT">
+                        <thead class="table-light">
+                            <tr>
+                                <th colspan="10" class="text-center fw-bold bg-light text-dark">MEMBER'S OPENED LOANS</th>
+                            </tr>
+                            <tr>
+                                <th style="display:none;">L. Ref</th>
+                                <th>Date</th>
+                                <th>L.Amount</th>
+                                <th>A.I</th>
+                                <th>Balance</th>
+                                <th>Capital</th>
+                                <th>Interest</th>
+                                <th>VAT (19.25%)</th>
+                                <th>Penalty</th>
+                                <th>Total</th>
+                                <th>Conf</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loanRepaymentTable">
+                            @foreach (var d in Model.Loans)
+                            {
+                                var loanId = d.Id; // Clean ID
+                                <tr id="row-@loanId">
+                                    <td style="display:none;">@loanId</td>
+                                    <td>@d.LoanDate.ToString("dd/MM/yy")</td>
+                                    <td class="loan-amount" data-loan-amount="@d.LoanAmount">@d.LoanAmount.ToString("#,##0.0")</td>
+                                    <td>@d.AccrualInterest.ToString("#,##0.0")</td>
+                                    <td>@d.Balance.ToString("#,##0.0")</td>
+                                    <td>
+                                        <input type="number" class="form-control capital-input" id="capital-@loanId" value="0" oninput="calculateVatAndTotals('@loanId')">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control interest-input" id="interest-@loanId" value="0" oninput="calculateVatAndTotals('@loanId')">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control vat-input" id="vat-@loanId" value="0" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control penalty-input" id="penalty-@loanId" value="0" oninput="calculateVatAndTotals('@loanId')">
+                                    </td>
+                                    <td><span class="total-span" id="total-@loanId">0</span></td>
+                                    <td>
+                                        <input type="checkbox" class="form-check-input" disabled>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="9" style="text-align: right;"><strong>Overall Total Repayment:</strong></td>
+                                <td colspan="2" id="grandTotalRepayment">0</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 mt-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control shadow-input-boxes", @id = "Note", rows = "3", placeholder = "Enter reason for transaction...", style = "height: 90px;" })
+                        @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger" })
+                        <label for="Note">Transaction Note (Reason)</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <button class="btn btn-primary me-2" onclick="PostLoanRepayment()">
+                    <i class="mdi mdi-check me-1"></i> Confirm Repayment
+                </button>
+                <button class="btn btn-secondary" onclick="Reprint()">
+                    <i class="mdi mdi-printer me-1"></i> Reprint Receipt
+                </button>
+                <button class="btn btn-outline-secondary" type="reset">
+                    <i class="mdi mdi-refresh me-1"></i> Reset
+                </button>
+            </div>
+        </div>
+    </fieldset>
+</div>
