@@ -519,7 +519,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepaymentByLocalAccountNoneCash")
                 {
-
+                    //LoanRepaymentGLAccountNoneCash
 
 
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits,  DepositType = "LoanRepaymentByLocalAccountNoneCash", IsCashOperation = false, OperationType = "Deposit"
@@ -528,6 +528,42 @@ namespace CBS.BusinessService.Accounts
 
                     };
                   
+                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
+                    if (response.ApiResponseData != null)
+                    {
+                        var transaction = response.ApiResponseData.Data;
+                        Branch branch = RetrieveBranchFromSession();
+                        var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
+                        HttpContext.Current.Session["rptSource"] = rptSource;
+                        GetExecutionMessages(response, true, null, MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+                }
+                else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepaymentGLAccountNoneCash")
+                {
+                    
+
+
+                    var BulkOperation = new BulkOperation
+                    {
+                        BulkOperations = bulkDeposits,
+                        DepositType = "LoanRepaymentGLAccountNoneCash",
+                        IsCashOperation = false,
+                        OperationType = "Deposit", 
+                    
+                        LoanToBeRefundeds= bulkDeposits.FirstOrDefault().LoanToBeRefundeds,
+                        AccountToBeDebiteds=bulkDeposits.FirstOrDefault().AccountToBeDebiteds
+
+
+                    };
+
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {

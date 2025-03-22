@@ -153,25 +153,62 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public async Task<ActionResult> PostRequestCash(List<AccountToBeDebited> accountToBeDebiteds, List<LoanToBeRefunded> loanToBeRefundeds)
+        public async Task<ActionResult> PostRequestCash(List<AccountToBeDebited> accountToBeDebiteds, List<LoanToBeRefunded> loanToBeRefundeds, string operationType = "LoanRepaymentByLocalAccountNoneCash")
         {
             try
             {
-                if (accountToBeDebiteds.Any() && loanToBeRefundeds.Any())
+                if (loanToBeRefundeds == null || !loanToBeRefundeds.Any())
+                    return Json(new { success = false, status = false, message = "No loan repayment data was submitted." });
+
+                var loan = loanToBeRefundeds.FirstOrDefault();
+                if (loan == null)
+                    return Json(new { success = false, status = false, message = "Invalid loan data submitted." });
+
+                // Accounts are optional for other operations but required for local account repayments
+                if (operationType == "LoanRepaymentByLocalAccountNoneCash" && (accountToBeDebiteds == null || !accountToBeDebiteds.Any()))
+                    return Json(new { success = false, status = false, message = "No accounts to debit were provided." });
+
+                var totalAmount = accountToBeDebiteds?.Sum(x => x.Amount) ?? 0;
+
+                var deposits = new List<BulkDeposit>
+        {
+            new BulkDeposit
+            {
+                Amount = loan.Capital,
+                AccountToBeDebiteds = accountToBeDebiteds ?? new List<AccountToBeDebited>(),
+                LoanToBeRefundeds = loanToBeRefundeds,
+                OperationType = operationType,
+                AccountNumber = loan.LoanId,
+                CustomerId = loan.MemberRefence,
+                Principal = loan.Capital,
+                Interest = loan.Interest,
+                Penalty = loan.Penalty,
+                Tax = Math.Abs(loan.Vat),
+                VAT = Math.Abs(loan.Vat),
+                Total = totalAmount,
+                Note = loan.Note, 
+                LoanId = loan.LoanId
+            }
+        };
+
+                var result = await _cashDeskService.BulkDeposi(deposits);
+
+                return Json(new
                 {
-                    var deposits = new List<BulkDeposit> { new BulkDeposit {Amount=loanToBeRefundeds.FirstOrDefault().Capital,  AccountToBeDebiteds=accountToBeDebiteds, LoanToBeRefundeds=loanToBeRefundeds, OperationType="LoanRepaymentByLocalAccountNoneCash", AccountNumber=loanToBeRefundeds.FirstOrDefault().LoanId, CustomerId=loanToBeRefundeds.FirstOrDefault().MemberRefence, Principal=loanToBeRefundeds.FirstOrDefault().Capital, Note=loanToBeRefundeds.FirstOrDefault().Note,LoanId=loanToBeRefundeds.FirstOrDefault().LoanId, Total=accountToBeDebiteds.Sum(x=>x.Amount), Interest=loanToBeRefundeds.FirstOrDefault().Interest,  Penalty=loanToBeRefundeds.FirstOrDefault().Penalty, Tax=Math.Abs(loanToBeRefundeds.FirstOrDefault().Vat), VAT=Math.Abs(loanToBeRefundeds.FirstOrDefault().Vat) } };
-                    var data = await _cashDeskService.BulkDeposi(deposits);
-                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-
-                }
-                return Json(new { success = false, status = false, message = $"No data was submitted." });
-
+                    success = result.Result,
+                    status = result.MessageStatus,
+                    message = Messaging.MessageResult(result)
+                });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
             }
         }
+
+
+
+
         [HttpPost]
         public async Task<ActionResult> GetReport(string path)
         {

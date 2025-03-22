@@ -42,7 +42,7 @@ function calculateVatAndTotals(loanId) {
     var total = capital + interest + penalty + vat;
     var totalSpan = document.getElementById(`total-${loanId}`);
     if (totalSpan) {
-        totalSpan.innerText = total.toFixed(2);
+        totalSpan.innerText = total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
     calculateGrandTotal();
@@ -53,11 +53,11 @@ function calculateGrandTotal() {
     var grandTotal = 0;
 
     totalElements.forEach(function (el) {
-        var val = parseFloat(el.innerText) || 0;
+        var val = parseFloat(el.innerText.replace(/,/g, '')) || 0; // remove commas before parsing
         grandTotal += val;
     });
 
-    document.getElementById('grandTotalRepayment').innerText = grandTotal.toFixed(2);
+    document.getElementById('grandTotalRepayment').innerText = grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 
@@ -67,84 +67,49 @@ function collectDeposits() {
     var loansToBeRefunded = [];
     var totalDebited = 0;
     var totalRepayment = 0;
-    var selectedAccounts = 0;
     var selectedLoans = 0;
-    var hasInvalidAccounts = false;
     var hasInvalidLoans = false;
 
     console.clear(); // Clear console for debugging
 
-    // Step 1: Collect Accounts to be Debited
-    $('#memberAccountsTable tr').each(function () {
-        let checkbox = $(this).find('.form-check-input'); // Find the checkbox
-        let amountInput = $(this).find('.amount-input'); // Find the amount input field
-        let statusIndicator = $(this).find('.status-indicator'); // Find the status indicator
-        let amount = parseFloat(amountInput.val()) || 0;
-        let balance = parseFloat($(this).find('.balance-span').text().replace(/[^\d.-]/g, '')) || 0; // Extract balance
-        let accountNumber = $(this).find('td:eq(1)').text().trim(); // Hidden column for AccountNumber
-        let accountType = $(this).find('td:eq(2)').text().trim(); // Account Type Column
-        let productId = $(this).find('td:eq(0)').text().trim(); // Hidden column for ProductId
+    // Capture member and branch information
+    var memberReference = $('#customerId').val();
+    var memberName = $('#memberName').val();
+    var branchName = $('#branchName').val();
+    var branchCode = $('#branchCode').val();
+    var accountantName = $('#accountantName').val();
 
-        if (amount > 0) {
-            if (amount > balance) {
-                statusIndicator.html("❌").css("color", "red"); // Red ❌ if amount > balance
-                hasInvalidAccounts = true;
-            } else {
-                statusIndicator.html("✅").css("color", "green"); // Green ✅ if valid
-                checkbox.prop('checked', true); // ✅ Auto-check the account if an amount is entered
-            }
+    // ✅ Capture the selected ledger account (Chart of Account ID)
+    var chartOfAccountId = $('#account_number').val();
+    var chartOfAccountName = $('#account_number option:selected').text().trim();
 
-            accountsToBeDebited.push({
-                AccountNumber: accountNumber,
-                Amount: amount,
-                ProductId: productId,
-                AccountType: accountType
-            });
-
-            totalDebited += amount;
-            selectedAccounts++;
-        }
-    });
-
-    // Step 2: Validate at least one account is selected
-    if (selectedAccounts === 0) {
-        appalert("❌ Please enter an amount and select at least one account from the account table.", 3, 1);
+    if (!chartOfAccountId || chartOfAccountId === "0" || chartOfAccountId === "") {
+        appalert("❌ Please select a source ledger account (GL) before proceeding.", 3, 1);
+        $('#account_number').focus();
         return null;
     }
-
-    if (hasInvalidAccounts) {
-        appalert("❌ Some accounts have invalid debit amounts (greater than balance). Please correct them.", 3, 1);
-        return null;
-    }
-
-    console.log("✅ Selected Accounts Count:", selectedAccounts);
-    console.log("✅ Accounts Collected:", accountsToBeDebited);
-
-    // Step 3: Validate the transaction note
     let transactionNote = getValidatedNote();
     if (!transactionNote) {
-        return null; // Prevent submission if note validation fails
+        return null;
     }
 
-    // Step 4: Collect Loan Repayments
+    // Step 2: Collect Loan Repayments
     $('#loanRepaymentTable tr').each(function () {
-        let checkbox = $(this).find('.form-check-input'); // Find the checkbox
-        let loanId = $(this).find('td:eq(0)').text().trim(); // Hidden column for LoanId
+        let checkbox = $(this).find('.form-check-input');
+        let loanId = $(this).find('td:eq(0)').text().trim();
         let capital = parseFloat($(this).find('.capital-input').val()) || 0;
         let interest = parseFloat($(this).find('.interest-input').val()) || 0;
         let penalty = parseFloat($(this).find('.penalty-input').val()) || 0;
-        let loanAmountContracted = parseFloat($(this).find('td:eq(2)').text().trim().replace(/[^\d.-]/g, '')) || 0; // Extract Loan Amount Contracted
+        let loanAmountContracted = parseFloat($(this).find('.loan-amount').data('loan-amount')) || 0;
 
-        // ✅ Calculate VAT (19% of Interest ONLY if Loan Amount Contracted ≥ 2,000,000 XAF)
         let vat = (loanAmountContracted >= 2000000) ? (interest * 0.1925) : 0;
-        vat = parseFloat(vat.toFixed(1)); // Format VAT correctly
-
-        let totalAmount = capital + interest + penalty + vat; // Add VAT to total repayment
+        vat = parseFloat(vat.toFixed(2));
+        let totalAmount = capital + interest + penalty + vat;
 
         if (totalAmount > 0) {
-            checkbox.prop('checked', true); // ✅ Auto-check the loan if an amount is entered
+            checkbox.prop('checked', true);
         } else {
-            $(this).find('.total-span').html("⚠️ Missing Values").css("color", "orange"); // Show Warning ⚠️
+            $(this).find('.total-span').html("⚠️ Missing Values").css("color", "orange");
             hasInvalidLoans = true;
         }
 
@@ -154,9 +119,13 @@ function collectDeposits() {
             Interest: interest,
             Penalty: penalty,
             Vat: vat,
-            TotalAmount: totalAmount, // Include VAT in total loan amount
-            LoanAmount: loanAmountContracted, // Store contracted loan amount
-            MemberRefence: $('#customerId').val(),
+            TotalAmount: totalAmount,
+            LoanAmountContracted: loanAmountContracted,
+            MemberReference: memberReference,
+            MemberName: memberName,
+            BranchName: branchName,
+            BranchCode: branchCode,
+            AccountantName: accountantName,
             Note: transactionNote
         });
 
@@ -164,7 +133,6 @@ function collectDeposits() {
         selectedLoans++;
     });
 
-    // Step 5: Validate Loan Selection
     if (selectedLoans === 0) {
         appalert("❌ Please enter an amount and select at least one loan to process repayment.", 3, 1);
         return null;
@@ -180,52 +148,65 @@ function collectDeposits() {
         return null;
     }
 
-    console.log("✅ Selected Loans Count:", selectedLoans);
-    console.log("✅ Loans Collected:", loansToBeRefunded);
+    console.log("✅ All validations passed. Ready to submit.");
 
-    // Step 6: Ensure the total debited amount matches the total repayment amount
-    if (Math.round(totalDebited) !== Math.round(totalRepayment)) {
-        appalert(`❌ The sum of Capital, Interest, and Penalty (including VAT) (${formatCurrency(totalRepayment)}) must be equal to the total amount to be debited (${formatCurrency(totalDebited)}).`, 3, 1);
-        return null;
-    }
-
-
-    console.log("✅ FINAL VALIDATION PASSED. Ready to Submit!");
-
-    return [{ AccountToBeDebiteds: accountsToBeDebited, LoanToBeRefundeds: loansToBeRefunded }];
+    return [{
+        MemberReference: memberReference,
+        MemberName: memberName,
+        BranchName: branchName,
+        BranchCode: branchCode,
+        AccountantName: accountantName,
+        Note: transactionNote,
+        LedgerChartOfAccountId: chartOfAccountId,
+        ChartOfAccountName: chartOfAccountName,
+        AccountsToBeDebited: accountsToBeDebited,
+        LoansToBeRefunded: loansToBeRefunded,
+        TotalDebited: totalDebited,
+        TotalRepayment: totalRepayment
+    }];
 }
 
 
 function getValidatedNote() {
     let noteInput = $('#Note').val().trim();
-    let memberName = $('#memberName').val().trim(); // Member's Name
-    let memberId = $('#customerId').val().trim(); // Member ID
-    let branchName = $('#branchName').val().trim(); // Branch Name
-    let branchCode = $('#branchCode').val().trim(); // Branch Code
-    let accountantName = $('#accountantName').val().trim(); // Accountant's Name
+    let memberName = $('#memberName').val().trim();
+    let memberId = $('#customerId').val().trim();
+    let branchName = $('#branchName').val().trim();
+    let branchCode = $('#branchCode').val().trim();
+    let accountantName = $('#accountantName').val().trim();
 
-    // Fallback if values are missing
+    // ✅ Get selected ledger account details from dropdown
+    let selectedLedgerId = $('#account_number').val();
+    let selectedLedgerName = $('#account_number option:selected').text().trim();
+
+    // Set safe defaults if fields are missing
     memberName = memberName || "the member";
     branchName = branchName || "their respective branch";
     branchCode = branchCode || "N/A";
     accountantName = accountantName || "the accountant";
+    selectedLedgerName = selectedLedgerName || "the designated ledger account";
+    selectedLedgerId = selectedLedgerId || "N/A";
 
-    let defaultNote = `This back office operation for loan repayment is due to the fact that ${memberName} (ID: ${memberId}) from ${branchName} (Branch Code: ${branchCode}) failed to pay their loan as planned. The repayment process has been manually initiated by ${accountantName} to ensure compliance with financial obligations and to maintain the integrity of the institution's loan portfolio.`;
+    let defaultNote = `This loan repayment transaction for ${memberName} (Member ID: ${memberId}) from ${branchName} (Branch Code: ${branchCode}) has been processed using ledger account '${selectedLedgerName}' (Ledger ID: ${selectedLedgerId}). This repayment may also represent a standing order instruction from the bank, executed manually by ${accountantName} to ensure proper reconciliation and compliance with the institution's loan portfolio management policies.`;
 
-    // ✅ If no note is provided, use the default note
+    // ✅ If no note is provided, auto-fill
     if (!noteInput) {
         $('#Note').val(defaultNote);
+        console.log("✅ Auto-filled transaction note for ledger-based loan repayment.");
         return defaultNote;
     }
 
-    // ✅ Count words in the user's note
+    // ✅ Validate word count
     let wordCount = noteInput.split(/\s+/).length;
-
     if (wordCount < 20) {
-        appalert("❌ The transaction note must contain at least 20 words. Please provide more details.", 3, 1);
+        appalert("❌ The transaction note must contain at least 20 words. Please provide more detailed justification.", 3, 1);
+        $('#Note').addClass('border border-danger');
+        $('html, body').animate({ scrollTop: $('#Note').offset().top - 100 }, 300);
         return null;
     }
 
+    // Remove error styling if valid
+    $('#Note').removeClass('border border-danger');
     return noteInput;
 }
 
@@ -236,7 +217,7 @@ function PostLoanRepayment() {
     var deposits = collectDeposits();
 
     if (!deposits) {
-        return; // Stop execution if deposits collection is not valid
+        return; // Stop execution if deposits collection failed
     }
 
     // Validate Note field
@@ -249,48 +230,39 @@ function PostLoanRepayment() {
     }
 
     if (wordCount < 20) {
-        appalert("❌ The note must contain at least 20 words.", 3, 1);
+        appalert("❌ The transaction note must contain at least 20 words.", 3, 1);
         return;
     }
 
-    // Get total amount to be debited
-    var accountsToBeDebited = deposits[0].AccountToBeDebiteds;
-    var loansToBeRefunded = deposits[0].LoanToBeRefundeds[0];
+    // ✅ Control that ledger must be selected
+    var ledgerAccountId = $('#account_number').val();
+    var ledgerAccountName = $('#account_number option:selected').text().trim();
+
+    if (!ledgerAccountId || ledgerAccountId === "" || ledgerAccountId === "0") {
+        appalert("❌ Please select a valid ledger account (GL) before proceeding.", 3, 1);
+        $('#account_number').focus();
+        return;
+    }
+
+    var accountsToBeDebited = deposits[0].AccountsToBeDebited;
+    var loan = deposits[0].LoansToBeRefunded[0];
 
     var totalDebited = parseFloat(accountsToBeDebited.reduce((sum, acc) => sum + acc.Amount, 0)) || 0;
-    var totalLoanAmount = parseFloat(loansToBeRefunded.TotalAmount) || 0;
-    var capital = parseFloat(loansToBeRefunded.Capital) || 0;
-    var interest = parseFloat(loansToBeRefunded.Interest) || 0;
-    var penalty = parseFloat(loansToBeRefunded.Penalty) || 0;
-    var loanAmountContracted = parseFloat(loansToBeRefunded.LoanAmount) || 0;
-
-    // Calculate VAT (19% on Interest ONLY if Loan Amount Contracted ≥ 2,000,000 XAF)
+    var totalLoanAmount = parseFloat(loan.TotalAmount) || 0;
+    var capital = parseFloat(loan.Capital) || 0;
+    var interest = parseFloat(loan.Interest) || 0;
+    var penalty = parseFloat(loan.Penalty) || 0;
+    var loanAmountContracted = parseFloat(loan.LoanAmountContracted) || 0;
     var vat = (loanAmountContracted >= 2000000) ? (interest * 0.1925) : 0;
-    vat = parseFloat(vat.toFixed(0)); // Ensure VAT is correctly formatted
+    vat = parseFloat(vat.toFixed(0));
 
-    console.log("🔹 Loan Amount Contracted:", loanAmountContracted);
-    console.log("🔹 Total Debited:", totalDebited);
-    console.log("🔹 Total Loan Amount:", totalLoanAmount);
-    console.log("🔹 Capital:", capital);
-    console.log("🔹 Interest:", interest);
-    console.log("🔹 Penalty:", penalty);
-    console.log("🔹 VAT:", vat);
+    var memberName = $('#memberName').val().trim();
+    var memberId = $('#customerId').val().trim();
+    var branchName = $('#branchName').val().trim();
+    var branchCode = $('#branchCode').val().trim();
+    var accountantName = $('#accountantName').val().trim();
 
-    if (Math.round(totalDebited) !== Math.round(totalLoanAmount)) {
-        appalert(`❌ Error: The total debited amount (${formatCurrency(totalDebited)}) must match the total loan repayment amount (${formatCurrency(totalLoanAmount)}).`, 3, 1);
-        return;
-    }
-
-
-    // Construct Account Debits Breakdown
-    var accountsSummary = `<br><strong>Accounts to be Debited:</strong><br>`;
-    accountsToBeDebited.forEach(account => {
-        accountsSummary += `✔️ ${account.AccountType} (${account.AccountNumber}) : ${formatCurrency(account.Amount)}<br>`;
-    });
-
-    accountsSummary += `<hr><strong>Total Amount to be Debited: ${formatCurrency(totalDebited)}</strong><br>`;
-
-    // Construct Loan Repayment Breakdown
+    // Loan Repayment Breakdown
     var loanSummary = `
         <br><strong>Loan Repayment Details:</strong><br>
         🔹 Contracted Loan Amount: ${formatCurrency(loanAmountContracted)}<br>
@@ -299,75 +271,85 @@ function PostLoanRepayment() {
         🔹 Penalty: ${formatCurrency(penalty)}<br>
         ${vat > 0 ? `🔹 VAT (19.25% of Interest): ${formatCurrency(vat)}<br>` : ""}
         <hr>
-        <strong>Total Loan Amount to be Paid: ${formatCurrency(Math.round(totalLoanAmount))}</strong><br>
+        <strong>Total Loan Repayment Amount: ${formatCurrency(Math.round(totalLoanAmount))}</strong><br>
     `;
 
-    // Final confirmation message
-    var message = `Are you sure you want to proceed with this loan repayment?<br>
-                   ${accountsSummary} ${loanSummary}`;
+    // Posting context details
+    var postingContext = `
+        <hr>
+        <strong>Posting Context:</strong><br>
+        📍 Member: <strong>${memberName}</strong> (${memberId})<br>
+        🏦 Branch: <strong>${branchName}</strong> (Code: ${branchCode})<br>
+        🗄️ Ledger Account Used: <strong>${ledgerAccountName}</strong> (${ledgerAccountId})<br>
+        👤 Posted by: <strong>${accountantName}</strong><br>
+        ${note.toLowerCase().includes('standing order') ? 'ℹ️ <strong>Note:</strong> This transaction relates to a standing order repayment from the bank.<br>' : ''}
+    `;
 
+    var message = `Are you sure you want to proceed with this loan repayment?<br>
+                   ${loanSummary} ${postingContext}`;
+
+    // Confirmation and posting
     confirmTransaction(
-        'Confirm Loan Repayment Operation',
+        'Confirm Ledger-Based Loan Repayment Operation',
         message,
         '/LoanRepaymentBackOffice/PostRequestCash',
         deposits,
         'LoanRepaymentMomocashCollection'
     );
 }
-function formatCurrencyNoName(amount) {
-    if (isNaN(amount) || amount === undefined) {
-        console.warn("🚨 formatCurrency() received an invalid amount:", amount);
-        return "0.0 XAF"; // Default value
-    }
-    return amount.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-}
-function formatCurrency(amount) {
-    if (isNaN(amount) || amount === undefined) {
-        console.warn("🚨 formatCurrency() received an invalid amount:", amount);
-        return "0.0 XAF"; // Default value
-    }
-    return amount.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + " XAF";
-}
-
-
-
-function Reprint() {
-    ReportView("LoanRepaymentBackOffice", null, "GetReport", null, null, "receipts", "ReportParameterLess");
-
-}
+appalert("❌ Some loans have missing values. Please enter valid amounts before proceeding.", 3, 1);
 function confirmTransaction(title, message, ajaxUrl, data, operationType) {
-    console.log("🔍 Data to be sent:", JSON.stringify(data, null, 2)); // Debugging - Log full JSON data before sending
+    console.log("🔍 Preparing to send data for operation:", operationType);
+    console.log("📤 Data to be sent:", JSON.stringify(data, null, 2));
 
     alertify.confirm(title, message,
         function () {
+            appalert('⏳ Processing transaction... Please wait.',1,1);
+            $('.ajs-button.ajs-ok').attr('disabled', true).text('Processing...');
+
             $.ajax({
                 url: ajaxUrl,
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    accountToBeDebiteds: data[0].AccountToBeDebiteds,
-                    loanToBeRefundeds: data[0].LoanToBeRefundeds
-                }), // Ensure correct structure
+                    accountToBeDebiteds: data[0].AccountsToBeDebited,
+                    loanToBeRefundeds: data[0].LoansToBeRefunded,
+                    operationType: "LoanRepaymentGLAccountNoneCash"
+                }),
                 success: function (response) {
+                    console.log("✅ Response received:", response);
                     if (response && response.success) {
+                        alertify.success('✅ Loan repayment posted successfully.');
                         successCallback(response, operationType);
                     } else {
                         if (!response) {
-                            alert("Your session is expired.");
+                            appalert("❌ Your session has expired. Please log in again.", 3, 1);
                         } else {
                             failureCallback(response);
                         }
                     }
                 },
                 error: function (xhr, status, error) {
-                    appalert("Your session is expired or an error occurred while processing the transaction. Please try again later.", 0, 1);
+                    console.error("❌ Error while posting transaction:", error);
+                    appalert("❌ An unexpected error occurred while processing the loan repayment. Please try again later.", 0, 1);
+                },
+                complete: function () {
+                    $('.ajs-button.ajs-ok').attr('disabled', false).text('OK');
                 }
             });
         },
         function () {
-            appalert('Transaction cancelled', 3, 1);
+            appalert('🚫 Transaction was cancelled.', 3, 1);
         }
     );
+}
+
+
+
+
+function Reprint() {
+    ReportView("LoanRepaymentBackOffice", null, "GetReport", null, null, "receipts", "ReportParameterLess");
+
 }
 
 function successCallback(response, operationType) {
@@ -425,7 +407,7 @@ function GetObject(KEY, divToLoadData, partialView, path) {
 function SearchByCustomerNumber(partialView, divToloadPV) {
 
     AddORUpdateGen($('#manualSearchInput').val(), divToloadPV, partialView, 'search', "LoanRepaymentBackOffice");
-  
+
 }
 function GetMember() {
     var operation = $("#currentselectedOperation").val();
@@ -436,8 +418,8 @@ function GetMember() {
 
 function GetMemberData(Key, partialView, divToloadPV, path) {
     $("#currentselectedOperation").val(path);
-   
-    
+
+
     AddORUpdateGen(Key, divToloadPV, partialView, path, "LoanRepaymentBackOffice");
     //calculateBalance();
 }

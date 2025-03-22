@@ -73,6 +73,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string DepositType { get; set; }
         public string Period { get; set; }
         public string OperationType { get; set; }
+        public string LedgerChartOfAccountId { get; set; }
         public bool IsCashOperation { get; set; }
         public string Id { get; set; }
         public string ReceiverCNI { get; set; }
