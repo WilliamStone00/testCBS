@@ -12,8 +12,8 @@
         <input type="hidden" name="ServiceOption" value="DepositNotification" id="ServiceOption" />
         if (Model.DepositNotification.HasBankAccount)
         {
-            <fieldset class="fieldset-custom">
-                <legend id="select_base">Bank accounts information present</legend>
+            @*<fieldset class="fieldset-custom">
+                <legend id="select_base">Bank accounts information present</legend>*@
                 <div class="row">
 
                     @*<div class="col-md-6">
@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                         </div>*@
-                    <div class="col-md-6" hidden="hidden">
+                    <div class="col-md-12" hidden="hidden">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
@@ -48,7 +48,7 @@
                     </div>
 
                 </div>
-            </fieldset>
+            @*</fieldset>*@
 
         }
         else
@@ -56,11 +56,7 @@
             @Html.HiddenFor(m => m.DepositNotification.BankAccountId, "XXXXXXX")
             @Html.HiddenFor(m => m.DepositNotification.BankAccountOwner, "XXXXXXX")
         }
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                <span class="formatted-amount shadow-box" id="lblBalanceDeposit">Balance: 0</span>
-            </div>
-        </div>
+   
         <fieldset class="fieldset-custom">
             <legend id="select_base">Cash Denomination Present</legend>
             <div class="row">
@@ -101,7 +97,6 @@
                         <label>N500</label>
                     </div>
                 </div>
-                <br>
                 <div class="col-md-2 mb-sm-4">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.DepositNotification.CurrencyNotes.coin500, new { @class = "form-control", @id = "Notes_coin500", @oninput = "calculateCashBalance()", @Value = "0" })
@@ -109,6 +104,8 @@
                         <label>C500</label>
                     </div>
                 </div>
+                <br>
+
                 <div class="col-md-2 mb-sm-4">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.DepositNotification.CurrencyNotes.coin100, new { @class = "form-control", @id = "Notes_coin100", @oninput = "calculateCashBalance()", @Value = "0" })
@@ -151,7 +148,11 @@
                         <label>C1</label>
                     </div>
                 </div>
-
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        <span class="formatted-amount shadow-box" id="lblBalanceDeposit">Balance: 0</span>
+                    </div>
+                </div>
             </div>
         </fieldset>
         <fieldset class="fieldset-custom">

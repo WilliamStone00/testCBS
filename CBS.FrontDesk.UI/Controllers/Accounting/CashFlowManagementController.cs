@@ -405,7 +405,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     listOfAccounts = listOfAccounts.Where(c => c.AccountNumber == "57101").ToList();
                 }
-                else if(optionQuery == "Approved".ToLower())
+                else if(optionQuery.ToLower().Contains("Approved"))
                 {
                     listOfAccounts = listOfAccounts.Where(c => c.Account2 == "56").ToList();
                 }
