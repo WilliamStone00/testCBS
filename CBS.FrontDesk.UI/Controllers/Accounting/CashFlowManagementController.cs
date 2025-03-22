@@ -397,18 +397,22 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             if (!string.IsNullOrEmpty(branchId))
             {
                 var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(branchId);
-                if (optionQuery.ToLower()== "RedirectToBranchBCO".ToLower())
+                if (optionQuery!=null)
                 {
-                    listOfAccounts = listOfAccounts.Where(c => c.Account2 == "56").ToList();
+                    if (optionQuery.ToLower() == "RedirectToBranchBCO".ToLower())
+                    {
+                        listOfAccounts = listOfAccounts.Where(c => c.Account2 == "56").ToList();
+                    }
+                    else if (optionQuery == "RedirectToBranchBTB".ToLower())
+                    {
+                        listOfAccounts = listOfAccounts.Where(c => c.AccountNumber == "57101").ToList();
+                    }
+                    else if (optionQuery.ToLower().Contains("Approved"))
+                    {
+                        listOfAccounts = listOfAccounts.Where(c => c.Account2 == "56").ToList();
+                    }
                 }
-                else if (optionQuery == "RedirectToBranchBTB".ToLower())
-                {
-                    listOfAccounts = listOfAccounts.Where(c => c.AccountNumber == "57101").ToList();
-                }
-                else if(optionQuery.ToLower().Contains("Approved"))
-                {
-                    listOfAccounts = listOfAccounts.Where(c => c.Account2 == "56").ToList();
-                }
+                
              
 
                 var data = BuildDropDown(GenerateAccountListView(listOfAccounts));
