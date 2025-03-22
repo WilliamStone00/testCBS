@@ -16,13 +16,13 @@
                 <legend id="select_base">Bank accounts information present</legend>
                 <div class="row">
 
-                    <div class="col-md-6">
+                    @*<div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             @Html.DropDownListFor(m => m.DepositNotification.BankAccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "AccountId" })
                             @Html.ValidationMessageFor(model => model.DepositNotification.BankAccountId, "", new { @class = "text-danger" })
                             <label for="AccountId">Select bank account</label>
                         </div>
-                    </div>
+                    </div>*@
 
 
 

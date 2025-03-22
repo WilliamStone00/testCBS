@@ -397,13 +397,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             if (!string.IsNullOrEmpty(branchId))
             {
                 var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(branchId);
-                if (optionQuery== "RedirectToBranchBCO")
+                if (optionQuery.ToLower()== "RedirectToBranchBCO".ToLower())
                 {
                     listOfAccounts = listOfAccounts.Where(c => c.Account2 == "56").ToList();
                 }
-                else if (optionQuery == "RedirectToBranchBTB")
+                else if (optionQuery == "RedirectToBranchBTB".ToLower())
                 {
                     listOfAccounts = listOfAccounts.Where(c => c.AccountNumber == "57101").ToList();
+                }
+                else if(optionQuery == "Approved".ToLower())
+                {
+                    listOfAccounts = listOfAccounts.Where(c => c.Account2 == "56").ToList();
                 }
              
 
