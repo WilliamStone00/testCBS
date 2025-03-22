@@ -26,7 +26,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
     {
         private readonly CashDeskServices _cashDeskService;
         private readonly MemberNoneCashOperationServices _memberNoneCashOperationServices;
-        
+
         private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
 
         public LoanRepaymentBackOfficeController(CashDeskServices cashDeskService = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, MemberNoneCashOperationServices memberNoneCashOperationServices = null)
@@ -45,7 +45,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             return View();
         }
 
-        public async Task<ActionResult> Ajaxloader(string Key,string path)
+        public async Task<ActionResult> Ajaxloader(string Key, string path)
         {
             if (path== "getmember")
             {
@@ -60,7 +60,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
             }
         }
-        public async Task<ActionResult> DownloadFile(string fileId,string path)
+        public async Task<ActionResult> DownloadFile(string fileId, string path)
         {
 
 
@@ -96,7 +96,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             }
         }
 
-       
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = "_DataNotFound", string path = null, string serviceOption = null)
         {
             try
@@ -131,9 +131,9 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 return PartialView("_NoRecordFound", new CashDesk());
             }
         }
-        
 
-         [HttpPost]
+
+        [HttpPost]
         public async Task<ActionResult> SubmitValidation(ValidateMemberNoneCashOperationCommand command)
         {
             try
@@ -153,7 +153,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public async Task<ActionResult> PostRequestCash(List<AccountToBeDebited> accountToBeDebiteds, List<LoanToBeRefunded> loanToBeRefundeds, string operationType = "LoanRepaymentByLocalAccountNoneCash")
+        public async Task<ActionResult> PostRequestCash(List<AccountToBeDebited> accountToBeDebiteds, List<LoanToBeRefunded> loanToBeRefundeds, string operationType = "LoanRepaymentByLocalAccountNoneCash", string ledgerChartOfAccountId = null)
         {
             try
             {
@@ -180,13 +180,14 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 OperationType = operationType,
                 AccountNumber = loan.LoanId,
                 CustomerId = loan.MemberRefence,
-                Principal = loan.Capital,
+                Principal = loan.Capital, 
+                ChartOfAccountId=ledgerChartOfAccountId,
                 Interest = loan.Interest,
                 Penalty = loan.Penalty,
                 Tax = Math.Abs(loan.Vat),
                 VAT = Math.Abs(loan.Vat),
                 Total = totalAmount,
-                Note = loan.Note, 
+                Note = loan.Note,
                 LoanId = loan.LoanId
             }
         };
