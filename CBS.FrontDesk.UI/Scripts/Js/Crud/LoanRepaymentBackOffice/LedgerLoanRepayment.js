@@ -121,7 +121,7 @@ function collectDeposits() {
             Vat: vat,
             TotalAmount: totalAmount,
             LoanAmountContracted: loanAmountContracted,
-            MemberReference: memberReference,
+            MemberRefence: memberReference,
             MemberName: memberName,
             BranchName: branchName,
             BranchCode: branchCode,
@@ -294,11 +294,11 @@ function PostLoanRepayment() {
         message,
         '/LoanRepaymentBackOffice/PostRequestCash',
         deposits,
-        'LoanRepaymentMomocashCollection'
+        'LoanRepaymentMomocashCollection', ledgerAccountId
     );
 }
 appalert("❌ Some loans have missing values. Please enter valid amounts before proceeding.", 3, 1);
-function confirmTransaction(title, message, ajaxUrl, data, operationType) {
+function confirmTransaction(title, message, ajaxUrl, data, operationType, ledgerAccountId) {
     console.log("🔍 Preparing to send data for operation:", operationType);
     console.log("📤 Data to be sent:", JSON.stringify(data, null, 2));
 
@@ -314,7 +314,8 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
                 data: JSON.stringify({
                     accountToBeDebiteds: data[0].AccountsToBeDebited,
                     loanToBeRefundeds: data[0].LoansToBeRefunded,
-                    operationType: "LoanRepaymentGLAccountNoneCash"
+                    operationType: "LoanRepaymentGLAccountNoneCash",
+                    ledgerChartOfAccountId: ledgerAccountId
                 }),
                 success: function (response) {
                     console.log("✅ Response received:", response);
