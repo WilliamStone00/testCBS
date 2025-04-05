@@ -564,6 +564,7 @@
     <Compile Include="Controllers\AuditTrailData\AuditTrailController.cs" />
     <Compile Include="Controllers\AndriodVersioning\AndriodAppVersioningController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
+    <Compile Include="Controllers\DailyCollectorManagement\DailyCollectorManagementController.cs" />
     <Compile Include="Controllers\LoanApplicationP\LoanApplicationController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\LoanRepaymentBackOfficeController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
@@ -3499,6 +3500,7 @@
     <Content Include="Views\LoanRepaymentBackOffice\Index.cshtml" />
     <Content Include="Views\LoanRepaymentBackOffice\LedgerLoanRepayment.cshtml" />
     <Content Include="Views\LoanRepaymentBackOffice\_LedgerLoanRepaymentForm.cshtml" />
+    <Content Include="Views\DailyCollectorManagement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -646,7 +646,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     //throw new Exception("");
                     // Failed creation
-                    GetExecutionMessages(response, true, $"Null reference exception", MessagesResults.Failed,
+                    GetExecutionMessages(response, true, $"Posting ", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"Null reference exception");
                 }
             }
