@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
 using System.Web.Mvc;
+using CBS.FrontDesk.Data.Entity.Config;
 
 namespace CBS.BusinessService
 {
@@ -151,6 +152,131 @@ namespace CBS.BusinessService
                 dataTableOptions: loansDataTableQuery.DataTableOptions
             );
         }
+
+        public List<Loan> MapLoansWithBranchDetails(List<Branch> branches, List<Loan> loans)
+        {
+            var mappedLoans = new List<Loan>();
+
+            foreach (var loan in loans)
+            {
+                var matchedBranch = branches.FirstOrDefault(b => b.BranchCode == loan.BranchCode);
+
+                var mappedLoan = new Loan
+                {
+                    Id = loan.Id,
+                    LoanApplicationId = loan.LoanApplicationId,
+                    Principal = loan.Principal,
+                    LoanAmount = loan.LoanAmount,
+                    InterestForcasted = loan.InterestForcasted,
+                    InterestRate = loan.InterestRate,
+                    LastPayment = loan.LastPayment,
+                    Paid = loan.Paid,
+                    Balance = loan.Balance,
+                    DueAmount = loan.DueAmount,
+                    AccrualInterest = loan.AccrualInterest,
+                    LastCalculatedInterest = loan.LastCalculatedInterest,
+                    AccrualInterestPaid = loan.AccrualInterestPaid,
+                    TotalPrincipalPaid = loan.TotalPrincipalPaid,
+                    Tax = loan.Tax,
+                    TaxPaid = loan.TaxPaid,
+                    FeePaid = loan.FeePaid,
+                    Fee = loan.Fee,
+                    Penalty = loan.Penalty,
+                    PenaltyPaid = loan.PenaltyPaid,
+                    DisbursementDate = loan.DisbursementDate,
+                    FirstInstallmentDate = loan.FirstInstallmentDate,
+                    NextInstallmentDate = loan.NextInstallmentDate,
+                    LoanDate = loan.LoanDate,
+                    IsLoanDisbursted = loan.IsLoanDisbursted,
+                    DisbursmentStatus = loan.DisbursmentStatus,
+                    LastInterestCalculatedDate = loan.LastInterestCalculatedDate,
+                    LastRefundDate = loan.LastRefundDate,
+                    LastEventData = loan.LastEventData,
+                    CustomerId = loan.CustomerId,
+                    LoanManager = loan.LoanManager,
+                    LoanStatus = loan.LoanStatus,
+                    IsRestructured = loan.IsRestructured,
+                    NewLoanId = loan.NewLoanId,
+                    IsWriteOffLoan = loan.IsWriteOffLoan,
+                    IsDeliquentLoan = loan.IsDeliquentLoan,
+                    IsCurrentLoan = loan.IsCurrentLoan,
+                    MaturityDate = loan.MaturityDate,
+                    OrganizationId = loan.OrganizationId,
+                    BranchId = loan.BranchId,
+                    BankId = loan.BankId,
+                    LoanType = loan.LoanType,
+                    BranchCode = loan.BranchCode,
+                    LoanId = loan.LoanId,
+                    CustomerName = loan.CustomerName,
+                    LoanDuration = loan.LoanDuration,
+                    LoanApplication = loan.LoanApplication,
+                    LoanJourneyStatus = loan.LoanJourneyStatus,
+                    VatRate = loan.VatRate,
+                    LoanTarget = loan.LoanTarget,
+                    LoanCategory = loan.LoanCategory,
+                    AccountNumber = loan.AccountNumber,
+                    IsUpload = loan.IsUpload,
+                    RequestedAmount = loan.RequestedAmount,
+                    RestructuredBalance = loan.RestructuredBalance,
+                    OldLoanPayment = loan.OldLoanPayment,
+                    DeliquentInterest = loan.DeliquentInterest,
+                    AdvancedPaymentDays = loan.AdvancedPaymentDays,
+                    DeliquentDays = loan.DeliquentDays,
+                    AdvancedPaymentAmount = loan.AdvancedPaymentAmount,
+                    DeliquentAmount = loan.DeliquentAmount,
+                    LoanStructuringStatus = loan.LoanStructuringStatus,
+                    LoanStructuringDate = loan.LoanStructuringDate,
+                    OldCapital = loan.OldCapital,
+                    OldInterest = loan.OldInterest,
+                    OldVAT = loan.OldVAT,
+                    OldPenalty = loan.OldPenalty,
+                    OldBalance = loan.OldBalance,
+                    OldDueAmount = loan.OldDueAmount,
+                    DeliquentStatus = loan.DeliquentStatus,
+                    StopInterestCalculation = loan.StopInterestCalculation,
+                    StoppedBy = loan.StoppedBy,
+                    DateInterestWastStoped = loan.DateInterestWastStoped,
+                    LastDeliquecyProcessedDate = loan.LastDeliquecyProcessedDate,
+                    BranchName = matchedBranch != null ? matchedBranch.Name : null,
+                    NumberOfInstallments = loan.NumberOfInstallments,
+                    RepaymentCycle = loan.RepaymentCycle,
+                    LoanDurarion = loan.LoanDurarion,
+                    IndividualCustomer = loan.IndividualCustomer,
+                    PaginationMetadata = loan.PaginationMetadata,
+                    FileDownloadInfoLoans = loan.FileDownloadInfoLoans,
+                    InitiateLoanDownloadCommand = loan.InitiateLoanDownloadCommand,
+                    Refunds = loan.Refunds,
+                    LoanAmortizations = loan.LoanAmortizations,
+                    DisburstedLoans = loan.DisburstedLoans,
+                    DailyInterestCalculations = loan.DailyInterestCalculations,
+                    IsCompleted = loan.IsCompleted,
+                    MigrationDate = loan.MigrationDate,
+                    InterestMustBePaidUpFront = loan.InterestMustBePaidUpFront,
+                    InterestAmountUpfront = loan.InterestAmountUpfront,
+                    LoanDeliquencyConfigurationId = loan.LoanDeliquencyConfigurationId,
+                    Savings = loan.Savings,
+                    OShares = loan.OShares,
+                    PShares = loan.PShares,
+                    Deposit = loan.Deposit,
+                    Salary = loan.Salary,
+                    Shortee = loan.Shortee,
+                    Co_Obligor = loan.Co_Obligor,
+                    Co_OperationGurantor = loan.Co_OperationGurantor,
+                    OtherGuaranteeFund = loan.OtherGuaranteeFund,
+                    TotalFundGuranteed = loan.TotalFundGuranteed,
+                    PercentageOfLiquidityCoverage = loan.PercentageOfLiquidityCoverage,
+                    PercentageOfCollateralCoverage = loan.PercentageOfCollateralCoverage,
+                    PercentageOfOverAllCoverage = loan.PercentageOfOverAllCoverage,
+                    LoanDeliquencyConfiguration = loan.LoanDeliquencyConfiguration,
+                    LoanDeliquencyConfigurationName = loan.LoanDeliquencyConfigurationName
+                };
+
+                mappedLoans.Add(mappedLoan);
+            }
+
+            return mappedLoans;
+        }
+
         public async Task<ExecutionMessages> ApprovePendingDisbursement(AddLoanDisbumentCommand model)
         {
             try

@@ -555,7 +555,7 @@ namespace CBS.BusinessService.Accounts
                     {
                         BulkOperations = bulkDeposits,
                         DepositType = "LoanRepaymentGLAccountNoneCash",
-                        IsCashOperation = false,
+                        IsCashOperation = false, 
                         OperationType = "Deposit", LedgerChartOfAccountId=bulkDeposits.FirstOrDefault().ChartOfAccountId,
                         LoanToBeRefundeds= bulkDeposits.FirstOrDefault().LoanToBeRefundeds,
                         AccountToBeDebiteds=bulkDeposits.FirstOrDefault().AccountToBeDebiteds

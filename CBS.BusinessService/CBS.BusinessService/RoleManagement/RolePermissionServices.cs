@@ -27,7 +27,7 @@ namespace CBS.BusinessService
         {
             try
             {
-                var model = new DeleteUserPermissionCommand(ids); // Get model from comman
+                var model = new DeleteUserPermissionCommand(ids); // GetAllowAnonymous model from comman
                 var inResponse = await _identityConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.Get_Update_Delete_RolePermission, model));
                 if (inResponse.IsSuccess)
                 {
@@ -58,20 +58,36 @@ namespace CBS.BusinessService
                 var couApiResponse = await _identityConfigApiHelper.GetAsync<ResponseObject<List<Role>>>(APICallHelper.GetAllRoles);
                 if (couApiResponse.ApiResponseData != null)
                 {
-                    var menuMasters = from a in couApiResponse.ApiResponseData.Data
-                                      select new StringValues
-                                      {
-                                          Value = a.Id.ToString(),
-                                          Text = $"{a.Name}-{a.Description}"
-                                      };
+                    if (IsHeadOffice())
+                    {
+                        var menuMasters = from a in couApiResponse.ApiResponseData.Data
+                                          select new StringValues
+                                          {
+                                              Value = a.Id.ToString(),
+                                              Text = $"{a.Name}-{a.Description}"
+                                          };
 
-                    return menuMasters;
+                        return menuMasters;
+                    }
+                    else
+                    {
+                        var menuMasters = from a in couApiResponse.ApiResponseData.Data
+                                          where !a.Name.Equals("Administrator", StringComparison.OrdinalIgnoreCase)
+                                          select new StringValues
+                                          {
+                                              Value = a.Id.ToString(),
+                                              Text = $"{a.Name}-{a.Description}"
+                                          };
+
+                        return menuMasters;
+                    }
                 }
+
                 return new List<StringValues>();
             }
             catch (Exception ex)
             {
-                // Log and handle exception
+                // TODO: Log exception properly
                 throw;
             }
         }
@@ -80,6 +96,23 @@ namespace CBS.BusinessService
             try
             {
                 var cusResponseObject = await _identityConfigApiHelper.GetAsync<ResponseObject<Permission>>(string.Format(APICallHelper.Get_Update_Delete_RolePermission, id));
+                if (cusResponseObject.IsSuccess)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<Permission> GetAllRolePermission()
+        {
+            try
+            {
+                var cusResponseObject = await _identityConfigApiHelper.GetAsync<ResponseObject<Permission>>(APICallHelper.GetAllRolePermission);
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;
@@ -114,21 +147,59 @@ namespace CBS.BusinessService
         {
             try
             {
-                var cusResponseObject = await _identityConfigApiHelper.GetAsync<ResponseObject<List<PermissionMenuLoader>>>(APICallHelper.GetAssignPemissions);
-                if (cusResponseObject!=null)
+                if (IsHeadOffice())
                 {
-                    MenuLoaderHelper menuLoaderHelper = new MenuLoaderHelper();
-                    List<PermissionMenuLoader> menuLoadersWithParentNames = menuLoaderHelper.AddParentNames(cusResponseObject.ApiResponseData.Data);
-                    return menuLoadersWithParentNames;
+                    // ✅ Head Office: Return all permissions from API
+                    var response = await _identityConfigApiHelper.GetAsync<ResponseObject<List<PermissionMenuLoader>>>(APICallHelper.GetAssignPemissions);
+                    if (response != null && response.ApiResponseData?.Data != null)
+                    {
+                        MenuLoaderHelper helper = new MenuLoaderHelper();
+                        return helper.AddParentNames(response.ApiResponseData.Data);
+                    }
                 }
-                return null;
+                else
+                {
+                    // 🔒 Non-Head Office: Filter based on role
+                    var allDatabaseMenus = await _identityConfigApiHelper.GetAsync<ResponseObject<List<Permission>>>(APICallHelper.GetAllRolePermission);
+
+                    if (allDatabaseMenus != null && allDatabaseMenus.ApiResponseData?.Data != null)
+                    {
+                        var currentRoleId = GetRoleId();
+
+                        var roleBasedMenus = allDatabaseMenus.ApiResponseData.Data
+                            .Where(d => d.RoleID.ToString() == currentRoleId)
+                            .Select(menu => new PermissionMenuLoader
+                            {
+                                MenuMasterId = menu.MenuMasterId,
+                                ParentName = menu.ParentName,
+                                Create = menu.Create,
+                                Read = menu.Read,
+                                Delete = menu.Delete,
+                                Update = menu.Update,
+                                Download = menu.Download,
+                                Upload = menu.Upload,
+                                MenuText = menu.MenuText,
+                                ParentId = menu.ParentId,
+                                ControllerName = menu.ControllerName,
+                                ActionName = menu.ActionName,
+                                MenuGroup = menu.MenuGroup,
+                                Description = menu.Description
+                            }).ToList();
+
+                        MenuLoaderHelper helper = new MenuLoaderHelper();
+                        return helper.AddParentNames(roleBasedMenus);
+                    }
+                }
+
+                return Enumerable.Empty<PermissionMenuLoader>();
             }
             catch (Exception ex)
             {
-                // Log and handle exception
-                throw ex;
+                // Optional: Log error here
+                throw;
             }
         }
+
         public async Task<ExecutionMessages> Create(PermissionMenuLoaderDto  command)
         {
             try

@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace CBS.BusinessService.UserManagement
 {
@@ -25,29 +26,29 @@ namespace CBS.BusinessService.UserManagement
         {
             try
             {
-                var model= new DeleteUserPermissionCommand(ids); // Get model from comman
-                var inResponse = await _identityConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.Get_Update_Delete_UserPermission, model));
-                if (inResponse.IsSuccess)
+                var model = new DeleteUserPermissionCommand(ids);
+                var response = await _identityConfigApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.DeleteUserPermission, model);
+
+                if (response.IsSuccess)
                 {
-
-                    GetExecutionMessages(inResponse, true, $"{ids.Count()}", MessagesResults.Success,
-                    ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
-                    return ExecutionMessage;
-
+                    GetExecutionMessages(response, true, $"{ids.Count}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                 }
                 else
                 {
-                    // Handle failure scenario
-                    GetExecutionMessages(model, false, $"{ids.Count()}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
+                    GetExecutionMessages(model, false, $"{ids.Count}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
             catch (Exception ex)
             {
-                // Log and handle exception
+                GetExecutionMessages(null, false, $"{ids.Count}", MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
+
             return ExecutionMessage;
         }
+
 
         public async Task<IEnumerable<Permission>> GetUserPermissions()
         {
@@ -101,17 +102,31 @@ namespace CBS.BusinessService.UserManagement
             }
         }
 
-        public async Task<ExecutionMessages> Create(UserPermissionRequestCommand command)
+        public async Task<ExecutionMessages> AddUserRole(Guid userId, List<int> selectedMenus)
         {
             try
             {
+                var command = new UserPermissionRequestCommand
+                {
+                    userID = userId,
+                    userPermissionRequests = selectedMenus.Select(menuId => new PermissionRequest
+                    {
+                        MenuMasterId = menuId,
+                        Create = false, MenuText="Menu Text", Id=Guid.NewGuid().ToString(),
+                        Read = true, 
+                        Delete = false,
+                        Update = false,
+                        Download = false,
+                        Upload = false
+                    }).ToList()
+                };
 
-                var response = await _identityConfigApiHelper.PostAsync<ServiceResponse<UserPermission>>(APICallHelper.CreateUserPermission, command);
+                var response = await _identityConfigApiHelper.PostAsync<ServiceResponse<List<UserPermission>>>(APICallHelper.CreateUserPermission, command);
                 if (response.IsSuccess)
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, $"Prrmission", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else

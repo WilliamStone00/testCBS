@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
     public class SalaryUploadController : BaseController
     {
         // GET: SalaryUpload

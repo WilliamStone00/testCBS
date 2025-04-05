@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.DataTable;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -91,4 +92,13 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
         public string OtherStatus { get; set; }
     }
 
+}
+
+public class GetDataTableQuery
+{
+    public DataTableOptions DataTableOptions { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public string Feild { get; set; }
+    public bool FilterByDatesOnly { get; set; }
 }

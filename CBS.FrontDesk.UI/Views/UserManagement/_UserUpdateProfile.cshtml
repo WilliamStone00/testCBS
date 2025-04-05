@@ -1,0 +1,184 @@
+﻿@model CBS.FrontDesk.Data.UserManagement.User
+
+<div class="modal-header text-white mb-2">
+    <h5 class="modal-title">
+        <i class="fas fa-user-edit me-2"></i> Update User Profile
+    </h5>
+</div>
+
+<div class="modal-body bg-light">
+    <!-- 🚦 Account Status Display -->
+    <div class="row mb-3 px-2">
+        <div class="col-md-4">
+            <label class="fw-bold text-secondary">Account Status:</label>
+            @if (Model.isActive)
+            {
+                <span class="badge bg-success">Active</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">Inactive</span>
+            }
+        </div>
+        <div class="col-md-4">
+            <label class="fw-bold text-secondary">Blocked:</label>
+            @if (Model.IsBlocked)
+            {
+                <span class="badge bg-danger">Blocked</span>
+            }
+            else
+            {
+                <span class="badge bg-success">Not Blocked</span>
+            }
+        </div>
+        <div class="col-md-4">
+            <label class="fw-bold text-secondary">Verified:</label>
+            @if (Model.IsVerified)
+            {
+                <span class="badge bg-success">Verified</span>
+            }
+            else
+            {
+                <span class="badge bg-secondary">Not Verified</span>
+            }
+        </div>
+        <div class="col-md-4 mt-3">
+            <label class="fw-bold text-secondary">MFA Enabled:</label>
+            @if (Model.IsGoogleAuthenticatorEnabled)
+            {
+                <span class="badge bg-success">Yes</span>
+            }
+            else
+            {
+                <span class="badge bg-secondary">No</span>
+            }
+        </div>
+        <div class="col-md-4 mt-3">
+            <label class="fw-bold text-secondary">Opened date:</label>
+            <span class="badge bg-light text-dark">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</span>
+        </div>
+        <div class="col-md-4 mt-3">
+            <label class="fw-bold text-secondary">Last Login:</label>
+            <span class="badge bg-light text-dark">@Model.LastLoginDate.ToString("dd/MM/yyyy HH:mm")</span>
+        </div>
+        <div class="col-md-12 mt-3">
+            <label class="fw-bold text-secondary">Role:</label>
+            <span class="badge bg-info text-black">
+                @if (Session["Roles"] is string[] rolesArrayUnique && rolesArrayUnique.Length > 0)
+                {
+                    <span>
+                        @for (var i = 0; i < rolesArrayUnique.Length; i++)
+                        {
+                            <small class="text-black">@rolesArrayUnique[i]</small>
+                            if (i < rolesArrayUnique.Length - 1)
+                            {
+                                <span class="mx-1">|</span>
+                            }
+                        }
+                    </span>
+                }
+            </span>
+        </div>
+    </div>
+
+    <!-- 🖼️ Display Profile Photo -->
+    <div class="row mb-4">
+        <div class="col-md-4 text-center">
+            <div class="border rounded shadow-sm p-2 bg-white">
+                <img src="@(string.IsNullOrEmpty(Model.profilePhoto) ? Url.Content(Model.ImageVirtualPath ?? "~/Appfiles/Images/p.jpg") : Model.profilePhoto)"
+                     alt="Profile Image" id="previewimage" class="img-fluid rounded-circle shadow-sm mb-2"
+                     style="width: 140px; height: 140px; object-fit: cover; border: 3px solid #ddd;" />
+                <p class="mt-2 text-muted">Profile Picture</p>
+            </div>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("AddOrEdit", "UserManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        @Html.HiddenFor(m => m.id)
+        @Html.Hidden("Option", "Profile")
+
+        @Html.ValidationSummary(true, "Please correct the errors and try again.", new { @class = "alert alert-danger" })
+
+        <div class="row gy-3">
+            <!-- Profile & Address -->
+            <div class="col-12">
+                <h6 class="text-primary border-bottom pb-1"><i class="mdi mdi-account-outline"></i> Profile & Address</h6>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.firstName, new { @class = "form-control", placeholder = "First Name", required = "required" })
+                    @Html.ValidationMessageFor(m => m.firstName, "", new { @class = "text-danger" })
+                    <label>First Name</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.lastName, new { @class = "form-control", placeholder = "Last Name", required = "required" })
+                    @Html.ValidationMessageFor(m => m.lastName, "", new { @class = "text-danger" })
+                    <label>Last Name</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.email, new { @class = "form-control", placeholder = "Email", required = "required", type = "email" })
+                    @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
+                    <label>Email</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.phoneNumber, new { @class = "form-control", placeholder = "Phone Number", required = "required" })
+                    @Html.ValidationMessageFor(m => m.phoneNumber, "", new { @class = "text-danger" })
+                    <label>Phone Number</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating shadow-sm">
+                    @Html.TextAreaFor(m => m.address, new { @class = "form-control", placeholder = "Address", style = "height: 100px;", required = "required" })
+                    @Html.ValidationMessageFor(m => m.address, "", new { @class = "text-danger" })
+                    <label>Address</label>
+                </div>
+            </div>
+
+            <!-- ID Card -->
+            <div class="col-12">
+                <h6 class="text-primary border-bottom pt-3 pb-1"><i class="mdi mdi-card-account-details-outline"></i> ID Card</h6>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.NationalIdentityCardNumber, new { @class = "form-control", placeholder = "National ID", required = "required" })
+                    @Html.ValidationMessageFor(m => m.NationalIdentityCardNumber, "", new { @class = "text-danger" })
+                    <label>National ID Card Number</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.IssueDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
+                    @Html.ValidationMessageFor(m => m.IssueDate, "", new { @class = "text-danger" })
+                    <label>Issue Date</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.ExpiryDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
+                    @Html.ValidationMessageFor(m => m.ExpiryDate, "", new { @class = "text-danger" })
+                    <label>Expiry Date</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.PlaceOfIssue, new { @class = "form-control", placeholder = "Place of Issue", required = "required" })
+                    @Html.ValidationMessageFor(m => m.PlaceOfIssue, "", new { @class = "text-danger" })
+                    <label>Place of Issue</label>
+                </div>
+            </div>
+
+            <div class="col-12 text-end mt-3">
+                <button type="submit" class="btn btn-primary shadow-sm px-4">
+                    <i class="fas fa-save me-1"></i> Update
+                </button>
+            </div>
+        </div>
+    }
+</div>

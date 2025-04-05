@@ -109,6 +109,7 @@ namespace CBS.FrontDesk.UI.Controllers.RoleManagement
 
         public async Task<bool> GetList()
         {
+          
             var stringValues = await _services.GetRolePermissions();
             ViewBag.Roles = stringValues.ToList();
             return true;

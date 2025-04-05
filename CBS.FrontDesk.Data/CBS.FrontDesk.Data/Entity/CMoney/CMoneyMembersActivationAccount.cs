@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,7 @@ namespace CBS.FrontDesk.Data.Entity.CMoney
         public int FailedAttempts { get; set; }
         public string Option { get; set; }
         public string Reason { get; set; }
+
         public IndividualProfile Customer { get; set; }
         public AddCMoneyMemberActivationCommand AddCMoneyMemberActivationCommand { get; set; }
         public ChangeCMoneyMemberPinCommand ChangeCMoneyMemberPinCommand { get; set; }
@@ -246,5 +248,39 @@ namespace CBS.FrontDesk.Data.Entity.CMoney
         public bool IsSubcribed { get; set; }
     }
 
+    public class GetCMoneyMemberActivationsDatatableQuery
+    {
+        public DataTableOptions DataTableOptions { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string BranchId { get; set; }
+        public bool ByBranch { get; set; }
+        public bool ByUser { get; set; }
+        public bool ByDate { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeactivated { get; set; }
+        public string CustomerId { get; set; }
+        public string LoginId { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Name { get; set; }
+        public bool? HasChangeDefaultPin { get; set; }
+        public bool? IsSubscribed { get; set; }
+        public int? FailedAttemptsMin { get; set; }
+        public int? FailedAttemptsMax { get; set; }
+        public DateTime? LastPaymentStartDate { get; set; }
+        public DateTime? LastPaymentEndDate { get; set; }
+        public string ActivatedBy { get; set; }
+    }
+    public class CMoneyMembersActivationAccountDto
+    {
+        public string Name { get; set; }
+        public string CustomerId { get; set; }
+        public string PhoneNumber { get; set; }
+        public string ActivatedBy { get; set; }
+        public string BranchCode { get; set; }
+        public DateTime ActivationDate { get; set; }
+        public bool IsActive { get; set; }
+        public string LoginId { get; set; }
+    }
 
 }

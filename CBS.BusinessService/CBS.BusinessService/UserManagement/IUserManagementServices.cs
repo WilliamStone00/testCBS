@@ -15,6 +15,7 @@ namespace CBS.BusinessService.UserManagement
     {
         Task<ExecutionMessages> CreateUser(User user);
         Task<IEnumerable<Role>> GetRoles();
+        List<UserSessionDataTable> MapUserSessionDtoToDataTable(List<UserSessionDto> sessionDtos);
         Guid ConvertStringToGuid(string input);
         Task<IEnumerable<User>> GetUsers();
         Task<User> GetUser(Guid userid);
@@ -33,7 +34,8 @@ namespace CBS.BusinessService.UserManagement
         Task<ExecutionMessages> EnableMFA(MFAActivation mFAActivation);
         Task<ExecutionMessages> MFACodeVerification(MFAActivation mFAActivation);
 
-
+        Task<CustomDataTable> GetDataTableAsync(GetAllUserSessionsDataTableQuery getAllUsersDataTableQuery);
+        Task<CustomDataTable> GetDataTableAsync(GetAllUsersDataTableQuery getAllUsersDataTableQuery);
 
     }
 }

@@ -131,7 +131,7 @@ namespace CBS.FrontDesk.Service
     //        }
 
     //        MemoryCache memoryCache = MemoryCache.Default;
-    //        var res = memoryCache.Get(userName);
+    //        var res = memoryCache.GetAllowAnonymous(userName);
     //        UserSessionVariable myData = res as UserSessionVariable;
     //        int roleid = myData.RoleID;
 

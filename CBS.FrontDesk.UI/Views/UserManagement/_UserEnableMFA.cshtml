@@ -1,0 +1,85 @@
+﻿@model CBS.FrontDesk.Data.UserManagement.User
+
+<div class="modal-header text-white mb-2">
+    <h5 class="modal-title">
+        <i class="fas fa-shield-alt me-2"></i> Multi-Factor Authentication
+    </h5>
+</div>
+
+<div class="modal-body bg-light">
+    @using (Html.BeginForm("AddOrEdit", "UserManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        @Html.Hidden("Option", "EnableMFA")
+        @Html.HiddenFor(m => m.id)
+
+        if (Model.IsGoogleAuthenticatorEnabled)
+        {
+            <div class="alert alert-success shadow-sm mb-2">
+                <i class="fas fa-check-circle me-2"></i>
+                MFA is <strong>enabled</strong> on this account. To disable, click the button below.
+            </div>
+
+            <div class="alert alert-secondary mb-2">
+                <strong>How to log in after enabling MFA:</strong>
+                <ol class="mt-2">
+                    <li>Enter your username and password on the login screen.</li>
+                    <li>Open your Google Authenticator app.</li>
+                    <li>Input the verification code into the MFA field.</li>
+                    <li>Submit to complete login.</li>
+                </ol>
+            </div>
+
+            <div class="text-end mt-3 mb-2">
+                @Html.HiddenFor(m => m.MFAActivation.Email)
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-lock me-1"></i> Disable MFA
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning shadow-sm mb-2">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                MFA is <strong>disabled</strong>. You can enable it below.
+            </div>
+
+            <div class="alert alert-info mb-2">
+                <strong>Why enable MFA?</strong><br />
+                Adds a second layer of protection by requiring a one-time code from an Authenticator app during login.
+            </div>
+
+            <div class="alert alert-secondary mb-2">
+                <strong>How to enable:</strong>
+                <ol class="mt-2">
+                    <li>Install the <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en" target="_blank">Google Authenticator app</a>.</li>
+                    <li>Scan the QR below or manually input the secret key.</li>
+                    <li>Enter the generated code to activate.</li>
+                </ol>
+            </div>
+
+            <div class="row gy-3 mb-2">
+                <div class="col-12 text-center">
+                    <img src="@Model.BarcodeImageUrl" alt="Barcode" class="img-thumbnail border shadow-sm" style="width: 180px; height: 180px;" />
+                    <p class="mt-2"><strong>Setup Key:</strong> @Model.GoogleAuthenticatorSecretKey</p>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.MFAActivation.Code, new { @class = "form-control", placeholder = "MFA Code", @autocomplete = "off" })
+                        <label for="MFAActivation_Code">Enter Authenticator Code</label>
+                        @Html.ValidationMessageFor(m => m.MFAActivation.Code, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @Html.HiddenFor(m => m.MFAActivation.Status, new { @value = true })
+                @Html.HiddenFor(m => m.MFAActivation.Email)
+
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-shield-alt me-1"></i> Enable MFA
+                    </button>
+                </div>
+            </div>
+        }
+    }
+</div>

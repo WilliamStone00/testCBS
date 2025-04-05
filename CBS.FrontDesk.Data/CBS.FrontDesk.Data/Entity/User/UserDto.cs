@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.UserManagement;
 
 namespace CBS.FrontDesk.Data.Entity
 {
@@ -16,7 +17,7 @@ namespace CBS.FrontDesk.Data.Entity
     }
     public class AddLogoutSessionCommand
     {
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
     }
     public class UserDto
     {
@@ -31,16 +32,22 @@ namespace CBS.FrontDesk.Data.Entity
         public string phoneNumber { get; set; }
         public string bearerToken { get; set; }
         public string refreshToken { get; set; }
+        public string FullName { get; set; }
         public string password { get; set; }
         public bool isAuthenticated { get; set; }
         public bool isMFA { get; set; }
         public bool IsBlocked { get; set; }
+        public string SessionId { get; set; }
+        public string SessionRecoveryCode { get; set; }
+        public string SessionCode { get; set; }
         public bool ChangePasswordOnFirstLogin { get; set; }
         public string GoogleAuthenticatorSecretKey { get; set; }
         public bool IsVerified { get; set; }
         public string profilePhoto { get; set; }
         public string BankID { get; set; }
         public string BranchID { get; set; }
+        public string Address { get; set; }
+        public bool IsActive { get; set; }
         public Bank Bank { get; set; } = new Bank();
         public Branch Branch { get; set; } = new Branch();
         public Organization Organization { get; set; }=new Organization();
@@ -54,11 +61,11 @@ namespace CBS.FrontDesk.Data.Entity
         public string Id { get; set; }
         public string UserName { get; set; }
         public string[] RoleName { get; set; }
-        public string TokenRefresherID { get; set; }
         public string Phonenumber { get; set; }
-        public string Token { get; set; }
-        public string Password { get; set; }
-
+        public string Email { get; set; }
+        public string FullName { get; set; }
+        public string SessionID { get; set; }
+        public string SessionCode { get; set; }
     }
     public class UserRoleDto
     {

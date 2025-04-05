@@ -1,0 +1,143 @@
+﻿@model CBS.FrontDesk.Data.UserManagement.User
+@{
+    var created = Model.UserSession.CreatedDate;
+    var expires = Model.UserSession.ExpiryDate;
+    var now = DateTime.Now;
+
+    var expireTime = expires - created;
+    var timeLeft = expires - now;
+
+    string expireHoursText = $"{expireTime.TotalHours:F2} hours";
+    string timeLeftText = timeLeft.TotalSeconds > 0
+        ? $"{(int)timeLeft.TotalHours}h {timeLeft.Minutes}m {timeLeft.Seconds}s"
+        : "Expired";
+}
+
+<div class="modal-header text-white mb-2">
+    <h5 class="modal-title">
+        <i class="fas fa-info-circle me-2"></i> Session Recovery & Metadata
+    </h5>
+</div>
+
+<div class="modal-body bg-light">
+    @Html.HiddenFor(m => m.id)
+
+    <!-- 🔐 SESSION RECOVERY CODE SECTION -->
+
+    @using (Html.BeginForm("AddOrEdit", "UserManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        @Html.Hidden("Option", "TerminateActiveSessions")
+        @Html.HiddenFor(m => m.id)
+        @Html.HiddenFor(m => m.SessionRecoveryCode)
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <label class="form-label fw-bold text-secondary">Recovery Code</label>
+                <div class="form-control bg-white shadow-sm d-flex justify-content-between align-items-center">
+                    <span class="text-primary fw-bold">@Model.SessionRecoveryCode</span>
+                    @if (Model.UserSession?.IsDefaultSessionRecoveryCode == true)
+                    {
+                        <span class="badge bg-danger"><i class="fas fa-gears me-2"></i>Default settings</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-primary"><i class="fas fa-gears me-2"></i>Custom settings</span>
+                    }
+                </div>
+                <small class="text">This is used to terminate all active sessions if your account is compromised.</small>
+            </div>
+
+            <div class="col-12 mt-3 text-end">
+                <button type="submit" class="btn btn-outline-danger shadow-sm">
+                    <i class="fas fa-sync-alt me-1"></i> Terminate all active sessions
+                </button>
+            </div>
+        </div>
+    }
+    <!-- 🔐 SECURITY TIPS -->
+    <div class="alert alert-warning mt-4 shadow-sm mb-3">
+        <strong>Security Tips:</strong>
+        <ul class="mb-0 mt-2 ps-3">
+            <li>Do not share your recovery code.</li>
+            <li>Generate a new code regularly for security hygiene.</li>
+            <li>Use recovery code only if you detect unauthorized access.</li>
+            <li>Consider changing your password after recovery.</li>
+        </ul>
+    </div>
+    <!-- 📋 SESSION DETAILS TABLE -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped shadow-sm">
+            <tbody>
+                <tr>
+                    <th class="bg-light">Session Code</th>
+                    <td>@Model.UserSession.SessionCode</td>
+                </tr>
+                <tr>
+                    <th class="bg-light">User Name</th>
+                    <td>@Model.UserSession.UserName</td>
+                </tr>
+                <tr>
+                    <th class="bg-light">Full Name</th>
+                    <td>@Model.UserSession.FullName</td>
+                </tr>
+                <tr>
+                    <th class="bg-light">Role</th>
+                    <td>@Model.UserSession.Role</td>
+                </tr>
+                <tr>
+                    <th class="bg-light">Branch</th>
+                    <td>@($"{Model.UserSession.BranchName} ({Model.UserSession.BranchCode})")</td>
+                </tr>
+                <tr>
+                    <th class="bg-light">IP Address</th>
+                    <td>@Model.UserSession.IpAddress</td>
+                </tr>
+                <tr>
+                    <th class="bg-light">Created Date</th>
+                    <td>@Model.UserSession.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
+                </tr>
+                <tr>
+                    <th class="bg-light">Expires At</th>
+                    <td>@Model.UserSession.ExpiryDate.ToString("dd/MM/yyyy HH:mm")</td>
+                </tr>
+                <tr>
+                    <th class="bg-light">Expire Time</th>
+                    <td>@expireHoursText</td>
+                </tr>
+                <tr>
+                    <th class="bg-light">Time Left</th>
+                    <td class="fw-bold text-@(timeLeft.TotalSeconds > 0 ? "primary" : "danger")">@timeLeftText</td>
+                </tr>
+
+                <tr>
+                    <th class="bg-light">Total Active Sessions</th>
+                    <td>@Model.UserSession.NumberOfSessionsOpen</td>
+                </tr>
+                <tr>
+                    <th class="bg-light">Session Status</th>
+                    <td>
+                        @if (Model.UserSession.SessionStatus == "Multiple_Sessions")
+                        {
+                            <span class="badge bg-warning text-dark">Multiple Active</span>
+                        }
+                        else if (Model.UserSession.SessionStatus == "OK")
+                        {
+                            <span class="badge bg-primary">Healthy</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Invalid / Expired</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th class="bg-light">Last Error Message</th>
+                    <td class="text-danger">@Model.UserSession.ErrorMessage</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+

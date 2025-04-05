@@ -62,7 +62,30 @@
                                 }
                             </span>
                         }
-                        <span>]</span>
+                        @*<span class="text-muted">
+                            | SESSION CODE:
+                            @{
+                                string sessionCode = null;
+
+                                if (Context?.Session != null)
+                                {
+                                    sessionCode = Context.Session["SessionCode"] as string;
+                                }
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(sessionCode))
+                            {
+                                <b>@sessionCode</b>
+                            }
+                            else
+                            {
+                                <span class="text-danger fw-bold">[ Not Available ]</span>
+                            }
+                        </span>*@
+
+
+                        ]
+
                     </label>
                 </b>
             </div>
@@ -304,7 +327,7 @@
                             <div class="dropdown-divider"></div>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="/UserManagement/UserProfile?KEY=@Session["UserID"].ToString()">
+                            <a class="dropdown-item" href="/UserManagement/MyProfile?KEY=@Session["UserID"].ToString()">
                                 <i class="mdi mdi-account-outline me-2"></i>
                                 <span class="align-middle">My Profile</span>
                             </a>

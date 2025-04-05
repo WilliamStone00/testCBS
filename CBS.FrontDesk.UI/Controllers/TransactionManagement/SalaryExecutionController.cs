@@ -12,7 +12,7 @@ using System.Web.UI.WebControls;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
     public class SalaryExecutionController : BaseController
     {
         // GET: SalaryExecutionServices

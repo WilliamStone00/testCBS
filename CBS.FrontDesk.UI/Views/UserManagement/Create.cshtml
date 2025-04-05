@@ -4,61 +4,105 @@
     ViewBag.Title = "User management";
 }
 
-
-<!-- /Account -->
-
-
-
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
-        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
-            <div class="accordion-item active">
-                <h2 class="accordion-header text-body d-flex justify-content-between"
-                    id="accordionPopoutIconThree">
-                    <button type="button"
-                            class="accordion-button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#accordionPopoutIcon-3"
-                            aria-expanded="true"
-                            aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-account me-2"></i>
-                      USER ACCOUNT CREATION
-                    </button>
-                </h2>
-                <div id="accordionPopoutIcon-3"
-                     class="accordion-collapse collapse show"
-                     data-bs-parent="#accordionPopoutIcon">
-                    <div class="accordion-body">
-                        <div id="mainviewChange">
-                            <div class="change-group">
-                                <div class="card mb-4">
-                                    <div class="card-body d-sm-flex d-block">
-                                        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            <a href="/UserManagement" class="btn btn-icon" data-bs-toggle="tooltip" title="Go to users list">
-                                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="mainview">
-                                    @Html.Partial("_Create")
-                                </div>
+        <!-- Header Section -->
+        <div class="card bg-light mb-3 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-group-outline me-2"></i> USER MANAGEMENT DASHBOARD
+                </h1>
+                <p class="card-text">
+                    Create and manage user accounts, define access roles, and ensure strong security posture. This interface provides full visibility and control over user identity, activity, and protection mechanisms.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+     
+        <!-- Tips Section -->
+        <div class="card shadow-sm mb-4">
+            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips" aria-expanded="false" aria-controls="collapseUserTips">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </h6>
+            <div id="collapseUserTips" class="collapse">
+                <div class="card-body">
+                    <div class="row gy-2">
+                        <div class="col-md-6">
+                            <div class="alert alert-primary d-flex align-items-center" role="alert">
+                                <i class="mdi mdi-account-edit-outline me-2"></i>
+                                Fill all required fields accurately.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                                <i class="mdi mdi-lock-reset me-2"></i>
+                                Users should change their passwords on first login.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert alert-info d-flex align-items-center" role="alert">
+                                <i class="mdi mdi-clock-alert-outline me-2"></i>
+                                Accounts inactive for over 1 month will be auto-suspended.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert alert-success d-flex align-items-center" role="alert">
+                                <i class="mdi mdi-calendar-refresh me-2"></i>
+                                Passwords older than 3 months will prompt a forced change.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                <i class="mdi mdi-security me-2"></i>
+                                Encourage MFA activation for enhanced login security.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert alert-secondary d-flex align-items-center" role="alert">
+                                <i class="mdi mdi-shield-refresh-outline me-2"></i>
+                                Session recovery codes must be regenerated after password updates.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert alert-info d-flex align-items-center" role="alert">
+                                <i class="mdi mdi-email-outline me-2"></i>
+                                Ensure email and phone number are verified for alerts on security activities and breach notifications.
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
+        <!-- Account Creation Section -->
+        <div class="card shadow-sm">
+            <div class="card-header text-body d-flex align-items-center justify-content-between">
+                <div>
+                    <i class="fas fa-user-plus me-2"></i>
+                    <h5 class="d-inline mb-0">USER ACCOUNT CREATION</h5>
+                </div>
+                <a href="/UserManagement" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Go to users list">
+                    <i class="mdi mdi-view-list me-1"></i> View Users
+                </a>
+            </div>
+            <div class="card-body">
+                <div id="mainviewChange">
+                    <div class="change-group">
+                        <div id="mainview">
+                            @Html.Partial("_Create")
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
 </div>
 
-
-
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")}
-
-@*<div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>*@
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

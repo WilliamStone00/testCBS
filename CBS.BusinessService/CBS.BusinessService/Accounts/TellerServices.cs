@@ -106,7 +106,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else
                 {
-                    // Get the current branch of the user
+                    // GetAllowAnonymous the current branch of the user
                     var currentBranch = branches.FirstOrDefault();
                     if (currentBranch == null)
                     {

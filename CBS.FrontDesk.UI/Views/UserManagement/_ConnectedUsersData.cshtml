@@ -1,0 +1,103 @@
+﻿
+<div class="card p-3 shadow mb-4">
+    <div class="table-responsive">
+        <table id="myDataTable" class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Session Code</th>
+                    <th>Full Name</th>
+                    <th>Role</th>
+                    <th>Branch</th>
+                    <th>Login Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+@*<div class="card shadow-sm border mb-4">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-users me-2"></i>Connected Users</h5>
+        <span class="badge bg-light text-dark">@Model?.Count ?? 0 user(s) connected</span>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-bordered mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>User</th>
+                        <th>Username</th>
+                        <th>Branch</th>
+                        <th>Role</th>
+                        <th>IP Address</th>
+                        <th>Session Code</th>
+                        <th>Session Recovery Code</th>
+                        <th>Created</th>
+                        <th>Expiry</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var session in Model)
+                        {
+                            <tr>
+                                <td>@session.FullName</td>
+                                <td>@session.UserName</td>
+                                <td>@session.BranchName (@session.BranchCode)</td>
+                                <td>@session.Role</td>
+                                <td>@session.IpAddress</td>
+                                <td><code>@session.SessionCode</code></td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(session.SessionRecoveryCode))
+                                    {
+                                        <code>@session.SessionRecoveryCode</code>
+                                        @if (session.IsDefaultSessionRecoveryCode)
+                                        {
+                                            <span class="badge bg-warning text-dark">Default</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">N/A</span>
+                                    }
+                                </td>
+                                <td>@session.CreatedDateDisplay</td>
+                                <td>@session.ExpiryDateDisplay</td>
+                                <td>
+                                    @if (session.SessionStatus == "Active")
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else if (session.SessionStatus == "Expired")
+                                    {
+                                        <span class="badge bg-danger">Expired</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">@session.SessionStatus</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="10" class="text-center text-muted">No active user sessions found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>*@

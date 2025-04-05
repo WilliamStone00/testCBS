@@ -157,7 +157,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                 {
                     DataTableOptions = new DataTableOptions
                     {
-                        pageSize = 30000,  // Export large number of records
+                        pageSize = 10000,  // Export large number of records
                         start = 0,
                         searchValue = searchCriteria
                     },
@@ -183,10 +183,13 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                 var dataTable = await _LoanServices.GetDataTableAsync(getLoansDataTableQuery, searchCriteria);
 
                 // Convert dataTable.data to List<Loan>
-                var loans = JsonConvert.DeserializeObject<List<Loan>>(
+                var loans1 = JsonConvert.DeserializeObject<List<Loan>>(
                     JsonConvert.SerializeObject(dataTable.data)
                 );
+                
                 string exportedBy = Session["FullName"].ToString();
+                var branches = await _branchServices.GetBranches();
+                var loans=_LoanServices.MapLoansWithBranchDetails(branches.ToList(), loans1);
 
                 // Generate Excel file
                 //var exportFile = new ExportFileResult();

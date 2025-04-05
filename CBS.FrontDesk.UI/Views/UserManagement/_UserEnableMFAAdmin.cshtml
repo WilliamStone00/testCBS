@@ -1,0 +1,72 @@
+﻿@model CBS.FrontDesk.Data.UserManagement.User
+
+<div class="modal-header mb-3">
+    <h5 class="modal-title">
+        <i class="fas fa-shield-alt me-2"></i> MFA Status & Recovery <small class="text-light">(Admin View)</small>
+    </h5>
+</div>
+
+<div class="modal-body bg-light">
+    <div class="mb-3">
+        <strong class="text-secondary">Username:</strong>
+        <span class="fw-bold text-dark">@Model.userName</span>
+    </div>
+
+    @if (Model.IsGoogleAuthenticatorEnabled)
+    {
+        <div class="alert alert-success shadow-sm mb-3">
+            <i class="fas fa-check-circle me-2"></i>
+            MFA is <strong>enabled</strong> for this user.
+        </div>
+
+        <div class="alert alert-info mb-3">
+            <strong>Note to Administrator:</strong><br />
+            This user has activated MFA (Multi-Factor Authentication) using the Google Authenticator app.
+            You <strong>cannot disable or modify</strong> MFA for them. However, you can assist with recovery if they've lost access.
+        </div>
+
+        <div class="alert alert-secondary mb-3">
+            <strong>Standard Login Process (For MFA Users):</strong>
+            <ol class="mt-2 mb-0">
+                <li>Enter username and password.</li>
+                <li>Open Google Authenticator app on their phone.</li>
+                <li>Enter the 6-digit time-based verification code.</li>
+                <li>Login is completed upon valid code verification.</li>
+            </ol>
+        </div>
+
+        <hr class="my-4" />
+
+        <div class="alert alert-warning shadow-sm">
+            <i class="fas fa-key me-2"></i>
+            <strong>Recovery Options:</strong><br />
+            If the user has lost access to their authenticator app, share the secret key and QR code below with them to reconfigure MFA on a new device.
+        </div>
+
+        <div class="row gy-3">
+            <div class="col-md-6 text-center">
+                <img src="@Model.BarcodeImageUrl" alt="QR Code for MFA" class="img-thumbnail border shadow-sm" style="width: 180px; height: 180px;" />
+                <div class="small text-muted mt-2">QR Code (Google Authenticator)</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">MFA Setup Key:</label>
+                <div class="bg-light border p-2 rounded text-danger fw-bold">@Model.GoogleAuthenticatorSecretKey</div>
+                <div class="form-text text-muted mt-1">
+                    Ask the user to open their Google Authenticator app and manually enter this key if scanning is not possible.
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning shadow-sm mb-3">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            MFA is <strong>currently disabled</strong> for this user.
+        </div>
+
+        <div class="alert alert-info">
+            <strong>Important:</strong> Administrators cannot enable MFA on behalf of users. The user must log into their account and activate MFA from their own dashboard for proper configuration and device binding.<br /><br />
+            <strong>Encourage users</strong> to activate MFA to improve their account security and reduce risks of unauthorized access.
+        </div>
+    }
+</div>

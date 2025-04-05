@@ -46,6 +46,7 @@
             max-width: 100%; /* Ensure the image does not exceed the width of its container */
             height: auto; /* Maintain aspect ratio */
         }
+
         #action_indented {
             color: #007bff; /* A nicer blue color */
             text-decoration: none; /* Remove underline */
@@ -77,10 +78,12 @@
             color: #721c24;
             box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
         }
+
         .system-error-text {
             font-family: "Courier New", Courier, monospace;
             color: black;
         }
+
         .system-error-container {
             text-align: center;
             margin-top: 30px;
@@ -89,13 +92,13 @@
             border: 1px solid #efce4d;
             border-radius: 5px;
             color: #f6bd1ea4;
-            font-size:inherit;
-           
+            font-size: inherit;
             box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
         }
-            .error-container p {
-                margin: 0;
-            }
+
+        .error-container p {
+            margin: 0;
+        }
     </style>
     <style>
 
@@ -312,9 +315,11 @@
                 font-weight: bold;
                 margin-bottom: 10px;
             }
+
         .underline-text {
             text-decoration: underline;
         }
+
         .underline-blue-bold {
             text-decoration: underline;
             text-decoration-color: blue;
@@ -916,7 +921,25 @@
                 text-align: left;
             }
 
-            #myDataTable thead, #myDataTableT thead {
+            #myDataTable2 thead, #myDataTableT thead {
+                background-color: #f8f9fa;
+            }
+
+
+        #myDataTable2, #myDataTableT2 {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+            #myDataTable2 th, #myDataTable2 td,
+            #myDataTableT2 th, #myDataTableT2 td {
+                border: 1px solid black; /* Thin border */
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Smoky effect */
+                padding: 8px;
+                text-align: left;
+            }
+
+            #myDataTable2 thead, #myDataTableT2 thead {
                 background-color: #f8f9fa;
             }
 
@@ -1099,21 +1122,7 @@
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     </script>
-    @*<script>
-            $(document).ready(function () {
-                startSessionWarning();
-            });
-        </script>*@
-    @*<script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const menuToggle = document.querySelector(".layout-menu-toggle");
-                const userProfile = document.querySelector(".user-profile");
-
-                menuToggle.addEventListener("click", function () {
-                    userProfile.classList.toggle("hidden");
-                });
-            });
-        </script>*@
+  
     <script>
         $(function () {
             var connection = new signalR.HubConnectionBuilder().withUrl("/sessionHub").build();
@@ -1129,27 +1138,22 @@
                 console.error("Failed to connect to SessionHub: " + err.toString());
             });
         });
+        //$(document).ajaxSend(function (e, xhr, options) {
+        //    if (xhr.getResponseHeader("X-Bypass-Loader") === "true" || options.headers?.["X-Bypass-Loader"] === "true") {
+        //        // Skip showing loader
+        //        return;
+        //    }
+
+        //    // Otherwise show loader
+        //    $("#globalLoader").show();
+        //});
+
     </script>
 
 
 
     <script>
-        //$(document).ajaxComplete(function (event, xhr, settings) {
-        //    if (xhr.status === 401) {
-        //        alert("Your session has expired. Please log in again.");
-        //        // Optionally, you can redirect the user to the login page
-        //        // window.location.href = "/Account/Login";
-        //        window.location.href = "/Authentication/Login";
-        //    }
-        //});
-
-        //$(document).ajaxError(function (event, jqxhr, settings, exception) {
-        //    if (jqxhr.status === 401) {
-        //        alert("Your session has expired. Please log in again.");
-        //        // Optionally, you can redirect the user to the login page
-        //        window.location.href = "/Authentication/Login";
-        //    }
-        //});
+       
         $(document).ready(function () {
             $.ajaxSetup({
                 complete: function (xhr) {
@@ -1161,20 +1165,7 @@
                 }
             });
         });
-        //document.addEventListener("DOMContentLoaded", () => {
-        //    const table = document.getElementById("myDataTable");
-        //    const cells = table.querySelectorAll("td");
-
-        //    cells.forEach(cell => {
-        //        const words = cell.textContent.trim().split(" ");
-        //        if (words.length > 10) {
-        //            // Break into a new line after 10 words
-        //            cell.innerHTML = words.map((word, index) =>
-        //                (index > 0 && index % 10 === 0) ? `<br>${word}` : word
-        //            ).join(" ");
-        //        }
-        //    });
-        //});
+       
     </script>
 
     @RenderSection("scripts", required: false)

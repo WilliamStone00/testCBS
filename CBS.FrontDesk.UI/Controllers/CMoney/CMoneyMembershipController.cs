@@ -3,11 +3,16 @@ using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.CMoney;
+using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.UI.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -31,8 +36,10 @@ namespace CBS.FrontDesk.UI.Controllers.CMoney
         }
 
        
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.Branches = Branches;
             return View();
         }
         public ActionResult Activation()
@@ -215,6 +222,65 @@ namespace CBS.FrontDesk.UI.Controllers.CMoney
                 throw;
             }
         }
+        [HttpPost]
+        public async Task<ActionResult> LoadCMoneyMemberData(GetCMoneyMemberActivationsDatatableQuery query)
+        {
+            try
+            {
+                var dataTable = await _cMoneyMemberServices.GetDataTableAsync(query);
+                var memberList = JsonConvert.DeserializeObject<List<CMoneyMembersActivationAccount>>(
+                    JsonConvert.SerializeObject(dataTable.data)
+                );
+                var cMoneyMembers = _cMoneyMemberServices.MapToDtoOrdered(memberList);
+                return Json(new
+                {
+                    draw = query.DataTableOptions.draw,
+                    recordsTotal = dataTable.recordsTotal,
+                    recordsFiltered = dataTable.recordsFiltered,
+                    data = cMoneyMembers
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading C-Money activation data.");
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> DownloadCMoneyActivations(GetCMoneyMemberActivationsDatatableQuery query)
+        {
+            try
+            {
+                query.DataTableOptions = new DataTableOptions
+                {
+                    pageSize = 10000,
+                    start = 0,
+                };
+
+                var dataTable = await _cMoneyMemberServices.GetDataTableAsync(query);
+
+                var activationList = JsonConvert.DeserializeObject<List<CMoneyMembersActivationAccount>>(
+                    JsonConvert.SerializeObject(dataTable.data)
+                );
+
+                string exportedBy = Session["FullName"]?.ToString() ?? "System Export";
+
+                var exportFile = ExportUtilityCMoney.GenerateCMoneyMemberActivationsExcel(
+                    activationList,
+                    exportedBy,
+                    query.StartDate?.ToString("dd/MM/yyyy"),
+                    query.EndDate?.ToString("dd/MM/yyyy")
+                );
+
+                return File(exportFile.Content, exportFile.ContentType, exportFile.FileName);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error exporting C-Money activation data.");
+            }
+        }
+
+
         [HttpPost]
         public async Task<ActionResult> LoadDataSearch(string searchCriterial = "All")
         {

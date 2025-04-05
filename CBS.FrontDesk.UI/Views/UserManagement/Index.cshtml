@@ -1,58 +1,149 @@
-﻿
-@{
-    ViewBag.Title = "Users";
+﻿@{
+    ViewBag.Title = "User Management Overview";
 }
 
 <div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
-        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
-
-            <div class="accordion-item active">
-                <h2 class="accordion-header text-body d-flex justify-content-between"
-                    id="accordionPopoutIconThree">
-                    <button type="button"
-                            class="accordion-button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#accordionPopoutIcon-3"
-                            aria-expanded="true"
-                            aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-account me-2"></i>
-                        SYSTEM USERS
-                    </button>
-
-                </h2>
-                <div id="accordionPopoutIcon-3"
-                     class="accordion-collapse collapse show"
-                     data-bs-parent="#accordionPopoutIcon">
-                    <div class="accordion-body">
-                        <div id="mainviewChange">
-                            <div class="change-group">
-                                <div class="card mb-4">
-                                    <div class="card-body d-sm-flex d-block">
-                                        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="LoadUsers()" data-bs-toggle="tooltip" title="Load users from database">
-                                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                            </a>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="datalistingview">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-group me-2"></i> USER MANAGEMENT
+                </h1>
+                <p class="card-text">
+                    Manage system users, track roles and statuses, and apply filters to search by user details, status, and organization unit.
+                </p>
+                <p class="card-text text-black fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use filters like role, branch, and date to manage and audit user access effectively.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
+        </div>
+    </div>
+</div>
 
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR USER FILTERING</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-account-check-outline text-success me-2"></i><strong>Role:</strong> Filter users by assigned role.</li>
+                <li><i class="mdi mdi-office-building text-primary me-2"></i><strong>Branch:</strong> View users by organizational branch.</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>Created Date:</strong> Narrow by registration period.</li>
+                <li><i class="mdi mdi-toggle-switch text-warning me-2"></i><strong>Status:</strong> Filter by active, blocked, or verification status.</li>
+                <li><i class="mdi mdi-refresh text-info me-2"></i><strong>Refresh:</strong> Ensure data is up to date.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-12 text-end">
+        <a href="@Url.Action("Create", "UserManagement")" class="btn btn-primary shadow-sm">
+            <i class="mdi mdi-account-plus-outline me-1"></i> Create New User
+        </a>
+    </div>
+</div>
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced User Filters</h5>
+    <div class="card p-3 mb-3 bg-light">
+        <div class="row mb-3">
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byBranch" />
+                <label class="form-check-label fw-bold" for="byBranch">Filter by branch name</label>
+            </div>
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byUser" />
+                <label class="form-check-label fw-bold" for="byUser">Filter by user names</label>
+            </div>
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byDate" />
+                <label class="form-check-label fw-bold" for="byDate">Filter By last login dates</label>
+            </div>
         </div>
 
+        <div id="branchFilterSection" class="row mb-3" style="display:none;">
+            <div class="col-md-12">
+                <label class="form-label fw-bold">Select Branch</label>
+                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "branchInput" })
+            </div>
+        </div>
+
+        <div id="userFilterSection" class="row mb-3" style="display:none;">
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Search by username</label>
+                <input type="text" id="userName" class="form-control" placeholder="Username" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Search by firstname</label>
+                <input type="text" id="firstName" class="form-control" placeholder="First Name" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Search by lastname</label>
+                <input type="text" id="lastName" class="form-control" placeholder="Last Name" />
+            </div>
+        </div>
+
+        <div id="dateRangeSection" class="row mb-3" style="display:none;">
+            <div class="col-md-6">
+                <input type="date" id="createdFrom" class="form-control" placeholder="Created From" />
+            </div>
+            <div class="col-md-6">
+                <input type="date" id="createdTo" class="form-control" placeholder="Created To" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <select id="isActive" class="form-select">
+                    <option value="">Active Status [Blocked By Administrator]</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="isBlocked" class="form-select">
+                    <option value="">Account Blocked Due to Multiple Attpemts</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="isVerified" class="form-select">
+                    <option value="">Email Verified</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="role" class="form-control" placeholder="Role (optional)" />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-12 d-flex">
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
+            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+            @*<button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-export"></i> Export</button>*@
+        </div>
     </div>
 </div>
 @Html.Partial("_model")
+<!-- DataTable Partial -->
+<div id="userTableView">
+    @Html.Partial("_UserDataTable")
+</div>
 
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/Crud/User/Users.js"></script>
+
+
+
+
+@section Scripts {
+    <script src="~/Scripts/Js/Crud/User/Users.js"></script>
 }
+
 

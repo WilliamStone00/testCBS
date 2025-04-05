@@ -9,28 +9,53 @@ using CBS.API.Helper;
 using System.Linq;
 using CBS.BusinessService.Config;
 using CBS.BusinessService;
+using CBS.FrontDesk.Data.Entity.DataTable;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Net;
+using System.IO;
+using CBS.BusinessService.Session;
+using System.Web.Services.Description;
+using Microsoft.Owin.Logging;
+using DocumentFormat.OpenXml.EMMA;
+using System.ComponentModel;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace CBS.FrontDesk.UI.Controllers.UserManagement
 {
     [CheckSessionTimeOutAttribute]
-
     public class UserManagementController : BaseController
     {
+        private readonly RolePermissionServices _rolePermissionServices;
+        private readonly UserPermissionServices _userPermissionServices;
         // GET: UserManagement
         private readonly IUserManagementServices _userManagementServices;
         private readonly BranchServices _branchServices;
         private readonly RoleServices _roleServices;
-        public UserManagementController(IUserManagementServices userManagementServices, BranchServices branchServices = null, RoleServices roleServices = null)
+        private readonly LocalSession _localSession;
+
+        public UserManagementController(IUserManagementServices userManagementServices, BranchServices branchServices = null, RoleServices roleServices = null, LocalSession localSession = null, RolePermissionServices rolePermissionServices = null, UserPermissionServices userPermissionServices = null)
         {
             _userManagementServices = userManagementServices;
             _branchServices = branchServices;
             _roleServices = roleServices;
+            _localSession=localSession;
+            _rolePermissionServices=rolePermissionServices;
+            _userPermissionServices=userPermissionServices;
         }
         public async Task<ActionResult> Index()
         {
-
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.Branches = Branches;
             return View();
         }
+        public async Task<ActionResult> ConnectedUsers()
+        {
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.Branches = Branches;
+            return View();
+        }
+        
         public async Task<ActionResult> InitializeData(string partialView = null, string KEY = null, string path = null)
         {
 
@@ -70,12 +95,23 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             //}
             //return PartialView(view, "");
         }
-
+        // MyProfile
+        public async Task<ActionResult> MyProfile(string serviceoption = null, string KEY = null, string ReadOptions = null, string path = null, string group = null, string datefrom = null, string dateto = null)
+        {
+            Session["userid_action"] = KEY;
+            var data = await _userManagementServices.GetUser(_userManagementServices.ConvertStringToGuid(KEY));
+            data.ResetPassword=new ResetPassword { userName=data.userName, password="000000", ResetPasswordReason=data.ResetPasswordReason };
+            ViewBag.Branches = await _userManagementServices.GetBranches();
+            return View(data);
+        }
         public async Task<ActionResult> UserProfile(string serviceoption = null, string KEY = null, string ReadOptions = null, string path = null, string group = null, string datefrom = null, string dateto = null)
         {
             Session["userid_action"] = KEY;
             var data = await _userManagementServices.GetUser(_userManagementServices.ConvertStringToGuid(KEY));
-            ViewBag.Roles = await _userManagementServices.GetRoles();
+            data.ResetPassword=new ResetPassword { userName=data.userName, password="000000", ResetPasswordReason=data.ResetPasswordReason };
+            var permissionMenuLoaders = await _rolePermissionServices.GetAssignPermissions();
+            data.PermissionMenuLoaders = permissionMenuLoaders.ToList();
+            await GetList();
             ViewBag.Branches = await _userManagementServices.GetBranches();
             return View(data);
         }
@@ -84,6 +120,13 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             ViewBag.Roles = await _userManagementServices.GetRoles();
             ViewBag.Branches = await _userManagementServices.GetBranches();
             return View(new User());
+        }
+        public async Task<bool> GetList()
+        {
+
+            var stringValues = await _rolePermissionServices.GetRolePermissions();
+            ViewBag.Roles = stringValues.ToList();
+            return true;
         }
         [HttpPost]
         public async Task<ActionResult> LoadData()
@@ -103,7 +146,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
         public async Task<ActionResult> AddOrEdit(User model)
         {
 
-            if (model.Option == "Profile")
+            if (model.Option == "Profile"|| model.Option == "BlackList"||model.Option == "ChangeRole"||model.Option == "ChangeBranch"||model.Option == "ActivateDeactivateAccount")
             {
                 var data = await _userManagementServices.UpdateUserProfile(model);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
@@ -121,12 +164,12 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
-            else if (model.Option == "ActivateAccount")
-            {
-                var data = await _userManagementServices.ResetPassword(model);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            //else if (model.Option == "ActivateAccount")
+            //{
+            //    var data = await _userManagementServices.ResetPassword(model);
+            //    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
-            }
+            //}
             else if (model.Option == "PhotoUpload")
             {
                 var data = await _userManagementServices.UploadPicture(model.FileUpload);
@@ -139,6 +182,17 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
+            else if (model.Option == "GenerateNewRecoveryCode")
+            {
+                var data = await _localSession.GenerateANewSessionRecoveryCode(model.id.ToString());
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            else if (model.Option == "TerminateActiveSessions")
+            {
+                var data = await _localSession.InvalidateAllActivetUsers(new SessionAuth { SessionRecoveryCode=model.SessionRecoveryCode});
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            }
             else
             {
                 var data = await _userManagementServices.CreateUser(model);
@@ -147,6 +201,148 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             }
 
         }
+        [HttpPost]
+        public async Task<JsonResult> TerminateSession(string userid)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(userid))
+                {
+                    return Json(new { success = false, message = "Session code is required to terminate session." });
+                }
+                var command = new AddLogoutSessionCommand { UserId = userid };
+                var result = await _localSession.LogoutuserSessions(command);
+
+                return Json(new
+                {
+                    success = result.Result,
+                    status = result.MessageStatus,
+                    message = Messaging.MessageResult(result)
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while terminating the session.", error = ex.Message });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> LoadUsers(GetAllUsersDataTableQuery query)
+        {
+            try
+            {
+                if (!query.IsActive && !query.IsBlocked && !query.IsVerified)
+                {
+                    query.IsActive=true;
+                }
+                var dataTable = await _userManagementServices.GetDataTableAsync(query);
+
+                var userList = JsonConvert.DeserializeObject<List<UserLightDto>>(
+                    JsonConvert.SerializeObject(dataTable.data)
+                );
+
+                return Json(new
+                {
+                    draw = query.DataTableOptions.draw,
+                    recordsTotal = dataTable.recordsTotal,
+                    recordsFiltered = dataTable.recordsFiltered,
+                    data = userList
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, "Error loading users: " + ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> LoadUserSessions(GetAllUserSessionsDataTableQuery query)
+        {
+            try
+            {
+               
+                var dataTable = await _userManagementServices.GetDataTableAsync(query);
+
+                var userList = JsonConvert.DeserializeObject<List<UserSessionDto>>(
+                    JsonConvert.SerializeObject(dataTable.data)
+                );
+                var usersessions = _userManagementServices.MapUserSessionDtoToDataTable(userList);
+                return Json(new
+                {
+                    draw = query.DataTableOptions.draw,
+                    recordsTotal = dataTable.recordsTotal,
+                    recordsFiltered = dataTable.recordsFiltered,
+                    data = usersessions
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, "Error loading users: " + ex.Message);
+            }
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetLiveSessionDashboard()
+        {
+            var dataTable = await _userManagementServices.GetDataTableAsync(
+                new GetAllUserSessionsDataTableQuery
+                {
+                    DataTableOptions = new DataTableOptions
+                    {
+                        start = 0,
+                        pageSize = 10000
+                    }
+                }
+            );
+
+            var userSessions = JsonConvert.DeserializeObject<List<UserSessionDto>>(
+                JsonConvert.SerializeObject(dataTable.data)
+            );
+
+            foreach (var s in userSessions)
+            {
+                s.IsExpired = s.ExpiryDate <= DateTime.UtcNow;
+                s.SessionStatus = s.IsExpired ? "Expired" : "Active";
+            }
+            var usersessions = _userManagementServices.MapUserSessionDtoToDataTable(userSessions);
+            return Json(usersessions, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> DownloadUsers(GetAllUsersDataTableQuery query)
+        {
+            try
+            {
+                query.DataTableOptions = new DataTableOptions
+                {
+                    pageSize = 10000,
+                    start = 0
+                };
+
+                var dataTable = await _userManagementServices.GetDataTableAsync(query);
+                var userList = JsonConvert.DeserializeObject<List<UserLightDto>>(
+                    JsonConvert.SerializeObject(dataTable.data)
+                );
+
+                string exportedBy = Session["FullName"]?.ToString() ?? "System Export";
+
+                //var file = ExportUtilityUser.GenerateUsersExcel(
+                //    userList,
+                //    exportedBy,
+                //    query.StartDate?.ToString("dd/MM/yyyy"),
+                //    query.EndDate?.ToString("dd/MM/yyyy")
+                //);
+                return null;
+                //return File(file.Content, file.ContentType, file.FileName);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error exporting user data.");
+            }
+        }
+  
         [HttpPost]
         public async Task<ActionResult> UpdateUser(User model)
         {
@@ -268,5 +464,42 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
 
         }
+        [HttpPost]
+        public async Task<JsonResult> AddUserRoles(Guid userId, List<int> selectedMenus)
+        {
+            try
+            {
+                if (selectedMenus == null || !selectedMenus.Any())
+                    return Json(new { success = false, message = "No roles selected." });
+
+                
+              var data=  await _userPermissionServices.AddUserRole(userId, selectedMenus);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while assigning roles." });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> DeleteUserPermission(List<string> userPermissionIds)
+        {
+            try
+            {
+                if (userPermissionIds == null || !userPermissionIds.Any())
+                    return Json(new { success = false, message = "No permissions selected." });
+
+               var data= await _userPermissionServices.Delete(userPermissionIds);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError(ex, "Error deleting user permissions.");
+                return Json(new { success = false, message = "Failed to remove permissions." });
+            }
+        }
+
+
     }
 }

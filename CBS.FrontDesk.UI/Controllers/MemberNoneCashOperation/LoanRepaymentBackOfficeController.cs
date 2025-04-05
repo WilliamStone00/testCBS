@@ -166,9 +166,9 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
                 // Accounts are optional for other operations but required for local account repayments
                 if (operationType == "LoanRepaymentByLocalAccountNoneCash" && (accountToBeDebiteds == null || !accountToBeDebiteds.Any()))
-                    return Json(new { success = false, status = false, message = "No accounts to debit were provided." });
+                return Json(new { success = false, status = false, message = "No accounts to debit were provided." });
 
-                var totalAmount = accountToBeDebiteds?.Sum(x => x.Amount) ?? 0;
+                
 
                 var deposits = new List<BulkDeposit>
         {
@@ -186,7 +186,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 Penalty = loan.Penalty,
                 Tax = Math.Abs(loan.Vat),
                 VAT = Math.Abs(loan.Vat),
-                Total = totalAmount,
+                Total = loan.TotalAmount,
                 Note = loan.Note,
                 LoanId = loan.LoanId
             }

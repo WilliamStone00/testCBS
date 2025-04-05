@@ -14,16 +14,20 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net;
 using Newtonsoft.Json;
+using CBS.BusinessService.Session;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
     public class AuthenticationController : BaseController
     {
         private readonly IAuthenticationServices _helper;
+        private readonly LocalSession _localSession;
 
-        public AuthenticationController(IAuthenticationServices helper)
+        public AuthenticationController(IAuthenticationServices helper, LocalSession localSession)
         {
             _helper = helper;
+            _localSession=localSession;
         }
 
         [AllowAnonymous]
@@ -52,7 +56,7 @@ namespace CBS.FrontDesk.UI.Controllers
                             if (userDto.ChangePasswordOnFirstLogin)
                             {
                                 Session["PWD"] = "PWD";
-                                CreateToken(userDto, userDto.expirationTime);
+                                CreateToken(userDto, "TSC", userDto.expirationTime);
                                 //CreateToken(userDto, "CHANGE_PWD", userDto.expirationTime, false, true);
                                 var url = Url.Action("FLoginChangePassword", "UserManagement", new
                                 {
@@ -71,7 +75,7 @@ namespace CBS.FrontDesk.UI.Controllers
                                 if (userDto.isMFA)
                                 {
                                     Session["MFA"] = "MFA";
-                                    CreateToken(userDto, userDto.expirationTime);
+                                    CreateToken(userDto, "TSC", userDto.expirationTime);
                                     var url = Url.Action("Index", "MFAVerification", new
                                     {
                                         serviceoption = "MFA",
@@ -88,7 +92,7 @@ namespace CBS.FrontDesk.UI.Controllers
                                 else
                                 {
                                     //CreateToken(userDto, "CBS4U", userDto.expirationTime, false, false);
-                                    CreateToken(userDto, userDto.expirationTime);
+                                    CreateToken(userDto, "TSC", userDto.expirationTime);
                                     ViewBag.Success = true;
                                     ViewBag.StartSessionWarning = true;
                                     ViewBag.Message = Messaging.MessageResult(result);
@@ -117,6 +121,63 @@ namespace CBS.FrontDesk.UI.Controllers
             ViewBag.Message = result.MessageString ?? "There was a connection issue. Please try again later.";
             return View("Login", model);
         }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> ResolveMultipleSessions(SessionAuth model)
+        {
+            if (!ModelState.IsValid)
+            {
+                // Send back to the GET action with preserved parameters
+                return RedirectToAction("ResolveMultipleSessions", new
+                {
+                    username = model.UserName,
+                    message = "❌ Please provide a valid session recovery code.",
+                    count = model.Counts
+                });
+            }
+
+            try
+            {
+                var result = await _localSession.InvalidateAllActivetUsers(model);
+
+                if (result.Result)
+                {
+                    TempData["Success"] = true;
+                    TempData["Message"] = "✅ All other sessions have been terminated. Please login again.";
+                    return RedirectToAction("Login", "Authentication");
+                }
+
+                // Redirect back with error message
+                return RedirectToAction("ResolveMultipleSessions", new
+                {
+                    username = model.UserName,
+                    message = result.MessageString ?? "⚠️ Failed to terminate other sessions. Please try again.",
+                    count = model.Counts
+                });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("ResolveMultipleSessions", new
+                {
+                    username = model.UserName,
+                    message = "🚨 An error occurred. Please try again later or contact support.",
+                    count = model.Counts
+                });
+            }
+        }
+
+
+
+
+        [AllowAnonymous]
+        public ActionResult ResolveMultipleSessions(string username, string message, int count)
+        {
+            ViewBag.Username = username;
+            ViewBag.Message = message;
+            ViewBag.SessionCount = count;
+            var sessionAuth = new SessionAuth { Counts=count, UserName=username, SessionRecoveryCode=string.Empty };
+            return View(sessionAuth);
+        }
 
         private ActionResult RedirectToLocal(string returnUrl)
         {
@@ -143,32 +204,39 @@ namespace CBS.FrontDesk.UI.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Logout()
         {
-
-            FormsAuthentication.SignOut();
-            // List of all cookies to clear
-            var cookieNames = new[]{ "BranchObject", "AuthUser", "CBS4U", "CBS4U_MFA", "MFA", "PWD", "ASP.NET_SessionId", "EncryptedJWToken"};
             await _helper.Logout();
-
-            foreach (var cookieName in cookieNames)
-            {
-                if (Request.Cookies[cookieName] != null)
-                {
-                    var cookie = new HttpCookie(cookieName)
-                    {
-                        Expires = DateTime.Now.AddYears(-1), // Set expiration date in the past
-                        Value = string.Empty // Clear the value
-                    };
-                    Response.Cookies.Add(cookie);
-                }
-            }
-            Session.Remove("EncryptedJWToken");
-
-            // Abandon the session
-            Session.Abandon();
-            Session.Clear();
-            Session.RemoveAll();
-            // Redirect to login page
+            await PerformLogoutAsync();
             return RedirectToAction("Login");
         }
+
+        //public async Task<ActionResult> Logout()
+        //{
+
+        //    FormsAuthentication.SignOut();
+        //    // List of all cookies to clear
+        //    var cookieNames = new[]{ "BranchObject", "AuthUser", "CBS4U", "CBS4U_MFA", "MFA", "PWD", "ASP.NET_SessionId", "EncryptedJWToken"};
+        //    await _helper.Logout();
+
+        //    foreach (var cookieName in cookieNames)
+        //    {
+        //        if (Request.Cookies[cookieName] != null)
+        //        {
+        //            var cookie = new HttpCookie(cookieName)
+        //            {
+        //                Expires = DateTime.Now.AddYears(-1), // Set expiration date in the past
+        //                Value = string.Empty // Clear the value
+        //            };
+        //            Response.Cookies.Add(cookie);
+        //        }
+        //    }
+        //    Session.Remove("EncryptedJWToken");
+
+        //    // Abandon the session
+        //    Session.Abandon();
+        //    Session.Clear();
+        //    Session.RemoveAll();
+        //    // Redirect to login page
+        //    return RedirectToAction("Login");
+        //}
     }
 }

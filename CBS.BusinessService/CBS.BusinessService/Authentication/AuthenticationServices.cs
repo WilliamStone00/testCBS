@@ -73,7 +73,7 @@ namespace CBS.FrontDesk.Service
             string errormessage = null;
             try
             {
-                var logoutSessionCommand = new AddLogoutSessionCommand { UserId = ConvertStringToGuid(GetUserID()) };
+                var logoutSessionCommand = new AddLogoutSessionCommand { UserId =GetUserID() };
                 var response = await _identityServer.PostAsync<ResponseObject<bool>>(APICallHelper.SessionLogout, logoutSessionCommand);
                 if (response.IsSuccess)
                 {

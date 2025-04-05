@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using CBS.FrontDesk.UI.Filter;
+using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI
 {
@@ -8,7 +9,9 @@ namespace CBS.FrontDesk.UI
         {
             filters.Add(new HandleErrorAttribute());
             filters.Add(new RequireHttpsAttribute());
+            //filters.Add(new GlobalExceptionFilter()); 
 
         }
     }
 }
+

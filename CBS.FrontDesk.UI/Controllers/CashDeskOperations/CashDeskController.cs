@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
 
     public class CashDeskController : BaseController
     {

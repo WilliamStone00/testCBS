@@ -31,7 +31,7 @@ namespace CBS.BusinessService.Session
                 {
                     Guid userId = (Guid)HttpContext.Current.Session["UserID"];
 
-                    // Get the refresh token from session
+                    // GetAllowAnonymous the refresh token from session
                     string currentSessionRefreshToken = HttpContext.Current.Session["RefresherToken"] as string;
 
                     // Check active sessions for the user

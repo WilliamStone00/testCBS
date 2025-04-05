@@ -1,11 +1,45 @@
 ﻿
-@{
+@*@{
     ViewBag.Title = "404-Resource Not Found";
     Layout = "~/Views/Shared/_ErrorLayout.cshtml";
-}
+}*@
 
-<h2 class="mb-4">404 - Resource Not Found</h2>
+@*<h2 class="mb-4">404 - Resource Not Found</h2>
 <p class="lead mb-4">Oops! We couldn't find the requested resource.</p>
 <p>Please check the URL or contact the administrator for assistance.</p>
 <p>ERROR:<br />@ViewBag.ErrorMessage</p>
-<a href="/" class="btn">Go Back to Home</a>
+<a href="/" class="btn">Go Back to Home</a>*@
+
+
+
+
+
+
+@{
+    ViewBag.Title = "An Error Occurred";
+    var title = ViewBag.TitleText ?? "Oops! Something went wrong.";
+    var message = ViewBag.Message ?? "We're sorry, but an unexpected error has occurred.";
+    var errorCode = ViewBag.StatusCode ?? 500;
+    var stackTrace = ViewBag.StackTrace ?? "";
+    Layout = "~/Views/Shared/_ErrorLayout.cshtml";
+    var showDiagnostics = HttpContext.Current.IsDebuggingEnabled; // show extra info in Debug mode
+}
+
+<div class="container mt-5">
+    <div class="alert alert-danger shadow border-start border-4 border-danger">
+        <h4 class="alert-heading"><i class="mdi mdi-alert-circle-outline me-2"></i> @title</h4>
+        <p><strong>Status Code:</strong> @errorCode</p>
+        <p><strong>Message:</strong> @message</p>
+
+        @if (showDiagnostics && !string.IsNullOrEmpty(stackTrace))
+        {
+            <hr />
+            <pre class="bg-light p-3 rounded">@stackTrace</pre>
+        }
+
+        <hr />
+        <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary">
+            <i class="mdi mdi-home-outline me-1"></i> Return to Home
+        </a>
+    </div>
+</div>

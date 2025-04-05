@@ -690,11 +690,13 @@
       <DependentUpon>TransactionDS.xsd</DependentUpon>
     </Compile>
     <Compile Include="Filter\AuthorizeAttributeEASIMS.cs" />
+    <Compile Include="Filter\GlobalExceptionFilter.cs" />
     <Compile Include="Filter\UserAuditFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Code\Helper\SessionTimeoutFilterAttribute.cs" />
+    <Compile Include="Helper\ExportUtilityCMoney.cs" />
     <Compile Include="Helper\LoanApplicationExcelGenerator.cs" />
     <Compile Include="Helper\LoanExcelGenerator.cs" />
     <Compile Include="Helper\ExportUtilityAuditTrail.cs" />
@@ -2559,6 +2561,7 @@
     <Content Include="Scripts\Js\Crud\Remittance\RemittancePending.js" />
     <Content Include="Scripts\Js\Crud\Remittance\RemittanceQuery.js" />
     <Content Include="Scripts\Js\Crud\Remittance\RemittanceRequest.js" />
+    <Content Include="Scripts\Js\Crud\User\UserConnected.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Pending.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Requests.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\WithdrawalNotification.js" />
@@ -2663,7 +2666,7 @@
     <Content Include="Views\Shared\_AjaxSpinner.cshtml" />
     <Content Include="Views\Shared\_Alert.cshtml" />
     <Content Include="Views\UserManagement\Index.cshtml" />
-    <Content Include="Views\UserManagement\_Data.cshtml" />
+    <Content Include="Views\UserManagement\_UserDataTable.cshtml" />
     <Content Include="Views\Individual\Create.cshtml" />
     <Content Include="Views\Individual\List.cshtml" />
     <Content Include="Views\Individual\_IndividualData.cshtml" />
@@ -2697,11 +2700,11 @@
     <Content Include="Views\Shared\DisplayTemplates\CanonicalHelperModel.cshtml" />
     <Content Include="Views\UserManagement\_Create.cshtml" />
     <Content Include="Views\UserManagement\UserProfile.cshtml" />
-    <Content Include="Views\UserManagement\_UserProfile.cshtml" />
-    <Content Include="Views\UserManagement\_ChangePassword.cshtml" />
+    <Content Include="Views\UserManagement\_UserUpdateProfile.cshtml" />
+    <Content Include="Views\UserManagement\_UserChangePassword.cshtml" />
     <Content Include="Views\UserManagement\_UpdateImage.cshtml" />
-    <Content Include="Views\UserManagement\_EnableMFA.cshtml" />
-    <Content Include="Views\UserManagement\_ResetPassword.cshtml" />
+    <Content Include="Views\UserManagement\_UserEnableMFA.cshtml" />
+    <Content Include="Views\UserManagement\_UserResetPassword.cshtml" />
     <Content Include="Views\Document\Index.cshtml" />
     <Content Include="Views\Document\_Data.cshtml" />
     <Content Include="Views\Document\_Create.cshtml" />
@@ -3015,7 +3018,7 @@
     <Content Include="Views\Dashboard\HeadOffice.cshtml" />
     <Content Include="Views\Dashboard\BranchOffice.cshtml" />
     <Content Include="Views\UserManagement\FLoginChangePassword.cshtml" />
-    <Content Include="Views\UserManagement\_UserDetails.cshtml" />
+    <Content Include="Views\UserManagement\_UserProfileManagePermissions.cshtml" />
     <Content Include="Views\AccountingConfiguration\_AccountUploud.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateIncomeStatementStructure.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateDocumentReferenceCode.cshtml" />
@@ -3499,6 +3502,20 @@
     <Content Include="Views\LoanRepaymentBackOffice\Index.cshtml" />
     <Content Include="Views\LoanRepaymentBackOffice\LedgerLoanRepayment.cshtml" />
     <Content Include="Views\LoanRepaymentBackOffice\_LedgerLoanRepaymentForm.cshtml" />
+    <Content Include="Views\UserManagement\_UserActivateDeactivate.cshtml" />
+    <Content Include="Views\UserManagement\_UserChangeBranch.cshtml" />
+    <Content Include="Views\UserManagement\_UserChangeRole.cshtml" />
+    <Content Include="Views\UserManagement\_UserSessions.cshtml" />
+    <Content Include="Views\UserManagement\_UserManagePermissions.cshtml" />
+    <Content Include="Views\Authentication\ResolveMultipleSessions.cshtml" />
+    <Content Include="Views\UserManagement\_UserGenerateNewRecoveryCode.cshtml" />
+    <Content Include="Views\UserManagement\MyProfile.cshtml" />
+    <Content Include="Views\UserManagement\_UserSecurityAwareness.cshtml" />
+    <Content Include="Views\UserManagement\_UserEnableMFAAdmin.cshtml" />
+    <Content Include="Views\UserManagement\ConnectedUsers.cshtml" />
+    <Content Include="Views\UserManagement\_ConnectedUsersData.cshtml" />
+    <Content Include="Views\UserManagement\_ConnectedUserStatistics.cshtml" />
+    <Content Include="Views\Shared\CustomError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

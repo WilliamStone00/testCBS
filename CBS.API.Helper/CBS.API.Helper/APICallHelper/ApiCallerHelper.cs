@@ -23,6 +23,7 @@ using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data;
 
 using System.Threading;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 
 namespace CBS.API.Helper
 {
@@ -88,7 +89,7 @@ namespace CBS.API.Helper
             // Parse the URL using the Uri class
             Uri uri = new Uri(fullUrl);
 
-            // Get the endpoint
+            // GetAllowAnonymous the endpoint
             string endpoint = uri.PathAndQuery;
 
             return endpoint;
@@ -103,7 +104,7 @@ namespace CBS.API.Helper
             // Parse the URL using the Uri class
             Uri uri = new Uri(fullUrl);
 
-            // Get the base URL
+            // GetAllowAnonymous the base URL
             string baseUrl = uri.GetLeftPart(UriPartial.Authority);
 
             return baseUrl;
@@ -123,6 +124,22 @@ namespace CBS.API.Helper
                 throw (ex);
             }
         }
+        public ApiResponse<T> GetAllowAnonymous<T>(string apiUrl)
+        {
+            try
+            {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+
+                HttpResponseMessage response = _httpClient.GetAsync(apiUrl).GetAwaiter().GetResult();
+
+                return HandleResponse<T>(response).GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                throw ex; // You may want to log it or wrap it in a custom exception.
+            }
+        }
+
         public async Task<ApiResponse<T>> PostImageAsync<T>(string apiUrl, HttpPostedFileBase imageFile)
         {
             try
@@ -721,6 +738,8 @@ namespace CBS.API.Helper
             HttpResponseMessage response = await _httpClient.DeleteAsync(apiUrl);
             return await HandleResponse<T>(response);
         }
+
+       
 
 
 
@@ -2216,6 +2235,16 @@ namespace CBS.API.Helper
 
 
         }
+
+        private static void AddAuthorizationHeader(HttpClient client, string token)
+        {
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+        }
+
+
+
+
+      
 
         public void Dispose()
         {

@@ -6,6 +6,7 @@ using CBS.FrontDesk.Data.Entity.CMoney;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -72,6 +73,53 @@ namespace CBS.BusinessService.CustomerManagement
                 throw;
             }
         }
+        public async Task<CustomDataTable> GetDataTableAsync(GetCMoneyMemberActivationsDatatableQuery loansDataTableQuery)
+        {
+            loansDataTableQuery.DataTableOptions.sortColumnName = "ActivationDate";
+            if (!IsHeadOffice())
+            {
+                loansDataTableQuery.ByBranch=true;
+                loansDataTableQuery.BranchId=GetBranchID();
+            }
+            // Make API call to fetch the DataTable result
+            var couApiResponse = await _loanConfigApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                APICallHelper.LoaDataTablePagginationFroCmoney,
+                loansDataTableQuery
+            );
+
+            // Return response if successful
+            if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+            {
+                return couApiResponse.ApiResponseData.Data;
+            }
+
+            // Return an empty DataTable if the request fails
+            return new CustomDataTable(
+                draw: Convert.ToInt32(loansDataTableQuery.DataTableOptions.draw),
+                recordsTotal: 0,
+                recordsFiltered: 0,
+                data: new List<object>(), // No data
+                dataTableOptions: loansDataTableQuery.DataTableOptions
+            );
+        }
+        public List<CMoneyMembersActivationAccountDto> MapToDtoOrdered(List<CMoneyMembersActivationAccount> entities)
+        {
+            return entities
+                
+                .Select(x => new CMoneyMembersActivationAccountDto
+                {
+                    Name = x.Name,
+                    CustomerId = x.CustomerId,
+                    PhoneNumber = x.PhoneNumber,
+                    ActivatedBy = x.ActivatedBy,
+                    BranchCode = x.BranchCode,
+                    ActivationDate = x.ActivationDate,
+                    IsActive = x.IsActive,
+                    LoginId = x.LoginId
+                }).OrderByDescending(x => x.ActivationDate).ToList();
+        }
+
+
         public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string searchCriterial, bool isByBranch = true)
         {
             if (IsHeadOffice())

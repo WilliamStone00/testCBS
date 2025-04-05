@@ -388,7 +388,7 @@ namespace CBS.BusinessService.Accounts
 
                 if (IsHeadOffice())
                 {
-                    // Get all user roles and filter for tellers
+                    // GetAllowAnonymous all user roles and filter for tellers
                     var userRoles = await _userManagementServices.GetUSerRoles();
                     var branches = await _brancheServices.GetBranches();
                     pTellers = (from a in userRoles
@@ -408,7 +408,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else
                 {
-                    // Get user roles for the current branch and filter for tellers
+                    // GetAllowAnonymous user roles for the current branch and filter for tellers
                     var userRoles = await _userManagementServices.GetUSerRoles();
                     pTellers = (from a in userRoles
                                 where a.IsTeller && a.branchId == GetBranchID()
@@ -435,7 +435,7 @@ namespace CBS.BusinessService.Accounts
 
                 if (IsHeadOffice())
                 {
-                    // Get all user roles and filter for tellers
+                    // GetAllowAnonymous all user roles and filter for tellers
                     var userRoles = await _userManagementServices.GetUSerRoles();
                     var branches = await _brancheServices.GetBranches();
                     stringValues = (from a in userRoles
@@ -451,7 +451,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else
                 {
-                    // Get user roles for the current branch and filter for tellers
+                    // GetAllowAnonymous user roles for the current branch and filter for tellers
                     var userRoles = await _userManagementServices.GetUSerRoles();
                     stringValues = (from a in userRoles
                                     where a.IsTeller && a.branchId == GetBranchID()

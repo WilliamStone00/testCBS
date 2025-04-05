@@ -221,8 +221,8 @@ namespace CBS.BusinessService.CustomerManagement
             {
                 var fullUrl = $"{APICallHelper.GetAllByParameters}";
                 var apiResponse = await _customerApiHelper.PostAsync<ResponseObject<List<CustomerListingDto>>>(fullUrl, resource);
-                var branches = await _branchServices.GetBranches(); // Get list of branches
-                var bank = await _bankServices.GetBank(GetBankID()); // Get list of branches
+                var branches = await _branchServices.GetBranches(); // GetAllowAnonymous list of branches
+                var bank = await _bankServices.GetBank(GetBankID()); // GetAllowAnonymous list of branches
                 var data = MapToCustomerListingDS(apiResponse.ApiResponseData.Data.ToList(), branches.ToList(), bank);
                 return data;
             }

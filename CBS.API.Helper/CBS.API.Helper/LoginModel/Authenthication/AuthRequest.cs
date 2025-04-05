@@ -129,8 +129,19 @@ namespace CBS.API.Helper
         [Required(ErrorMessage = "Password is required.")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters.")]
         public string Password { get; set; }
+        public string SessionCode { get; set; }
         public GeoLocationResponse GeoLocationResponse { get; set; }
     }
+
+
+    public class SessionAuth
+    {
+        [Required(ErrorMessage = "Session recovery code  is required to logout all existing sessions.")]
+        public string SessionRecoveryCode { get; set; }
+        public string UserName { get; set; }
+        public int Counts { get; set; }
+    }
+
     public class GeoLocationResponse
     {
         public string Ip { get; set; }
@@ -164,5 +175,8 @@ namespace CBS.API.Helper
 
         public Guid UserId { get; set; }
     }
-
+    public class LogOutUsessions
+    {
+        public string UserId { get; set; }
+    }
 }

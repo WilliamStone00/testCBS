@@ -113,10 +113,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 foreach (var item in chartofAccountManagementPositions)
                 {
-                    // 1. Get the ChartOfAccount using the ID
+                    // 1. GetAllowAnonymous the ChartOfAccount using the ID
                     var ModelChart = chartOfAccountsss.Where(x => x.Id == item.ChartOfAccountId).FirstOrDefault();
 
-                    // 2. Get the AccountCategory using the ID from ChartOfAccount
+                    // 2. GetAllowAnonymous the AccountCategory using the ID from ChartOfAccount
                     if (ModelChart==null)
                     {
                         continue;

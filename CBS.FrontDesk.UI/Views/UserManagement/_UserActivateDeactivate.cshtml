@@ -1,0 +1,72 @@
+﻿@model CBS.FrontDesk.Data.UserManagement.User
+
+<div class="modal-header text-white mb-2">
+    <h5 class="modal-title">
+        <i class="fas fa-user-edit me-2"></i> Update Account Status
+    </h5>
+</div>
+
+<div class="modal-body bg-light">
+    @using (Html.BeginForm("AddOrEdit", "UserManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        @Html.Hidden("Option", "ActivateDeactivateAccount")
+        @Html.HiddenFor(m => m.id)
+
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <h6 class="text-secondary fw-bold mb-2">
+                    <i class="fas fa-info-circle me-2 text-primary"></i> Current Account Status
+                </h6>
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <span class="fw-bold">Status:</span>
+                    @if (Model.isActive)
+                    {
+                        <span class="badge bg-primary px-4 py-2 fs-6">
+                            <i class="fas fa-check-circle me-1"></i> Active
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger px-4 py-2 fs-6">
+                            <i class="fas fa-times-circle me-1"></i> Inactive
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        if (Model.isActive)
+        {
+            <div class="alert alert-info shadow-sm mb-4">
+                <i class="fas fa-lightbulb me-2"></i> You need to provide reason why you want to block or deactivate this account. Add your reason to the existing text if any...
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-secondary">
+                        Reason for Deactivation <span class="text-danger">*</span>
+                    </label>
+                    @Html.TextAreaFor(m => m.ReasonForBlockingAccount, new { @class = "form-control", placeholder = "ReasonForBlockingAccount", style = "height: 100px;" })
+                    @Html.ValidationMessageFor(m => m.ReasonForBlockingAccount, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info shadow-sm mb-4">
+                <i class="fas fa-lightbulb me-2"></i> Why do you want to re-activate this account?. Imply add to the existing text.
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-secondary">
+                        Reason for Deactivation <span class="text-danger">*</span>
+                    </label>
+                    @Html.TextAreaFor(m => m.ReasonForBlockingAccount, new { @class = "form-control", placeholder = "ReasonForBlockingAccount", style = "height: 100px;" })
+                    @Html.ValidationMessageFor(m => m.ReasonForBlockingAccount, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary shadow-sm px-4">
+                <i class="fas fa-shield-alt me-2"></i> Toggle Account Status
+            </button>
+        </div>
+    }
+</div>

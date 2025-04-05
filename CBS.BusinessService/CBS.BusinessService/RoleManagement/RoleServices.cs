@@ -10,6 +10,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Security;
 
 namespace CBS.BusinessService
 {
@@ -82,18 +83,33 @@ namespace CBS.BusinessService
             try
             {
                 var couApiResponse = await _identityConfigApiHelper.GetAsync<ResponseObject<List<Role>>>(APICallHelper.GetAllRoles);
-                if (couApiResponse.ApiResponseData!=null)
+
+                if (couApiResponse.ApiResponseData != null)
                 {
-                    return couApiResponse.ApiResponseData.Data;
+                    IEnumerable<Role> roles;
+
+                    if (!IsHeadOffice())
+                    {
+                        roles = couApiResponse.ApiResponseData.Data
+                            .Where(r => !string.Equals(r.Name, "Administrator", StringComparison.OrdinalIgnoreCase));
+                    }
+                    else
+                    {
+                        roles = couApiResponse.ApiResponseData.Data;
+                    }
+
+                    return roles;
                 }
+
                 return new List<Role>();
             }
             catch (Exception ex)
             {
-                // Log and handle exception
+                // Optional: log the error
                 throw;
             }
         }
+
         public async Task<IEnumerable<RolePermission>> GetRolePermissions(string roleID)
         {
             try

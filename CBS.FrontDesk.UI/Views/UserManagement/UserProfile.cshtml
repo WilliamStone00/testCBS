@@ -1,118 +1,219 @@
 ﻿@model CBS.FrontDesk.Data.UserManagement.User
+
 @{
-    ViewBag.Title = "User Profile";
+    ViewBag.Title = "User Account Manager";
 }
-<div class="container mt-4">
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header p-0">
-            <ul class="nav nav-tabs nav-fill" role="tablist">
-                <li class="nav-item">
-                    <button type="button"
-                            class="nav-link active"
-                            role="tab"
-                            data-bs-toggle="tab"
-                            data-bs-target="#profileTab"
-                            aria-controls="profileTab"
-                            aria-selected="true">
-                        <i class="tf-icons mdi mdi-home-outline me-2"></i> Profile
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button type="button"
-                            class="nav-link"
-                            role="tab"
-                            data-bs-toggle="tab"
-                            data-bs-target="#imageTab"
-                            aria-controls="imageTab"
-                            aria-selected="false">
-                        <i class="tf-icons mdi mdi-image-outline me-2"></i> Image Upload
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button type="button"
-                            class="nav-link"
-                            role="tab"
-                            data-bs-toggle="tab"
-                            data-bs-target="#securityTab"
-                            aria-controls="securityTab"
-                            aria-selected="false">
-                        <i class="tf-icons mdi mdi-security me-2"></i> Security
-                    </button>
+<style>
+    /* Custom flat button-style nav links */
+    .nav-flat .nav-link {
+        border: none;
+        border-radius: 0;
+        background: #f8f9fa;
+        color: #333;
+        padding: 12px 16px;
+        text-align: left;
+        transition: all 0.2s ease-in-out;
+        font-weight: 500;
+        border-left: 4px solid transparent;
+    }
+
+        .nav-flat .nav-link:hover {
+            background-color: #e9ecef;
+            color: #007bff;
+            border-left: 4px solid #007bff;
+        }
+
+        .nav-flat .nav-link.active {
+            background-color: #e3f2fd;
+            color: #0d6efd;
+            font-weight: 600;
+            border-left: 4px solid #0d6efd;
+        }
+</style>
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-group-outline me-2"></i> USER ACCOUNT MANAGER [@Model.name.ToUpper()]
+                </h1>
+                <p class="card-text">
+                    Manage user accounts, credentials, roles, MFA, sessions, recovery codes, and permissions in one place. Ensure secure access and user management across your organization.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips" aria-expanded="false" aria-controls="collapseUserTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseUserTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-account-edit-outline text-primary me-2"></i> <strong>Update profile:</strong> Keep your name, email, phone, and address up to date.</li>
+                <li><i class="mdi mdi-lock-reset text-primary me-2"></i> <strong>Manage passwords:</strong> Change or reset your password periodically.</li>
+                <li><i class="mdi mdi-shield-key-outline text-primary me-2"></i> <strong>Session security:</strong> Sessions expire after <strong>1 hour</strong>. Logout when inactive.</li>
+                <li><i class="mdi mdi-shield-refresh-outline text-success me-2"></i> <strong>Session recovery code:</strong> Regenerate your code after password changes or exposure.</li>
+                <li><i class="mdi mdi-account-key-outline text-info me-2"></i> <strong>MFA:</strong> Enable Multi-Factor Authentication to protect your login.</li>
+                <li><i class="mdi mdi-bank-outline text-info me-2"></i> <strong>Branch & role:</strong> Ensure roles and branch access match your responsibilities.</li>
+                <li><i class="mdi mdi-lock-alert-outline text-danger me-2"></i> <strong>Account lock:</strong> Blocked users can be re-enabled via admin.</li>
+                <li><i class="mdi mdi-clock-alert-outline text-warning me-2"></i> <strong>Inactivity suspension:</strong> Accounts inactive for over 1 month will be suspended.</li>
+                <li><i class="mdi mdi-calendar-alert text-warning me-2"></i> <strong>Password expiration:</strong> Change your password if older than 3 months.</li>
+                <li><i class="mdi mdi-email-outline text-primary me-2"></i> <strong>Verify contact:</strong> Ensure your email and phone are verified to receive security alerts.</li>
+                <li>
+                    <i class="mdi mdi-shield-alert-outline text-warning me-2"></i> <strong>Best practices:</strong>
+                    <ul>
+                        <li>Never share your password or recovery code.</li>
+                        <li>Use strong passwords with numbers and symbols.</li>
+                        <li>Be alert to unfamiliar logins and IPs.</li>
+                    </ul>
                 </li>
             </ul>
         </div>
-        <div class="card-body">
-            <div class="tab-content p-3">
-                <div class="tab-pane fade show active" id="profileTab" role="tabpanel">
-                    <div class="my-3">
-                        <h5 class="fw-bold">Profile Details</h5>
-                        <p>View and edit your profile information here.</p>
-                        <div id="mainviewProfile">
-                            @Html.Partial("_UserProfile")
-                        </div>
-                    </div>
+    </div>
+</div>
+<div class="card-header text-body d-flex align-items-center justify-content-between">
+    <div>
+        <i class="fas fa-user-plus me-2"></i>
+        <h5 class="d-inline mb-0">ACCOUNT MANAGER</h5>
+    </div>
+    <a href="/UserManagement" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Back to Users List">
+        <i class="mdi mdi-view-list me-1"></i> View Users
+    </a>
+</div>
+<div class="row">
+    <!-- Sidebar Tabs -->
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm border">
+            <div class="card-body p-2">
+                <div class="nav flex-column nav-pills nav-flat" id="userAccountTabs" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="vtab-awareness" data-bs-toggle="pill" href="#tab-awareness" role="tab" aria-selected="true">Security Awareness</a>
+                    <a class="nav-link" id="vtab-profile" data-bs-toggle="pill" href="#tab-profile" role="tab" aria-selected="false">Update Profile</a>
+                    <a class="nav-link" id="vtab-reset" data-bs-toggle="pill" href="#tab-reset" role="tab" aria-selected="false">Reset Password</a>
+                    <a class="nav-link" id="vtab-activation" data-bs-toggle="pill" href="#tab-activation" role="tab" aria-selected="false">Activate/Deactivate</a>
+                    <a class="nav-link" id="vtab-mfa" data-bs-toggle="pill" href="#tab-mfa" role="tab" aria-selected="false">MFA Status</a>
+                    <a class="nav-link" id="vtab-role" data-bs-toggle="pill" href="#tab-role" role="tab" aria-selected="false">Change Role</a>
+                    <a class="nav-link" id="vtab-branch" data-bs-toggle="pill" href="#tab-branch" role="tab" aria-selected="false">Change Branch</a>
+                    <a class="nav-link" id="vtab-session" data-bs-toggle="pill" href="#tab-session" role="tab" aria-selected="false">User Sessions</a>
+                    <a class="nav-link" id="vtab-recovery" data-bs-toggle="pill" href="#tab-recovery" role="tab" aria-selected="false">Recovery Code</a>
+                    <a class="nav-link" id="vtab-permission" data-bs-toggle="pill" href="#tab-permission" role="tab" aria-selected="false">User Permissions</a>
                 </div>
-                <div class="tab-pane fade" id="imageTab" role="tabpanel">
-                    <div class="my-3">
-                        <h5 class="fw-bold">Upload Image</h5>
-                        <p>Update your profile image here.</p>
-                        <div id="mainviewUpload">
-                            @Html.Partial("_UpdateImage")
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="securityTab" role="tabpanel">
-                    <div class="my-3">
-                        <h5 class="fw-bold">Security Settings</h5>
-                        <p>Manage your security settings below.</p>
-                        <div class="accordion" id="accordionSecurity">
-                            <div class="accordion-item shadow-sm mb-2">
-                                <h2 class="accordion-header" id="headingChangePassword">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChangePassword" aria-expanded="true" aria-controls="collapseChangePassword">
-                                        <i class="mdi mdi-lock-outline me-2"></i> Change Password
-                                    </button>
-                                </h2>
-                                <div id="collapseChangePassword" class="accordion-collapse collapse show" aria-labelledby="headingChangePassword" data-bs-parent="#accordionSecurity">
-                                    <div class="accordion-body">
-                                        <div id="mainviewChange">
-                                            @Html.Partial("_ChangePassword")
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item shadow-sm mb-2">
-                                <h2 class="accordion-header" id="headingResetPassword">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseResetPassword" aria-controls="collapseResetPassword">
-                                        <i class="mdi mdi-lock-alert me-2"></i> Reset Password
-                                    </button>
-                                </h2>
-                                <div id="collapseResetPassword" class="accordion-collapse collapse" aria-labelledby="headingResetPassword" data-bs-parent="#accordionSecurity">
-                                    <div class="accordion-body">
-                                        <div id="mainviewReset">
-                                            @Html.Partial("_ResetPassword")
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item shadow-sm">
-                                <h2 class="accordion-header" id="headingMFA">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMFA" aria-controls="collapseMFA">
-                                        <i class="mdi mdi-two-factor-authentication me-2"></i> Multi-Factor Authentication (MFA)
-                                    </button>
-                                </h2>
-                                <div id="collapseMFA" class="accordion-collapse collapse" aria-labelledby="headingMFA" data-bs-parent="#accordionSecurity">
-                                    <div class="accordion-body">
-                                        <div id="mainview_mfa">
-                                            @Html.Partial("_EnableMFA")
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="col-md-9">
+        <div class="card h-100 shadow-sm border">
+            <div class="card-body">
+                <div class="tab-content" id="userAccountTabsContent">
+                    <div class="tab-pane fade show active" id="tab-awareness" role="tabpanel">@Html.Partial("_UserSecurityAwareness")</div>
+                    <div class="tab-pane fade" id="tab-profile" role="tabpanel">@Html.Partial("_UserUpdateProfile")</div>
+                    <div class="tab-pane fade" id="tab-reset" role="tabpanel">@Html.Partial("_UserResetPassword")</div>
+                    <div class="tab-pane fade" id="tab-activation" role="tabpanel">@Html.Partial("_UserActivateDeactivate")</div>
+                    <div class="tab-pane fade" id="tab-mfa" role="tabpanel">@Html.Partial("_UserEnableMFAAdmin")</div>
+                    <div class="tab-pane fade" id="tab-role" role="tabpanel">@Html.Partial("_UserChangeRole")</div>
+                    <div class="tab-pane fade" id="tab-branch" role="tabpanel">@Html.Partial("_UserChangeBranch")</div>
+                    <div class="tab-pane fade" id="tab-session" role="tabpanel">@Html.Partial("_UserSessions")</div>
+                    <div class="tab-pane fade" id="tab-recovery" role="tabpanel">@Html.Partial("_UserGenerateNewRecoveryCode")</div>
+                    <div class="tab-pane fade" id="tab-permission" role="tabpanel">@Html.Partial("_UserManagePermissions")</div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            // Initialize DataTables
+            $('#myDataTable').DataTable();
+            $('#myDataTableT2').DataTable();
+
+            // Select all for Add Role Table
+            $('#selectAll').on('click', function () {
+                $('input[name="selectedMenus"]').prop('checked', this.checked);
+            });
+
+            // Select all for User Permission Table
+            $('#selectAllPermissions').on('click', function () {
+                $('.permission-checkbox').prop('checked', this.checked);
+            });
+        });
+
+        // Add User Roles handler
+        function submitUserRoles(userId) {
+            let selectedMenus = [];
+            $('input[name="selectedMenus"]:checked').each(function () {
+                selectedMenus.push(parseInt($(this).val()));
+            });
+
+            if (selectedMenus.length === 0) {
+                alert("Please select at least one role to assign.");
+                return;
+            }
+
+            $.post('/UserManagement/AddUserRoles', { userId: userId, selectedMenus: selectedMenus }, function (response) {
+                if (response.success) {
+                    toastr.success(response.message);
+                    //location.reload();
+                } else {
+                    toastr.error(response.message);
+                }
+            });
+        }
+
+        // Delete Selected User Permissions
+        $('#deleteSelectedPermissionsBtn').on('click', function () {
+            let selected = $('.permission-checkbox:checked').map(function () {
+                return $(this).val();
+            }).get();
+
+            if (selected.length === 0) {
+                appalert("Please select permission(s) to delete.",3,1);
+                return;
+            }
+
+            alertify.confirm("Delete Selected Permissions",
+                "Are you sure you want to delete the selected permission(s)?",
+                function () {
+                    // ✅ User clicked YES
+                    $.ajax({
+                        url: '/UserManagement/DeleteUserPermission',
+                        type: 'POST',
+                        data: { userPermissionIds: selected },
+                        traditional: true, // Needed to serialize array properly
+                        success: function (response) {
+                            if (response.success) {
+                               
+                                appalert(response.message, 1, 1);
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                appalert(response.message, 3, 1);
+                            }
+                        },
+                        error: function () {
+                            appalert("Something went wrong while deleting permissions.",3,1);
+                            
+                        }
+                    });
+                },
+                function () {
+                    // ❌ User clicked CANCEL
+                    appalert("Deletion cancelled.",3,1);
+                });
+        });
+
+    </script>
+
+
+}

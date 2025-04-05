@@ -212,7 +212,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanApplicationP
                     return new HttpStatusCodeResult(HttpStatusCode.NoContent, "No data available for export.");
                 }
 
-                // ✅ Get exported by user
+                // ✅ GetAllowAnonymous exported by user
                 string exportedBy = Session["FullName"]?.ToString() ?? "Unknown";
 
                 // ✅ Generate Excel file

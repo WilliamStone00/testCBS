@@ -76,7 +76,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 this.HttpContext.Session["RPTBranchName"] = "All Branches";
             }
-            // Get the referrer URL
+            // GetAllowAnonymous the referrer URL
             string currentUrl = "/DailyTellerAssignation/TellerOpenningAndClossingStatus";
             if (Data == null || !Data.Any())
             {
@@ -393,7 +393,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         //        //this.HttpContext.Session["ReportName"] = "TellerStatement.rpt";
         //        //this.HttpContext.Session["rptpath"] = "~/AppFiles/Reporting/Transactions/Reciepts/TellerStatement.rpt";
         //        //this.HttpContext.Session["rpttitle"] = "AccountStatementTeller";
-        //        //// Get the referrer URL
+        //        //// GetAllowAnonymous the referrer URL
         //        //string currentUrl = "/DailyTellerAssignation/DownloadTellerOperations";
         //        //if (Data == null || !Data.Any())
         //        //{

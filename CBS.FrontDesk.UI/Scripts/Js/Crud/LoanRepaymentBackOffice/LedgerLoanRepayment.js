@@ -294,7 +294,7 @@ function PostLoanRepayment() {
         message,
         '/LoanRepaymentBackOffice/PostRequestCash',
         deposits,
-        'LoanRepaymentMomocashCollection', ledgerAccountId
+        'LoanRepaymentGLAccountNoneCash', ledgerAccountId
     );
 }
 appalert("❌ Some loans have missing values. Please enter valid amounts before proceeding.", 3, 1);
@@ -357,11 +357,11 @@ function successCallback(response, operationType) {
     appalert(response.message, 1, 1);
     resetDepositorForm();
     switch (operationType) {
-        case 'CashInMomocashCollection':
-            GetMemberData($("#customerId").val(), '_MomocashCollectionDesk', 'datalistingview', 'cashin');
+        case 'LoanRepaymentGLAccountNoneCash':
+            GetMemberData($("#customerId").val(), '_LedgerLoanRepaymentForm', 'datalistingview', 'loan_repayment_gl');
             break;
         case 'LoanRepaymentMomocashCollection':
-            GetMemberData($("#customerId").val(), '_MomocashCollectionDesk', 'datalistingview', 'repayment');
+            GetMemberData($("#customerId").val(), '_LedgerLoanRepaymentForm', 'datalistingview', 'loan_repayment_gl');
             break;
         default:
             break;

@@ -1338,8 +1338,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public DateTime? DateInterestWastStoped { get; set; } = DateTime.MinValue;
         public DateTime? LastDeliquecyProcessedDate { get; set; } // Nullable to support unprocessed loans
 
-
-
+        public string BranchName { get; set; }
         public int NumberOfInstallments { get; set; }
         public string RepaymentCycle { get; set; }
         public string LoanDurarion { get; set; }

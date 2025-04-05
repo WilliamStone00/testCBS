@@ -76,7 +76,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             // Retrieve the user name from the session
             var userName = Session["FullName"]?.ToString() ?? "Unknown User";
 
-            // Get the current date and time
+            // GetAllowAnonymous the current date and time
             var validationDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             cashCeilingRequest.ValidationCashCeilingRequestCommand=new ValidationCashCeilingRequestCommand { Amount=cashCeilingRequest.CashoutRequestAmount, Id=cashCeilingRequest.Id, CurrencyNote=new Data.Entity.Accounting.CurrencyNotesRequest() };
             // Set ApprovedComment based on the RequestType

@@ -1,5 +1,6 @@
 ﻿using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -54,6 +55,7 @@ namespace CBS.FrontDesk.Data.UserManagement
         public string BarcodeImageUrl { get; set; }
         public bool IsVerified { get; set; }
         public bool IsBlocked { get; set; }
+        public string ResetPasswordReason { get; set; }
         public bool ChangePasswordOnFirstLogin { get; set; }
         public DateTime CreatedDate { get; set; }
         public Guid? CreatedBy { get; set; }
@@ -66,21 +68,128 @@ namespace CBS.FrontDesk.Data.UserManagement
         public string provider { get; set; }
         public string name { get; set; }
         public string roleName { get; set; }
+        public string SessionRecoveryCode { get; set; }
+        public bool IsDefaultSessionRecoveryCode { get; set; }
+        public string NationalIdentityCardNumber { get; set; }
+        public DateTime IssueDate { get; set; }
+        public DateTime ExpiryDate { get; set; }
+        public string PlaceOfIssue { get; set; }
+        public DateTime LastDateOfPasswordChange { get; set; }
+        public string ReasonForBlockingAccount { get; set; }
+
+
         public Bank Bank { get; set; }
         public Branch Brancch { get; set; }
         public string strlastLoginDate { get; set; }
         public ChangePassword ChangePassword { get; set; } = new ChangePassword();
         public ResetPassword ResetPassword { get; set; } = new ResetPassword();
-        public List<UserClaim> userClaims { get; set; }
+        public UserSessionDto UserSession { get; set; } = new UserSessionDto();
+        public List<UserPermission> UserPermissions { get; set; }
         public HttpPostedFileBase FileUpload { get; set; }
         public string ImageVirtualPath { get; set; }
         public MFAActivation MFAActivation { get; set; }
+        public List<PermissionMenuLoader> PermissionMenuLoaders { get; set; }=new List<PermissionMenuLoader>();
 
         public User()
         {
             isActive = true;
             MFAActivation = new MFAActivation();
             ImageVirtualPath = "~/Appfiles/Images/p.jpg";
+        }
+    }
+    public class GetAllUserSessionsDataTableQuery
+    {
+        public DataTableOptions DataTableOptions { get; set; }
+
+        // Searchable session fields
+        public string UserName { get; set; }
+        public string SessionCode { get; set; }
+        public string FullName { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public string Role { get; set; }
+        public bool IsExpired { get; set; }
+        // CreatedDate filter
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+
+        public GetAllUserSessionsDataTableQuery()
+        {
+            DataTableOptions=new DataTableOptions();
+        }
+    }
+    public class UserLightDto
+    {
+
+        public string Id { get; set; }
+        // === Personal Information ===
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string ProfilePhoto { get; set; }
+        public string Address { get; set; }
+        public string FullName { get; set; }
+
+        // === Security & Login ===
+        public bool IsVerified { get; set; }
+        public bool IsBlocked { get; set; }
+        public int LoginAttempts { get; set; }
+        public bool ChangePasswordOnFirstLogin { get; set; }
+        public string LoginMethod { get; set; } // Password, MFA, OTP, etc.
+        public bool IsGoogleAuthenticatorEnabled { get; set; }
+        public string GoogleAuthenticatorSecretKey { get; set; }
+        public string BarcodeImageUrl { get; set; }
+        public DateTime? LastLoginDate { get; set; }
+
+        // === Account State ===
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool IsUsedByAnotherUser { get; set; }
+        public bool IsRoot { get; set; }
+        public string SessionRecoveryCode { get; set; }
+
+        // === Organization Info ===
+        public string BranchId { get; set; }
+        public string BankId { get; set; }
+        public string OrganizationId { get; set; }
+
+        // === Token Management ===
+        public string RefreshToken { get; set; }
+        public string UserToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
+        public int ExpirationTime { get; set; }
+        public DateTime ExpirationDate { get; set; }
+
+        // === Email Verification ===
+        public string EmailVerificationCode { get; set; }
+        public DateTime EmailVerificationExpiry { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string RoleName { get; set; }
+        public string UserName { get; set; }
+        public string PhoneNumber { get; set; }
+    }
+
+    public class GetAllUsersDataTableQuery
+    {
+        public DataTableOptions DataTableOptions { get; set; }
+
+        public string UserName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string BranchId { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsBlocked { get; set; }
+        public bool IsVerified { get; set; }
+
+        public string Role { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+
+        public GetAllUsersDataTableQuery()
+        {
+            DataTableOptions = new DataTableOptions();
         }
     }
     public class ChangePassword
@@ -101,26 +210,74 @@ namespace CBS.FrontDesk.Data.UserManagement
         [Compare("password", ErrorMessage = "The password and confirmation password do not match.")]
         public string confirmPassword { get; set; }
     }
+
     public class ResetPassword
     {
-
+        [Required(ErrorMessage = "Username is required.")]
         public string userName { get; set; }
+
         public string password { get; set; }
 
+        [Required(ErrorMessage = "Reset reason is required.")]
+        [StringLength(500, ErrorMessage = "Reason cannot exceed 500 characters.")]
+        public string ResetPasswordReason { get; set; }
     }
 
+    public class GetUserSessionBySessionCodeQuery
+    {
+        public string SessionCode { get; set; }
+        public string Username { get; set; }
+
+    }
     public class UserSessionDto
     {
-        public Guid Id { get; set; }
-        public Guid UserId { get; set; }
+        public string Id { get; set; }
+        public string UserId { get; set; }
+        public string UserName { get; set; }
+        public string SessionCode { get; set; }
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
-        public string DeviceName { get; set; }
+        public string FullName { get; set; }
         public string IpAddress { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? ExpiresAt { get; set; }
-        public UserDto User { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime ExpiryDate { get; set; }
+        public string BranchId { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchName { get; set; }
+        public string Role { get; set; }
+        public string ErrorMessage { get; set; }
+        public int NumberOfSessionsOpen { get; set; }
+        public string SessionRecoveryCode { get; set; }
+        public bool IsDefaultSessionRecoveryCode { get; set; }
+        public bool IsExpired { get; set; }
+
+        public string SessionStatus { get; set; }
+        public User User { get; set; }
+        public UserDto UserAuthDto { get; set; }
     }
+    public class UserSessionDataTable
+    {
+        public string Id { get; set; }
+        public string UserId { get; set; }
+        public string UserName { get; set; }
+        public string SessionCode { get; set; }
+        public string FullName { get; set; }
+        public string IpAddress { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime ExpiryDate { get; set; }
+        public string BranchId { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchName { get; set; }
+        public string Role { get; set; }
+        public string ErrorMessage { get; set; }
+        public int NumberOfSessionsOpen { get; set; }
+        public string SessionRecoveryCode { get; set; }
+        public bool IsDefaultSessionRecoveryCode { get; set; }
+        public bool IsExpired { get; set; }
+
+        public string SessionStatus { get; set; }
+    }
+
     public class MFAActivation
     {
         [Required(ErrorMessage = "Email is required.")]
@@ -139,6 +296,12 @@ namespace CBS.FrontDesk.Data.UserManagement
         public string FullName { get; set; }
 
         public string ReturnUrl { get; set; }
+    }
+    public class GenerateNewRecoveryCodeCommand
+    {
+        public string UserId { get; set; }
+
+
     }
 
 }

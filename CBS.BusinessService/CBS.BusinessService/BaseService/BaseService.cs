@@ -1622,6 +1622,10 @@ namespace BusinessServices
         {
             return HttpContext.Current.Session["UserName"].ToString();
         }
+        public string GetSessionCode()
+        {
+            return HttpContext.Current.Session["SessionCode"].ToString();
+        }
         public string GetGroup()
         {
             string str = HttpContext.Current.Session["GroupName"].ToString();
@@ -1653,6 +1657,11 @@ namespace BusinessServices
         public string GetBankCode()
         {
             string str = HttpContext.Current.Session["BankCode"].ToString();
+            return str;
+        }
+        public string GetRoleId()
+        {
+            string str = HttpContext.Current.Session["RoleId"].ToString();
             return str;
         }
         public string GetBranchCode()

@@ -122,7 +122,7 @@ namespace CBS.BusinessService.Accounts
                 // Call the API to get cash replenishment data
                 var couApiResponse = await _transactionBaseConfigApiHelper.PostAsync<ResponseObject<List<CashReplenishmentPrimaryTeller>>>(APICallHelper.GetAllPrimaryTellerCashReplenishmentByBranch, query);
 
-                // Get tellers and branches
+                // GetAllowAnonymous tellers and branches
                 var tellers = await _tellerServices.GetTellers();
                 var branch = await _branchServices.GetBranch(branchId);
 

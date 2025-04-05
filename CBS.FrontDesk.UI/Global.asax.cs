@@ -5,7 +5,9 @@ using CBS.BusinessService.Config;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Service;
+using CBS.FrontDesk.UI.Filter;
 using CBS.FrontDesk.UI.Filters;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using System;
@@ -38,10 +40,13 @@ namespace CBS.FrontDesk.UI
             UnityConfig.RegisterComponents();
             MvcHandler.DisableMvcResponseHeader = true;
             GlobalFilters.Filters.Add(new UserAuditFilter()); // Register UserAuditFilter
+            ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
             ConnectionMonitoringService connectionService = new ConnectionMonitoringService();
+
         }
-       
-      
+
+
+
         protected void Application_EndRequest()
         {
             if (HttpContext.Current.Response.StatusCode == 401)
@@ -53,27 +58,39 @@ namespace CBS.FrontDesk.UI
 
         protected void Application_PreSendRequestHeaders()
         {
-            // Remove server version details and set custom server Name
+            // 🔄 Remove existing headers not removed by <remove> in web.config
             Response.Headers.Remove("Server");
             Response.Headers.Remove("X-AspNet-Version");
-            Response.Headers.Remove("X-Powered-By");
-            Response.Headers.Add("Server", "Flux Server TBS");
-            Response.Headers.Add("X-Powered-By", "Flux");
-            Response.Headers.Add("X-Content-Type-Options", "nosniff");
-            Response.Headers.Add("X-Frame-Options", "DENY");
-            Response.Headers.Add("X-XSS-Protection", "1; mode=block");
-            Response.Headers.Add("Referrer-Policy", "no-referrer");
-            Response.Headers.Add("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
-            Response.Headers.Add("Permissions-Policy", "geolocation=(), microphone=(), camera=(), payment=()");
 
-            // Set secure cookie attributes
+            // 🛡️ Add branding (not security-sensitive)
+            Response.Headers.Add("Server", "SERVER FLUX TSC");
+            Response.Headers.Add("X-Powered-By", "FLUXSAL CAMEROON"); // Only if you're OK showing brand
+
+            // ✅ These are already defined in web.config, so DO NOT add them again:
+            // • Strict-Transport-Security
+            // • X-Frame-Options
+            // • X-Content-Type-Options
+            // • X-XSS-Protection
+
+            // 🔒 Additional secure headers (not present in web.config)
+            if (!Response.Headers.AllKeys.Contains("Referrer-Policy"))
+                Response.Headers.Add("Referrer-Policy", "no-referrer");
+
+            if (!Response.Headers.AllKeys.Contains("Permissions-Policy"))
+                Response.Headers.Add("Permissions-Policy", "geolocation=(), microphone=(), camera=(), payment=()");
+
+            // 🍪 Secure cookies with best practices
             foreach (var cookieKey in Response.Cookies.AllKeys)
             {
-                Response.Cookies[cookieKey].Secure = true; // Requires HTTPS
-                Response.Cookies[cookieKey].HttpOnly = true; // Helps mitigate XSS attacks
-                Response.Cookies[cookieKey].SameSite = SameSiteMode.Strict; // Prevents CSRF attacks
+                var cookie = Response.Cookies[cookieKey];
+                if (cookie == null) continue;
+
+                cookie.Secure = true; // HTTPS only
+                cookie.HttpOnly = true; // No access from JS
+                cookie.SameSite = SameSiteMode.Strict; // CSRF protection
             }
         }
+
         protected void Application_AuthenticateRequest(Object sender, EventArgs e)
         {
             HttpCookie authCookie = Context.Request.Cookies[FormsAuthentication.FormsCookieName];
@@ -111,136 +128,146 @@ namespace CBS.FrontDesk.UI
         //    }
         //}
 
-        protected void Application_Error(object sender, EventArgs e)
+        //protected void Application_Error(object sender, EventArgs e)
+        //{
+        //    var context = HttpContext.Current;
+        //    var exception = Server.GetLastError();
+        //    var httpException = exception as HttpException;
+
+        //    // ✅ Skip JSON/AJAX calls to avoid disrupting front-end flow
+        //    if (context?.Request?.Headers["X-Requested-With"] == "XMLHttpRequest")
+        //    {
+        //        Response.Clear();
+        //        Response.StatusCode = 500;
+        //        Response.ContentType = "application/json";
+        //        Response.Write("{ \"success\": false, \"message\": \"An unexpected error occurred.\" }");
+        //        Response.End();
+        //        return;
+        //    }
+
+        //    Response.Flush();
+        //    Server.ClearError();
+
+        //    if (httpException != null)
+        //    {
+        //        var code = httpException.GetHttpCode();
+        //        string message = HttpUtility.UrlEncode(httpException.Message);
+
+        //        switch (code)
+        //        {
+        //            case 400: Response.Redirect("~/Error/BadRequest?message=" + message); break;
+        //            case 401: Response.Redirect("~/Error/Unauthorized?message=" + message); break;
+        //            case 403: Response.Redirect("~/Error/Forbidden?message=" + message); break;
+        //            case 404: Response.Redirect("~/Error/NotFound?message=" + message); break;
+        //            case 500: Response.Redirect("~/Error/InternalServer?message=" + message); break;
+        //            case 503: Response.Redirect("~/Error/ServiceUnavailable?message=" + message); break;
+        //            default: Response.Redirect("~/Error?message=" + message); break;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        string message = HttpUtility.UrlEncode(exception?.Message ?? "Unexpected error");
+        //        Response.Redirect("~/Error?message=" + message);
+        //    }
+        //}
+
+
+        //protected void Application_AcquireRequestState(Object sender, EventArgs e)
+        //{
+        //    var context = HttpContext.Current;
+
+        //    if (context != null && context.Session != null)
+        //    {
+        //        var encryptedToken = context.Session["EncryptedJWToken"] as string;
+
+        //        // Check if the encrypted token is null or empty
+        //        if (string.IsNullOrEmpty(encryptedToken))
+        //        {
+        //            // Redirect to login if not MFA or Change Password
+        //            if (context.Request.Url.AbsolutePath != FormsAuthentication.LoginUrl)
+        //            {
+        //                FormsAuthentication.SignOut();
+        //                context.Session.Clear();
+        //                context.Session.Abandon();
+        //                context.Response.Clear(); // Clear any existing content
+        //                context.Response.Redirect(FormsAuthentication.LoginUrl, false); // Set endResponse to false
+        //                context.ApplicationInstance.CompleteRequest(); // Complete the request without aborting the thread
+        //                return;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            try
+        //            {
+        //                // Decrypt and validate the token
+        //                var token = TokenEncryptionHelper.DecryptToken(encryptedToken);
+        //                var handler = new JwtSecurityTokenHandler();
+        //                var jwtToken = handler.ReadJwtToken(token);
+
+        //                if (jwtToken.ValidTo > DateTime.UtcNow)
+        //                {
+        //                    // Set up the user principal with the JWT claims
+        //                    SetupUserPrincipal(jwtToken);
+
+        //                    context.Session.Timeout = (int)(jwtToken.ValidTo - DateTime.UtcNow).TotalMinutes;
+        //                }
+        //                else
+        //                {
+        //                    // Token expired, remove session and redirect to login
+        //                    context.Session.Remove("EncryptedJWToken");
+        //                    FormsAuthentication.SignOut();
+        //                    context.Session.Clear();
+        //                    context.Session.Abandon();
+        //                    if (context.Request.Url.AbsolutePath != FormsAuthentication.LoginUrl)
+        //                    {
+        //                        context.Response.Clear(); // Clear any existing content
+        //                        context.Response.Redirect(FormsAuthentication.LoginUrl, false); // Set endResponse to false
+        //                        context.ApplicationInstance.CompleteRequest(); // Complete the request without aborting the thread
+        //                    }
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                // Handle exception, clean up session, and redirect to login
+        //                context.Session.Remove("EncryptedJWToken");
+        //                FormsAuthentication.SignOut();
+        //                context.Session.Clear();
+        //                context.Session.Abandon();
+        //                if (context.Request.Url.AbsolutePath != FormsAuthentication.LoginUrl)
+        //                {
+        //                    context.Response.Clear(); // Clear any existing content
+        //                    context.Response.Redirect(FormsAuthentication.LoginUrl, false); // Set endResponse to false
+        //                    context.ApplicationInstance.CompleteRequest(); // Complete the request without aborting the thread
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+
+        protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
         {
-            var exception = Server.GetLastError();
-            var httpException = exception as HttpException;
-
-            Response.Clear();
-            Server.ClearError();
-
-            if (httpException != null)
+            HttpCookie authCookie = Request.Cookies["TSC"];
+            if (authCookie != null)
             {
-                int errorCode = httpException.GetHttpCode();
-
-                // Redirect based on error code
-                switch (errorCode)
+                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                if (!authTicket.Expired)
                 {
-                    case 400:
-                        Response.Redirect("~/Error/BadRequest?message=" + httpException.Message);
-                        break;
-                    case 401:
-                        Response.Redirect("~/Error/Unauthorized?message=" + httpException.Message);
-                        break;
-                    case 403:
-                        Response.Redirect("~/Error/Forbidden?message=" + httpException.Message);
-                        break;
-                    case 404:
-                        Response.Redirect("~/Error/NotFound?message=" + httpException.Message);
-                        break;
-                    case 500:
-                        Response.Redirect("~/Error/InternalServer?message=" + httpException.Message);
-                        break;
-                    case 503:
-                        Response.Redirect("~/Error/ServiceUnavailable?message=" + httpException.Message);
-                        break;
-                    // Add more cases for other error codes if needed
-                    default:
-                        Response.Redirect("~/Error?message=" + httpException.Message);
-                        break;
+                    var user = JsonConvert.DeserializeObject<CustomSerializeModel>(authTicket.UserData);
+                    CustomPrincipal principal = new CustomPrincipal(authTicket.Name);
+                    principal.UserId = user.Id;
+                    principal.FullName = user.FullName;
+                    principal.UserName = user.UserName;
+                    principal.Roles = user.RoleName;
+                    principal.SessionID = user.SessionID;
+                    principal.Email = user.Email;
+                    principal.SessionCode = user.SessionCode;
+                    principal.Phonenumber = user.Phonenumber;
+                    HttpContext.Current.User = principal;
                 }
-            }
-            else
-            {
-                // Redirect to a generic error page for other types of exceptions
-                Response.Redirect("~/Error?message=" + exception.Message);
+
             }
         }
-
-        private void SetupUserPrincipal(JwtSecurityToken jwtToken)
-        {
-            var claims = jwtToken.Claims.ToList();
-            var identity = new ClaimsIdentity(claims, "Jwt");
-            var principal = new ClaimsPrincipal(identity);
-
-            HttpContext.Current.User = principal;
-            Thread.CurrentPrincipal = principal;
-        }
-
-        protected void Application_AcquireRequestState(Object sender, EventArgs e)
-        {
-            var context = HttpContext.Current;
-
-            if (context != null && context.Session != null)
-            {
-                var encryptedToken = context.Session["EncryptedJWToken"] as string;
-
-                // Check if the encrypted token is null or empty
-                if (string.IsNullOrEmpty(encryptedToken))
-                {
-                    // Redirect to login if not MFA or Change Password
-                    if (context.Request.Url.AbsolutePath != FormsAuthentication.LoginUrl)
-                    {
-                        FormsAuthentication.SignOut();
-                        context.Session.Clear();
-                        context.Session.Abandon();
-                        context.Response.Clear(); // Clear any existing content
-                        context.Response.Redirect(FormsAuthentication.LoginUrl, false); // Set endResponse to false
-                        context.ApplicationInstance.CompleteRequest(); // Complete the request without aborting the thread
-                        return;
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        // Decrypt and validate the token
-                        var token = TokenEncryptionHelper.DecryptToken(encryptedToken);
-                        var handler = new JwtSecurityTokenHandler();
-                        var jwtToken = handler.ReadJwtToken(token);
-
-                        if (jwtToken.ValidTo > DateTime.UtcNow)
-                        {
-                            // Set up the user principal with the JWT claims
-                            SetupUserPrincipal(jwtToken);
-
-                            context.Session.Timeout = (int)(jwtToken.ValidTo - DateTime.UtcNow).TotalMinutes;
-                        }
-                        else
-                        {
-                            // Token expired, remove session and redirect to login
-                            context.Session.Remove("EncryptedJWToken");
-                            FormsAuthentication.SignOut();
-                            context.Session.Clear();
-                            context.Session.Abandon();
-                            if (context.Request.Url.AbsolutePath != FormsAuthentication.LoginUrl)
-                            {
-                                context.Response.Clear(); // Clear any existing content
-                                context.Response.Redirect(FormsAuthentication.LoginUrl, false); // Set endResponse to false
-                                context.ApplicationInstance.CompleteRequest(); // Complete the request without aborting the thread
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        // Handle exception, clean up session, and redirect to login
-                        context.Session.Remove("EncryptedJWToken");
-                        FormsAuthentication.SignOut();
-                        context.Session.Clear();
-                        context.Session.Abandon();
-                        if (context.Request.Url.AbsolutePath != FormsAuthentication.LoginUrl)
-                        {
-                            context.Response.Clear(); // Clear any existing content
-                            context.Response.Redirect(FormsAuthentication.LoginUrl, false); // Set endResponse to false
-                            context.ApplicationInstance.CompleteRequest(); // Complete the request without aborting the thread
-                        }
-                    }
-                }
-            }
-        }
-
-
-
 
 
 

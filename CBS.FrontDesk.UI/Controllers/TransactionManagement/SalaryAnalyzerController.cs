@@ -17,7 +17,7 @@ using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
     public class SalaryAnalyzerController : BaseController
     {
         // GET: SalaryAnalyzer

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.UserManagement;
+using System;
 using System.Linq;
 using System.Security.Principal;
 
@@ -16,10 +18,11 @@ namespace CBS.FrontDesk.Service
         public string[] Roles { get; set; }
         public string SessionID { get; set; }
         public string Phonenumber { get; set; }
-        public string Token { get; set; }
         public string RefresherID { get; set; }
         public string Password { get; set; }
- 
+        public string SessionCode { get; set; }
+        public UserSessionDto  UserSession { get; set; }
+
 
         #endregion
 

@@ -16,30 +16,42 @@
     </div>
 </div>
 
-<!-- Search & Filters Section -->
-<div class="card mb-3 shadow-sm">
-    <div class="card-header bg-light text-dark fw-bold d-flex justify-content-between align-items-center">
-        <span>
-            <i class="mdi mdi-filter-outline me-2"></i> Remittance Search and Filters
-        </span>
-        <button id="toggleFilterButton" class="btn btn-sm btn-light" data-bs-toggle="collapse" data-bs-target="#filterContent">
-            <i class="mdi mdi-chevron-down"></i> Show Filters
-        </button>
-    </div>
-    <div class="card-body collapse" id="filterContent">
-        <div class="row">
-            <!-- Date Filters -->
-            <div class="col-md-3">
-                <label for="dateFrom" class="form-label fw-bold">Date From:</label>
-                <input type="date" id="dateFrom" class="form-control shadow-sm" placeholder="dd/MM/yyyy" />
+<!-- Advanced Filter Panel -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced Remittance Filters</h5>
+    <div class="card p-3 mb-3 bg-light">
+        <div class="row mb-3">
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byBranch" />
+                <label class="form-check-label fw-bold" for="byBranch">Filter By Branch</label>
             </div>
-            <div class="col-md-3">
-                <label for="dateTo" class="form-label fw-bold">Date To:</label>
-                <input type="date" id="dateTo" class="form-control shadow-sm" placeholder="dd/MM/yyyy" />
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byStatus" />
+                <label class="form-check-label fw-bold" for="byStatus">Filter By Status</label>
             </div>
-            <!-- Remittance Status -->
-            <div class="col-md-3">
-                <label for="remittanceStatus" class="form-label fw-bold">Status:</label>
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byDate" />
+                <label class="form-check-label fw-bold" for="byDate">Filter By Date Range</label>
+            </div>
+        </div>
+
+        <!-- Branch Filter Section -->
+        <div id="branchFilterSection" class="row mb-3" style="display:none;">
+            <div class="col-md-12">
+                <label for="branchSelection" class="form-label fw-bold">Select Branch</label>
+                @Html.DropDownListFor(
+                    m => m.SourceBranchId,
+                    new SelectList(ViewBag.Branches, "Id", "Name"),
+                    "--- Select Branch ---",
+                    new { @class = "form-control shadow-sm select2", @id = "branchSelection" }
+                )
+            </div>
+        </div>
+
+        <!-- Status Filter Section -->
+        <div id="statusFilterSection" class="row mb-3" style="display:none;">
+            <div class="col-md-12">
+                <label for="remittanceStatus" class="form-label fw-bold">Select Status</label>
                 <select id="remittanceStatus" class="form-select shadow-sm">
                     <option value="all" selected>All</option>
                     <option value="Approved">Approved</option>
@@ -49,8 +61,23 @@
                     <option value="Withdrawn">Withdrawn</option>
                 </select>
             </div>
-            <!-- Query Parameter Selection -->
-            <div class="col-md-3">
+        </div>
+
+        <!-- Date Range Filter Section -->
+        <div id="dateRangeSection" class="row mb-3" style="display:none;">
+            <div class="col-md-6">
+                <label for="dateFrom" class="form-label fw-bold">Date From</label>
+                <input type="date" id="dateFrom" class="form-control shadow-sm" placeholder="dd/MM/yyyy" />
+            </div>
+            <div class="col-md-6">
+                <label for="dateTo" class="form-label fw-bold">Date To</label>
+                <input type="date" id="dateTo" class="form-control shadow-sm" placeholder="dd/MM/yyyy" />
+            </div>
+        </div>
+
+        <!-- Query Parameter Filters -->
+        <div class="row mb-3">
+            <div class="col-md-4">
                 <label for="queryParameter" class="form-label fw-bold">Search By:</label>
                 <select id="queryParameter" class="form-select shadow-sm">
                     <option value="all" selected>All</option>
@@ -68,58 +95,45 @@
                     <option value="branchid">Branch ID</option>
                 </select>
             </div>
-        </div>
-
-        <div class="row mt-3">
-            <!-- Branch Selection -->
-            <div class="col-md-9">
-                <label for="branchSelection" class="form-label fw-bold">Branch:</label>
-                @Html.DropDownListFor(
-                    m => m.SourceBranchId,
-                    new SelectList(ViewBag.Branches, "Id", "Name"),
-                    "---Select All---",
-                    new { @class = "form-control shadow-sm select2", @id = "branchSelection" }
-                )
-            </div>
-           
-            <div class="col-md-3">
-                <label for="queryValue" class="form-label fw-bold">Search Query:</label>
+            <div class="col-md-8">
+                <label for="queryValue" class="form-label fw-bold">Search Value:</label>
                 <input type="text" id="queryValue" class="form-control shadow-sm" placeholder="Enter search value..." />
             </div>
-
-        </div>
-        <!-- Search & Reset Buttons -->
-        <div class="row mt-3">
-            <div class="col-md-12 d-flex justify-content-end">
-                <button id="searchButton" class="btn btn-primary me-2">
-                    <i class="mdi mdi-magnify me-1"></i> Search
-                </button>
-                <button id="resetButton" class="btn btn-secondary me-2">
-                    <i class="mdi mdi-refresh me-1"></i> Reset Filter
-                </button>
-                <button id="exportButton" class="btn btn-success" onclick="exportRemittanceData()">
-                    <i class="mdi mdi-file-excel me-1"></i> Export
-                </button>
-            </div>
         </div>
     </div>
-</div>
 
-
-
-<!-- Remittance Transactions Table -->
-<div class="card shadow-sm mt-3" id="remittanceDataCard" style="display: none;">
-    <div class="card-header bg-light text-dark fw-bold">
-        <i class="mdi mdi-table me-2"></i> Remittance Transactions Table
-    </div>
-    <div class="card-body">
-        <div id="remittanceDataTableContainer">
-            @*@Html.Partial("_RemittanceData")*@
+    <!-- Action Buttons -->
+    <div class="row mt-2">
+        <div class="col-md-12 d-flex">
+            <button id="searchButton" class="btn btn-primary me-2 w-100">
+                <i class="mdi mdi-magnify me-1"></i> Search
+            </button>
+            <button id="resetButton" class="btn btn-secondary me-2 w-100">
+                <i class="mdi mdi-refresh me-1"></i> Reset Filter
+            </button>
+            <button id="exportButton" class="btn btn-success w-100">
+                <i class="mdi mdi-file-excel me-1"></i> Export
+            </button>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            // Toggle sections based on checkbox
+            $('#byBranch').on('change', function () {
+                $('#branchFilterSection').toggle(this.checked);
+            });
+
+            $('#byStatus').on('change', function () {
+                $('#statusFilterSection').toggle(this.checked);
+            });
+
+            $('#byDate').on('change', function () {
+                $('#dateRangeSection').toggle(this.checked);
+            });
+        });
+    </script>
     <script src="~/Scripts/Js/Crud/Remittance/RemittanceQuery.js"></script>
 }

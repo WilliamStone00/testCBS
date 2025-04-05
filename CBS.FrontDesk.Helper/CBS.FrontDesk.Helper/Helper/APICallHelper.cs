@@ -9,7 +9,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllFinancialDocument = "/api/v1/Document";
         public static string GetlocationInforUrl = "/api/v1/Country/Location/CMR";
         //TrialBalanceFile  
-        //Get,Update,Delete TrialBalanceFile By Id
+        //GetAllowAnonymous,Update,Delete TrialBalanceFile By Id
         public static string Get_Update_Delete_TrialBalanceFile = "/api/v1/TrialBalanceFile/{0}";
 
         public static string GetAllUserDownLoads = "/api/v1/DownloadFileByUserIdQuery/{0}";
@@ -21,9 +21,9 @@ namespace CBS.FrontDesk.Helper
         /// <summary>
         /// CashMovementTracker
         /// </summary>
-        //Get,Update,Delete AccountClass By Id
+        //GetAllowAnonymous,Update,Delete AccountClass By Id
         public static string Get_CashMovementTracker = "/api/v1/CashMovementTracker/GetCashMovementTrackerQuery/{0}";
-        //Get All AccountClass
+        //GetAllowAnonymous All AccountClass
         public static string Update_CashMovementTracker = "/api/v1/CashMovementTracker/UpdateCashMovementTrackerCommand/{0}";
         public static string Delete_CashMovementTracker = "/api/v1/CashMovementTracker/{0}";
 
@@ -33,9 +33,9 @@ namespace CBS.FrontDesk.Helper
         /// <summary>
         /// CashMovementTrackerConfiguration
         /// </summary>
-        //Get,Update,Delete AccountClass By Id
+        //GetAllowAnonymous,Update,Delete AccountClass By Id
         public static string Get_CashMovementTrackerConfiguration = "/api/v1//CashMovementTrackingConfiguration/GetCashMovementTrackingConfigurationQuery/{0}";
-        //Get All AccountClass
+        //GetAllowAnonymous All AccountClass
         public static string Update_CashMovementTrackerConfiguration = "/api/v1/CashMovementTrackingConfiguration/UpdateCashMovementTrackingConfigurationCommand/{0}";
         public static string Delete_CashMovementTrackerConfiguration = "/api/v1/CashMovementTrackingConfiguration/{0}";
 
@@ -50,7 +50,7 @@ namespace CBS.FrontDesk.Helper
         public static string MFAAuthentication = "/api/v1/MFA/MFALogin";
         public static string Authentication = "/api/Authentication/Session/Login";
         public static string RefreshToken = " /api/Authentication/Session/RefreshToken";
-        public static string SessionLogout = "/api/UserSession/Logout";
+        public static string SessionLogout = "/api/Session/logout";
 
         //CreateMemberAccountActivation
         public static string CreateMemberAccountActivation = "/api/v1/MemberAccountActivation";
@@ -145,11 +145,15 @@ namespace CBS.FrontDesk.Helper
         public static string GetRecentRegisteredUsers = "/api/User/GetRecentlyRegisteredUsers";
         public static string UpdateUser = "/api/User/{0}";
         public static string GetUserSessions = "/api/UserSession/GetUser/Sessions/{0}";
-        
-    
-    //FLoginChangePasswordCommand
-    //Role
-    public static string Get_Update_Delete_Role = "/api/Role/{0}";
+        public static string GetUserSessionByUserNameAndCode = "/api/Session/by-session-code";
+        public static string InvalidateAllActivetUsers = "/api/Session/invalidate-by-recovery-code";
+        public static string LogoutuserSessions = "/api/Session/logout";
+        public static string GenerateRecoveryCode = "/api/Session/generate-recovery-code";
+
+
+        //FLoginChangePasswordCommand
+        //Role
+        public static string Get_Update_Delete_Role = "/api/Role/{0}";
         public static string GetAllRoles = "/api/Role";
         public static string CreateRole = "/api/Role";
         //
@@ -158,9 +162,10 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_UserPermission = "/api/UserPermission/{0}";
         public static string GetAllUserPermission = "/api/UserPermissions";
         public static string CreateUserPermission = "/api/UserPermission";
+        public static string DeleteUserPermission = "/api/UserPermission/Delete";
         public static string GetUserPermissions = "/api/UserPermission/User/{0}";
         public static string GetAllUserRoles = "/api/RoleUsers/GetAllUserRoles";
-
+        
         //RolePermission
         public static string Get_Update_Delete_RolePermission = "/api/RolePermission/{0}";
         public static string GetAllRolePermission = "/api/RolePermissions";
@@ -258,7 +263,7 @@ namespace CBS.FrontDesk.Helper
         public static string ChangePhonuNumberRequest = "/api/v1/ChangeCustomerPhone/change-phone-number";
         public static string ApprovePhoneNumberRequest = "/api/v1/ChangeCustomerPhone/approve-phone-number";
         public static string GetPendingPhoneNumberChangeRequest = "/api/v1/ChangeCustomerPhone/History/{0}";
-        public static string GetChangeCustomerPhone = "/api/v1/ChangeCustomerPhone/Get-History-byid/{0}";
+        public static string GetChangeCustomerPhone = "/api/v1/ChangeCustomerPhone/GetAllowAnonymous-History-byid/{0}";
         public static string DeletePhoneNumberChnageRequest = "/api/v1/ChangeCustomerPhone/{0}";
 
         //GroupType
@@ -551,7 +556,10 @@ namespace CBS.FrontDesk.Helper
         public static string LoaDataTablePaggination = "/api/v1/Loan/Paggination-DataTable";
 
 
-
+        public static string LoaDataTablePagginationFroCmoney = "/api/v1/cmoney/members/activations/datatable";
+        public static string LoadDataTablePagginationForUsers = "/api/User/datatable";
+        public static string LoadDataTablePagginationForUserSessions = "/api/Session/datatable";
+        public static string LoadDataTablePagginationForUserSession = "/api/Session/datatable";
 
         ///api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{userid}
         ///api/v1/Loan/SearchByAnyCriterialQuery
@@ -696,26 +704,26 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllOperationServicesAccountingRuleEntryQuery = "/api/v1/AccountingEntry/OperationServicesAccountingRuleEntryQuery/{0}";
         //
         //OperationEvent
-        //Get,Update,Delete OperationEvent By Id
+        //GetAllowAnonymous,Update,Delete OperationEvent By Id
         public static string Get_Update_Delete_OperationEvent = "/api/v1/OperationEvent/{0}";
-        //Get All OperationEvent
+        //GetAllowAnonymous All OperationEvent
         public static string GetAllOperationEvent = "/api/v1/OperationEvent";
         // POST  Create a OperationEvent
         public static string CreateOperationEvent = "/api/v1/OperationEvent";
 
 
         //OperationEventAttribute
-        //Get,Update,Delete OperationEventAttribute By Id
+        //GetAllowAnonymous,Update,Delete OperationEventAttribute By Id
         public static string Get_Update_Delete_OperationEventAttribute = "/api/v1/OperationEventAttribute/{0}";
-        //Get All OperationEventAttribute
+        //GetAllowAnonymous All OperationEventAttribute
         public static string GetAllOperationEventAttribute = "/api/v1/OperationEventAttributes";
         // POST  Create a OperationEventAttribute
         public static string CreateOperationEventAttribute = "/api/v1/OperationEventAttribute";
 
         //AccountingRule
-        //Get,Update,Delete AccountingRule By Id
+        //GetAllowAnonymous,Update,Delete AccountingRule By Id
         public static string Get_Update_Delete_AccountingRule = "/api/v1/AccountingRule/{0}";
-        //Get All AccountingRule
+        //GetAllowAnonymous All AccountingRule
         public static string GetAllAccountingRule = "/api/v1/AccountingRules";
         // POST  Create a AccountingRule
         public static string CreateAccountingRule = "/api/v1/AccountingRule";
@@ -724,31 +732,31 @@ namespace CBS.FrontDesk.Helper
         // POST  Create a AccountingRule
         public static string CreateAccounOnUploadie = "/api/v1/Account/UploadAccountCommand";
         //AccountingRuleEntry
-        //Get,Update,Delete AccountingRuleEntry By Id/api/v1/AccountingRuleEntry/GetAccountingRuleEntryByEventCodeQuery/Vault_To_Liaison
+        //GetAllowAnonymous,Update,Delete AccountingRuleEntry By Id/api/v1/AccountingRuleEntry/GetAccountingRuleEntryByEventCodeQuery/Vault_To_Liaison
         public static string Get_Update_Delete_AccountingRuleEntry = "/api/v1/AccountingRuleEntry/{0}";
 
-        //Get,Update,Delete AccountingRuleEntry By Id/api/v1/AccountingRuleEntry/GetAccountingRuleEntryByEventCodeQuery/Vault_To_Liaison
+        //GetAllowAnonymous,Update,Delete AccountingRuleEntry By Id/api/v1/AccountingRuleEntry/GetAccountingRuleEntryByEventCodeQuery/Vault_To_Liaison
         public static string Get_AccountingRuleEntryByEventCode = "/api/v1/AccountingRuleEntry/GetAccountingRuleEntryByEventCodeQuery/{0}";
-        //Get All OperationEventAttribute
+        //GetAllowAnonymous All OperationEventAttribute
         public static string GetAllAccountingRuleEntry = "/api/v1/AccountingRuleEntry";
         // POST  Create a OperationEventAttribute
         public static string CreateAccountingRuleEntry = "/api/v1/AccountingRuleEntry";
-        //Get All OperationEventAttribute
+        //GetAllowAnonymous All OperationEventAttribute
         public static string GetAccountingRuleEntries = "/api/v1/AccountingEntry/LoadAccountingRuleEntryQuery";
         //AccountClass
-        //Get,Update,Delete AccountClass By Id
+        //GetAllowAnonymous,Update,Delete AccountClass By Id
         public static string Get_Update_Delete_AccountClass = "/api/v1/AccountClass/{0}";
-        //Get All AccountClass
+        //GetAllowAnonymous All AccountClass
         public static string GetAllAccountClass = "/api/v1/AccountClasss";
         // POST  Create a AccountClass
         public static string CreateAccountClass = "/api/v1/AccountClass";
 
         //AccountCategory
-        //Get,Update,Delete AccountCategory By Id
+        //GetAllowAnonymous,Update,Delete AccountCategory By Id
         public static string Get_Update_Delete_AccountCategory = "/api/v1/AccountCartegory/{0}";
 
         public static string Get_AccountClassCategory = "/api/v1/AccountClassCartegory/{0}";
-        //Get All AccountCategory
+        //GetAllowAnonymous All AccountCategory
         public static string GetAllAccountCategory = "/api/v1/AccountCartegories";
         // POST  Create a AccountClass
         public static string CreateAccountCategory = "/api/v1/AccountCartegory";
@@ -758,7 +766,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetProductAccountingBookbyproductnameUrl = "/api/v1/ProductAccountingBook/GetProductAccountingConfigurations/{0}";
         public static string GetProductAccountingBookbyproductTypeUrl = "/api/v1/ProductAccountingBook/GetAllProductAccountingConfigurations/{0}";
         //AccountCategory AccountProduct {name}
-        //Get,Update,Delete AccountCategory By Id
+        //GetAllowAnonymous,Update,Delete AccountCategory By Id
         public static string Get_Update_Delete_ChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition/{0}";
         public static string Get_ChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition/{0}";
         public static string GetAllChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPositions";
@@ -788,7 +796,7 @@ namespace CBS.FrontDesk.Helper
 
         public static string Get_Update_Delete_CorrespondingMapping = "/api/v1/CorrespondingMapping/{0}";
         public static string Get_CorrespondingMapping = "/api/v1/CorrespondingMapping/{0}";
-        //Get All AccountCategory
+        //GetAllowAnonymous All AccountCategory
         public static string GetAllCorrespondingMapping = "/api/v1/CorrespondingMapping";
         // POST  Create a AccountClass
         public static string CreateCorrespondingMapping = "/api/v1/CorrespondingMapping";
@@ -796,18 +804,18 @@ namespace CBS.FrontDesk.Helper
 
         public static string Get_Update_Delete_CorrespondingMappingException = "/api/v1/CorrespondingMappingException/{0}";
         public static string Get_CorrespondingMappingException = "/api/v1/CorrespondingMappingException/{0}";
-        //Get All AccountCategory
+        //GetAllowAnonymous All AccountCategory
         public static string GetAllCorrespondingMappingException = "/api/v1/CorrespondingMappingException";
  
 
         //ChartOfAccount
-        //Get,Update,Delete ChartOfAccount By Id
+        //GetAllowAnonymous,Update,Delete ChartOfAccount By Id
         public static string Get_Update_Delete_ChartOfAccount = "/api/v1/ChartOfAccount/{0}";
-        //Get All ChartOfAccount
+        //GetAllowAnonymous All ChartOfAccount
         public static string GetAllChartOfAccount = "/api/v1/ChartOfAccounts"; ///
         public static string GetAllChartOfAccountManagementPositionByChart = "api/v1/ChartOfAccountManagementPosition/GetAllChartOfAccounts";
         public static string Get_ChartOfAccount_By_AccountNumber = "/api/v1/ChartOfAccount/GetChartOfAccountByAccountNumber/{0}";
-        //Get All ChartOfAccount
+        //GetAllowAnonymous All ChartOfAccount
 
         public static string GetOperationEventAttributes = "/api/v1/AccountType/GetOperationEventAttributes/{0}";
         public static string GetAllOperationEventAttributes = "/api/v1/OperationEventAttributes";
@@ -815,7 +823,7 @@ namespace CBS.FrontDesk.Helper
         // POST  Create a ChartOfAccount
         public static string CreateChartOfAccount = "/api/v1/ChartOfAccount";
         public static string GetAllJsTreeNode = "/api/v1/ChartOfAccounts/JsTreeNode";
-        //Get,Update,Delete ChartOfAccount By Id
+        //GetAllowAnonymous,Update,Delete ChartOfAccount By Id
         public static string Delete_ChartOfAccount = "/api/v1/ChartOfAccount/DeleteChartOfAccountByAccountNumber/{0}";
         // POST  Create a ChartOfAccount
         public static string ManualEntriePosting = "/api/v1/AccountingEntry/ManualPostingEventCommand";

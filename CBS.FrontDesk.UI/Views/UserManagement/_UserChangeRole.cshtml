@@ -1,0 +1,31 @@
+﻿@model CBS.FrontDesk.Data.UserManagement.User
+
+<div class="modal-header text-white mb-2">
+    <h5 class="modal-title">
+        <i class="fas fa-user-tag me-2"></i> Change User Role
+    </h5>
+</div>
+
+<div class="modal-body bg-light">
+    @using (Html.BeginForm("AddOrEdit", "UserManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        @Html.Hidden("Option", "ChangeRole")
+        @Html.HiddenFor(m => m.id)
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <label class="form-label fw-bold text-secondary">Select Role</label>
+                <div class="shadow-sm rounded">
+                    @Html.DropDownListFor(m => m.roleID, new SelectList(ViewBag.Roles, "Value", "Text"), "---Select Role---", new { @class = "form-control select2" })
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-user-check me-1"></i> Update Role
+            </button>
+        </div>
+    }
+</div>
