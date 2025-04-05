@@ -158,7 +158,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var listOfAccounts = await _accountingServices.GetAllLiasionAccount(branchId);
 
                 var data = BuildDropDown(GenerateAccountsListView(listOfAccounts));
-                //jjjj
+         
                 return Json(data, JsonRequestBehavior.AllowGet);
 
             }
