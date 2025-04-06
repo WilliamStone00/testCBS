@@ -32,7 +32,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
     public class ManuallyJournalEntryController : BaseController
     {
         private readonly EntryTempDataServices _Service;

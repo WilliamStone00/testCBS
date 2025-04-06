@@ -335,26 +335,16 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             BuildLocalSession(userSession.UserAuthDto);
             // ✅ Valid single session
-            GetMenus();
+            SetMenuFromSession();
         }
 
 
-        public List<DatabaseMenus> GetMenus()
+        protected void SetMenuFromSession()
         {
-            var menus = System.Web.HttpContext.Current.Session["menu"];
-
-            if (menus is List<DatabaseMenus> permissionMenus)
-            {
-                var menusMaster = permissionMenus.OrderBy(x => x.MenuMasterId).ToList();
-                ViewBag.MenuItems = menusMaster;
-                return menusMaster;
-            }
-            else
-            {
-                ViewBag.MenuItems = new List<DatabaseMenus>();
-                return new List<DatabaseMenus>();
-            }
+            var menus = Session["menu"] as List<PermissionNode> ?? new List<PermissionNode>();
+            ViewBag.MenuItems = menus.OrderBy(x => x.Menu.MenuOrder).ToList();
         }
+
         public DataTableOptions GetDataTableOptions()
         {
             var queryParams = HttpContext.Request.QueryString;
@@ -447,13 +437,13 @@ namespace CBS.FrontDesk.UI.Controllers
             Session["BankCode"] = userSession.Branch.Bank.BankCode;
             Session["IsHeadOffice"] = userSession.Branch.IsHeadOffice;
 
-            if (userSession.Permissions == null)
+            if (userSession.PermissionNodes == null)
             {
-                HttpContext.Session["menu"] = new List<Permission>(); // Assuming Permission is your type
+                HttpContext.Session["menu"] = new List<PermissionNode>(); // Assuming Permission is your type
             }
             else
             {
-                HttpContext.Session["menu"] = userSession.Permissions.ToList();
+                HttpContext.Session["menu"] = userSession.PermissionNodes.ToList();
             }
 
             Session["EncryptedJWToken"] = TokenEncryptionHelper.EncryptToken(userSession.bearerToken);

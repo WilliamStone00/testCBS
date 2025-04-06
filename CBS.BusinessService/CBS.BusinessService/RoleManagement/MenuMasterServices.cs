@@ -156,6 +156,7 @@ namespace CBS.BusinessService
                     MenuMaster.IsVisible = model.IsVisible;
                     MenuMaster.Description = model.Description;
                     MenuMaster.IconClass = model.IconClass;
+                    MenuMaster.MenuOrder = model.MenuOrder;
                     var response = await _identityConfigApiHelper.PutAsync<ResponseObject<MenuMaster>>(string.Format(APICallHelper.Get_Update_Delete_MenuMaster, model.Id), MenuMaster);
                     if (response.IsSuccess)
                     {
