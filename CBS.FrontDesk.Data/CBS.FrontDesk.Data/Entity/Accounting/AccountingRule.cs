@@ -18,6 +18,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string RuleName { get; set; }
         public string Description { get; set; }
         public string EventName { get; set; }
+        public double UnitAmount { get; set; }
         public string System_Id { get; set; }
         public string BookingDirection { get; set; }
         public List<AccountEventRule> AccountingRules { get; set; } = new List<AccountEventRule>();

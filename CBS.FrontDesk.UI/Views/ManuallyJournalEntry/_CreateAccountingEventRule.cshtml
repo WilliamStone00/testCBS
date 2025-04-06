@@ -35,6 +35,12 @@
                                                 </div>
                                                 <div class="col-md-12 form-floating form-floating-outline mb-4">
 
+                                                    @Html.TextBoxFor(m => m.AccountingRule.UnitAmount, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.UnitAmount, "", new { @class = "text-danger" })
+                                                    <label class="form-label">Amount to be executed in journal</label>
+                                                </div>
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+
                                                     @Html.DropDownListFor(m => m.AccountingRule.IsValidationNeed, new SelectList(ViewBag.DoubbleEntryValidation, "Value", "Text"), new { @class = "form-control select2" })
                                                     @Html.ValidationMessageFor(m => m.AccountingRule.IsValidationNeed, "", new { @class = "text-danger" })
                                                     <label class="form-label">Is Validation Needed?</label>

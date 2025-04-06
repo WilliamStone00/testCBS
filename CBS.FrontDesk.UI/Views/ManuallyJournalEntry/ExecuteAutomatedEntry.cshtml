@@ -19,7 +19,14 @@
                             <label class="form-label fw-bold">Event Name</label>
                             <input type="text" class="form-control" value="@Model.AccountingEventRule.EventName" readonly>
                         </div>
-
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Event Description</label>
+                            <input type="text" class="form-control" value="@Model.AccountingEventRule.Description" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Amount to be executed</label>
+                            <input type="text" class="form-control" value="@Model.AccountingEventRule.UnitAmount" readonly>
+                        </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold">Double Validation Needed</label>
                             <input type="text" class="form-control" value="@(Model.AccountingEventRule.IsDoubleValidationNeeded ? "Double Validation is required" : "Double Validation is not required")" readonly>
@@ -77,7 +84,7 @@
                                                 <td>
                                                     @if (rule.BookingDirection.ToLower() == "debit")
                                                     {
-                                                        <input type="number" name="AccountingRules[@rule.Id].Debit" class="form-control text-end debitInput" value="0">
+                                                        <input type="number" name="AccountingRules[@rule.Id].Debit" class="form-control text-end debitInput" value="@Model.AccountingEventRule.UnitAmount">
                                                     }
                                                     else
                                                     {
@@ -87,7 +94,7 @@
                                                 <td>
                                                     @if (rule.BookingDirection.ToLower() == "credit")
                                                     {
-                                                        <input type="number" name="AccountingRules[@rule.Id].Credit" class="form-control text-end creditInput" value="0">
+                                                        <input type="number" name="AccountingRules[@rule.Id].Credit" class="form-control text-end creditInput" value="@Model.AccountingEventRule.UnitAmount">
                                                     }
                                                     else
                                                     {
