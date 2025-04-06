@@ -62,7 +62,7 @@ namespace CBS.FrontDesk.UI.Controllers
             _AccountingRuleServices = new AccountingRuleService();
             _accountCategoryServices = new AccountCategoryServices();
                 }
-        // GET: 
+        // GET:ManuallyJournalEntry/PendingAccountingEntries
 
         public async Task<ActionResult> Index()
         {
