@@ -4,6 +4,107 @@
     var isRoot = ViewData["IsRoot"] as bool? ?? false;
     var level = (int?)ViewData["Level"] ?? 0;
     var maxDepth = 10;
+
+    var currentController = (ViewContext.RouteData.Values["controller"]?.ToString() ?? "").ToLower();
+    var currentAction = (ViewContext.RouteData.Values["action"]?.ToString() ?? "").ToLower();
+
+    bool isHomeActive = currentController == "home" && currentAction == "index";
+}
+
+<style>
+    .menu-text {
+        color: black;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        vertical-align: middle;
+        max-width: 160px;
+        position: relative;
+    }
+
+        .menu-text[title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 12px;
+            white-space: normal;
+            max-width: 250px;
+            font-size: 13px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-text[title]:hover::before {
+            content: "";
+            position: absolute;
+            left: calc(100% - 5px);
+            top: 50%;
+            transform: translateY(-50%);
+            border: 6px solid transparent;
+            border-right-color: #333;
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-text[title]:hover::after,
+        .menu-text[title]:hover::before {
+            opacity: 1;
+        }
+
+    .menu-link i {
+        vertical-align: middle;
+    }
+
+    .menu-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .menu-item.active > .menu-link,
+    .menu-item.active.open > .menu-link {
+        background-color: #e6f0ff;
+        font-weight: bold;
+        color: #0d6efd !important;
+    }
+
+    .menu-link.active {
+        background-color: #e6f0ff;
+        color: #0d6efd !important;
+    }
+
+    .menu-sub {
+        display: none;
+    }
+
+    .menu-item.open > .menu-sub {
+        display: block;
+    }
+</style>
+
+@functions {
+    bool IsActive(CBS.FrontDesk.Data.Entity.PermissionNode node, string currentController, string currentAction)
+    {
+        var nodeController = node.Menu.ControllerName?.ToLower() ?? "";
+        var nodeAction = node.Menu.ActionName?.ToLower() ?? "";
+
+        if (nodeController == currentController && nodeAction == currentAction)
+        {
+            return true;
+        }
+
+        return node.Children?.Any(child => IsActive(child, currentController, currentAction)) == true;
+    }
 }
 
 @if (level > maxDepth)
@@ -13,44 +114,65 @@
 else if (Model != null && Model.Any())
 {
     <ul class="@(isRoot ? "menu-inner py-1" : "menu-sub")">
-        @foreach (var node in Model.OrderBy(n => n.Menu.MenuText))
+
+        @* 🔹 Static Home Menu *@
+        @if (isRoot)
         {
-            // ✅ Ensure all C# logic is inside a block before the HTML
+            <li class="menu-item @(isHomeActive ? "active" : "")">
+                <a href="@Url.Action("Index", "Home")" class="menu-link @(isHomeActive ? "active" : "")">
+                    <i class="mdi mdi-home text-primary"></i>
+                    <div class="menu-text" title="Home">Home</div>
+                </a>
+            </li>
+        }
 
+        @foreach (var node in Model.OrderBy(n => n.Menu.MenuOrder))
+        {
+            if (!node.Menu.IsVisible) { continue; }
 
+            var hasChildren = node.Children != null && node.Children.Any(c => c.Menu.IsVisible);
+            var isActive = IsActive(node, currentController, currentAction);
+            var subViewData = new ViewDataDictionary(ViewData)
+            {
+                ["IsRoot"] = false,
+                ["Level"] = level + 1
+            };
 
-                if (!node.Menu.IsVisible) { continue; }
-
-                var hasChildren = node.Children != null && node.Children.Any(c => c.Menu.IsVisible);
-                var subViewData = new ViewDataDictionary(ViewData)
-                {
-                    ["IsRoot"] = false,
-                    ["Level"] = level + 1
-                };
-        
-
-            <li class="menu-item">
+            <li class="menu-item @(isActive ? "active open" : "")">
                 @if (hasChildren)
                 {
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle @(isActive ? "active" : "")" aria-expanded="@(isActive ? "true" : "false")">
                         @if (!string.IsNullOrWhiteSpace(node.Menu.IconClass))
                         {
-                            <i class="@node.Menu.IconClass" style="margin-right: 10px;"></i>
+                            <i class="@($"{node.Menu.IconClass} text-primary")"></i>
                         }
-                        <div style="color: black;">@node.Menu.MenuText</div>
+                        <div class="menu-text" title="@(node.Menu.Tooltip ?? node.Menu.Description)">@node.Menu.MenuText</div>
                     </a>
 
                     @Html.Partial("_MenuTree", node.Children.Where(c => c.Menu.IsVisible).ToList(), subViewData)
                 }
                 else
                 {
-                    <a href="@Url.Action(node.Menu.ActionName, node.Menu.ControllerName)" class="menu-link">
-                        @if (!string.IsNullOrWhiteSpace(node.Menu.IconClass))
-                        {
-                            <i class="@node.Menu.IconClass" style="margin-right: 10px;"></i>
-                        }
-                        <div style="color: black;">@node.Menu.MenuText</div>
-                    </a>
+                    if (string.IsNullOrWhiteSpace(node.Menu.ControllerName))
+                    {
+                        <div class="menu-link" style="cursor: default;">
+                            @if (!string.IsNullOrWhiteSpace(node.Menu.IconClass))
+                            {
+                                <i class="@($"{node.Menu.IconClass} text-primary")"></i>
+                            }
+                            <div class="menu-text" title="@(node.Menu.Tooltip ?? node.Menu.Description)">@node.Menu.MenuText</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action(node.Menu.ActionName, node.Menu.ControllerName)" class="menu-link @(isActive ? "active" : "")">
+                            @if (!string.IsNullOrWhiteSpace(node.Menu.IconClass))
+                            {
+                                <i class="@($"{node.Menu.IconClass} text-primary")"></i>
+                            }
+                            <div class="menu-text" title="@(node.Menu.Tooltip ?? node.Menu.Description)">@node.Menu.MenuText</div>
+                        </a>
+                    }
                 }
             </li>
         }

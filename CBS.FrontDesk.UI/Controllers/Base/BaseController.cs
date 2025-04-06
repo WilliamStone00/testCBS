@@ -335,7 +335,7 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             BuildLocalSession(userSession.UserAuthDto);
             // ✅ Valid single session
-            SetMenuFromSession();
+            //SetMenuFromSession();
         }
 
 

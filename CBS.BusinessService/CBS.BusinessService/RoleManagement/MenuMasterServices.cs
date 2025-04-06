@@ -4,6 +4,7 @@ using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.Helper;
+using Microsoft.AspNet.SignalR.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -33,7 +34,7 @@ namespace CBS.BusinessService
                 {
 
                     GetExecutionMessages(inResponse, true, $"{objMenuMaster.MenuText}", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null,null);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }
@@ -123,7 +124,7 @@ namespace CBS.BusinessService
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, $"{model.MenuText}", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
@@ -145,33 +146,34 @@ namespace CBS.BusinessService
         {
             try
             {
-                var MenuMaster = await GetMenuMaster(model.Id.ToString());
-                if (MenuMaster != null)
+                var response = await _identityConfigApiHelper.PutAsync<ResponseObject<MenuMaster>>(string.Format(APICallHelper.Get_Update_Delete_MenuMaster, model.Id), model);
+                if (response.IsSuccess)
                 {
-                    MenuMaster.MenuText = model.MenuText;
-                    MenuMaster.MenuGroup = model.MenuGroup;
-                    MenuMaster.ActionName = model.ActionName;
-                    MenuMaster.ControllerName = model.ControllerName;
-                    MenuMaster.ParentId = model.ParentId;
-                    MenuMaster.IsVisible = model.IsVisible;
-                    MenuMaster.Description = model.Description;
-                    MenuMaster.IconClass = model.IconClass;
-                    MenuMaster.MenuOrder = model.MenuOrder;
-                    var response = await _identityConfigApiHelper.PutAsync<ResponseObject<MenuMaster>>(string.Format(APICallHelper.Get_Update_Delete_MenuMaster, model.Id), MenuMaster);
-                    if (response.IsSuccess)
-                    {
-                        // Successful creation
-                        GetExecutionMessages(response, true, $"{model.MenuText}", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
-                        return ExecutionMessage;
-                    }
-                    else
-                    {
-                        // Failed creation
-                        GetExecutionMessages(model, false, model.MenuText, MessagesResults.Failed,
-                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
-                    }
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{model.MenuText}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
                 }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, model.MenuText, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+                //var MenuMaster = await GetMenuMaster(model.Id.ToString());
+                //if (MenuMaster != null)
+                //{
+                //    MenuMaster.MenuText = model.MenuText;
+                //    MenuMaster.MenuGroup = model.MenuGroup;
+                //    MenuMaster.ActionName = model.ActionName;
+                //    MenuMaster.ControllerName = model.ControllerName;
+                //    MenuMaster.ParentId = model.ParentId;
+                //    MenuMaster.IsVisible = model.IsVisible;
+                //    MenuMaster.Description = model.Description;
+                //    MenuMaster.IconClass = model.IconClass;
+                //    MenuMaster.MenuOrder = model.MenuOrder;
+
+                //}
 
             }
             catch (Exception ex)

@@ -12,7 +12,7 @@ using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.RoleManagement
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
 
     public class MenuMasterController : BaseController
     {
