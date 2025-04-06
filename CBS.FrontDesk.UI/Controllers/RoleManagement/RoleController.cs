@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.RoleManagement
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
 
     public class RoleController : BaseController
     {

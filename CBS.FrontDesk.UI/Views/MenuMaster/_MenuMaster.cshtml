@@ -64,6 +64,13 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
+                        @Html.TextAreaFor(m => m.Tooltip, new { @class = "form-control", @style = "height: 100px;" })
+                        @Html.ValidationMessageFor(m => m.Tooltip, "", new { @class = "text-danger" })
+                        <label>Tooltips</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 200px;" })
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                         <label>Description</label>

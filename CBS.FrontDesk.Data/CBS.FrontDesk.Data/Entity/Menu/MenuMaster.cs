@@ -38,6 +38,7 @@ namespace CBS.FrontDesk.Data.Entity
         public int MenuOrder { get; set; }
         public string Action { get; set; }
         public string ServiceOption { get; set; }
+        public string Tooltip { get; set; }
         public MenuMaster()
         {
             IsVisible = true;
@@ -68,7 +69,7 @@ namespace CBS.FrontDesk.Data.Entity
         public string Description { get; set; }
         public bool IsVisible { get; set; }
         public int MenuOrder { get; set; }
-
+        public string Tooltip { get; set; }
 
     }
     public class Permission: DatabaseMenus
