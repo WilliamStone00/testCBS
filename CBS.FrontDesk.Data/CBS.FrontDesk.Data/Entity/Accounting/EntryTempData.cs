@@ -13,6 +13,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         public List<AccountingRule> AccountingRules { get; set; } //Loan Operation xxx
         public string EventName { get; set; }
+        public double UnitAmount { get; set; }
         public bool IsDoubleValidationNeeded { get; set; }
         public string LevelOfExecution { get; set; }
         public List<string> ListOfEligibleBranchId { get; set; }
@@ -28,6 +29,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             return new AddAccountingRuleCommand
             {
                 EventName = model.AccountingRules[0].RuleName,
+                UnitAmount = model.AccountingRules[0].UnitAmount,
                 AccountingRules = BuildRequestItems(model.AccountingRules),
                 IsDoubleValidationNeeded =model.AccountingRules[0].IsValidationNeed,
                 LevelOfExecution = model.AccountingRules[0].LevelOfExecution,
@@ -218,6 +220,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<AccountingRule> AccountingRules { get; set; } //Loan Operation xxx
         public List<string> ListOfEligibleBranchId { get; set; }
         public string EventName { get; set; }
+        public double UnitAmount { get; set; }
         public string Description { get; set; }
         public bool IsDoubleValidationNeeded { get; set; }
         public string LevelOfExecution { get; set; }
@@ -238,6 +241,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             return new AccountingEventRule
             {
                 EventName = model.AccountingRules[0].RuleName,
+                UnitAmount = model.AccountingRules[0].UnitAmount,
                 AccountingRules = BuildRequestItems(model.AccountingRules),
                 IsDoubleValidationNeeded = model.AccountingRules[0].IsValidationNeed,
                 LevelOfExecution = model.AccountingRules[0].LevelOfExecution,

@@ -44,8 +44,8 @@ namespace CBS.FrontDesk.UI.Controllers
         private readonly AccountingEntryRuleService _accountingEntryRuleService;
         private readonly BranchServices _branchService;
         private readonly AccountingRuleService _AccountingRuleServices;
-      //  private readonly List<string> excludedPrefixes = ['2', '5', '6', '46', '41', '42'];
-        //private
+        //  private readonly List<string> excludedPrefixes = ['2', '5', '6', '46', '41', '42'];
+        //private 
         private const string CLASS_4 = "4"; //THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)
         private const string CLASS_4_Payabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)";
         private const string CLASS_4_Simple = "THIRD PARTY ACCOUNTS AND ACCRUALS";

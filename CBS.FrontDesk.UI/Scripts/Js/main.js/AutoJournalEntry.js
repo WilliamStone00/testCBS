@@ -68,6 +68,7 @@ function ReadFormData() {
     $("#AccountingRulebasketTable tbody tr").each(function () {
         let row = { 
             ruleName: $('#AccountingRule_RuleName').val(),
+            UnitAmount: $('#AccountingRule_UnitAmount').val(),
             MFI_ChartOfAccountId: $(this).find("td:eq(0)").text().trim(),
             bookingDirection: $(this).find("td:eq(1)").text().trim(),
             IsValidationNeed: $('#AccountingRule_IsValidationNeed').val(),
@@ -87,6 +88,7 @@ function ReadFormData() {
     let formData = {
         entryTempData: {
             ruleName: $("#AccountingRule_RuleName").val(),
+            UnitAmount: $('#AccountingRule_UnitAmount').val(),
             description: $("#AccountingRule_Description").val(),
             isValidationNeeded: $("#AccountingRule_IsValidationNeed").val(),
             entryType: $("#AccountingRule_EntryType").val(),
@@ -177,6 +179,7 @@ function addToBasketForInsert() {
         Description: $('#AccountingRule_Description').val(),
         ListOfEligibleBranchId: $('#AccountingRule_ListOfEligibleBranchId').val(),
         IsChainEntry: $('#AccountingRule_IsChainEntry').val(),
+        UnitAmount: $('#AccountingRule_UnitAmount').val(),
         IsInterBranchTransaction: $('#AccountingRule_IsInterBranchTransaction').val(),
         AccountingEventRuleId: $('#AccountingRule_AccountingEventRuleId').val(),
         EntryType: $('#AccountingRule_EntryType').val(),
@@ -209,6 +212,7 @@ function addToBasketForInsert() {
     $('#AccountingRule_LevelOfExecution').prop('disabled', true);
     $('#AccountingRule_Description').prop('disabled', true);
     $('#AccountingRule_IsChainEntry').prop('disabled', true);
+    $('#AccountingRule_UnitAmount').prop('disabled', true);
     $('#AccountingRule_AccountingEventRuleId').prop('disabled', true);
     // Update basket label and clear relevant form fields
     $('#basket_Label').text('Event: ' + item.ruleName);
@@ -227,6 +231,7 @@ function addToBasketForUpdate() {
         Description: $('#AccountingRule_Description').val(),
         ListOfEligibleBranchId: $('#AccountingRule_ListOfEligibleBranchId').val(),
         IsChainEntry: $('#AccountingRule_IsChainEntry').val(),
+        UnitAmount: $('#AccountingRule_UnitAmount').val(),
         IsInterBranchTransaction: $('#AccountingRule_IsInterBranchTransaction').val(),
         AccountingEventRuleId: $('#AccountingRule_AccountingEventRuleId').val(),
         EntryType: $('#AccountingRule_EntryType').val(),
@@ -266,6 +271,7 @@ function addToBasketForUpdate() {
     $('#AccountingRule_LevelOfExecution').prop('disabled', true);
     $('#AccountingRule_Description').prop('disabled', true);
     $('#AccountingRule_IsChainEntry').prop('disabled', true);
+    $('#AccountingRule_UnitAmount').prop('disabled', true);
     $('#AccountingRule_AccountingEventRuleId').prop('disabled', true);
     // Update basket label and clear relevant form fields
     $('#basket_Label').text('Event: ' + item.ruleName);

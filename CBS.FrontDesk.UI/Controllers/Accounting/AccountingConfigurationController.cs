@@ -216,9 +216,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             var listOfItems = new Dictionary<string, string>
             {
-                   {"Income Operation Event","INCOME_" },
-                   {"Expense Operation Event","EXPENSE_" },
-                   {"Other Operation Event","OTHER_" }
+                   {"INCOME_","Income Operation Event" },
+                   {"EXPENSE_","Expense Operation Event" },
+                   {"OTHER_" ,"Other Operation Event"}
             };
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
             selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select Operation EventType" });

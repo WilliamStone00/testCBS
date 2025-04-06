@@ -175,8 +175,11 @@ namespace CBS.BusinessService.Accounting
             bool isClass4Receivable = account.AccountNumber.StartsWith("41") || account.AccountNumber.StartsWith("42") || account.AccountNumber.StartsWith("46");
             bool isClass4Payables = account.AccountNumber.StartsWith("40") || account.AccountNumber.StartsWith("43") || account.AccountNumber.StartsWith("48") || account.AccountNumber.StartsWith("49") ||
                 account.AccountNumber.StartsWith("44") || account.AccountNumber.StartsWith("45") || account.AccountNumber.StartsWith("47");
+            if (isClass4Payables || isClass4Receivable)
+            {
+                return true;
+            }
 
-        
             if (isDebitNormal || isClass4Receivable)
             {
                 if (operationType == OperationTypes.DEBIT)
