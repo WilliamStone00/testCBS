@@ -14,7 +14,7 @@
                         <label>Menu text</label>
                     </div>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-5">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.ControllerName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.ControllerName, "", new { @class = "text-danger" })
@@ -26,6 +26,13 @@
                         @Html.TextBoxFor(m => m.ActionName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.ActionName, "", new { @class = "text-danger" })
                         <label>Action name</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.MenuOrder, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MenuOrder, "", new { @class = "text-danger" })
+                        <label>Menu Order</label>
                     </div>
                 </div>
                 <div class="col-md-12">

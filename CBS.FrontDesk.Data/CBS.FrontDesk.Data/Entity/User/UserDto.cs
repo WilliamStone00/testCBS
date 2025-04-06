@@ -55,7 +55,10 @@ namespace CBS.FrontDesk.Data.Entity
         public List<UserRoleDto> Roles { get; set; }=new List<UserRoleDto>();
         public List<DatabaseMenus> Permissions { get; set; } = new List<DatabaseMenus>();
         public bool IsSuccess { get; set; }
+        public List<PermissionNode> PermissionNodes { get; set; }
+
     }
+   
     public class CustomSerializeModel
     {
         public string Id { get; set; }

@@ -254,6 +254,8 @@ namespace CBS.FrontDesk.Data.UserManagement
         public string SessionStatus { get; set; }
         public User User { get; set; }
         public UserDto UserAuthDto { get; set; }
+        public List<PermissionNode> PermissionNodes { get; set; }
+
     }
     public class UserSessionDataTable
     {

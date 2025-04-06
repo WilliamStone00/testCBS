@@ -1,0 +1,58 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.PermissionNode>
+
+@{
+    var isRoot = ViewData["IsRoot"] as bool? ?? false;
+    var level = (int?)ViewData["Level"] ?? 0;
+    var maxDepth = 10;
+}
+
+@if (level > maxDepth)
+{
+    <li class="menu-item"><span style="color:red;">⚠ Too deep</span></li>
+}
+else if (Model != null && Model.Any())
+{
+    <ul class="@(isRoot ? "menu-inner py-1" : "menu-sub")">
+        @foreach (var node in Model.OrderBy(n => n.Menu.MenuText))
+        {
+            // ✅ Ensure all C# logic is inside a block before the HTML
+
+
+
+                if (!node.Menu.IsVisible) { continue; }
+
+                var hasChildren = node.Children != null && node.Children.Any(c => c.Menu.IsVisible);
+                var subViewData = new ViewDataDictionary(ViewData)
+                {
+                    ["IsRoot"] = false,
+                    ["Level"] = level + 1
+                };
+        
+
+            <li class="menu-item">
+                @if (hasChildren)
+                {
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        @if (!string.IsNullOrWhiteSpace(node.Menu.IconClass))
+                        {
+                            <i class="@node.Menu.IconClass" style="margin-right: 10px;"></i>
+                        }
+                        <div style="color: black;">@node.Menu.MenuText</div>
+                    </a>
+
+                    @Html.Partial("_MenuTree", node.Children.Where(c => c.Menu.IsVisible).ToList(), subViewData)
+                }
+                else
+                {
+                    <a href="@Url.Action(node.Menu.ActionName, node.Menu.ControllerName)" class="menu-link">
+                        @if (!string.IsNullOrWhiteSpace(node.Menu.IconClass))
+                        {
+                            <i class="@node.Menu.IconClass" style="margin-right: 10px;"></i>
+                        }
+                        <div style="color: black;">@node.Menu.MenuText</div>
+                    </a>
+                }
+            </li>
+        }
+    </ul>
+}

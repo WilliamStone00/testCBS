@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CBS.FrontDesk.Data.Entity
 {
 
-
+    public class PermissionNode
+    {
+        public Permission Menu { get; set; }
+        public List<PermissionNode> Children { get; set; } = new List<PermissionNode>();
+    }
 
 
     public class MenuMaster
@@ -29,6 +34,8 @@ namespace CBS.FrontDesk.Data.Entity
 
         public string Description { get; set; }
         public bool IsVisible { get; set; } = true;
+        [Required]
+        public int MenuOrder { get; set; }
         public string Action { get; set; }
         public string ServiceOption { get; set; }
         public MenuMaster()
@@ -60,6 +67,8 @@ namespace CBS.FrontDesk.Data.Entity
         public string IconClass { get; set; }
         public string Description { get; set; }
         public bool IsVisible { get; set; }
+        public int MenuOrder { get; set; }
+
 
     }
     public class Permission: DatabaseMenus

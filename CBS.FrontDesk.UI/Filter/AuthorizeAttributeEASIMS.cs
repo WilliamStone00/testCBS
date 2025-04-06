@@ -37,15 +37,21 @@ namespace CBS.FrontDesk.UI {
             string url = $"/{controllerName}/{actionName}";
 
             // ✅ Skip access check for specific pages
-            if (actionName.Equals("ChangePassword", StringComparison.OrdinalIgnoreCase) ||
-                actionName.Equals("FLoginChangePassword", StringComparison.OrdinalIgnoreCase) ||
-                actionName.Equals("GetLiveSessionDashboard", StringComparison.OrdinalIgnoreCase) ||
-                actionName.Equals("MFACodeVerification", StringComparison.OrdinalIgnoreCase) ||
-                actionName.Equals("MyProfile", StringComparison.OrdinalIgnoreCase) ||
-                (controllerName.Equals("Home", StringComparison.OrdinalIgnoreCase) && actionName.Equals("Index", StringComparison.OrdinalIgnoreCase)))
+            if (
+                   actionName.Equals("ChangePassword", StringComparison.OrdinalIgnoreCase) ||
+                   actionName.Equals("FLoginChangePassword", StringComparison.OrdinalIgnoreCase) ||
+                   actionName.Equals("GetLiveSessionDashboard", StringComparison.OrdinalIgnoreCase) ||
+                   actionName.Equals("MFACodeVerification", StringComparison.OrdinalIgnoreCase) ||
+                   actionName.Equals("MyProfile", StringComparison.OrdinalIgnoreCase) ||
+                   actionName.ToLower().Contains("download") ||
+                   (controllerName.Equals("Home", StringComparison.OrdinalIgnoreCase) &&
+                    actionName.Equals("Index", StringComparison.OrdinalIgnoreCase))
+               )
             {
                 return;
             }
+
+
 
             // ✅ Extract user identity (CustomPrincipal)
             var identity = filterContext.HttpContext.User as CustomPrincipal;

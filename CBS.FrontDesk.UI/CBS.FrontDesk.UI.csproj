@@ -3518,6 +3518,8 @@
     <Content Include="Views\UserManagement\_ConnectedUsersData.cshtml" />
     <Content Include="Views\UserManagement\_ConnectedUserStatistics.cshtml" />
     <Content Include="Views\Shared\CustomError.cshtml" />
+    <Content Include="Views\Shared\_MenuTree.cshtml" />
+    <Content Include="Views\Shared\_MenuX.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
