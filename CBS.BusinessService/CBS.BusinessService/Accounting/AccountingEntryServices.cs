@@ -114,11 +114,12 @@ namespace CBS.BusinessService
                 if (OperationEvent != null)
                 {
 
-                    OperationEvent.AmountRequested = model.Amount;
-                    OperationEvent.RequestMessage = model.RequestMessage;
-                    OperationEvent.CurrentOpenOfDayHistoryId = model.CurrentOpenOfDayHistoryId;
-                    OperationEvent.Id = model.Id;
-
+              
+                    model.CurrentOpenOfDayHistoryId = "model.CurrentOpenOfDayHistoryId";
+                
+                    model.ReferenceNumber = OperationEvent.ReferenceId;
+                    model.RequestMessage = "model.CurrentOpenOfDayHistoryId";
+                    model.Amount = OperationEvent.AmountRequested;
                     var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<CashInfusion>>(string.Format(APICallHelper.UpdateCashReplenishmentRequest, model.Id), model);
                     if (response.IsSuccess)
                     {
@@ -1197,7 +1198,7 @@ namespace CBS.BusinessService
                 var userLists = await ApiCallerHelper.GetAsync<ResponseObject<List<User>>>(APICallHelper.GetUsers);
                 var newList = new List<User>();
 
-                if (userLists != null)
+                if (userLists.ApiResponseData != null)
                 {
                     var braches = await GetBranches();
 
@@ -1230,7 +1231,7 @@ namespace CBS.BusinessService
 
 
 
-                return userLists.ApiResponseData.Data;
+                return newList;
             }
             catch (Exception ex)
             {

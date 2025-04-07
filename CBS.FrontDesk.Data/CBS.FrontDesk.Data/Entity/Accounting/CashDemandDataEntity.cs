@@ -13,7 +13,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public CashInfusionRequest CashInfusionRequest { get; set; } = new CashInfusionRequest();
         public Approval Approval { get; set; } = new Approval();
         public BankCashOut BankCashOut { get; set; } = new BankCashOut(); 
-                 public BankDepositCashClearing BankDepositCashClearing { get; set; } = new BankDepositCashClearing();
+        public BankDepositCashClearing BankDepositCashClearing { get; set; } = new BankDepositCashClearing();
         public CashClearing CashClearing { get; set; } = new CashClearing();
         public BranchToBranchTransfer BranchToBranchTransfer { get; set; } = new BranchToBranchTransfer();
         public DetailsDto DetailsDto { get; set; } = new DetailsDto();
@@ -29,8 +29,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<CashReplenimentRequestDto> ListCashReplenimentRequestDto { get; set; } = new List<CashReplenimentRequestDto>();
         public List<DetailsDto> DetailsDtos { get; set; } = new List<DetailsDto>();
         public string ServiceOption { get; set; }
- 
+        public string Id { get; set; }
         public string Action { get; set; }
+
     }
 
 

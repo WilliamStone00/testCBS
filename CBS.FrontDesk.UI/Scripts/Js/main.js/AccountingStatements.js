@@ -164,13 +164,19 @@ function AjaxPostSearch(form) {
 
                 var ajaxConfig = {
                     type: 'POST',
-                    url: form.action,
+                    url: "/AccountingStatements/PostSearch",
                     data: new FormData(form),
                     success: function (response) {
-                        //  openReportWindow(model.FileType, model.ReportType);
-                        appalert("Report [" + getReportTitle(model.ReportType) +"] has been generated successfully", 1, 1);
-                        //LoadDataGen('AccountingStatements', 'myDataTable', '_DownloadedReportData', null, null, null, null, 'list');
-                        window.location.reload();
+      
+                        appalert("Report [" + getReportTitle(model.ReportType) + "] has been generated successfully", 1, 1);
+                        if (model.FileType.toLowerCase() === "pdf")
+                        {
+                            openReportWindow(model.FileType, model.ReportType);
+                        } else {
+                            window.location.reload();
+                        }
+                    
+             
                     }
                     , error: function (err) {
                         console.log(err.statusText);
@@ -565,14 +571,12 @@ function openReportWindow(fileType, reportType) {
         } else if (reportType === "JE") {
             url = "/Reports/PrintJournalEntryDtoInExcel";
         }
-    } else {
-        if (reportType === "BS") {
-            url = "/Reports/DownloadBSFile";
-        } else {
-            url = "/Reports/DownloadExcelFile";
-        }
-        
+    } else
+    {
+        url = "/Reports/AccountingPDFReport?FileType=" + reportType;
+
     }
+    console.log(url);
     window.open(url, "_blank");
 }
 function LoadLiaionLedgerByBranchID(branchId) {
