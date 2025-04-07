@@ -392,6 +392,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppFiles\Images\Avatar\avatarimg.jpg" />
     <Content Include="AppFiles\Images\Bank-deposit-slip-excel-template.jpg" />
     <Content Include="AppFiles\Images\BG.jpeg" />
     <Content Include="AppFiles\Images\BG2.png" />

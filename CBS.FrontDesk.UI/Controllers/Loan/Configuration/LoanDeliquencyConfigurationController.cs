@@ -12,7 +12,7 @@ using System.Web.Mvc;
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
    
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
     public class LoanDeliquencyConfigurationController : BaseController
     {
         // GET: LoanDeliquencyConfiguration

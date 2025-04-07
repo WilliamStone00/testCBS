@@ -1,14 +1,25 @@
 ﻿@{
-    // Retrieve the menu tree from the session via ViewBag.
     var menuItems = ViewBag.MenuItems as List<CBS.FrontDesk.Data.Entity.PermissionNode>;
+    string fullName = Session["FullName"]?.ToString() ?? "";
+    string trimmedName = string.Join(" ", fullName.Split(' ').Take(10));
+    var userPhoto = Session["Photo"]?.ToString();
+
+    var encodedName = System.Net.WebUtility.UrlEncode(fullName);
+    var profileImage = string.IsNullOrWhiteSpace(userPhoto)
+        ? Url.Content("~/AppFiles/Images/Avatar/avatarimg.jpg")
+        : userPhoto;
 }
+
+
+
+
 
 @if (menuItems != null && menuItems.Any())
 {
-    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-white">
+    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-white shadow-sm rounded-end">
 
         <!-- Logo and Menu Toggle -->
-        <div class="app-brand demo d-flex align-items-center justify-content-between px-3 py-2">
+        <div class="app-brand demo d-flex align-items-center justify-content-between px-3 py-2 border-bottom">
             <a href="/" class="app-brand-link">
                 <span class="app-brand-logo demo">
                     <img src="~/AppFiles/Images/SideImageHeader_login.png"
@@ -21,23 +32,373 @@
             </button>
         </div>
 
-        <!-- Optional Shadow Divider -->
-        <div class="menu-inner-shadow"></div>
-
-        <!-- User Profile Section -->
-        <div class="d-flex align-items-center px-3 py-3 border-bottom">
+        <!-- User Profile -->
+        <div class="d-flex align-items-center px-3 py-3 border-bottom bg-light-subtle">
             <div class="user-image me-3 d-flex align-items-center justify-content-center">
-                <img src="@Session["Photo"].ToString()"
-                     alt="User Profile Image"
-                     class="img-fluid rounded-circle"
-                     style="width: 40px; height: 40px;" />
+               <img src="@profileImage"
+     alt="User Profile Image"
+     class="img-fluid rounded-circle shadow-sm"
+     style="width: 40px; height: 40px;" />
             </div>
             <div class="user-info">
-                <span class="user-name fw-semibold">@Session["FullName"].ToString()</span>
+                <span class="user-name fw-semibold">@trimmedName</span>
             </div>
         </div>
 
-        <!-- Menu Tree -->
-        @Html.Partial("_MenuTree", menuItems, new ViewDataDictionary { { "IsRoot", true }, { "Level", 0 } })
+        <!-- 🔍 Material Design Search -->
+        <!-- 🔍 Centered Search Box in Gray Background -->
+        <div class="search-wrapper bg-light border-bottom d-flex justify-content-center align-items-center">
+            <div class="md-search position-relative" style="max-width: 280px; width: 100%;">
+                <button type="button" class="md-search-btn" tabindex="-1">
+                    <i class="mdi mdi-magnify"></i>
+                </button>
+                <input type="text"
+                       id="menuSearchInput"
+                       class="md-search-input form-control"
+                       placeholder="Search Menu."
+                       autocomplete="off" />
+                <label for="menuSearchInput" class="md-search-label">Search menu</label>
+                <button type="button" id="clearSearchBtn" class="md-clear-btn">
+                    <i class="mdi mdi-close-circle"></i>
+                </button>
+            </div>
+        </div>
+
+
+
+        <!-- Spacer -->
+        <div style="height: 8px;"></div>
+
+        <!-- 🌲 Menu Tree -->
+        <div id="menuTreeWrapper" class="px-2">
+            @Html.Partial("_MenuTree", menuItems, new ViewDataDictionary { { "IsRoot", true }, { "Level", 0 } })
+        </div>
     </aside>
+
+    <!-- 💡 JavaScript -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("menuSearchInput");
+            const clearBtn = document.getElementById("clearSearchBtn");
+
+            const allItems = document.querySelectorAll("#layout-menu .menu-item");
+            const allSubMenus = document.querySelectorAll("#layout-menu .menu-sub");
+
+            function resetSearch() {
+                searchInput.value = "";
+                allItems.forEach(item => {
+                    item.classList.remove("d-none");
+                    item.classList.remove("search-match");
+                });
+                allSubMenus.forEach(sub => sub.style.display = "");
+            }
+
+            function showChildren(item) {
+                const children = item.querySelectorAll(":scope > .menu-sub > .menu-item");
+                children.forEach(child => {
+                    child.classList.remove("d-none");
+                    child.classList.add("search-match");
+                    showChildren(child); // recursively reveal deeper children
+                });
+            }
+
+            searchInput.addEventListener("input", function () {
+                const filter = this.value.toLowerCase().trim();
+
+                // Reset all visibility
+                allItems.forEach(item => {
+                    item.classList.remove("d-none", "search-match");
+                });
+                allSubMenus.forEach(sub => {
+                    sub.style.display = "";
+                });
+
+                // Exit if filter is empty
+                if (!filter) return;
+
+                // Step 1: Hide all items
+                allItems.forEach(item => item.classList.add("d-none"));
+
+                // Step 2: Reveal matches and full hierarchy around them
+                allItems.forEach(item => {
+                    const textElement = item.querySelector(".menu-text");
+                    const text = textElement?.textContent.toLowerCase() ?? "";
+
+                    const isDirectMatch = text.includes(filter);
+                    const hasMatchingDescendants = Array.from(item.querySelectorAll(".menu-item .menu-text"))
+                        .some(child => child.textContent.toLowerCase().includes(filter));
+
+                    if (isDirectMatch || hasMatchingDescendants) {
+                        // Show this item
+                        item.classList.remove("d-none");
+                        item.classList.add("search-match");
+
+                        // Show all children (force all if parent matched)
+                        if (isDirectMatch) {
+                            showChildren(item);
+                        }
+
+                        // Show ancestors
+                        let parent = item.parentElement;
+                        while (parent && parent.id !== "layout-menu") {
+                            if (parent.classList.contains("menu-sub")) {
+                                parent.style.display = "block";
+                            }
+                            if (parent.classList.contains("menu-item")) {
+                                parent.classList.remove("d-none");
+                                parent.classList.add("search-match");
+                            }
+                            parent = parent.parentElement;
+                        }
+                    }
+                });
+            });
+
+            // Clear search
+            clearBtn.addEventListener("click", resetSearch);
+
+            // Ctrl+K to focus
+            document.addEventListener("keydown", function (e) {
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                    e.preventDefault();
+                    searchInput.focus();
+                }
+            });
+        });
+    </script>
+
+
+    @*<script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const searchInput = document.getElementById("menuSearchInput");
+                const clearBtn = document.getElementById("clearSearchBtn");
+
+                const allItems = document.querySelectorAll("#layout-menu .menu-item");
+                const allSubMenus = document.querySelectorAll("#layout-menu .menu-sub");
+
+                function resetSearch() {
+                    searchInput.value = "";
+                    allItems.forEach(item => item.classList.remove("d-none", "search-match"));
+                    allSubMenus.forEach(sub => sub.style.display = "");
+                }
+
+                function showChildren(item) {
+                    const children = item.querySelectorAll(":scope > .menu-sub > .menu-item");
+                    children.forEach(child => {
+                        child.classList.remove("d-none");
+                        child.classList.add("search-match");
+                        showChildren(child);
+                    });
+                }
+
+                searchInput.addEventListener("input", function () {
+                    const filter = this.value.toLowerCase().trim();
+
+                    allItems.forEach(item => {
+                        item.classList.remove("d-none", "search-match");
+                    });
+                    allSubMenus.forEach(sub => sub.style.display = "");
+
+                    if (!filter) return;
+
+                    allItems.forEach(item => item.classList.add("d-none"));
+                    allSubMenus.forEach(sub => sub.style.display = "block");
+
+                    allItems.forEach(item => {
+                        const textElement = item.querySelector(".menu-text");
+                        const text = textElement?.textContent.toLowerCase() ?? "";
+
+                        const isDirectMatch = text.includes(filter);
+                        const hasMatchInChildren = Array.from(item.querySelectorAll(".menu-item .menu-text"))
+                            .some(child => child.textContent.toLowerCase().includes(filter));
+
+                        if (isDirectMatch || hasMatchInChildren) {
+                            item.classList.remove("d-none");
+                            item.classList.add("search-match");
+
+                            if (isDirectMatch) {
+                                showChildren(item);
+                            }
+
+                            let parent = item.parentElement;
+                            while (parent && parent.id !== "layout-menu") {
+                                if (parent.classList.contains("menu-sub")) {
+                                    parent.style.display = "block";
+                                }
+                                if (parent.classList.contains("menu-item")) {
+                                    parent.classList.remove("d-none");
+                                    parent.classList.add("search-match");
+                                }
+                                parent = parent.parentElement;
+                            }
+                        }
+                    });
+                });
+
+                clearBtn.addEventListener("click", resetSearch);
+
+                document.addEventListener("keydown", function (e) {
+                    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                        e.preventDefault();
+                        searchInput.focus();
+                    }
+                });
+            });
+        </script>*@
+
+    <!-- ✨ Styling -->
+    <style>
+        /* Container for search bar (center it in gray block) */
+        .search-wrapper {
+            height: 80px;
+            background-color: #f1f1f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Material Design Search */
+        .md-search {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 0 8px;
+            width: 100%;
+            max-width: 280px;
+            position: relative;
+        }
+
+        .md-search-btn {
+            border: none;
+            background: transparent;
+            padding: 10px;
+            cursor: default;
+        }
+
+            .md-search-btn i {
+                font-size: 18px;
+                color: #666;
+            }
+
+        .md-search-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 12px;
+            font-size: 14px;
+            border-radius: 24px;
+            background-color: transparent;
+        }
+
+            .md-search-input:focus + .md-search-label,
+            .md-search-input:not(:placeholder-shown) + .md-search-label {
+                top: 4px;
+                font-size: 11px;
+                color: #1976d2;
+            }
+
+        .md-search-label {
+            display: none; /* hiding floating label since we use placeholder */
+        }
+
+        .md-clear-btn {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 18px;
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+        }
+
+            .md-clear-btn:hover {
+                color: #dc3545;
+            }
+
+        /* Balloon Tooltip */
+        .menu-text[title] {
+            position: relative;
+        }
+
+            .menu-text[title]:hover::after {
+                content: attr(title);
+                position: absolute;
+                left: 110%;
+                top: 50%;
+                transform: translateY(-50%);
+                background-color: #333;
+                color: #fff;
+                padding: 8px 12px;
+                border-radius: 10px;
+                font-size: 12px;
+                white-space: nowrap;
+                z-index: 1000;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+                opacity: 1;
+                transition: opacity 0.2s ease-in-out;
+            }
+
+            .menu-text[title]:hover::before {
+                content: '';
+                position: absolute;
+                left: 100%;
+                top: 50%;
+                transform: translateY(-50%);
+                margin-left: -5px;
+                border: 6px solid transparent;
+                border-left-color: #333;
+            }
+
+        /* Soft Menu Styles */
+        #layout-menu {
+            border-right: 1px solid #e5e5e5;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: 6px;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+            .menu-link:hover {
+                background-color: #f1f1f1;
+            }
+
+            .menu-item.active > .menu-link,
+            .menu-item.active.open > .menu-link,
+            .menu-link.active {
+                background-color: #e0f2f1;
+                color: #00796b !important;
+                font-weight: 500;
+            }
+
+        .menu-text {
+            margin-left: 6px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .menu-inner,
+        .menu-sub,
+        .menu-item {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu-sub {
+            padding-left: 0;
+        }
+
+        .menu-item {
+            padding-left: 0;
+        }
+    </style>
+
 }

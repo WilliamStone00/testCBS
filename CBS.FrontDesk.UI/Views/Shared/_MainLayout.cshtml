@@ -1155,6 +1155,8 @@
     <script>
        
         $(document).ready(function () {
+            fetchAccountingDate(); // Initial load
+            setInterval(fetchAccountingDate, 30000); // Refresh every 30 seconds
             $.ajaxSetup({
                 complete: function (xhr) {
                     if (xhr.status === 401) { // Unauthorized

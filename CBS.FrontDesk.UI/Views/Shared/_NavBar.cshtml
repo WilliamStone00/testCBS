@@ -62,26 +62,9 @@
                                 }
                             </span>
                         }
-                        @*<span class="text-muted">
-                            | SESSION CODE:
-                            @{
-                                string sessionCode = null;
-
-                                if (Context?.Session != null)
-                                {
-                                    sessionCode = Context.Session["SessionCode"] as string;
-                                }
-                            }
-
-                            @if (!string.IsNullOrWhiteSpace(sessionCode))
-                            {
-                                <b>@sessionCode</b>
-                            }
-                            else
-                            {
-                                <span class="text-danger fw-bold">[ Not Available ]</span>
-                            }
-                        </span>*@
+                        <span class="mx-2">|</span>
+                        <strong><span class="fw-bold text-secondary" id="accountingDayLabel">Loading...</span></strong>
+                        <div id="accountingDayError" class="text-danger small mt-1"></div>
 
 
                         ]

@@ -53,6 +53,29 @@ namespace CBS.BusinessService.AccountingDayObject
                 throw ex;
             }
         }
+        public async Task<DateTime> GetCurrentAccountingDate()
+        {
+            try
+            {
+                var cusResponseObject = await _transactionBaseConfigApiHelper
+                    .GetAsync<ResponseObject<DateTime>>(string.Format(APICallHelper.GetCurrentAccountingDay, GetBranchID()));
+
+                if (cusResponseObject?.IsSuccess == true && cusResponseObject.ApiResponseData?.Data != null)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+
+                return DateTime.MinValue;
+            }
+            catch (Exception ex)
+            {
+                // Optional: log the error
+                // _logger.LogError(ex, "Error retrieving accounting date for branch {0}", GetBranchID());
+
+                return DateTime.MinValue;
+            }
+        }
+
         public async Task<ExecutionMessages> RemoveAccountingDay(string id)
         {
             try
