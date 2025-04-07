@@ -444,7 +444,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
                 else
                 {
-                    //update
+
+                    model.CashInfusionModel.Id = model.Id;
                     var datac = await _accountingEntryServices.Update(model.CashInfusionModel);
                     return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
 
@@ -697,7 +698,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
-
+                cashDemandDataEntity.CashInfusionModel = new CashInfusion { Id = cashDemandDataEntity.CashReplenimentRequestdto.Id, Amount = cashDemandDataEntity.CashReplenimentRequestdto.AmountRequested, RequestMessage = cashDemandDataEntity.CashReplenimentRequestdto.RequestMessage };
                 return PartialView(partialView, cashDemandDataEntity);
 
             }

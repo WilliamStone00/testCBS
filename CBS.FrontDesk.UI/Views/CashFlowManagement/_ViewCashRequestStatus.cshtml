@@ -6,6 +6,7 @@
 
 <div class="row invoice-preview">
     <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+   
 
         <div class="accordion-item active">
             <h2 class="accordion-header text-body d-flex justify-content-between"
@@ -73,7 +74,7 @@
                                         }
                                         else
                                         {
-                                    <div> Request has been redirected to @Model.CashReplenimentRequestdto.CorrespondingBranch</div>
+                                            <div> Request has been redirected to @Model.CashReplenimentRequestdto.CorrespondingBranch</div>
                                         }
                                     </td>
                                 </tr>
@@ -93,114 +94,124 @@
                                     <td>Approved Amount</td>
                                     <td id="ApprovedBy">@Model.CashReplenimentRequestdto.AmountApproved </td>
                                 </tr>
-                             
-                                    <tr>
-                                        <td>Bank Transaction</td>
-                                        <td>
-                                            @*  <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.ReferenceId')" class="mr-2" id="exLargeModal" data-toggle="tooltip" data-placement="top" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>*@
-                                            <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>
-                                        </td>
-                                    </tr>
-                              
+
+                                <tr>
+                                    <td>Bank Transaction</td>
+                                    <td>
+                                        @*  <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.ReferenceId')" class="mr-2" id="exLargeModal" data-toggle="tooltip" data-placement="top" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>*@
+                                        <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>
+                                    </td>
+                                </tr>
+
 
                             }
-                            else
+                            else if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
                             {
-                                if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
-                                {
-                                    <tr>
-                                        <td>Status</td>
-                                        <td class="badge bg-label-primary rounded-pill">
-                                            @Model.CashReplenimentRequestdto.Status,Has not yet been approved by head office
-                                        </td>
-                                    </tr>
-                                }
-                                else
-                                {
-                                    if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
-                                    {
-                                        <tr>
-                                            <td>Status</td>
-                                            <td class="badge bg-label-success rounded-pill">
-                                                @Model.CashReplenimentRequestdto.Status 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Approved Message</td>
-                                            <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Approved By </td>
-                                            <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.TempId2 </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Approved Date</td>
-                                            <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
-                                        </tr>
-                                    }
-                                    else
-                                    {
-                                        if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBCO.ToString()))
+
+                                <tr>
+                                    <td>Status</td>
+                                    <td class="badge bg-label-primary rounded-pill">
+                                        @Model.CashReplenimentRequestdto.Status,Has not yet been approved by head office
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        @using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
                                         {
-                                            <tr>
-                                                <td>Status</td>
-                                                <td class="badge bg-label-primary rounded-pill text-uppercase">
-                                                    @Model.CashReplenimentRequestdto.Status,Has been redirected to @Model.CashReplenimentRequestdto.CorrespondingBranch for BANK CASH OUT
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Approved Message</td>
-                                                <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Approved By </td>
-                                                <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.TempId2 </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Approved Date</td>
-                                                <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
+                                            <input type="hidden" name="option" value="Status" id="option" />
 
-                                            </tr>
-                                            <tr>
-                                                <td>Bank Transaction</td>
-                                             
-                                                <td class="badge bg-label-warning rounded-pill">
-                                                   NOT YET COMPLETED
-                                                </td>
-                                            
-                                            </tr>
+                                            <input type="hidden" name="ServiceOption" value="CashInfusionModel" id="ServiceOption" />
+                                            <input type="hidden" name="Id" value="@Model.CashReplenimentRequestdto.Id" id="Id" />
+                                            <div class="col-12 text-end">
+                                                <button type="submit" class="btn btn-danger me-2">Cancel Cash Requisition Request</button>
+                                                <input type="hidden" name="Action" value="update" id="Action" />
+
+                                            </div>
+
                                         }
-                                        else if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBTB.ToString()))
-                                        {
-                                            
-                                            <tr>
-                                                <td>Status</td>
-                                                <td class="badge bg-label-warning nav-pills">
-                                                    @Model.CashReplenimentRequestdto.Status Has been redirected to @Model.CashReplenimentRequestdto.CorrespondingBranch for Branch Transfer
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Approved Message</td>
-                                                <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Approved By </td>
-                                                <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.TempId2 </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Approved Date</td>
-                                                <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
-                                            </tr>
-                                        }
-
-                                    }
-                                }
-
+                                    </td>
+                                </tr>
                             }
-
-
-                            @if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBTB.ToString()))
+                            else if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
                             {
+
+                                <tr>
+                                    <td>Status</td>
+                                    <td class="badge bg-label-success rounded-pill">
+                                        @Model.CashReplenimentRequestdto.Status
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Approved Message</td>
+                                    <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
+                                </tr>
+                                <tr>
+                                    <td>Approved By </td>
+                                    <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.TempId2 </td>
+                                </tr>
+                                <tr>
+                                    <td>Approved Date</td>
+                                    <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
+                                </tr>
+                            }
+                            else if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBCO.ToString()))
+                            {
+
+                                <tr>
+                                    <td>Status</td>
+                                    <td class="badge bg-label-primary rounded-pill text-uppercase">
+                                        @Model.CashReplenimentRequestdto.Status,Has been redirected to @Model.CashReplenimentRequestdto.CorrespondingBranch for BANK CASH OUT
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Approved Message</td>
+                                    <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
+                                </tr>
+                                <tr>
+                                    <td>Approved By </td>
+                                    <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.TempId2 </td>
+                                </tr>
+                                <tr>
+                                    <td>Approved Date</td>
+                                    <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
+
+                                </tr>
+                                <tr>
+                                    <td>Bank Transaction</td>
+
+                                    <td class="badge bg-label-warning rounded-pill">
+                                        NOT YET COMPLETED
+                                    </td>
+
+                                </tr>
+                            }
+                            else if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBTB.ToString()))
+                            {
+
+                                <tr>
+                                    <td>Status</td>
+                                    <td class="badge bg-label-warning nav-pills">
+                                        @Model.CashReplenimentRequestdto.Status Has been redirected to @Model.CashReplenimentRequestdto.CorrespondingBranch for Branch Transfer
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Approved Message</td>
+                                    <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
+                                </tr>
+                                <tr>
+                                    <td>Approved By </td>
+                                    <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.TempId2 </td>
+                                </tr>
+                                <tr>
+                                    <td>Approved Date</td>
+                                    <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
+                                </tr>
+                            }
+                            else if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBTB.ToString()))
+                            {
+
+
+
                                 <tr>
                                     <td>Bank Transaction</td>
                                     <td>
@@ -226,73 +237,73 @@
                     </a>
                 </div>
                 @*@if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
-                    {
-                        <td class="badge bg-label-success rounded-pill text-uppercase">
-                            @Model.CashReplenimentRequestdto.Status,but  waiting for action from manager
-                        </td>
+                {
+                    <td class="badge bg-label-success rounded-pill text-uppercase">
+                        @Model.CashReplenimentRequestdto.Status,but  waiting for action from manager
+                    </td>
 
+                }
+                else
+                {
+                    if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
+                    {
+                        <td class="badge bg-label-primary rounded-pill text-uppercase">
+                            @Model.CashReplenimentRequestdto.Status,Has not yet been approved by head office
+                        </td>
                     }
                     else
                     {
-                        if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
+                        if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
                         {
-                            <td class="badge bg-label-primary rounded-pill text-uppercase">
-                                @Model.CashReplenimentRequestdto.Status,Has not yet been approved by head office
-                            </td>
+                            <div class="card card-action mb-5">
+                                <h5 class="card-title">Cash Replenishment Request Status</h5>
+                                <div class="card-body">
+                                    <div class="mb-3 col-12 mb-0">
+
+                                            <div class="alert alert-outline-primary" role="alert">
+                                                <h6 class="alert-heading mb-1">ReferenceId :@Model.CashReplenimentRequestdto.Id  with Amount XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") has been approved</h6>
+
+                                            </div>
+
+                                        <div class="text-end" style="padding-right:2em">
+
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
                         }
                         else
                         {
-                            if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
+                            if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.awaiting_corresponding_entry_posting.ToString()))
                             {
-                                <div class="card card-action mb-5">
-                                    <h5 class="card-title">Cash Replenishment Request Status</h5>
-                                    <div class="card-body">
-                                        <div class="mb-3 col-12 mb-0">
-
-                                                <div class="alert alert-outline-primary" role="alert">
-                                                    <h6 class="alert-heading mb-1">ReferenceId :@Model.CashReplenimentRequestdto.Id  with Amount XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") has been approved</h6>
-
-                                                </div>
-
-                                            <div class="text-end" style="padding-right:2em">
-
-
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
+                                <td class="badge bg-label-primary rounded-pill text-uppercase">
+                                    @Model.CashReplenimentRequestdto.Status,Awaiting for bank transfer
+                                </td>
                             }
                             else
                             {
-                                if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.awaiting_corresponding_entry_posting.ToString()))
-                                {
-                                    <td class="badge bg-label-primary rounded-pill text-uppercase">
-                                        @Model.CashReplenimentRequestdto.Status,Awaiting for bank transfer
-                                    </td>
-                                }
-                                else
-                                {
-                                    <td class="badge bg-label-danger rounded-pill text-uppercase">
-                                        @Model.CashReplenimentRequestdto.Status and aborted
-                                    </td>
-
-                                }
+                                <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                    @Model.CashReplenimentRequestdto.Status and aborted
+                                </td>
 
                             }
+
                         }
-
                     }
-                    @if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
-                    {
 
-                    }
-                    else
-                    {
+                }
+                @if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
+                {
 
-                    }*@
+                }
+                else
+                {
+
+                }*@
 
             </div>
         </div>

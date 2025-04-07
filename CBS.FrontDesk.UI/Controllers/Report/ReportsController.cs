@@ -4,6 +4,7 @@ using CBS.FrontDesk.Data.ReportDataSetDto;
 using ClosedXML.Excel;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
+using DocumentFormat.OpenXml.EMMA;
 using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ using System.Web.UI;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
-    [CheckSessionTimeOutAttribute]
+   // [CheckSessionTimeOutAttribute]
 
     public class ReportsController : BaseController
     {
@@ -194,6 +195,108 @@ namespace CBS.FrontDesk.UI.Controllers
             //Response.Close();
             return File(filePath, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Filename);
         }
+
+        public ActionResult AccountingPDFReport(string FileType="")
+        {
+            try
+            {
+                var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+                //string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
+                string fileType = System.Web.HttpContext.Current.Session["fileType"].ToString();
+                string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
+     
+                string rptType = System.Web.HttpContext.Current.Session["rptType"].ToString();
+             
+                ReportDocument rd = new ReportDocument();
+                if (rptSource != "empty")
+                    {
+                    List<TrialBalance6ColumnDto> trialBalance6ColumnDto = new List<TrialBalance6ColumnDto>();
+                    List<TrialBalance4ColumnDto> trialBalance4ColumnDto = new List<TrialBalance4ColumnDto>();
+                        AccountingGeneralLedger accountingGeneralLedger = new AccountingGeneralLedger();
+                        JournalEntryDto journalEntryDto = new JournalEntryDto();
+                    AccountingGeneralLedgerDetails accountingGeneralLedgerDetails = new AccountingGeneralLedgerDetails();
+                        if (fileType.Contains("TB6"))
+                        {
+                           trialBalance6ColumnDto = (List<TrialBalance6ColumnDto>)rptSource;
+                      
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+                        rd.SetDataSource(trialBalance6ColumnDto);
+
+                    }
+                    else if (fileType.Contains("TB4"))
+                        {
+                        trialBalance4ColumnDto = (List<TrialBalance4ColumnDto>)rptSource;
+              
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+                        rd.SetDataSource(trialBalance4ColumnDto);
+
+                    }
+                    else if (fileType.Contains("JE"))
+                    {
+                        accountingGeneralLedger = (AccountingGeneralLedger)rptSource;
+                
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+                        rd.SetDataSource(accountingGeneralLedger);
+
+                    }
+                    else if (fileType.Contains("JE"))
+                    {
+                        journalEntryDto = (JournalEntryDto)rptSource;
+            
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+                        rd.SetDataSource(journalEntryDto);
+
+                    }
+                    else if (fileType.Contains("GL"))
+                    {
+                        accountingGeneralLedgerDetails = (AccountingGeneralLedgerDetails)rptSource;
+                   
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+                        rd.SetDataSource(accountingGeneralLedgerDetails);
+
+                    }
+
+
+
+
+                    string SavedFileName = string.Format($"{rptType}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
+                        //Export the report to a byte array
+                        Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+                        byte[] bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, bytes.Length);
+
+                        //Clear the response and set the content type
+                        Response.ClearContent();
+                        Response.ClearHeaders();
+                        Response.ContentType = "application/pdf";
+
+                        //Write the report bytes to the response
+                        Response.BinaryWrite(bytes);
+                        Response.Flush();
+                        Response.End();
+                        //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+                        CleanReport(rd);
+
+                    }
+
+           
+
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // Handle specific exceptions if needed
+                Response.Write("<H2>An error occurred while generating the report</H2>");
+            }
+
+            return new EmptyResult();
+        }
+
         public void CleanReport(ReportDocument rd)
         {
             if (rd != null)
@@ -655,6 +758,57 @@ namespace CBS.FrontDesk.UI.Controllers
                 export.ToExcel(Response, model as IEnumerable<object>, strtitle);
 
  
+            return new EmptyResult();
+
+
+        }
+
+        public ActionResult Download()
+        {
+            var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+            string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
+            string rpTType = System.Web.HttpContext.Current.Session["rptType"].ToString();
+            var model = rptSource;
+
+            if (rpTType == "EXCEL")
+            {
+                Export export = new Export();
+                export.ToExcel(Response, model as IEnumerable<object>, strtitle);
+
+            }
+            else
+            {
+                string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
+
+                if (rptSource != "empty")
+                {
+                    ReportDocument rd = new ReportDocument();
+                    string strRptPath = Server.MapPath(rptpath);
+                    rd.Load(strRptPath);
+
+                    rd.SetDataSource(rptSource);
+                    string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
+                    // Export the report to a byte array
+                    Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+                    byte[] bytes = new byte[stream.Length];
+                    stream.Read(bytes, 0, bytes.Length);
+
+                    // Clear the response and set the content type
+                    Response.ClearContent();
+                    Response.ClearHeaders();
+                    Response.ContentType = "application/pdf";
+
+                    // Write the report bytes to the response
+                    Response.BinaryWrite(bytes);
+                    Response.Flush();
+                    Response.End();
+                    //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+                    //CleanReport(rd);
+
+
+                }
+
+            }
             return new EmptyResult();
 
 
@@ -1596,6 +1750,7 @@ namespace CBS.FrontDesk.UI.Controllers
             var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
             var paths = System.Web.HttpContext.Current.Session["rptpath"].ToString();
             var rpttitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
+            var rpttype = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
             List<TrialBalance6ColumnDto> accounts = (rptSource == "empty") ? new List<TrialBalance6ColumnDto>() : (List<TrialBalance6ColumnDto>)rptSource;
             TrialBalance6ColumnDto trialBalance = (rptSource == "empty") ? new TrialBalance6ColumnDto() : accounts[0];
             if ((rptSource == "empty"))
@@ -1604,171 +1759,179 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             else
             {
-                using (var workbook = new XLWorkbook())
+                if (rpttype.ToLower()=="pdf")
                 {
-                    var worksheet = workbook.Worksheets.Add(rpttitle);
-                    var headerStyle = workbook.Style;
-
-                    headerStyle.Font.Bold = true;
-                    headerStyle.Font.FontSize = 14;
-                    headerStyle.Font.FontColor = XLColor.Black;
-                    // Apply border to branch range
-                    headerStyle.Border.BottomBorder = XLBorderStyleValues.Thin;
-                    headerStyle.Border.LeftBorder = XLBorderStyleValues.Thin;
-                    headerStyle.Border.RightBorder = XLBorderStyleValues.Thin;
-                    headerStyle.Border.TopBorder = XLBorderStyleValues.Thin;
-                    // Print letterhead
-                    worksheet.Cell(1, 2).Value = trialBalance.branchName;
-                    worksheet.Cell(2, 2).Value = $"{trialBalance.branchLocation}, {trialBalance.branchAddress}";
-                    worksheet.Cell(3, 2).Value = $" {trialBalance.capital}";
-                    worksheet.Cell(4, 2).Value = $"{trialBalance.immatriculationNumber}";
-                    worksheet.Cell(5, 2).Value = $"{trialBalance.webSite}";
-                    worksheet.Cell(6, 2).Value = $" {trialBalance.branchTelephone}";
-                    worksheet.Cell(7, 2).Value = $"{trialBalance.headOfficeTelePhone}";
-
-                    worksheet.Cell(1, 1).Value = "BranchName";
-                    worksheet.Cell(2, 1).Value = $"Address";
-                    worksheet.Cell(3, 1).Value = $"Capital";
-                    worksheet.Cell(4, 1).Value = $"Immatriculation Number";
-                    worksheet.Cell(5, 1).Value = $"Website";
-                    worksheet.Cell(6, 1).Value = $"Branch Telephone";
-                    worksheet.Cell(7, 1).Value = $"Head Office Telephone";
-                    // Apply header style
-
-                    var headerRange = worksheet.Range(1, 1, 7, 1);
-                    headerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
-                    headerRange.Style.Font.FontSize = 12;
-                    headerRange.Style.Font.Bold = true;
-                    headerRange.Style.Alignment.WrapText = true;
-                    headerRange.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-                    headerRange.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
-                    headerRange.Style.Border.RightBorder = XLBorderStyleValues.Thin;
-                    headerRange.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-
-                    var headerRange2 = worksheet.Range(1, 1, 7, 2);
-
-                    headerRange2.Style.Font.FontSize = 12;
-
-                    headerRange2.Style.Alignment.WrapText = true;
-                    headerRange2.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-                    headerRange2.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
-                    headerRange2.Style.Border.RightBorder = XLBorderStyleValues.Thin;
-                    headerRange2.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-                    // Print account details
-                    var titleRange = worksheet.Range("B10:G10");
-                    titleRange.Merge().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                    titleRange.Style.Font.Bold = true;
-                    titleRange.Style.Font.FontSize = 14;
-                    titleRange.Style.Font.FontColor = XLColor.Black;
-                    // Apply border to title range
-                    titleRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                    titleRange.Value = $"  Trial Balance as at {trialBalance.fromDate} to {trialBalance.toDate}";
-                    // Print balance sheet header
-                    worksheet.Cell(12, 1).Value = "Account Number";
-                    worksheet.Cell(12, 2).Value = "Account Name";
-                    worksheet.Cell(12, 3).Value = "Beginning Debit Balance";
-                    worksheet.Cell(12, 4).Value = "Beginning Credit Balance";
-                    worksheet.Cell(12, 5).Value = "Debit Balance";
-                    worksheet.Cell(12, 6).Value = "Credit Balance";
-                    worksheet.Cell(12, 7).Value = "Ending Debit Balance";
-                    worksheet.Cell(12, 8).Value = "Ending Credit Balance";
-
-                    // Apply header style
-                    var headerRange0 = worksheet.Range(12, 1, 12, 8);
-                    headerRange0.Style.Fill.BackgroundColor = XLColor.LightBlue;
-                    headerRange0.Style.Font.FontSize = 12;
-                    headerRange0.Style.Font.Bold = true;
-                    headerRange0.Style.Alignment.WrapText = true;
-                    headerRange0.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-                    headerRange0.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
-                    headerRange0.Style.Border.RightBorder = XLBorderStyleValues.Thin;
-                    headerRange0.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-                    var headerRange10 = worksheet.Range(13, 1, accounts.Count() + 13, 8);
-                    headerRange10.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-                    headerRange10.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
-                    headerRange10.Style.Border.RightBorder = XLBorderStyleValues.Thin;
-                    headerRange10.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-                    int row = 13;
-                    foreach (var account in accounts)
-                    {
-                        worksheet.Cell(row, 1).Value = account.accountNumber;
-                        worksheet.Cell(row, 2).Value = account.accountName;
-                        worksheet.Cell(row, 3).Value = ConvertToLong( account.beginningDebitBalance);
-                        worksheet.Cell(row, 3).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(row, 4).Value = ConvertToLong(account.beginningCreditBalance);
-                        worksheet.Cell(row, 4).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(row, 5).Value = ConvertToLong(account.debitBalance);
-                        worksheet.Cell(row, 5).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(row, 6).Value = ConvertToLong(account.creditBalance);
-                        worksheet.Cell(row, 6).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(row, 7).Value = ConvertToLong(account.endDebitBalance);
-                        worksheet.Cell(row, 7).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(row, 8).Value = ConvertToLong(account.endCreditBalance);
-                        worksheet.Cell(row, 8).Style.NumberFormat.Format = "#,##0";
-                        row++;
-                    }
-
-                    // Autofit columns
-                    worksheet.Columns().AdjustToContents();
-
-                    if ((rptSource == "empty"))
-                    {
-
-                    }
-                    else
-                    {
-                        var footerRange = worksheet.Range(accounts.Count() + 13, 2, accounts.Count() + 13, 8);
-                        footerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
-                        footerRange.Style.Font.FontSize = 12;
-                        footerRange.Style.Font.Bold = true;
-                        footerRange.Style.Alignment.WrapText = false;
-                        footerRange.Style.Alignment.JustifyLastLine = false;
-                        footerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                        footerRange.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-                        footerRange.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
-                        footerRange.Style.Border.RightBorder = XLBorderStyleValues.Thin;
-                        footerRange.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-                        //var balance = accounts.Where(x => x.accountName == "Total").First();
-                        // Print totals
-                        worksheet.Cell(row, 2).Value = "Totals";
-                        worksheet.Cell(row, 3).Value = ConvertToLong(trialBalance.totalBeginningDebitBalance.ToString());
-                        worksheet.Cell(row, 3).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(row, 4).Value = ConvertToLong(trialBalance.totalBeginningCreditBalance.ToString());
-                        worksheet.Cell(row,4).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(row, 5).Value = ConvertToLong(trialBalance.totalDebitBalance.ToString());
-                        worksheet.Cell(row, 5).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(row, 6).Value = ConvertToLong(trialBalance.totalCreditBalance.ToString());
-                        worksheet.Cell(row, 6).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(row, 7).Value = ConvertToLong(trialBalance.totalEndDebitBalance.ToString());
-                        worksheet.Cell(row, 7).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(row, 8).Value = ConvertToLong(trialBalance.totalEndCreditBalance.ToString());
-                        worksheet.Cell(row, 8).Style.NumberFormat.Format = "#,##0";
-                        //worksheet.Cell(row, 2).Value = "Totals";
-                        //worksheet.Cell(row, 3).Value = trialBalance.beginningDebitBalance.ToString();
-                        //worksheet.Cell(row, 4).Value = trialBalance.beginningCreditBalance.ToString();
-                        //worksheet.Cell(row, 5).Value = trialBalance.debitBalance.ToString();
-                        //worksheet.Cell(row, 6).Value = trialBalance.creditBalance.ToString();
-                        //worksheet.Cell(row, 7).Value = trialBalance.endDebitBalance.ToString();
-                        //worksheet.Cell(row, 8).Value = trialBalance.endCreditBalance.ToString();
-                    }
-
-
-                    using (var stream = new MemoryStream())
-                    {
-                        workbook.SaveAs(stream);
-                        stream.Position = 0;
-
-                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",  "BapCCUL-" + trialBalance.branchName + "TB6C.xlsx");
-                    }
-                    //worksheet.Cell(row + 1, 1).Value = $"Ending Balance Sign: {trialBalance.EndingBalanceSigne}";
-
-                    // Save the workbook
 
                 }
+                else
+                {
+                    using (var workbook = new XLWorkbook())
+                    {
+                        var worksheet = workbook.Worksheets.Add(rpttitle);
+                        var headerStyle = workbook.Style;
+
+                        headerStyle.Font.Bold = true;
+                        headerStyle.Font.FontSize = 14;
+                        headerStyle.Font.FontColor = XLColor.Black;
+                        // Apply border to branch range
+                        headerStyle.Border.BottomBorder = XLBorderStyleValues.Thin;
+                        headerStyle.Border.LeftBorder = XLBorderStyleValues.Thin;
+                        headerStyle.Border.RightBorder = XLBorderStyleValues.Thin;
+                        headerStyle.Border.TopBorder = XLBorderStyleValues.Thin;
+                        // Print letterhead
+                        worksheet.Cell(1, 2).Value = trialBalance.branchName;
+                        worksheet.Cell(2, 2).Value = $"{trialBalance.branchLocation}, {trialBalance.branchAddress}";
+                        worksheet.Cell(3, 2).Value = $" {trialBalance.capital}";
+                        worksheet.Cell(4, 2).Value = $"{trialBalance.immatriculationNumber}";
+                        worksheet.Cell(5, 2).Value = $"{trialBalance.webSite}";
+                        worksheet.Cell(6, 2).Value = $" {trialBalance.branchTelephone}";
+                        worksheet.Cell(7, 2).Value = $"{trialBalance.headOfficeTelePhone}";
+
+                        worksheet.Cell(1, 1).Value = "BranchName";
+                        worksheet.Cell(2, 1).Value = $"Address";
+                        worksheet.Cell(3, 1).Value = $"Capital";
+                        worksheet.Cell(4, 1).Value = $"Immatriculation Number";
+                        worksheet.Cell(5, 1).Value = $"Website";
+                        worksheet.Cell(6, 1).Value = $"Branch Telephone";
+                        worksheet.Cell(7, 1).Value = $"Head Office Telephone";
+                        // Apply header style
+
+                        var headerRange = worksheet.Range(1, 1, 7, 1);
+                        headerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
+                        headerRange.Style.Font.FontSize = 12;
+                        headerRange.Style.Font.Bold = true;
+                        headerRange.Style.Alignment.WrapText = true;
+                        headerRange.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                        headerRange.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+                        headerRange.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+                        headerRange.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+
+                        var headerRange2 = worksheet.Range(1, 1, 7, 2);
+
+                        headerRange2.Style.Font.FontSize = 12;
+
+                        headerRange2.Style.Alignment.WrapText = true;
+                        headerRange2.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                        headerRange2.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+                        headerRange2.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+                        headerRange2.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                        // Print account details
+                        var titleRange = worksheet.Range("B10:G10");
+                        titleRange.Merge().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        titleRange.Style.Font.Bold = true;
+                        titleRange.Style.Font.FontSize = 14;
+                        titleRange.Style.Font.FontColor = XLColor.Black;
+                        // Apply border to title range
+                        titleRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                        titleRange.Value = $"  Trial Balance as at {trialBalance.fromDate} to {trialBalance.toDate}";
+                        // Print balance sheet header
+                        worksheet.Cell(12, 1).Value = "Account Number";
+                        worksheet.Cell(12, 2).Value = "Account Name";
+                        worksheet.Cell(12, 3).Value = "Beginning Debit Balance";
+                        worksheet.Cell(12, 4).Value = "Beginning Credit Balance";
+                        worksheet.Cell(12, 5).Value = "Debit Balance";
+                        worksheet.Cell(12, 6).Value = "Credit Balance";
+                        worksheet.Cell(12, 7).Value = "Ending Debit Balance";
+                        worksheet.Cell(12, 8).Value = "Ending Credit Balance";
+
+                        // Apply header style
+                        var headerRange0 = worksheet.Range(12, 1, 12, 8);
+                        headerRange0.Style.Fill.BackgroundColor = XLColor.LightBlue;
+                        headerRange0.Style.Font.FontSize = 12;
+                        headerRange0.Style.Font.Bold = true;
+                        headerRange0.Style.Alignment.WrapText = true;
+                        headerRange0.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                        headerRange0.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+                        headerRange0.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+                        headerRange0.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                        var headerRange10 = worksheet.Range(13, 1, accounts.Count() + 13, 8);
+                        headerRange10.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                        headerRange10.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+                        headerRange10.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+                        headerRange10.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                        int row = 13;
+                        foreach (var account in accounts)
+                        {
+                            worksheet.Cell(row, 1).Value = account.accountNumber;
+                            worksheet.Cell(row, 2).Value = account.accountName;
+                            worksheet.Cell(row, 3).Value = ConvertToLong(account.beginningDebitBalance);
+                            worksheet.Cell(row, 3).Style.NumberFormat.Format = "#,##0";
+                            worksheet.Cell(row, 4).Value = ConvertToLong(account.beginningCreditBalance);
+                            worksheet.Cell(row, 4).Style.NumberFormat.Format = "#,##0";
+                            worksheet.Cell(row, 5).Value = ConvertToLong(account.debitBalance);
+                            worksheet.Cell(row, 5).Style.NumberFormat.Format = "#,##0";
+                            worksheet.Cell(row, 6).Value = ConvertToLong(account.creditBalance);
+                            worksheet.Cell(row, 6).Style.NumberFormat.Format = "#,##0";
+                            worksheet.Cell(row, 7).Value = ConvertToLong(account.endDebitBalance);
+                            worksheet.Cell(row, 7).Style.NumberFormat.Format = "#,##0";
+                            worksheet.Cell(row, 8).Value = ConvertToLong(account.endCreditBalance);
+                            worksheet.Cell(row, 8).Style.NumberFormat.Format = "#,##0";
+                            row++;
+                        }
+
+                        // Autofit columns
+                        worksheet.Columns().AdjustToContents();
+
+                        if ((rptSource == "empty"))
+                        {
+
+                        }
+                        else
+                        {
+                            var footerRange = worksheet.Range(accounts.Count() + 13, 2, accounts.Count() + 13, 8);
+                            footerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
+                            footerRange.Style.Font.FontSize = 12;
+                            footerRange.Style.Font.Bold = true;
+                            footerRange.Style.Alignment.WrapText = false;
+                            footerRange.Style.Alignment.JustifyLastLine = false;
+                            footerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                            footerRange.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                            footerRange.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+                            footerRange.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+                            footerRange.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                            //var balance = accounts.Where(x => x.accountName == "Total").First();
+                            // Print totals
+                            worksheet.Cell(row, 2).Value = "Totals";
+                            worksheet.Cell(row, 3).Value = ConvertToLong(trialBalance.totalBeginningDebitBalance.ToString());
+                            worksheet.Cell(row, 3).Style.NumberFormat.Format = "#,##0";
+                            worksheet.Cell(row, 4).Value = ConvertToLong(trialBalance.totalBeginningCreditBalance.ToString());
+                            worksheet.Cell(row, 4).Style.NumberFormat.Format = "#,##0";
+                            worksheet.Cell(row, 5).Value = ConvertToLong(trialBalance.totalDebitBalance.ToString());
+                            worksheet.Cell(row, 5).Style.NumberFormat.Format = "#,##0";
+                            worksheet.Cell(row, 6).Value = ConvertToLong(trialBalance.totalCreditBalance.ToString());
+                            worksheet.Cell(row, 6).Style.NumberFormat.Format = "#,##0";
+                            worksheet.Cell(row, 7).Value = ConvertToLong(trialBalance.totalEndDebitBalance.ToString());
+                            worksheet.Cell(row, 7).Style.NumberFormat.Format = "#,##0";
+                            worksheet.Cell(row, 8).Value = ConvertToLong(trialBalance.totalEndCreditBalance.ToString());
+                            worksheet.Cell(row, 8).Style.NumberFormat.Format = "#,##0";
+                            //worksheet.Cell(row, 2).Value = "Totals";
+                            //worksheet.Cell(row, 3).Value = trialBalance.beginningDebitBalance.ToString();
+                            //worksheet.Cell(row, 4).Value = trialBalance.beginningCreditBalance.ToString();
+                            //worksheet.Cell(row, 5).Value = trialBalance.debitBalance.ToString();
+                            //worksheet.Cell(row, 6).Value = trialBalance.creditBalance.ToString();
+                            //worksheet.Cell(row, 7).Value = trialBalance.endDebitBalance.ToString();
+                            //worksheet.Cell(row, 8).Value = trialBalance.endCreditBalance.ToString();
+                        }
+
+
+                        using (var stream = new MemoryStream())
+                        {
+                            workbook.SaveAs(stream);
+                            stream.Position = 0;
+
+                            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "BapCCUL-" + trialBalance.branchName + "TB6C.xlsx");
+                        }
+                        //worksheet.Cell(row + 1, 1).Value = $"Ending Balance Sign: {trialBalance.EndingBalanceSigne}";
+
+                        // Save the workbook
+
+                    }
+                }
+       
 
             }
 
-            //return new EmptyResult();
+            return new EmptyResult();
         }
 
 

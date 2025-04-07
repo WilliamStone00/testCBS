@@ -2,7 +2,7 @@
 <div class="container">
     <fieldset class="fieldset-custom">
         <div class="card-body">
-            @using (Html.BeginForm("PostSearchJquery", "AccountingStatements", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostSearch(this);" }))
+            @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostSearch(this);" }))
             {
                 <div class="row justify-content-center mt-2 gy-4">
                     @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)

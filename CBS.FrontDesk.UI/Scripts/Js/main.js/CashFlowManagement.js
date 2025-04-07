@@ -56,7 +56,58 @@
     });
 
 });
-//GetAllBranchAccountUsedToCreditCashFlow
+//GetAllBranchAccountUsedToCreditCashFlow BankingOperation/UpdateRequestForCashReplenishment/{Id}
+
+function createCashDemandDataEntity() {
+    return {
+        usersNotifications: [],
+        cashInfusionModel: {},                 // CashInfusion
+        cashInfusionRequest: {},               // CashInfusionRequest
+        approval: {},                          // Approval
+        bankCashOut: {},                       // BankCashOut
+        bankDepositCashClearing: {},           // BankDepositCashClearing
+        cashClearing: {},                      // CashClearing
+        branchToBranchTransfer: {},            // BranchToBranchTransfer
+        detailsDto: {},                        // DetailsDto
+        uploadBankReciept: {},                 // UploadBankReciept
+        depositApproval: {},                   // DepositNotificationApproval
+        depositNotification: {},               // DepositNotification
+        depositNotificationDto: {},            // DepositNotificationDto
+        listDepositNotificationDto: [],        // List<DepositNotificationDto>
+        cashReplenimentRequestdto: {},         // CashReplenimentRequestDto
+        cashReplenimentRequestCompleteDto: {}, // CashReplenimentRequestCompleteDto
+        cashReplenimentRequest: {},            // CashReplenimentRequest
+        listCashReplenimentRequest: [],        // List<CashReplenimentRequest>
+        listCashReplenimentRequestDto: [],     // List<CashReplenimentRequestDto>
+        detailsDtos: [],                       // List<DetailsDto>
+        serviceOption: "CashInfusionModel",                     // string
+        action: "Reject"                             // string
+    };
+}
+
+// Example usage:
+
+function RejectCashRequisition(Key) {
+    const cashDemandData = createCashDemandDataEntity();
+    cashDemandData.cashInfusionModel.Id = Key;
+    console.log(cashDemandData);
+    $.ajax({
+        url: '/CashFlowManagement/AddOrUpdate',
+        type: 'Post',
+        dataType: 'json',
+        data: { model: cashDemandData },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo 
+         
+
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+
 
 
 function loadBranchAccountUsedToCreditCashFlow(branchId,option) {
