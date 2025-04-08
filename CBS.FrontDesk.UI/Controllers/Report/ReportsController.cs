@@ -199,7 +199,7 @@ namespace CBS.FrontDesk.UI.Controllers
         public ActionResult AccountingPDFReport(string FileType="")
         {
             try
-            {
+             {
                 var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
                 //string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
                 string fileType = System.Web.HttpContext.Current.Session["fileType"].ToString();
@@ -213,7 +213,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     List<TrialBalance6ColumnDto> trialBalance6ColumnDto = new List<TrialBalance6ColumnDto>();
                     List<TrialBalance4ColumnDto> trialBalance4ColumnDto = new List<TrialBalance4ColumnDto>();
                         AccountingGeneralLedger accountingGeneralLedger = new AccountingGeneralLedger();
-                        JournalEntryDto journalEntryDto = new JournalEntryDto();
+                        AccountingEntriesReport journalEntryDto = new AccountingEntriesReport();
                     AccountingGeneralLedgerDetails accountingGeneralLedgerDetails = new AccountingGeneralLedgerDetails();
                         if (fileType.Contains("TB6"))
                         {
@@ -233,22 +233,14 @@ namespace CBS.FrontDesk.UI.Controllers
                         rd.SetDataSource(trialBalance4ColumnDto);
 
                     }
+               
                     else if (fileType.Contains("JE"))
                     {
-                        accountingGeneralLedger = (AccountingGeneralLedger)rptSource;
-                
-                        string strRptPath = Server.MapPath(rptpath);
-                        rd.Load(strRptPath);
-                        rd.SetDataSource(accountingGeneralLedger);
-
-                    }
-                    else if (fileType.Contains("JE"))
-                    {
-                        journalEntryDto = (JournalEntryDto)rptSource;
+                        journalEntryDto = (AccountingEntriesReport)rptSource;
             
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
-                        rd.SetDataSource(journalEntryDto);
+                        rd.SetDataSource(journalEntryDto.BuildJournalEntry(journalEntryDto,GetUserDto().FullName));
 
                     }
                     else if (fileType.Contains("GL"))

@@ -573,7 +573,12 @@ function openReportWindow(fileType, reportType) {
         }
     } else
     {
-        url = "/Reports/AccountingPDFReport?FileType=" + reportType;
+        if (reportType === "BS") {
+            url = "/Reports/DownloadBSFile";
+        } else {
+            url = "/Reports/AccountingPDFReport?FileType=" + reportType;
+        }
+     
 
     }
     console.log(url);

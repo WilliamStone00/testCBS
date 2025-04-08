@@ -40,13 +40,13 @@ namespace CBS.BusinessService.Accounting
                         from crAccount in crJoined.DefaultIfEmpty()
                         select new AccountingEntryDto
                         {
-                            EntryDate = entry.EntryDate.Date.ToShortDateString(),
-                            AccountNumber = entry.EntryType == "DEBIT" ? drAccount?.AccountNumber : crAccount?.AccountNumber,
-                            AccountName = entry.EntryType == "DEBIT" ? drAccount?.AccountName : crAccount?.AccountName,
-                            Description = entry.Description,
-                            Reference = entry.ReferenceID,
-                            Debit  = entry.EntryType == "DEBIT" ? entry.DrAmount.ToString() : "0",
-                            Credit = entry.EntryType == "CREDIT" ? entry.CrAmount.ToString() : "0",
+                            //EntryDate = entry.EntryDate.Date.ToShortDateString(),
+                            //AccountNumber = entry.EntryType == "DEBIT" ? drAccount?.AccountNumber : crAccount?.AccountNumber,
+                            //AccountName = entry.EntryType == "DEBIT" ? drAccount?.AccountName : crAccount?.AccountName,
+                            //Description = entry.Description,
+                            //Reference = entry.ReferenceID,
+                            //Debit  = entry.EntryType == "DEBIT" ? entry.DrAmount.ToString() : "0",
+                            //Credit = entry.EntryType == "CREDIT" ? entry.CrAmount.ToString() : "0",
                             EntryDateTime = entry.EntryDate.ToString(),
             
                         };

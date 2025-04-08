@@ -2,11 +2,141 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
+    public class ReportHeader
+    {
+        public string EntityId { get; set; }
+        public string EntityType { get; set; }
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public string BranchName { get; set; }
+        public string BranchLocation { get; set; }
+        public string BranchAddress { get; set; }
+        public string Capital { get; set; }
+        public string ImmatriculationNumber { get; set; }
+        public string WebSite { get; set; }
+        public string BranchTelephone { get; set; }
+        public string HeadOfficeTelePhone { get; set; }
+        public string BranchCode { get; set; }
+        public string Name { get; set; }
+        public string Location { get; set; }
+        public string Address { get; set; }
+        public string MainAccountNumber { get; set; }
+    }
+    public class AccountingEntriesReport : ReportHeader
+    {
+
+        public List<AccountingEntryDto> AccountingEntries { get; set; }
+
+        public List<JournalEntryDto>  BuildJournalEntry(AccountingEntriesReport Entries,string username)
+        {
+            List<JournalEntryDto> listDto = new List<JournalEntryDto>();
+            decimal SumDebit = 0;
+            decimal SumCredit = 0;
+            int TotalOperations = 0;
+            int NumberDebit = 0;
+            int NumberCredit = 0;
+            foreach (var account in Entries.AccountingEntries)
+            {
+ 
+                JournalEntryDto dto = new JournalEntryDto();
+                dto.AccountNumber = account.AccountNumberReference;
+                dto.Description = account.Naration;
+                dto.Debit = ConvertToLong(account.DrAmount).ToString();
+                dto.Credit = ConvertToLong(account.CrAmount).ToString();
+                dto.Reference = account.ReferenceID.ToString();
+                dto.EntryDate = account.EntryDate.ToString();
+                dto.Address = this.Address;
+                dto.BranchLocation = this.Location;
+                dto.Location = this.Location;
+                dto.Capital = this.Capital;
+                dto.WebSite = this.WebSite;
+                dto.BranchTelephone = this.BranchTelephone;
+                dto.ImmatriculationNumber = this.ImmatriculationNumber;
+                dto.Name = this.Name;
+                dto.Auxilary = account.Representative;
+                dto.PrintersName = username;
+                dto.BranchCode = this.BranchCode;
+                dto.BranchName = this.BranchName;
+                dto.FromDate = this.FromDate.ToString("yyyy-MM-dd");
+                dto.ToDate = this.ToDate.ToString("yyyy-MM-dd");
+                dto.SumCredit = ConvertToLong((Entries.AccountingEntries.Where(x=>x.CrAmount>0).Sum(x=>x.CrAmount))).ToString("N");
+                dto.SumDebit = ConvertToLong(Entries.AccountingEntries.Where(x => x.DrAmount > 0).Sum(x => x.DrAmount)).ToString("N");
+                dto.NumberCredit = ConvertToLong(Entries.AccountingEntries.Where(x => x.CrAmount > 0).Count()).ToString("N");
+                dto.NumberDebit = ConvertToLong(Entries.AccountingEntries.Where(x => x.CrAmount > 0).Count()).ToString("N");
+                dto.NumberEntries = ConvertToLong(Entries.AccountingEntries.Count()).ToString("N");
+                listDto.Add(dto);
+            }
+            return listDto;
+        }
+        public static long ConvertToLong(object value)
+        {
+            try
+            {
+                if (value == null)
+                {
+                    // Handle null value by returning 0 or a default value.
+                    return 0;
+                }
+
+                // If the value is already a numeric type, convert directly.
+                if (value is int || value is long || value is short || value is byte)
+                {
+                    return Convert.ToInt64(value);
+                }
+
+                if (value is decimal || value is double || value is float)
+                {
+                    // Round the value before converting to avoid truncation errors.
+                    return Convert.ToInt64(Math.Round(Convert.ToDecimal(value)));
+                }
+
+                if (value is string)
+                {
+                    // Remove potential formatting characters like commas or currency symbols.
+                    string cleanedValue = value.ToString().Replace(",", "").Replace("$", "").Trim();
+
+                    if (decimal.TryParse(cleanedValue, out decimal parsedDecimal))
+                    {
+                        return Convert.ToInt64(Math.Round(parsedDecimal));
+                    }
+                    else
+                    {
+                        throw new FormatException("The string value cannot be parsed as a numeric value.");
+                    }
+                }
+
+                // Attempt to convert any other object type if possible.
+                if (value is IConvertible)
+                {
+                    return Convert.ToInt64(value);
+                }
+
+                // If none of the above conditions are met, throw an exception.
+                throw new InvalidCastException("The provided value is not convertible to a long.");
+            }
+            catch (OverflowException)
+            {
+                // Handle values that are out of range for Int64.
+                throw new OverflowException("The value is too large or too small to be converted to a long.");
+            }
+            catch (FormatException ex)
+            {
+                // Handle invalid formats.
+                throw new FormatException($"Invalid format: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Catch any other unexpected exceptions.
+                throw new Exception($"An error occurred during conversion: {ex.Message}");
+            }
+        }
+    }
     public class AccountingEntryServiceResponse
     {
         public List<AccountingEntry > Data { get; set; }
@@ -93,23 +223,65 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     }
     public class AccountingEntryDto
     {
+
         // Unique ID number for the entry=
-        //public string Id { get; set; }
-        public string EntryDateTime { get; set; }
-        public string EntryDate { get; set; }
+        public string Id { get; set; }
+
+        // Date the accounting entry was created
+        public DateTime EntryDate { get; set; }
+
+        public string EntryDatetime { get; set; }
+
+        // Effective date for posting the accounting impact
+        public DateTime ValueDate { get; set; }
+
+        // Type of entry (Debit or Credit)
+        public string EntryType { get; set; }
+
+
+        // Currency denomination 
+        public string Currency { get; set; }
+
+        // Text description explaining the purpose of the transaction
         public string Description { get; set; }
-        public string Reference { get; set; }
+
+        // ID linking to source documents related to transaction
+        public string ReferenceID { get; set; }
+
+        public string Status { get; set; }
+
+        public string ReviewedBy { get; set; }
+        public string DrAccountId { get; set; }
+        public string CrAccountId { get; set; }
+        public string DrAccountNumber { get; set; }
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
-        public string Debit { get; set; }
-        public string Credit { get; set; }
+        public string CrAccountNumber { get; set; }
+        public decimal DrAmount { get; set; }
+        public decimal CrAmount { get; set; }
+        public decimal CurrentBalance { get; set; } = 0;
+        public bool IsAuxilaryEntry { get; set; } = false;
+        public string AccountNumberReference { get; set; }
+        public string InitiatorId { get; set; } = "";
+        public string Source { get; set; }
+        public string EventCode { get; set; }  // Generated from rule
+        public string BankId { get; set; } // Related Bank 
+        public string BranchId { get; set; } // Related branch 
+        public string CreatedBy { get; set; }
+        public string CreatedDate { get; set; }
+        public string ExternalBranchId { get; set; }
+
+        public string OperationType { get; set; }
+        public decimal DrBalanceBroughtForward { get; set; } = 0;
+        public decimal CrBalanceBroughtForward { get; set; } = 0;
+        public decimal Amount { get; set; }
+        public decimal CrCurrentBalance { get; set; }
+        public decimal DrCurrentBalance { get; set; }
         public string AccountId { get; set; }
-        public string CurrentBalance { get; set; }
-        public string CreditAccountBalance { get; set; }
-        public string DebitAccountBalance { get; set; }
-        public string ReferenceID { get; set; }
-        public double DrAmount { get; set; }
-        public double CrAmount { get; set; }
+        public string AccountCartegory { get; set; }
+        public string EntryDateTime { get; set; }
+        public string Representative { get; set; }
+        public string Naration { get; set; }
     }
 
 
@@ -159,8 +331,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         public string BranchId { get; set; }
         public DateTime Date { get; set; }
+        public string FileType { get; set; }
         public string DocumentId { get; set; }
     }
+        
     public class TrialBalance4Column
     {
         public DateTime ToDate { get; set; }
