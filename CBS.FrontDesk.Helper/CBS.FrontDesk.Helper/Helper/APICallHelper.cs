@@ -6,7 +6,7 @@ namespace CBS.FrontDesk.Helper
     public abstract class APICallHelper
     {
         //
-        public static string GetAllFinancialDocument = "/api/v1/Document";
+        public static string GetAllFinancialDocument = "/api/v1/Documents";
         public static string GetlocationInforUrl = "/api/v1/Country/Location/CMR";
         //TrialBalanceFile  
         //GetAllowAnonymous,Update,Delete TrialBalanceFile By Id

@@ -662,7 +662,37 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
+        public async Task<AccountingEntriesReport> PostJournalEntries(JEQuery model, string url)
+        {
+            try
+            {
 
+                // Make an API call to create an individual profile
+
+
+                var response = await _accountingApiCallerHelper.PostJOurnalEntriesAsync(url, model);
+                if (response.StatusCode==200)
+                {
+                    // Successful creation
+                    //GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+                    //    ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return response.Data;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return new AccountingEntriesReport();
+        }
         public async Task<ExecutionMessages> PostJE(JEQuery model, string url)
         {
             try

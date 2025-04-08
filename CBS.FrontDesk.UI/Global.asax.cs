@@ -46,23 +46,55 @@ namespace CBS.FrontDesk.UI
 
         }
 
-
-        protected void Application_BeginRequest()
-        {
-            string lang = HttpContext.Current.Session?["SelectedLanguage"]?.ToString() ?? "en";
-            CultureInfo culture = new CultureInfo(lang);
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
-        }
-
         protected void Application_EndRequest()
         {
-            if (HttpContext.Current.Response.StatusCode == 401)
+            var response = HttpContext.Current.Response;
+            var request = HttpContext.Current.Request;
+
+            // Handle 401 Unauthorized
+            if (response.StatusCode == 401)
             {
-                HttpContext.Current.Response.Clear();
-                HttpContext.Current.Response.Redirect("~/Authentication/Logout");
+                response.Clear();
+                if (!request.Url.AbsolutePath.EndsWith("/Authentication/Logout", StringComparison.OrdinalIgnoreCase))
+                {
+                    response.Redirect("~/Authentication/Logout");
+                }
+            }
+            // Log 500 Internal Server Errors
+            else if (response.StatusCode == 500)
+            {
+                var exception = Server.GetLastError(); // Get the last thrown exception
+                if (exception != null)
+                {
+                    string errorDetails = $"500 Error at {request.Url}\n" +
+                                        $"Exception: {exception.Message}\n" +
+                                        $"Stack Trace: {exception.StackTrace}\n" +
+                                        $"Inner Exception: {exception.InnerException?.Message}";
+
+
+                    // Optionally: Log to a file (ensure permissions)
+                    // File.AppendAllText(Server.MapPath("~/App_Data/ErrorLog.txt"), $"{DateTime.Now}: {errorDetails}\n\n");
+                }
+            }
+            // Log other 4xx/5xx errors (optional)
+            else if (response.StatusCode >= 400)
+            {
+                System.Diagnostics.Trace.TraceWarning($"HTTP {response.StatusCode} at {request.Url}");
             }
         }
+
+        //protected void Application_EndRequest()
+        //{
+        //    if (HttpContext.Current.Response.StatusCode == 401)
+        //    {
+        //        HttpContext.Current.Response.Clear();
+        //        HttpContext.Current.Response.Redirect("~/Authentication/Logout");
+        //    }
+        //    else
+        //    {
+
+        //    }
+        //}
 
         protected void Application_PreSendRequestHeaders()
         {

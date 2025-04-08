@@ -26,7 +26,15 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public UploadAccountResult apiResponseData { get; set; }
     }
 
-
+    public class AccountingEntriesReportResponse
+    {
+        public AccountingEntriesReport Data { get; set; }
+        public int StatusCode { get; set; }
+        public string Message { get; set; }
+        public string Status { get; set; }
+        public string Description { get; set; }
+        public List<string> Errors { get; set; }
+    }
     public class TrialBalance4ColumnDtoServiceResponse
     {
         public List<TrialBalance4ColumnDto> Data { get; set; }
@@ -68,7 +76,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
     public class AccountLedgerDto
     {
-  
+    
         public string FromDate { get; set; }
         public string ToDate { get; set; }
         public string BranchName { get; set; }
@@ -111,6 +119,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Description { get; set; }
         public string Reference { get; set; }
         public string EntryDate { get; set; }
+        public string SumDebit { get; set; }
+        public string SumCredit { get; set; }
+        public string NumberEntries { get; set; }
+        public string NumberDebit { get; set; }
+        public string NumberCredit { get; set; }
+        public string PrintersName { get;   set; }
+        public string Auxilary { get;   set; }
+        public string BranchCode { get;   set; }
     }
 
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
