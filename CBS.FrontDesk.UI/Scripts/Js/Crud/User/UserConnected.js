@@ -157,6 +157,7 @@
                 $.ajax({
                     url: '/UserManagement/LoadUserSessions',
                     type: 'POST',
+                    global: false, // 👈 disables triggering #loading or global spinner
                     contentType: 'application/json',
                     data: JSON.stringify({
                         ...ConnectedUsers.getFilterData(),

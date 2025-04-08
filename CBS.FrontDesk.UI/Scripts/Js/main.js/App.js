@@ -6,7 +6,12 @@ document.querySelectorAll('input[type="number"]').forEach(input => {
         }
     });
 });
+
+
+
+
 $(document).ready(function () {
+   
     // Validate on form submission
     $('form').submit(function () {
         var isValid = true;
@@ -38,6 +43,7 @@ $(document).ready(function () {
         }
     });
 });
+
 
 function formatCurrency(amount) {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'XAF', minimumFractionDigits: 1 }).format(amount);

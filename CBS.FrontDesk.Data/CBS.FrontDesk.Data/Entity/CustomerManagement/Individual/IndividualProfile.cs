@@ -9,6 +9,39 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.CustomerManagement
 {
+    public class SubcriptionPackage
+    {
+        public string FeeTyeName { get; set; }
+        public string Amount { get; set; }
+    }
+    public class MemberActivationRequest
+    {
+        public string ReferenceNumber { get; set; }
+        public int AlphaNumber { get; set; }
+        public string MemberType { get; set; } = "New";
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchId { get; set; }
+        public string EventName { get; set; }
+        public string ActivationType { get; set; }// Re-Subcription, New-Subcription
+        public decimal TotalSubcriptionAmount { get; set; }
+        public List<SubcriptionPackage> SubcriptionPackage { get; set; }
+    }
+
+    public class MemberAccountHistory
+    {
+        public string Id { get; set; }
+        public string ReferenceNumber { get; set; }
+        public string FeeTyeName { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchId { get; set; }
+        public string TransactionRferenceId { get; set; }
+        public decimal Amount { get; set; }
+        public DateTime Date  { get; set; }
+        public decimal TotalSubcriptionAmount { get; set; }
+        public string EventName { get; set; }
+    }
 
     public class IndividualProfile
     {

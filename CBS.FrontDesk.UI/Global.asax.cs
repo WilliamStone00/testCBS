@@ -11,6 +11,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using System;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
@@ -70,8 +71,6 @@ namespace CBS.FrontDesk.UI
                                         $"Stack Trace: {exception.StackTrace}\n" +
                                         $"Inner Exception: {exception.InnerException?.Message}";
 
-                    // Log to a file, database, or event log
-                    System.Diagnostics.Trace.TraceError(errorDetails);
 
                     // Optionally: Log to a file (ensure permissions)
                     // File.AppendAllText(Server.MapPath("~/App_Data/ErrorLog.txt"), $"{DateTime.Now}: {errorDetails}\n\n");

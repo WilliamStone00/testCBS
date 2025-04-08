@@ -141,6 +141,30 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             }
         }
 
+        [HttpGet]
+        public async Task<JsonResult> GetCurrentAccountingDay()
+        {
+            try
+            {
+                var date = await _services.GetCurrentAccountingDate();
+                return Json(new
+                {
+                    success = true,
+                    status = "OK",
+                    data = date.ToString("dd-MM-yyyy hh:mm:ss")
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Error retrieving accounting day: " + ex.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         public async Task<ActionResult> GetAccountingDayDetails(string id)
         {
             var accountingDay = await _services.GetAccountingDay(id); // Fetch the accounting day by ID
