@@ -223,6 +223,8 @@ namespace CBS.FrontDesk.Helper
     //    }
     //}
 
+
+
     public class ResponseObject<T> where T : new()
     {
         public T Data { get; set; }

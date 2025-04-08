@@ -11,6 +11,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using System;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
@@ -46,6 +47,13 @@ namespace CBS.FrontDesk.UI
         }
 
 
+        protected void Application_BeginRequest()
+        {
+            string lang = HttpContext.Current.Session?["SelectedLanguage"]?.ToString() ?? "en";
+            CultureInfo culture = new CultureInfo(lang);
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+        }
 
         protected void Application_EndRequest()
         {

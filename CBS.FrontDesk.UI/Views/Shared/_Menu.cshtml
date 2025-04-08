@@ -1,12 +1,12 @@
 ﻿@{
     var menuItems = ViewBag.MenuItems as List<CBS.FrontDesk.Data.Entity.PermissionNode>;
-    string fullName = Session["FullName"]?.ToString() ?? "";
-    string trimmedName = string.Join(" ", fullName.Split(' ').Take(10));
-    var userPhoto = Session["Photo"]?.ToString();
 
-    var encodedName = System.Net.WebUtility.UrlEncode(fullName);
-    var profileImage = string.IsNullOrWhiteSpace(userPhoto)
-        ? Url.Content("~/AppFiles/Images/Avatar/avatarimg.jpg")
+    string fullName = Session["FullName"]?.ToString() ?? "";
+    string trimmedName = fullName.Length > 15 ? fullName.Substring(0, 15) + "..." : fullName;
+
+    var userPhoto = Session["Photo"]?.ToString();
+    var profileImage = (string.IsNullOrWhiteSpace(userPhoto) || userPhoto == "No image")
+        ? Url.Content("~/AppFiles/Images/Avatar/avatarimg.jpg")  // make sure this file exists in wwwroot/images/
         : userPhoto;
 }
 
@@ -16,68 +16,73 @@
 
 @if (menuItems != null && menuItems.Any())
 {
-    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-white shadow-sm rounded-end">
-
-        <!-- Logo and Menu Toggle -->
-        <div class="app-brand demo d-flex align-items-center justify-content-between px-3 py-2 border-bottom">
-            <a href="/" class="app-brand-link">
-                <span class="app-brand-logo demo">
-                    <img src="~/AppFiles/Images/SideImageHeader_login.png"
-                         alt="TrustBank Logo"
-                         style="max-width: 100px; height: auto;" />
-                </span>
-            </a>
-            <button class="layout-menu-toggle btn btn-outline-primary btn-sm">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-
-        <!-- User Profile -->
-        <div class="d-flex align-items-center px-3 py-3 border-bottom bg-light-subtle">
-            <div class="user-image me-3 d-flex align-items-center justify-content-center">
-               <img src="@profileImage"
-     alt="User Profile Image"
-     class="img-fluid rounded-circle shadow-sm"
-     style="width: 40px; height: 40px;" />
-            </div>
-            <div class="user-info">
-                <span class="user-name fw-semibold">@trimmedName</span>
-            </div>
-        </div>
-
-        <!-- 🔍 Material Design Search -->
-        <!-- 🔍 Centered Search Box in Gray Background -->
-        <div class="search-wrapper bg-light border-bottom d-flex justify-content-center align-items-center">
-            <div class="md-search position-relative" style="max-width: 280px; width: 100%;">
-                <button type="button" class="md-search-btn" tabindex="-1">
-                    <i class="mdi mdi-magnify"></i>
-                </button>
-                <input type="text"
-                       id="menuSearchInput"
-                       class="md-search-input form-control"
-                       placeholder="Search Menu."
-                       autocomplete="off" />
-                <label for="menuSearchInput" class="md-search-label">Search menu</label>
-                <button type="button" id="clearSearchBtn" class="md-clear-btn">
-                    <i class="mdi mdi-close-circle"></i>
+    <aside id="layout-menu" class="layout-menu menu-vertical bg-white">
+      
+            <!-- Logo and Menu Toggle -->
+            <div class="app-brand demo d-flex align-items-center justify-content-between px-3 py-2 border-bottom">
+                <a href="/" class="app-brand-link">
+                    <span class="app-brand-logo demo">
+                        <img src="~/AppFiles/Images/SideImageHeader_login.png"
+                             alt="TrustBank Logo"
+                             style="max-width: 100px; height: auto;" />
+                    </span>
+                </a>
+                <button id="menuToggleBtn" class="layout-menu-toggle btn btn-outline-primary btn-sm">
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
-        </div>
 
+            <!-- 👤 User Profile -->
+            <div class="sidebar-extras user-section d-flex align-items-center gap-2 p-3 border-bottom shadow-sm">
+                <div class="user-avatar position-relative">
+                    <img src="@profileImage"
+                         alt="User Avatar"
+                         class="img-fluid rounded-circle shadow"
+                         style="width: 48px; height: 48px; object-fit: cover;" />
+                    <span class="online-dot"></span>
+                </div>
+                <div class="user-info d-flex flex-column">
+                    <span class="fw-semibold text-dark">@trimmedName</span>
+                    <small class="text-muted">Online</small>
+                </div>
+            </div>
+
+            <!-- 🔍 Search -->
+            <div class="sidebar-extras search-wrapper bg-light border-bottom d-flex justify-content-center align-items-center">
+                <div class="md-search position-relative" style="max-width: 280px; width: 100%;">
+                    <button type="button" class="md-search-btn" tabindex="-1">
+                        <i class="mdi mdi-magnify"></i>
+                    </button>
+                    <input type="text"
+                           id="menuSearchInput"
+                           class="md-search-input form-control"
+                           placeholder="Search Menu."
+                           autocomplete="off" />
+                    <label for="menuSearchInput" class="md-search-label">Search menu</label>
+                    <button type="button" id="clearSearchBtn" class="md-clear-btn">
+                        <i class="mdi mdi-close-circle"></i>
+                    </button>
+                </div>
+            </div>
 
 
         <!-- Spacer -->
         <div style="height: 8px;"></div>
 
-        <!-- 🌲 Menu Tree -->
-        <div id="menuTreeWrapper" class="px-2">
-            @Html.Partial("_MenuTree", menuItems, new ViewDataDictionary { { "IsRoot", true }, { "Level", 0 } })
+        <!-- 🌲 Scrollable Menu -->
+        <div class="menu-scroll">
+            <div id="menuTreeWrapper" class="px-2">
+                @Html.Partial("_MenuTree", menuItems, new ViewDataDictionary { { "IsRoot", true }, { "Level", 0 } })
+            </div>
         </div>
     </aside>
 
     <!-- 💡 JavaScript -->
 
     <script>
+        document.getElementById("menuToggleBtn").addEventListener("click", function () {
+            document.getElementById("layout-menu").classList.toggle("menu-collapsed");
+        });
         document.addEventListener("DOMContentLoaded", function () {
             const searchInput = document.getElementById("menuSearchInput");
             const clearBtn = document.getElementById("clearSearchBtn");
@@ -169,87 +174,42 @@
     </script>
 
 
-    @*<script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const searchInput = document.getElementById("menuSearchInput");
-                const clearBtn = document.getElementById("clearSearchBtn");
-
-                const allItems = document.querySelectorAll("#layout-menu .menu-item");
-                const allSubMenus = document.querySelectorAll("#layout-menu .menu-sub");
-
-                function resetSearch() {
-                    searchInput.value = "";
-                    allItems.forEach(item => item.classList.remove("d-none", "search-match"));
-                    allSubMenus.forEach(sub => sub.style.display = "");
-                }
-
-                function showChildren(item) {
-                    const children = item.querySelectorAll(":scope > .menu-sub > .menu-item");
-                    children.forEach(child => {
-                        child.classList.remove("d-none");
-                        child.classList.add("search-match");
-                        showChildren(child);
-                    });
-                }
-
-                searchInput.addEventListener("input", function () {
-                    const filter = this.value.toLowerCase().trim();
-
-                    allItems.forEach(item => {
-                        item.classList.remove("d-none", "search-match");
-                    });
-                    allSubMenus.forEach(sub => sub.style.display = "");
-
-                    if (!filter) return;
-
-                    allItems.forEach(item => item.classList.add("d-none"));
-                    allSubMenus.forEach(sub => sub.style.display = "block");
-
-                    allItems.forEach(item => {
-                        const textElement = item.querySelector(".menu-text");
-                        const text = textElement?.textContent.toLowerCase() ?? "";
-
-                        const isDirectMatch = text.includes(filter);
-                        const hasMatchInChildren = Array.from(item.querySelectorAll(".menu-item .menu-text"))
-                            .some(child => child.textContent.toLowerCase().includes(filter));
-
-                        if (isDirectMatch || hasMatchInChildren) {
-                            item.classList.remove("d-none");
-                            item.classList.add("search-match");
-
-                            if (isDirectMatch) {
-                                showChildren(item);
-                            }
-
-                            let parent = item.parentElement;
-                            while (parent && parent.id !== "layout-menu") {
-                                if (parent.classList.contains("menu-sub")) {
-                                    parent.style.display = "block";
-                                }
-                                if (parent.classList.contains("menu-item")) {
-                                    parent.classList.remove("d-none");
-                                    parent.classList.add("search-match");
-                                }
-                                parent = parent.parentElement;
-                            }
-                        }
-                    });
-                });
-
-                clearBtn.addEventListener("click", resetSearch);
-
-                document.addEventListener("keydown", function (e) {
-                    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-                        e.preventDefault();
-                        searchInput.focus();
-                    }
-                });
-            });
-        </script>*@
-
+  
     <!-- ✨ Styling -->
     <style>
-        /* Container for search bar (center it in gray block) */
+        /* Hide profile and search on collapse */
+        .layout-menu.menu-collapsed .sidebar-extras {
+            display: none !important;
+        }
+
+        /* Optional: Adjust scroll area when collapsed */
+        .layout-menu.menu-collapsed .menu-scroll {
+            max-height: 100vh;
+        }
+
+        /* 🚀 Scrollable Sidebar Menu */
+        .menu-scroll {
+            max-height: calc(100vh - 180px); /* 160 + padding buffer */
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: #ccc transparent;
+        }
+
+            .menu-scroll::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .menu-scroll::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            .menu-scroll::-webkit-scrollbar-thumb {
+                background-color: #bbb;
+                border-radius: 6px;
+            }
+
+        /* 🔍 Search Wrapper */
         .search-wrapper {
             height: 80px;
             background-color: #f1f1f1;
@@ -259,7 +219,6 @@
             border-bottom: 1px solid #ddd;
         }
 
-        /* Material Design Search */
         .md-search {
             display: flex;
             align-items: center;
@@ -302,7 +261,7 @@
             }
 
         .md-search-label {
-            display: none; /* hiding floating label since we use placeholder */
+            display: none;
         }
 
         .md-clear-btn {
@@ -319,7 +278,7 @@
                 color: #dc3545;
             }
 
-        /* Balloon Tooltip */
+        /* 💬 Tooltip */
         .menu-text[title] {
             position: relative;
         }
@@ -353,7 +312,7 @@
                 border-left-color: #333;
             }
 
-        /* Soft Menu Styles */
+        /* 📘 Menu Core */
         #layout-menu {
             border-right: 1px solid #e5e5e5;
         }
@@ -364,6 +323,7 @@
             padding: 10px 14px;
             border-radius: 6px;
             transition: background 0.2s ease, color 0.2s ease;
+            position: relative;
         }
 
             .menu-link:hover {
@@ -382,6 +342,10 @@
             margin-left: 6px;
             font-size: 14px;
             color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 160px;
         }
 
         .menu-inner,
@@ -398,6 +362,54 @@
 
         .menu-item {
             padding-left: 0;
+        }
+
+        /* 👤 Beautified User Section */
+        .user-section {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+            .user-section img {
+                width: 48px;
+                height: 48px;
+                object-fit: cover;
+                border-radius: 50%;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .user-info .user-name {
+                font-weight: 600;
+                color: #212529;
+            }
+
+            .user-info small {
+                color: #888;
+            }
+
+        .user-avatar {
+            position: relative;
+        }
+
+        .online-dot {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            background-color: #28a745;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
         }
     </style>
 

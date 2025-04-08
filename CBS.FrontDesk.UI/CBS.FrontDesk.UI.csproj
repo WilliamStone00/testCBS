@@ -399,6 +399,8 @@
     <Content Include="AppFiles\Images\BG3.jpeg" />
     <Content Include="AppFiles\Images\BG3.png" />
     <Content Include="AppFiles\Images\CaptureBG.png" />
+    <Content Include="AppFiles\Images\Lang\france_64.png" />
+    <Content Include="AppFiles\Images\Lang\united_kingdom_64.png" />
     <Content Include="AppFiles\Images\Logog2.jpeg" />
     <Content Include="AppFiles\Images\Logog2X.jpeg" />
     <Content Include="AppFiles\Images\Logog2XI.png" />
@@ -566,6 +568,7 @@
     <Compile Include="Controllers\AndriodVersioning\AndriodAppVersioningController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectorManagementController.cs" />
+    <Compile Include="Controllers\Language\LanguageController.cs" />
     <Compile Include="Controllers\LoanApplicationP\LoanApplicationController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\LoanRepaymentBackOfficeController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
@@ -3530,6 +3533,7 @@
     <Folder Include="Hub\" />
     <Folder Include="Views\CorrespondingBank\" />
     <Folder Include="Views\DocumentPack\" />
+    <Folder Include="Views\Language\" />
     <Folder Include="Views\Reports\" />
     <Folder Include="Views\Session\" />
     <Folder Include="Views\TwoStepaccountverification\" />

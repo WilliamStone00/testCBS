@@ -110,53 +110,7 @@
     </a>
 </body>
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script>
 
-    function fetchAccountingDate() {
-
-        $.ajax({
-            url: '/AccountingDay/GetCurrentAccountingDay',
-            type: 'GET',
-            success: function (res) {
-                console.log("Success:", res);
-                const label = document.getElementById("accountingDayLabel");
-                const error = document.getElementById("accountingDayError");
-
-                if (res.success) {
-                    label.textContent = 'Accounting Day: ' + res.data;
-                    label.style.color = 'gray'; // Ash/Gray color
-                    label.style.fontWeight = 'normal';
-
-                    error.textContent = '';
-                } else {
-                    label.textContent = 'Accounting Day: N/A';
-                    label.style.color = 'red';
-                    label.style.fontWeight = 'bold';
-
-                    error.textContent = 'Error: Could not load accounting day.';
-                }
-            },
-            error: function (xhr, status, errorThrown) {
-                console.error("AJAX error:", errorThrown);
-
-                const label = document.getElementById("accountingDayLabel");
-                const error = document.getElementById("accountingDayError");
-
-                label.textContent = 'Accounting Day: Error';
-                label.style.color = 'red';
-                label.style.fontWeight = 'bold';
-
-                error.textContent = 'Error: ' + errorThrown;
-            }
-        });
-    }
-
-
-    document.addEventListener("DOMContentLoaded", function () {
-        fetchAccountingDate(); // Initial call
-        setInterval(fetchAccountingDate, 30000); // Refresh every 30 seconds
-    });
-</script>
 
 }
 

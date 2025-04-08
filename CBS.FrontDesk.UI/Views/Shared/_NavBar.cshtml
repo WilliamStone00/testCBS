@@ -1,18 +1,63 @@
-﻿<style>
+﻿@{
+    var selectedLang = (Session["SelectedLanguage"]?.ToString() ?? "en").ToLower();
+    var langFlag = selectedLang == "fr" ? Url.Content("~/AppFiles/Images/Lang/france_64.png") : Url.Content("~/AppFiles/Images/Lang/united_kingdom_64.png");
+}
+
+<style>
     .text-center label {
         font-size: 16px;
+    }
+
+    .dropdown-language img {
+        border-radius: 3px;
+        object-fit: cover;
     }
 
     .navbar-nav .text-muted {
         margin-left: 5px;
         margin-right: 5px;
     }
+
+    .info-banner {
+        font-size: 14px;
+        border: 1px solid #e0e0e0;
+        background-color: #fdfdfd;
+        border-radius: 10px;
+        padding: 10px 16px;
+        min-height: 45px;
+        display: flex;
+        justify-content: flex-start; /* Align content to the left */
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    body {
+        top: 0 !important;
+    }
+
+    .goog-te-banner-frame.skiptranslate {
+        display: none !important;
+    }
+
+    .goog-te-combo {
+        margin: 0;
+    }
+
+    #google_translate_element {
+        display: none !important;
+    }
+
+    .goog-logo-link,
+    .goog-te-gadget {
+        display: none !important;
+    }
+
+
 </style>
 @if (User.Identity.IsAuthenticated)
 {
 
-    <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-         id="layout-navbar">
+    <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme mt-2" id="layout-navbar">
+
         <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
             <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
                 <i class="mdi mdi-menu mdi-24px"></i>
@@ -21,57 +66,55 @@
 
         <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
             <!-- Search -->
-            <div class="navbar-nav align-items-center d-flex justify-content-center">
-                <b>
-                    <label class="text-center px-3 d-flex flex-row align-items-center">
-                        <!-- TRUSTSOFT in sky blue and CREDIT in green, both bold -->
-                        <span class="mx-1" style="color: deepskyblue; font-weight: bold;">T R U S T S O F T</span>
-                        <span style="color: limegreen; font-weight: bold;"> C R E D I T</span>
+            <div class="info-banner bg-light rounded px-4 py-2 shadow-sm d-flex justify-content-start">
+                <!-- Logo Text -->
+                <span class="text-primary fw-bold me-2" style="font-size: 16px;">T R U S T S O F T</span>
+                <span class="fw-bold text-success me-3" style="font-size: 16px;">C R E D I T</span>
 
-                        <!-- Additional content -->
-                        <span class="mx-2">[</span>
-                        <span>
-                            @if (Session["BranchName"] != null && Session["BranchCode"] != null)
-                            {
-                                @($"{Session["BranchName"]} | BCDE: {Session["BranchCode"]}");
-                            }
-                            else if (Session["BranchName"] != null)
-                            {
-                                @Session["BranchName"].ToString();
-                            }
-                            else if (Session["BranchCode"] != null)
-                            {
-                                @Session["BranchCode"].ToString();
-                            }
-                            else
-                            {
-                                <small class="text-muted">Unknown Branch</small>
-                            }
-                        </span>
-                        @if (Session["Roles"] is string[] rolesArrayUnique && rolesArrayUnique.Length > 0)
-                        {
-                            <span class="mx-2">|</span> <!-- Add pipe before roles if they exist -->
-                            <span>
-                                @for (var i = 0; i < rolesArrayUnique.Length; i++)
-                                {
-                                    <small class="text-muted">R: @rolesArrayUnique[i]</small>
-                                    if (i < rolesArrayUnique.Length - 1)
-                                    {
-                                        <span class="mx-1">|</span> <!-- Separator for multiple roles -->
-                                    }
-                                }
-                            </span>
-                        }
-                        <span class="mx-2">|</span>
-                        <strong><span class="fw-bold text-secondary" id="accountingDayLabel">Loading...</span></strong>
-                        <div id="accountingDayError" class="text-danger small mt-1"></div>
+                <!-- Divider -->
+                <span class="text-muted mx-2">[</span>
+
+                <!-- Branch Info -->
+                <span class="text-dark fw-medium me-2">
+                    @if (Session["BranchName"] != null && Session["BranchCode"] != null)
+                    {
+                        @($"{Session["BranchName"]} | BCDE: {Session["BranchCode"]}")
+                    }
+                    else if (Session["BranchName"] != null)
+                    {
+                        @Session["BranchName"]
+                    }
+                    else if (Session["BranchCode"] != null)
+                    {
+                        @Session["BranchCode"]
+                    }
+                    else
+                    {
+                        <small class="text-muted">Unknown Branch</small>
+                    }
+                </span>
+
+                <!-- Roles -->
+                @if (Session["Roles"] is string[] rolesArrayDropdown)
+                {
+                    foreach (var role in rolesArrayDropdown)
+                    {
+                        var displayRole = role.Length > 15 ? role.Substring(0, 15) + "..." : role;
+                        <small class="text-muted">| @displayRole</small><br />
+                    }
+                }
 
 
-                        ]
+                <!-- Accounting Day -->
+                <span class="text-muted mx-2">|</span>
+                <span id="accountingDayStatus" style="display: none; color: green;">🟢</span>
+                <span class="fw-bold text-primary" id="accountingDayLabel">Loading...</span>
+                <span class="text-danger small ms-2" id="accountingDayError"></span>
 
-                    </label>
-                </b>
+                <!-- Close bracket -->
+                <span class="text-muted ms-2">]</span>
             </div>
+
 
 
 
@@ -79,65 +122,35 @@
 
             <ul class="navbar-nav flex-row align-items-center ms-auto">
 
-                <!-- Language -->
-                <!--<li class="nav-item dropdown-language dropdown me-1 me-xl-0">
-            <a class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow"
-               href="javascript:void(0);"
-               data-bs-toggle="dropdown">
-                <i class="mdi mdi-translate mdi-24px"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                    <a class="dropdown-item" href="javascript:void(0);" data-language="en" data-text-direction="ltr">
-                        <span class="align-middle">English</span>
+                @*/ Language
+        Style Switcher*@
+                <!-- 🌐 Language Selector -->
+                <li class="nav-item dropdown-language dropdown me-1 me-xl-0">
+                    <a class="nav-link btn btn-text-secondary rounded-pill btn-icon hide-arrow"
+                       href="javascript:void(0);" data-bs-toggle="dropdown">
+                        <img id="current-lang-flag" src="~/AppFiles/Images/Lang/united_kingdom_64.png" alt="Lang" width="24" height="16" />
                     </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" onclick="setLanguage('en', '~/AppFiles/Images/Lang/united_kingdom_64.png')">
+                                <img src="~/AppFiles/Images/Lang/united_kingdom_64.png" alt="English" width="20" class="me-2" />
+                                <span>English</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" onclick="setLanguage('fr', '~/AppFiles/Images/Lang/france_64.png')">
+                                <img src="~/AppFiles/Images/Lang/france_64.png" alt="French" width="20" class="me-2" />
+                                <span>French</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li>
-                    <a class="dropdown-item" href="javascript:void(0);" data-language="fr" data-text-direction="ltr">
-                        <span class="align-middle">French</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="javascript:void(0);" data-language="ar" data-text-direction="rtl">
-                        <span class="align-middle">Arabic</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="javascript:void(0);" data-language="de" data-text-direction="ltr">
-                        <span class="align-middle">German</span>
-                    </a>
-                </li>
-            </ul>
-        </li>-->
-                <!--/ Language -->
-                <!-- Style Switcher -->
-                <!--<li class="nav-item dropdown-style-switcher dropdown me-1 me-xl-0">
-            <a class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow"
-               href="javascript:void(0);"
-               data-bs-toggle="dropdown">
-                <i class="mdi mdi-24px"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-styles">
-                <li>
-                    <a class="dropdown-item" href="javascript:void(0);" data-theme="light">
-                        <span class="align-middle"><i class="mdi mdi-weather-sunny me-2"></i>Light</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="javascript:void(0);" data-theme="dark">
-                        <span class="align-middle"><i class="mdi mdi-weather-night me-2"></i>Dark</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="javascript:void(0);" data-theme="system">
-                        <span class="align-middle"><i class="mdi mdi-monitor me-2"></i>System</span>
-                    </a>
-                </li>
-            </ul>
-        </li>-->
+
+
+
                 <!-- / Style Switcher-->
                 <!-- Quick links  -->
-                <!--<li class="nav-item dropdown-shortcuts navbar-dropdown dropdown me-1 me-xl-0">
+                @*<li class="nav-item dropdown-shortcuts navbar-dropdown dropdown me-1 me-xl-0">
             <a class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow"
                href="javascript:void(0);"
                data-bs-toggle="dropdown"
@@ -225,7 +238,7 @@
                     </div>
                 </div>
             </div>
-        </li>-->
+        </li>*@
                 <!-- Quick links -->
                 <!-- Notification -->
                 <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-2 me-xl-1">
@@ -316,38 +329,38 @@
                             </a>
                         </li>
                         @*<li>
-                        <a class="dropdown-item" href="pages-account-settings-account.html">
-                            <i class="mdi mdi-cog-outline me-2"></i>
-                            <span class="align-middle">Settings</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="pages-account-settings-billing.html">
-                            <span class="d-flex align-items-center align-middle">
-                                <i class="flex-shrink-0 mdi mdi-credit-card-outline me-2"></i>
-                                <span class="flex-grow-1 align-middle ms-1">Billing</span>
-                                <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <div class="dropdown-divider"></div>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="pages-faq.html">
-                            <i class="mdi mdi-help-circle-outline me-2"></i>
-                            <span class="align-middle">FAQ</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="pages-pricing.html">
-                            <i class="mdi mdi-currency-usd me-2"></i>
-                            <span class="align-middle">Pricing</span>
-                        </a>
-                    </li>
-                    <li>
-                        <div class="dropdown-divider"></div>
-                    </li>*@
+                    <a class="dropdown-item" href="pages-account-settings-account.html">
+                        <i class="mdi mdi-cog-outline me-2"></i>
+                        <span class="align-middle">Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="pages-account-settings-billing.html">
+                        <span class="d-flex align-items-center align-middle">
+                            <i class="flex-shrink-0 mdi mdi-credit-card-outline me-2"></i>
+                            <span class="flex-grow-1 align-middle ms-1">Billing</span>
+                            <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <div class="dropdown-divider"></div>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="pages-faq.html">
+                        <i class="mdi mdi-help-circle-outline me-2"></i>
+                        <span class="align-middle">FAQ</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="pages-pricing.html">
+                        <i class="mdi mdi-currency-usd me-2"></i>
+                        <span class="align-middle">Pricing</span>
+                    </a>
+                </li>
+                <li>
+                    <div class="dropdown-divider"></div>
+                </li>*@
                         <li>
                             <a class="dropdown-item" href="/Authentication/Logout">
                                 <i class="mdi mdi-logout me-2"></i>
@@ -366,5 +379,39 @@
 }
 
 
+<script>
+    function changeLanguage(lang) {
+        const frame = document.querySelector('iframe.goog-te-menu-frame');
+        if (!frame) return;
+
+        const innerDoc = frame.contentDocument || frame.contentWindow.document;
+        const langElements = innerDoc.querySelectorAll('.goog-te-menu2-item span.text');
+
+        langElements.forEach(el => {
+            if (el.innerText.toLowerCase().includes(lang === 'fr' ? 'french' : 'english')) {
+                el.click();
+            }
+        });
+    }
+    function triggerManualTranslation(langCode) {
+        const translateCombo = document.querySelector('.goog-te-combo');
+        if (translateCombo) {
+            translateCombo.value = langCode;
+            translateCombo.dispatchEvent(new Event('change'));
+        }
+    }
+
+</script>
 
 
+@*<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('[data-language]').forEach(item => {
+                item.addEventListener('click', function () {
+                    const lang = this.getAttribute('data-language');
+                    fetch(`/Language/SetLanguage?lang=${lang}`, { method: 'GET' })
+                        .then(() => location.reload());
+                });
+            });
+        });
+    </script>*@
