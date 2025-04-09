@@ -2486,6 +2486,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             private global::System.Data.DataColumn columnDelinquencyConfigName;
             
+            private global::System.Data.DataColumn columnMemberPhoneNumber;
+            
+            private global::System.Data.DataColumn columnAge;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public LoanPortfolioDataTable() {
@@ -2857,6 +2861,22 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn MemberPhoneNumberColumn {
+                get {
+                    return this.columnMemberPhoneNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn AgeColumn {
+                get {
+                    return this.columnAge;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2934,7 +2954,9 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                         string HeadOfficeWebSite, 
                         string HeadOfficeInitial, 
                         string Logo, 
-                        string DelinquencyConfigName) {
+                        string DelinquencyConfigName, 
+                        string MemberPhoneNumber, 
+                        string Age) {
                 LoanPortfolioRow rowLoanPortfolioRow = ((LoanPortfolioRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -2978,7 +3000,9 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                         HeadOfficeWebSite,
                         HeadOfficeInitial,
                         Logo,
-                        DelinquencyConfigName};
+                        DelinquencyConfigName,
+                        MemberPhoneNumber,
+                        Age};
                 rowLoanPortfolioRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowLoanPortfolioRow);
                 return rowLoanPortfolioRow;
@@ -3043,6 +3067,8 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                 this.columnHeadOfficeInitial = base.Columns["HeadOfficeInitial"];
                 this.columnLogo = base.Columns["Logo"];
                 this.columnDelinquencyConfigName = base.Columns["DelinquencyConfigName"];
+                this.columnMemberPhoneNumber = base.Columns["MemberPhoneNumber"];
+                this.columnAge = base.Columns["Age"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3132,6 +3158,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                 base.Columns.Add(this.columnLogo);
                 this.columnDelinquencyConfigName = new global::System.Data.DataColumn("DelinquencyConfigName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDelinquencyConfigName);
+                this.columnMemberPhoneNumber = new global::System.Data.DataColumn("MemberPhoneNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMemberPhoneNumber);
+                this.columnAge = new global::System.Data.DataColumn("Age", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAge);
                 this.columnId.Caption = "AgingBucket";
                 this.columnCustomerId.Caption = "DelinquentLoanCount";
                 this.columnCustomerName.Caption = "DelinquentPrincipal";
@@ -7323,6 +7353,38 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string MemberPhoneNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.MemberPhoneNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MemberPhoneNumber\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.MemberPhoneNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Age {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.AgeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Age\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.AgeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tableLoanPortfolio.IdColumn);
             }
@@ -7823,6 +7885,30 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetDelinquencyConfigNameNull() {
                 this[this.tableLoanPortfolio.DelinquencyConfigNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsMemberPhoneNumberNull() {
+                return this.IsNull(this.tableLoanPortfolio.MemberPhoneNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetMemberPhoneNumberNull() {
+                this[this.tableLoanPortfolio.MemberPhoneNumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsAgeNull() {
+                return this.IsNull(this.tableLoanPortfolio.AgeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetAgeNull() {
+                this[this.tableLoanPortfolio.AgeColumn] = global::System.Convert.DBNull;
             }
         }
         
