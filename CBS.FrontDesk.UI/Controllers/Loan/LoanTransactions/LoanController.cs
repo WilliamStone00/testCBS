@@ -1,4 +1,4 @@
-using CBS.BusinessService;
+﻿using CBS.BusinessService;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.AuditTrailP;
 using CBS.BusinessService.Config;
@@ -12,11 +12,16 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanCommitee;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.MemberOperation;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.UI.Helper;
+using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -24,7 +29,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
 
     public class LoanController : BaseController
     {
@@ -59,6 +64,8 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
             var loan = await _LoanServices.GetLoanWithCustomerAndBranch(KEY);
             return View(loan);
         }
+       
+
         // Action to handle file download
         public async Task<ActionResult> DownloadFile(string fileId = null)
         {
@@ -353,6 +360,331 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
         {
             var data = await _LoanServices.Delete(id);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public async Task<ActionResult> LoanPortfolioStatistics(GenerateLoanPortfolioReportCommand reportCommand)
+        {
+            try
+            {
+                // Use beginning of month to today if not specified
+                var endDate = reportCommand.EndDate == default ? DateTime.Today : reportCommand.EndDate;
+                var startDate = reportCommand.StartDate == default ? new DateTime(endDate.Year, endDate.Month, 1) : reportCommand.StartDate;
+
+                reportCommand.StartDate = startDate;
+                reportCommand.EndDate = endDate;
+
+                var loanPortfolioAnalysis = await _LoanServices.GetLoanPortfolioAnalysisAsync(reportCommand);
+                if (loanPortfolioAnalysis == null)
+                    return Json(new { success = false, message = "No data was found." });
+
+                string mainReportType = (reportCommand.MainReportType ?? "All").ToLowerInvariant();
+                string reportFilePath;
+                switch (mainReportType)
+                {
+                    case "currentloan":
+                        reportFilePath = "~/AppFiles/Reporting/Loan/PortFolio/CurrentLoanRPT.rpt";
+                        break;
+                    case "delinquentloan":
+                        reportFilePath = "~/AppFiles/Reporting/Loan/PortFolio/DelinquentLoanRPT.rpt";
+                        break;
+                    case "loanbypurpose":
+                        reportFilePath = "~/AppFiles/Reporting/Loan/PortFolio/LoanByPurposeRPT.rpt";
+                        break;
+                    default:
+                        reportFilePath = "~/AppFiles/Reporting/Loan/PortFolio/MainPortFolioRPT.rpt";
+                        break;
+                }
+
+                var report = new ReportDocument();
+                report.Load(Server.MapPath(reportFilePath));
+
+                // Indexable report source
+                var reportData = new List<LoanPortfolioAnalysis> { loanPortfolioAnalysis };
+                report.SetDataSource(reportData);
+
+               
+                // Only load subreports if the main report is the full one
+                if (mainReportType == "all" && reportData.Count > 0)
+                {
+                    var selectedReports = string.IsNullOrWhiteSpace(reportCommand.SubReportType)
+                        ? new List<string> { "All" }
+                        : reportCommand.SubReportType.Split(',').Select(s => s.Trim()).ToList();
+
+                    bool ShouldInclude(string name) =>
+                        selectedReports.Contains("All", StringComparer.OrdinalIgnoreCase) ||
+                        selectedReports.Contains(name, StringComparer.OrdinalIgnoreCase);
+
+                    var main = reportData[0];
+
+                    foreach (ReportDocument subReport in report.Subreports)
+                    {
+                        switch (subReport.Name)
+                        {
+                            case "DeliquencyLoanAgingPortFolioRPTSub.rpt" when ShouldInclude("AgingAnalysis"):
+                                subReport.SetDataSource(main.AgingAnalysis);
+                                break;
+                            case "GenderAgingAnalysisSubReport" when ShouldInclude("GenderAgingAnalysis"):
+                                subReport.SetDataSource(main.GenderAgingAnalysis);
+                                break;
+                            case "GroupDelinquencySubReport" when ShouldInclude("GroupDelinquency"):
+                                subReport.SetDataSource(main.GroupDelinquency);
+                                break;
+                            case "IndividualDelinquencySubReport" when ShouldInclude("IndividualDelinquency"):
+                                subReport.SetDataSource(main.IndividualDelinquency);
+                                break;
+                            case "LoanTypeDelinquencySubReport" when ShouldInclude("LoanTypeDelinquency"):
+                                subReport.SetDataSource(main.LoanTypeDelinquency);
+                                break;
+                            case "MemberAgeDelinquencySubReport" when ShouldInclude("MemberAgeDelinquency"):
+                                subReport.SetDataSource(main.MemberAgeDelinquency);
+                                break;
+                            case "LoanPortfoliosSubReport" when ShouldInclude("LoanPortfolios"):
+                                subReport.SetDataSource(main.LoanPortfolios);
+                                break;
+                            case "LoanTargetGenderAnalysisSubReport" when ShouldInclude("LoanTargetGenderAnalysis"):
+                                subReport.SetDataSource(main.LoanTargetGenderAnalysis);
+                                break;
+                            case "LoanProductTypeTargetGenderAnalysisSubReport" when ShouldInclude("LoanProductTypeTargetGenderAnalysis"):
+                                subReport.SetDataSource(main.LoanProductTypeTargetGenderAnalysis);
+                                break;
+                            case "LoanTermProductTargetGenderAnalysisSubReport" when ShouldInclude("LoanTermProductTargetGenderAnalysis"):
+                                subReport.SetDataSource(main.LoanTermProductTargetGenderAnalysis);
+                                break;
+                            case "LoanCategoryTermProductTargetGenderAnalysisSubReport" when ShouldInclude("LoanCategoryTermProductTargetGenderAnalysis"):
+                                subReport.SetDataSource(main.LoanCategoryTermProductTargetGenderAnalysis);
+                                break;
+                        }
+                    }
+
+                    // Set parameters for the main report only
+                    foreach (ParameterField param in report.ParameterFields)
+                    {
+                        switch (param.Name)
+                        {
+                            case "StartDate":
+                                report.SetParameterValue("StartDate", startDate);
+                                break;
+                            case "EndDate":
+                                report.SetParameterValue("EndDate", endDate);
+                                break;
+                            case "BranchName":
+                                report.SetParameterValue("BranchName", loanPortfolioAnalysis.BranchName);
+                                break;
+                            case "PrintedBy":
+                                report.SetParameterValue("PrintedBy", User.Identity?.Name ?? "System");
+                                break;
+                            case "ReportTitle":
+                                report.SetParameterValue("ReportTitle", "Loan Portfolio Report");
+                                break;
+                        }
+                    }
+
+                }
+
+                // Export logic
+                var exportType = (reportCommand.ReportDownloadType ?? "PDF").ToLowerInvariant();
+                ExportFormatType crystalExportType;
+                string contentType, extension;
+
+                switch (exportType)
+                {
+                    case "excel":
+                        crystalExportType = ExportFormatType.Excel;
+                        contentType = "application/vnd.ms-excel";
+                        extension = "xls";
+                        break;
+                    case "word":
+                        crystalExportType = ExportFormatType.WordForWindows;
+                        contentType = "application/msword";
+                        extension = "doc";
+                        break;
+                    default:
+                        crystalExportType = ExportFormatType.PortableDocFormat;
+                        contentType = "application/pdf";
+                        extension = "pdf";
+                        break;
+                }
+
+                var fileName = $"LoanPortfolioReport_{DateTime.Now:yyyyMMddHHmmss}.{extension}";
+                var stream = report.ExportToStream(crystalExportType);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                Response.AppendHeader("Content-Disposition", $"attachment; filename={fileName}");
+                return File(stream, contentType);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Error: {ex.Message}" });
+            }
+        }
+
+
+        //public async Task<ActionResult> LoanPortfolioStatistics(GenerateLoanPortfolioReportCommand reportCommand)
+        //{
+        //    try
+        //    {
+        //        // Use beginning of month to today if not specified
+        //        var endDate = reportCommand.EndDate == default ? DateTime.Today : reportCommand.EndDate;
+        //        var startDate = reportCommand.StartDate == default ? new DateTime(endDate.Year, endDate.Month, 1) : reportCommand.StartDate;
+
+        //        reportCommand.StartDate = startDate;
+        //        reportCommand.EndDate = endDate;
+
+        //        var loanPortfolioAnalysis = await _LoanServices.GetLoanPortfolioAnalysisAsync(reportCommand);
+        //        if (loanPortfolioAnalysis == null)
+        //            return Json(new { success = false, message = "No data was found." });
+
+        //        string mainReportType = (reportCommand.MainReportType ?? "All").ToLowerInvariant();
+        //        string reportFilePath;
+        //        switch (mainReportType)
+        //        {
+        //            case "currentloan":
+        //                reportFilePath = "~/AppFiles/Reporting/Loan/PortFolio/CurrentLoanRPT.rpt";
+        //                break;
+        //            case "delinquentloan":
+        //                reportFilePath = "~/AppFiles/Reporting/Loan/PortFolio/DelinquentLoanRPT.rpt";
+        //                break;
+        //            case "loanbypurpose":
+        //                reportFilePath = "~/AppFiles/Reporting/Loan/PortFolio/LoanByPurposeRPT.rpt";
+        //                break;
+        //            default:
+        //                reportFilePath = "~/AppFiles/Reporting/Loan/PortFolio/MainPortFolioRPT.rpt";
+        //                break;
+        //        }
+
+        //        ReportDocument report = new ReportDocument();
+        //        report.Load(Server.MapPath(reportFilePath));
+        //        report.SetDataSource(new List<LoanPortfolioAnalysis> { loanPortfolioAnalysis });
+
+        //        // Set parameters on main report only (they apply to subreports via linking)
+        //        foreach (ParameterField param in report.ParameterFields)
+        //        {
+        //            switch (param.Name)
+        //            {
+        //                case "StartDate":
+        //                    report.SetParameterValue("StartDate", startDate); break;
+        //                case "EndDate":
+        //                    report.SetParameterValue("EndDate", endDate); break;
+        //                case "BranchName":
+        //                    report.SetParameterValue("BranchName", loanPortfolioAnalysis.BranchName); break;
+        //                case "PrintedBy":
+        //                    report.SetParameterValue("PrintedBy", User.Identity?.Name ?? "System"); break;
+        //                case "ReportTitle":
+        //                    report.SetParameterValue("ReportTitle", "Loan Portfolio Report"); break;
+        //            }
+        //        }
+
+        //        if (mainReportType == "all")
+        //        {
+        //            var selectedReports = string.IsNullOrWhiteSpace(reportCommand.SubReportType)
+        //                ? new List<string> { "All" }
+        //                : reportCommand.SubReportType.Split(',').Select(s => s.Trim()).ToList();
+
+        //            bool ShouldInclude(string name) =>
+        //                selectedReports.Contains("All", StringComparer.OrdinalIgnoreCase) ||
+        //                selectedReports.Contains(name, StringComparer.OrdinalIgnoreCase);
+
+        //            foreach (ReportDocument subReport in report.Subreports)
+        //            {
+        //                switch (subReport.Name)
+        //                {
+        //                    case "DeliquencyLoanAgingPortFolioRPTSub.rpt" when ShouldInclude("AgingAnalysis"):
+        //                        subReport.SetDataSource(loanPortfolioAnalysis.AgingAnalysis); 
+        //                        break;
+        //                    case "GenderAgingAnalysisSubReport" when ShouldInclude("GenderAgingAnalysis"):
+        //                        subReport.SetDataSource(loanPortfolioAnalysis.GenderAgingAnalysis); break;
+        //                    case "GroupDelinquencySubReport" when ShouldInclude("GroupDelinquency"):
+        //                        subReport.SetDataSource(loanPortfolioAnalysis.GroupDelinquency); break;
+        //                    case "IndividualDelinquencySubReport" when ShouldInclude("IndividualDelinquency"):
+        //                        subReport.SetDataSource(loanPortfolioAnalysis.IndividualDelinquency); break;
+        //                    case "LoanTypeDelinquencySubReport" when ShouldInclude("LoanTypeDelinquency"):
+        //                        subReport.SetDataSource(loanPortfolioAnalysis.LoanTypeDelinquency); break;
+        //                    case "MemberAgeDelinquencySubReport" when ShouldInclude("MemberAgeDelinquency"):
+        //                        subReport.SetDataSource(loanPortfolioAnalysis.MemberAgeDelinquency); break;
+        //                    case "LoanPortfoliosSubReport" when ShouldInclude("LoanPortfolios"):
+        //                        subReport.SetDataSource(loanPortfolioAnalysis.LoanPortfolios); break;
+        //                    case "LoanTargetGenderAnalysisSubReport" when ShouldInclude("LoanTargetGenderAnalysis"):
+        //                        subReport.SetDataSource(loanPortfolioAnalysis.LoanTargetGenderAnalysis); break;
+        //                    case "LoanProductTypeTargetGenderAnalysisSubReport" when ShouldInclude("LoanProductTypeTargetGenderAnalysis"):
+        //                        subReport.SetDataSource(loanPortfolioAnalysis.LoanProductTypeTargetGenderAnalysis); break;
+        //                    case "LoanTermProductTargetGenderAnalysisSubReport" when ShouldInclude("LoanTermProductTargetGenderAnalysis"):
+        //                        subReport.SetDataSource(loanPortfolioAnalysis.LoanTermProductTargetGenderAnalysis); break;
+        //                    case "LoanCategoryTermProductTargetGenderAnalysisSubReport" when ShouldInclude("LoanCategoryTermProductTargetGenderAnalysis"):
+        //                        subReport.SetDataSource(loanPortfolioAnalysis.LoanCategoryTermProductTargetGenderAnalysis); break;
+        //                }
+        //            }
+        //        }
+
+        //        var exportType = (reportCommand.ReportDownloadType ?? "PDF").ToLowerInvariant();
+        //        ExportFormatType crystalExportType;
+        //        string contentType, extension;
+
+        //        switch (exportType)
+        //        {
+        //            case "excel":
+        //                crystalExportType = ExportFormatType.Excel;
+        //                contentType = "application/vnd.ms-excel";
+        //                extension = "xls";
+        //                break;
+        //            case "word":
+        //                crystalExportType = ExportFormatType.WordForWindows;
+        //                contentType = "application/msword";
+        //                extension = "doc";
+        //                break;
+        //            default:
+        //                crystalExportType = ExportFormatType.PortableDocFormat;
+        //                contentType = "application/pdf";
+        //                extension = "pdf";
+        //                break;
+        //        }
+
+        //        var fileName = $"LoanPortfolioReport_{DateTime.Now:yyyyMMddHHmmss}.{extension}";
+        //        var stream = report.ExportToStream(crystalExportType);
+        //        stream.Seek(0, SeekOrigin.Begin);
+
+        //        Response.AppendHeader("Content-Disposition", $"attachment; filename={fileName}");
+        //        return File(stream, contentType);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = $"Error: {ex.Message}" });
+        //    }
+        //}
+
+
+
+
+        //[HttpPost]
+        //public async Task<ActionResult> LoanPortfolioStatistics(GenerateLoanPortfolioReportCommand reportCommand)
+        //{
+
+        //    var loanPortfolioAnalysis = await _LoanServices.GetLoanPortfolioAnalysisAsync(reportCommand);
+        //    if (loanPortfolioAnalysis != null)
+        //    {
+
+        //        var analysis = GetLoanPortfolioAnalysis(); // your populated object
+        //        var dataset = GetLoanPortfolioReportData(analysis);
+
+        //        var report = new ReportDocument();
+        //        report.Load(Server.MapPath("~/Reports/LoanPortfolioReport.rpt"));
+        //        report.SetDataSource(dataset);
+
+        //        CrystalReportViewer1.ReportSource = report;
+        //        CrystalReportViewer1.DataBind();
+
+
+        //        this.HttpContext.Session["rptSource"] = loanPortfolioAnalysis;
+        //        return Json(new { success = true, message = "OK" });
+
+        //    }
+        //    return Json(new { success = false, message = $"No data was found." });
+        //}
+        [HttpGet]
+        public async Task<ActionResult> LoanPortfolioReport()
+        {
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.Branches = Branches;
+            return View();
         }
     }
 }

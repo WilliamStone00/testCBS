@@ -1,0 +1,198 @@
+﻿@{
+    ViewBag.Title = "Loan Portfolio Report Overview";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-finance me-2"></i> LOAN PORTFOLIO REPORT
+                </h1>
+                <p class="card-text">
+                    Analyze and track loan portfolio statistics across branches and timeframes. Filter by branch, loan type, delinquency state, or report focus area.
+                </p>
+                <p class="card-text text-black fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Select a main report type or generate a full portfolio report with optional subreport details. Export as PDF, Excel, or Word.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR USING LOAN PORTFOLIO REPORT FILTERS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-bank-outline text-success me-2"></i> <strong>Filter by Branch:</strong> Focus on a specific credit union branch.</li>
+                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>Date Range:</strong> Define the loan disbursement or report period.</li>
+                <li><i class="mdi mdi-table-large text-info me-2"></i> <strong>Main Report Type:</strong> Choose between a full report or a focused view (e.g., Delinquent Loans).</li>
+                <li><i class="mdi mdi-layers-triple-outline text-info me-2"></i> <strong>Subreport Analysis:</strong> Add deeper breakdowns such as aging, gender, and purpose.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>Export:</strong> Download as PDF, Excel, or Word for sharing and compliance.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Section -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Generate Loan Portfolio Report</h5>
+    <div class="card p-3 mb-3 bg-light">
+
+        <!-- Toggle Options -->
+        <div class="row mb-3">
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byBranch" />
+                <label class="form-check-label fw-bold" for="byBranch">Filter By Branch</label>
+            </div>
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byMainReport" />
+                <label class="form-check-label fw-bold" for="byMainReport">Filter By Main Report Type</label>
+            </div>
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byDate" />
+                <label class="form-check-label fw-bold" for="byDate">Filter By Date Range</label>
+            </div>
+        </div>
+
+        <!-- Branch Section -->
+        <div id="branchFilterSection" class="row mb-3" style="display: none;">
+            <div class="col-md-12">
+                <label for="BranchId" class="form-label fw-bold">Select Branch</label>
+                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2" })
+            </div>
+        </div>
+
+        <!-- Main Report Type + Subreport on same line -->
+        <div class="row mb-3" id="mainReportTypeSection" style="display: none;">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Main Report Type</label>
+                <select id="MainReportType" class="form-select">
+                    <option value="All">Full Loan Portfolio Report</option>
+                    <option value="CurrentLoan">Current Loan Summary</option>
+                    <option value="DelinquentLoan">Delinquent Loan Summary</option>
+                    <option value="LoanByPurpose">Loan by Purpose</option>
+                </select>
+            </div>
+            <div class="col-md-6" id="subreportSection" style="display: none;">
+                <label class="form-label fw-bold">Subreport Type(s)</label>
+                <select id="SubReportType" class="form-select select2" multiple>
+                    <option value="AgingAnalysis">Aging Analysis</option>
+                    <option value="LoanPortfolios">Loan Portfolios</option>
+                    <option value="GroupDelinquency">Group Delinquency</option>
+                    <option value="IndividualDelinquency">Individual Delinquency</option>
+                    <option value="LoanTypeDelinquency">Loan Type Delinquency</option>
+                    <option value="GenderAgingAnalysis">Gender Aging</option>
+                    <option value="MemberAgeDelinquency">Member Age</option>
+                    <option value="LoanTargetGenderAnalysis">Target Gender</option>
+                    <option value="LoanProductTypeTargetGenderAnalysis">Product Type x Gender</option>
+                    <option value="LoanTermProductTargetGenderAnalysis">Term x Gender</option>
+                    <option value="LoanCategoryTermProductTargetGenderAnalysis">Category x Term x Gender</option>
+                </select>
+                <small class="text-muted">Hold Ctrl (or Cmd) to select multiple</small>
+            </div>
+        </div>
+
+        <!-- Date Range Section -->
+        <div id="dateRangeSection" class="row mb-3" style="display: none;">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Start Date</label>
+                <input type="date" id="StartDate" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">End Date</label>
+                <input type="date" id="EndDate" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Export Format and Action -->
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label class="form-label fw-bold">Export Format</label>
+                <select id="ReportDownloadType" class="form-select">
+                    <option value="PDF">PDF</option>
+                    <option value="Excel">Excel</option>
+                    <option value="Word">Word</option>
+                </select>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6 d-flex align-items-end">
+            <button id="generateReportBtn" class="btn btn-primary w-100">
+                <i class="mdi mdi-file-chart-outline me-1"></i> Generate Report
+            </button>
+        </div>
+        <div class="col-md-6 d-flex align-items-end">
+            <button id="resetReportBtn" class="btn btn-secondary w-100">
+                <i class="mdi mdi-refresh me-1"></i> Reset Filters
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Section to Show Status or Report Downloads -->
+<div id="reportStatusArea" class="mt-3"></div>
+
+@section Scripts {
+    <script src="~/Scripts/Js/Crud/Loan/Portfolio/loanPortfolioReport.js"></script>
+    <script>
+        $(function () {
+            function resetBranch() {
+                $('#BranchId').val('').trigger('change');
+            }
+            function resetMainReport() {
+                $('#MainReportType').val('All');
+                $('#SubReportType').val(null).trigger('change');
+            }
+            function resetDateRange() {
+                $('#StartDate').val('');
+                $('#EndDate').val('');
+            }
+
+            $('#byBranch').on('change', function () {
+                $('#branchFilterSection').toggle(this.checked);
+                if (!this.checked) resetBranch();
+            });
+
+            $('#byMainReport').on('change', function () {
+                $('#mainReportTypeSection').toggle(this.checked);
+                const showSubreports = $('#MainReportType').val() === "All";
+                $('#subreportSection').toggle(showSubreports);
+                if (!this.checked) resetMainReport();
+            });
+
+            $('#byDate').on('change', function () {
+                $('#dateRangeSection').toggle(this.checked);
+                if (!this.checked) resetDateRange();
+            });
+
+            $('#MainReportType').on('change', function () {
+                const selected = $(this).val();
+                $('#subreportSection').toggle(selected === "All");
+            });
+
+            $('#resetReportBtn').on('click', function () {
+                $('#byBranch, #byMainReport, #byDate').prop('checked', false);
+                resetBranch();
+                resetMainReport();
+                resetDateRange();
+                $('#branchFilterSection, #mainReportTypeSection, #dateRangeSection, #subreportSection').hide();
+                $('#ReportDownloadType').val('PDF');
+            });
+
+            $('.select2').select2({ width: '100%' });
+            $('#subreportSection').hide();
+        });
+    </script>
+}

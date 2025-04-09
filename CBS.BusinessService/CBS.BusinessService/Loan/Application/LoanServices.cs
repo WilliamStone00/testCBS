@@ -16,6 +16,8 @@ using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
 using System.Web.Mvc;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.ReportDataSetDto;
+using CBS.FrontDesk.Data.Entity.Accounting;
 
 namespace CBS.BusinessService
 {
@@ -564,6 +566,140 @@ namespace CBS.BusinessService
                 throw ex;
             }
 
+        }
+
+        public async Task<LoanPortfolioAnalysis> GetLoanPortfolioAnalysisAsync(GenerateLoanPortfolioReportCommand reportCommand)
+        {
+            //GenerateLoanPortfolioReportCommand
+            try
+            {
+                bool isSingleBranch = false;
+
+                if (!IsHeadOffice())
+                {
+                    isSingleBranch=true;
+                    reportCommand.BranchId=GetBranchID();
+                }
+                else
+                {
+                    if (reportCommand.BranchId==null)
+                    {
+                        reportCommand.BranchId="All";
+                    }
+                }
+
+                var queryString = ToQueryString(reportCommand);
+                var fullUrl = $"{APICallHelper.GetLoanPortFolio}?{queryString}";
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<LoanPortfolioAnalysis>>(fullUrl);
+
+                if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+                {
+                    var loan = couApiResponse.ApiResponseData.Data;
+                    var branches = await _branchServices.GetBranches();
+                    var mappingobject = MapToLoanPortfolioAnalysis(loan, branches.FirstOrDefault(x=>x.Id==reportCommand.BranchId));
+                    return mappingobject;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+
+        }
+        public LoanPortfolioAnalysis MapToLoanPortfolioAnalysis(LoanPortfolioAnalysis reportDto,Branch branch)
+        {
+            var headOffice = branch.Bank;
+           
+
+            var analysis = new LoanPortfolioAnalysis
+            {
+                // Branch Info
+                Logo = branch.LogoUrl ?? headOffice.LogoUrl,
+                BranchName = branch.Name,
+                BranchCode = branch.BranchCode,
+                BranchAddress = branch.Address,
+                BranchTelephone = branch.Telephone,
+
+                // Head Office Info
+                HeadOfficeName = headOffice.Name,
+                HeadOfficeAddress = headOffice.Address,
+                HeadOfficeTelephone = headOffice.Telephone,
+                HeadOfficeEmail = headOffice.Email,
+                HeadOfficeWebSite = headOffice.WebSite,
+                HeadOfficeInitial = headOffice.BankInitial,
+                HeadOfficeCode = headOffice.BankCode,
+
+                // Portfolio Overview
+                TotalLoans = reportDto.PortfolioOverview.TotalLoans,
+                TotalPrincipal = reportDto.PortfolioOverview.TotalPrincipal,
+                TotalInterest = reportDto.PortfolioOverview.TotalInterest,
+                TotalForecastedInterest = reportDto.PortfolioOverview.TotalForecastedInterest,
+                TotalBalance = reportDto.PortfolioOverview.TotalBalance,
+
+                CurrentLoanCount = reportDto.PortfolioOverview.CurrentLoanCount,
+                CurrentPrincipal = reportDto.PortfolioOverview.CurrentPrincipal,
+                CurrentBalance = reportDto.PortfolioOverview.CurrentBalance,
+
+                DelinquentLoanCount = reportDto.PortfolioOverview.DelinquentLoanCount,
+                DelinquentPrincipal = reportDto.PortfolioOverview.DelinquentPrincipal,
+                DelinquentInterest = reportDto.PortfolioOverview.DelinquentInterest,
+                DelinquentBalance = reportDto.PortfolioOverview.DelinquentBalance,
+
+                PortfolioAtRiskPercentage_Overview = reportDto.PortfolioOverview.PortfolioAtRiskPercentage,
+                DefaultRate = reportDto.PortfolioOverview.DefaultRate,
+
+                // Current Loan Summary
+                CurrentTotalLoans = reportDto.CurrentLoanSummary.TotalLoans,
+                CurrentTotalPrincipal = reportDto.CurrentLoanSummary.TotalPrincipal,
+                CurrentTotalInterest = reportDto.CurrentLoanSummary.TotalInterest,
+                CurrentTotalForecastedInterest = reportDto.CurrentLoanSummary.TotalForecastedInterest,
+                CurrentTotalOutstandingPrincipal = reportDto.CurrentLoanSummary.TotalOutstandingPrincipal,
+                CurrentTotalBalance = reportDto.CurrentLoanSummary.TotalBalance,
+                CurrentPercentageBalance = reportDto.CurrentLoanSummary.PercentageBalance,
+                CurrentPercentageOfPortfolioPrincipal = reportDto.CurrentLoanSummary.PercentageOfPortfolioPrincipal,
+                CurrentPercentageOfPortfolioInterest = reportDto.CurrentLoanSummary.PercentageOfPortfolioInterest,
+                CurrentPercentageOfPortfolioForecastedInterest = reportDto.CurrentLoanSummary.PercentageOfPortfolioForecastedInterest,
+
+                // Delinquent Loan Summary
+                DelinquentTotalPrincipal = reportDto.DeliquentLoanSummary.TotalPrincipal,
+                DelinquentTotalInterest = reportDto.DeliquentLoanSummary.TotalInterest,
+                DelinquentTotalLoans = reportDto.DeliquentLoanSummary.TotalLoans,
+                TotalDelinquentLoans = reportDto.DeliquentLoanSummary.TotalDelinquentLoans,
+                DelinquentTotalOutstandingPrincipal = reportDto.DeliquentLoanSummary.TotalOutstandingPrincipal,
+                TotalDelinquentPrincipal = reportDto.DeliquentLoanSummary.TotalDelinquentPrincipal,
+                TotalDelinquentInterest = reportDto.DeliquentLoanSummary.TotalDelinquentInterest,
+                DelinquentTotalBalance = reportDto.DeliquentLoanSummary.TotalBalance,
+                DelinquentPercentageBalance = reportDto.DeliquentLoanSummary.PercentageBalance,
+                DelinquentPercentageDelinquentPrincipal = reportDto.DeliquentLoanSummary.PercentageDelinquentPrincipal,
+                DelinquentPercentageDelinquentInterest = reportDto.DeliquentLoanSummary.PercentageDelinquentInterest,
+                DelinquentPercentageArrears = reportDto.DeliquentLoanSummary.PercentageArrears,
+                DelinquentTotalForecastedInterest = reportDto.DeliquentLoanSummary.TotalForecastedInterest,
+                DelinquentPercentageOfPortfolioPrincipal = reportDto.DeliquentLoanSummary.PercentageOfPortfolioPrincipal,
+                DelinquentPercentageOfPortfolioInterest = reportDto.DeliquentLoanSummary.PercentageOfPortfolioInterest,
+                DelinquentPercentageOfPortfolioForecastedInterest = reportDto.DeliquentLoanSummary.PercentageOfPortfolioForecastedInterest,
+
+                // Collections
+                AgingAnalysis = reportDto.AgingAnalysis,
+                GenderAgingAnalysis = reportDto.GenderAgingAnalysis,
+                GroupDelinquency = reportDto.GroupDelinquency,
+                IndividualDelinquency = reportDto.IndividualDelinquency,
+                LoanTypeDelinquency = reportDto.LoanTypeDelinquency,
+                MemberAgeDelinquency = reportDto.MemberAgeDelinquency,
+                LoanPortfolios = reportDto.LoanPortfolios,
+                LoanTargetGenderAnalysis = reportDto.LoanTargetGenderAnalysis,
+                LoanProductTypeTargetGenderAnalysis = reportDto.LoanProductTypeTargetGenderAnalysis,
+                LoanTermProductTargetGenderAnalysis = reportDto.LoanTermProductTargetGenderAnalysis,
+                LoanCategoryTermProductTargetGenderAnalysis = reportDto.LoanCategoryTermProductTargetGenderAnalysis,
+
+                // Raw nested for reference
+                PortfolioOverview = reportDto.PortfolioOverview,
+                CurrentLoanSummary = reportDto.CurrentLoanSummary,
+                DeliquentLoanSummary = reportDto.DeliquentLoanSummary
+            };
+
+            return analysis;
         }
 
     }

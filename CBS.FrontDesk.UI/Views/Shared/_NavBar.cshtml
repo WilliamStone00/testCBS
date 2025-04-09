@@ -94,15 +94,19 @@
                     }
                 </span>
 
-                <!-- Roles -->
-                @if (Session["Roles"] is string[] rolesArrayDropdown)
+                @if (Session["BranchCode"]!= null)
                 {
-                    foreach (var role in rolesArrayDropdown)
+                    <!-- Roles -->
+                    if (Session["Roles"] is string[] rolesArrayDropdown)
                     {
-                        var displayRole = role.Length > 15 ? role.Substring(0, 15) + "..." : role;
-                        <small class="text-muted">| @displayRole</small><br />
+                        foreach (var role in rolesArrayDropdown)
+                        {
+                            var displayRole = role.Length > 15 ? role.Substring(0, 15) + "..." : role;
+                            <small class="text-muted">| @displayRole</small><br />
+                        }
                     }
                 }
+
 
 
                 <!-- Accounting Day -->

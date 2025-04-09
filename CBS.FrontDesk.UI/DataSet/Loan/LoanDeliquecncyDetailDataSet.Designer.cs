@@ -30,7 +30,13 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
         
         private MemberAgeDelinquencyDataTable tableMemberAgeDelinquency;
         
-        private PortfolioSummaryDataTable tablePortfolioSummary;
+        private DeliquentLoanSummaryDataTable tableDeliquentLoanSummary;
+        
+        private LoanPortfolioDataTable tableLoanPortfolio;
+        
+        private CurrentLoanSummaryDataTable tableCurrentLoanSummary;
+        
+        private MainPortFolioDataTable tableMainPortFolio;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -69,8 +75,17 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                 if ((ds.Tables["MemberAgeDelinquency"] != null)) {
                     base.Tables.Add(new MemberAgeDelinquencyDataTable(ds.Tables["MemberAgeDelinquency"]));
                 }
-                if ((ds.Tables["PortfolioSummary"] != null)) {
-                    base.Tables.Add(new PortfolioSummaryDataTable(ds.Tables["PortfolioSummary"]));
+                if ((ds.Tables["DeliquentLoanSummary"] != null)) {
+                    base.Tables.Add(new DeliquentLoanSummaryDataTable(ds.Tables["DeliquentLoanSummary"]));
+                }
+                if ((ds.Tables["LoanPortfolio"] != null)) {
+                    base.Tables.Add(new LoanPortfolioDataTable(ds.Tables["LoanPortfolio"]));
+                }
+                if ((ds.Tables["CurrentLoanSummary"] != null)) {
+                    base.Tables.Add(new CurrentLoanSummaryDataTable(ds.Tables["CurrentLoanSummary"]));
+                }
+                if ((ds.Tables["MainPortFolio"] != null)) {
+                    base.Tables.Add(new MainPortFolioDataTable(ds.Tables["MainPortFolio"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -124,9 +139,39 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public PortfolioSummaryDataTable PortfolioSummary {
+        public DeliquentLoanSummaryDataTable DeliquentLoanSummary {
             get {
-                return this.tablePortfolioSummary;
+                return this.tableDeliquentLoanSummary;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public LoanPortfolioDataTable LoanPortfolio {
+            get {
+                return this.tableLoanPortfolio;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public CurrentLoanSummaryDataTable CurrentLoanSummary {
+            get {
+                return this.tableCurrentLoanSummary;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public MainPortFolioDataTable MainPortFolio {
+            get {
+                return this.tableMainPortFolio;
             }
         }
         
@@ -206,8 +251,17 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                 if ((ds.Tables["MemberAgeDelinquency"] != null)) {
                     base.Tables.Add(new MemberAgeDelinquencyDataTable(ds.Tables["MemberAgeDelinquency"]));
                 }
-                if ((ds.Tables["PortfolioSummary"] != null)) {
-                    base.Tables.Add(new PortfolioSummaryDataTable(ds.Tables["PortfolioSummary"]));
+                if ((ds.Tables["DeliquentLoanSummary"] != null)) {
+                    base.Tables.Add(new DeliquentLoanSummaryDataTable(ds.Tables["DeliquentLoanSummary"]));
+                }
+                if ((ds.Tables["LoanPortfolio"] != null)) {
+                    base.Tables.Add(new LoanPortfolioDataTable(ds.Tables["LoanPortfolio"]));
+                }
+                if ((ds.Tables["CurrentLoanSummary"] != null)) {
+                    base.Tables.Add(new CurrentLoanSummaryDataTable(ds.Tables["CurrentLoanSummary"]));
+                }
+                if ((ds.Tables["MainPortFolio"] != null)) {
+                    base.Tables.Add(new MainPortFolioDataTable(ds.Tables["MainPortFolio"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -260,10 +314,28 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                     this.tableMemberAgeDelinquency.InitVars();
                 }
             }
-            this.tablePortfolioSummary = ((PortfolioSummaryDataTable)(base.Tables["PortfolioSummary"]));
+            this.tableDeliquentLoanSummary = ((DeliquentLoanSummaryDataTable)(base.Tables["DeliquentLoanSummary"]));
             if ((initTable == true)) {
-                if ((this.tablePortfolioSummary != null)) {
-                    this.tablePortfolioSummary.InitVars();
+                if ((this.tableDeliquentLoanSummary != null)) {
+                    this.tableDeliquentLoanSummary.InitVars();
+                }
+            }
+            this.tableLoanPortfolio = ((LoanPortfolioDataTable)(base.Tables["LoanPortfolio"]));
+            if ((initTable == true)) {
+                if ((this.tableLoanPortfolio != null)) {
+                    this.tableLoanPortfolio.InitVars();
+                }
+            }
+            this.tableCurrentLoanSummary = ((CurrentLoanSummaryDataTable)(base.Tables["CurrentLoanSummary"]));
+            if ((initTable == true)) {
+                if ((this.tableCurrentLoanSummary != null)) {
+                    this.tableCurrentLoanSummary.InitVars();
+                }
+            }
+            this.tableMainPortFolio = ((MainPortFolioDataTable)(base.Tables["MainPortFolio"]));
+            if ((initTable == true)) {
+                if ((this.tableMainPortFolio != null)) {
+                    this.tableMainPortFolio.InitVars();
                 }
             }
         }
@@ -282,8 +354,14 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             base.Tables.Add(this.tableLoanTypeDelinquency);
             this.tableMemberAgeDelinquency = new MemberAgeDelinquencyDataTable();
             base.Tables.Add(this.tableMemberAgeDelinquency);
-            this.tablePortfolioSummary = new PortfolioSummaryDataTable();
-            base.Tables.Add(this.tablePortfolioSummary);
+            this.tableDeliquentLoanSummary = new DeliquentLoanSummaryDataTable();
+            base.Tables.Add(this.tableDeliquentLoanSummary);
+            this.tableLoanPortfolio = new LoanPortfolioDataTable();
+            base.Tables.Add(this.tableLoanPortfolio);
+            this.tableCurrentLoanSummary = new CurrentLoanSummaryDataTable();
+            base.Tables.Add(this.tableCurrentLoanSummary);
+            this.tableMainPortFolio = new MainPortFolioDataTable();
+            base.Tables.Add(this.tableMainPortFolio);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -306,7 +384,25 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        private bool ShouldSerializePortfolioSummary() {
+        private bool ShouldSerializeDeliquentLoanSummary() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        private bool ShouldSerializeLoanPortfolio() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        private bool ShouldSerializeCurrentLoanSummary() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        private bool ShouldSerializeMainPortFolio() {
             return false;
         }
         
@@ -375,7 +471,16 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
         public delegate void MemberAgeDelinquencyRowChangeEventHandler(object sender, MemberAgeDelinquencyRowChangeEvent e);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public delegate void PortfolioSummaryRowChangeEventHandler(object sender, PortfolioSummaryRowChangeEvent e);
+        public delegate void DeliquentLoanSummaryRowChangeEventHandler(object sender, DeliquentLoanSummaryRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public delegate void LoanPortfolioRowChangeEventHandler(object sender, LoanPortfolioRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public delegate void CurrentLoanSummaryRowChangeEventHandler(object sender, CurrentLoanSummaryRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public delegate void MainPortFolioRowChangeEventHandler(object sender, MainPortFolioRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -409,6 +514,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             private global::System.Data.DataColumn columnPercentageOfDelinquentPrincipal;
             
             private global::System.Data.DataColumn columnPercentageArrears;
+            
+            private global::System.Data.DataColumn columnLoanCount;
+            
+            private global::System.Data.DataColumn columnInterest;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
@@ -549,6 +658,22 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoanCountColumn {
+                get {
+                    return this.columnLoanCount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn InterestColumn {
+                get {
+                    return this.columnInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -584,7 +709,7 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public AgingAnalysisRow AddAgingAnalysisRow(string AgingBucket, string DelinquentLoanCount, string DelinquentPrincipal, string DelinquentInterest, string Balance, string Principal, string PercentageBalance, string TotalArrears, string PercentageOfLoans, string PercentageOfPrincipal, string PercentageOfInterest, string PercentageOfDelinquentPrincipal, string PercentageArrears) {
+            public AgingAnalysisRow AddAgingAnalysisRow(decimal AgingBucket, int DelinquentLoanCount, decimal DelinquentPrincipal, decimal DelinquentInterest, decimal Balance, decimal Principal, decimal PercentageBalance, decimal TotalArrears, decimal PercentageOfLoans, decimal PercentageOfPrincipal, decimal PercentageOfInterest, decimal PercentageOfDelinquentPrincipal, decimal PercentageArrears, int LoanCount, decimal Interest) {
                 AgingAnalysisRow rowAgingAnalysisRow = ((AgingAnalysisRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         AgingBucket,
@@ -599,7 +724,9 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                         PercentageOfPrincipal,
                         PercentageOfInterest,
                         PercentageOfDelinquentPrincipal,
-                        PercentageArrears};
+                        PercentageArrears,
+                        LoanCount,
+                        Interest};
                 rowAgingAnalysisRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowAgingAnalysisRow);
                 return rowAgingAnalysisRow;
@@ -635,37 +762,43 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                 this.columnPercentageOfInterest = base.Columns["PercentageOfInterest"];
                 this.columnPercentageOfDelinquentPrincipal = base.Columns["PercentageOfDelinquentPrincipal"];
                 this.columnPercentageArrears = base.Columns["PercentageArrears"];
+                this.columnLoanCount = base.Columns["LoanCount"];
+                this.columnInterest = base.Columns["Interest"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             private void InitClass() {
-                this.columnAgingBucket = new global::System.Data.DataColumn("AgingBucket", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnAgingBucket = new global::System.Data.DataColumn("AgingBucket", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAgingBucket);
-                this.columnDelinquentLoanCount = new global::System.Data.DataColumn("DelinquentLoanCount", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnDelinquentLoanCount = new global::System.Data.DataColumn("DelinquentLoanCount", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDelinquentLoanCount);
-                this.columnDelinquentPrincipal = new global::System.Data.DataColumn("DelinquentPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnDelinquentPrincipal = new global::System.Data.DataColumn("DelinquentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDelinquentPrincipal);
-                this.columnDelinquentInterest = new global::System.Data.DataColumn("DelinquentInterest", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnDelinquentInterest = new global::System.Data.DataColumn("DelinquentInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDelinquentInterest);
-                this.columnBalance = new global::System.Data.DataColumn("Balance", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnBalance = new global::System.Data.DataColumn("Balance", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBalance);
-                this.columnPrincipal = new global::System.Data.DataColumn("Principal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPrincipal = new global::System.Data.DataColumn("Principal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPrincipal);
-                this.columnPercentageBalance = new global::System.Data.DataColumn("PercentageBalance", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageBalance = new global::System.Data.DataColumn("PercentageBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageBalance);
-                this.columnTotalArrears = new global::System.Data.DataColumn("TotalArrears", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalArrears = new global::System.Data.DataColumn("TotalArrears", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalArrears);
-                this.columnPercentageOfLoans = new global::System.Data.DataColumn("PercentageOfLoans", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageOfLoans = new global::System.Data.DataColumn("PercentageOfLoans", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageOfLoans);
-                this.columnPercentageOfPrincipal = new global::System.Data.DataColumn("PercentageOfPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageOfPrincipal = new global::System.Data.DataColumn("PercentageOfPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageOfPrincipal);
-                this.columnPercentageOfInterest = new global::System.Data.DataColumn("PercentageOfInterest", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageOfInterest = new global::System.Data.DataColumn("PercentageOfInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageOfInterest);
-                this.columnPercentageOfDelinquentPrincipal = new global::System.Data.DataColumn("PercentageOfDelinquentPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageOfDelinquentPrincipal = new global::System.Data.DataColumn("PercentageOfDelinquentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageOfDelinquentPrincipal);
-                this.columnPercentageArrears = new global::System.Data.DataColumn("PercentageArrears", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageArrears = new global::System.Data.DataColumn("PercentageArrears", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageArrears);
+                this.columnLoanCount = new global::System.Data.DataColumn("LoanCount", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoanCount);
+                this.columnInterest = new global::System.Data.DataColumn("Interest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInterest);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1033,19 +1166,19 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                         string BorrowerName, 
                         string Branch, 
                         string LoanType, 
-                        string DelinquentInterest, 
-                        string Balance, 
-                        string Principal, 
-                        string LoanCount, 
-                        string DelinquentPrincipal, 
-                        string PercentageOfLoans, 
-                        string PercentageOfPrincipal, 
-                        string PercentageOfInterest, 
-                        string PercentageOfDelinquentPrincipal, 
-                        string PercentageArrears, 
-                        string PercentageBalance, 
-                        string PercentageDelinquentPrincipal, 
-                        string PercentageDelinquentInterest) {
+                        decimal DelinquentInterest, 
+                        decimal Balance, 
+                        decimal Principal, 
+                        int LoanCount, 
+                        decimal DelinquentPrincipal, 
+                        decimal PercentageOfLoans, 
+                        decimal PercentageOfPrincipal, 
+                        decimal PercentageOfInterest, 
+                        decimal PercentageOfDelinquentPrincipal, 
+                        decimal PercentageArrears, 
+                        decimal PercentageBalance, 
+                        decimal PercentageDelinquentPrincipal, 
+                        decimal PercentageDelinquentInterest) {
                 LoanTypeDelinquencyRow rowLoanTypeDelinquencyRow = ((LoanTypeDelinquencyRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         BorrowerName,
@@ -1113,31 +1246,31 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                 base.Columns.Add(this.columnBranch);
                 this.columnLoanType = new global::System.Data.DataColumn("LoanType", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLoanType);
-                this.columnDelinquentInterest = new global::System.Data.DataColumn("DelinquentInterest", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnDelinquentInterest = new global::System.Data.DataColumn("DelinquentInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDelinquentInterest);
-                this.columnBalance = new global::System.Data.DataColumn("Balance", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnBalance = new global::System.Data.DataColumn("Balance", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBalance);
-                this.columnPrincipal = new global::System.Data.DataColumn("Principal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPrincipal = new global::System.Data.DataColumn("Principal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPrincipal);
-                this.columnLoanCount = new global::System.Data.DataColumn("LoanCount", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnLoanCount = new global::System.Data.DataColumn("LoanCount", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLoanCount);
-                this.columnDelinquentPrincipal = new global::System.Data.DataColumn("DelinquentPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnDelinquentPrincipal = new global::System.Data.DataColumn("DelinquentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDelinquentPrincipal);
-                this.columnPercentageOfLoans = new global::System.Data.DataColumn("PercentageOfLoans", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageOfLoans = new global::System.Data.DataColumn("PercentageOfLoans", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageOfLoans);
-                this.columnPercentageOfPrincipal = new global::System.Data.DataColumn("PercentageOfPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageOfPrincipal = new global::System.Data.DataColumn("PercentageOfPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageOfPrincipal);
-                this.columnPercentageOfInterest = new global::System.Data.DataColumn("PercentageOfInterest", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageOfInterest = new global::System.Data.DataColumn("PercentageOfInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageOfInterest);
-                this.columnPercentageOfDelinquentPrincipal = new global::System.Data.DataColumn("PercentageOfDelinquentPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageOfDelinquentPrincipal = new global::System.Data.DataColumn("PercentageOfDelinquentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageOfDelinquentPrincipal);
-                this.columnPercentageArrears = new global::System.Data.DataColumn("PercentageArrears", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageArrears = new global::System.Data.DataColumn("PercentageArrears", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageArrears);
-                this.columnPercentageBalance = new global::System.Data.DataColumn("PercentageBalance", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageBalance = new global::System.Data.DataColumn("PercentageBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageBalance);
-                this.columnPercentageDelinquentPrincipal = new global::System.Data.DataColumn("PercentageDelinquentPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageDelinquentPrincipal = new global::System.Data.DataColumn("PercentageDelinquentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageDelinquentPrincipal);
-                this.columnPercentageDelinquentInterest = new global::System.Data.DataColumn("PercentageDelinquentInterest", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageDelinquentInterest = new global::System.Data.DataColumn("PercentageDelinquentInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageDelinquentInterest);
                 this.columnBorrowerName.Caption = "AgingBucket";
                 this.columnBranch.Caption = "DelinquentLoanCount";
@@ -1511,19 +1644,19 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                         string BorrowerName, 
                         string Branch, 
                         string LoanType, 
-                        string DelinquentInterest, 
-                        string Balance, 
-                        string Principal, 
-                        string LoanCount, 
-                        string DelinquentPrincipal, 
-                        string PercentageOfLoans, 
-                        string PercentageOfPrincipal, 
-                        string PercentageOfInterest, 
-                        string PercentageOfDelinquentPrincipal, 
-                        string PercentageArrears, 
-                        string PercentageBalance, 
-                        string PercentageDelinquentPrincipal, 
-                        string PercentageDelinquentInterest) {
+                        decimal DelinquentInterest, 
+                        decimal Balance, 
+                        decimal Principal, 
+                        int LoanCount, 
+                        decimal DelinquentPrincipal, 
+                        decimal PercentageOfLoans, 
+                        decimal PercentageOfPrincipal, 
+                        decimal PercentageOfInterest, 
+                        decimal PercentageOfDelinquentPrincipal, 
+                        decimal PercentageArrears, 
+                        decimal PercentageBalance, 
+                        decimal PercentageDelinquentPrincipal, 
+                        decimal PercentageDelinquentInterest) {
                 MemberAgeDelinquencyRow rowMemberAgeDelinquencyRow = ((MemberAgeDelinquencyRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         BorrowerName,
@@ -1591,31 +1724,31 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                 base.Columns.Add(this.columnBranch);
                 this.columnLoanType = new global::System.Data.DataColumn("LoanType", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLoanType);
-                this.columnDelinquentInterest = new global::System.Data.DataColumn("DelinquentInterest", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnDelinquentInterest = new global::System.Data.DataColumn("DelinquentInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDelinquentInterest);
-                this.columnBalance = new global::System.Data.DataColumn("Balance", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnBalance = new global::System.Data.DataColumn("Balance", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBalance);
-                this.columnPrincipal = new global::System.Data.DataColumn("Principal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPrincipal = new global::System.Data.DataColumn("Principal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPrincipal);
-                this.columnLoanCount = new global::System.Data.DataColumn("LoanCount", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnLoanCount = new global::System.Data.DataColumn("LoanCount", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLoanCount);
-                this.columnDelinquentPrincipal = new global::System.Data.DataColumn("DelinquentPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnDelinquentPrincipal = new global::System.Data.DataColumn("DelinquentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDelinquentPrincipal);
-                this.columnPercentageOfLoans = new global::System.Data.DataColumn("PercentageOfLoans", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageOfLoans = new global::System.Data.DataColumn("PercentageOfLoans", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageOfLoans);
-                this.columnPercentageOfPrincipal = new global::System.Data.DataColumn("PercentageOfPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageOfPrincipal = new global::System.Data.DataColumn("PercentageOfPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageOfPrincipal);
-                this.columnPercentageOfInterest = new global::System.Data.DataColumn("PercentageOfInterest", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageOfInterest = new global::System.Data.DataColumn("PercentageOfInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageOfInterest);
-                this.columnPercentageOfDelinquentPrincipal = new global::System.Data.DataColumn("PercentageOfDelinquentPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageOfDelinquentPrincipal = new global::System.Data.DataColumn("PercentageOfDelinquentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageOfDelinquentPrincipal);
-                this.columnPercentageArrears = new global::System.Data.DataColumn("PercentageArrears", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageArrears = new global::System.Data.DataColumn("PercentageArrears", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageArrears);
-                this.columnPercentageBalance = new global::System.Data.DataColumn("PercentageBalance", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageBalance = new global::System.Data.DataColumn("PercentageBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageBalance);
-                this.columnPercentageDelinquentPrincipal = new global::System.Data.DataColumn("PercentageDelinquentPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageDelinquentPrincipal = new global::System.Data.DataColumn("PercentageDelinquentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageDelinquentPrincipal);
-                this.columnPercentageDelinquentInterest = new global::System.Data.DataColumn("PercentageDelinquentInterest", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageDelinquentInterest = new global::System.Data.DataColumn("PercentageDelinquentInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageDelinquentInterest);
                 this.columnBorrowerName.Caption = "AgingBucket";
                 this.columnBranch.Caption = "DelinquentLoanCount";
@@ -1753,7 +1886,7 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class PortfolioSummaryDataTable : global::System.Data.TypedTableBase<PortfolioSummaryRow> {
+        public partial class DeliquentLoanSummaryDataTable : global::System.Data.TypedTableBase<DeliquentLoanSummaryRow> {
             
             private global::System.Data.DataColumn columnTotalPrincipal;
             
@@ -1785,10 +1918,16 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             private global::System.Data.DataColumn columnPortfolioAtRiskPercentage;
             
+            private global::System.Data.DataColumn columnPercentageOfPortfolioPrincipal;
+            
+            private global::System.Data.DataColumn columnPercentageOfPortfolioInterest;
+            
+            private global::System.Data.DataColumn columnPercentageOfPortfolioForecastedInterest;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public PortfolioSummaryDataTable() {
-                this.TableName = "PortfolioSummary";
+            public DeliquentLoanSummaryDataTable() {
+                this.TableName = "DeliquentLoanSummary";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -1796,7 +1935,7 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            internal PortfolioSummaryDataTable(global::System.Data.DataTable table) {
+            internal DeliquentLoanSummaryDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -1813,7 +1952,7 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected PortfolioSummaryDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected DeliquentLoanSummaryDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -1940,6 +2079,30 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PercentageOfPortfolioPrincipalColumn {
+                get {
+                    return this.columnPercentageOfPortfolioPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PercentageOfPortfolioInterestColumn {
+                get {
+                    return this.columnPercentageOfPortfolioInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PercentageOfPortfolioForecastedInterestColumn {
+                get {
+                    return this.columnPercentageOfPortfolioForecastedInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1949,34 +2112,52 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public PortfolioSummaryRow this[int index] {
+            public DeliquentLoanSummaryRow this[int index] {
                 get {
-                    return ((PortfolioSummaryRow)(this.Rows[index]));
+                    return ((DeliquentLoanSummaryRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event PortfolioSummaryRowChangeEventHandler PortfolioSummaryRowChanging;
+            public event DeliquentLoanSummaryRowChangeEventHandler DeliquentLoanSummaryRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event PortfolioSummaryRowChangeEventHandler PortfolioSummaryRowChanged;
+            public event DeliquentLoanSummaryRowChangeEventHandler DeliquentLoanSummaryRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event PortfolioSummaryRowChangeEventHandler PortfolioSummaryRowDeleting;
+            public event DeliquentLoanSummaryRowChangeEventHandler DeliquentLoanSummaryRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event PortfolioSummaryRowChangeEventHandler PortfolioSummaryRowDeleted;
+            public event DeliquentLoanSummaryRowChangeEventHandler DeliquentLoanSummaryRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void AddPortfolioSummaryRow(PortfolioSummaryRow row) {
+            public void AddDeliquentLoanSummaryRow(DeliquentLoanSummaryRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public PortfolioSummaryRow AddPortfolioSummaryRow(string TotalPrincipal, string TotalInterest, string TotalLoans, string TotalDelinquentLoans, string TotalOutstandingPrincipal, string TotalDelinquentPrincipal, string TotalDelinquentInterest, string TotalBalance, string PercentageBalance, string PercentageDelinquentPrincipal, string PercentageDelinquentInterest, string PercentageOfDelinquentPrincipal, string PercentageArrears, string TotalArrears, string PortfolioAtRiskPercentage) {
-                PortfolioSummaryRow rowPortfolioSummaryRow = ((PortfolioSummaryRow)(this.NewRow()));
+            public DeliquentLoanSummaryRow AddDeliquentLoanSummaryRow(
+                        decimal TotalPrincipal, 
+                        decimal TotalInterest, 
+                        int TotalLoans, 
+                        int TotalDelinquentLoans, 
+                        decimal TotalOutstandingPrincipal, 
+                        decimal TotalDelinquentPrincipal, 
+                        decimal TotalDelinquentInterest, 
+                        decimal TotalBalance, 
+                        decimal PercentageBalance, 
+                        decimal PercentageDelinquentPrincipal, 
+                        decimal PercentageDelinquentInterest, 
+                        decimal PercentageOfDelinquentPrincipal, 
+                        decimal PercentageArrears, 
+                        decimal TotalArrears, 
+                        decimal PortfolioAtRiskPercentage, 
+                        decimal PercentageOfPortfolioPrincipal, 
+                        decimal PercentageOfPortfolioInterest, 
+                        decimal PercentageOfPortfolioForecastedInterest) {
+                DeliquentLoanSummaryRow rowDeliquentLoanSummaryRow = ((DeliquentLoanSummaryRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         TotalPrincipal,
                         TotalInterest,
@@ -1992,16 +2173,19 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                         PercentageOfDelinquentPrincipal,
                         PercentageArrears,
                         TotalArrears,
-                        PortfolioAtRiskPercentage};
-                rowPortfolioSummaryRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowPortfolioSummaryRow);
-                return rowPortfolioSummaryRow;
+                        PortfolioAtRiskPercentage,
+                        PercentageOfPortfolioPrincipal,
+                        PercentageOfPortfolioInterest,
+                        PercentageOfPortfolioForecastedInterest};
+                rowDeliquentLoanSummaryRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowDeliquentLoanSummaryRow);
+                return rowDeliquentLoanSummaryRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                PortfolioSummaryDataTable cln = ((PortfolioSummaryDataTable)(base.Clone()));
+                DeliquentLoanSummaryDataTable cln = ((DeliquentLoanSummaryDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -2009,7 +2193,7 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new PortfolioSummaryDataTable();
+                return new DeliquentLoanSummaryDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2030,41 +2214,50 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                 this.columnPercentageArrears = base.Columns["PercentageArrears"];
                 this.columnTotalArrears = base.Columns["TotalArrears"];
                 this.columnPortfolioAtRiskPercentage = base.Columns["PortfolioAtRiskPercentage"];
+                this.columnPercentageOfPortfolioPrincipal = base.Columns["PercentageOfPortfolioPrincipal"];
+                this.columnPercentageOfPortfolioInterest = base.Columns["PercentageOfPortfolioInterest"];
+                this.columnPercentageOfPortfolioForecastedInterest = base.Columns["PercentageOfPortfolioForecastedInterest"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             private void InitClass() {
-                this.columnTotalPrincipal = new global::System.Data.DataColumn("TotalPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalPrincipal = new global::System.Data.DataColumn("TotalPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalPrincipal);
-                this.columnTotalInterest = new global::System.Data.DataColumn("TotalInterest", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalInterest = new global::System.Data.DataColumn("TotalInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalInterest);
-                this.columnTotalLoans = new global::System.Data.DataColumn("TotalLoans", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalLoans = new global::System.Data.DataColumn("TotalLoans", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalLoans);
-                this.columnTotalDelinquentLoans = new global::System.Data.DataColumn("TotalDelinquentLoans", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalDelinquentLoans = new global::System.Data.DataColumn("TotalDelinquentLoans", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalDelinquentLoans);
-                this.columnTotalOutstandingPrincipal = new global::System.Data.DataColumn("TotalOutstandingPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalOutstandingPrincipal = new global::System.Data.DataColumn("TotalOutstandingPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalOutstandingPrincipal);
-                this.columnTotalDelinquentPrincipal = new global::System.Data.DataColumn("TotalDelinquentPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalDelinquentPrincipal = new global::System.Data.DataColumn("TotalDelinquentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalDelinquentPrincipal);
-                this.columnTotalDelinquentInterest = new global::System.Data.DataColumn("TotalDelinquentInterest", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalDelinquentInterest = new global::System.Data.DataColumn("TotalDelinquentInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalDelinquentInterest);
-                this.columnTotalBalance = new global::System.Data.DataColumn("TotalBalance", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalBalance = new global::System.Data.DataColumn("TotalBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalBalance);
-                this.columnPercentageBalance = new global::System.Data.DataColumn("PercentageBalance", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageBalance = new global::System.Data.DataColumn("PercentageBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageBalance);
-                this.columnPercentageDelinquentPrincipal = new global::System.Data.DataColumn("PercentageDelinquentPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageDelinquentPrincipal = new global::System.Data.DataColumn("PercentageDelinquentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageDelinquentPrincipal);
-                this.columnPercentageDelinquentInterest = new global::System.Data.DataColumn("PercentageDelinquentInterest", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageDelinquentInterest = new global::System.Data.DataColumn("PercentageDelinquentInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageDelinquentInterest);
-                this.columnPercentageOfDelinquentPrincipal = new global::System.Data.DataColumn("PercentageOfDelinquentPrincipal", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageOfDelinquentPrincipal = new global::System.Data.DataColumn("PercentageOfDelinquentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageOfDelinquentPrincipal);
-                this.columnPercentageArrears = new global::System.Data.DataColumn("PercentageArrears", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPercentageArrears = new global::System.Data.DataColumn("PercentageArrears", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentageArrears);
-                this.columnTotalArrears = new global::System.Data.DataColumn("TotalArrears", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalArrears = new global::System.Data.DataColumn("TotalArrears", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalArrears);
-                this.columnPortfolioAtRiskPercentage = new global::System.Data.DataColumn("PortfolioAtRiskPercentage", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPortfolioAtRiskPercentage = new global::System.Data.DataColumn("PortfolioAtRiskPercentage", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPortfolioAtRiskPercentage);
+                this.columnPercentageOfPortfolioPrincipal = new global::System.Data.DataColumn("PercentageOfPortfolioPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercentageOfPortfolioPrincipal);
+                this.columnPercentageOfPortfolioInterest = new global::System.Data.DataColumn("PercentageOfPortfolioInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercentageOfPortfolioInterest);
+                this.columnPercentageOfPortfolioForecastedInterest = new global::System.Data.DataColumn("PercentageOfPortfolioForecastedInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercentageOfPortfolioForecastedInterest);
                 this.columnTotalPrincipal.Caption = "AgingBucket";
                 this.columnTotalInterest.Caption = "DelinquentLoanCount";
                 this.columnTotalLoans.Caption = "DelinquentPrincipal";
@@ -2080,28 +2273,28 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public PortfolioSummaryRow NewPortfolioSummaryRow() {
-                return ((PortfolioSummaryRow)(this.NewRow()));
+            public DeliquentLoanSummaryRow NewDeliquentLoanSummaryRow() {
+                return ((DeliquentLoanSummaryRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new PortfolioSummaryRow(builder);
+                return new DeliquentLoanSummaryRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(PortfolioSummaryRow);
+                return typeof(DeliquentLoanSummaryRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.PortfolioSummaryRowChanged != null)) {
-                    this.PortfolioSummaryRowChanged(this, new PortfolioSummaryRowChangeEvent(((PortfolioSummaryRow)(e.Row)), e.Action));
+                if ((this.DeliquentLoanSummaryRowChanged != null)) {
+                    this.DeliquentLoanSummaryRowChanged(this, new DeliquentLoanSummaryRowChangeEvent(((DeliquentLoanSummaryRow)(e.Row)), e.Action));
                 }
             }
             
@@ -2109,8 +2302,8 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.PortfolioSummaryRowChanging != null)) {
-                    this.PortfolioSummaryRowChanging(this, new PortfolioSummaryRowChangeEvent(((PortfolioSummaryRow)(e.Row)), e.Action));
+                if ((this.DeliquentLoanSummaryRowChanging != null)) {
+                    this.DeliquentLoanSummaryRowChanging(this, new DeliquentLoanSummaryRowChangeEvent(((DeliquentLoanSummaryRow)(e.Row)), e.Action));
                 }
             }
             
@@ -2118,8 +2311,8 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.PortfolioSummaryRowDeleted != null)) {
-                    this.PortfolioSummaryRowDeleted(this, new PortfolioSummaryRowChangeEvent(((PortfolioSummaryRow)(e.Row)), e.Action));
+                if ((this.DeliquentLoanSummaryRowDeleted != null)) {
+                    this.DeliquentLoanSummaryRowDeleted(this, new DeliquentLoanSummaryRowChangeEvent(((DeliquentLoanSummaryRow)(e.Row)), e.Action));
                 }
             }
             
@@ -2127,14 +2320,14 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.PortfolioSummaryRowDeleting != null)) {
-                    this.PortfolioSummaryRowDeleting(this, new PortfolioSummaryRowChangeEvent(((PortfolioSummaryRow)(e.Row)), e.Action));
+                if ((this.DeliquentLoanSummaryRowDeleting != null)) {
+                    this.DeliquentLoanSummaryRowDeleting(this, new DeliquentLoanSummaryRowChangeEvent(((DeliquentLoanSummaryRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void RemovePortfolioSummaryRow(PortfolioSummaryRow row) {
+            public void RemoveDeliquentLoanSummaryRow(DeliquentLoanSummaryRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -2161,7 +2354,2332 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "PortfolioSummaryDataTable";
+                attribute2.FixedValue = "DeliquentLoanSummaryDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class LoanPortfolioDataTable : global::System.Data.TypedTableBase<LoanPortfolioRow> {
+            
+            private global::System.Data.DataColumn columnId;
+            
+            private global::System.Data.DataColumn columnCustomerId;
+            
+            private global::System.Data.DataColumn columnCustomerName;
+            
+            private global::System.Data.DataColumn columnLoanApplicationId;
+            
+            private global::System.Data.DataColumn columnLoanType;
+            
+            private global::System.Data.DataColumn columnBranchId;
+            
+            private global::System.Data.DataColumn columnBranchCode;
+            
+            private global::System.Data.DataColumn columnPrincipal;
+            
+            private global::System.Data.DataColumn columnLoanAmount;
+            
+            private global::System.Data.DataColumn columnBalance;
+            
+            private global::System.Data.DataColumn columnDueAmount;
+            
+            private global::System.Data.DataColumn columnInterestRate;
+            
+            private global::System.Data.DataColumn columnAccrualInterest;
+            
+            private global::System.Data.DataColumn columnDeliquentInterest;
+            
+            private global::System.Data.DataColumn columnDeliquentDays;
+            
+            private global::System.Data.DataColumn columnLoanManager;
+            
+            private global::System.Data.DataColumn columnBranchName;
+            
+            private global::System.Data.DataColumn columnLoanDate;
+            
+            private global::System.Data.DataColumn columnLastRepaymentDate;
+            
+            private global::System.Data.DataColumn columnLastRepaymentAmount;
+            
+            private global::System.Data.DataColumn columnMaturityDate;
+            
+            private global::System.Data.DataColumn columnLoanStatus;
+            
+            private global::System.Data.DataColumn columnPurposeName;
+            
+            private global::System.Data.DataColumn columnProductType;
+            
+            private global::System.Data.DataColumn columnApplicationType;
+            
+            private global::System.Data.DataColumn columnTermName;
+            
+            private global::System.Data.DataColumn columnLoanCategory;
+            
+            private global::System.Data.DataColumn columnLoanTarget;
+            
+            private global::System.Data.DataColumn columnDeliquentStatus;
+            
+            private global::System.Data.DataColumn columnLoanDuration;
+            
+            private global::System.Data.DataColumn columnLoanDeliquencyConfigurationId;
+            
+            private global::System.Data.DataColumn columnDelinquentDays;
+            
+            private global::System.Data.DataColumn columnBranchAddress;
+            
+            private global::System.Data.DataColumn columnBranchTelephone;
+            
+            private global::System.Data.DataColumn columnHeadOfficeName;
+            
+            private global::System.Data.DataColumn columnHeadOfficeAddress;
+            
+            private global::System.Data.DataColumn columnHeadOfficeTelephone;
+            
+            private global::System.Data.DataColumn columnHeadOfficeEmail;
+            
+            private global::System.Data.DataColumn columnHeadOfficeWebSite;
+            
+            private global::System.Data.DataColumn columnHeadOfficeInitial;
+            
+            private global::System.Data.DataColumn columnLogo;
+            
+            private global::System.Data.DataColumn columnDelinquencyConfigName;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public LoanPortfolioDataTable() {
+                this.TableName = "LoanPortfolio";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal LoanPortfolioDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected LoanPortfolioDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn IdColumn {
+                get {
+                    return this.columnId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CustomerIdColumn {
+                get {
+                    return this.columnCustomerId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CustomerNameColumn {
+                get {
+                    return this.columnCustomerName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoanApplicationIdColumn {
+                get {
+                    return this.columnLoanApplicationId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoanTypeColumn {
+                get {
+                    return this.columnLoanType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchIdColumn {
+                get {
+                    return this.columnBranchId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchCodeColumn {
+                get {
+                    return this.columnBranchCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PrincipalColumn {
+                get {
+                    return this.columnPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoanAmountColumn {
+                get {
+                    return this.columnLoanAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BalanceColumn {
+                get {
+                    return this.columnBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DueAmountColumn {
+                get {
+                    return this.columnDueAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn InterestRateColumn {
+                get {
+                    return this.columnInterestRate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn AccrualInterestColumn {
+                get {
+                    return this.columnAccrualInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DeliquentInterestColumn {
+                get {
+                    return this.columnDeliquentInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DeliquentDaysColumn {
+                get {
+                    return this.columnDeliquentDays;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoanManagerColumn {
+                get {
+                    return this.columnLoanManager;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchNameColumn {
+                get {
+                    return this.columnBranchName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoanDateColumn {
+                get {
+                    return this.columnLoanDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LastRepaymentDateColumn {
+                get {
+                    return this.columnLastRepaymentDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LastRepaymentAmountColumn {
+                get {
+                    return this.columnLastRepaymentAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn MaturityDateColumn {
+                get {
+                    return this.columnMaturityDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoanStatusColumn {
+                get {
+                    return this.columnLoanStatus;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PurposeNameColumn {
+                get {
+                    return this.columnPurposeName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ProductTypeColumn {
+                get {
+                    return this.columnProductType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ApplicationTypeColumn {
+                get {
+                    return this.columnApplicationType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TermNameColumn {
+                get {
+                    return this.columnTermName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoanCategoryColumn {
+                get {
+                    return this.columnLoanCategory;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoanTargetColumn {
+                get {
+                    return this.columnLoanTarget;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DeliquentStatusColumn {
+                get {
+                    return this.columnDeliquentStatus;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoanDurationColumn {
+                get {
+                    return this.columnLoanDuration;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoanDeliquencyConfigurationIdColumn {
+                get {
+                    return this.columnLoanDeliquencyConfigurationId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentDaysColumn {
+                get {
+                    return this.columnDelinquentDays;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchAddressColumn {
+                get {
+                    return this.columnBranchAddress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchTelephoneColumn {
+                get {
+                    return this.columnBranchTelephone;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeNameColumn {
+                get {
+                    return this.columnHeadOfficeName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeAddressColumn {
+                get {
+                    return this.columnHeadOfficeAddress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeTelephoneColumn {
+                get {
+                    return this.columnHeadOfficeTelephone;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeEmailColumn {
+                get {
+                    return this.columnHeadOfficeEmail;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeWebSiteColumn {
+                get {
+                    return this.columnHeadOfficeWebSite;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeInitialColumn {
+                get {
+                    return this.columnHeadOfficeInitial;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LogoColumn {
+                get {
+                    return this.columnLogo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquencyConfigNameColumn {
+                get {
+                    return this.columnDelinquencyConfigName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public LoanPortfolioRow this[int index] {
+                get {
+                    return ((LoanPortfolioRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event LoanPortfolioRowChangeEventHandler LoanPortfolioRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event LoanPortfolioRowChangeEventHandler LoanPortfolioRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event LoanPortfolioRowChangeEventHandler LoanPortfolioRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event LoanPortfolioRowChangeEventHandler LoanPortfolioRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void AddLoanPortfolioRow(LoanPortfolioRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public LoanPortfolioRow AddLoanPortfolioRow(
+                        string Id, 
+                        string CustomerId, 
+                        string CustomerName, 
+                        string LoanApplicationId, 
+                        string LoanType, 
+                        string BranchId, 
+                        string BranchCode, 
+                        decimal Principal, 
+                        decimal LoanAmount, 
+                        string Balance, 
+                        decimal DueAmount, 
+                        decimal InterestRate, 
+                        decimal AccrualInterest, 
+                        decimal DeliquentInterest, 
+                        decimal DeliquentDays, 
+                        string LoanManager, 
+                        string BranchName, 
+                        System.DateTime LoanDate, 
+                        System.DateTime LastRepaymentDate, 
+                        decimal LastRepaymentAmount, 
+                        System.DateTime MaturityDate, 
+                        string LoanStatus, 
+                        string PurposeName, 
+                        string ProductType, 
+                        string ApplicationType, 
+                        string TermName, 
+                        string LoanCategory, 
+                        string LoanTarget, 
+                        string DeliquentStatus, 
+                        string LoanDuration, 
+                        string LoanDeliquencyConfigurationId, 
+                        int DelinquentDays, 
+                        string BranchAddress, 
+                        string BranchTelephone, 
+                        string HeadOfficeName, 
+                        string HeadOfficeAddress, 
+                        string HeadOfficeTelephone, 
+                        string HeadOfficeEmail, 
+                        string HeadOfficeWebSite, 
+                        string HeadOfficeInitial, 
+                        string Logo, 
+                        string DelinquencyConfigName) {
+                LoanPortfolioRow rowLoanPortfolioRow = ((LoanPortfolioRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        Id,
+                        CustomerId,
+                        CustomerName,
+                        LoanApplicationId,
+                        LoanType,
+                        BranchId,
+                        BranchCode,
+                        Principal,
+                        LoanAmount,
+                        Balance,
+                        DueAmount,
+                        InterestRate,
+                        AccrualInterest,
+                        DeliquentInterest,
+                        DeliquentDays,
+                        LoanManager,
+                        BranchName,
+                        LoanDate,
+                        LastRepaymentDate,
+                        LastRepaymentAmount,
+                        MaturityDate,
+                        LoanStatus,
+                        PurposeName,
+                        ProductType,
+                        ApplicationType,
+                        TermName,
+                        LoanCategory,
+                        LoanTarget,
+                        DeliquentStatus,
+                        LoanDuration,
+                        LoanDeliquencyConfigurationId,
+                        DelinquentDays,
+                        BranchAddress,
+                        BranchTelephone,
+                        HeadOfficeName,
+                        HeadOfficeAddress,
+                        HeadOfficeTelephone,
+                        HeadOfficeEmail,
+                        HeadOfficeWebSite,
+                        HeadOfficeInitial,
+                        Logo,
+                        DelinquencyConfigName};
+                rowLoanPortfolioRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowLoanPortfolioRow);
+                return rowLoanPortfolioRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                LoanPortfolioDataTable cln = ((LoanPortfolioDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new LoanPortfolioDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal void InitVars() {
+                this.columnId = base.Columns["Id"];
+                this.columnCustomerId = base.Columns["CustomerId"];
+                this.columnCustomerName = base.Columns["CustomerName"];
+                this.columnLoanApplicationId = base.Columns["LoanApplicationId"];
+                this.columnLoanType = base.Columns["LoanType"];
+                this.columnBranchId = base.Columns["BranchId"];
+                this.columnBranchCode = base.Columns["BranchCode"];
+                this.columnPrincipal = base.Columns["Principal"];
+                this.columnLoanAmount = base.Columns["LoanAmount"];
+                this.columnBalance = base.Columns["Balance"];
+                this.columnDueAmount = base.Columns["DueAmount"];
+                this.columnInterestRate = base.Columns["InterestRate"];
+                this.columnAccrualInterest = base.Columns["AccrualInterest"];
+                this.columnDeliquentInterest = base.Columns["DeliquentInterest"];
+                this.columnDeliquentDays = base.Columns["DeliquentDays"];
+                this.columnLoanManager = base.Columns["LoanManager"];
+                this.columnBranchName = base.Columns["BranchName"];
+                this.columnLoanDate = base.Columns["LoanDate"];
+                this.columnLastRepaymentDate = base.Columns["LastRepaymentDate"];
+                this.columnLastRepaymentAmount = base.Columns["LastRepaymentAmount"];
+                this.columnMaturityDate = base.Columns["MaturityDate"];
+                this.columnLoanStatus = base.Columns["LoanStatus"];
+                this.columnPurposeName = base.Columns["PurposeName"];
+                this.columnProductType = base.Columns["ProductType"];
+                this.columnApplicationType = base.Columns["ApplicationType"];
+                this.columnTermName = base.Columns["TermName"];
+                this.columnLoanCategory = base.Columns["LoanCategory"];
+                this.columnLoanTarget = base.Columns["LoanTarget"];
+                this.columnDeliquentStatus = base.Columns["DeliquentStatus"];
+                this.columnLoanDuration = base.Columns["LoanDuration"];
+                this.columnLoanDeliquencyConfigurationId = base.Columns["LoanDeliquencyConfigurationId"];
+                this.columnDelinquentDays = base.Columns["DelinquentDays"];
+                this.columnBranchAddress = base.Columns["BranchAddress"];
+                this.columnBranchTelephone = base.Columns["BranchTelephone"];
+                this.columnHeadOfficeName = base.Columns["HeadOfficeName"];
+                this.columnHeadOfficeAddress = base.Columns["HeadOfficeAddress"];
+                this.columnHeadOfficeTelephone = base.Columns["HeadOfficeTelephone"];
+                this.columnHeadOfficeEmail = base.Columns["HeadOfficeEmail"];
+                this.columnHeadOfficeWebSite = base.Columns["HeadOfficeWebSite"];
+                this.columnHeadOfficeInitial = base.Columns["HeadOfficeInitial"];
+                this.columnLogo = base.Columns["Logo"];
+                this.columnDelinquencyConfigName = base.Columns["DelinquencyConfigName"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            private void InitClass() {
+                this.columnId = new global::System.Data.DataColumn("Id", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnId);
+                this.columnCustomerId = new global::System.Data.DataColumn("CustomerId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCustomerId);
+                this.columnCustomerName = new global::System.Data.DataColumn("CustomerName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCustomerName);
+                this.columnLoanApplicationId = new global::System.Data.DataColumn("LoanApplicationId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoanApplicationId);
+                this.columnLoanType = new global::System.Data.DataColumn("LoanType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoanType);
+                this.columnBranchId = new global::System.Data.DataColumn("BranchId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchId);
+                this.columnBranchCode = new global::System.Data.DataColumn("BranchCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchCode);
+                this.columnPrincipal = new global::System.Data.DataColumn("Principal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPrincipal);
+                this.columnLoanAmount = new global::System.Data.DataColumn("LoanAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoanAmount);
+                this.columnBalance = new global::System.Data.DataColumn("Balance", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBalance);
+                this.columnDueAmount = new global::System.Data.DataColumn("DueAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDueAmount);
+                this.columnInterestRate = new global::System.Data.DataColumn("InterestRate", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInterestRate);
+                this.columnAccrualInterest = new global::System.Data.DataColumn("AccrualInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAccrualInterest);
+                this.columnDeliquentInterest = new global::System.Data.DataColumn("DeliquentInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeliquentInterest);
+                this.columnDeliquentDays = new global::System.Data.DataColumn("DeliquentDays", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeliquentDays);
+                this.columnLoanManager = new global::System.Data.DataColumn("LoanManager", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoanManager);
+                this.columnBranchName = new global::System.Data.DataColumn("BranchName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchName);
+                this.columnLoanDate = new global::System.Data.DataColumn("LoanDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoanDate);
+                this.columnLastRepaymentDate = new global::System.Data.DataColumn("LastRepaymentDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLastRepaymentDate);
+                this.columnLastRepaymentAmount = new global::System.Data.DataColumn("LastRepaymentAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLastRepaymentAmount);
+                this.columnMaturityDate = new global::System.Data.DataColumn("MaturityDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMaturityDate);
+                this.columnLoanStatus = new global::System.Data.DataColumn("LoanStatus", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoanStatus);
+                this.columnPurposeName = new global::System.Data.DataColumn("PurposeName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPurposeName);
+                this.columnProductType = new global::System.Data.DataColumn("ProductType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnProductType);
+                this.columnApplicationType = new global::System.Data.DataColumn("ApplicationType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnApplicationType);
+                this.columnTermName = new global::System.Data.DataColumn("TermName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTermName);
+                this.columnLoanCategory = new global::System.Data.DataColumn("LoanCategory", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoanCategory);
+                this.columnLoanTarget = new global::System.Data.DataColumn("LoanTarget", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoanTarget);
+                this.columnDeliquentStatus = new global::System.Data.DataColumn("DeliquentStatus", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeliquentStatus);
+                this.columnLoanDuration = new global::System.Data.DataColumn("LoanDuration", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoanDuration);
+                this.columnLoanDeliquencyConfigurationId = new global::System.Data.DataColumn("LoanDeliquencyConfigurationId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoanDeliquencyConfigurationId);
+                this.columnDelinquentDays = new global::System.Data.DataColumn("DelinquentDays", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentDays);
+                this.columnBranchAddress = new global::System.Data.DataColumn("BranchAddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchAddress);
+                this.columnBranchTelephone = new global::System.Data.DataColumn("BranchTelephone", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchTelephone);
+                this.columnHeadOfficeName = new global::System.Data.DataColumn("HeadOfficeName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeName);
+                this.columnHeadOfficeAddress = new global::System.Data.DataColumn("HeadOfficeAddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeAddress);
+                this.columnHeadOfficeTelephone = new global::System.Data.DataColumn("HeadOfficeTelephone", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeTelephone);
+                this.columnHeadOfficeEmail = new global::System.Data.DataColumn("HeadOfficeEmail", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeEmail);
+                this.columnHeadOfficeWebSite = new global::System.Data.DataColumn("HeadOfficeWebSite", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeWebSite);
+                this.columnHeadOfficeInitial = new global::System.Data.DataColumn("HeadOfficeInitial", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeInitial);
+                this.columnLogo = new global::System.Data.DataColumn("Logo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLogo);
+                this.columnDelinquencyConfigName = new global::System.Data.DataColumn("DelinquencyConfigName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquencyConfigName);
+                this.columnId.Caption = "AgingBucket";
+                this.columnCustomerId.Caption = "DelinquentLoanCount";
+                this.columnCustomerName.Caption = "DelinquentPrincipal";
+                this.columnLoanApplicationId.Caption = "DelinquentInterest";
+                this.columnLoanType.Caption = "Balance";
+                this.columnBranchId.Caption = "Principal";
+                this.columnBranchCode.Caption = "PercentageBalance";
+                this.columnPrincipal.Caption = "TotalArrears";
+                this.columnLoanAmount.Caption = "PercentageOfLoans";
+                this.columnBalance.Caption = "PercentageOfPrincipal";
+                this.columnDueAmount.Caption = "PercentageOfInterest";
+                this.columnInterestRate.Caption = "PercentageOfDelinquentPrincipal";
+                this.columnAccrualInterest.Caption = "PercentageArrears";
+                this.columnDeliquentInterest.Caption = "PercentageBalance";
+                this.columnDeliquentDays.Caption = "PercentageDelinquentPrincipal";
+                this.columnLoanManager.Caption = "PercentageDelinquentInterest";
+                this.columnDelinquentDays.Caption = "BranchName";
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public LoanPortfolioRow NewLoanPortfolioRow() {
+                return ((LoanPortfolioRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new LoanPortfolioRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(LoanPortfolioRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.LoanPortfolioRowChanged != null)) {
+                    this.LoanPortfolioRowChanged(this, new LoanPortfolioRowChangeEvent(((LoanPortfolioRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.LoanPortfolioRowChanging != null)) {
+                    this.LoanPortfolioRowChanging(this, new LoanPortfolioRowChangeEvent(((LoanPortfolioRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.LoanPortfolioRowDeleted != null)) {
+                    this.LoanPortfolioRowDeleted(this, new LoanPortfolioRowChangeEvent(((LoanPortfolioRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.LoanPortfolioRowDeleting != null)) {
+                    this.LoanPortfolioRowDeleting(this, new LoanPortfolioRowChangeEvent(((LoanPortfolioRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void RemoveLoanPortfolioRow(LoanPortfolioRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                LoanDeliquecncyDetail ds = new LoanDeliquecncyDetail();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "LoanPortfolioDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class CurrentLoanSummaryDataTable : global::System.Data.TypedTableBase<CurrentLoanSummaryRow> {
+            
+            private global::System.Data.DataColumn columnTotalLoans;
+            
+            private global::System.Data.DataColumn columnTotalPrincipal;
+            
+            private global::System.Data.DataColumn columnTotalInterest;
+            
+            private global::System.Data.DataColumn columnTotalForecastedInterest;
+            
+            private global::System.Data.DataColumn columnTotalOutstandingPrincipal;
+            
+            private global::System.Data.DataColumn columnTotalBalance;
+            
+            private global::System.Data.DataColumn columnPercentageBalance;
+            
+            private global::System.Data.DataColumn columnPercentageOfPortfolioPrincipal;
+            
+            private global::System.Data.DataColumn columnPercentageOfPortfolioInterest;
+            
+            private global::System.Data.DataColumn columnPercentageOfPortfolioForecastedInterest;
+            
+            private global::System.Data.DataColumn columnPortfolioHealthRatio;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public CurrentLoanSummaryDataTable() {
+                this.TableName = "CurrentLoanSummary";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal CurrentLoanSummaryDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected CurrentLoanSummaryDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalLoansColumn {
+                get {
+                    return this.columnTotalLoans;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalPrincipalColumn {
+                get {
+                    return this.columnTotalPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalInterestColumn {
+                get {
+                    return this.columnTotalInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalForecastedInterestColumn {
+                get {
+                    return this.columnTotalForecastedInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalOutstandingPrincipalColumn {
+                get {
+                    return this.columnTotalOutstandingPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalBalanceColumn {
+                get {
+                    return this.columnTotalBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PercentageBalanceColumn {
+                get {
+                    return this.columnPercentageBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PercentageOfPortfolioPrincipalColumn {
+                get {
+                    return this.columnPercentageOfPortfolioPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PercentageOfPortfolioInterestColumn {
+                get {
+                    return this.columnPercentageOfPortfolioInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PercentageOfPortfolioForecastedInterestColumn {
+                get {
+                    return this.columnPercentageOfPortfolioForecastedInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PortfolioHealthRatioColumn {
+                get {
+                    return this.columnPortfolioHealthRatio;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public CurrentLoanSummaryRow this[int index] {
+                get {
+                    return ((CurrentLoanSummaryRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event CurrentLoanSummaryRowChangeEventHandler CurrentLoanSummaryRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event CurrentLoanSummaryRowChangeEventHandler CurrentLoanSummaryRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event CurrentLoanSummaryRowChangeEventHandler CurrentLoanSummaryRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event CurrentLoanSummaryRowChangeEventHandler CurrentLoanSummaryRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void AddCurrentLoanSummaryRow(CurrentLoanSummaryRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public CurrentLoanSummaryRow AddCurrentLoanSummaryRow(decimal TotalLoans, decimal TotalPrincipal, decimal TotalInterest, decimal TotalForecastedInterest, decimal TotalOutstandingPrincipal, decimal TotalBalance, decimal PercentageBalance, decimal PercentageOfPortfolioPrincipal, decimal PercentageOfPortfolioInterest, decimal PercentageOfPortfolioForecastedInterest, decimal PortfolioHealthRatio) {
+                CurrentLoanSummaryRow rowCurrentLoanSummaryRow = ((CurrentLoanSummaryRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        TotalLoans,
+                        TotalPrincipal,
+                        TotalInterest,
+                        TotalForecastedInterest,
+                        TotalOutstandingPrincipal,
+                        TotalBalance,
+                        PercentageBalance,
+                        PercentageOfPortfolioPrincipal,
+                        PercentageOfPortfolioInterest,
+                        PercentageOfPortfolioForecastedInterest,
+                        PortfolioHealthRatio};
+                rowCurrentLoanSummaryRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowCurrentLoanSummaryRow);
+                return rowCurrentLoanSummaryRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                CurrentLoanSummaryDataTable cln = ((CurrentLoanSummaryDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new CurrentLoanSummaryDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal void InitVars() {
+                this.columnTotalLoans = base.Columns["TotalLoans"];
+                this.columnTotalPrincipal = base.Columns["TotalPrincipal"];
+                this.columnTotalInterest = base.Columns["TotalInterest"];
+                this.columnTotalForecastedInterest = base.Columns["TotalForecastedInterest"];
+                this.columnTotalOutstandingPrincipal = base.Columns["TotalOutstandingPrincipal"];
+                this.columnTotalBalance = base.Columns["TotalBalance"];
+                this.columnPercentageBalance = base.Columns["PercentageBalance"];
+                this.columnPercentageOfPortfolioPrincipal = base.Columns["PercentageOfPortfolioPrincipal"];
+                this.columnPercentageOfPortfolioInterest = base.Columns["PercentageOfPortfolioInterest"];
+                this.columnPercentageOfPortfolioForecastedInterest = base.Columns["PercentageOfPortfolioForecastedInterest"];
+                this.columnPortfolioHealthRatio = base.Columns["PortfolioHealthRatio"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            private void InitClass() {
+                this.columnTotalLoans = new global::System.Data.DataColumn("TotalLoans", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalLoans);
+                this.columnTotalPrincipal = new global::System.Data.DataColumn("TotalPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalPrincipal);
+                this.columnTotalInterest = new global::System.Data.DataColumn("TotalInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalInterest);
+                this.columnTotalForecastedInterest = new global::System.Data.DataColumn("TotalForecastedInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalForecastedInterest);
+                this.columnTotalOutstandingPrincipal = new global::System.Data.DataColumn("TotalOutstandingPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalOutstandingPrincipal);
+                this.columnTotalBalance = new global::System.Data.DataColumn("TotalBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalBalance);
+                this.columnPercentageBalance = new global::System.Data.DataColumn("PercentageBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercentageBalance);
+                this.columnPercentageOfPortfolioPrincipal = new global::System.Data.DataColumn("PercentageOfPortfolioPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercentageOfPortfolioPrincipal);
+                this.columnPercentageOfPortfolioInterest = new global::System.Data.DataColumn("PercentageOfPortfolioInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercentageOfPortfolioInterest);
+                this.columnPercentageOfPortfolioForecastedInterest = new global::System.Data.DataColumn("PercentageOfPortfolioForecastedInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercentageOfPortfolioForecastedInterest);
+                this.columnPortfolioHealthRatio = new global::System.Data.DataColumn("PortfolioHealthRatio", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPortfolioHealthRatio);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public CurrentLoanSummaryRow NewCurrentLoanSummaryRow() {
+                return ((CurrentLoanSummaryRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new CurrentLoanSummaryRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(CurrentLoanSummaryRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.CurrentLoanSummaryRowChanged != null)) {
+                    this.CurrentLoanSummaryRowChanged(this, new CurrentLoanSummaryRowChangeEvent(((CurrentLoanSummaryRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.CurrentLoanSummaryRowChanging != null)) {
+                    this.CurrentLoanSummaryRowChanging(this, new CurrentLoanSummaryRowChangeEvent(((CurrentLoanSummaryRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.CurrentLoanSummaryRowDeleted != null)) {
+                    this.CurrentLoanSummaryRowDeleted(this, new CurrentLoanSummaryRowChangeEvent(((CurrentLoanSummaryRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.CurrentLoanSummaryRowDeleting != null)) {
+                    this.CurrentLoanSummaryRowDeleting(this, new CurrentLoanSummaryRowChangeEvent(((CurrentLoanSummaryRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void RemoveCurrentLoanSummaryRow(CurrentLoanSummaryRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                LoanDeliquecncyDetail ds = new LoanDeliquecncyDetail();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "CurrentLoanSummaryDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class MainPortFolioDataTable : global::System.Data.TypedTableBase<MainPortFolioRow> {
+            
+            private global::System.Data.DataColumn columnBranchName;
+            
+            private global::System.Data.DataColumn columnBranchCode;
+            
+            private global::System.Data.DataColumn columnBranchAddress;
+            
+            private global::System.Data.DataColumn columnBranchTelephone;
+            
+            private global::System.Data.DataColumn columnHeadOfficeName;
+            
+            private global::System.Data.DataColumn columnHeadOfficeAddress;
+            
+            private global::System.Data.DataColumn columnHeadOfficeTelephone;
+            
+            private global::System.Data.DataColumn columnHeadOfficeEmail;
+            
+            private global::System.Data.DataColumn columnHeadOfficeWebSite;
+            
+            private global::System.Data.DataColumn columnHeadOfficeInitial;
+            
+            private global::System.Data.DataColumn columnLogo;
+            
+            private global::System.Data.DataColumn columnTotalLoans;
+            
+            private global::System.Data.DataColumn columnTotalPrincipal;
+            
+            private global::System.Data.DataColumn columnTotalInterest;
+            
+            private global::System.Data.DataColumn columnTotalForecastedInterest;
+            
+            private global::System.Data.DataColumn columnTotalBalance;
+            
+            private global::System.Data.DataColumn columnCurrentLoanCount;
+            
+            private global::System.Data.DataColumn columnCurrentPrincipal;
+            
+            private global::System.Data.DataColumn columnCurrentBalance;
+            
+            private global::System.Data.DataColumn columnDelinquentLoanCount;
+            
+            private global::System.Data.DataColumn columnDelinquentPrincipal;
+            
+            private global::System.Data.DataColumn columnDelinquentInterest;
+            
+            private global::System.Data.DataColumn columnDelinquentBalance;
+            
+            private global::System.Data.DataColumn columnPortfolioAtRiskPercentage_Overview;
+            
+            private global::System.Data.DataColumn columnDefaultRate;
+            
+            private global::System.Data.DataColumn columnArrears_Overview;
+            
+            private global::System.Data.DataColumn columnCurrentTotalLoans;
+            
+            private global::System.Data.DataColumn columnCurrentTotalPrincipal;
+            
+            private global::System.Data.DataColumn columnCurrentTotalInterest;
+            
+            private global::System.Data.DataColumn columnCurrentTotalForecastedInterest;
+            
+            private global::System.Data.DataColumn columnCurrentTotalOutstandingPrincipal;
+            
+            private global::System.Data.DataColumn columnCurrentTotalBalance;
+            
+            private global::System.Data.DataColumn columnCurrentPercentageBalance;
+            
+            private global::System.Data.DataColumn columnCurrentPercentageOfPortfolioPrincipal;
+            
+            private global::System.Data.DataColumn columnCurrentPercentageOfPortfolioInterest;
+            
+            private global::System.Data.DataColumn columnCurrentPercentageOfPortfolioForecastedInterest;
+            
+            private global::System.Data.DataColumn columnPortfolioHealthRatio;
+            
+            private global::System.Data.DataColumn columnDelinquentTotalPrincipal;
+            
+            private global::System.Data.DataColumn columnDelinquentTotalInterest;
+            
+            private global::System.Data.DataColumn columnDelinquentTotalLoans;
+            
+            private global::System.Data.DataColumn columnTotalDelinquentLoans;
+            
+            private global::System.Data.DataColumn columnDelinquentTotalOutstandingPrincipal;
+            
+            private global::System.Data.DataColumn columnTotalDelinquentPrincipal;
+            
+            private global::System.Data.DataColumn columnTotalDelinquentInterest;
+            
+            private global::System.Data.DataColumn columnDelinquentTotalBalance;
+            
+            private global::System.Data.DataColumn columnDelinquentPercentageBalance;
+            
+            private global::System.Data.DataColumn columnDelinquentPercentageDelinquentPrincipal;
+            
+            private global::System.Data.DataColumn columnDelinquentPercentageDelinquentInterest;
+            
+            private global::System.Data.DataColumn columnDelinquentPercentageArrears;
+            
+            private global::System.Data.DataColumn columnDelinquentTotalForecastedInterest;
+            
+            private global::System.Data.DataColumn columnDelinquentPercentageOfPortfolioPrincipal;
+            
+            private global::System.Data.DataColumn columnDelinquentPercentageOfPortfolioInterest;
+            
+            private global::System.Data.DataColumn columnDelinquentPercentageOfPortfolioForecastedInterest;
+            
+            private global::System.Data.DataColumn columnTotalArrears;
+            
+            private global::System.Data.DataColumn columnPortfolioAtRiskPercentage;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public MainPortFolioDataTable() {
+                this.TableName = "MainPortFolio";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal MainPortFolioDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected MainPortFolioDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchNameColumn {
+                get {
+                    return this.columnBranchName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchCodeColumn {
+                get {
+                    return this.columnBranchCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchAddressColumn {
+                get {
+                    return this.columnBranchAddress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchTelephoneColumn {
+                get {
+                    return this.columnBranchTelephone;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeNameColumn {
+                get {
+                    return this.columnHeadOfficeName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeAddressColumn {
+                get {
+                    return this.columnHeadOfficeAddress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeTelephoneColumn {
+                get {
+                    return this.columnHeadOfficeTelephone;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeEmailColumn {
+                get {
+                    return this.columnHeadOfficeEmail;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeWebSiteColumn {
+                get {
+                    return this.columnHeadOfficeWebSite;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeInitialColumn {
+                get {
+                    return this.columnHeadOfficeInitial;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LogoColumn {
+                get {
+                    return this.columnLogo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalLoansColumn {
+                get {
+                    return this.columnTotalLoans;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalPrincipalColumn {
+                get {
+                    return this.columnTotalPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalInterestColumn {
+                get {
+                    return this.columnTotalInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalForecastedInterestColumn {
+                get {
+                    return this.columnTotalForecastedInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalBalanceColumn {
+                get {
+                    return this.columnTotalBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrentLoanCountColumn {
+                get {
+                    return this.columnCurrentLoanCount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrentPrincipalColumn {
+                get {
+                    return this.columnCurrentPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrentBalanceColumn {
+                get {
+                    return this.columnCurrentBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentLoanCountColumn {
+                get {
+                    return this.columnDelinquentLoanCount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentPrincipalColumn {
+                get {
+                    return this.columnDelinquentPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentInterestColumn {
+                get {
+                    return this.columnDelinquentInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentBalanceColumn {
+                get {
+                    return this.columnDelinquentBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PortfolioAtRiskPercentage_OverviewColumn {
+                get {
+                    return this.columnPortfolioAtRiskPercentage_Overview;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DefaultRateColumn {
+                get {
+                    return this.columnDefaultRate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn Arrears_OverviewColumn {
+                get {
+                    return this.columnArrears_Overview;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrentTotalLoansColumn {
+                get {
+                    return this.columnCurrentTotalLoans;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrentTotalPrincipalColumn {
+                get {
+                    return this.columnCurrentTotalPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrentTotalInterestColumn {
+                get {
+                    return this.columnCurrentTotalInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrentTotalForecastedInterestColumn {
+                get {
+                    return this.columnCurrentTotalForecastedInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrentTotalOutstandingPrincipalColumn {
+                get {
+                    return this.columnCurrentTotalOutstandingPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrentTotalBalanceColumn {
+                get {
+                    return this.columnCurrentTotalBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrentPercentageBalanceColumn {
+                get {
+                    return this.columnCurrentPercentageBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrentPercentageOfPortfolioPrincipalColumn {
+                get {
+                    return this.columnCurrentPercentageOfPortfolioPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrentPercentageOfPortfolioInterestColumn {
+                get {
+                    return this.columnCurrentPercentageOfPortfolioInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrentPercentageOfPortfolioForecastedInterestColumn {
+                get {
+                    return this.columnCurrentPercentageOfPortfolioForecastedInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PortfolioHealthRatioColumn {
+                get {
+                    return this.columnPortfolioHealthRatio;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentTotalPrincipalColumn {
+                get {
+                    return this.columnDelinquentTotalPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentTotalInterestColumn {
+                get {
+                    return this.columnDelinquentTotalInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentTotalLoansColumn {
+                get {
+                    return this.columnDelinquentTotalLoans;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalDelinquentLoansColumn {
+                get {
+                    return this.columnTotalDelinquentLoans;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentTotalOutstandingPrincipalColumn {
+                get {
+                    return this.columnDelinquentTotalOutstandingPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalDelinquentPrincipalColumn {
+                get {
+                    return this.columnTotalDelinquentPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalDelinquentInterestColumn {
+                get {
+                    return this.columnTotalDelinquentInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentTotalBalanceColumn {
+                get {
+                    return this.columnDelinquentTotalBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentPercentageBalanceColumn {
+                get {
+                    return this.columnDelinquentPercentageBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentPercentageDelinquentPrincipalColumn {
+                get {
+                    return this.columnDelinquentPercentageDelinquentPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentPercentageDelinquentInterestColumn {
+                get {
+                    return this.columnDelinquentPercentageDelinquentInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentPercentageArrearsColumn {
+                get {
+                    return this.columnDelinquentPercentageArrears;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentTotalForecastedInterestColumn {
+                get {
+                    return this.columnDelinquentTotalForecastedInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentPercentageOfPortfolioPrincipalColumn {
+                get {
+                    return this.columnDelinquentPercentageOfPortfolioPrincipal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentPercentageOfPortfolioInterestColumn {
+                get {
+                    return this.columnDelinquentPercentageOfPortfolioInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DelinquentPercentageOfPortfolioForecastedInterestColumn {
+                get {
+                    return this.columnDelinquentPercentageOfPortfolioForecastedInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalArrearsColumn {
+                get {
+                    return this.columnTotalArrears;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PortfolioAtRiskPercentageColumn {
+                get {
+                    return this.columnPortfolioAtRiskPercentage;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public MainPortFolioRow this[int index] {
+                get {
+                    return ((MainPortFolioRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event MainPortFolioRowChangeEventHandler MainPortFolioRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event MainPortFolioRowChangeEventHandler MainPortFolioRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event MainPortFolioRowChangeEventHandler MainPortFolioRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event MainPortFolioRowChangeEventHandler MainPortFolioRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void AddMainPortFolioRow(MainPortFolioRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public MainPortFolioRow AddMainPortFolioRow(
+                        string BranchName, 
+                        string BranchCode, 
+                        string BranchAddress, 
+                        string BranchTelephone, 
+                        string HeadOfficeName, 
+                        string HeadOfficeAddress, 
+                        string HeadOfficeTelephone, 
+                        string HeadOfficeEmail, 
+                        string HeadOfficeWebSite, 
+                        string HeadOfficeInitial, 
+                        string Logo, 
+                        int TotalLoans, 
+                        decimal TotalPrincipal, 
+                        decimal TotalInterest, 
+                        decimal TotalForecastedInterest, 
+                        decimal TotalBalance, 
+                        int CurrentLoanCount, 
+                        decimal CurrentPrincipal, 
+                        decimal CurrentBalance, 
+                        int DelinquentLoanCount, 
+                        decimal DelinquentPrincipal, 
+                        decimal DelinquentInterest, 
+                        decimal DelinquentBalance, 
+                        decimal PortfolioAtRiskPercentage_Overview, 
+                        decimal DefaultRate, 
+                        decimal Arrears_Overview, 
+                        int CurrentTotalLoans, 
+                        decimal CurrentTotalPrincipal, 
+                        decimal CurrentTotalInterest, 
+                        decimal CurrentTotalForecastedInterest, 
+                        decimal CurrentTotalOutstandingPrincipal, 
+                        decimal CurrentTotalBalance, 
+                        decimal CurrentPercentageBalance, 
+                        decimal CurrentPercentageOfPortfolioPrincipal, 
+                        decimal CurrentPercentageOfPortfolioInterest, 
+                        decimal CurrentPercentageOfPortfolioForecastedInterest, 
+                        decimal PortfolioHealthRatio, 
+                        decimal DelinquentTotalPrincipal, 
+                        decimal DelinquentTotalInterest, 
+                        int DelinquentTotalLoans, 
+                        int TotalDelinquentLoans, 
+                        decimal DelinquentTotalOutstandingPrincipal, 
+                        decimal TotalDelinquentPrincipal, 
+                        decimal TotalDelinquentInterest, 
+                        decimal DelinquentTotalBalance, 
+                        decimal DelinquentPercentageBalance, 
+                        decimal DelinquentPercentageDelinquentPrincipal, 
+                        decimal DelinquentPercentageDelinquentInterest, 
+                        decimal DelinquentPercentageArrears, 
+                        decimal DelinquentTotalForecastedInterest, 
+                        decimal DelinquentPercentageOfPortfolioPrincipal, 
+                        decimal DelinquentPercentageOfPortfolioInterest, 
+                        decimal DelinquentPercentageOfPortfolioForecastedInterest, 
+                        decimal TotalArrears, 
+                        decimal PortfolioAtRiskPercentage) {
+                MainPortFolioRow rowMainPortFolioRow = ((MainPortFolioRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        BranchName,
+                        BranchCode,
+                        BranchAddress,
+                        BranchTelephone,
+                        HeadOfficeName,
+                        HeadOfficeAddress,
+                        HeadOfficeTelephone,
+                        HeadOfficeEmail,
+                        HeadOfficeWebSite,
+                        HeadOfficeInitial,
+                        Logo,
+                        TotalLoans,
+                        TotalPrincipal,
+                        TotalInterest,
+                        TotalForecastedInterest,
+                        TotalBalance,
+                        CurrentLoanCount,
+                        CurrentPrincipal,
+                        CurrentBalance,
+                        DelinquentLoanCount,
+                        DelinquentPrincipal,
+                        DelinquentInterest,
+                        DelinquentBalance,
+                        PortfolioAtRiskPercentage_Overview,
+                        DefaultRate,
+                        Arrears_Overview,
+                        CurrentTotalLoans,
+                        CurrentTotalPrincipal,
+                        CurrentTotalInterest,
+                        CurrentTotalForecastedInterest,
+                        CurrentTotalOutstandingPrincipal,
+                        CurrentTotalBalance,
+                        CurrentPercentageBalance,
+                        CurrentPercentageOfPortfolioPrincipal,
+                        CurrentPercentageOfPortfolioInterest,
+                        CurrentPercentageOfPortfolioForecastedInterest,
+                        PortfolioHealthRatio,
+                        DelinquentTotalPrincipal,
+                        DelinquentTotalInterest,
+                        DelinquentTotalLoans,
+                        TotalDelinquentLoans,
+                        DelinquentTotalOutstandingPrincipal,
+                        TotalDelinquentPrincipal,
+                        TotalDelinquentInterest,
+                        DelinquentTotalBalance,
+                        DelinquentPercentageBalance,
+                        DelinquentPercentageDelinquentPrincipal,
+                        DelinquentPercentageDelinquentInterest,
+                        DelinquentPercentageArrears,
+                        DelinquentTotalForecastedInterest,
+                        DelinquentPercentageOfPortfolioPrincipal,
+                        DelinquentPercentageOfPortfolioInterest,
+                        DelinquentPercentageOfPortfolioForecastedInterest,
+                        TotalArrears,
+                        PortfolioAtRiskPercentage};
+                rowMainPortFolioRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowMainPortFolioRow);
+                return rowMainPortFolioRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                MainPortFolioDataTable cln = ((MainPortFolioDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new MainPortFolioDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal void InitVars() {
+                this.columnBranchName = base.Columns["BranchName"];
+                this.columnBranchCode = base.Columns["BranchCode"];
+                this.columnBranchAddress = base.Columns["BranchAddress"];
+                this.columnBranchTelephone = base.Columns["BranchTelephone"];
+                this.columnHeadOfficeName = base.Columns["HeadOfficeName"];
+                this.columnHeadOfficeAddress = base.Columns["HeadOfficeAddress"];
+                this.columnHeadOfficeTelephone = base.Columns["HeadOfficeTelephone"];
+                this.columnHeadOfficeEmail = base.Columns["HeadOfficeEmail"];
+                this.columnHeadOfficeWebSite = base.Columns["HeadOfficeWebSite"];
+                this.columnHeadOfficeInitial = base.Columns["HeadOfficeInitial"];
+                this.columnLogo = base.Columns["Logo"];
+                this.columnTotalLoans = base.Columns["TotalLoans"];
+                this.columnTotalPrincipal = base.Columns["TotalPrincipal"];
+                this.columnTotalInterest = base.Columns["TotalInterest"];
+                this.columnTotalForecastedInterest = base.Columns["TotalForecastedInterest"];
+                this.columnTotalBalance = base.Columns["TotalBalance"];
+                this.columnCurrentLoanCount = base.Columns["CurrentLoanCount"];
+                this.columnCurrentPrincipal = base.Columns["CurrentPrincipal"];
+                this.columnCurrentBalance = base.Columns["CurrentBalance"];
+                this.columnDelinquentLoanCount = base.Columns["DelinquentLoanCount"];
+                this.columnDelinquentPrincipal = base.Columns["DelinquentPrincipal"];
+                this.columnDelinquentInterest = base.Columns["DelinquentInterest"];
+                this.columnDelinquentBalance = base.Columns["DelinquentBalance"];
+                this.columnPortfolioAtRiskPercentage_Overview = base.Columns["PortfolioAtRiskPercentage_Overview"];
+                this.columnDefaultRate = base.Columns["DefaultRate"];
+                this.columnArrears_Overview = base.Columns["Arrears_Overview"];
+                this.columnCurrentTotalLoans = base.Columns["CurrentTotalLoans"];
+                this.columnCurrentTotalPrincipal = base.Columns["CurrentTotalPrincipal"];
+                this.columnCurrentTotalInterest = base.Columns["CurrentTotalInterest"];
+                this.columnCurrentTotalForecastedInterest = base.Columns["CurrentTotalForecastedInterest"];
+                this.columnCurrentTotalOutstandingPrincipal = base.Columns["CurrentTotalOutstandingPrincipal"];
+                this.columnCurrentTotalBalance = base.Columns["CurrentTotalBalance"];
+                this.columnCurrentPercentageBalance = base.Columns["CurrentPercentageBalance"];
+                this.columnCurrentPercentageOfPortfolioPrincipal = base.Columns["CurrentPercentageOfPortfolioPrincipal"];
+                this.columnCurrentPercentageOfPortfolioInterest = base.Columns["CurrentPercentageOfPortfolioInterest"];
+                this.columnCurrentPercentageOfPortfolioForecastedInterest = base.Columns["CurrentPercentageOfPortfolioForecastedInterest"];
+                this.columnPortfolioHealthRatio = base.Columns["PortfolioHealthRatio"];
+                this.columnDelinquentTotalPrincipal = base.Columns["DelinquentTotalPrincipal"];
+                this.columnDelinquentTotalInterest = base.Columns["DelinquentTotalInterest"];
+                this.columnDelinquentTotalLoans = base.Columns["DelinquentTotalLoans"];
+                this.columnTotalDelinquentLoans = base.Columns["TotalDelinquentLoans"];
+                this.columnDelinquentTotalOutstandingPrincipal = base.Columns["DelinquentTotalOutstandingPrincipal"];
+                this.columnTotalDelinquentPrincipal = base.Columns["TotalDelinquentPrincipal"];
+                this.columnTotalDelinquentInterest = base.Columns["TotalDelinquentInterest"];
+                this.columnDelinquentTotalBalance = base.Columns["DelinquentTotalBalance"];
+                this.columnDelinquentPercentageBalance = base.Columns["DelinquentPercentageBalance"];
+                this.columnDelinquentPercentageDelinquentPrincipal = base.Columns["DelinquentPercentageDelinquentPrincipal"];
+                this.columnDelinquentPercentageDelinquentInterest = base.Columns["DelinquentPercentageDelinquentInterest"];
+                this.columnDelinquentPercentageArrears = base.Columns["DelinquentPercentageArrears"];
+                this.columnDelinquentTotalForecastedInterest = base.Columns["DelinquentTotalForecastedInterest"];
+                this.columnDelinquentPercentageOfPortfolioPrincipal = base.Columns["DelinquentPercentageOfPortfolioPrincipal"];
+                this.columnDelinquentPercentageOfPortfolioInterest = base.Columns["DelinquentPercentageOfPortfolioInterest"];
+                this.columnDelinquentPercentageOfPortfolioForecastedInterest = base.Columns["DelinquentPercentageOfPortfolioForecastedInterest"];
+                this.columnTotalArrears = base.Columns["TotalArrears"];
+                this.columnPortfolioAtRiskPercentage = base.Columns["PortfolioAtRiskPercentage"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            private void InitClass() {
+                this.columnBranchName = new global::System.Data.DataColumn("BranchName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchName);
+                this.columnBranchCode = new global::System.Data.DataColumn("BranchCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchCode);
+                this.columnBranchAddress = new global::System.Data.DataColumn("BranchAddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchAddress);
+                this.columnBranchTelephone = new global::System.Data.DataColumn("BranchTelephone", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchTelephone);
+                this.columnHeadOfficeName = new global::System.Data.DataColumn("HeadOfficeName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeName);
+                this.columnHeadOfficeAddress = new global::System.Data.DataColumn("HeadOfficeAddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeAddress);
+                this.columnHeadOfficeTelephone = new global::System.Data.DataColumn("HeadOfficeTelephone", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeTelephone);
+                this.columnHeadOfficeEmail = new global::System.Data.DataColumn("HeadOfficeEmail", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeEmail);
+                this.columnHeadOfficeWebSite = new global::System.Data.DataColumn("HeadOfficeWebSite", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeWebSite);
+                this.columnHeadOfficeInitial = new global::System.Data.DataColumn("HeadOfficeInitial", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeInitial);
+                this.columnLogo = new global::System.Data.DataColumn("Logo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLogo);
+                this.columnTotalLoans = new global::System.Data.DataColumn("TotalLoans", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalLoans);
+                this.columnTotalPrincipal = new global::System.Data.DataColumn("TotalPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalPrincipal);
+                this.columnTotalInterest = new global::System.Data.DataColumn("TotalInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalInterest);
+                this.columnTotalForecastedInterest = new global::System.Data.DataColumn("TotalForecastedInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalForecastedInterest);
+                this.columnTotalBalance = new global::System.Data.DataColumn("TotalBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalBalance);
+                this.columnCurrentLoanCount = new global::System.Data.DataColumn("CurrentLoanCount", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentLoanCount);
+                this.columnCurrentPrincipal = new global::System.Data.DataColumn("CurrentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentPrincipal);
+                this.columnCurrentBalance = new global::System.Data.DataColumn("CurrentBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentBalance);
+                this.columnDelinquentLoanCount = new global::System.Data.DataColumn("DelinquentLoanCount", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentLoanCount);
+                this.columnDelinquentPrincipal = new global::System.Data.DataColumn("DelinquentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentPrincipal);
+                this.columnDelinquentInterest = new global::System.Data.DataColumn("DelinquentInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentInterest);
+                this.columnDelinquentBalance = new global::System.Data.DataColumn("DelinquentBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentBalance);
+                this.columnPortfolioAtRiskPercentage_Overview = new global::System.Data.DataColumn("PortfolioAtRiskPercentage_Overview", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPortfolioAtRiskPercentage_Overview);
+                this.columnDefaultRate = new global::System.Data.DataColumn("DefaultRate", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDefaultRate);
+                this.columnArrears_Overview = new global::System.Data.DataColumn("Arrears_Overview", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnArrears_Overview);
+                this.columnCurrentTotalLoans = new global::System.Data.DataColumn("CurrentTotalLoans", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentTotalLoans);
+                this.columnCurrentTotalPrincipal = new global::System.Data.DataColumn("CurrentTotalPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentTotalPrincipal);
+                this.columnCurrentTotalInterest = new global::System.Data.DataColumn("CurrentTotalInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentTotalInterest);
+                this.columnCurrentTotalForecastedInterest = new global::System.Data.DataColumn("CurrentTotalForecastedInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentTotalForecastedInterest);
+                this.columnCurrentTotalOutstandingPrincipal = new global::System.Data.DataColumn("CurrentTotalOutstandingPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentTotalOutstandingPrincipal);
+                this.columnCurrentTotalBalance = new global::System.Data.DataColumn("CurrentTotalBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentTotalBalance);
+                this.columnCurrentPercentageBalance = new global::System.Data.DataColumn("CurrentPercentageBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentPercentageBalance);
+                this.columnCurrentPercentageOfPortfolioPrincipal = new global::System.Data.DataColumn("CurrentPercentageOfPortfolioPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentPercentageOfPortfolioPrincipal);
+                this.columnCurrentPercentageOfPortfolioInterest = new global::System.Data.DataColumn("CurrentPercentageOfPortfolioInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentPercentageOfPortfolioInterest);
+                this.columnCurrentPercentageOfPortfolioForecastedInterest = new global::System.Data.DataColumn("CurrentPercentageOfPortfolioForecastedInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentPercentageOfPortfolioForecastedInterest);
+                this.columnPortfolioHealthRatio = new global::System.Data.DataColumn("PortfolioHealthRatio", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPortfolioHealthRatio);
+                this.columnDelinquentTotalPrincipal = new global::System.Data.DataColumn("DelinquentTotalPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentTotalPrincipal);
+                this.columnDelinquentTotalInterest = new global::System.Data.DataColumn("DelinquentTotalInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentTotalInterest);
+                this.columnDelinquentTotalLoans = new global::System.Data.DataColumn("DelinquentTotalLoans", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentTotalLoans);
+                this.columnTotalDelinquentLoans = new global::System.Data.DataColumn("TotalDelinquentLoans", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalDelinquentLoans);
+                this.columnDelinquentTotalOutstandingPrincipal = new global::System.Data.DataColumn("DelinquentTotalOutstandingPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentTotalOutstandingPrincipal);
+                this.columnTotalDelinquentPrincipal = new global::System.Data.DataColumn("TotalDelinquentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalDelinquentPrincipal);
+                this.columnTotalDelinquentInterest = new global::System.Data.DataColumn("TotalDelinquentInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalDelinquentInterest);
+                this.columnDelinquentTotalBalance = new global::System.Data.DataColumn("DelinquentTotalBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentTotalBalance);
+                this.columnDelinquentPercentageBalance = new global::System.Data.DataColumn("DelinquentPercentageBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentPercentageBalance);
+                this.columnDelinquentPercentageDelinquentPrincipal = new global::System.Data.DataColumn("DelinquentPercentageDelinquentPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentPercentageDelinquentPrincipal);
+                this.columnDelinquentPercentageDelinquentInterest = new global::System.Data.DataColumn("DelinquentPercentageDelinquentInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentPercentageDelinquentInterest);
+                this.columnDelinquentPercentageArrears = new global::System.Data.DataColumn("DelinquentPercentageArrears", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentPercentageArrears);
+                this.columnDelinquentTotalForecastedInterest = new global::System.Data.DataColumn("DelinquentTotalForecastedInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentTotalForecastedInterest);
+                this.columnDelinquentPercentageOfPortfolioPrincipal = new global::System.Data.DataColumn("DelinquentPercentageOfPortfolioPrincipal", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentPercentageOfPortfolioPrincipal);
+                this.columnDelinquentPercentageOfPortfolioInterest = new global::System.Data.DataColumn("DelinquentPercentageOfPortfolioInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentPercentageOfPortfolioInterest);
+                this.columnDelinquentPercentageOfPortfolioForecastedInterest = new global::System.Data.DataColumn("DelinquentPercentageOfPortfolioForecastedInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDelinquentPercentageOfPortfolioForecastedInterest);
+                this.columnTotalArrears = new global::System.Data.DataColumn("TotalArrears", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalArrears);
+                this.columnPortfolioAtRiskPercentage = new global::System.Data.DataColumn("PortfolioAtRiskPercentage", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPortfolioAtRiskPercentage);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public MainPortFolioRow NewMainPortFolioRow() {
+                return ((MainPortFolioRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new MainPortFolioRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(MainPortFolioRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.MainPortFolioRowChanged != null)) {
+                    this.MainPortFolioRowChanged(this, new MainPortFolioRowChangeEvent(((MainPortFolioRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.MainPortFolioRowChanging != null)) {
+                    this.MainPortFolioRowChanging(this, new MainPortFolioRowChangeEvent(((MainPortFolioRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.MainPortFolioRowDeleted != null)) {
+                    this.MainPortFolioRowDeleted(this, new MainPortFolioRowChangeEvent(((MainPortFolioRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.MainPortFolioRowDeleting != null)) {
+                    this.MainPortFolioRowDeleting(this, new MainPortFolioRowChangeEvent(((MainPortFolioRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void RemoveMainPortFolioRow(MainPortFolioRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                LoanDeliquecncyDetail ds = new LoanDeliquecncyDetail();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "MainPortFolioDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -2218,10 +4736,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string AgingBucket {
+            public decimal AgingBucket {
                 get {
                     try {
-                        return ((string)(this[this.tableAgingAnalysis.AgingBucketColumn]));
+                        return ((decimal)(this[this.tableAgingAnalysis.AgingBucketColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'AgingBucket\' in table \'AgingAnalysis\' is DBNull.", e);
@@ -2234,10 +4752,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string DelinquentLoanCount {
+            public int DelinquentLoanCount {
                 get {
                     try {
-                        return ((string)(this[this.tableAgingAnalysis.DelinquentLoanCountColumn]));
+                        return ((int)(this[this.tableAgingAnalysis.DelinquentLoanCountColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'DelinquentLoanCount\' in table \'AgingAnalysis\' is DBNull.", e);
@@ -2250,10 +4768,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string DelinquentPrincipal {
+            public decimal DelinquentPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tableAgingAnalysis.DelinquentPrincipalColumn]));
+                        return ((decimal)(this[this.tableAgingAnalysis.DelinquentPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'DelinquentPrincipal\' in table \'AgingAnalysis\' is DBNull.", e);
@@ -2266,10 +4784,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string DelinquentInterest {
+            public decimal DelinquentInterest {
                 get {
                     try {
-                        return ((string)(this[this.tableAgingAnalysis.DelinquentInterestColumn]));
+                        return ((decimal)(this[this.tableAgingAnalysis.DelinquentInterestColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'DelinquentInterest\' in table \'AgingAnalysis\' is DBNull.", e);
@@ -2282,10 +4800,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string Balance {
+            public decimal Balance {
                 get {
                     try {
-                        return ((string)(this[this.tableAgingAnalysis.BalanceColumn]));
+                        return ((decimal)(this[this.tableAgingAnalysis.BalanceColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Balance\' in table \'AgingAnalysis\' is DBNull.", e);
@@ -2298,10 +4816,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string Principal {
+            public decimal Principal {
                 get {
                     try {
-                        return ((string)(this[this.tableAgingAnalysis.PrincipalColumn]));
+                        return ((decimal)(this[this.tableAgingAnalysis.PrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Principal\' in table \'AgingAnalysis\' is DBNull.", e);
@@ -2314,10 +4832,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageBalance {
+            public decimal PercentageBalance {
                 get {
                     try {
-                        return ((string)(this[this.tableAgingAnalysis.PercentageBalanceColumn]));
+                        return ((decimal)(this[this.tableAgingAnalysis.PercentageBalanceColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageBalance\' in table \'AgingAnalysis\' is DBNull.", e);
@@ -2330,10 +4848,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string TotalArrears {
+            public decimal TotalArrears {
                 get {
                     try {
-                        return ((string)(this[this.tableAgingAnalysis.TotalArrearsColumn]));
+                        return ((decimal)(this[this.tableAgingAnalysis.TotalArrearsColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'TotalArrears\' in table \'AgingAnalysis\' is DBNull.", e);
@@ -2346,10 +4864,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageOfLoans {
+            public decimal PercentageOfLoans {
                 get {
                     try {
-                        return ((string)(this[this.tableAgingAnalysis.PercentageOfLoansColumn]));
+                        return ((decimal)(this[this.tableAgingAnalysis.PercentageOfLoansColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfLoans\' in table \'AgingAnalysis\' is DBNull.", e);
@@ -2362,10 +4880,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageOfPrincipal {
+            public decimal PercentageOfPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tableAgingAnalysis.PercentageOfPrincipalColumn]));
+                        return ((decimal)(this[this.tableAgingAnalysis.PercentageOfPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfPrincipal\' in table \'AgingAnalysis\' is DBNull.", e);
@@ -2378,10 +4896,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageOfInterest {
+            public decimal PercentageOfInterest {
                 get {
                     try {
-                        return ((string)(this[this.tableAgingAnalysis.PercentageOfInterestColumn]));
+                        return ((decimal)(this[this.tableAgingAnalysis.PercentageOfInterestColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfInterest\' in table \'AgingAnalysis\' is DBNull.", e);
@@ -2394,10 +4912,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageOfDelinquentPrincipal {
+            public decimal PercentageOfDelinquentPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tableAgingAnalysis.PercentageOfDelinquentPrincipalColumn]));
+                        return ((decimal)(this[this.tableAgingAnalysis.PercentageOfDelinquentPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfDelinquentPrincipal\' in table \'AgingAnalysis\' i" +
@@ -2411,10 +4929,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageArrears {
+            public decimal PercentageArrears {
                 get {
                     try {
-                        return ((string)(this[this.tableAgingAnalysis.PercentageArrearsColumn]));
+                        return ((decimal)(this[this.tableAgingAnalysis.PercentageArrearsColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageArrears\' in table \'AgingAnalysis\' is DBNull.", e);
@@ -2422,6 +4940,38 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                 }
                 set {
                     this[this.tableAgingAnalysis.PercentageArrearsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public int LoanCount {
+                get {
+                    try {
+                        return ((int)(this[this.tableAgingAnalysis.LoanCountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoanCount\' in table \'AgingAnalysis\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAgingAnalysis.LoanCountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal Interest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableAgingAnalysis.InterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Interest\' in table \'AgingAnalysis\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAgingAnalysis.InterestColumn] = value;
                 }
             }
             
@@ -2580,6 +5130,30 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             public void SetPercentageArrearsNull() {
                 this[this.tableAgingAnalysis.PercentageArrearsColumn] = global::System.Convert.DBNull;
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoanCountNull() {
+                return this.IsNull(this.tableAgingAnalysis.LoanCountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoanCountNull() {
+                this[this.tableAgingAnalysis.LoanCountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsInterestNull() {
+                return this.IsNull(this.tableAgingAnalysis.InterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetInterestNull() {
+                this[this.tableAgingAnalysis.InterestColumn] = global::System.Convert.DBNull;
+            }
         }
         
         /// <summary>
@@ -2646,10 +5220,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string DelinquentInterest {
+            public decimal DelinquentInterest {
                 get {
                     try {
-                        return ((string)(this[this.tableLoanTypeDelinquency.DelinquentInterestColumn]));
+                        return ((decimal)(this[this.tableLoanTypeDelinquency.DelinquentInterestColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'DelinquentInterest\' in table \'LoanTypeDelinquency\' is DBNul" +
@@ -2663,10 +5237,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string Balance {
+            public decimal Balance {
                 get {
                     try {
-                        return ((string)(this[this.tableLoanTypeDelinquency.BalanceColumn]));
+                        return ((decimal)(this[this.tableLoanTypeDelinquency.BalanceColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Balance\' in table \'LoanTypeDelinquency\' is DBNull.", e);
@@ -2679,10 +5253,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string Principal {
+            public decimal Principal {
                 get {
                     try {
-                        return ((string)(this[this.tableLoanTypeDelinquency.PrincipalColumn]));
+                        return ((decimal)(this[this.tableLoanTypeDelinquency.PrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Principal\' in table \'LoanTypeDelinquency\' is DBNull.", e);
@@ -2695,10 +5269,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string LoanCount {
+            public int LoanCount {
                 get {
                     try {
-                        return ((string)(this[this.tableLoanTypeDelinquency.LoanCountColumn]));
+                        return ((int)(this[this.tableLoanTypeDelinquency.LoanCountColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'LoanCount\' in table \'LoanTypeDelinquency\' is DBNull.", e);
@@ -2711,10 +5285,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string DelinquentPrincipal {
+            public decimal DelinquentPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tableLoanTypeDelinquency.DelinquentPrincipalColumn]));
+                        return ((decimal)(this[this.tableLoanTypeDelinquency.DelinquentPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'DelinquentPrincipal\' in table \'LoanTypeDelinquency\' is DBNu" +
@@ -2728,10 +5302,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageOfLoans {
+            public decimal PercentageOfLoans {
                 get {
                     try {
-                        return ((string)(this[this.tableLoanTypeDelinquency.PercentageOfLoansColumn]));
+                        return ((decimal)(this[this.tableLoanTypeDelinquency.PercentageOfLoansColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfLoans\' in table \'LoanTypeDelinquency\' is DBNull" +
@@ -2745,10 +5319,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageOfPrincipal {
+            public decimal PercentageOfPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tableLoanTypeDelinquency.PercentageOfPrincipalColumn]));
+                        return ((decimal)(this[this.tableLoanTypeDelinquency.PercentageOfPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfPrincipal\' in table \'LoanTypeDelinquency\' is DB" +
@@ -2762,10 +5336,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageOfInterest {
+            public decimal PercentageOfInterest {
                 get {
                     try {
-                        return ((string)(this[this.tableLoanTypeDelinquency.PercentageOfInterestColumn]));
+                        return ((decimal)(this[this.tableLoanTypeDelinquency.PercentageOfInterestColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfInterest\' in table \'LoanTypeDelinquency\' is DBN" +
@@ -2779,10 +5353,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageOfDelinquentPrincipal {
+            public decimal PercentageOfDelinquentPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tableLoanTypeDelinquency.PercentageOfDelinquentPrincipalColumn]));
+                        return ((decimal)(this[this.tableLoanTypeDelinquency.PercentageOfDelinquentPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfDelinquentPrincipal\' in table \'LoanTypeDelinque" +
@@ -2796,10 +5370,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageArrears {
+            public decimal PercentageArrears {
                 get {
                     try {
-                        return ((string)(this[this.tableLoanTypeDelinquency.PercentageArrearsColumn]));
+                        return ((decimal)(this[this.tableLoanTypeDelinquency.PercentageArrearsColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageArrears\' in table \'LoanTypeDelinquency\' is DBNull" +
@@ -2813,10 +5387,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageBalance {
+            public decimal PercentageBalance {
                 get {
                     try {
-                        return ((string)(this[this.tableLoanTypeDelinquency.PercentageBalanceColumn]));
+                        return ((decimal)(this[this.tableLoanTypeDelinquency.PercentageBalanceColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageBalance\' in table \'LoanTypeDelinquency\' is DBNull" +
@@ -2830,10 +5404,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageDelinquentPrincipal {
+            public decimal PercentageDelinquentPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tableLoanTypeDelinquency.PercentageDelinquentPrincipalColumn]));
+                        return ((decimal)(this[this.tableLoanTypeDelinquency.PercentageDelinquentPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageDelinquentPrincipal\' in table \'LoanTypeDelinquenc" +
@@ -2847,10 +5421,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageDelinquentInterest {
+            public decimal PercentageDelinquentInterest {
                 get {
                     try {
-                        return ((string)(this[this.tableLoanTypeDelinquency.PercentageDelinquentInterestColumn]));
+                        return ((decimal)(this[this.tableLoanTypeDelinquency.PercentageDelinquentInterestColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageDelinquentInterest\' in table \'LoanTypeDelinquency" +
@@ -3119,10 +5693,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string DelinquentInterest {
+            public decimal DelinquentInterest {
                 get {
                     try {
-                        return ((string)(this[this.tableMemberAgeDelinquency.DelinquentInterestColumn]));
+                        return ((decimal)(this[this.tableMemberAgeDelinquency.DelinquentInterestColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'DelinquentInterest\' in table \'MemberAgeDelinquency\' is DBNu" +
@@ -3136,10 +5710,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string Balance {
+            public decimal Balance {
                 get {
                     try {
-                        return ((string)(this[this.tableMemberAgeDelinquency.BalanceColumn]));
+                        return ((decimal)(this[this.tableMemberAgeDelinquency.BalanceColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Balance\' in table \'MemberAgeDelinquency\' is DBNull.", e);
@@ -3152,10 +5726,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string Principal {
+            public decimal Principal {
                 get {
                     try {
-                        return ((string)(this[this.tableMemberAgeDelinquency.PrincipalColumn]));
+                        return ((decimal)(this[this.tableMemberAgeDelinquency.PrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Principal\' in table \'MemberAgeDelinquency\' is DBNull.", e);
@@ -3168,10 +5742,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string LoanCount {
+            public int LoanCount {
                 get {
                     try {
-                        return ((string)(this[this.tableMemberAgeDelinquency.LoanCountColumn]));
+                        return ((int)(this[this.tableMemberAgeDelinquency.LoanCountColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'LoanCount\' in table \'MemberAgeDelinquency\' is DBNull.", e);
@@ -3184,10 +5758,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string DelinquentPrincipal {
+            public decimal DelinquentPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tableMemberAgeDelinquency.DelinquentPrincipalColumn]));
+                        return ((decimal)(this[this.tableMemberAgeDelinquency.DelinquentPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'DelinquentPrincipal\' in table \'MemberAgeDelinquency\' is DBN" +
@@ -3201,10 +5775,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageOfLoans {
+            public decimal PercentageOfLoans {
                 get {
                     try {
-                        return ((string)(this[this.tableMemberAgeDelinquency.PercentageOfLoansColumn]));
+                        return ((decimal)(this[this.tableMemberAgeDelinquency.PercentageOfLoansColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfLoans\' in table \'MemberAgeDelinquency\' is DBNul" +
@@ -3218,10 +5792,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageOfPrincipal {
+            public decimal PercentageOfPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tableMemberAgeDelinquency.PercentageOfPrincipalColumn]));
+                        return ((decimal)(this[this.tableMemberAgeDelinquency.PercentageOfPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfPrincipal\' in table \'MemberAgeDelinquency\' is D" +
@@ -3235,10 +5809,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageOfInterest {
+            public decimal PercentageOfInterest {
                 get {
                     try {
-                        return ((string)(this[this.tableMemberAgeDelinquency.PercentageOfInterestColumn]));
+                        return ((decimal)(this[this.tableMemberAgeDelinquency.PercentageOfInterestColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfInterest\' in table \'MemberAgeDelinquency\' is DB" +
@@ -3252,10 +5826,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageOfDelinquentPrincipal {
+            public decimal PercentageOfDelinquentPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tableMemberAgeDelinquency.PercentageOfDelinquentPrincipalColumn]));
+                        return ((decimal)(this[this.tableMemberAgeDelinquency.PercentageOfDelinquentPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfDelinquentPrincipal\' in table \'MemberAgeDelinqu" +
@@ -3269,10 +5843,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageArrears {
+            public decimal PercentageArrears {
                 get {
                     try {
-                        return ((string)(this[this.tableMemberAgeDelinquency.PercentageArrearsColumn]));
+                        return ((decimal)(this[this.tableMemberAgeDelinquency.PercentageArrearsColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageArrears\' in table \'MemberAgeDelinquency\' is DBNul" +
@@ -3286,10 +5860,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageBalance {
+            public decimal PercentageBalance {
                 get {
                     try {
-                        return ((string)(this[this.tableMemberAgeDelinquency.PercentageBalanceColumn]));
+                        return ((decimal)(this[this.tableMemberAgeDelinquency.PercentageBalanceColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageBalance\' in table \'MemberAgeDelinquency\' is DBNul" +
@@ -3303,10 +5877,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageDelinquentPrincipal {
+            public decimal PercentageDelinquentPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tableMemberAgeDelinquency.PercentageDelinquentPrincipalColumn]));
+                        return ((decimal)(this[this.tableMemberAgeDelinquency.PercentageDelinquentPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageDelinquentPrincipal\' in table \'MemberAgeDelinquen" +
@@ -3320,10 +5894,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageDelinquentInterest {
+            public decimal PercentageDelinquentInterest {
                 get {
                     try {
-                        return ((string)(this[this.tableMemberAgeDelinquency.PercentageDelinquentInterestColumn]));
+                        return ((decimal)(this[this.tableMemberAgeDelinquency.PercentageDelinquentInterestColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PercentageDelinquentInterest\' in table \'MemberAgeDelinquenc" +
@@ -3531,443 +6105,3632 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class PortfolioSummaryRow : global::System.Data.DataRow {
+        public partial class DeliquentLoanSummaryRow : global::System.Data.DataRow {
             
-            private PortfolioSummaryDataTable tablePortfolioSummary;
+            private DeliquentLoanSummaryDataTable tableDeliquentLoanSummary;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            internal PortfolioSummaryRow(global::System.Data.DataRowBuilder rb) : 
+            internal DeliquentLoanSummaryRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tablePortfolioSummary = ((PortfolioSummaryDataTable)(this.Table));
+                this.tableDeliquentLoanSummary = ((DeliquentLoanSummaryDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string TotalPrincipal {
+            public decimal TotalPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tablePortfolioSummary.TotalPrincipalColumn]));
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.TotalPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TotalPrincipal\' in table \'PortfolioSummary\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalPrincipal\' in table \'DeliquentLoanSummary\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablePortfolioSummary.TotalPrincipalColumn] = value;
+                    this[this.tableDeliquentLoanSummary.TotalPrincipalColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string TotalInterest {
+            public decimal TotalInterest {
                 get {
                     try {
-                        return ((string)(this[this.tablePortfolioSummary.TotalInterestColumn]));
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.TotalInterestColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TotalInterest\' in table \'PortfolioSummary\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalInterest\' in table \'DeliquentLoanSummary\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablePortfolioSummary.TotalInterestColumn] = value;
+                    this[this.tableDeliquentLoanSummary.TotalInterestColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string TotalLoans {
+            public int TotalLoans {
                 get {
                     try {
-                        return ((string)(this[this.tablePortfolioSummary.TotalLoansColumn]));
+                        return ((int)(this[this.tableDeliquentLoanSummary.TotalLoansColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TotalLoans\' in table \'PortfolioSummary\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalLoans\' in table \'DeliquentLoanSummary\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablePortfolioSummary.TotalLoansColumn] = value;
+                    this[this.tableDeliquentLoanSummary.TotalLoansColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string TotalDelinquentLoans {
+            public int TotalDelinquentLoans {
                 get {
                     try {
-                        return ((string)(this[this.tablePortfolioSummary.TotalDelinquentLoansColumn]));
+                        return ((int)(this[this.tableDeliquentLoanSummary.TotalDelinquentLoansColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDelinquentLoans\' in table \'PortfolioSummary\' is DBNull" +
-                                ".", e);
-                    }
-                }
-                set {
-                    this[this.tablePortfolioSummary.TotalDelinquentLoansColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string TotalOutstandingPrincipal {
-                get {
-                    try {
-                        return ((string)(this[this.tablePortfolioSummary.TotalOutstandingPrincipalColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TotalOutstandingPrincipal\' in table \'PortfolioSummary\' is D" +
-                                "BNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePortfolioSummary.TotalOutstandingPrincipalColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string TotalDelinquentPrincipal {
-                get {
-                    try {
-                        return ((string)(this[this.tablePortfolioSummary.TotalDelinquentPrincipalColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDelinquentPrincipal\' in table \'PortfolioSummary\' is DB" +
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDelinquentLoans\' in table \'DeliquentLoanSummary\' is DB" +
                                 "Null.", e);
                     }
                 }
                 set {
-                    this[this.tablePortfolioSummary.TotalDelinquentPrincipalColumn] = value;
+                    this[this.tableDeliquentLoanSummary.TotalDelinquentLoansColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string TotalDelinquentInterest {
+            public decimal TotalOutstandingPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tablePortfolioSummary.TotalDelinquentInterestColumn]));
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.TotalOutstandingPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDelinquentInterest\' in table \'PortfolioSummary\' is DBN" +
-                                "ull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePortfolioSummary.TotalDelinquentInterestColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string TotalBalance {
-                get {
-                    try {
-                        return ((string)(this[this.tablePortfolioSummary.TotalBalanceColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TotalBalance\' in table \'PortfolioSummary\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePortfolioSummary.TotalBalanceColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageBalance {
-                get {
-                    try {
-                        return ((string)(this[this.tablePortfolioSummary.PercentageBalanceColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageBalance\' in table \'PortfolioSummary\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePortfolioSummary.PercentageBalanceColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageDelinquentPrincipal {
-                get {
-                    try {
-                        return ((string)(this[this.tablePortfolioSummary.PercentageDelinquentPrincipalColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageDelinquentPrincipal\' in table \'PortfolioSummary\' " +
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalOutstandingPrincipal\' in table \'DeliquentLoanSummary\' " +
                                 "is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablePortfolioSummary.PercentageDelinquentPrincipalColumn] = value;
+                    this[this.tableDeliquentLoanSummary.TotalOutstandingPrincipalColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageDelinquentInterest {
+            public decimal TotalDelinquentPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tablePortfolioSummary.PercentageDelinquentInterestColumn]));
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.TotalDelinquentPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageDelinquentInterest\' in table \'PortfolioSummary\' i" +
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDelinquentPrincipal\' in table \'DeliquentLoanSummary\' i" +
                                 "s DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablePortfolioSummary.PercentageDelinquentInterestColumn] = value;
+                    this[this.tableDeliquentLoanSummary.TotalDelinquentPrincipalColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageOfDelinquentPrincipal {
+            public decimal TotalDelinquentInterest {
                 get {
                     try {
-                        return ((string)(this[this.tablePortfolioSummary.PercentageOfDelinquentPrincipalColumn]));
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.TotalDelinquentInterestColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfDelinquentPrincipal\' in table \'PortfolioSummary" +
-                                "\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDelinquentInterest\' in table \'DeliquentLoanSummary\' is" +
+                                " DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablePortfolioSummary.PercentageOfDelinquentPrincipalColumn] = value;
+                    this[this.tableDeliquentLoanSummary.TotalDelinquentInterestColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PercentageArrears {
+            public decimal TotalBalance {
                 get {
                     try {
-                        return ((string)(this[this.tablePortfolioSummary.PercentageArrearsColumn]));
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.TotalBalanceColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageArrears\' in table \'PortfolioSummary\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalBalance\' in table \'DeliquentLoanSummary\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablePortfolioSummary.PercentageArrearsColumn] = value;
+                    this[this.tableDeliquentLoanSummary.TotalBalanceColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string TotalArrears {
+            public decimal PercentageBalance {
                 get {
                     try {
-                        return ((string)(this[this.tablePortfolioSummary.TotalArrearsColumn]));
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.PercentageBalanceColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TotalArrears\' in table \'PortfolioSummary\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageBalance\' in table \'DeliquentLoanSummary\' is DBNul" +
+                                "l.", e);
                     }
                 }
                 set {
-                    this[this.tablePortfolioSummary.TotalArrearsColumn] = value;
+                    this[this.tableDeliquentLoanSummary.PercentageBalanceColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string PortfolioAtRiskPercentage {
+            public decimal PercentageDelinquentPrincipal {
                 get {
                     try {
-                        return ((string)(this[this.tablePortfolioSummary.PortfolioAtRiskPercentageColumn]));
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.PercentageDelinquentPrincipalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'PortfolioAtRiskPercentage\' in table \'PortfolioSummary\' is D" +
-                                "BNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageDelinquentPrincipal\' in table \'DeliquentLoanSumma" +
+                                "ry\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablePortfolioSummary.PortfolioAtRiskPercentageColumn] = value;
+                    this[this.tableDeliquentLoanSummary.PercentageDelinquentPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PercentageDelinquentInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.PercentageDelinquentInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageDelinquentInterest\' in table \'DeliquentLoanSummar" +
+                                "y\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliquentLoanSummary.PercentageDelinquentInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PercentageOfDelinquentPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.PercentageOfDelinquentPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfDelinquentPrincipal\' in table \'DeliquentLoanSum" +
+                                "mary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliquentLoanSummary.PercentageOfDelinquentPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PercentageArrears {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.PercentageArrearsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageArrears\' in table \'DeliquentLoanSummary\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliquentLoanSummary.PercentageArrearsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalArrears {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.TotalArrearsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalArrears\' in table \'DeliquentLoanSummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliquentLoanSummary.TotalArrearsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PortfolioAtRiskPercentage {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.PortfolioAtRiskPercentageColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PortfolioAtRiskPercentage\' in table \'DeliquentLoanSummary\' " +
+                                "is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliquentLoanSummary.PortfolioAtRiskPercentageColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PercentageOfPortfolioPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.PercentageOfPortfolioPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfPortfolioPrincipal\' in table \'DeliquentLoanSumm" +
+                                "ary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliquentLoanSummary.PercentageOfPortfolioPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PercentageOfPortfolioInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.PercentageOfPortfolioInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfPortfolioInterest\' in table \'DeliquentLoanSumma" +
+                                "ry\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliquentLoanSummary.PercentageOfPortfolioInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PercentageOfPortfolioForecastedInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableDeliquentLoanSummary.PercentageOfPortfolioForecastedInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfPortfolioForecastedInterest\' in table \'Deliquen" +
+                                "tLoanSummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliquentLoanSummary.PercentageOfPortfolioForecastedInterestColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsTotalPrincipalNull() {
-                return this.IsNull(this.tablePortfolioSummary.TotalPrincipalColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.TotalPrincipalColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetTotalPrincipalNull() {
-                this[this.tablePortfolioSummary.TotalPrincipalColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.TotalPrincipalColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsTotalInterestNull() {
-                return this.IsNull(this.tablePortfolioSummary.TotalInterestColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.TotalInterestColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetTotalInterestNull() {
-                this[this.tablePortfolioSummary.TotalInterestColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.TotalInterestColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsTotalLoansNull() {
-                return this.IsNull(this.tablePortfolioSummary.TotalLoansColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.TotalLoansColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetTotalLoansNull() {
-                this[this.tablePortfolioSummary.TotalLoansColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.TotalLoansColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsTotalDelinquentLoansNull() {
-                return this.IsNull(this.tablePortfolioSummary.TotalDelinquentLoansColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.TotalDelinquentLoansColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetTotalDelinquentLoansNull() {
-                this[this.tablePortfolioSummary.TotalDelinquentLoansColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.TotalDelinquentLoansColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsTotalOutstandingPrincipalNull() {
-                return this.IsNull(this.tablePortfolioSummary.TotalOutstandingPrincipalColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.TotalOutstandingPrincipalColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetTotalOutstandingPrincipalNull() {
-                this[this.tablePortfolioSummary.TotalOutstandingPrincipalColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.TotalOutstandingPrincipalColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsTotalDelinquentPrincipalNull() {
-                return this.IsNull(this.tablePortfolioSummary.TotalDelinquentPrincipalColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.TotalDelinquentPrincipalColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetTotalDelinquentPrincipalNull() {
-                this[this.tablePortfolioSummary.TotalDelinquentPrincipalColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.TotalDelinquentPrincipalColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsTotalDelinquentInterestNull() {
-                return this.IsNull(this.tablePortfolioSummary.TotalDelinquentInterestColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.TotalDelinquentInterestColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetTotalDelinquentInterestNull() {
-                this[this.tablePortfolioSummary.TotalDelinquentInterestColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.TotalDelinquentInterestColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsTotalBalanceNull() {
-                return this.IsNull(this.tablePortfolioSummary.TotalBalanceColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.TotalBalanceColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetTotalBalanceNull() {
-                this[this.tablePortfolioSummary.TotalBalanceColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.TotalBalanceColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsPercentageBalanceNull() {
-                return this.IsNull(this.tablePortfolioSummary.PercentageBalanceColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.PercentageBalanceColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetPercentageBalanceNull() {
-                this[this.tablePortfolioSummary.PercentageBalanceColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.PercentageBalanceColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsPercentageDelinquentPrincipalNull() {
-                return this.IsNull(this.tablePortfolioSummary.PercentageDelinquentPrincipalColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.PercentageDelinquentPrincipalColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetPercentageDelinquentPrincipalNull() {
-                this[this.tablePortfolioSummary.PercentageDelinquentPrincipalColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.PercentageDelinquentPrincipalColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsPercentageDelinquentInterestNull() {
-                return this.IsNull(this.tablePortfolioSummary.PercentageDelinquentInterestColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.PercentageDelinquentInterestColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetPercentageDelinquentInterestNull() {
-                this[this.tablePortfolioSummary.PercentageDelinquentInterestColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.PercentageDelinquentInterestColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsPercentageOfDelinquentPrincipalNull() {
-                return this.IsNull(this.tablePortfolioSummary.PercentageOfDelinquentPrincipalColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.PercentageOfDelinquentPrincipalColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetPercentageOfDelinquentPrincipalNull() {
-                this[this.tablePortfolioSummary.PercentageOfDelinquentPrincipalColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.PercentageOfDelinquentPrincipalColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsPercentageArrearsNull() {
-                return this.IsNull(this.tablePortfolioSummary.PercentageArrearsColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.PercentageArrearsColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetPercentageArrearsNull() {
-                this[this.tablePortfolioSummary.PercentageArrearsColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.PercentageArrearsColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsTotalArrearsNull() {
-                return this.IsNull(this.tablePortfolioSummary.TotalArrearsColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.TotalArrearsColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetTotalArrearsNull() {
-                this[this.tablePortfolioSummary.TotalArrearsColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.TotalArrearsColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsPortfolioAtRiskPercentageNull() {
-                return this.IsNull(this.tablePortfolioSummary.PortfolioAtRiskPercentageColumn);
+                return this.IsNull(this.tableDeliquentLoanSummary.PortfolioAtRiskPercentageColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetPortfolioAtRiskPercentageNull() {
-                this[this.tablePortfolioSummary.PortfolioAtRiskPercentageColumn] = global::System.Convert.DBNull;
+                this[this.tableDeliquentLoanSummary.PortfolioAtRiskPercentageColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPercentageOfPortfolioPrincipalNull() {
+                return this.IsNull(this.tableDeliquentLoanSummary.PercentageOfPortfolioPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPercentageOfPortfolioPrincipalNull() {
+                this[this.tableDeliquentLoanSummary.PercentageOfPortfolioPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPercentageOfPortfolioInterestNull() {
+                return this.IsNull(this.tableDeliquentLoanSummary.PercentageOfPortfolioInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPercentageOfPortfolioInterestNull() {
+                this[this.tableDeliquentLoanSummary.PercentageOfPortfolioInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPercentageOfPortfolioForecastedInterestNull() {
+                return this.IsNull(this.tableDeliquentLoanSummary.PercentageOfPortfolioForecastedInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPercentageOfPortfolioForecastedInterestNull() {
+                this[this.tableDeliquentLoanSummary.PercentageOfPortfolioForecastedInterestColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class LoanPortfolioRow : global::System.Data.DataRow {
+            
+            private LoanPortfolioDataTable tableLoanPortfolio;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal LoanPortfolioRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableLoanPortfolio = ((LoanPortfolioDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Id {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.IdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Id\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.IdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string CustomerId {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.CustomerIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CustomerId\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.CustomerIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string CustomerName {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.CustomerNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CustomerName\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.CustomerNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string LoanApplicationId {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.LoanApplicationIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoanApplicationId\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.LoanApplicationIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string LoanType {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.LoanTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoanType\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.LoanTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchId {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.BranchIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchId\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.BranchIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.BranchCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchCode\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.BranchCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal Principal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableLoanPortfolio.PrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Principal\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.PrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal LoanAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableLoanPortfolio.LoanAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoanAmount\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.LoanAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Balance {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.BalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Balance\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.BalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DueAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableLoanPortfolio.DueAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DueAmount\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.DueAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal InterestRate {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableLoanPortfolio.InterestRateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'InterestRate\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.InterestRateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal AccrualInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableLoanPortfolio.AccrualInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AccrualInterest\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.AccrualInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DeliquentInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableLoanPortfolio.DeliquentInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DeliquentInterest\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.DeliquentInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DeliquentDays {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableLoanPortfolio.DeliquentDaysColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DeliquentDays\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.DeliquentDaysColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string LoanManager {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.LoanManagerColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoanManager\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.LoanManagerColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchName {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.BranchNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchName\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.BranchNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime LoanDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableLoanPortfolio.LoanDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoanDate\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.LoanDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime LastRepaymentDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableLoanPortfolio.LastRepaymentDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LastRepaymentDate\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.LastRepaymentDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal LastRepaymentAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableLoanPortfolio.LastRepaymentAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LastRepaymentAmount\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.LastRepaymentAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime MaturityDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableLoanPortfolio.MaturityDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MaturityDate\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.MaturityDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string LoanStatus {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.LoanStatusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoanStatus\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.LoanStatusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string PurposeName {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.PurposeNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PurposeName\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.PurposeNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ProductType {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.ProductTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ProductType\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.ProductTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ApplicationType {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.ApplicationTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ApplicationType\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.ApplicationTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string TermName {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.TermNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TermName\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.TermNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string LoanCategory {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.LoanCategoryColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoanCategory\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.LoanCategoryColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string LoanTarget {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.LoanTargetColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoanTarget\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.LoanTargetColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string DeliquentStatus {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.DeliquentStatusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DeliquentStatus\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.DeliquentStatusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string LoanDuration {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.LoanDurationColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoanDuration\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.LoanDurationColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string LoanDeliquencyConfigurationId {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.LoanDeliquencyConfigurationIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoanDeliquencyConfigurationId\' in table \'LoanPortfolio\' is " +
+                                "DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.LoanDeliquencyConfigurationIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public int DelinquentDays {
+                get {
+                    try {
+                        return ((int)(this[this.tableLoanPortfolio.DelinquentDaysColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentDays\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.DelinquentDaysColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchAddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.BranchAddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchAddress\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.BranchAddressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchTelephone {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.BranchTelephoneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchTelephone\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.BranchTelephoneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeName {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.HeadOfficeNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeName\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.HeadOfficeNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeAddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.HeadOfficeAddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeAddress\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.HeadOfficeAddressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeTelephone {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.HeadOfficeTelephoneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeTelephone\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.HeadOfficeTelephoneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeEmail {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.HeadOfficeEmailColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeEmail\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.HeadOfficeEmailColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeWebSite {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.HeadOfficeWebSiteColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeWebSite\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.HeadOfficeWebSiteColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeInitial {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.HeadOfficeInitialColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeInitial\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.HeadOfficeInitialColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Logo {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.LogoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Logo\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.LogoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string DelinquencyConfigName {
+                get {
+                    try {
+                        return ((string)(this[this.tableLoanPortfolio.DelinquencyConfigNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquencyConfigName\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.DelinquencyConfigNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsIdNull() {
+                return this.IsNull(this.tableLoanPortfolio.IdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetIdNull() {
+                this[this.tableLoanPortfolio.IdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCustomerIdNull() {
+                return this.IsNull(this.tableLoanPortfolio.CustomerIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCustomerIdNull() {
+                this[this.tableLoanPortfolio.CustomerIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCustomerNameNull() {
+                return this.IsNull(this.tableLoanPortfolio.CustomerNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCustomerNameNull() {
+                this[this.tableLoanPortfolio.CustomerNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoanApplicationIdNull() {
+                return this.IsNull(this.tableLoanPortfolio.LoanApplicationIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoanApplicationIdNull() {
+                this[this.tableLoanPortfolio.LoanApplicationIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoanTypeNull() {
+                return this.IsNull(this.tableLoanPortfolio.LoanTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoanTypeNull() {
+                this[this.tableLoanPortfolio.LoanTypeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchIdNull() {
+                return this.IsNull(this.tableLoanPortfolio.BranchIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchIdNull() {
+                this[this.tableLoanPortfolio.BranchIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchCodeNull() {
+                return this.IsNull(this.tableLoanPortfolio.BranchCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchCodeNull() {
+                this[this.tableLoanPortfolio.BranchCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPrincipalNull() {
+                return this.IsNull(this.tableLoanPortfolio.PrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPrincipalNull() {
+                this[this.tableLoanPortfolio.PrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoanAmountNull() {
+                return this.IsNull(this.tableLoanPortfolio.LoanAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoanAmountNull() {
+                this[this.tableLoanPortfolio.LoanAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBalanceNull() {
+                return this.IsNull(this.tableLoanPortfolio.BalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBalanceNull() {
+                this[this.tableLoanPortfolio.BalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDueAmountNull() {
+                return this.IsNull(this.tableLoanPortfolio.DueAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDueAmountNull() {
+                this[this.tableLoanPortfolio.DueAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsInterestRateNull() {
+                return this.IsNull(this.tableLoanPortfolio.InterestRateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetInterestRateNull() {
+                this[this.tableLoanPortfolio.InterestRateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsAccrualInterestNull() {
+                return this.IsNull(this.tableLoanPortfolio.AccrualInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetAccrualInterestNull() {
+                this[this.tableLoanPortfolio.AccrualInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDeliquentInterestNull() {
+                return this.IsNull(this.tableLoanPortfolio.DeliquentInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDeliquentInterestNull() {
+                this[this.tableLoanPortfolio.DeliquentInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDeliquentDaysNull() {
+                return this.IsNull(this.tableLoanPortfolio.DeliquentDaysColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDeliquentDaysNull() {
+                this[this.tableLoanPortfolio.DeliquentDaysColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoanManagerNull() {
+                return this.IsNull(this.tableLoanPortfolio.LoanManagerColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoanManagerNull() {
+                this[this.tableLoanPortfolio.LoanManagerColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchNameNull() {
+                return this.IsNull(this.tableLoanPortfolio.BranchNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchNameNull() {
+                this[this.tableLoanPortfolio.BranchNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoanDateNull() {
+                return this.IsNull(this.tableLoanPortfolio.LoanDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoanDateNull() {
+                this[this.tableLoanPortfolio.LoanDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLastRepaymentDateNull() {
+                return this.IsNull(this.tableLoanPortfolio.LastRepaymentDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLastRepaymentDateNull() {
+                this[this.tableLoanPortfolio.LastRepaymentDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLastRepaymentAmountNull() {
+                return this.IsNull(this.tableLoanPortfolio.LastRepaymentAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLastRepaymentAmountNull() {
+                this[this.tableLoanPortfolio.LastRepaymentAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsMaturityDateNull() {
+                return this.IsNull(this.tableLoanPortfolio.MaturityDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetMaturityDateNull() {
+                this[this.tableLoanPortfolio.MaturityDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoanStatusNull() {
+                return this.IsNull(this.tableLoanPortfolio.LoanStatusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoanStatusNull() {
+                this[this.tableLoanPortfolio.LoanStatusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPurposeNameNull() {
+                return this.IsNull(this.tableLoanPortfolio.PurposeNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPurposeNameNull() {
+                this[this.tableLoanPortfolio.PurposeNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsProductTypeNull() {
+                return this.IsNull(this.tableLoanPortfolio.ProductTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetProductTypeNull() {
+                this[this.tableLoanPortfolio.ProductTypeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsApplicationTypeNull() {
+                return this.IsNull(this.tableLoanPortfolio.ApplicationTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetApplicationTypeNull() {
+                this[this.tableLoanPortfolio.ApplicationTypeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTermNameNull() {
+                return this.IsNull(this.tableLoanPortfolio.TermNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTermNameNull() {
+                this[this.tableLoanPortfolio.TermNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoanCategoryNull() {
+                return this.IsNull(this.tableLoanPortfolio.LoanCategoryColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoanCategoryNull() {
+                this[this.tableLoanPortfolio.LoanCategoryColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoanTargetNull() {
+                return this.IsNull(this.tableLoanPortfolio.LoanTargetColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoanTargetNull() {
+                this[this.tableLoanPortfolio.LoanTargetColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDeliquentStatusNull() {
+                return this.IsNull(this.tableLoanPortfolio.DeliquentStatusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDeliquentStatusNull() {
+                this[this.tableLoanPortfolio.DeliquentStatusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoanDurationNull() {
+                return this.IsNull(this.tableLoanPortfolio.LoanDurationColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoanDurationNull() {
+                this[this.tableLoanPortfolio.LoanDurationColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoanDeliquencyConfigurationIdNull() {
+                return this.IsNull(this.tableLoanPortfolio.LoanDeliquencyConfigurationIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoanDeliquencyConfigurationIdNull() {
+                this[this.tableLoanPortfolio.LoanDeliquencyConfigurationIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentDaysNull() {
+                return this.IsNull(this.tableLoanPortfolio.DelinquentDaysColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentDaysNull() {
+                this[this.tableLoanPortfolio.DelinquentDaysColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchAddressNull() {
+                return this.IsNull(this.tableLoanPortfolio.BranchAddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchAddressNull() {
+                this[this.tableLoanPortfolio.BranchAddressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchTelephoneNull() {
+                return this.IsNull(this.tableLoanPortfolio.BranchTelephoneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchTelephoneNull() {
+                this[this.tableLoanPortfolio.BranchTelephoneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeNameNull() {
+                return this.IsNull(this.tableLoanPortfolio.HeadOfficeNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeNameNull() {
+                this[this.tableLoanPortfolio.HeadOfficeNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeAddressNull() {
+                return this.IsNull(this.tableLoanPortfolio.HeadOfficeAddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeAddressNull() {
+                this[this.tableLoanPortfolio.HeadOfficeAddressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeTelephoneNull() {
+                return this.IsNull(this.tableLoanPortfolio.HeadOfficeTelephoneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeTelephoneNull() {
+                this[this.tableLoanPortfolio.HeadOfficeTelephoneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeEmailNull() {
+                return this.IsNull(this.tableLoanPortfolio.HeadOfficeEmailColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeEmailNull() {
+                this[this.tableLoanPortfolio.HeadOfficeEmailColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeWebSiteNull() {
+                return this.IsNull(this.tableLoanPortfolio.HeadOfficeWebSiteColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeWebSiteNull() {
+                this[this.tableLoanPortfolio.HeadOfficeWebSiteColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeInitialNull() {
+                return this.IsNull(this.tableLoanPortfolio.HeadOfficeInitialColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeInitialNull() {
+                this[this.tableLoanPortfolio.HeadOfficeInitialColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLogoNull() {
+                return this.IsNull(this.tableLoanPortfolio.LogoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLogoNull() {
+                this[this.tableLoanPortfolio.LogoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquencyConfigNameNull() {
+                return this.IsNull(this.tableLoanPortfolio.DelinquencyConfigNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquencyConfigNameNull() {
+                this[this.tableLoanPortfolio.DelinquencyConfigNameColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class CurrentLoanSummaryRow : global::System.Data.DataRow {
+            
+            private CurrentLoanSummaryDataTable tableCurrentLoanSummary;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal CurrentLoanSummaryRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableCurrentLoanSummary = ((CurrentLoanSummaryDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalLoans {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCurrentLoanSummary.TotalLoansColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalLoans\' in table \'CurrentLoanSummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCurrentLoanSummary.TotalLoansColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCurrentLoanSummary.TotalPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalPrincipal\' in table \'CurrentLoanSummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCurrentLoanSummary.TotalPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCurrentLoanSummary.TotalInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalInterest\' in table \'CurrentLoanSummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCurrentLoanSummary.TotalInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalForecastedInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCurrentLoanSummary.TotalForecastedInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalForecastedInterest\' in table \'CurrentLoanSummary\' is D" +
+                                "BNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCurrentLoanSummary.TotalForecastedInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalOutstandingPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCurrentLoanSummary.TotalOutstandingPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalOutstandingPrincipal\' in table \'CurrentLoanSummary\' is" +
+                                " DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCurrentLoanSummary.TotalOutstandingPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCurrentLoanSummary.TotalBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalBalance\' in table \'CurrentLoanSummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCurrentLoanSummary.TotalBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PercentageBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCurrentLoanSummary.PercentageBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageBalance\' in table \'CurrentLoanSummary\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableCurrentLoanSummary.PercentageBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PercentageOfPortfolioPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCurrentLoanSummary.PercentageOfPortfolioPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfPortfolioPrincipal\' in table \'CurrentLoanSummar" +
+                                "y\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCurrentLoanSummary.PercentageOfPortfolioPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PercentageOfPortfolioInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCurrentLoanSummary.PercentageOfPortfolioInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfPortfolioInterest\' in table \'CurrentLoanSummary" +
+                                "\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCurrentLoanSummary.PercentageOfPortfolioInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PercentageOfPortfolioForecastedInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCurrentLoanSummary.PercentageOfPortfolioForecastedInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PercentageOfPortfolioForecastedInterest\' in table \'CurrentL" +
+                                "oanSummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCurrentLoanSummary.PercentageOfPortfolioForecastedInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PortfolioHealthRatio {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCurrentLoanSummary.PortfolioHealthRatioColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PortfolioHealthRatio\' in table \'CurrentLoanSummary\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tableCurrentLoanSummary.PortfolioHealthRatioColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalLoansNull() {
+                return this.IsNull(this.tableCurrentLoanSummary.TotalLoansColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalLoansNull() {
+                this[this.tableCurrentLoanSummary.TotalLoansColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalPrincipalNull() {
+                return this.IsNull(this.tableCurrentLoanSummary.TotalPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalPrincipalNull() {
+                this[this.tableCurrentLoanSummary.TotalPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalInterestNull() {
+                return this.IsNull(this.tableCurrentLoanSummary.TotalInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalInterestNull() {
+                this[this.tableCurrentLoanSummary.TotalInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalForecastedInterestNull() {
+                return this.IsNull(this.tableCurrentLoanSummary.TotalForecastedInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalForecastedInterestNull() {
+                this[this.tableCurrentLoanSummary.TotalForecastedInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalOutstandingPrincipalNull() {
+                return this.IsNull(this.tableCurrentLoanSummary.TotalOutstandingPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalOutstandingPrincipalNull() {
+                this[this.tableCurrentLoanSummary.TotalOutstandingPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalBalanceNull() {
+                return this.IsNull(this.tableCurrentLoanSummary.TotalBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalBalanceNull() {
+                this[this.tableCurrentLoanSummary.TotalBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPercentageBalanceNull() {
+                return this.IsNull(this.tableCurrentLoanSummary.PercentageBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPercentageBalanceNull() {
+                this[this.tableCurrentLoanSummary.PercentageBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPercentageOfPortfolioPrincipalNull() {
+                return this.IsNull(this.tableCurrentLoanSummary.PercentageOfPortfolioPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPercentageOfPortfolioPrincipalNull() {
+                this[this.tableCurrentLoanSummary.PercentageOfPortfolioPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPercentageOfPortfolioInterestNull() {
+                return this.IsNull(this.tableCurrentLoanSummary.PercentageOfPortfolioInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPercentageOfPortfolioInterestNull() {
+                this[this.tableCurrentLoanSummary.PercentageOfPortfolioInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPercentageOfPortfolioForecastedInterestNull() {
+                return this.IsNull(this.tableCurrentLoanSummary.PercentageOfPortfolioForecastedInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPercentageOfPortfolioForecastedInterestNull() {
+                this[this.tableCurrentLoanSummary.PercentageOfPortfolioForecastedInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPortfolioHealthRatioNull() {
+                return this.IsNull(this.tableCurrentLoanSummary.PortfolioHealthRatioColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPortfolioHealthRatioNull() {
+                this[this.tableCurrentLoanSummary.PortfolioHealthRatioColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class MainPortFolioRow : global::System.Data.DataRow {
+            
+            private MainPortFolioDataTable tableMainPortFolio;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal MainPortFolioRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableMainPortFolio = ((MainPortFolioDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchName {
+                get {
+                    try {
+                        return ((string)(this[this.tableMainPortFolio.BranchNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchName\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.BranchNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableMainPortFolio.BranchCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchCode\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.BranchCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchAddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableMainPortFolio.BranchAddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchAddress\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.BranchAddressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchTelephone {
+                get {
+                    try {
+                        return ((string)(this[this.tableMainPortFolio.BranchTelephoneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchTelephone\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.BranchTelephoneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeName {
+                get {
+                    try {
+                        return ((string)(this[this.tableMainPortFolio.HeadOfficeNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeName\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.HeadOfficeNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeAddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableMainPortFolio.HeadOfficeAddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeAddress\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.HeadOfficeAddressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeTelephone {
+                get {
+                    try {
+                        return ((string)(this[this.tableMainPortFolio.HeadOfficeTelephoneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeTelephone\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.HeadOfficeTelephoneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeEmail {
+                get {
+                    try {
+                        return ((string)(this[this.tableMainPortFolio.HeadOfficeEmailColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeEmail\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.HeadOfficeEmailColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeWebSite {
+                get {
+                    try {
+                        return ((string)(this[this.tableMainPortFolio.HeadOfficeWebSiteColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeWebSite\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.HeadOfficeWebSiteColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeInitial {
+                get {
+                    try {
+                        return ((string)(this[this.tableMainPortFolio.HeadOfficeInitialColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeInitial\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.HeadOfficeInitialColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Logo {
+                get {
+                    try {
+                        return ((string)(this[this.tableMainPortFolio.LogoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Logo\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.LogoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public int TotalLoans {
+                get {
+                    try {
+                        return ((int)(this[this.tableMainPortFolio.TotalLoansColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalLoans\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.TotalLoansColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.TotalPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalPrincipal\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.TotalPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.TotalInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalInterest\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.TotalInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalForecastedInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.TotalForecastedInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalForecastedInterest\' in table \'MainPortFolio\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.TotalForecastedInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.TotalBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalBalance\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.TotalBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public int CurrentLoanCount {
+                get {
+                    try {
+                        return ((int)(this[this.tableMainPortFolio.CurrentLoanCountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentLoanCount\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.CurrentLoanCountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CurrentPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.CurrentPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentPrincipal\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.CurrentPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CurrentBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.CurrentBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentBalance\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.CurrentBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public int DelinquentLoanCount {
+                get {
+                    try {
+                        return ((int)(this[this.tableMainPortFolio.DelinquentLoanCountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentLoanCount\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentLoanCountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentPrincipal\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentInterest\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentBalance\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PortfolioAtRiskPercentage_Overview {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.PortfolioAtRiskPercentage_OverviewColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PortfolioAtRiskPercentage_Overview\' in table \'MainPortFolio" +
+                                "\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.PortfolioAtRiskPercentage_OverviewColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DefaultRate {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DefaultRateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DefaultRate\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DefaultRateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal Arrears_Overview {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.Arrears_OverviewColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Arrears_Overview\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.Arrears_OverviewColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public int CurrentTotalLoans {
+                get {
+                    try {
+                        return ((int)(this[this.tableMainPortFolio.CurrentTotalLoansColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentTotalLoans\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.CurrentTotalLoansColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CurrentTotalPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.CurrentTotalPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentTotalPrincipal\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.CurrentTotalPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CurrentTotalInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.CurrentTotalInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentTotalInterest\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.CurrentTotalInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CurrentTotalForecastedInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.CurrentTotalForecastedInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentTotalForecastedInterest\' in table \'MainPortFolio\' is" +
+                                " DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.CurrentTotalForecastedInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CurrentTotalOutstandingPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.CurrentTotalOutstandingPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentTotalOutstandingPrincipal\' in table \'MainPortFolio\' " +
+                                "is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.CurrentTotalOutstandingPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CurrentTotalBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.CurrentTotalBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentTotalBalance\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.CurrentTotalBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CurrentPercentageBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.CurrentPercentageBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentPercentageBalance\' in table \'MainPortFolio\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.CurrentPercentageBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CurrentPercentageOfPortfolioPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.CurrentPercentageOfPortfolioPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentPercentageOfPortfolioPrincipal\' in table \'MainPortFo" +
+                                "lio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.CurrentPercentageOfPortfolioPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CurrentPercentageOfPortfolioInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.CurrentPercentageOfPortfolioInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentPercentageOfPortfolioInterest\' in table \'MainPortFol" +
+                                "io\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.CurrentPercentageOfPortfolioInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CurrentPercentageOfPortfolioForecastedInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.CurrentPercentageOfPortfolioForecastedInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentPercentageOfPortfolioForecastedInterest\' in table \'M" +
+                                "ainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.CurrentPercentageOfPortfolioForecastedInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PortfolioHealthRatio {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.PortfolioHealthRatioColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PortfolioHealthRatio\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.PortfolioHealthRatioColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentTotalPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentTotalPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentTotalPrincipal\' in table \'MainPortFolio\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentTotalPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentTotalInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentTotalInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentTotalInterest\' in table \'MainPortFolio\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentTotalInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public int DelinquentTotalLoans {
+                get {
+                    try {
+                        return ((int)(this[this.tableMainPortFolio.DelinquentTotalLoansColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentTotalLoans\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentTotalLoansColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public int TotalDelinquentLoans {
+                get {
+                    try {
+                        return ((int)(this[this.tableMainPortFolio.TotalDelinquentLoansColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDelinquentLoans\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.TotalDelinquentLoansColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentTotalOutstandingPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentTotalOutstandingPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentTotalOutstandingPrincipal\' in table \'MainPortFoli" +
+                                "o\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentTotalOutstandingPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalDelinquentPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.TotalDelinquentPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDelinquentPrincipal\' in table \'MainPortFolio\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.TotalDelinquentPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalDelinquentInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.TotalDelinquentInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDelinquentInterest\' in table \'MainPortFolio\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.TotalDelinquentInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentTotalBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentTotalBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentTotalBalance\' in table \'MainPortFolio\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentTotalBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentPercentageBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentPercentageBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentPercentageBalance\' in table \'MainPortFolio\' is DB" +
+                                "Null.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentPercentageBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentPercentageDelinquentPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentPercentageDelinquentPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentPercentageDelinquentPrincipal\' in table \'MainPort" +
+                                "Folio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentPercentageDelinquentPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentPercentageDelinquentInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentPercentageDelinquentInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentPercentageDelinquentInterest\' in table \'MainPortF" +
+                                "olio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentPercentageDelinquentInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentPercentageArrears {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentPercentageArrearsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentPercentageArrears\' in table \'MainPortFolio\' is DB" +
+                                "Null.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentPercentageArrearsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentTotalForecastedInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentTotalForecastedInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentTotalForecastedInterest\' in table \'MainPortFolio\'" +
+                                " is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentTotalForecastedInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentPercentageOfPortfolioPrincipal {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentPercentageOfPortfolioPrincipalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentPercentageOfPortfolioPrincipal\' in table \'MainPor" +
+                                "tFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentPercentageOfPortfolioPrincipalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentPercentageOfPortfolioInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentPercentageOfPortfolioInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentPercentageOfPortfolioInterest\' in table \'MainPort" +
+                                "Folio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentPercentageOfPortfolioInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DelinquentPercentageOfPortfolioForecastedInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.DelinquentPercentageOfPortfolioForecastedInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DelinquentPercentageOfPortfolioForecastedInterest\' in table" +
+                                " \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.DelinquentPercentageOfPortfolioForecastedInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalArrears {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.TotalArrearsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalArrears\' in table \'MainPortFolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.TotalArrearsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal PortfolioAtRiskPercentage {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMainPortFolio.PortfolioAtRiskPercentageColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PortfolioAtRiskPercentage\' in table \'MainPortFolio\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tableMainPortFolio.PortfolioAtRiskPercentageColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchNameNull() {
+                return this.IsNull(this.tableMainPortFolio.BranchNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchNameNull() {
+                this[this.tableMainPortFolio.BranchNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchCodeNull() {
+                return this.IsNull(this.tableMainPortFolio.BranchCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchCodeNull() {
+                this[this.tableMainPortFolio.BranchCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchAddressNull() {
+                return this.IsNull(this.tableMainPortFolio.BranchAddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchAddressNull() {
+                this[this.tableMainPortFolio.BranchAddressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchTelephoneNull() {
+                return this.IsNull(this.tableMainPortFolio.BranchTelephoneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchTelephoneNull() {
+                this[this.tableMainPortFolio.BranchTelephoneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeNameNull() {
+                return this.IsNull(this.tableMainPortFolio.HeadOfficeNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeNameNull() {
+                this[this.tableMainPortFolio.HeadOfficeNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeAddressNull() {
+                return this.IsNull(this.tableMainPortFolio.HeadOfficeAddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeAddressNull() {
+                this[this.tableMainPortFolio.HeadOfficeAddressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeTelephoneNull() {
+                return this.IsNull(this.tableMainPortFolio.HeadOfficeTelephoneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeTelephoneNull() {
+                this[this.tableMainPortFolio.HeadOfficeTelephoneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeEmailNull() {
+                return this.IsNull(this.tableMainPortFolio.HeadOfficeEmailColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeEmailNull() {
+                this[this.tableMainPortFolio.HeadOfficeEmailColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeWebSiteNull() {
+                return this.IsNull(this.tableMainPortFolio.HeadOfficeWebSiteColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeWebSiteNull() {
+                this[this.tableMainPortFolio.HeadOfficeWebSiteColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeInitialNull() {
+                return this.IsNull(this.tableMainPortFolio.HeadOfficeInitialColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeInitialNull() {
+                this[this.tableMainPortFolio.HeadOfficeInitialColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLogoNull() {
+                return this.IsNull(this.tableMainPortFolio.LogoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLogoNull() {
+                this[this.tableMainPortFolio.LogoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalLoansNull() {
+                return this.IsNull(this.tableMainPortFolio.TotalLoansColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalLoansNull() {
+                this[this.tableMainPortFolio.TotalLoansColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalPrincipalNull() {
+                return this.IsNull(this.tableMainPortFolio.TotalPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalPrincipalNull() {
+                this[this.tableMainPortFolio.TotalPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalInterestNull() {
+                return this.IsNull(this.tableMainPortFolio.TotalInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalInterestNull() {
+                this[this.tableMainPortFolio.TotalInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalForecastedInterestNull() {
+                return this.IsNull(this.tableMainPortFolio.TotalForecastedInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalForecastedInterestNull() {
+                this[this.tableMainPortFolio.TotalForecastedInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalBalanceNull() {
+                return this.IsNull(this.tableMainPortFolio.TotalBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalBalanceNull() {
+                this[this.tableMainPortFolio.TotalBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrentLoanCountNull() {
+                return this.IsNull(this.tableMainPortFolio.CurrentLoanCountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrentLoanCountNull() {
+                this[this.tableMainPortFolio.CurrentLoanCountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrentPrincipalNull() {
+                return this.IsNull(this.tableMainPortFolio.CurrentPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrentPrincipalNull() {
+                this[this.tableMainPortFolio.CurrentPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrentBalanceNull() {
+                return this.IsNull(this.tableMainPortFolio.CurrentBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrentBalanceNull() {
+                this[this.tableMainPortFolio.CurrentBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentLoanCountNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentLoanCountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentLoanCountNull() {
+                this[this.tableMainPortFolio.DelinquentLoanCountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentPrincipalNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentPrincipalNull() {
+                this[this.tableMainPortFolio.DelinquentPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentInterestNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentInterestNull() {
+                this[this.tableMainPortFolio.DelinquentInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentBalanceNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentBalanceNull() {
+                this[this.tableMainPortFolio.DelinquentBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPortfolioAtRiskPercentage_OverviewNull() {
+                return this.IsNull(this.tableMainPortFolio.PortfolioAtRiskPercentage_OverviewColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPortfolioAtRiskPercentage_OverviewNull() {
+                this[this.tableMainPortFolio.PortfolioAtRiskPercentage_OverviewColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDefaultRateNull() {
+                return this.IsNull(this.tableMainPortFolio.DefaultRateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDefaultRateNull() {
+                this[this.tableMainPortFolio.DefaultRateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsArrears_OverviewNull() {
+                return this.IsNull(this.tableMainPortFolio.Arrears_OverviewColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetArrears_OverviewNull() {
+                this[this.tableMainPortFolio.Arrears_OverviewColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrentTotalLoansNull() {
+                return this.IsNull(this.tableMainPortFolio.CurrentTotalLoansColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrentTotalLoansNull() {
+                this[this.tableMainPortFolio.CurrentTotalLoansColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrentTotalPrincipalNull() {
+                return this.IsNull(this.tableMainPortFolio.CurrentTotalPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrentTotalPrincipalNull() {
+                this[this.tableMainPortFolio.CurrentTotalPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrentTotalInterestNull() {
+                return this.IsNull(this.tableMainPortFolio.CurrentTotalInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrentTotalInterestNull() {
+                this[this.tableMainPortFolio.CurrentTotalInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrentTotalForecastedInterestNull() {
+                return this.IsNull(this.tableMainPortFolio.CurrentTotalForecastedInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrentTotalForecastedInterestNull() {
+                this[this.tableMainPortFolio.CurrentTotalForecastedInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrentTotalOutstandingPrincipalNull() {
+                return this.IsNull(this.tableMainPortFolio.CurrentTotalOutstandingPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrentTotalOutstandingPrincipalNull() {
+                this[this.tableMainPortFolio.CurrentTotalOutstandingPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrentTotalBalanceNull() {
+                return this.IsNull(this.tableMainPortFolio.CurrentTotalBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrentTotalBalanceNull() {
+                this[this.tableMainPortFolio.CurrentTotalBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrentPercentageBalanceNull() {
+                return this.IsNull(this.tableMainPortFolio.CurrentPercentageBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrentPercentageBalanceNull() {
+                this[this.tableMainPortFolio.CurrentPercentageBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrentPercentageOfPortfolioPrincipalNull() {
+                return this.IsNull(this.tableMainPortFolio.CurrentPercentageOfPortfolioPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrentPercentageOfPortfolioPrincipalNull() {
+                this[this.tableMainPortFolio.CurrentPercentageOfPortfolioPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrentPercentageOfPortfolioInterestNull() {
+                return this.IsNull(this.tableMainPortFolio.CurrentPercentageOfPortfolioInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrentPercentageOfPortfolioInterestNull() {
+                this[this.tableMainPortFolio.CurrentPercentageOfPortfolioInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrentPercentageOfPortfolioForecastedInterestNull() {
+                return this.IsNull(this.tableMainPortFolio.CurrentPercentageOfPortfolioForecastedInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrentPercentageOfPortfolioForecastedInterestNull() {
+                this[this.tableMainPortFolio.CurrentPercentageOfPortfolioForecastedInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPortfolioHealthRatioNull() {
+                return this.IsNull(this.tableMainPortFolio.PortfolioHealthRatioColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPortfolioHealthRatioNull() {
+                this[this.tableMainPortFolio.PortfolioHealthRatioColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentTotalPrincipalNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentTotalPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentTotalPrincipalNull() {
+                this[this.tableMainPortFolio.DelinquentTotalPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentTotalInterestNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentTotalInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentTotalInterestNull() {
+                this[this.tableMainPortFolio.DelinquentTotalInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentTotalLoansNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentTotalLoansColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentTotalLoansNull() {
+                this[this.tableMainPortFolio.DelinquentTotalLoansColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalDelinquentLoansNull() {
+                return this.IsNull(this.tableMainPortFolio.TotalDelinquentLoansColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalDelinquentLoansNull() {
+                this[this.tableMainPortFolio.TotalDelinquentLoansColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentTotalOutstandingPrincipalNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentTotalOutstandingPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentTotalOutstandingPrincipalNull() {
+                this[this.tableMainPortFolio.DelinquentTotalOutstandingPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalDelinquentPrincipalNull() {
+                return this.IsNull(this.tableMainPortFolio.TotalDelinquentPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalDelinquentPrincipalNull() {
+                this[this.tableMainPortFolio.TotalDelinquentPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalDelinquentInterestNull() {
+                return this.IsNull(this.tableMainPortFolio.TotalDelinquentInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalDelinquentInterestNull() {
+                this[this.tableMainPortFolio.TotalDelinquentInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentTotalBalanceNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentTotalBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentTotalBalanceNull() {
+                this[this.tableMainPortFolio.DelinquentTotalBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentPercentageBalanceNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentPercentageBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentPercentageBalanceNull() {
+                this[this.tableMainPortFolio.DelinquentPercentageBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentPercentageDelinquentPrincipalNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentPercentageDelinquentPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentPercentageDelinquentPrincipalNull() {
+                this[this.tableMainPortFolio.DelinquentPercentageDelinquentPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentPercentageDelinquentInterestNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentPercentageDelinquentInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentPercentageDelinquentInterestNull() {
+                this[this.tableMainPortFolio.DelinquentPercentageDelinquentInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentPercentageArrearsNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentPercentageArrearsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentPercentageArrearsNull() {
+                this[this.tableMainPortFolio.DelinquentPercentageArrearsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentTotalForecastedInterestNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentTotalForecastedInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentTotalForecastedInterestNull() {
+                this[this.tableMainPortFolio.DelinquentTotalForecastedInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentPercentageOfPortfolioPrincipalNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentPercentageOfPortfolioPrincipalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentPercentageOfPortfolioPrincipalNull() {
+                this[this.tableMainPortFolio.DelinquentPercentageOfPortfolioPrincipalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentPercentageOfPortfolioInterestNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentPercentageOfPortfolioInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentPercentageOfPortfolioInterestNull() {
+                this[this.tableMainPortFolio.DelinquentPercentageOfPortfolioInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDelinquentPercentageOfPortfolioForecastedInterestNull() {
+                return this.IsNull(this.tableMainPortFolio.DelinquentPercentageOfPortfolioForecastedInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDelinquentPercentageOfPortfolioForecastedInterestNull() {
+                this[this.tableMainPortFolio.DelinquentPercentageOfPortfolioForecastedInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalArrearsNull() {
+                return this.IsNull(this.tableMainPortFolio.TotalArrearsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalArrearsNull() {
+                this[this.tableMainPortFolio.TotalArrearsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPortfolioAtRiskPercentageNull() {
+                return this.IsNull(this.tableMainPortFolio.PortfolioAtRiskPercentageColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPortfolioAtRiskPercentageNull() {
+                this[this.tableMainPortFolio.PortfolioAtRiskPercentageColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -4077,22 +9840,124 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public class PortfolioSummaryRowChangeEvent : global::System.EventArgs {
+        public class DeliquentLoanSummaryRowChangeEvent : global::System.EventArgs {
             
-            private PortfolioSummaryRow eventRow;
+            private DeliquentLoanSummaryRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public PortfolioSummaryRowChangeEvent(PortfolioSummaryRow row, global::System.Data.DataRowAction action) {
+            public DeliquentLoanSummaryRowChangeEvent(DeliquentLoanSummaryRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public PortfolioSummaryRow Row {
+            public DeliquentLoanSummaryRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public class LoanPortfolioRowChangeEvent : global::System.EventArgs {
+            
+            private LoanPortfolioRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public LoanPortfolioRowChangeEvent(LoanPortfolioRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public LoanPortfolioRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public class CurrentLoanSummaryRowChangeEvent : global::System.EventArgs {
+            
+            private CurrentLoanSummaryRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public CurrentLoanSummaryRowChangeEvent(CurrentLoanSummaryRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public CurrentLoanSummaryRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public class MainPortFolioRowChangeEvent : global::System.EventArgs {
+            
+            private MainPortFolioRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public MainPortFolioRowChangeEvent(MainPortFolioRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public MainPortFolioRow Row {
                 get {
                     return this.eventRow;
                 }

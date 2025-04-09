@@ -250,6 +250,7 @@
     <Compile Include="Message\Messaging.cs" />
     <Compile Include="PropertiesBuilder\PropertyBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportDataSetDto\LoanPortfolioAnalysis.cs" />
     <Compile Include="ReportDataSetDto\TransactionReportDS.cs" />
     <Compile Include="Entity\ThirdPartyInstitution.cs" />
     <Compile Include="UserManagement\Request\UserAllowedIP.cs" />

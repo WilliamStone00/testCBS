@@ -461,6 +461,24 @@
       <DependentUpon>LiaisonLedger.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\PortFolio\DelinquentLoansRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DelinquentLoansRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\PortFolio\MainPortFolioRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MainPortFolioRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\PortFolio\DeliquencyLoanAgingPortFolioRPTSub.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeliquencyLoanAgingPortFolioRPTSub.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Members\MembersListing\Membersrpt.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2558,6 +2576,7 @@
     <Content Include="Scripts\Js\Crud\LoanApplicationHistory\LoanApplicationQuery.js" />
     <Content Include="Scripts\Js\Crud\LoanRepaymentBackOffice\LedgerLoanRepayment.js" />
     <Content Include="Scripts\Js\Crud\LoanRepaymentBackOffice\LoanRepaymentBackOffice.js" />
+    <Content Include="Scripts\Js\Crud\Loan\Portfolio\loanPortfolioReport.js" />
     <Content Include="Scripts\Js\Crud\Loan\LoanTransactions\LoanQuery.js" />
     <Content Include="Scripts\Js\Crud\NoneCashMobileMoney\Approvals.js" />
     <Content Include="Scripts\Js\Crud\NoneCashMobileMoney\NoneCashMobileMoneyOperations.js" />
@@ -3540,6 +3559,7 @@
     <Content Include="Views\Shared\CustomError.cshtml" />
     <Content Include="Views\Shared\_MenuTree.cshtml" />
     <Content Include="Views\Shared\_MenuX.cshtml" />
+    <Content Include="Views\Loan\LoanPortfolioReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -3637,6 +3657,18 @@
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\TrialBalance8Column.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TrialBalance8Column.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\PortFolio\DelinquentLoansRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DelinquentLoansRPT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\PortFolio\MainPortFolioRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>MainPortFolioRPT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\PortFolio\DeliquencyLoanAgingPortFolioRPTSub.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DeliquencyLoanAgingPortFolioRPTSub.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Members\MembersListing\Membersrpt.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
