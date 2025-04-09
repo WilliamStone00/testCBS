@@ -156,6 +156,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string headOfficeTelePhone { get; set; }
         public string webSite { get; set; }
      
+        
 
         public List<BalanceSheetInfo> ConvertToBalanceSheetInfo(string PrintersName, string Date, string categoryA, string categoryB)
         {
