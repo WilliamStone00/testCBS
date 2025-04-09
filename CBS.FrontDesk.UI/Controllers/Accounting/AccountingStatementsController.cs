@@ -139,11 +139,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private IEnumerable<StringValues> GenerateReportType()
         {
             List<StringValues> stringValues = new List<StringValues>();
-            stringValues.Add(new StringValues("GLD", "General Ledger"));
-            stringValues.Add(new StringValues("GL", "Detail General Ledger"));
+            //stringValues.Add(new StringValues("GLD", "General Ledger"));
+            stringValues.Add(new StringValues("GL", "General Ledger"));
             stringValues.Add(new StringValues("JE", "Journal Entries"));
-            stringValues.Add(new StringValues("LL", "Liaison Ledger"));
-            stringValues.Add(new StringValues("LLA", "Liaison Ledger An Account"));
+            //stringValues.Add(new StringValues("LL", "Liaison Ledger"));
+            //stringValues.Add(new StringValues("LLA", "Liaison Ledger An Account"));
             stringValues.Add(new StringValues("TB6", "Trial Balance 6C"));
             stringValues.Add(new StringValues("TB4", "Trial Balance 4C"));
             stringValues.Add(new StringValues("BS", "Balance Sheet Statement"));
