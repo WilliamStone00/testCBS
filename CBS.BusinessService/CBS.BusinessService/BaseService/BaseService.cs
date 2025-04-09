@@ -137,6 +137,41 @@ namespace BusinessServices
             }
             return true;
         }
+        public static DataTable ConvertToDataTable<T>(T obj, string tableName)
+        {
+            var table = new DataTable(tableName);
+            var props = typeof(T).GetProperties();
+
+            foreach (var prop in props)
+                table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+
+            var row = table.NewRow();
+            foreach (var prop in props)
+                row[prop.Name] = prop.GetValue(obj) ?? DBNull.Value;
+
+            table.Rows.Add(row);
+            return table;
+        }
+
+        public DataTable ConvertToDataTable<T>(List<T> list, string tableName)
+        {
+            var table = new DataTable(tableName);
+            var props = typeof(T).GetProperties();
+
+            foreach (var prop in props)
+                table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+
+            foreach (var item in list)
+            {
+                var row = table.NewRow();
+                foreach (var prop in props)
+                    row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
+                table.Rows.Add(row);
+            }
+
+            return table;
+        }
+
         public Guid ConvertStringToGuid(string input)
         {
             // Check if the input string is null or empty
