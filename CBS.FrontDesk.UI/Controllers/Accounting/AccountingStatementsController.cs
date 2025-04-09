@@ -349,7 +349,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.TempData + "-" + item.AccountName });
 
                 }
-
+            list.Add(new System.Web.WebPages.Html.SelectListItem { Text = "XXXXXX", Value = "[x]-ALL Account" });
             return list;
         }
 

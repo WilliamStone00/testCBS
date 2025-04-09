@@ -249,7 +249,8 @@ namespace CBS.FrontDesk.UI.Controllers
                    
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
-                        rd.SetDataSource(accountingGeneralLedgerDetails);
+                        var listData = accountingGeneralLedgerDetails.ConvertToGeneralLedgerDto(accountingGeneralLedgerDetails);
+                        rd.SetDataSource(listData);
 
                     }
 
