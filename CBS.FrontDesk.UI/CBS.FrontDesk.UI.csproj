@@ -679,6 +679,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet\Loan\LoanDeliquecncyDetailDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoanDeliquecncyDetailDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet\Transaction\MembersDS.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2483,6 +2488,17 @@
     </Content>
     <Content Include="DataSet\Transaction\MembersDS.xsc">
       <DependentUpon>MembersDS.xsd</DependentUpon>
+    </Content>
+    <Content Include="DataSet\Loan\LoanDeliquecncyDetailDataSet.xsc">
+      <DependentUpon>LoanDeliquecncyDetailDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet\Loan\LoanDeliquecncyDetailDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LoanDeliquecncyDetailDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="DataSet\Loan\LoanDeliquecncyDetailDataSet.xss">
+      <DependentUpon>LoanDeliquecncyDetailDataSet.xsd</DependentUpon>
     </Content>
     <None Include="DataSet\Transaction\MembersDS.xsd">
       <SubType>Designer</SubType>
