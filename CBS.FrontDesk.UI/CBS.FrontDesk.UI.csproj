@@ -2496,7 +2496,7 @@
     <None Include="DataSet\Accounting\AccountingDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>AccountingDataSet.Designer.cs</LastGenOutput>
+      <LastGenOutput>AccountingDataSet1.Designer.cs</LastGenOutput>
     </None>
     <Content Include="DataSet\Accounting\AccountingDataSet.xss">
       <DependentUpon>AccountingDataSet.xsd</DependentUpon>

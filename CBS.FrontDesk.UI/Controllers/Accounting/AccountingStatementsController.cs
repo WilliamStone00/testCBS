@@ -146,8 +146,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             stringValues.Add(new StringValues("LLA", "Liaison Ledger An Account"));
             stringValues.Add(new StringValues("TB6", "Trial Balance 6C"));
             stringValues.Add(new StringValues("TB4", "Trial Balance 4C"));
-            stringValues.Add(new StringValues("BS", "Balance Sheet"));
-            stringValues.Add(new StringValues("PANDL", "Profit and loss"));
+            stringValues.Add(new StringValues("BS", "Balance Sheet Statement"));
+            stringValues.Add(new StringValues("PANDL", "Income and Expense Statement"));
             return stringValues;
         }
         [HttpGet]
@@ -349,7 +349,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.TempData + "-" + item.AccountName });
 
                 }
-
+            list.Add(new System.Web.WebPages.Html.SelectListItem { Text = "XXXXXX", Value = "[x]-ALL Account" });
             return list;
         }
 

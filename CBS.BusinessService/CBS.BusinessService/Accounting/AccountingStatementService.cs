@@ -75,7 +75,7 @@ namespace CBS.BusinessService.Accounting
          
                 return modelObject;
             }
-            catch (Exception ex)
+           catch (Exception ex)
             {
 
                 throw(ex);

@@ -1528,7 +1528,7 @@ namespace CBS.BusinessService
                 // Make an API call to create an individual profile
 
 
-                return await _accountingApiCallerHelper.PostIncomeAndExpenseEntriesAsync(APICallHelper.AccountingEntry_BalanceSheetColumn, model);
+                return await _accountingApiCallerHelper.PostIncomeAndExpenseEntriesAsync(APICallHelper.AccountingEntry_IncomeStatement, model);
 
             }
             catch (Exception ex)

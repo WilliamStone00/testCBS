@@ -1977,6 +1977,24 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
             
             private global::System.Data.DataColumn columnBranchCode;
             
+            private global::System.Data.DataColumn columnReference;
+            
+            private global::System.Data.DataColumn columnRepresentative;
+            
+            private global::System.Data.DataColumn columnToDate;
+            
+            private global::System.Data.DataColumn columnCurrency;
+            
+            private global::System.Data.DataColumn columnDescription;
+            
+            private global::System.Data.DataColumn columnDebit;
+            
+            private global::System.Data.DataColumn columnCredit;
+            
+            private global::System.Data.DataColumn columnBalance;
+            
+            private global::System.Data.DataColumn columnEntryDate;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public GeneralLedgerDataTable() {
@@ -2172,6 +2190,78 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ReferenceColumn {
+                get {
+                    return this.columnReference;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn RepresentativeColumn {
+                get {
+                    return this.columnRepresentative;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ToDateColumn {
+                get {
+                    return this.columnToDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrencyColumn {
+                get {
+                    return this.columnCurrency;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DescriptionColumn {
+                get {
+                    return this.columnDescription;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DebitColumn {
+                get {
+                    return this.columnDebit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CreditColumn {
+                get {
+                    return this.columnCredit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BalanceColumn {
+                get {
+                    return this.columnBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn EntryDateColumn {
+                get {
+                    return this.columnEntryDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2227,7 +2317,16 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
                         string HeadOfficeTelePhone, 
                         string LogoPath, 
                         string PrintersName, 
-                        string BranchCode) {
+                        string BranchCode, 
+                        string Reference, 
+                        string Representative, 
+                        string ToDate, 
+                        string Currency, 
+                        string Description, 
+                        string Debit, 
+                        string Credit, 
+                        string Balance, 
+                        string EntryDate) {
                 GeneralLedgerRow rowGeneralLedgerRow = ((GeneralLedgerRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         EntityType,
@@ -2249,7 +2348,16 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
                         HeadOfficeTelePhone,
                         LogoPath,
                         PrintersName,
-                        BranchCode};
+                        BranchCode,
+                        Reference,
+                        Representative,
+                        ToDate,
+                        Currency,
+                        Description,
+                        Debit,
+                        Credit,
+                        Balance,
+                        EntryDate};
                 rowGeneralLedgerRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowGeneralLedgerRow);
                 return rowGeneralLedgerRow;
@@ -2292,6 +2400,15 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
                 this.columnLogoPath = base.Columns["LogoPath"];
                 this.columnPrintersName = base.Columns["PrintersName"];
                 this.columnBranchCode = base.Columns["BranchCode"];
+                this.columnReference = base.Columns["Reference"];
+                this.columnRepresentative = base.Columns["Representative"];
+                this.columnToDate = base.Columns["ToDate"];
+                this.columnCurrency = base.Columns["Currency"];
+                this.columnDescription = base.Columns["Description"];
+                this.columnDebit = base.Columns["Debit"];
+                this.columnCredit = base.Columns["Credit"];
+                this.columnBalance = base.Columns["Balance"];
+                this.columnEntryDate = base.Columns["EntryDate"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2337,6 +2454,24 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
                 base.Columns.Add(this.columnPrintersName);
                 this.columnBranchCode = new global::System.Data.DataColumn("BranchCode", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBranchCode);
+                this.columnReference = new global::System.Data.DataColumn("Reference", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReference);
+                this.columnRepresentative = new global::System.Data.DataColumn("Representative", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRepresentative);
+                this.columnToDate = new global::System.Data.DataColumn("ToDate", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnToDate);
+                this.columnCurrency = new global::System.Data.DataColumn("Currency", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrency);
+                this.columnDescription = new global::System.Data.DataColumn("Description", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDescription);
+                this.columnDebit = new global::System.Data.DataColumn("Debit", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDebit);
+                this.columnCredit = new global::System.Data.DataColumn("Credit", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCredit);
+                this.columnBalance = new global::System.Data.DataColumn("Balance", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBalance);
+                this.columnEntryDate = new global::System.Data.DataColumn("EntryDate", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEntryDate);
                 this.columnFromDate.Caption = "Date";
                 this.columnBeginningBalance.Caption = "CurrentBalance";
             }
@@ -2527,6 +2662,8 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
             private global::System.Data.DataColumn columnNumberCredit;
             
             private global::System.Data.DataColumn columnNumberEntries;
+            
+            private global::System.Data.DataColumn columnEntreyDate;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
@@ -2787,6 +2924,14 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn EntreyDateColumn {
+                get {
+                    return this.columnEntreyDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2850,7 +2995,8 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
                         string SumCredit, 
                         string NumberDebit, 
                         string NumberCredit, 
-                        string NumberEntries) {
+                        string NumberEntries, 
+                        string EntreyDate) {
                 JournalEntriesRow rowJournalEntriesRow = ((JournalEntriesRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         EntityType,
@@ -2880,7 +3026,8 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
                         SumCredit,
                         NumberDebit,
                         NumberCredit,
-                        NumberEntries};
+                        NumberEntries,
+                        EntreyDate};
                 rowJournalEntriesRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowJournalEntriesRow);
                 return rowJournalEntriesRow;
@@ -2931,6 +3078,7 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
                 this.columnNumberDebit = base.Columns["NumberDebit"];
                 this.columnNumberCredit = base.Columns["NumberCredit"];
                 this.columnNumberEntries = base.Columns["NumberEntries"];
+                this.columnEntreyDate = base.Columns["EntreyDate"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2992,6 +3140,8 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
                 base.Columns.Add(this.columnNumberCredit);
                 this.columnNumberEntries = new global::System.Data.DataColumn("NumberEntries", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNumberEntries);
+                this.columnEntreyDate = new global::System.Data.DataColumn("EntreyDate", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEntreyDate);
                 this.columnEntryDate.Caption = "Date";
                 this.columnAccountName.Caption = "CurrentBalance";
                 this.columnDebit.Caption = "DebitBalance";
@@ -7630,6 +7780,150 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Reference {
+                get {
+                    try {
+                        return ((string)(this[this.tableGeneralLedger.ReferenceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Reference\' in table \'GeneralLedger\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableGeneralLedger.ReferenceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Representative {
+                get {
+                    try {
+                        return ((string)(this[this.tableGeneralLedger.RepresentativeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Representative\' in table \'GeneralLedger\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableGeneralLedger.RepresentativeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ToDate {
+                get {
+                    try {
+                        return ((string)(this[this.tableGeneralLedger.ToDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ToDate\' in table \'GeneralLedger\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableGeneralLedger.ToDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Currency {
+                get {
+                    try {
+                        return ((string)(this[this.tableGeneralLedger.CurrencyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Currency\' in table \'GeneralLedger\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableGeneralLedger.CurrencyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Description {
+                get {
+                    try {
+                        return ((string)(this[this.tableGeneralLedger.DescriptionColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Description\' in table \'GeneralLedger\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableGeneralLedger.DescriptionColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Debit {
+                get {
+                    try {
+                        return ((string)(this[this.tableGeneralLedger.DebitColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Debit\' in table \'GeneralLedger\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableGeneralLedger.DebitColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Credit {
+                get {
+                    try {
+                        return ((string)(this[this.tableGeneralLedger.CreditColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Credit\' in table \'GeneralLedger\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableGeneralLedger.CreditColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Balance {
+                get {
+                    try {
+                        return ((string)(this[this.tableGeneralLedger.BalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Balance\' in table \'GeneralLedger\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableGeneralLedger.BalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string EntryDate {
+                get {
+                    try {
+                        return ((string)(this[this.tableGeneralLedger.EntryDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EntryDate\' in table \'GeneralLedger\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableGeneralLedger.EntryDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsEntityTypeNull() {
                 return this.IsNull(this.tableGeneralLedger.EntityTypeColumn);
             }
@@ -7866,6 +8160,114 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetBranchCodeNull() {
                 this[this.tableGeneralLedger.BranchCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsReferenceNull() {
+                return this.IsNull(this.tableGeneralLedger.ReferenceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetReferenceNull() {
+                this[this.tableGeneralLedger.ReferenceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsRepresentativeNull() {
+                return this.IsNull(this.tableGeneralLedger.RepresentativeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetRepresentativeNull() {
+                this[this.tableGeneralLedger.RepresentativeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsToDateNull() {
+                return this.IsNull(this.tableGeneralLedger.ToDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetToDateNull() {
+                this[this.tableGeneralLedger.ToDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrencyNull() {
+                return this.IsNull(this.tableGeneralLedger.CurrencyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrencyNull() {
+                this[this.tableGeneralLedger.CurrencyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDescriptionNull() {
+                return this.IsNull(this.tableGeneralLedger.DescriptionColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDescriptionNull() {
+                this[this.tableGeneralLedger.DescriptionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDebitNull() {
+                return this.IsNull(this.tableGeneralLedger.DebitColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDebitNull() {
+                this[this.tableGeneralLedger.DebitColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCreditNull() {
+                return this.IsNull(this.tableGeneralLedger.CreditColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCreditNull() {
+                this[this.tableGeneralLedger.CreditColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBalanceNull() {
+                return this.IsNull(this.tableGeneralLedger.BalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBalanceNull() {
+                this[this.tableGeneralLedger.BalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsEntryDateNull() {
+                return this.IsNull(this.tableGeneralLedger.EntryDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetEntryDateNull() {
+                this[this.tableGeneralLedger.EntryDateColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -8334,6 +8736,22 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string EntreyDate {
+                get {
+                    try {
+                        return ((string)(this[this.tableJournalEntries.EntreyDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EntreyDate\' in table \'JournalEntries\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableJournalEntries.EntreyDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsEntityTypeNull() {
                 return this.IsNull(this.tableJournalEntries.EntityTypeColumn);
             }
@@ -8666,6 +9084,18 @@ namespace CBS.FrontDesk.UI.DataSet.Accounting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetNumberEntriesNull() {
                 this[this.tableJournalEntries.NumberEntriesColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsEntreyDateNull() {
+                return this.IsNull(this.tableJournalEntries.EntreyDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetEntreyDateNull() {
+                this[this.tableJournalEntries.EntreyDateColumn] = global::System.Convert.DBNull;
             }
         }
         
