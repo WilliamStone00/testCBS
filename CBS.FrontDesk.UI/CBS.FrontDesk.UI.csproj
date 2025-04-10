@@ -467,16 +467,22 @@
       <DependentUpon>DelinquentLoansRPT.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\PortFolio\Flat_AgeAndLoanTypeSubReport.cs">
+      <DependentUpon>Flat_AgeAndLoanTypeSubReport.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Loan\PortFolio\MainPortFolioRPT.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MainPortFolioRPT.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Reporting\Loan\PortFolio\DeliquencyLoanAgingPortFolioRPTSub.cs">
+    <Compile Include="AppFiles\Reporting\Loan\PortFolio\Flat_AgeAndGenderSubReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DeliquencyLoanAgingPortFolioRPTSub.rpt</DependentUpon>
+      <DependentUpon>Flat_AgeAndGenderSubReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Members\MembersListing\Membersrpt.cs">
@@ -719,6 +725,7 @@
     </Compile>
     <Compile Include="Filter\AuthorizeAttributeEASIMS.cs" />
     <Compile Include="Filter\GlobalExceptionFilter.cs" />
+    <Compile Include="Filter\SessionLockCheckAttribute.cs" />
     <Compile Include="Filter\UserAuditFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -3560,6 +3567,7 @@
     <Content Include="Views\Shared\_MenuTree.cshtml" />
     <Content Include="Views\Shared\_MenuX.cshtml" />
     <Content Include="Views\Loan\LoanPortfolioReport.cshtml" />
+    <Content Include="Views\Session\Locked.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -3571,7 +3579,6 @@
     <Folder Include="Views\DocumentPack\" />
     <Folder Include="Views\Language\" />
     <Folder Include="Views\Reports\" />
-    <Folder Include="Views\Session\" />
     <Folder Include="Views\TwoStepaccountverification\" />
   </ItemGroup>
   <ItemGroup>
@@ -3662,13 +3669,17 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DelinquentLoansRPT.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\PortFolio\Flat_AgeAndLoanTypeSubReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Flat_AgeAndLoanTypeSubReport.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Loan\PortFolio\MainPortFolioRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>MainPortFolioRPT.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Reporting\Loan\PortFolio\DeliquencyLoanAgingPortFolioRPTSub.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\PortFolio\Flat_AgeAndGenderSubReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>DeliquencyLoanAgingPortFolioRPTSub.cs</LastGenOutput>
+      <LastGenOutput>Flat_AgeAndGenderSubReport.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Members\MembersListing\Membersrpt.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

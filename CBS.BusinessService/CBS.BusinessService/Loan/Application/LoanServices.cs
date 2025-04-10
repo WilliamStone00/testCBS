@@ -18,6 +18,9 @@ using System.Web.Mvc;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.ReportDataSetDto.LoanPortFolioDataSet;
+using CBS.BusinessService.LoanportFolioFlattener;
+using CBS.NLoan.Data.Dto.DataSetLoanPortfolio;
 
 namespace CBS.BusinessService
 {
@@ -568,7 +571,7 @@ namespace CBS.BusinessService
 
         }
 
-        public async Task<LoanPortfolioAnalysis> GetLoanPortfolioAnalysisAsync(GenerateLoanPortfolioReportCommand reportCommand)
+        public async Task<LoanDelinquencyReportResultRPT> GetLoanPortfolioAnalysisAsync(GenerateLoanPortfolioReportCommand reportCommand)
         {
             //GenerateLoanPortfolioReportCommand
             try
@@ -590,13 +593,13 @@ namespace CBS.BusinessService
 
                 var queryString = ToQueryString(reportCommand);
                 var fullUrl = $"{APICallHelper.GetLoanPortFolio}?{queryString}";
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<LoanPortfolioAnalysis>>(fullUrl);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<LoanDelinquencyReportResult>>(fullUrl);
 
                 if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
                 {
                     var loan = couApiResponse.ApiResponseData.Data;
                     var branches = await _branchServices.GetBranches();
-                    var mappingobject = MapToLoanPortfolioAnalysis(loan, branches.FirstOrDefault(x=>x.Id==reportCommand.BranchId));
+                    var mappingobject = LoanDelinquencyFlattener.FlattenAll(loan, branches.FirstOrDefault(x=>x.Id==reportCommand.BranchId));
                     return mappingobject;
                 }
                 return null;

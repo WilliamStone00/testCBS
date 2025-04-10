@@ -258,6 +258,7 @@
     <Compile Include="CorrespondingBankBranchServices\BankingZoneServices.cs" />
     <Compile Include="CustomerManagement\CMoneyMemberServices.cs" />
     <Compile Include="Loan\Config\LoanProductCategoryServices.cs" />
+    <Compile Include="Loan\LoanportFolioFlattener\LoanDelinquencyFlattener.cs" />
     <Compile Include="PaymentReceiptMapping.cs" />
     <Compile Include="Config\EconomicActivityServices.cs" />
     <Compile Include="Config\CustomerCategoryServices.cs" />

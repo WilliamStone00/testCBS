@@ -147,6 +147,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetUserSessions = "/api/UserSession/GetUser/Sessions/{0}";
         public static string GetUserSessionByUserNameAndCode = "/api/Session/by-session-code";
         public static string InvalidateAllActivetUsers = "/api/Session/invalidate-by-recovery-code";
+        public static string GetCurrentIdletimeByBranch = "/api/v1/idletime/by-branch/{0}";
         public static string LogoutuserSessions = "/api/Session/logout";
         public static string GenerateRecoveryCode = "/api/Session/generate-recovery-code";
 

@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.Helper;
@@ -22,29 +23,7 @@ namespace CBS.BusinessService.Session
             _identityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
 
         }
-        //public UserSessionDto GetUserCurrentsession()
-        //{
-        //    try
-        //    {
-        //        string sessionCode = GetSessionCode();
-        //        string username = GetUserNAme();
-
-        //        // Construct query parameters
-        //        var queryParams = $"?SessionCode={HttpUtility.UrlEncode(sessionCode)}&Username={HttpUtility.UrlEncode(username)}";
-
-        //        // Final URL to call (assumes APICallHelper returns the relative path)
-        //        var fullUrl = $"{APICallHelper.GetUserSessionByUserNameAndCode}{queryParams}";
-
-        //        // Use the configured GET method on _identityServerBaseUrl
-        //        var response =  _identityServerBaseUrl.GetAllowAnonymous<ResponseObject<UserSessionDto>>(fullUrl);
-
-        //        return response?.ApiResponseData?.Data;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //}
+       
         public UserSessionDto GetUserCurrentsession(string sessionCode, string username)
         {
             try
@@ -65,6 +44,28 @@ namespace CBS.BusinessService.Session
                 throw;
             }
         }
+        //GetCurrentIdletimeByBranch
+        public async Task<IdleTime> GetCurrentIdletimeByBranch()
+        {
+            try
+            {
+                var branchId = GetBranchID(); // You may want to log this or validate
+                var response = await _identityServerBaseUrl
+                    .GetAsync<ServiceResponse<IdleTime>>(string.Format(APICallHelper.GetCurrentIdletimeByBranch, branchId));
+                if (response.ApiResponseData != null)
+                {
+                    return response.ApiResponseData.Data;
+                }
+                return new IdleTime();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+   
+
         public async Task<ExecutionMessages> InvalidateAllActivetUsers(SessionAuth sessionAuth)
         {
             try

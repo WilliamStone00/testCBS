@@ -385,7 +385,7 @@ namespace CBS.BusinessService.Accounts
                 //LoanRepayment
                 else if (bulkDeposits.FirstOrDefault().OperationType == "CashIn")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Deposit" };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Deposit", CustomerAlphaNumber=bulkDeposits.FirstOrDefault().CustomerAlphaNumber };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {

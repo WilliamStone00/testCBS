@@ -187,11 +187,10 @@ function collectDeposits() {
             deposit.CustomerId = $('#customerId').val();
             deposit.LoanApplicationId = $(this).find('.loan-application-id').val();
             deposit.Period = $(this).find('.period').val();
-            deposits.push(deposit);
             deposits.PaymentMethod = 'Cash';
             deposits.PaymentChannel = 'Web_Portal';
-
-
+            deposits.CustomerAlphaNumber = $('#CustomerAlphaNumber').val();
+            deposits.push(deposit);
         }
     });
 
@@ -307,6 +306,7 @@ function failureCallback(response) {
 }
 
 function PostCashIn() {
+    if (!validateCustomerAlphaNumber()) return;
     if (!checkTotalNotes()) return false;
 
     var totalNotes = parseFloat($("#totalNoteAmount").val());
@@ -327,6 +327,26 @@ function PostCashIn() {
     message += "Are you sure you want to perform a cash-in of " + totalInfo.total + " to the selected account numbers?\n";
     message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
     confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits, 'CashIn');
+}
+function validateCustomerAlphaNumber() {
+    var alphaNumber = $("#CustomerAlphaNumber").val()?.trim();
+
+    if (!alphaNumber) {
+        appalert("Member custome  account number is required.", 3, 1);
+        return false;
+    }
+
+    if (!/^\d+$/.test(alphaNumber)) {
+        appalert("Member custome  account number must be a valid integer.", 3, 1);
+        return false;
+    }
+
+    if (alphaNumber.length > 7) {
+        appalert("Member custome  account number must not exceed 7 digits.", 3, 1);
+        return false;
+    }
+
+    return true;
 }
 
 function PostFEE() {

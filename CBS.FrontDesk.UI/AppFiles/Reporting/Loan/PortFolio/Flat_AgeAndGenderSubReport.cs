@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class MainPortFolioRPT : ReportClass {
+    public class Flat_AgeAndGenderSubReport : ReportClass {
         
-        public MainPortFolioRPT() {
+        public Flat_AgeAndGenderSubReport() {
         }
         
         public override string ResourceName {
             get {
-                return "MainPortFolioRPT.rpt";
+                return "Flat_AgeAndGenderSubReport.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio.MainPortFolioRPT.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio.Flat_AgeAndGenderSubReport.rpt" +
+                    "";
             }
             set {
                 // Do nothing
@@ -66,7 +67,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageHeaderSection2 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -74,7 +75,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageHeaderSection3 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,81 +83,17 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageHeaderSection1 {
-            get {
-                return this.ReportDefinition.Sections[4];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
-            get {
-                return this.ReportDefinition.Sections[5];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
-            get {
-                return this.ReportDefinition.Sections[6];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
-                return this.ReportDefinition.Sections[7];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_ReportTitle {
-            get {
-                return this.DataDefinition.ParameterFields[0];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_DateFrom {
-            get {
-                return this.DataDefinition.ParameterFields[1];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_DateTo {
-            get {
-                return this.DataDefinition.ParameterFields[2];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_BranchStatus {
-            get {
-                return this.DataDefinition.ParameterFields[3];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_PrintedBy {
-            get {
-                return this.DataDefinition.ParameterFields[4];
+                return this.ReportDefinition.Sections[4];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedMainPortFolioRPT : Component, ICachedReport {
+    public class CachedFlat_AgeAndGenderSubReport : Component, ICachedReport {
         
-        public CachedMainPortFolioRPT() {
+        public CachedFlat_AgeAndGenderSubReport() {
         }
         
         [Browsable(false)]
@@ -193,7 +130,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            MainPortFolioRPT rpt = new MainPortFolioRPT();
+            Flat_AgeAndGenderSubReport rpt = new Flat_AgeAndGenderSubReport();
             rpt.Site = this.Site;
             return rpt;
         }

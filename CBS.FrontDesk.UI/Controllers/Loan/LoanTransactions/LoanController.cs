@@ -15,6 +15,7 @@ using CBS.FrontDesk.Data.Entity.MemberOperation;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.ReportDataSetDto;
+using CBS.FrontDesk.Data.ReportDataSetDto.LoanPortFolioDataSet;
 using CBS.FrontDesk.UI.Helper;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
@@ -399,7 +400,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                 report.Load(Server.MapPath(reportFilePath));
 
                 // Indexable report source
-                var reportData = new List<LoanPortfolioAnalysis> { loanPortfolioAnalysis };
+                var reportData = new List<LoanDelinquencyReportResultRPT> { loanPortfolioAnalysis };
                 report.SetDataSource(reportData);
 
                
@@ -420,38 +421,26 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                     {
                         switch (subReport.Name)
                         {
-                            case "DeliquencyLoanAgingPortFolioRPTSub.rpt" when ShouldInclude("AgingAnalysis"):
-                                subReport.SetDataSource(main.AgingAnalysis);
+                            case "Flat_AgeAndGenderSubReport.rpt" when ShouldInclude("Flat_AgeAndGender"):
+                                subReport.SetDataSource(main.Flat_AgeAndGender);
                                 break;
-                            case "GenderAgingAnalysisSubReport" when ShouldInclude("GenderAgingAnalysis"):
-                                subReport.SetDataSource(main.GenderAgingAnalysis);
+                            case "Flat_AgeAndLoanTypeSubReport.rpt" when ShouldInclude("Flat_AgeAndLoanType"):
+                                subReport.SetDataSource(main.Flat_AgeAndLoanType);
                                 break;
-                            case "GroupDelinquencySubReport" when ShouldInclude("GroupDelinquency"):
-                                subReport.SetDataSource(main.GroupDelinquency);
+                            case "Flat_ByLoanTermSubReport.rpt" when ShouldInclude("Flat_ByLoanTerm"):
+                                subReport.SetDataSource(main.Flat_ByLoanTerm);
                                 break;
-                            case "IndividualDelinquencySubReport" when ShouldInclude("IndividualDelinquency"):
-                                subReport.SetDataSource(main.IndividualDelinquency);
+                            case "Flat_ByTargetGroupSubReport.rpt" when ShouldInclude("Flat_ByTargetGroup"):
+                                subReport.SetDataSource(main.Flat_ByTargetGroup);
                                 break;
-                            case "LoanTypeDelinquencySubReport" when ShouldInclude("LoanTypeDelinquency"):
-                                subReport.SetDataSource(main.LoanTypeDelinquency);
+                            case "Flat_ByCategorySubReport.rpt" when ShouldInclude("Flat_ByCategory"):
+                                subReport.SetDataSource(main.Flat_ByCategory);
                                 break;
-                            case "MemberAgeDelinquencySubReport" when ShouldInclude("MemberAgeDelinquency"):
-                                subReport.SetDataSource(main.MemberAgeDelinquency);
+                            case "Flat_ByZoneSubReport.rpt" when ShouldInclude("Flat_ByZone"):
+                                subReport.SetDataSource(main.Flat_ByZone);
                                 break;
-                            case "LoanPortfoliosSubReport" when ShouldInclude("LoanPortfolios"):
-                                subReport.SetDataSource(main.LoanPortfolios);
-                                break;
-                            case "LoanTargetGenderAnalysisSubReport" when ShouldInclude("LoanTargetGenderAnalysis"):
-                                subReport.SetDataSource(main.LoanTargetGenderAnalysis);
-                                break;
-                            case "LoanProductTypeTargetGenderAnalysisSubReport" when ShouldInclude("LoanProductTypeTargetGenderAnalysis"):
-                                subReport.SetDataSource(main.LoanProductTypeTargetGenderAnalysis);
-                                break;
-                            case "LoanTermProductTargetGenderAnalysisSubReport" when ShouldInclude("LoanTermProductTargetGenderAnalysis"):
-                                subReport.SetDataSource(main.LoanTermProductTargetGenderAnalysis);
-                                break;
-                            case "LoanCategoryTermProductTargetGenderAnalysisSubReport" when ShouldInclude("LoanCategoryTermProductTargetGenderAnalysis"):
-                                subReport.SetDataSource(main.LoanCategoryTermProductTargetGenderAnalysis);
+                            case "PortfolioDetailsSubReport.rpt" when ShouldInclude("PortfolioDetails"):
+                                subReport.SetDataSource(main.PortfolioDetails);
                                 break;
                         }
                     }
@@ -461,20 +450,20 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                     {
                         switch (param.Name)
                         {
-                            case "StartDate":
-                                report.SetParameterValue("StartDate", startDate);
+                            case "DateFrom":
+                                report.SetParameterValue("DateFrom", startDate);
                                 break;
-                            case "EndDate":
-                                report.SetParameterValue("EndDate", endDate);
+                            case "DateTo":
+                                report.SetParameterValue("DateTo", endDate);
                                 break;
                             case "BranchName":
                                 report.SetParameterValue("BranchName", loanPortfolioAnalysis.BranchName);
                                 break;
                             case "PrintedBy":
-                                report.SetParameterValue("PrintedBy", User.Identity?.Name ?? "System");
+                                report.SetParameterValue("PrintedBy", Session["FullName"].ToString());
                                 break;
                             case "ReportTitle":
-                                report.SetParameterValue("ReportTitle", "Loan Portfolio Report");
+                                report.SetParameterValue("ReportTitle", $"Loan Delinquency Repor");
                                 break;
                         }
                     }
