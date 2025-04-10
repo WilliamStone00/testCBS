@@ -125,7 +125,7 @@ namespace CBS.FrontDesk.UI.Controllers
             catch (Exception ex)
             {
                 // Log the exception (optional) and rethrow for centralized handling
-                throw;
+                throw(ex);
             }
         }
 
@@ -153,7 +153,20 @@ namespace CBS.FrontDesk.UI.Controllers
                 && digits.Length == 3
                 && digits.All(char.IsDigit);
         }
+        protected JsonResult JsonValidationErrorsssssResponse()
+        {
+            // GetAllowAnonymous all the validation errors from ModelState
+            var errors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
 
+            // Combine all the errors into a single string
+            var errorMessage = string.Join("; ", errors);
+
+            // Return the JSON response with the combined error message
+            return Json(new { success = false, status = false, message = errorMessage });
+        }
         protected JsonResult JsonValidationErrorResponse()
         {
             // GetAllowAnonymous all the validation errors from ModelState

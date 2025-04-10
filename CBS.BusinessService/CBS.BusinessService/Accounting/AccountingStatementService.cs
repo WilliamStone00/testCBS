@@ -240,10 +240,11 @@ namespace CBS.BusinessService.Accounting
             return await _Service.GetBalanceSheetDataEntries(model);
         }
 
-        public async Task<List<ModelExpenses>> GenerateIncomeStatement(SystemQuery model)
+        public async Task<BalanceSheetData> GenerateIncomeStatement(BSQuery model)
         {
-            List<AccountingEntry> filteredEntries = new List<AccountingEntry>();
-            return await _Service.RetrieveIncomeAndExpenseEntries(model);
+       
+
+            return await _Service.GetBalanceSheetDataEntries(model);
         }
 
     

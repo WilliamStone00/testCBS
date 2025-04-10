@@ -79,6 +79,111 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
+        public void IncomeStatementSubReports()
+        {
+            try
+            {
+                // Retrieve parameters from session
+                string strReportName = HttpContext.Session["ReportName"]?.ToString();
+                var rptSource = HttpContext.Session["rptSource"];
+                var rptpath = HttpContext.Session["rptpath"]?.ToString();
+                var rpttitle = HttpContext.Session["rpttitle"]?.ToString();
+
+                if (string.IsNullOrEmpty(strReportName) || rptSource == null || rptpath == null || rpttitle == null)
+                {
+                    HttpContext.Response.Write("<H2>No Report with such Name found</H2>");
+                    return;
+                }
+
+                // Create a new ReportDocument
+                ReportDocument rd = new ReportDocument();
+                string strRptPath = HttpContext.Server.MapPath(rptpath);
+                rd.Load(strRptPath);
+
+                // Cast rptSource to List<PaymentReciptDS>
+                if (rptSource is List<PaymentReciptDS> reportData)
+                {
+                    // Check if the list has at least one item
+                    if (reportData.Count > 0)
+                    {
+                        // Set data source for the main report
+                        rd.SetDataSource(reportData);
+
+                        // Set data sources for subreports
+                        foreach (ReportDocument subReport in rd.Subreports)
+                        {
+                            string subReportName = subReport.Name;
+
+                            switch (subReportName)
+                            {
+                                case "DenominationSubReport.rpt":
+                                    // Extract Denominations from the first PaymentReciptDS object
+                                    var denominations = reportData[0].DenominationDs;
+                                    subReport.SetDataSource(denominations);
+                                    break;
+
+                                case "PaymentDetailSubReport.rpt":
+                                    // Extract Payment Details from the first PaymentReciptDS object
+                                    var paymentDetails = reportData[0].PaymentDetailDs;
+                                    subReport.SetDataSource(paymentDetails);
+                                    break;
+                                case "PaymentDetailSubReportLoan.rpt":
+                                    // Extract Payment Details from the first PaymentReciptDS object
+                                    var paymentDetailsLoan = reportData[0].PaymentDetailDs;
+                                    subReport.SetDataSource(paymentDetailsLoan);
+                                    break;
+
+                                    // Add more cases if you have more subreports
+                            }
+                        }
+                    }
+                    else
+                    {
+                        HttpContext.Response.Write("<H2>No data found in report source</H2>");
+                        return;
+                    }
+                }
+                else
+                {
+                    HttpContext.Response.Write("<H2>Invalid report source</H2>");
+                    return;
+                }
+
+                // Set report parameters if needed
+                string year = HttpContext.Session["Year"]?.ToString() ?? "Non";
+                string dates = HttpContext.Session["Dates"]?.ToString() ?? "Non";
+                string strFromDate = HttpContext.Session["DateFrom"]?.ToString() ?? "Non";
+                string strToDate = HttpContext.Session["DateTo"]?.ToString() ?? "Non";
+
+                if (year != "Non")
+                {
+                    rd.SetParameterValue("param", $"Header summary: {year}");
+                }
+
+                if (dates != "Non" && !string.IsNullOrEmpty(strFromDate) && !string.IsNullOrEmpty(strToDate))
+                {
+                    rd.SetParameterValue("DateFrom", strFromDate);
+                    rd.SetParameterValue("DateTo", strToDate);
+                }
+
+                // Export the report to PDF and send to response
+                string savedFileName = $"{rpttitle}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
+                rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, savedFileName);
+
+                // Clean up the report document
+                CleanReport(rd);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // Handle specific exceptions if needed
+                HttpContext.Response.Write("<H2>An error occurred while generating the report</H2>");
+            }
+        }
+
+
+
+
         public void ReportParameterLessWithSubReports()
         {
             try
@@ -878,31 +983,64 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 if (rptSource != "empty")
                 {
-                    var user = this.GetUserDto();
-                    var modeli = (BSQuery)dtoPasser;
-                    var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
-                    var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
+                    if (rpTType.ToUpper()=="BS")
+                    {
+                        var user = this.GetUserDto();
+                        var modeli = (BSQuery)dtoPasser;
+                        var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
+                        var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
 
-                    ReportDocument rd = new ReportDocument();
-                    string strRptPath = Server.MapPath(rptpath);
-                    rd.Load(strRptPath);
-                    rd.SetDataSource(assetsModel);
-                    rd.SetDataSource(LiabilityModel);
-                    string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
-                    //Export the report to a byte array
-                    Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
-                    byte[] bytes = new byte[stream.Length];
-                    stream.Read(bytes, 0, bytes.Length);
+                        ReportDocument rd = new ReportDocument();
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+                        rd.SetDataSource(assetsModel);
+                        rd.SetDataSource(LiabilityModel);
+                        string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
+                        //Export the report to a byte array
+                        Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+                        byte[] bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, bytes.Length);
 
-                    //Clear the response and set the content type
-                    Response.ClearContent();
-                    Response.ClearHeaders();
-                    Response.ContentType = "application/pdf";
+                        //Clear the response and set the content type
+                        Response.ClearContent();
+                        Response.ClearHeaders();
+                        Response.ContentType = "application/pdf";
 
-                    //Write the report bytes to the response
-                    Response.BinaryWrite(bytes);
-                    Response.Flush();
-                    Response.End();
+                        //Write the report bytes to the response
+                        Response.BinaryWrite(bytes);
+                        Response.Flush();
+                        Response.End();
+                    }
+                    else
+                    {
+                        var user = this.GetUserDto();
+                        var modeli = (BSQuery)dtoPasser;
+                        var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Income, BSCartegory.Expense);
+                        var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Income, BSCartegory.Expense);
+                        var DataList = new  List<BalanceSheetInfo> {  };
+                        DataList.AddRange(assetsModel);
+                        DataList.AddRange(LiabilityModel);
+                        ReportDocument rd = new ReportDocument();
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+                        rd.SetDataSource(DataList);
+                 
+                        string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
+                        //Export the report to a byte array
+                        Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+                        byte[] bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, bytes.Length);
+
+                        //Clear the response and set the content type
+                        Response.ClearContent();
+                        Response.ClearHeaders();
+                        Response.ContentType = "application/pdf";
+
+                        //Write the report bytes to the response
+                        Response.BinaryWrite(bytes);
+                        Response.Flush();
+                        Response.End();
+                    }
                     //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
                     //CleanReport(rd);
  

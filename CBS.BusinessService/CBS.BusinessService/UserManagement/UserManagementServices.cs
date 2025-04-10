@@ -28,7 +28,7 @@ namespace CBS.BusinessService.UserManagement
         public UserManagementServices(BranchServices branchServices = null, RoleServices roleServices = null)
         {
             _identityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-            _branchServices=branchServices;
+            _branchServices=new BranchServices();
             _roleServices=roleServices;
         }
         public async Task<ExecutionMessages> CreateUser(User user)

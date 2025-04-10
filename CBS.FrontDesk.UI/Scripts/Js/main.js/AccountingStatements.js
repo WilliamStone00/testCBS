@@ -32,15 +32,29 @@
             var selectedId = $("#selectedBranchID").val();
             loadBranchAccounts(selectedId);
         } else {
+
+            const targetReportTypes = ["BS", "PANDL", "TB6", "TB4"];
+
+       
+                const selectedValue = $(this).val();
+                const fromDateInput = $('input[name="SystemQuery.FromDate"]');
+
+                if (targetReportTypes.includes(selectedValue)) {
+                    const currentYear = new Date().getFullYear();
+                    const beginningOfYear = `${currentYear}-01-01`;
+
+                    fromDateInput.val(beginningOfYear);
+                    fromDateInput.prop('disabled', true);
+                } else {
+                    fromDateInput.prop('disabled', false);
+                }
+         
             // Hide the element
             $('#AccountToHide').hide();
         }
 
     });
-    $(document).on('click', '#print_btn', function () {
-       
-    });
-
+  
 });
 
 function LoadBranchAndAccountDataSetDT(tableID) {
@@ -216,8 +230,7 @@ function DeleteRecordPage(controller, KEY, partialview)
                     if (response.success) {
                         appalert(response.message, 1, 1);
                         console.log(response);
-                        windows.location.reload();
-                       // LoadDataGen(controller, 'myDataTable', partialview, null, null, null, null, 'list');
+                         LoadDataGen(controller, 'myDataTable', partialview, null, null, null, null, 'list');
                     }
                     else {
                         appalert(response.message, 3, 1);
@@ -573,7 +586,7 @@ function openReportWindow(fileType, reportType) {
         }
     } else
     {
-        if (reportType === "BS") {
+        if (reportType === "BS" && reportType === "PANDL") {
             url = "/Reports/DownloadBSFile";
         } else {
             url = "/Reports/AccountingPDFReport?FileType=" + reportType;

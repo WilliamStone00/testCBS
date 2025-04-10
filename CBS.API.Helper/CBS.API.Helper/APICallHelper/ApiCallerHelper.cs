@@ -632,14 +632,14 @@ namespace CBS.API.Helper
             return Model.Data;
         }
 
-        public async Task<List<ModelExpenses>> PostIncomeAndExpenseEntriesAsync(string apiUrl, object data)
+        public async Task<List<ModelBalanceSheetAssets>> PostIncomeAndExpenseEntriesAsync(string apiUrl, object data)
         {
             apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
             string jsonData = JsonConvert.SerializeObject(data);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             AddAuthorizationHeader(_httpClient);
             HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
-            var Model = await HandleModelExpensesServiceResponse(response);
+            var Model = await HandleBalanceSheetAssetsResponse(response);
             return Model.Data;
         }
         public async Task<ServiceResponseXX<T>> PostxxAsync<T>(string apiUrl, object data)

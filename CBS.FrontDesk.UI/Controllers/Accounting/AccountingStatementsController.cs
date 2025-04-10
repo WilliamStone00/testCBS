@@ -637,12 +637,19 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 if (model.SystemQuery.FileType.ToLower() == "pdf")
                                 {
                                     string fileTitle = $"InComeStatement{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
-                                    var account = await _acountServices.GenerateIncomeStatement(model.SystemQuery);
+                                    var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "PROFITANDLOSS").First();
+                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, Date = model.SystemQuery.ToDate, DocumentId = DocModel.id, FileType = "pdf" };
+                                    var account = await _acountServices.GenerateIncomeStatement(modelx);
                                     this.HttpContext.Session["rptSource"] = account;
-                                    if (!account.Any())
-                                    {
-                                        this.HttpContext.Session["rptSource"] = "empty";
-                                    }
+                                
+                                    string ReportName = $"Income and Expense.rpt";
+                                   
+                             
+                                    this.HttpContext.Session["dtoPasser"] = modelx;
+                                    this.HttpContext.Session["rptType"] = model.SystemQuery.ReportType;
+                                    this.HttpContext.Session["fileType"] = $"Income and Expense.rpt";
+                                    this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                                    this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
                                     this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                                 }
                                 else
@@ -875,14 +882,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     break;
                                 case "PANDL":
                                     {
-                                        string fileTitle = $"InComeStatement{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
-                                        var account = await _acountServices.GenerateIncomeStatement(model.SystemQuery);
-                                        this.HttpContext.Session["rptSource"] = account;
-                                        if (!account.Any())
-                                        {
-                                            this.HttpContext.Session["rptSource"] = "empty";
-                                        }
-                                        this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
+                                        //string fileTitle = $"InComeStatement{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                                        ////var account = await _acountServices.GenerateIncomeStatement(model.SystemQuery);
+                                        //this.HttpContext.Session["rptSource"] = account;
+                                        //if (!account.Any())
+                                        //{
+                                        //    this.HttpContext.Session["rptSource"] = "empty";
+                                        //}
+                                        //this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                                     }
                                     break;
                             }
@@ -954,12 +961,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             case "PANDL":
                                 {
                                     string fileTitle = $"InComeStatement{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
-                                    var account = await _acountServices.GenerateIncomeStatement(model.SystemQuery);
-                                    this.HttpContext.Session["rptSource"] = account;
-                                    if (!account.Any())
-                                    {
-                                        this.HttpContext.Session["rptSource"] = "empty";
-                                    }
+                                    //var account = await _acountServices.GenerateIncomeStatement(model.SystemQuery);
+                                    //this.HttpContext.Session["rptSource"] = account;
+                                    //if (!account.Any())
+                                    //{
+                                    //    this.HttpContext.Session["rptSource"] = "empty";
+                                    //}
                                     this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                                 }
                                 break;

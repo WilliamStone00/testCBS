@@ -1520,7 +1520,7 @@ namespace CBS.BusinessService
             }
         }
 
-        public async Task<List<ModelExpenses>> RetrieveIncomeAndExpenseEntries(SystemQuery model)
+        public async Task<List<ModelBalanceSheetAssets>> RetrieveIncomeAndExpenseEntries(BSQuery model)
         {
             try
             {
@@ -1619,6 +1619,8 @@ namespace CBS.BusinessService
                 throw (ex);
             }
         }
+
+     
     }
 
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
