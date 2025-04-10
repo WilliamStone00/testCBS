@@ -570,8 +570,37 @@ namespace CBS.BusinessService.Accounting
                 }
                 else
                 {
-                    // Handle failure scenario
+   
                     return GetExecutionMessages(account, false, $"{account.AccountNumber + " " + account.AccountName}", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
+                }
+
+            }
+            catch (Exception ex)
+            {
+    
+            }
+            return null;
+        }
+        public async Task<ExecutionMessages> Deletto(string id)
+        {
+            try
+            {
+                var account = await GetReportById(id);
+                var inResponse = await _accountingApiCallerHelper.DeleteAsync<ResponseObject<bool>>(string.Format(APICallHelper.Get_Delete_ReportDownLoad, id));
+                if (inResponse.IsSuccess)
+                {
+
+
+                    return GetExecutionMessages(inResponse, true, $"{account.ReportType + " " + account.FileName}", MessagesResults.Success,
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
+
+
+                }
+                else
+                {
+                    // Handle failure scenario
+                    return GetExecutionMessages(account, false, $"{account.ReportType + " " + account.ReportType}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
 
