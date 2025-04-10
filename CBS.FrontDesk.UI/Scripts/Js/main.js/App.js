@@ -2018,84 +2018,84 @@ function AjaxPostAndUpdateChangePassword(form) {
 
 
 
-    (function () {
-        let idleTimeoutMinutes = 5; // fallback
-    let idleCounter = 0;
-    let idleInterval = null;
+//    (function () {
+//        let idleTimeoutMinutes = 5; // fallback
+//    let idleCounter = 0;
+//    let idleInterval = null;
 
-    // ⏳ Extend session on server and update local timeout
-    function extendServerSession() {
-        fetch('/Session/ExtendSessionTimeout')
-            .then(res => res.json())
-            .then(data => {
-                if (data.success && data.timeout) {
-                    idleTimeoutMinutes = data.timeout;
-                    console.debug('🔄 Session extended to', idleTimeoutMinutes, 'min');
-                }
-            })
-            .catch(err => {
-                console.warn('⚠️ Failed to extend session timeout:', err);
-            });
-    }
+//    // ⏳ Extend session on server and update local timeout
+//    function extendServerSession() {
+//        fetch('/Session/ExtendSessionTimeout')
+//            .then(res => res.json())
+//            .then(data => {
+//                if (data.success && data.timeout) {
+//                    idleTimeoutMinutes = data.timeout;
+//                    console.debug('🔄 Session extended to', idleTimeoutMinutes, 'min');
+//                }
+//            })
+//            .catch(err => {
+//                console.warn('⚠️ Failed to extend session timeout:', err);
+//            });
+//    }
 
-    // 🔁 Reset timer and inform server
-    function resetIdleTimer() {
-        idleCounter = 0;
-    extendServerSession(); // 🔄 Sync with backend
-    }
+//    // 🔁 Reset timer and inform server
+//    function resetIdleTimer() {
+//        idleCounter = 0;
+//    extendServerSession(); // 🔄 Sync with backend
+//    }
 
-    // 🔐 Lock session on timeout
-    function lockSession() {
-        sessionStorage.setItem('SessionLocked', 'true');
-    window.location.href = '/Session/Locked';
-    }
+//    // 🔐 Lock session on timeout
+//    function lockSession() {
+//        sessionStorage.setItem('SessionLocked', 'true');
+//    window.location.href = '/Session/Locked';
+//    }
 
-    // 🕒 Start idle tracking
-    function startIdleWatcher() {
-        if (idleInterval) return;
+//    // 🕒 Start idle tracking
+//    function startIdleWatcher() {
+//        if (idleInterval) return;
 
-        idleInterval = setInterval(() => {
-        idleCounter++;
-    console.debug('⏳ Idle for', idleCounter, 'min');
+//        idleInterval = setInterval(() => {
+//        idleCounter++;
+//    console.debug('⏳ Idle for', idleCounter, 'min');
 
-            if (idleCounter >= idleTimeoutMinutes) {
-        clearInterval(idleInterval);
-    lockSession();
-            }
-        }, 60000); // every 1 minute
-    }
+//            if (idleCounter >= idleTimeoutMinutes) {
+//        clearInterval(idleInterval);
+//    lockSession();
+//            }
+//        }, 60000); // every 1 minute
+//    }
 
-    // ⬇️ Initial fetch from server
-    function fetchIdleTimeout() {
-        fetch('/Session/GetIdleTimeout')
-            .then(res => res.json())
-            .then(data => {
-                if (data.timeout > 0) {
-                    idleTimeoutMinutes = data.timeout;
-                    console.debug('📥 Initial idle timeout from server:', idleTimeoutMinutes, 'min');
-                }
-                startIdleWatcher();
-            })
-            .catch(() => {
-                console.warn('⚠️ Could not fetch idle timeout. Using default.');
-                startIdleWatcher();
-            });
-    }
+//    // ⬇️ Initial fetch from server
+//    function fetchIdleTimeout() {
+//        fetch('/Session/GetIdleTimeout')
+//            .then(res => res.json())
+//            .then(data => {
+//                if (data.timeout > 0) {
+//                    idleTimeoutMinutes = data.timeout;
+//                    console.debug('📥 Initial idle timeout from server:', idleTimeoutMinutes, 'min');
+//                }
+//                startIdleWatcher();
+//            })
+//            .catch(() => {
+//                console.warn('⚠️ Could not fetch idle timeout. Using default.');
+//                startIdleWatcher();
+//            });
+//    }
 
-    // 🧱 Block back/forward if on lock screen
-    if (window.location.pathname.toLowerCase() === '/session/locked') {
-        history.pushState(null, null, location.href);
-        window.onpopstate = () => {
-        history.pushState(null, null, location.href);
-        };
-    }
+//    // 🧱 Block back/forward if on lock screen
+//    if (window.location.pathname.toLowerCase() === '/session/locked') {
+//        history.pushState(null, null, location.href);
+//        window.onpopstate = () => {
+//        history.pushState(null, null, location.href);
+//        };
+//    }
 
-    // 🎯 Listen to user activity
-    ['mousemove', 'keydown', 'click', 'scroll'].forEach(event =>
-    window.addEventListener(event, resetIdleTimer)
-    );
+//    // 🎯 Listen to user activity
+//    ['mousemove', 'keydown', 'click', 'scroll'].forEach(event =>
+//    window.addEventListener(event, resetIdleTimer)
+//    );
 
-    // 🚀 Start logic
-    fetchIdleTimeout();
-})();
+//    // 🚀 Start logic
+//    fetchIdleTimeout();
+//})();
 
