@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.DataSetLoanPortfolio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -331,40 +332,4 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
 
     }
 
-    public class LoanPortfolioDto
-    {
-        public string Id { get; set; }
-        public string CustomerId { get; set; }
-        public string CustomerName { get; set; }
-        public string LoanApplicationId { get; set; }
-        public string LoanType { get; set; }
-        public string BranchId { get; set; }
-        public string BranchCode { get; set; }
-        public decimal Principal { get; set; }
-        public decimal LoanAmount { get; set; }
-        public decimal Balance { get; set; }
-        public decimal DueAmount { get; set; }
-        public decimal InterestRate { get; set; }
-        public decimal AccrualInterest { get; set; }
-        public decimal DeliquentAmount { get; set; }
-        public decimal DeliquentInterest { get; set; }
-        public decimal DeliquentDays { get; set; }
-        public string LoanManager { get; set; }
-        public string BranchName { get; set; }
-        public DateTime LoanDate { get; set; }
-        public DateTime LastRepaymentDate { get; set; }
-        public decimal LastRepaymentAmount { get; set; }
-        public DateTime MaturityDate { get; set; }
-        public string LoanStatus { get; set; }
-        public string PurposeName { get; set; }
-        public string ProductType { get; set; }
-        public string ApplicationType { get; set; }
-        public string TermName { get; set; }
-        public string LoanCategory { get; set; }
-        public string LoanTarget { get; set; }
-        public string DeliquentStatus { get; set; }
-        public string LoanDuration { get; set; }
-        public object LoanDeliquencyConfigurationId { get; set; }
-        public string DelinquencyConfigName { get; set; }
-    }
 }

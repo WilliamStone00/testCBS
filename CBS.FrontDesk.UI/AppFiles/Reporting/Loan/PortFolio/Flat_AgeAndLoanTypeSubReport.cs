@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class DeliquencyLoanAgingPortFolioRPTSub : ReportClass {
+    public class Flat_AgeAndLoanTypeSubReport : ReportClass {
         
-        public DeliquencyLoanAgingPortFolioRPTSub() {
+        public Flat_AgeAndLoanTypeSubReport() {
         }
         
         public override string ResourceName {
             get {
-                return "DeliquencyLoanAgingPortFolioRPTSub.rpt";
+                return "Flat_AgeAndLoanTypeSubReport.rpt";
             }
             set {
                 // Do nothing
@@ -41,8 +41,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio.DeliquencyLoanAgingPortFolioRP" +
-                    "TSub.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio.Flat_AgeAndLoanTypeSubReport.r" +
+                    "pt";
             }
             set {
                 // Do nothing
@@ -91,9 +91,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedDeliquencyLoanAgingPortFolioRPTSub : Component, ICachedReport {
+    public class CachedFlat_AgeAndLoanTypeSubReport : Component, ICachedReport {
         
-        public CachedDeliquencyLoanAgingPortFolioRPTSub() {
+        public CachedFlat_AgeAndLoanTypeSubReport() {
         }
         
         [Browsable(false)]
@@ -130,7 +130,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            DeliquencyLoanAgingPortFolioRPTSub rpt = new DeliquencyLoanAgingPortFolioRPTSub();
+            Flat_AgeAndLoanTypeSubReport rpt = new Flat_AgeAndLoanTypeSubReport();
             rpt.Site = this.Site;
             return rpt;
         }

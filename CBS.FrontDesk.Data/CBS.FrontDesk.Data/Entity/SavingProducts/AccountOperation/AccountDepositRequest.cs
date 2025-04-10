@@ -73,6 +73,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string DepositType { get; set; }
         public string Period { get; set; }
         public string OperationType { get; set; }
+        public string CustomerAlphaNumber { get; set; }
         public string LedgerChartOfAccountId { get; set; }
         public bool IsCashOperation { get; set; }
         public string Id { get; set; }
@@ -131,6 +132,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public decimal Total { get; set; }
         public string TellerCode { get; set; }
         public string ChartOfAccountId { get; set; }
+        public string CustomerAlphaNumber { get; set; }
         public string AccountType { get; set; }
         public string LoanId { get; set; }
         public string RemittanceId { get; set; }

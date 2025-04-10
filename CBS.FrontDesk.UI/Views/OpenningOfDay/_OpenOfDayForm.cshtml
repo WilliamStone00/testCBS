@@ -34,14 +34,14 @@
             <input type="hidden" name="Option" id="Option" value="@ViewBag.Option" />
             <div class="col-md-2">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.OpenningOfDayRequest.CurrencyNotes.note10000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note10000", @oninput = "calculateBalance()" })
+                    @Html.TextBoxFor(m => m.OpenningOfDayRequest.CurrencyNotes.note10000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note10000", @oninput = "calculateBalance()", @readonly = true })
                     @Html.ValidationMessageFor(m => m.OpenningOfDayRequest.CurrencyNotes.note10000, "", new { @class = "text-danger " })
                     <label>N10,000</label>
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.OpenningOfDayRequest.CurrencyNotes.note5000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note5000", @oninput = "calculateBalance()" })
+                    @Html.TextBoxFor(m => m.OpenningOfDayRequest.CurrencyNotes.note5000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note5000", @oninput = "calculateBalance()", @readonly = true })
                     @Html.ValidationMessageFor(m => m.OpenningOfDayRequest.CurrencyNotes.note5000, "", new { @class = "text-danger " })
                     <label>N5,000</label>
                 </div>

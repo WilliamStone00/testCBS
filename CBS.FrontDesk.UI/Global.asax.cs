@@ -45,6 +45,41 @@ namespace CBS.FrontDesk.UI
             ConnectionMonitoringService connectionService = new ConnectionMonitoringService();
 
         }
+        //protected void Application_AcquireRequestState(object sender, EventArgs e)
+        //{
+        //    var context = HttpContext.Current;
+        //    if (context == null || context.Session == null)
+        //        return;
+
+        //    // If user is authenticated, and the session unlock flag is not yet set
+        //    if (context.User?.Identity?.IsAuthenticated == true && context.Session["SessionUnlocked"] == null)
+        //    {
+        //        context.Session["SessionUnlocked"] = true; // ✅ unlock session
+        //    }
+
+        //    // Your session lock check to prevent page access (except for allowed routes)
+        //    var path = context.Request.Path.ToLower();
+
+        //    bool isAllowed = path.StartsWith("/session/locked") ||
+        //                     path.StartsWith("/session/validaterecoverycode") ||
+        //                     path.StartsWith("/authentication") ||
+        //                     path.StartsWith("/account") ||
+        //                     path.StartsWith("/content") ||
+        //                     path.StartsWith("/scripts") ||
+        //                     path.StartsWith("/favicon") ||
+        //                     path.Contains(".axd");
+
+        //    if (!isAllowed)
+        //    {
+        //        bool unlocked = context.Session["SessionUnlocked"] as bool? ?? false;
+
+        //        if (!unlocked)
+        //        {
+        //            context.Response.Redirect("~/Session/Locked", true);
+        //        }
+        //    }
+        //}
+
 
         protected void Application_EndRequest()
         {
@@ -294,20 +329,26 @@ namespace CBS.FrontDesk.UI
                 if (!authTicket.Expired)
                 {
                     var user = JsonConvert.DeserializeObject<CustomSerializeModel>(authTicket.UserData);
-                    CustomPrincipal principal = new CustomPrincipal(authTicket.Name);
-                    principal.UserId = user.Id;
-                    principal.FullName = user.FullName;
-                    principal.UserName = user.UserName;
-                    principal.Roles = user.RoleName;
-                    principal.SessionID = user.SessionID;
-                    principal.Email = user.Email;
-                    principal.SessionCode = user.SessionCode;
-                    principal.Phonenumber = user.Phonenumber;
-                    HttpContext.Current.User = principal;
-                }
 
+                    CustomPrincipal principal = new CustomPrincipal(authTicket.Name)
+                    {
+                        UserId = user.Id,
+                        FullName = user.FullName,
+                        UserName = user.UserName,
+                        Roles = user.RoleName,
+                        SessionID = user.SessionID,
+                        Email = user.Email,
+                        SessionCode = user.SessionCode,
+                        Phonenumber = user.Phonenumber
+                    };
+
+                    HttpContext.Current.User = principal;
+
+                
+                }
             }
         }
+
 
 
 

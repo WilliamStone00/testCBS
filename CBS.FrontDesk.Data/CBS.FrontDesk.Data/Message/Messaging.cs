@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -160,6 +161,7 @@ namespace CBS.FrontDesk.Data.Message
         public int ObjectID { get; set; }
         public object Data { get; set; }
         public bool Result { get; set; }
+        public IdleTime IdleTime { get; set; } = new IdleTime();
         public Exception ex { get; set; }
         public ExecutionProcessOption ProcessOption { get; set; }
         public MessagesResults MessagesResults { get; set; }
