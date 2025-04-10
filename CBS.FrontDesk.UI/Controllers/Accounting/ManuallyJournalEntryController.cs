@@ -259,10 +259,10 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             var accounts = await _AccountServices.GetAllAccounting();
             var accountingRules = (await _accountingEntryRuleService.GetAccountingEntryRules()).ToList();
-            return accounts.ToList();
-            //return accounts.Where(account =>
-            //    !CheckIfAccountIsOperationsAccount(account, accountingRules).Result)
-            //    .ToList();
+            //return accounts.ToList();
+            return accounts.Where(account =>
+                !CheckIfAccountIsOperationsAccount(account, accountingRules).Result)
+                .ToList();
         }
 
         private Task<bool> CheckIfAccountIsOperationsAccount(Data.Account account, List<AccountingRuleEntry> accountingRules)
