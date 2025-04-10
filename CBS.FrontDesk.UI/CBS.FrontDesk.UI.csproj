@@ -419,6 +419,12 @@
       <DependentUpon>BalanceSheet.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\BalanceSheet_Assets.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BalanceSheet_Assets.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\Expense Report.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3621,6 +3627,10 @@
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\BalanceSheet.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BalanceSheet.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\BalanceSheet_Assets.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BalanceSheet_Assets.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\Expense Report.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

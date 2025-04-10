@@ -878,31 +878,62 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 if (rptSource != "empty")
                 {
-                    var user = this.GetUserDto();
-                    var modeli = (BSQuery)dtoPasser;
-                    var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
-                    var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
+                    if (rpTType.ToUpper()=="BS")
+                    {
+                        var user = this.GetUserDto();
+                        var modeli = (BSQuery)dtoPasser;
+                        var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
+                        var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
 
-                    ReportDocument rd = new ReportDocument();
-                    string strRptPath = Server.MapPath(rptpath);
-                    rd.Load(strRptPath);
-                    rd.SetDataSource(assetsModel);
-                    rd.SetDataSource(LiabilityModel);
-                    string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
-                    //Export the report to a byte array
-                    Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
-                    byte[] bytes = new byte[stream.Length];
-                    stream.Read(bytes, 0, bytes.Length);
+                        ReportDocument rd = new ReportDocument();
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+                        rd.SetDataSource(assetsModel);
+                        rd.SetDataSource(LiabilityModel);
+                        string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
+                        //Export the report to a byte array
+                        Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+                        byte[] bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, bytes.Length);
 
-                    //Clear the response and set the content type
-                    Response.ClearContent();
-                    Response.ClearHeaders();
-                    Response.ContentType = "application/pdf";
+                        //Clear the response and set the content type
+                        Response.ClearContent();
+                        Response.ClearHeaders();
+                        Response.ContentType = "application/pdf";
 
-                    //Write the report bytes to the response
-                    Response.BinaryWrite(bytes);
-                    Response.Flush();
-                    Response.End();
+                        //Write the report bytes to the response
+                        Response.BinaryWrite(bytes);
+                        Response.Flush();
+                        Response.End();
+                    }
+                    else
+                    {
+                        var user = this.GetUserDto();
+                        var modeli = (BSQuery)dtoPasser;
+                        var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Income, BSCartegory.Expense);
+                        var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Income, BSCartegory.Expense);
+
+                        ReportDocument rd = new ReportDocument();
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+                        rd.SetDataSource(assetsModel);
+                        rd.SetDataSource(LiabilityModel);
+                        string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
+                        //Export the report to a byte array
+                        Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+                        byte[] bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, bytes.Length);
+
+                        //Clear the response and set the content type
+                        Response.ClearContent();
+                        Response.ClearHeaders();
+                        Response.ContentType = "application/pdf";
+
+                        //Write the report bytes to the response
+                        Response.BinaryWrite(bytes);
+                        Response.Flush();
+                        Response.End();
+                    }
                     //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
                     //CleanReport(rd);
  

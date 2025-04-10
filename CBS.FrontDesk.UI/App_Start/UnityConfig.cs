@@ -34,7 +34,7 @@ namespace CBS.FrontDesk.UI
             container.RegisterType<CountryServices, CountryServices>();
             container.RegisterType<RegionServices, RegionServices>();
             container.RegisterType<AccountingServices, AccountingServices>();
-            container.RegisterType<IAccountingEntryServices, AccountingEntryServices>();
+            //container.RegisterType<IAccountingEntryServices, AccountingEntryServices>();
             container.RegisterType<IUserManagementServices, UserManagementServices>();
 
             container.RegisterType<SubDivisionServices, SubDivisionServices>();

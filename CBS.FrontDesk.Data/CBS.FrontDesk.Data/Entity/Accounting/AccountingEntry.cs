@@ -313,6 +313,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
         public static string Assets = "Assets";
         public static string LIABILITIES = "Liability";
+       public static string Income = "Income";
+        public static string Expense = "Expense";
     }
     public class GLQuery
     {

@@ -1,6 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingEntryQuery
 <div class="container">
-    <fieldset class="fieldset-custom">
+    <fieldset class="fieldset">
         <div class="card-body">
             @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostSearch(this);" }))
             {
@@ -103,11 +103,11 @@
                     <input type="hidden" id="selectedBranchID" value="" />
                 </div>
                 <br>
-                <div class="row justify-content-center mt-12">
-                    <div>
-                        <button type="submit" class="btn btn-primary me-2" id="print_btn" onsubmit="AjaxPostSearch()">Print</button>
+                <div class="col-md-12">
+                   
+                        <button type="submit" class="btn btn-primary me-2 mdi mdi-printer-pos-alert mdi-24px"  id="print_btn" onsubmit="AjaxPostSearch()">Print</button>
 
-                    </div>
+                     
                 </div>
             }
 

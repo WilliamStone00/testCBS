@@ -50,7 +50,7 @@ namespace CBS.BusinessService
         Task<List<AccountingEntry>> RetrieveAccountingEntries(SystemQuery model);
         Task<List<ModelBalanceSheetAssets>> RetrieveBalanceSheetColumnEntries(SystemQuery model);
         Task<List<BranchLiaisonLedgerEntry>> RetrieveBranchLiaisonAccountingEntries(SystemQuery model);
-        Task<List<ModelExpenses>> RetrieveIncomeAndExpenseEntries(SystemQuery model);
+ 
         Task<List<LiaisonLedgerEntry>> RetrieveLiasonAccountingEntries(SystemQuery model);
         Task<List<TrialBalance4ColumnDto>> RetrieveTrialBalance4ColumnEntries(SystemQuery model);
         Task<List<TrialBalance6ColumnDto>> RetrieveTrialBalance6ColumnEntries(SystemQuery model);
