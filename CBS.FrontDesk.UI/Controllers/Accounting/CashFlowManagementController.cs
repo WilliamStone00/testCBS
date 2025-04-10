@@ -722,8 +722,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.DepositNotificationDto = OperationEventAttribute;
                 cashDemandDataEntity.DepositNotificationDto.BranchOffice = (await branchServices.GetBranches()).Where(po => po.Id.Equals(OperationEventAttribute.BranchId)).FirstOrDefault().Name;
-                var listBranch = await _bankZoneBranchServices.GetAllBranchPresentInZoneByParticipant(OperationEventAttribute.BranchId, "BRANCH");
-                ViewBag.ZoneBranch = BuildDropDown(await GenerateBranchInZoneCode(listBranch, OperationEventAttribute.BranchId));
+                var listBranch =  await branchServices.GetBranches(); // _bankZoneBranchServices.GetAllBranchPresentInZoneByParticipant(OperationEventAttribute.BranchId, "BRANCH");
+                                                                      //ViewBag.ZoneBranch = BuildDropDown(await GenerateBranchInZoneCode(listBranch, OperationEventAttribute.BranchId));
+                ViewBag.Branches = BuildDropDown(GenerateBranchBranchCode(listBranch.ToList()));
                 if (branchServices.IsHeadOffice()==false)
                 {
                     ViewBag.IsAuthourized = false;
