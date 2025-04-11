@@ -385,7 +385,13 @@ namespace CBS.BusinessService.Accounts
                 //LoanRepayment
                 else if (bulkDeposits.FirstOrDefault().OperationType == "CashIn")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Deposit", CustomerAlphaNumber=bulkDeposits.FirstOrDefault().CustomerAlphaNumber };
+                    var customerAlphaNumber = string.IsNullOrWhiteSpace(bulkDeposits.FirstOrDefault()?.CustomerAlphaNumber) ||
+                          bulkDeposits.FirstOrDefault()?.CustomerAlphaNumber == "0"
+                          ? "n/a"
+                          : bulkDeposits.FirstOrDefault().CustomerAlphaNumber;
+
+
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Deposit", CustomerAlphaNumber=customerAlphaNumber };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -522,12 +528,19 @@ namespace CBS.BusinessService.Accounts
                     //LoanRepaymentGLAccountNoneCash
 
 
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits,  DepositType = "LoanRepaymentByLocalAccountNoneCash", IsCashOperation = false, OperationType = "Deposit"
-                    , LoanToBeRefundeds= bulkDeposits.FirstOrDefault().LoanToBeRefundeds, AccountToBeDebiteds=bulkDeposits.FirstOrDefault().AccountToBeDebiteds
+                    var BulkOperation = new BulkOperation
+                    {
+                        BulkOperations = bulkDeposits,
+                        DepositType = "LoanRepaymentByLocalAccountNoneCash",
+                        IsCashOperation = false,
+                        OperationType = "Deposit"
+                    ,
+                        LoanToBeRefundeds= bulkDeposits.FirstOrDefault().LoanToBeRefundeds,
+                        AccountToBeDebiteds=bulkDeposits.FirstOrDefault().AccountToBeDebiteds
 
 
                     };
-                  
+
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -548,15 +561,16 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepaymentGLAccountNoneCash")
                 {
-                    
+
 
 
                     var BulkOperation = new BulkOperation
                     {
                         BulkOperations = bulkDeposits,
                         DepositType = "LoanRepaymentGLAccountNoneCash",
-                        IsCashOperation = false, 
-                        OperationType = "Deposit", LedgerChartOfAccountId=bulkDeposits.FirstOrDefault().ChartOfAccountId,
+                        IsCashOperation = false,
+                        OperationType = "Deposit",
+                        LedgerChartOfAccountId=bulkDeposits.FirstOrDefault().ChartOfAccountId,
                         LoanToBeRefundeds= bulkDeposits.FirstOrDefault().LoanToBeRefundeds,
                         AccountToBeDebiteds=bulkDeposits.FirstOrDefault().AccountToBeDebiteds
 
@@ -648,7 +662,7 @@ namespace CBS.BusinessService.Accounts
                  : "N/A",
                         Direction = "",
                         Name = a.Period,
-                        Naration = a.Note=string.IsNullOrEmpty(a.Note) ? "N/A": a.Note,
+                        Naration = a.Note=string.IsNullOrEmpty(a.Note) ? "N/A" : a.Note,
                         EnventName = a.EventCode,
                         EventCode = a.EventCode,
                         SourceType = a.SourceType,

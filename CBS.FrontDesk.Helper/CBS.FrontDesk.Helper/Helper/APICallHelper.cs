@@ -264,7 +264,7 @@ namespace CBS.FrontDesk.Helper
         public static string ChangePhonuNumberRequest = "/api/v1/ChangeCustomerPhone/change-phone-number";
         public static string ApprovePhoneNumberRequest = "/api/v1/ChangeCustomerPhone/approve-phone-number";
         public static string GetPendingPhoneNumberChangeRequest = "/api/v1/ChangeCustomerPhone/History/{0}";
-        public static string GetChangeCustomerPhone = "/api/v1/ChangeCustomerPhone/GetAllowAnonymous-History-byid/{0}";
+        public static string GetChangeCustomerPhone = "/api/v1/ChangeCustomerPhone/Get-History-byid/{0}";
         public static string DeletePhoneNumberChnageRequest = "/api/v1/ChangeCustomerPhone/{0}";
 
         //GroupType
