@@ -459,6 +459,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 }
                                 else
                                 {
+                                    string fileTitle = $"JournalEntries_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
                                     var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId }, APICallHelper.JournalEntryUrl);
 
                                 }
