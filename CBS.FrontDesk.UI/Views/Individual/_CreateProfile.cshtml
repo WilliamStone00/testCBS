@@ -36,7 +36,7 @@
                                 <div class="row g-4">
                                     <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.CustomerId, new { @class = "form-control", @placeholder = "1234" })
+                                            @Html.TextBoxFor(m => m.CustomerId, new { @class = "form-control", @placeholder = "1234",@readonly=true })
                                             @Html.ValidationMessageFor(m => m.CustomerId, "", new { @class = "text-danger" })
                                             <label>Members Reference Number</label>
                                         </div>
