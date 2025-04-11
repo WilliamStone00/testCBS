@@ -259,10 +259,10 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             var accounts = await _AccountServices.GetAllAccounting();
             var accountingRules = (await _accountingEntryRuleService.GetAccountingEntryRules()).ToList();
-            return accounts.ToList();
-            //return accounts.Where(account =>
-            //    !CheckIfAccountIsOperationsAccount(account, accountingRules).Result)
-            //    .ToList();
+            //return accounts.ToList();
+            return accounts.Where(account =>
+                !CheckIfAccountIsOperationsAccount(account, accountingRules).Result)
+                .ToList();
         }
 
         private Task<bool> CheckIfAccountIsOperationsAccount(Data.Account account, List<AccountingRuleEntry> accountingRules)
@@ -879,9 +879,9 @@ namespace CBS.FrontDesk.UI.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult> ApproveEntries(string Id, bool HasApproved)
+        public async Task<ActionResult> ApproveEntries(string Id, bool HasApproved,string Comment)
         {
-            var model = new EntryApproval { HasApproved = HasApproved, Id = Id };
+            var model = new EntryApproval { HasApproved = HasApproved, Id = Id , Comment = Comment, BranchId= _Service .GetBranchID()};
             try
             {
                 var data = await _Service.ApproveAccountingEntry(model);

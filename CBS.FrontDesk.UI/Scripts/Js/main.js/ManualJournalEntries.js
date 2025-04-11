@@ -14,13 +14,13 @@ $(document).ready(function ()
             data: 'debit',
             render: function (data, type, row) {
                 // Check if the booking direction is 'debit', if true, show '0' in debit column
-                return (row.bookingDirection.toLowerCase() === 'debit') ? 0 : data;
+                return (row.bookingDirection.toLowerCase() === 'debit') ? data : 0 ;
             }
         }, {
             data: 'credit',
             render: function (data, type, row) {
                 // Check if the booking direction is 'credit', if true, show '0' in credit column
-                return (row.bookingDirection.toLowerCase() === 'credit') ? 0 : data;
+                return (row.bookingDirection.toLowerCase() === 'credit') ? data:0 ;
             }
         }, {
             data: null,
@@ -160,7 +160,7 @@ function ApprovePostedEntries(response) {
     //comment_description
     var storedId = $("#selectedId").val();
     var comment = $("#comment_description").val();
-
+    console.log(storedId + "  " + comment + "  " + response);
     if (comment === "") {
 
         appalert("Please kindly enter your decision for this entry with referenceId:" + storedId + " before you continue", 2, 1);
@@ -301,6 +301,7 @@ function addToBasket()
         amount: $('#EntryTempData_Amount').val(),
         credit: $('#EntryTempData_Amount').val(),
         debit: $('#EntryTempData_Amount').val(),
+        valueDate: $("input[name='EntryTempData.ValueDate']").val(),
         description: $('#EntryTempData_Description').val().trim(),
         AccountCategoryId: $('#EntryTempData_AccountCategoryId').val().trim()
     };

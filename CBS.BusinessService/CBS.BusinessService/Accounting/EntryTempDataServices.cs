@@ -144,15 +144,8 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                var models = new
-                {
-                    Id = model.Id,
-                    HasApproved = model.HasApproved,
-                    TransactionDate = BaseUtilities.UtcToLocal(),
-                    BranchId = await GetBranchByIDAsync(GetBranchID()),
-                    ValidationIsNotRequired = false
-                };
-                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.Post_ManaulEntryApproval_Entries, models);
+                 
+                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.Post_ManaulEntryApproval_Entries, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation

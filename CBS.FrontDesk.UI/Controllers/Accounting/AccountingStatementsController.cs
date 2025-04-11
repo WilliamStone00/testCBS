@@ -619,7 +619,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     }
                                     this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                                     this.HttpContext.Session["dtoPasser"] = modelx;
-                                    this.HttpContext.Session["rptType"] = model.SystemQuery.FileType;
+                                    this.HttpContext.Session["rptType"] = model.SystemQuery.ReportType;
                                     this.HttpContext.Session["fileType"] = $"BS";
                                     this.HttpContext.Session["ReportName"] = $"{ReportName}";
                                     this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
@@ -643,11 +643,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     this.HttpContext.Session["rptSource"] = account;
                                 
                                     string ReportName = $"Income and Expense.rpt";
-                                   
-                             
+
+                                    ReportName = $"Income and Expense.rpt";
                                     this.HttpContext.Session["dtoPasser"] = modelx;
                                     this.HttpContext.Session["rptType"] = model.SystemQuery.ReportType;
-                                    this.HttpContext.Session["fileType"] = $"Income and Expense.rpt";
+                                    this.HttpContext.Session["fileType"] = $"PANDL";
                                     this.HttpContext.Session["ReportName"] = $"{ReportName}";
                                     this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
                                     this.HttpContext.Session["rpttitle"] = $"{fileTitle}";

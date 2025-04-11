@@ -45,7 +45,14 @@
                                                     <label>Current Balance</label>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="EntryTempData.AccountCategoryId"  id="EntryTempData_AccountCategoryId" value=""/>
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(model => model.EntryTempData.ValueDate, new { @class = "form-control date-picker", placeholder = "From Date" })
+                                                    @Html.ValidationMessageFor(model => model.EntryTempData.ValueDate, "", new { @class = "text-danger" })
+                                                    <label>Value Date</label>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="EntryTempData.AccountCategoryId" id="EntryTempData_AccountCategoryId" value="" />
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
                                                     @Html.DropDownListFor(m => m.EntryTempData.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select Direction---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
@@ -66,7 +73,7 @@
                                                 <div class="form-floating form-floating-outline">
                                                     @Html.TextAreaFor(m => m.EntryTempData.Description, new { @class = "form-control shadow-input-boxes", @style = "height: 100px;" })
                                                     @Html.ValidationMessageFor(m => m.EntryTempData.Description, "", new { @class = "text-danger" })
-                                                    <label>Description</label>
+                                                    <label>Reason</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -103,8 +110,8 @@
                         <thead>
                             <tr>
                                 <th>Account Description</th>
-                                <th>Credit</th>
                                 <th>Debit</th>
+                                <th>Credit</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -112,8 +119,8 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Total Credit:<p id="totalCredit"></p></th>
                                 <th>Total Debit:<p id="totalDebit"></p></th>
+                                <th>Total Credit:<p id="totalCredit"></p></th>
                                 <th>Diffrence:<p id="balance"></p></th>
                             </tr>
                         </thead>

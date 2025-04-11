@@ -90,6 +90,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         public string Id { get; set; }
         [Required]
+        public DateTime ValueDate { get; set; } = DateTime.Now;
         public string Reference { get; set; }
         public string AccountBalance { get; set; }
         public string AccountId { get; set; }
@@ -119,14 +120,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                     AccountNumber = Item.AccountNumber,
                     AccountingEventId = Item.AccountingEventId,
                     BookingDirection = Item.BookingDirection,
-                   BranchId = branchId,
+                    BranchId = branchId,
                     Amount = Convert.ToDecimal(Item.Amount),
                     AccountBalance =  Item.AccountBalance??"0",
                     Description = Item.Description,
                     ExternalBranchId = branchId,
                     Reference = Item.Reference,
-
-                });
+                    ValueDate = Item.ValueDate
+    });
             }
             return new AccountingEntryPayloadCommand
             { 
@@ -156,7 +157,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string AccountId { get; set; }
         public string AccountName { get; set; }
         public string AccountNumber { get; set; }
-
+        public DateTime ValueDate { get; set; }
         public string BookingDirection { get; set; }
 
         public decimal Amount { get; set; }
@@ -190,8 +191,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Id { get; set; }
 
         public bool HasApproved { get; set; }
+        public string Comment { get;   set; }
         public bool ValidationIsNotRequired { get; set; }
-        public string BranchId { get; internal set; }
+        public string BranchId { get;   set; }
     }
     public class EntryTempDataResult
     {
