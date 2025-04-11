@@ -163,40 +163,91 @@ function validateTotalAmount(total, totalNotes) {
 
     return true;
 }
-
 function collectDeposits() {
     var deposits = [];
+
+    var alphaNumber = $('#CustomerAlphaNumber').val();
+    var customerId = $('#customerId').val();
+    var operationType = $('#OperationType').val();
+    var checkName = $('#CheckName')?.val() || '';
+    var checkNumber = $('#CheckNumber')?.val() || '';
+    var note = $('#Note')?.val() || '';
 
     $('#myDataTableT tbody tr').each(function () {
         if ($(this).find('.form-check-input').prop('checked')) {
             var deposit = {};
-            deposit.AccountNumber = $(this).find('td:eq(0)').text();
-            deposit.Amount = parseFloat($(this).find('.amount-input').val());
-            deposit.Fee = parseFloat($(this).find('.fee-input').val());
-            deposit.Penalty = parseFloat($(this).find('.penalty-input').val());
-            deposit.Interest = parseFloat($(this).find('.interest-input').val());
-            deposit.Total = parseFloat($(this).find('.total-span').text());
-            deposit.AccountType = $(this).find('td:eq(1)').text();
-            deposit.Note = $('#Note').val();
+
+            deposit.AccountNumber = $(this).find('td:eq(0)').text().trim();
+            deposit.AccountType = $(this).find('td:eq(1)').text().trim();
+            deposit.Balance = parseFloat($(this).find('td:eq(2)').text()) || 0;
+
+            deposit.Amount = parseFloat($(this).find('.amount-input').val()) || 0;
+            deposit.Fee = parseFloat($(this).find('.fee-input').val()) || 0;
+            deposit.Penalty = parseFloat($(this).find('.penalty-input')?.val()) || 0;
+            deposit.Interest = parseFloat($(this).find('.interest-input')?.val()) || 0;
+            deposit.Total = parseFloat($(this).find('.total-span').text()) || 0;
+
+            deposit.Note = note;
+            deposit.CheckName = checkName;
+            deposit.CheckNumber = checkNumber;
+
+            deposit.CustomerAlphaNumber = alphaNumber;
+            deposit.CustomerId = customerId;
+            deposit.OperationType = operationType;
+
             deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
             deposit.IsChargesInclussive = $(this).find('.check-inclussive').prop('checked');
-            deposit.OperationType = $('#OperationType').val();
-            deposit.CheckName = $('#CheckName').val();
-            deposit.CheckNumber = $('#CheckNumber').val();
+
             deposit.IsSWS = true;
-            deposit.CustomerId = $('#customerId').val();
-            deposit.LoanApplicationId = $(this).find('.loan-application-id').val();
-            deposit.Period = $(this).find('.period').val();
-            deposits.PaymentMethod = 'Cash';
-            deposits.PaymentChannel = 'Web_Portal';
-            deposits.CustomerAlphaNumber = $('#CustomerAlphaNumber').val();
+            deposit.PaymentMethod = 'Cash';
+            deposit.PaymentChannel = 'Web_Portal';
+
+            // Optional fields if present
+            deposit.LoanApplicationId = $(this).find('.loan-application-id')?.val() || '';
+            deposit.Period = $(this).find('.period')?.val() || '';
+
             deposits.push(deposit);
         }
     });
 
-
+    console.log("Collected Deposits:", deposits); // Debug output
     return deposits;
 }
+
+
+//function collectDeposits() {
+//    var deposits = [];
+
+//    $('#myDataTableT tbody tr').each(function () {
+//        if ($(this).find('.form-check-input').prop('checked')) {
+//            var deposit = {};
+//            deposit.AccountNumber = $(this).find('td:eq(0)').text();
+//            deposit.Amount = parseFloat($(this).find('.amount-input').val());
+//            deposit.Fee = parseFloat($(this).find('.fee-input').val());
+//            deposit.Penalty = parseFloat($(this).find('.penalty-input')?.val() || 0);
+//            deposit.Interest = parseFloat($(this).find('.interest-input')?.val() || 0);
+//            deposit.Total = parseFloat($(this).find('.total-span').text()) || 0;
+//            deposit.AccountType = $(this).find('td:eq(1)').text();
+//            deposit.Note = $('#Note').val();
+//            deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
+//            deposit.IsChargesInclussive = $(this).find('.check-inclussive').prop('checked');
+//            deposit.OperationType = $('#OperationType').val();
+//            deposit.CheckName = $('#CheckName').val();
+//            deposit.CheckNumber = $('#CheckNumber').val();
+//            deposit.IsSWS = true;
+//            deposit.CustomerId = $('#customerId').val();
+//            deposit.LoanApplicationId = $(this).find('.loan-application-id')?.val();
+//            deposit.Period = $(this).find('.period')?.val();
+//            deposit.PaymentMethod = 'Cash';
+//            deposit.PaymentChannel = 'Web_Portal';
+//            deposit.CustomerAlphaNumber = $('#CustomerAlphaNumber').val(); // ✅ correct assignment
+
+//            deposits.push(deposit);
+//        }
+//    });
+
+//    return deposits;
+//}
 
 function collectCurrencyNotes() {
     return {
@@ -331,23 +382,36 @@ function PostCashIn() {
 function validateCustomerAlphaNumber() {
     var alphaNumber = $("#CustomerAlphaNumber").val()?.trim();
 
+    // 1. Required field
     if (!alphaNumber) {
-        appalert("Member custome  account number is required.", 3, 1);
+        appalert(
+            "The Member's custom account number is required. This number uniquely identifies the member from the previous system and is necessary for linking their records in Trust Soft Credit (TSC).",
+            3, 1
+        );
         return false;
     }
 
+    // 2. Must be numeric only
     if (!/^\d+$/.test(alphaNumber)) {
-        appalert("Member custome  account number must be a valid integer.", 3, 1);
+        appalert(
+            "The Member's custom account number must contain digits only. Please enter the exact number as provided in the legacy system to ensure correct member linkage in TSC.",
+            3, 1
+        );
         return false;
     }
 
+    // 3. Max length check
     if (alphaNumber.length > 7) {
-        appalert("Member custome  account number must not exceed 7 digits.", 3, 1);
+        appalert(
+            "The Member's custom account number must not exceed 7 digits. This is to ensure compatibility with the format used during migration from the legacy system.",
+            3, 1
+        );
         return false;
     }
 
     return true;
 }
+
 
 function PostFEE() {
     if (!checkTotalNotes()) return false;

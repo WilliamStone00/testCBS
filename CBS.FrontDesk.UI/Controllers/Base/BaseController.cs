@@ -125,7 +125,7 @@ namespace CBS.FrontDesk.UI.Controllers
             catch (Exception ex)
             {
                 // Log the exception (optional) and rethrow for centralized handling
-                throw(ex);
+               // throw(ex);
             }
         }
 

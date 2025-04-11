@@ -610,6 +610,7 @@ namespace CBS.BusinessService.UserManagement
                 }
                 else if (model.Option == "ChangeRole")
                 {
+                    userModel.userRoles=new List<UserRole>();
                     userModel.userRoles.Add(new UserRole { roleId = model.roleID, userId = model.id });
                 }
                 else if (model.Option == "BlackList")

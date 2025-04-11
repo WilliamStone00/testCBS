@@ -1,4 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+
+
 @if (ViewBag.Operation == "cashin")
 {
     <div class="form-wrapper">
@@ -21,12 +23,21 @@
                         </div>
                     </div>
                     <hr style="border: 2px solid green;" />
-                    <div class="col-md-12">
-                        <div class="form-floating form-floating-outline mb-3">
-                            <input type="text" class="form-control shadow-input-boxes" id="CustomerAlphaNumber" placeholder="Member custome account number. example 5129" required />
-                            <label for="CustomerAlphaNumber">Member custome account number</label>
+                    @if (ViewBag.AllAccountsAreMB == true)
+                    {
+                        <div class="col-md-12">
+                            <div class="form-floating form-floating-outline mb-3">
+                                <input type="text" class="form-control shadow-input-boxes" id="CustomerAlphaNumber" placeholder="Member custom account number. example 5129" required />
+                                <label for="CustomerAlphaNumber">Member custom account number</label>
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <input type="hidden" id="CustomerAlphaNumber" value="0" />
+                    }
+
+
                     <div class="table-responsive" style="width: 100%;">
                         <table class="table table-hover" id="myDataTableT">
                             <thead class="table-light">
@@ -503,8 +514,8 @@ else if (ViewBag.Operation == "repayment")
                                             <input type="checkbox" class="form-check-input">
                                         </td>
                                         @*<td>
-                                <button type="button" class="btn btn-primary" onclick="openPaymentModal('@d.Id', @d.AccrualInterest, @d.Balance)">Pay</button>
-                            </td>*@
+                                                <button type="button" class="btn btn-primary" onclick="openPaymentModal('@d.Id', @d.AccrualInterest, @d.Balance)">Pay</button>
+                                            </td>*@
                                         <td>
                                             <!-- Details Button -->
                                             <button type="button" class="btn btn-info btn-sm" onclick='showLoanDetails(@Html.Raw(Json.Encode(d)))'>Details</button>
@@ -840,7 +851,7 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
                         <tbody>
                             @foreach (var d in Model.LoanApplicationFees.GroupBy(fee => fee.Period))
                             {
-                                
+
                                 decimal periodTotal = 0;
                                 <tr class="period-group">
                                     <td colspan="8"><strong>@d.Key</strong></td>

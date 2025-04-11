@@ -136,6 +136,34 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                         ViewBag.message = $"{KEY} was not found in the database.";
                         return PartialView("_DataNotFound", new CashDesk());
                     }
+                    var nonLoanAccounts = cashDesk?.BulkDeposits?
+                    .Where(x => x.AccountType != null && !x.AccountType.ToLower().Contains("loan"))
+                    .ToList();
+
+                    bool allAccountsAreMB = true;
+
+                    if (nonLoanAccounts != null && nonLoanAccounts.Any())
+                    {
+
+                        foreach (var acc in nonLoanAccounts)
+                        {
+                            if (string.IsNullOrWhiteSpace(acc.AccountNumber) || !acc.AccountNumber.Trim().ToUpper().StartsWith("MB"))
+                            {
+                                allAccountsAreMB = false;
+                                
+                            }
+                            else
+                            {
+                                allAccountsAreMB=true;
+                                break;
+                            }
+                        }
+
+                    }
+
+                    ViewBag.AllAccountsAreMB = allAccountsAreMB;
+                    ViewBag.Operation = path;
+
                     ViewBag.Operation = path;
                     return PartialView(partialView, cashDesk);
 
