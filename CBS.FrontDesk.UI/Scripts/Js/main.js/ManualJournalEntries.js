@@ -341,10 +341,10 @@ function addToBasket()
     }
 
     // Validate debit transaction
-    if (!validateDebitTransaction(item)) {
-        appalert('The account balance is insufficient for this entry', 2, 1);
-        return;
-    }
+    //if (!validateDebitTransaction(item)) {
+    //    appalert('The account balance is insufficient for this entry', 2, 1);
+    //    return;
+    //}
 
     // Check for duplicate account
     const existingItem = basket.find(x => x.accountId === item.accountId);
