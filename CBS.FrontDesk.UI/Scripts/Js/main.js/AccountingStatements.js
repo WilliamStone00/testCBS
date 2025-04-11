@@ -586,7 +586,7 @@ function openReportWindow(fileType, reportType) {
         }
     } else
     {
-        if (reportType === "BS" && reportType === "PANDL") {
+        if (reportType === "BS" || reportType === "PANDL") {
             url = "/Reports/DownloadBSFile";
         } else {
             url = "/Reports/AccountingPDFReport?FileType=" + reportType;

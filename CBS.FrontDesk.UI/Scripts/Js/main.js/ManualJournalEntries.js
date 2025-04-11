@@ -160,7 +160,7 @@ function ApprovePostedEntries(response) {
     //comment_description
     var storedId = $("#selectedId").val();
     var comment = $("#comment_description").val();
-
+    console.log(storedId + "  " + comment + "  " + response);
     if (comment === "") {
 
         appalert("Please kindly enter your decision for this entry with referenceId:" + storedId + " before you continue", 2, 1);

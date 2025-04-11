@@ -191,8 +191,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Id { get; set; }
 
         public bool HasApproved { get; set; }
+        public string Comment { get;   set; }
         public bool ValidationIsNotRequired { get; set; }
-        public string BranchId { get; internal set; }
+        public string BranchId { get;   set; }
     }
     public class EntryTempDataResult
     {
