@@ -306,6 +306,7 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
                 success: function (response) {
                     if (response && response.success) {
                         successCallback(response, operationType);
+                        Reprint();
                     } else {
                         if (!response) {
                             alert("Your session is expired.");
@@ -331,6 +332,7 @@ function successCallback(response, operationType) {
     switch (operationType) {
         case 'CashIn':
             GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashin');
+
             break;
         case 'Withdrawal':
             GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashout');
