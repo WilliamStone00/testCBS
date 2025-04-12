@@ -499,7 +499,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 }
                                 else
                                 {
-                                    var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId }, APICallHelper.JournalEntryUrl);
+                                    var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery); //( model.SystemQuery);
 
                                 }
 
@@ -568,8 +568,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 }
                                 else
                                 {
-                                    var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId }, APICallHelper.JournalEntryUrl);
-
+                                    var account = await _acountServices.GenerateTrialBalance_4column(model.SystemQuery);
                                 }
 
                             }
@@ -598,8 +597,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 }
                                 else
                                 {
-                                    var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId }, APICallHelper.JournalEntryUrl);
-
+                                    var account = await _acountServices.GenerateTrialBalance_6column(model.SystemQuery);
                                 }
                             }
                             break;
@@ -627,8 +625,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 }
                                 else
                                 {
-                                    var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId }, APICallHelper.JournalEntryUrl);
-
+                                    var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "BALANCESHEET").First();
+                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, Date = model.SystemQuery.ToDate, DocumentId = DocModel.id, FileType = "Excel" };
+                                    var account = await _acountServices.GenerateBalanceSheet(modelx);
                                 }
 
                             }
@@ -655,7 +654,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 }
                                 else
                                 {
-                                    var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId }, APICallHelper.JournalEntryUrl);
+                                    var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId }, APICallHelper.AccountingEntry_IncomeStatement);
 
                                 }
                             }

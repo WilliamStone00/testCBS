@@ -2,8 +2,10 @@
 let tableJE;
 
 $(document).ready(function () {
+    LoadPendingPostedEntries("myDataTable");
     LoadAccountingRuleDataSetDT("AccountingEventxxDataTable");
  
+
     $('#AccountingEvent').hide();
     tableJE = $('#AccountingRulebasketTable').DataTable({
         columns: [
@@ -1040,6 +1042,47 @@ function LoadAccountingRuleDataSetDT(tableID) {
 }
 
 
+function LoadCashReplenishmentDataDT(tableID) {
+
+
+    var T = '#' + tableID;
+    var dataThumbView = $(T).DataTable({
+        responsive: false,
+        "columns": [
+            //{ "data": "ReferenceId", "name": "ReferenceId", "autoWidth": true },
+            //{ "data": "Amount", "name": "Amount", "autoWidth": true },
+            //{ "data": "RequestMessage", "name": "RequestMessage", "autoWidth": true },
+            //{ "data": "IssuedBy", "name": "IssuedBy", "autoWidth": true },
+            //{ "data": "IssuedDate", "name": "IssuedDate", "autoWidth": true },
+            //{
+            //    "data": "Id", "orderable": "false", "render": function (data) {
+            //        return "<a href='/CashFlowManagement/GetCashReplenimentRequest?KEY=" + data + " class='mr-2' data-toggle='tooltip' data-placement='top' title='View " + data + " detail'> Click to Approve</a>";
+            //    }
+            //}
+        ],
+        "columnDefs": [
+            { "targets": 0, "searchable": true, "orderable": true, "width": "10%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "10%" },
+            { "targets": 2, "searchable": true, "orderable": true, "width": "25%" },
+            { "targets": 3, "searchable": true, "orderable": true, "width": "25%" },
+            { "targets": 4, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 5, "searchable": true, "orderable": true, "width": "15%" },
+
+        ],
+
+        oLanguage: {
+            sLengthMenu: "_MENU_",
+            sSearch: ""
+        },
+        aLengthMenu: [[4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
+
+
+        order: [[0, "asc"]],
+        bInfo: true,
+        pageLength: 10
+
+    });
+}
 
 
 
@@ -1192,4 +1235,39 @@ function LoadData(tableID) {
         console.error("Error initializing DataTable:", error);
         console.log("Table HTML:", $(tableSelector).prop('outerHTML'));
     }
+}
+
+function LoadPendingPostedEntries(tableID) {
+
+
+    var T = '#' + tableID;
+    var dataThumbView = $(T).DataTable({
+        responsive: false,
+        "columns": [
+        ],
+        "columnDefs": [
+            /*//{ "targets": 0, "searchable": true, "orderable": true, "width": "10%" },*/
+            { "targets": 0, "searchable": true, "orderable": true, "width": "5%" },
+            { "targets": 1, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 2, "searchable": true, "orderable": true, "width": "20%" },
+            { "targets": 3, "searchable": true, "orderable": true, "width": "19%" },
+            { "targets": 4, "searchable": true, "orderable": true, "width": "1%" },
+            { "targets": 5, "searchable": true, "orderable": true, "width": "15%" },
+            { "targets": 6, "searchable": true, "orderable": true, "width": "10%" },
+            { "targets": 7, "searchable": true, "orderable": true, "width": "10%" },
+
+        ],
+
+        oLanguage: {
+            sLengthMenu: "_MENU_",
+            sSearch: ""
+        },
+        aLengthMenu: [[10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
+
+
+        order: [[0, "asc"]],
+        bInfo: true,
+        pageLength: 10
+
+    });
 }
