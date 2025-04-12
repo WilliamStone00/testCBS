@@ -580,8 +580,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     string fileTitle = $"TB6C{model.SystemQuery.FromDate.Date.ToString("yyyyMMddhhmmss")}";
                                     string ReportName = $"TrialBalance8Column.rpt";
                                     var account = await _acountServices.GenerateTrialBalance_6column(model.SystemQuery);
-                                 
-                                        this.HttpContext.Session["rptSource"] = account;
+                                    this.HttpContext.Session["rptSource"] = account;
 
                                     this.HttpContext.Session["fileType"] = $"TB6";
                                     if (!account.Any())
