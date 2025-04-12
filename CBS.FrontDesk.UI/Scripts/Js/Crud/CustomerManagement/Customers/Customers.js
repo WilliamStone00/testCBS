@@ -148,6 +148,17 @@ function AjaxPostAndUpdateMemberRegistration(form) {
                 appalert("❌ Please correct the highlighted fields before submitting.", 2, 1);
             }
         }
+        // ✅ Validate Mother's Information: All required
+        const motherFields = ["MName", "MPhone", "MOccupation", "MAddress"];
+        if (motherFields.includes(name)) {
+            if (!val) {
+                field.addClass('is-invalid');
+                if (!firstInvalid) firstInvalid = field;
+                isValid = false;
+                appalert("❌ Please complete all required Mother's information fields.", 2, 1);
+                return;
+            }
+        }
 
         return isValid;
     }
@@ -220,6 +231,50 @@ function manualSearch() {
     LoadUsers($('#manualSearchInput').val())
 }
 
+function AjaxPostAndUpdateMembers(form) {
+    // Parse form for client-side validation
+    $.validator.unobtrusive.parse(form);
+
+    // Run custom field-level validation
+    if (!validateMemberForm(form)) {
+        return false;
+    }
+
+    if ($(form).valid()) {
+        alertify.confirm("Confirmation", "Are you sure you want to update the member profile?",
+            function () {
+                var ajaxConfig = {
+                    type: 'POST',
+                    url: form.action,
+                    data: new FormData(form),
+                    success: function (response) {
+                        if (response.success) {
+                            appalert(response.message, 1, 1);
+                            setTimeout(() => location.reload(), 1500);
+                        } else {
+                            appalert(response.message || "Update failed.", 2, 1);
+                        }
+                    },
+                    error: function (err) {
+                        appalert(err.statusText || "Server error.", 0, 1);
+                    }
+                };
+
+                if ($(form).attr('enctype') === "multipart/form-data") {
+                    ajaxConfig.contentType = false;
+                    ajaxConfig.processData = false;
+                }
+
+                $.ajax(ajaxConfig);
+            },
+            function () {
+                appalert('Update cancelled', 3, 1);
+            }
+        );
+    }
+
+    return false;
+}
 
 
 function showConfirmMessage(KEY, ServiceOption, tableID) {

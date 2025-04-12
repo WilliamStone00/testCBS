@@ -107,6 +107,14 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string EmployerTelephone { get; set; }
         public string EmployerAddress { get; set; }
         public string MaritalStatus { get; set; }
+        public string MName { get; set; }
+        public string MAddress { get; set; }
+        public string MOccupation { get; set; }
+        public string MPhone { get; set; }
+        public string FName { get; set; }
+        public string FAddress { get; set; }
+        public string FOccupation { get; set; }
+        public string FPhone { get; set; }
         public string SpouseName { get; set; }
         public string SpouseAddress { get; set; }
         public int NumberOfKids { get; set; }

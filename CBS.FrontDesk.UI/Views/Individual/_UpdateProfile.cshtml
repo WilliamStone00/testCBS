@@ -2,7 +2,7 @@
 
 <div class="card-body">
 
-    @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+    @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdateMembers(this);", @id = "formValidationExamples" }))
     {
         <!-- Account Details -->
         @Html.HiddenFor(model => model.CustomerList.CustomerId)
@@ -14,14 +14,14 @@
 
         <div class="col-md-7">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.FirstName, new { @class = "form-control", @placeholder = "First name" })
+                @Html.TextBoxFor(m => m.CustomerList.FirstName, new { @class = "form-control", @placeholder = "First name", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.FirstName, "", new { @class = "text-danger" })
                 <label>First Name</label>
             </div>
         </div>
         <div class="col-md-5">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.LastName, new { @class = "form-control", @placeholder = "Last name" })
+                @Html.TextBoxFor(m => m.CustomerList.LastName, new { @class = "form-control", @placeholder = "Last name", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.LastName, "", new { @class = "text-danger" })
                 <label>Last Name</label>
             </div>
@@ -35,7 +35,7 @@
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.Gender, new SelectList(ViewBag.genders, "Text", "Value"), "---Select gender---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.CustomerList.Gender, new SelectList(ViewBag.genders, "Text", "Value"), "---Select gender---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.Gender, "", new { @class = "text-danger" })
                 <label>Gender</label>
             </div>
@@ -43,28 +43,28 @@
 
         <div class="col-12">
             <div class="form-check">
-                @Html.CheckBoxFor(m => m.CustomerList.IsDailyCollector, new { @class = "form-check-input", @Readonly=true })
+                @Html.CheckBoxFor(m => m.CustomerList.IsDailyCollector, new { @class = "form-check-input", @Readonly = true })
                 <label class="form-check-label" for="isActive">Check me. I am a daily saving member.</label>
             </div>
         </div>
 
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.DateOfBirth, new { @class = "form-control date-picker", @placeholder = "Date of birth" })
+                @Html.TextBoxFor(m => m.CustomerList.DateOfBirth, new { @class = "form-control date-picker", @placeholder = "Date of birth", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.DateOfBirth, "", new { @class = "text-danger" })
                 <label>Date of birth</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.PlaceOfBirth, new { @class = "form-control", @placeholder = "Place of birth" })
+                @Html.TextBoxFor(m => m.CustomerList.PlaceOfBirth, new { @class = "form-control", @placeholder = "Place of birth", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.PlaceOfBirth, "", new { @class = "text-danger" })
                 <label>Place of birth</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.Phone, new { @class = "form-control", @placeholder = "Pnone number", @readonly = true })
+                @Html.TextBoxFor(m => m.CustomerList.Phone, new { @class = "form-control", @placeholder = "Pnone number", @readonly = true, @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.Phone, "", new { @class = "text-danger" })
                 <label>Phone number</label>
             </div>
@@ -72,28 +72,28 @@
 
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.IDNumber, new { @class = "form-control", @placeholder = "National ID Card Number" })
+                @Html.TextBoxFor(m => m.CustomerList.IDNumber, new { @class = "form-control", @placeholder = "National ID Card Number", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.IDNumber, "", new { @class = "text-danger" })
                 <label>National id card</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.IDNumberIssueDate, new { @class = "form-control date-picker", @placeholder = "Date issued" })
+                @Html.TextBoxFor(m => m.CustomerList.IDNumberIssueDate, new { @class = "form-control date-picker", @placeholder = "Date issued", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.IDNumberIssueDate, "", new { @class = "text-danger" })
                 <label>Date issued</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.IDNumberIssueAt, new { @class = "form-control", @placeholder = "Place of issued" })
+                @Html.TextBoxFor(m => m.CustomerList.IDNumberIssueAt, new { @class = "form-control", @placeholder = "Place of issued", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.IDNumberIssueAt, "", new { @class = "text-danger" })
                 <label>Place of issue</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.TaxIdentificationNumber, new { @class = "form-control", @placeholder = "Personnal Identification Number" })
+                @Html.TextBoxFor(m => m.CustomerList.TaxIdentificationNumber, new { @class = "form-control", @placeholder = "Personnal Identification Number", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.TaxIdentificationNumber, "", new { @class = "text-danger" })
                 <label>Personal identification number</label>
             </div>
@@ -101,28 +101,28 @@
 
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.EconomicActivitiesId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), "---Select Economic activity---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.CustomerList.EconomicActivitiesId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), "---Select Economic activity---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.EconomicActivitiesId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">Econimic activity</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.Occupation, new { @class = "form-control", @placeholder = "Occumation" })
+                @Html.TextBoxFor(m => m.CustomerList.Occupation, new { @class = "form-control", @placeholder = "Occumation", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.Occupation, "", new { @class = "text-danger" })
                 <label>Occumation</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.Language, new SelectList(ViewBag.languages, "Text", "Value"), "---Select Branch offce---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.CustomerList.Language, new SelectList(ViewBag.languages, "Text", "Value"), "---Select Branch offce---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.Language, "", new { @class = "text-danger " })
                 <label for="formValidationDob">Language</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.CustomerCategoryId, new SelectList(ViewBag.Categories, "Value", "Text"), "---Select customer category---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.CustomerList.CustomerCategoryId, new SelectList(ViewBag.Categories, "Value", "Text"), "---Select customer category---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.CustomerCategoryId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">Select customer category</label>
             </div>
@@ -134,49 +134,49 @@
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.CountryId, new SelectList(ViewBag.Countries, "Id", "Name"), "---Select Country---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.CustomerList.CountryId, new SelectList(ViewBag.Countries, "Id", "Name"), "---Select Country---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.CountryId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">Country</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.RegionId, new SelectList(ViewBag.Regions, "Id", "Name"), "---Select Region---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.CustomerList.RegionId, new SelectList(ViewBag.Regions, "Id", "Name"), "---Select Region---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.RegionId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">Region</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.DivisionId, new SelectList(ViewBag.Divisions, "Id", "Name"), "---Select Division---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.CustomerList.DivisionId, new SelectList(ViewBag.Divisions, "Id", "Name"), "---Select Division---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.DivisionId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">Division</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.SubDivisionId, new SelectList(ViewBag.SubDivisions, "Id", "Name"), "---Select Sub-Division---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.CustomerList.SubDivisionId, new SelectList(ViewBag.SubDivisions, "Id", "Name"), "---Select Sub-Division---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.SubDivisionId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">Sub-Division</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.TownId, new SelectList(ViewBag.Towns, "Id", "Name"), "---Select Town---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.CustomerList.TownId, new SelectList(ViewBag.Towns, "Id", "Name"), "---Select Town---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.TownId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">Town</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.TextAreaFor(m => m.CustomerList.Address, new { @class = "form-control", @placeholder = "Address" })
+                @Html.TextAreaFor(m => m.CustomerList.Address, new { @class = "form-control", @placeholder = "Address", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.Address, "", new { @class = "text-danger" })
                 <label>Address</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.Email, new { @class = "form-control", @placeholder = "Email" })
+                @Html.TextBoxFor(m => m.CustomerList.Email, new { @class = "form-control", @placeholder = "Email", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.Email, "", new { @class = "text-danger" })
                 <label>Email</label>
             </div>
@@ -197,11 +197,82 @@
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.VillageOfOrigin, new { @class = "form-control", @placeholder = "VillageOfOrigin" })
+                @Html.TextBoxFor(m => m.CustomerList.VillageOfOrigin, new { @class = "form-control", @placeholder = "VillageOfOrigin", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.VillageOfOrigin, "", new { @class = "text-danger" })
                 <label>Village of origin</label>
             </div>
         </div>
+        <div class="col-12">
+            <h5 class="mt-2"><b>3. Parents Information</b></h5>
+            <hr class="mt-0" />
+        </div>
+
+        <!-- Mother's Information -->
+        <div class="col-md-12">
+            <h6 class="text-primary">Mother's Information</h6>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.MName, new { @class = "form-control", @placeholder = "Mother's Full Name", @required = "required" })
+                @Html.ValidationMessageFor(m => m.CustomerList.MName, "", new { @class = "text-danger" })
+                <label>Mother's Full Name</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.MPhone, new { @class = "form-control", @placeholder = "Mother's Phone", @required = "required" })
+                @Html.ValidationMessageFor(m => m.CustomerList.MPhone, "", new { @class = "text-danger" })
+                <label>Mother's Phone</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.MOccupation, new { @class = "form-control", @placeholder = "Mother's Occupation", @required = "required" })
+                @Html.ValidationMessageFor(m => m.CustomerList.MOccupation, "", new { @class = "text-danger" })
+                <label>Mother's Occupation</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.MAddress, new { @class = "form-control", @placeholder = "Mother's Address", @required = "required" })
+                @Html.ValidationMessageFor(m => m.CustomerList.MAddress, "", new { @class = "text-danger" })
+                <label>Mother's Address</label>
+            </div>
+        </div>
+
+        <!-- Father's Information -->
+        <div class="col-md-12 mt-4">
+            <h6 class="text-primary">Father's Information</h6>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.FName, new { @class = "form-control", @placeholder = "Father's Full Name" })
+                @Html.ValidationMessageFor(m => m.CustomerList.FName, "", new { @class = "text-danger" })
+                <label>Father's Full Name</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.FPhone, new { @class = "form-control", @placeholder = "Father's Phone" })
+                @Html.ValidationMessageFor(m => m.CustomerList.FPhone, "", new { @class = "text-danger" })
+                <label>Father's Phone</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.FOccupation, new { @class = "form-control", @placeholder = "Father's Occupation" })
+                @Html.ValidationMessageFor(m => m.CustomerList.FOccupation, "", new { @class = "text-danger" })
+                <label>Father's Occupation</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.FAddress, new { @class = "form-control", @placeholder = "Father's Address" })
+                @Html.ValidationMessageFor(m => m.CustomerList.FAddress, "", new { @class = "text-danger" })
+                <label>Father's Address</label>
+            </div>
+        </div>
+
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Update</button>
         </div>

@@ -722,8 +722,8 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {
-
                 var customer = await GetSingleCustomer(objCustomerProfile.CustomerList.CustomerId);
+
                 customer.DivisionId = objCustomerProfile.CustomerList.DivisionId;
                 customer.SubDivisionId = objCustomerProfile.CustomerList.SubDivisionId;
                 customer.RegionId = objCustomerProfile.CustomerList.RegionId;
@@ -751,27 +751,37 @@ namespace CBS.BusinessService.CustomerManagement
                 customer.CustomerCategoryId = objCustomerProfile.CustomerList.CustomerCategoryId;
                 customer.Fax = objCustomerProfile.CustomerList.Fax;
                 customer.POBox = objCustomerProfile.CustomerList.POBox;
-                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(string.Format(APICallHelper.UpdateIndividualProfile, customer.CustomerId), customer);
+
+                // ✅ Add Parent Information
+                customer.MName = objCustomerProfile.CustomerList.MName;
+                customer.MAddress = objCustomerProfile.CustomerList.MAddress;
+                customer.MOccupation = objCustomerProfile.CustomerList.MOccupation;
+                customer.MPhone = objCustomerProfile.CustomerList.MPhone;
+                customer.FName = objCustomerProfile.CustomerList.FName;
+                customer.FAddress = objCustomerProfile.CustomerList.FAddress;
+                customer.FOccupation = objCustomerProfile.CustomerList.FOccupation;
+                customer.FPhone = objCustomerProfile.CustomerList.FPhone;
+
+                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<IndividualProfile>>(
+                    string.Format(APICallHelper.UpdateIndividualProfile, customer.CustomerId), customer);
+
                 if (inResponse.IsSuccess)
                 {
-                    // Handle success scenario
                     GetExecutionMessages(inResponse, true, $"{customer.FirstName} {customer.LastName}", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                     return ExecutionMessage;
-
                 }
                 else
                 {
-                    // Handle failure scenario
                     GetExecutionMessages(customer, false, customer.FirstName, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, null);
-
                 }
             }
             catch (Exception ex)
             {
-                // Log and handle exception
+                // Handle exception (you may add logger here if needed)
             }
+
             return ExecutionMessage;
         }
         public async Task<ExecutionMessages> UpdateBankInfo(IndividualCustomerProfile objCustomerProfile)

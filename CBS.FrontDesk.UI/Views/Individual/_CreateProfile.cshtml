@@ -36,7 +36,7 @@
                                 <div class="row g-4">
                                     <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.CustomerId, new { @class = "form-control", @placeholder = "1234",@readonly=true, @required = "required" })
+                                            @Html.TextBoxFor(m => m.CustomerId, new { @class = "form-control", @placeholder = "1234", @readonly = true, @required = "required" })
                                             @Html.ValidationMessageFor(m => m.CustomerId, "", new { @class = "text-danger" })
                                             <label>Members Reference Number</label>
                                         </div>
@@ -237,7 +237,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email",@required = "required" })
+                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email", @required = "required" })
                                             @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                                             <label>Email</label>
                                         </div>
@@ -393,6 +393,101 @@
                     </div>
                 </div>
                 <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingParentInfo">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseParentInfo"
+                                aria-expanded="false"
+                                aria-controls="collapseParentInfo">
+                            Parents Information
+                        </button>
+                    </h2>
+                    <div id="collapseParentInfo"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingParentInfo"
+                         data-bs-parent="#collapsibleSection">
+                        <div class="accordion-body">
+                            <fieldset class="fieldset-custom">
+                                <div class="row g-4">
+                                    <div class="col-md-12">
+                                        <h5 class="text-primary">Mother's Information</h5>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.MName, new { @class = "form-control", @placeholder = "Mother's Full Name", @required = "required" })
+                                            @Html.ValidationMessageFor(m => m.MName, "", new { @class = "text-danger" })
+                                            <label>Mother's Full Name</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.MPhone, new { @class = "form-control", @placeholder = "Mother's Phone Number", @required = "required" })
+                                            @Html.ValidationMessageFor(m => m.MPhone, "", new { @class = "text-danger" })
+                                            <label>Mother's Phone Number</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.MOccupation, new { @class = "form-control", @placeholder = "Mother's Occupation", @required = "required" })
+                                            @Html.ValidationMessageFor(m => m.MOccupation, "", new { @class = "text-danger" })
+                                            <label>Mother's Occupation</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.MAddress, new { @class = "form-control", @placeholder = "Mother's Address", @required = "required" })
+                                            @Html.ValidationMessageFor(m => m.MAddress, "", new { @class = "text-danger" })
+                                            <label>Mother's Address</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mt-4">
+                                        <h5 class="text-primary">Father's Information</h5>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.FName, new { @class = "form-control", @placeholder = "Father's Full Name" })
+                                            @Html.ValidationMessageFor(m => m.FName, "", new { @class = "text-danger" })
+                                            <label>Father's Full Name</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.FPhone, new { @class = "form-control", @placeholder = "Father's Phone Number" })
+                                            @Html.ValidationMessageFor(m => m.FPhone, "", new { @class = "text-danger" })
+                                            <label>Father's Phone Number</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.FOccupation, new { @class = "form-control", @placeholder = "Father's Occupation" })
+                                            @Html.ValidationMessageFor(m => m.FOccupation, "", new { @class = "text-danger" })
+                                            <label>Father's Occupation</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.FAddress, new { @class = "form-control", @placeholder = "Father's Address" })
+                                            @Html.ValidationMessageFor(m => m.FAddress, "", new { @class = "text-danger" })
+                                            <label>Father's Address</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card accordion-item mb-3">
                     <h2 class="accordion-header" id="headingPaymentMethod">
                         <button type="button"
                                 class="accordion-button collapsed"
@@ -412,12 +507,12 @@
                             <fieldset class="fieldset-custom">
                                 <div class="row g-4">
                                     @*<div class="col-md-4">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.LegalForm, new SelectList(ViewBag.legalForms, "Text", "Value"), "---Select legality status---", new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.LegalForm, "", new { @class = "text-danger " })
-                                                <label for="formValidationDob">Legal form</label>
-                                            </div>
-                                        </div>*@
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(m => m.LegalForm, new SelectList(ViewBag.legalForms, "Text", "Value"), "---Select legality status---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(m => m.LegalForm, "", new { @class = "text-danger " })
+                                    <label for="formValidationDob">Legal form</label>
+                                </div>
+                            </div>*@
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.DropDownListFor(m => m.FormalOrInformalSector, new SelectList(ViewBag.formalOrInformalSectors, "Text", "Value"), "---Select sector---", new { @class = "form-control select2", @search = "true", @required = "required" })
