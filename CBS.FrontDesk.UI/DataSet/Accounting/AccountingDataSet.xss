@@ -10,7 +10,7 @@
     <Shape ID="DesignTable:TrialBalance8Column" ZOrder="9" X="360" Y="70" Height="770" Width="243" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="766" />
     <Shape ID="DesignTable:GeneralLedger" ZOrder="2" X="960" Y="88" Height="676" Width="157" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="672" />
     <Shape ID="DesignTable:JournalEntries" ZOrder="3" X="682" Y="100" Height="752" Width="157" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="628" SplitterPosition="748" />
-    <Shape ID="DesignTable:LiaisonLedger" ZOrder="8" X="1196" Y="91" Height="540" Width="189" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="536" />
+    <Shape ID="DesignTable:AccountEntryReciept" ZOrder="8" X="1196" Y="91" Height="448" Width="189" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="444" />
     <Shape ID="DesignTable:BalanceSheet" ZOrder="7" X="85" Y="720" Height="563" Width="221" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="559" />
     <Shape ID="DesignTable:Income" ZOrder="4" X="1284" Y="687" Height="517" Width="219" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="513" />
     <Shape ID="DesignTable:Expense" ZOrder="6" X="747" Y="943" Height="309" Width="210" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="305" />
