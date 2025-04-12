@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Accounting\ProductAccountingBook.cs" />
     <Compile Include="Entity\Accounting\Enumeration.cs" />
+    <Compile Include="Entity\AccountOpeningRulePerBranchP\AccountOpeningRulePerBranch.cs" />
     <Compile Include="Entity\AndriodApp\AndriodVersionConfiguration.cs" />
     <Compile Include="Entity\AuditTralP\AuditTrailDto.cs" />
     <Compile Include="Entity\CashCeilingManagement\CashCeilingRequest.cs" />

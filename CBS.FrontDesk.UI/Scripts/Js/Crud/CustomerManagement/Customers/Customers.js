@@ -14,6 +14,207 @@ function EditReset(KEY, ServiceOption) {
 }
 
 
+function AjaxPostAndUpdateMemberRegistration(form) {
+    console.log("Form Action:", form.action);
+    console.log("Form Method:", form.method);
+
+    var formData = new FormData(form);
+    for (var pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
+
+    // --- Custom Client-Side Validation ---
+    function validateMemberForm(formElement) {
+        let isValid = true;
+        let firstInvalid = null;
+
+        const today = new Date();
+        const minDOB = new Date(today.getFullYear() - 5, today.getMonth(), today.getDate());
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        const maritalStatus = $(formElement).find('[name="MaritalStatus"]').val();
+        const workingStatus = $(formElement).find('[name="WorkingStatus"]').val();
+
+        $(formElement).find('.is-invalid').removeClass('is-invalid');
+
+        $(formElement).find('input, select, textarea').each(function () {
+            const field = $(this);
+            const name = field.attr("name");
+            const val = $.trim(field.val());
+            const isRequired = field.prop('required') || field.hasClass('required');
+
+            // General required check
+            if (isRequired && (val === "" || val === null)) {
+                field.addClass('is-invalid');
+                if (!firstInvalid) firstInvalid = field;
+                isValid = false;
+                return;
+            }
+
+            // ✅ Marital status dependent fields
+            const maritalRequiredFields = [
+                "SpouseName",
+                "SpouseAddress",
+                "SpouseContactNumber",
+                "NumberOfKids",
+                "SpouseOccupation"
+            ];
+
+            if (maritalStatus === "Married" && maritalRequiredFields.includes(name)) {
+                if (!val) {
+                    field.addClass('is-invalid');
+                    if (!firstInvalid) firstInvalid = field;
+                    isValid = false;
+                    appalert("❌ Please complete all spouse-related fields for Married status.", 2, 1);
+                    return;
+                }
+            }
+
+            // ✅ Working status dependent fields
+            const workFields = ["EmployerName", "EmployerTelephone", "EmployerAddress", "Income"];
+            if (workingStatus && workFields.includes(name)) {
+                if (!val) {
+                    field.addClass('is-invalid');
+                    if (!firstInvalid) firstInvalid = field;
+                    isValid = false;
+                    appalert("❌ Please complete all employer-related fields for selected Working Status.", 2, 1);
+                    return;
+                }
+
+                // ✅ Income must be > 0
+                if (name === "Income") {
+                    const income = parseFloat(val);
+                    if (isNaN(income) || income <= 0) {
+                        field.addClass('is-invalid');
+                        if (!firstInvalid) firstInvalid = field;
+                        isValid = false;
+                        appalert("❌ Income must be a number greater than 0.", 2, 1);
+                        return;
+                    }
+                }
+            }
+
+            // ✅ Date of Birth: Minimum 5 years
+            if (name === "DateOfBirth" && val) {
+                const dob = new Date(val);
+                if (dob > minDOB) {
+                    field.addClass('is-invalid');
+                    if (!firstInvalid) firstInvalid = field;
+                    isValid = false;
+                    appalert("❌ Member must be at least 5 years old.", 2, 1);
+                    return;
+                }
+            }
+
+            // ✅ ID Card Issue Date: Cannot be in the future
+            if (name === "IDNumberIssueDate" && val) {
+                const issueDate = new Date(val);
+                if (issueDate > today) {
+                    field.addClass('is-invalid');
+                    if (!firstInvalid) firstInvalid = field;
+                    isValid = false;
+                    appalert("❌ ID Card Issue Date cannot be in the future.", 2, 1);
+                    return;
+                }
+            }
+
+            // ✅ ID Card Expiry Date: Must be strictly after today
+            if (name === "IDNumberExpiryDate" && val) {
+                const expiryDate = new Date(val);
+                const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                if (expiryDate <= todayOnly) {
+                    field.addClass('is-invalid');
+                    if (!firstInvalid) firstInvalid = field;
+                    isValid = false;
+                    appalert("❌ ID Card Expiry Date must be greater than today.", 2, 1);
+                    return;
+                }
+            }
+
+
+            // ✅ Email validation
+            if (name === "Email" && val && !emailPattern.test(val)) {
+                field.addClass('is-invalid');
+                if (!firstInvalid) firstInvalid = field;
+                isValid = false;
+                appalert("❌ Please enter a valid email address.", 2, 1);
+                return;
+            }
+        });
+
+        if (!isValid && firstInvalid) {
+            firstInvalid.focus();
+            if (!$(".appalert:visible").length) {
+                appalert("❌ Please correct the highlighted fields before submitting.", 2, 1);
+            }
+        }
+
+        return isValid;
+    }
+
+
+
+    // Validate form
+    if (!validateMemberForm(form)) {
+        return false;
+    }
+
+    // Proceed with jQuery Unobtrusive Validation
+    $.validator.unobtrusive.parse(form);
+    if (!$(form).valid()) {
+        appalert("❌ Please correct validation errors before submitting.", 2, 1);
+        return false;
+    }
+
+    // Confirmation
+    alertify.confirm("Confirmation", "Are you sure you want to perform this action? ",
+        function () {
+            const ajaxConfig = {
+                type: 'POST',
+                url: form.action,
+                data: new FormData(form),
+                success: function (response) {
+                    console.log("Response:", response);
+                    if (response.success) {
+                        if (response.status === "Exist") {
+                            appalert(response.message, 3, 1);
+                        } else if (response.status === "Failed") {
+                            appalert(response.message, 2, 1);
+                        } else {
+                            appalert(response.message, 1, 1);
+                            setTimeout(() => location.reload(), 1500);
+                        }
+                    } else {
+                        const msg = response.message || "❌ Operation failed.";
+                        appalert(msg, response.status === "Exist" ? 3 : 2, 1);
+                    }
+                },
+                error: function (err) {
+                    console.log("Error:", err);
+                    if (err.status === 401) {
+                        window.location.href = '/Authentication/Login';
+                    } else {
+                        appalert(err.statusText, 0, 1);
+                    }
+                }
+            };
+
+            if ($(form).attr('enctype') === "multipart/form-data") {
+                ajaxConfig.contentType = false;
+                ajaxConfig.processData = false;
+            }
+
+            console.log("AJAX Config:", ajaxConfig);
+            $.ajax(ajaxConfig);
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
+        }
+    );
+
+    return false;
+}
+
 
 function manualSearch() {
     LoadUsers($('#manualSearchInput').val())

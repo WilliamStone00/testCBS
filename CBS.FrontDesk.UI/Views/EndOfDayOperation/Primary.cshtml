@@ -1,21 +1,21 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.EndOfTheDay
 @{
-    ViewBag.Title = "CLOSE OF DAY P.T";
+    ViewBag.Title = "CLOSE OF DAY Main-Till";
 }
 <div class="row">
     <div class="col-12">
         <!-- Page Header -->
         <div class="card bg-light mb-4">
             <div class="card-body text-center">
-                <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash-multiple me-2"></i> Closing of Primary-Till
+                <h1 class="card-title text-Main">
+                    <i class="mdi mdi-cash-multiple me-2"></i> Closing of Main-Till
                 </h1>
                 <p class="card-text text-muted">
-                    Manage the closing process of the primary till efficiently. Ensure all subtills in the branch have been closed before proceeding.
+                    Manage the closing process of the Main till efficiently. Ensure all subtills in the branch have been closed before proceeding.
                 </p>
                 <p class="card-text text-danger fw-bold">
                     <i class="mdi mdi-alert-circle-outline me-2"></i>
-                    Note: Primary tills cannot be closed unless all sub-tills in the branch are closed.
+                    Note: Main tills cannot be closed unless all sub-tills in the branch are closed.
                 </p>
             </div>
         </div>
@@ -24,7 +24,7 @@
 
 <!-- Tips Card -->
 <div class="card mb-3">
-    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-Main">
         <span>
             <i class="mdi mdi-information-outline me-2"></i> HELP TIPS
         </span>
@@ -35,7 +35,7 @@
     <div id="collapseHelpTips" class="collapse">
         <div class="card-body">
             <p class="text-muted mb-2">
-                Follow these steps to ensure a smooth closing of the primary till:
+                Follow these steps to ensure a smooth closing of the Main till:
             </p>
             <ul>
                 <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Verify that all sub-tills under the same branch have been closed.</li>
@@ -45,7 +45,7 @@
             </ul>
             <p class="text-muted">Additional notes:</p>
             <ul>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> If the <strong>Close of Day button is greyed out</strong>, ensure all sub-tills are closed.</li>
+                <li><i class="mdi mdi-information-outline text-Main me-2"></i> If the <strong>Close of Day button is greyed out</strong>, ensure all sub-tills are closed.</li>
                 <li><i class="mdi mdi-alert-outline text-danger me-2"></i> Make sure to <strong>print your End of Day report</strong> after completing the process.</li>
             </ul>
         </div>
@@ -65,7 +65,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cash-multiple me-2"></i>
-                            Closing of Primary-Till
+                            Closing of Main-Till
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"

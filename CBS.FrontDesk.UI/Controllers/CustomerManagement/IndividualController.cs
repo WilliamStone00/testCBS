@@ -54,6 +54,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         {
             ViewBag.KEY = KEY;
             var customer = await InitializeCustomerData(KEY);
+            ViewBag.MemberStatus = customer.CustomerList.CustomerId.Contains("PRM") ? "MEMBER REFERENCE NUMBER" : "MEMBER ACCOUNT NUMBER";
             return View(customer);
         }
         public async Task<ActionResult> MyMembers()

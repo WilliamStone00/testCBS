@@ -3574,9 +3574,16 @@
     <Content Include="Views\Shared\_MenuX.cshtml" />
     <Content Include="Views\Loan\LoanPortfolioReport.cshtml" />
     <Content Include="Views\Session\Locked.cshtml" />
+    <Content Include="Views\AccountOpeningRulePerBranch\_Create.cshtml" />
+    <Content Include="Views\AccountOpeningRulePerBranch\_Data.cshtml" />
+    <Content Include="Views\AccountOpeningRulePerBranch\_VaultDetailsPartial.cshtml" />
+    <Content Include="Views\AccountOpeningRulePerBranch\_VaultInitializationForm.cshtml" />
+    <Content Include="Views\AccountOpeningRulePerBranch\Index.cshtml" />
+    <Content Include="Views\AccountOpeningRulePerBranch\Initilization.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
+    <Folder Include="AppFiles\Images\BarCodes\" />
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\CustomerManagement\MemberActivation\" />

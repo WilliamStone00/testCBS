@@ -2711,6 +2711,8 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             private global::System.Data.DataColumn columnGender;
             
+            private global::System.Data.DataColumn columnDeliquentAmount;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public LoanPortfolioDataTable() {
@@ -3122,6 +3124,14 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DeliquentAmountColumn {
+                get {
+                    return this.columnDeliquentAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -3204,7 +3214,8 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                         string Age, 
                         decimal Penalty, 
                         decimal VAT, 
-                        string Gender) {
+                        string Gender, 
+                        decimal DeliquentAmount) {
                 LoanPortfolioRow rowLoanPortfolioRow = ((LoanPortfolioRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -3253,7 +3264,8 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                         Age,
                         Penalty,
                         VAT,
-                        Gender};
+                        Gender,
+                        DeliquentAmount};
                 rowLoanPortfolioRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowLoanPortfolioRow);
                 return rowLoanPortfolioRow;
@@ -3323,6 +3335,7 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                 this.columnPenalty = base.Columns["Penalty"];
                 this.columnVAT = base.Columns["VAT"];
                 this.columnGender = base.Columns["Gender"];
+                this.columnDeliquentAmount = base.Columns["DeliquentAmount"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3422,6 +3435,8 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                 base.Columns.Add(this.columnVAT);
                 this.columnGender = new global::System.Data.DataColumn("Gender", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGender);
+                this.columnDeliquentAmount = new global::System.Data.DataColumn("DeliquentAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeliquentAmount);
                 this.columnId.Caption = "AgingBucket";
                 this.columnCustomerId.Caption = "DelinquentLoanCount";
                 this.columnCustomerName.Caption = "DelinquentPrincipal";
@@ -7977,6 +7992,22 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal DeliquentAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableLoanPortfolio.DeliquentAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DeliquentAmount\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.DeliquentAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tableLoanPortfolio.IdColumn);
             }
@@ -8537,6 +8568,18 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetGenderNull() {
                 this[this.tableLoanPortfolio.GenderColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDeliquentAmountNull() {
+                return this.IsNull(this.tableLoanPortfolio.DeliquentAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDeliquentAmountNull() {
+                this[this.tableLoanPortfolio.DeliquentAmountColumn] = global::System.Convert.DBNull;
             }
         }
         

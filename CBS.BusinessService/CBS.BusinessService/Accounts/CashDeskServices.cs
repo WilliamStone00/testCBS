@@ -310,8 +310,31 @@ namespace CBS.BusinessService.Accounts
         public static List<BulkDeposit> FilterByAmountGreaterThanZero(List<BulkDeposit> deposits)
         {
 
-            return deposits.Where(deposit => deposit.Amount > 0 || deposit.Fee > 0 || deposit.Interest > 0 || deposit.Penalty > 0).ToList();
+            if (deposits == null || !deposits.Any())
+                return new List<BulkDeposit>();
+
+            foreach (var deposit in deposits)
+            {
+                if (deposit == null)
+                    throw new InvalidOperationException("One of the deposit entries is null. Please review the list.");
+
+                if (deposit.Amount < 0 || deposit.Fee < 0 || deposit.Interest < 0 || deposit.Penalty < 0)
+                {
+                    throw new InvalidOperationException(
+                        $"❌ Operation Validation Failed:\n" +
+                        $"- Account Number: {deposit.AccountNumber}\n" +
+                        $"- Amount: {deposit.Amount}, Fee: {deposit.Fee}, Interest: {deposit.Interest}, Penalty: {deposit.Penalty}\n\n" +
+                        $"🚫 Negative values are not allowed in a Operation. " +
+                        $"Please verify the transaction and ensure all values are positive or zero."
+                    );
+                }
+            }
+
+            return deposits
+                .Where(d => d.Amount > 0 || d.Fee > 0 || d.Interest > 0 || d.Penalty > 0)
+                .ToList();
         }
+
         public async Task<ExecutionMessages> BulkDeposi(List<BulkDeposit> bulkDeposits1)
         {
             try

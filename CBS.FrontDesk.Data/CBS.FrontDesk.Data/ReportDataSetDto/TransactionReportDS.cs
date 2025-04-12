@@ -262,6 +262,9 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public string InternalReferenceNumber { get; set; }
         public string ExternalReferenceNumber { get; set; }
         public string SourceOfRequest { get; set; }
+        public string BarcodeData { get; set; }
+        public string BarcodeImagePath { get; set; }
+
         public string PortalUsed { get; set; }
         public List<DenominationDS> DenominationDs { get; set; }
         public List<PaymentDetailDS> PaymentDetailDs { get; set; }
