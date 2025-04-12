@@ -259,10 +259,10 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             var accounts = await _AccountServices.GetAllAccounting();
             var accountingRules = (await _accountingEntryRuleService.GetAccountingEntryRules()).ToList();
-            //return accounts.ToList();
-            return accounts.Where(account =>
-                !CheckIfAccountIsOperationsAccount(account, accountingRules).Result)
-                .ToList();
+            return accounts.ToList();
+            //return accounts.Where(account =>
+            //    !CheckIfAccountIsOperationsAccount(account, accountingRules).Result)
+            //    .ToList();
         }
 
         private Task<bool> CheckIfAccountIsOperationsAccount(Data.Account account, List<AccountingRuleEntry> accountingRules)
@@ -276,7 +276,7 @@ namespace CBS.FrontDesk.UI.Controllers
         "Virtual_Teller_Momo_cash_Collection"
     };
 
-            var matchingRules = accountingRules
+            var matchingRules = accountingRules 
                 .FirstOrDefault(x => x.DeterminationAccountId.Equals(account.ChartOfAccountManagementPositionId));
 
             return Task.FromResult(
