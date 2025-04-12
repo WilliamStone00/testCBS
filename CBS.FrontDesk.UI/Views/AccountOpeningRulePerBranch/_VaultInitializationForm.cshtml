@@ -1,0 +1,183 @@
+﻿@model CBS.FrontDesk.Data.Entity.VaultManagement.Vault
+
+
+@using (Html.BeginForm("VaultInitialization", "Vault", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+
+    <fieldset class="fieldset-custom">
+        <div class="row mt-2 gy-4">
+            <!-- Cash in Hand -->
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.AmountInHand, new { @class = "form-control formatted-amount shadow-box", @id = "AmountInHand", @oninput = "calculateTotalAmount()" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.AmountInHand, "", new { @class = "text-danger" })
+                    <label for="AmountInHand">Cash in Hand</label>
+                </div>
+            </div>
+            <!-- Cash in Vault -->
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.AmountInVault, new { @class = "form-control formatted-amount shadow-box", @id = "AmountInVault", @oninput = "calculateTotalAmount()"})
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.AmountInVault, "", new { @class = "text-danger" })
+                    <label for="AmountInVault">Cash in Vault</label>
+                </div>
+            </div>
+            
+    <!-- Total Amount -->
+            <div class="col-md-6" style="display:none">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.TotalAmount, new { @class = "form-control formatted-amount shadow-box", @readonly = "readonly", @id = "TotalAmount" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.TotalAmount, "", new { @class = "text-danger" })
+                    <label for="TotalAmount">Total Cash In @Session["BranchName"]</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    <span class="formatted-amount shadow-box float-start" id="balanceBroughtForward">
+                        Balance Brought Forward: 0 XAF
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-6" hidden="hidden">
+                <div class="form-floating form-floating-outline">
+                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                    <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
+                    <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="0">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    <span class="formatted-amount shadow-box" id="lblBalance">
+                        Balance: 0 XAF
+                    </span>
+                </div>
+            </div>
+            <input type="hidden" name="Option" id="Option" value="@ViewBag.Option" />
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.CurrencyNote.note10000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note10000", @oninput = "calculateBalance()" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.CurrencyNote.note10000, "", new { @class = "text-danger " })
+                    <label>N10,000</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.CurrencyNote.note5000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note5000", @oninput = "calculateBalance()" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.CurrencyNote.note5000, "", new { @class = "text-danger " })
+                    <label>N5,000</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.CurrencyNote.note2000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note2000", @oninput = "calculateBalance()" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.CurrencyNote.note2000, "", new { @class = "text-danger " })
+                    <label>N2,000</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.CurrencyNote.note1000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note1000", @oninput = "calculateBalance()" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.CurrencyNote.note1000, "", new { @class = "text-danger " })
+                    <label>N1,000</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.CurrencyNote.note500, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note500", @oninput = "calculateBalance()" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.CurrencyNote.note500, "", new { @class = "text-danger " })
+                    <label>N500</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.CurrencyNote.coin500, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin500", @oninput = "calculateBalance()" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.CurrencyNote.coin500, "", new { @class = "text-danger " })
+                    <label>C500</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.CurrencyNote.coin100, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin100", @oninput = "calculateBalance()" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.CurrencyNote.coin100, "", new { @class = "text-danger " })
+                    <label>C100</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.CurrencyNote.coin50, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin50", @oninput = "calculateBalance()" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.CurrencyNote.coin50, "", new { @class = "text-danger " })
+                    <label>C50</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.CurrencyNote.coin25, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin25", @oninput = "calculateBalance()" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.CurrencyNote.coin25, "", new { @class = "text-danger " })
+                    <label>C25</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.CurrencyNote.coin10, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin10", @oninput = "calculateBalance()" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.CurrencyNote.coin10, "", new { @class = "text-danger " })
+                    <label>C10</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.CurrencyNote.coin5, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin5", @oninput = "calculateBalance()" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.CurrencyNote.coin5, "", new { @class = "text-danger " })
+                    <label>C5</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.CurrencyNote.coin1, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin1", @oninput = "calculateBalance()" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.CurrencyNote.coin1, "", new { @class = "text-danger " })
+                    <label>C1</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextAreaFor(m => m.VaultInitializationCommand.Note, new { @class = "form-control", @style = "height: 90px;" })
+                    @Html.ValidationMessageFor(m => m.VaultInitializationCommand.Note, "", new { @class = "text-danger " })
+                    <label for="formValidationDob">Drop a note</label>
+                </div>
+            </div>
+            <!-- Checkbox for CanProceed -->
+            <div class="col-md-12 d-flex align-items-center">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.VaultInitializationCommand.CanProceed, new { @class = "form-check-input", @id = "canProceedCheckbox", @onchange = "toggleExecution()" })
+                    <label class="form-check-label" for="canProceedCheckbox">Can Proceed to execute deficits or supplus</label>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" id="btnSave" class="btn btn-primary me-2">Initialize vailt</button>
+        </div>
+    </fieldset>
+}
+<script>
+    // Function to calculate the total amount and update the relevant fields
+    function calculateTotalAmount() {
+        // Example: Get cash-in-vault and cash-in-hand values (replace with your actual inputs)
+        const cashInVault = parseFloat(document.getElementById('AmountInVault').value) || 0;
+        const cashInHand = parseFloat(document.getElementById('AmountInHand').value) || 0;
+
+        // Calculate total amount
+        const totalAmount = cashInVault + cashInHand;
+
+        // Format total amount to currency XAF
+        const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'XAF' }).format(totalAmount);
+
+        // Update the spans and hidden input fields
+        document.getElementById('balanceBroughtForward').innerText = `Balance Brought Forward: ${formattedAmount}`;
+        document.getElementById('lblDepositRequest_amount').innerText = `Total amount: ${formattedAmount}`;
+        document.getElementById('lblBalance').innerText = `Balance: ${formattedAmount}`;
+        document.getElementById('totalNoteAmount').value = totalAmount.toFixed(2);
+        document.getElementById('totalProvision').value = totalAmount.toFixed(2);
+
+        // Update the Total Amount field
+        document.getElementById('TotalAmount').value = totalAmount.toFixed(2);
+    }
+</script>

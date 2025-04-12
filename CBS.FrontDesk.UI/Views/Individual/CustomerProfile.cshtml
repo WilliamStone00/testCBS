@@ -31,7 +31,7 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="group-title">
-                        MEMBER REFERENCE # <span class="highlight-text">@Model.CustomerList.CustomerId</span>
+                        @ViewBag.MemberStatus <span class="highlight-text">@Model.CustomerList.CustomerId</span>
                         <hr />
                         <small>Member code: Last 4 digits</small><br />
                         <small>Bank Code: @Session["BankCode"].ToString()</small><br />

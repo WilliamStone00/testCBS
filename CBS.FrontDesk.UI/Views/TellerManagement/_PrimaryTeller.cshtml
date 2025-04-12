@@ -93,7 +93,7 @@
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.TellerType, "NoneCashTeller", new { id = "NoneCashTeller", @class = "form-check-input" })
-                                        <label class="form-check-label" for="NoneCashTeller">None Cash Management Teller. (No cash is treated)</label>
+                                        <label class="form-check-label" for="NoneCashTeller">Non Cash Management Teller. (No cash is treated)</label>
                                     </div>
                                 </div>
                             </div>
@@ -137,11 +137,11 @@
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.OperationType, "NoneCash", new { id = "NoneCash", @class = "form-check-input" })
-                                        <label class="form-check-label" for="NoneCash">Performs None Cash Operation.</label>
+                                        <label class="form-check-label" for="NoneCash">Performs Non Cash Operation.</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.OperationType, "Both_Cash_NoneCash", new { id = "NoneCash", @class = "form-check-input" })
-                                        <label class="form-check-label" for="NoneCash">Performs "<b>None Cash</b>" and "<b>Cash</b>" Operations. [Both Operations].</label>
+                                        <label class="form-check-label" for="NoneCash">Performs "<b>Non Cash</b>" and "<b>Cash</b>" Operations. [Both Operations].</label>
                                     </div>
                                 </div>
                             </div>

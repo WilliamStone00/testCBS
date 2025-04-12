@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "Account Opening Rules";
+}
+
+@model CBS.FrontDesk.Data.Entity.AccountOpeningRulePerBranchP.AccountOpeningRulePerBranch
+
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-bank me-2"></i> Account Opening Rules per Branch
+                </h1>
+                <p class="card-text text-muted">
+                    Configure and manage rules that determine how saving accounts can be opened for each branch. Use the controls below to add or view rules.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccountRuleTips" aria-expanded="false" aria-controls="collapseAccountRuleTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseAccountRuleTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure you select the correct branch and saving product before submitting a rule.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Opening balances must be specified and within realistic financial thresholds.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Rules apply per product and branch—duplicates are not allowed.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Enabling installment payment allows customers to open accounts gradually.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Accordion Section -->
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="card shadow-sm">
+            <div id="accordionAccountOpeningRule" class="accordion accordion-popout">
+                <div class="accordion-item active">
+                    <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionAccountOpeningRuleHeader">
+                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionAccountOpeningRuleBody" aria-expanded="true" aria-controls="accordionAccountOpeningRuleBody">
+                            <i class="mdi mdi-shield-key-outline me-2"></i> Account Opening Rule Management
+                        </button>
+                    </h2>
+                    <div id="accordionAccountOpeningRuleBody" class="accordion-collapse collapse show" data-bs-parent="#accordionAccountOpeningRule">
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+                                <div class="card mb-1">
+                                    <div class="card-body d-flex justify-content-end align-items-center">
+                                        <a type="button" onclick="LoadDataGen('AccountOpeningRulePerBranch','myDataTable','_Data',0,'datalistingview')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View List">
+                                            <i class="mdi mdi-view-list mdi-18px"></i> View List
+                                        </a>
+                                        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','AccountOpeningRulePerBranch')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="Add New Rule">
+                                            <i class="mdi mdi-plus mdi-18px"></i> Add Rule
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="datalistingview">
+                                    @Html.Partial("_Create")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Details View -->
+<div class="modal fade" id="accountRuleDetailsModal" tabindex="-1" aria-labelledby="accountRuleDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header p-2">
+                <header class="w-100 text-center">
+                    <h4 class="text-primary fw-bold mb-1">
+                        <i class="mdi mdi-bank-outline me-2"></i> ACCOUNT RULE DETAILS
+                    </h4>
+                    <p class="text-muted mb-0">
+                        View and manage account opening rule details for selected branch and product.
+                    </p>
+                    <hr style="border: 1px solid rgba(128, 128, 128, 0.5);" />
+                </header>
+            </div>
+            <div class="modal-body p-2">
+                <div id="accountRuleDetailsContent">
+                    <!-- Partial view or dynamic content will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

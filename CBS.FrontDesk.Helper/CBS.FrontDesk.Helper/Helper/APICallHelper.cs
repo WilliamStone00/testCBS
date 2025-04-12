@@ -72,6 +72,12 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllHolyDay = "/api/v1/HolyDays";
         public static string CreateHolyDay = "/api/v1/HolyDay";
 
+
+        public static string Get_Or_Delete_AccountOpeningRule = "/api/v1/AccountOpeningRule/{0}";
+        public static string GetAllAccountOpeningRule = "/api/v1/AccountOpeningRule/All";
+        public static string UpdateAccountOpeningRule = "/api/v1/AccountOpeningRule/Update";
+        public static string AddAccountOpeningRule = "/api/v1/AccountOpeningRule/Add";
+
         public static string Get_Vault = "/api/v1/Vault/{0}";
         public static string Update_Vault = "/api/v1/Vault/update";
         public static string GetAllVaultByBranch = "/api/v1/Vault/branch/{0}";

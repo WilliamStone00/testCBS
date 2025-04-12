@@ -90,6 +90,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
       <Private>True</Private>
@@ -180,6 +181,10 @@
     <Reference Include="XLParser, Version=1.5.2.0, Culture=neutral, PublicKeyToken=63397e1e46bb91b4, processorArchitecture=MSIL">
       <HintPath>..\..\packages\XLParser.1.5.2\lib\net461\XLParser.dll</HintPath>
     </Reference>
+    <Reference Include="zxing, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CBS.FrontDesk.UI\Bin\zxing.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountingDayObject\AccountingDayServices.cs" />
@@ -219,6 +224,7 @@
     <Compile Include="Accounting\OperationEventServices.cs" />
     <Compile Include="Accounting\TellerCashReplenishmentServices.cs" />
     <Compile Include="Accounting\TransactionReferenceValidator.cs" />
+    <Compile Include="Accounts\AccountOpeningRulePerBranchServices.cs" />
     <Compile Include="Accounts\SalaryAnalysisResultServices.cs" />
     <Compile Include="Accounts\MemberNoneCashOperationServices.cs" />
     <Compile Include="Accounts\SalaryExecutionServices.cs" />

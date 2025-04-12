@@ -415,6 +415,10 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             private global::System.Data.DataColumn columnDepositorCNI;
             
+            private global::System.Data.DataColumn columnBarcodeData;
+            
+            private global::System.Data.DataColumn columnBarcodeImagePath;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public PaymentReciptDSDataTable() {
@@ -714,6 +718,22 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BarcodeDataColumn {
+                get {
+                    return this.columnBarcodeData;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BarcodeImagePathColumn {
+                get {
+                    return this.columnBarcodeImagePath;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -782,7 +802,9 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         string DepositorName, 
                         string PortalUsed, 
                         string DepositorPhone, 
-                        string DepositorCNI) {
+                        string DepositorCNI, 
+                        string BarcodeData, 
+                        string BarcodeImagePath) {
                 PaymentReciptDSRow rowPaymentReciptDSRow = ((PaymentReciptDSRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -817,7 +839,9 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         DepositorName,
                         PortalUsed,
                         DepositorPhone,
-                        DepositorCNI};
+                        DepositorCNI,
+                        BarcodeData,
+                        BarcodeImagePath};
                 rowPaymentReciptDSRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowPaymentReciptDSRow);
                 return rowPaymentReciptDSRow;
@@ -873,6 +897,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 this.columnPortalUsed = base.Columns["PortalUsed"];
                 this.columnDepositorPhone = base.Columns["DepositorPhone"];
                 this.columnDepositorCNI = base.Columns["DepositorCNI"];
+                this.columnBarcodeData = base.Columns["BarcodeData"];
+                this.columnBarcodeImagePath = base.Columns["BarcodeImagePath"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -944,6 +970,10 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 base.Columns.Add(this.columnDepositorPhone);
                 this.columnDepositorCNI = new global::System.Data.DataColumn("DepositorCNI", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDepositorCNI);
+                this.columnBarcodeData = new global::System.Data.DataColumn("BarcodeData", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBarcodeData);
+                this.columnBarcodeImagePath = new global::System.Data.DataColumn("BarcodeImagePath", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBarcodeImagePath);
                 this.columnId.AllowDBNull = false;
             }
             
@@ -2331,6 +2361,38 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BarcodeData {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.BarcodeDataColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BarcodeData\' in table \'PaymentReciptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.BarcodeDataColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BarcodeImagePath {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.BarcodeImagePathColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BarcodeImagePath\' in table \'PaymentReciptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.BarcodeImagePathColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsMemberNameNull() {
                 return this.IsNull(this.tablePaymentReciptDS.MemberNameColumn);
             }
@@ -2711,6 +2773,30 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetDepositorCNINull() {
                 this[this.tablePaymentReciptDS.DepositorCNIColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBarcodeDataNull() {
+                return this.IsNull(this.tablePaymentReciptDS.BarcodeDataColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBarcodeDataNull() {
+                this[this.tablePaymentReciptDS.BarcodeDataColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBarcodeImagePathNull() {
+                return this.IsNull(this.tablePaymentReciptDS.BarcodeImagePathColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBarcodeImagePathNull() {
+                this[this.tablePaymentReciptDS.BarcodeImagePathColumn] = global::System.Convert.DBNull;
             }
         }
         
