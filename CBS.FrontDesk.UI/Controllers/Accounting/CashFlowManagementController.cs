@@ -230,7 +230,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(_AccountServices.GetBranchID());
             var model = new DepositNotification();
+            var AccModel = listOfAccounts.Where(c => c.Account2 == "57101").ToList();
             model.HasBankAccount = listOfAccounts.Any();
+            model.AmountInVault = AccModel.Count > 0 ? (AccModel.Sum(c => c.CurrentBalance)) : 0;
             ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
             ViewBag.Branches = BuildDropDown(GenerateBranchListView((await branchServices.GetBranches()).ToList()));
 
@@ -456,11 +458,19 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                 if (model.Action.Equals("insert"))
                 {
+                    var amount = model.DepositNotification.CurrencyNotes.GetAmountValue();
 
+                    if ((model.DepositNotification.AmountInVault- amount) >0)
+                    {
 
-                    var datac = await _accountingEntryServices.DepositNotificationRequest(model.DepositNotification);
+                        var datac = await _accountingEntryServices.DepositNotificationRequest(model.DepositNotification);
 
-                    return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
+                        return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, status = MessagesResults.Required, message = "The balance in your vault do not enable you to perform this bank deposit transaction" });
+                    }
 
                 }
                 else

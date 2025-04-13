@@ -73,7 +73,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
         public string BankAccountOwner{ get; set; }
         public decimal Amount { get; set; }
-
+        public decimal AmountInVault { get; set; }
         public bool HasBankAccount { get; set; }
         public string BankAccountId { get; set; }
         public string Message { get; set; }
