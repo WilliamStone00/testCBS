@@ -136,8 +136,9 @@ namespace CBS.API.Helper
             }
             catch (Exception ex)
             {
-                throw ex; // You may want to log it or wrap it in a custom exception.
+                
             }
+            return null;
         }
 
         public async Task<ApiResponse<T>> PostImageAsync<T>(string apiUrl, HttpPostedFileBase imageFile)

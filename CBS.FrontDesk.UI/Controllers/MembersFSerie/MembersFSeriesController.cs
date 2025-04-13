@@ -2,13 +2,17 @@
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.ReportDataSetDto;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -31,28 +35,42 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             _individualProfileServices = individualProfileServices;
             _branchServices = branchServices;
         }
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+            ViewBag.Branches=await _branchServices.GetBranches();
             return View();
         }
         public async Task<ActionResult> F5MembersAccountStatement()
         {
             return View();
         }
-        [HttpGet]
-        public async Task<ActionResult> LoadData(string searchCriteria = "All")
+        [HttpPost]
+        public async Task<ActionResult> LoadMembersData(GetCustomersForDataTableQuery query)
         {
             try
             {
-                var dataTable = await _individualProfileServices.GetDataTable(GetDataTableOptions(), searchCriteria,false);
-                return Json(new { draw = dataTable.draw, recordsFiltered = dataTable.recordsTotal, recordsTotal = dataTable.recordsTotal, data = dataTable.data }, JsonRequestBehavior.AllowGet);
+                var dataTable = await _individualProfileServices.GetDataTableAsync(query);
 
+                var customerList = JsonConvert.DeserializeObject<List<CustomerLightDto>>(
+                    JsonConvert.SerializeObject(dataTable.data)
+                );
+                var branches = await _branchServices.GetBranches();
+                var customers = _individualProfileServices.MapToDtoOrdered(customerList, branches.ToList()); // Optional: for client-side sorting/grouping
+
+                return Json(new
+                {
+                    draw = query.Options?.draw ?? "1",
+                    recordsTotal = dataTable.recordsTotal,
+                    recordsFiltered = dataTable.recordsFiltered,
+                    data = customers
+                }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                throw;
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading member data.");
             }
         }
+
         public async Task<ActionResult> F2MembersGeneratSituation(string KEY)
         {
             if (KEY == null || KEY == "")

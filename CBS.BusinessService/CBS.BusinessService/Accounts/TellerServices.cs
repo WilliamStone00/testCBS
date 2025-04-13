@@ -264,6 +264,9 @@ namespace CBS.BusinessService.Accounts
                     Teller.PerformCashOut = model.PerformCashOut;
                     Teller.TellerType = model.TellerType;
                     Teller.OperationType = model.OperationType;
+                    Teller.IsBlockedDueToCashCeilling = model.IsBlockedDueToCashCeilling;
+                    Teller.Comment = model.Comment;
+                    Teller.Blockedby = GetUserFullName();
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<Teller>>(string.Format(APICallHelper.Get_Update_Delete_Teller, model.id), Teller);
                     if (response.IsSuccess)
                     {

@@ -287,31 +287,32 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             FormsAuthentication.SignOut();
 
-            // List of cookies to clear
             var cookieNames = new[]
             {
                 "BranchObject", "AuthUser", "CBS4U", "CBS4U_MFA", "MFA", "PWD",
-                "ASP.NET_SessionId", "EncryptedJWToken","TSC"
+                "ASP.NET_SessionId", "EncryptedJWToken", "TSC"
             };
 
-
-            foreach (var cookieName in cookieNames)
+                    foreach (var cookieName in cookieNames)
             {
                 if (Request.Cookies[cookieName] != null)
                 {
-                    var cookie = new HttpCookie(cookieName)
+                    var expiredCookie = new HttpCookie(cookieName)
                     {
                         Expires = DateTime.Now.AddYears(-1),
-                        Value = string.Empty
+                        Value = string.Empty,
+                        HttpOnly = true
                     };
-                    Response.Cookies.Add(cookie);
+                    Response.Cookies.Add(expiredCookie);
                 }
             }
 
             Session.Clear();
-            Session.Abandon();
             Session.RemoveAll();
-            Session.Remove("EncryptedJWToken");
+            Session.Abandon();
+
+            // ✅ No need to manually set HttpContext.User = null here
+
             return Task.CompletedTask;
         }
 

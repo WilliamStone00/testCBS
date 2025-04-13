@@ -1,8 +1,4 @@
 ﻿
-$(document).ready(function () {
-    //LoadUsers("All");
-    /*LoadDataGen('Individual', 'myDataTable', '_IndividualData', 0, 'datalistingview', null, 'all')*/
-});
 
 
 function showConfirmMessage(KEY, ServiceOption, tableID) {

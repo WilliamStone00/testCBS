@@ -195,6 +195,52 @@
 
                         </fieldset>
 
+                        <fieldset class="fieldset-custom">
+                            <legend>Cash Ceiling Monitoring</legend>
+                            <div class="row gy-4">
+
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.Teller.IsBlockedDueToCashCeilling, new { @class = "form-check-input", @disabled = "disabled" })
+                                        <label class="form-check-label">Blocked Due to Ceiling</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.Teller.DateOfBlocked, "{0:yyyy-MM-dd HH:mm}", new { @class = "form-control", @readonly = "readonly", type = "datetime-local" })
+                                        <label>Date Blocked</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.Teller.Blockedby, new { @class = "form-control", @readonly = "readonly" })
+                                        <label>Blocked By</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.Teller.Comment, new { @class = "form-control", placeholder = "Reason or Notes" })
+                                        @Html.ValidationMessageFor(m => m.Teller.Comment, "", new { @class = "text-danger" })
+                                        <label>Comment</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mt-3">
+                                    @{
+                                        var statusBadgeClass = Model.Teller.IsBlockedDueToCashCeilling ? "badge bg-danger" : "badge bg-success";
+                                        var statusText = Model.Teller.IsBlockedDueToCashCeilling ? "🚫 Ceiling Attained – Cash-In Disabled" : "✅ Within Cash Limit";
+                                    }
+                                    <span class="@statusBadgeClass px-3 py-2 fs-6">
+                                        @statusText
+                                    </span>
+                                </div>
+
+                            </div>
+                        </fieldset>
+
 
                         <div class="mt-4">
                             @if (Model.Teller.id == null)

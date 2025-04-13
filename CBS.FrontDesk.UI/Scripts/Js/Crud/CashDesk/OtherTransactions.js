@@ -269,89 +269,159 @@ function PostCashOut() {
     message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
     confirmTransaction('Confirm Cash-Out Operation', message, '/CashDesk/PostRequestCash', deposits, 'Withdrawal');
 }
-
 function PostOtherCashIn() {
-
-    // Check if at least one table row is checked
+    // ✅ Check confirmation in table rows
     var checkedRows = $("#myDataTableT tbody input[type='checkbox']:checked");
     if (checkedRows.length === 0) {
-        appalert("Please select the confirmation option from the table", 3, 1);
+        appalert("Please confirm at least one row in the table.", 3, 1);
         return;
     }
 
-    // Check if one of the radio buttons is selected
+    // ✅ Ensure a Source Type is selected
     var sourceType = $("input[name='BulkDeposit.OtherTransaction.SourceType']:checked").val();
     if (!sourceType) {
-        appalert("Please select source type, Either member's account OR Cash collection", 3, 1);
+        appalert("Please select a source type.", 3, 1);
         return;
     }
-    // Check if amount entered is greater than 0 and not negative
+
+    // ✅ Check valid Amount entries
     var amountInputs = $("#myDataTableT tbody input.amount-input");
     var isValidAmount = true;
     amountInputs.each(function () {
         var amount = parseFloat($(this).val());
         if (isNaN(amount) || amount <= 0) {
             isValidAmount = false;
-            return false; // Exit the loop early
+            return false;
         }
     });
     if (!isValidAmount) {
-        appalert("Please enter a valid amount greater than 0");
+        appalert("Please enter a valid amount greater than 0.", 3, 1);
         return;
     }
 
-
+    // ✅ Validate denominations
     if (!checkTotalNotes()) return false;
 
+    // ✅ Validate amount vs denominations
     var totalNotes = parseFloat($("#totalNoteAmount").val());
     var totalInfo = calculateTotalAmount();
-
     if (!validateTotalAmount(totalInfo, totalNotes)) return;
 
+    // ✅ Prepare data object
     var deposits = collectDeposits();
     if (deposits.length === 0) {
-        appalert("Please select at least one account to perform the cash-in.", 3, 1);
+        appalert("Please provide at least one account entry.", 3, 1);
         return;
     }
-    var sourceType = document.querySelector('input[name="BulkDeposit.OtherTransaction.SourceType"]:checked').value;
+
+    // ✅ Fetch form data
     var eventCode = document.getElementById("BulkDeposit_OtherTransaction_EventCode").value;
     var memberName = document.getElementById("Name").value;
-    var accountNumber = document.getElementById("account_number").value;
-    // Check if Event Code is selected
+
     if (!eventCode) {
-        appalert("Please select an event item.", 3, 1);
+        appalert("Please select an Event Item.", 3, 1);
         return;
     }
 
-    // Check SourceType requirements
-    if (sourceType === "Member_Account" && !document.getElementById("account_number").value) {
-        appalert("Please select a member account.", 3, 1);
-        return;
-    }
-
-    // Check if Member Name is provided
     if (!memberName || memberName.trim() === "") {
-        appalert("Member Name cannot be empty.", 3, 1);
+        appalert("Member name cannot be empty.", 3, 1);
         return;
     }
-    // Check SourceType requirements
-    if (sourceType === "Member_Account") {
-        if (!accountNumber) {
-            appalert("Please select a member account", 3, 1);
-            return;
-        }
-    }
+
+    // ✅ Add currency notes breakdown
     deposits[0].currencyNotes = collectCurrencyNotes();
-    var message = "";
-    // Check if MemberAccount radio button is checked
-    if ($('#memberAccountOption').prop('checked')) {
-        message += "Are you sure you want to debit " + totalInfo.total + " from the account number " + $("#account_number").val() + "?\n";
-        message += "and pay for the service: " + $("#BulkDeposit_OtherTransaction_EventCode option:selected").text() + " on behalf of the member?\n";
-    } else {
-        message += "Are you sure you want to process a transaction of " + totalInfo.total + " for the service: " + $("#BulkDeposit_OtherTransaction_EventCode option:selected").text() + "?\n";
-    }
+
+    // ✅ Construct confirmation message
+    var message = `Are you sure you want to record a cash-in of ${totalInfo.total} for the service: ` +
+        `${$("#BulkDeposit_OtherTransaction_EventCode option:selected").text()}?
+Name: ${memberName}`;
+
+    // ✅ Final call
     confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits);
 }
+
+//function PostOtherCashIn() {
+
+//    // Check if at least one table row is checked
+//    var checkedRows = $("#myDataTableT tbody input[type='checkbox']:checked");
+//    if (checkedRows.length === 0) {
+//        appalert("Please select the confirmation option from the table", 3, 1);
+//        return;
+//    }
+
+//    // Check if one of the radio buttons is selected
+//    var sourceType = $("input[name='BulkDeposit.OtherTransaction.SourceType']:checked").val();
+//    if (!sourceType) {
+//        appalert("Please select source type, Either member's account OR Cash collection", 3, 1);
+//        return;
+//    }
+//    // Check if amount entered is greater than 0 and not negative
+//    var amountInputs = $("#myDataTableT tbody input.amount-input");
+//    var isValidAmount = true;
+//    amountInputs.each(function () {
+//        var amount = parseFloat($(this).val());
+//        if (isNaN(amount) || amount <= 0) {
+//            isValidAmount = false;
+//            return false; // Exit the loop early
+//        }
+//    });
+//    if (!isValidAmount) {
+//        appalert("Please enter a valid amount greater than 0");
+//        return;
+//    }
+
+
+//    if (!checkTotalNotes()) return false;
+
+//    var totalNotes = parseFloat($("#totalNoteAmount").val());
+//    var totalInfo = calculateTotalAmount();
+
+//    if (!validateTotalAmount(totalInfo, totalNotes)) return;
+
+//    var deposits = collectDeposits();
+//    if (deposits.length === 0) {
+//        appalert("Please select at least one account to perform the cash-in.", 3, 1);
+//        return;
+//    }
+//    var sourceType = document.querySelector('input[name="BulkDeposit.OtherTransaction.SourceType"]:checked').value;
+//    var eventCode = document.getElementById("BulkDeposit_OtherTransaction_EventCode").value;
+//    var memberName = document.getElementById("Name").value;
+//    var accountNumber = document.getElementById("account_number").value;
+//    // Check if Event Code is selected
+//    if (!eventCode) {
+//        appalert("Please select an event item.", 3, 1);
+//        return;
+//    }
+
+//    // Check SourceType requirements
+//    if (sourceType === "Member_Account" && !document.getElementById("account_number").value) {
+//        appalert("Please select a member account.", 3, 1);
+//        return;
+//    }
+
+//    // Check if Member Name is provided
+//    if (!memberName || memberName.trim() === "") {
+//        appalert("Member Name cannot be empty.", 3, 1);
+//        return;
+//    }
+//    // Check SourceType requirements
+//    if (sourceType === "Member_Account") {
+//        if (!accountNumber) {
+//            appalert("Please select a member account", 3, 1);
+//            return;
+//        }
+//    }
+//    deposits[0].currencyNotes = collectCurrencyNotes();
+//    var message = "";
+//    // Check if MemberAccount radio button is checked
+//    if ($('#memberAccountOption').prop('checked')) {
+//        message += "Are you sure you want to debit " + totalInfo.total + " from the account number " + $("#account_number").val() + "?\n";
+//        message += "and pay for the service: " + $("#BulkDeposit_OtherTransaction_EventCode option:selected").text() + " on behalf of the member?\n";
+//    } else {
+//        message += "Are you sure you want to process a transaction of " + totalInfo.total + " for the service: " + $("#BulkDeposit_OtherTransaction_EventCode option:selected").text() + "?\n";
+//    }
+//    confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits);
+//}
 
 function collectCurrencyNotes() {
     return {

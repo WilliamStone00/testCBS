@@ -1,48 +1,91 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @{
-    ViewBag.Title = "Other cash operations";
+    ViewBag.Title = "Other Cash Operations";
 }
+
+<!-- 🔷 Page Title and Welcome Message -->
 <div class="row">
-    <div class="col">
-        <div class="row my-4">
-            <div class="accordion" id="collapsibleSection">
-                <div class="card accordion-item mb-3">
-                    <h2 class="accordion-header" id="headingDeliveryAddress">
-
-                        <button type="button"
-                                class="accordion-button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#accordionPopoutIcon-3"
-                                aria-expanded="true"
-                                aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-cash-register me-2"></i>
-                            OTHER CASH TRANSACTIONS
-                        </button>
-                    </h2>
-                    <hr />
-                    <div id="collapseDeliveryAddress"
-                         data-bs-parent="#collapsibleSection">
-                        <div class="accordion-body">
-                            <div id="datalistingview">
-
-                                @Html.Partial("_OtherTransactionDesk");
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="col-12">
+        <div class="card bg-light mb-3">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-cash me-2"></i> Cash Desk Management
+                </h1>
+                <p class="card-text">
+                    Welcome to the Cash Desk of <strong>TRUST SOFT CREDIT (TSC)</strong>. This interface manages <strong>Other Cash-In Operations</strong> that do not involve direct member accounts.
+                </p>
+                <p class="card-text">
+                    <strong>Other Cash-In</strong> refers to cash physically received at the teller desk and recorded against <strong>General Ledger (GL) accounts</strong> via configured <strong>accounting event items</strong>
+                </p>
+                <p class="card-text">
+                    💡 <strong>Note:</strong> This interface is strictly for <strong>cash-in</strong> operations posted to GL accounts. Use other modules for withdrawals or member-based deposits.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
-            @*}*@
         </div>
     </div>
 </div>
 
+<!-- 🔷 Tips Section for Other Cash-In -->
+<div class="row">
+    <div class="col-12">
+        <div class="accordion mb-4" id="tipsAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed fw-bold text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+                        <i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips & Guidelines for Other Cash-In
+                    </button>
+                </h2>
+                <div id="collapseTips" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
+                    <div class="accordion-body">
+                        <ul class="mb-2">
+                            <li><strong>GL Integration:</strong> Each operation is posted to predefined GL accounts based on the selected <strong>accounting event item</strong>.</li>
+                            <li><strong>Event Item Required:</strong> Always select a valid Event Item to ensure accurate GL mapping.</li>
+                            <li><strong>Non-Member Focused:</strong> Use this interface for cash from non-members, such as institutional income or public transactions.</li>
+                            <li><strong>Denomination Entry:</strong> Ensure cash denominations match the actual amount collected at the teller desk.</li>
+                            <li><strong>Clear Narration:</strong> Provide descriptive notes to support audit trails and cash reconciliations.</li>
+                            <li><strong>Branch-Specific Configuration:</strong> Available Event Items may differ by branch and are managed through centralized accounting settings.</li>
+                        </ul>
+                        <p class="text"><strong>Note:</strong> This interface handles <strong>cash-in only</strong>. For withdrawals or customer cash transactions, please use the respective modules.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- 🔷 Main Transaction Area -->
+<div class="row g-4">
+    <div class="col-md-3">
+        <!-- Denominations Breakdown -->
+        @Html.Partial("_DenominationBreakDown")
+    </div>
 
+    <div class="col-md-9">
+        <!-- Collapsible Card for Cash Transactions -->
+        <div class="accordion" id="collapsibleSection">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingDeliveryAddress">
+                    <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseDeliveryAddress" aria-expanded="true" aria-controls="collapseDeliveryAddress">
+                        <i class="mdi mdi-bank me-2"></i> <span id="cashDeskOperations">OTHER CASH-IN OPERATIONS</span>
+                    </button>
+                </h2>
+                <div id="collapseDeliveryAddress" class="accordion-collapse collapse show" data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body p-4">
+                        <!-- Cash-In Form Partial -->
+                        <div class="mt-4" id="datalistingview_inner">
+                            @Html.Partial("_OtherTransactionForm")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- Modal to display customer information -->
-@Html.Partial("_model")
-
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/Crud/CashDesk/OtherTransactions.js"></script>
+<!-- 🔷 Scripts -->
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/CashDesk/OtherTransactions.js"></script>
+    <script src="~/Scripts/Js/Crud/CashDesk/OtherTransactions.js"></script>
 }

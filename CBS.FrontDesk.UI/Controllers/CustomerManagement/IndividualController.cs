@@ -21,6 +21,11 @@ using CBS.BusinessService.MembersAccountSettings;
 using CBS.BusinessService.Accounts;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using System.Web.Services.Description;
+using Newtonsoft.Json;
+using System.Net;
+using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.BusinessService.Config.Localization;
+using CBS.BusinessService.Session;
 
 namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
 {
@@ -33,18 +38,21 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         private readonly AccountServices _accountServices;
         private readonly MemberAccountActivationServices _memberAccountActivationServices;
         private readonly BranchServices _branchServices;
-
-        public IndividualController(IndividualProfileServices individualProfileServices, MemberAccountActivationServices memberAccountActivationServices = null, BranchServices branchServices = null, AccountServices accountServices = null)
+        private readonly CountryServices _countryServices;
+        private readonly LocationAggregateService _locationService;
+        public IndividualController(IndividualProfileServices individualProfileServices, MemberAccountActivationServices memberAccountActivationServices = null, BranchServices branchServices = null, AccountServices accountServices = null, CountryServices countryServices = null, LocationAggregateService locationService = null)
         {
             _individualProfileServices = individualProfileServices;
             _memberAccountActivationServices = memberAccountActivationServices;
             _branchServices = branchServices;
             _accountServices=accountServices;
+            _countryServices=countryServices;
+            _locationService=locationService;
         }
         public async Task<ActionResult> List()
         {
 
-            //var data = await _individualProfileServices.GetIndividualProfile();
+            ViewBag.Branches=await _branchServices.GetBranches();
             return View();
 
 
@@ -59,7 +67,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         }
         public async Task<ActionResult> MyMembers()
         {
-
+  
             return View();
         }
         public async Task<ActionResult> Account(string KEY = null, string ReadOptions = null, string path = null, string group = null)
@@ -419,6 +427,100 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         {
             var customerAccount = await _accountServices.GetAccount(accountid);
             return PartialView("_AccountDetails", new IndividualCustomerProfile { CustomerAccount=customerAccount });
+        }
+        [HttpPost]
+        public async Task<ActionResult> LoadMembersData(GetCustomersForDataTableQuery query)
+        {
+            try
+            {
+                var dataTable = await _individualProfileServices.GetDataTableAsync(query);
+
+                var customerList = JsonConvert.DeserializeObject<List<CustomerLightDto>>(
+                    JsonConvert.SerializeObject(dataTable.data)
+                );
+                var branches = await _branchServices.GetBranches();
+                var customers = _individualProfileServices.MapToDtoOrdered(customerList, branches.ToList()); // Optional: for client-side sorting/grouping
+
+                return Json(new
+                {
+                    draw = query.Options?.draw ?? "1",
+                    recordsTotal = dataTable.recordsTotal,
+                    recordsFiltered = dataTable.recordsFiltered,
+                    data = customers
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading member data.");
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> DownloadMembersData(GetCustomersForDataTableQuery query)
+        {
+            try
+            {
+                // Ensure we fetch all relevant records
+                query.Options = new DataTableOptions
+                {
+                    pageSize = 10000,
+                    start = 0,
+                    skip = 0
+                };
+
+                var dataTable = await _individualProfileServices.GetDataTableAsync(query);
+
+                var customerList = JsonConvert.DeserializeObject<List<CustomerLightDto>>(
+                    JsonConvert.SerializeObject(dataTable.data)
+                );
+
+                var branches = await _branchServices.GetBranches();
+
+                var customers = _individualProfileServices.MapToDtoOrdered(customerList, branches.ToList());
+
+                string exportedBy = Session["FullName"]?.ToString() ?? "System Export";
+
+                //var exportFile = ExportUtilityCustomer.GenerateCustomerExcel(
+                //    customers,
+                //    exportedBy,
+                //    query.CreatedFrom?.ToString("dd/MM/yyyy"),
+                //    query.CreatedTo?.ToString("dd/MM/yyyy")
+                //);
+
+                //return File(exportFile.Content, exportFile.ContentType, exportFile.FileName);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error exporting member data.");
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetRegionsByCountry(string countryId)
+        {
+            var regions = _locationService.GetRegionsByCountry(countryId);
+            return Json(regions.Select(r => new { r.Id, r.Name }), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetDivisionsByRegion(string regionId)
+        {
+            var divisions = _locationService.GetDivisionsByRegion(regionId);
+            return Json(divisions.Select(d => new { d.Id, d.Name }), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetSubDivisionsByDivision(string divisionId)
+        {
+            var subDivisions = _locationService.GetSubDivisionsByDivision(divisionId);
+            return Json(subDivisions.Select(s => new { s.Id, s.Name }), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetTownsBySubDivision(string subDivisionId)
+        {
+            var towns = _locationService.GetTownsBySubDivision(subDivisionId);
+            return Json(towns.Select(t => new { t.Id, t.Name }), JsonRequestBehavior.AllowGet);
         }
 
     }

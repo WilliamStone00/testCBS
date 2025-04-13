@@ -339,6 +339,7 @@
     <Compile Include="RoleManagement\RolePermissionServices.cs" />
     <Compile Include="RoleManagement\MenuMasterServices.cs" />
     <Compile Include="RoleManagement\RoleServices.cs" />
+    <Compile Include="Session\AggregateSessionService.cs" />
     <Compile Include="Session\SessionHelper.cs" />
     <Compile Include="Session\LocalSession.cs" />
     <Compile Include="Session\SessionHub.cs" />

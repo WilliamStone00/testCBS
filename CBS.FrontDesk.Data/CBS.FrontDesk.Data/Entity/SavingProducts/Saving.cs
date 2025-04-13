@@ -658,6 +658,10 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string PhoneNumberToRecieveAlert { get; set; }
         public string MobileMoneyAlertMessageInFrench { get; set; }
         public string MobileMoneyAlertMessageInEnglish { get; set; }
+        public bool IsBlockedDueToCashCeilling { get; set; }
+        public DateTime DateOfBlocked { get; set; }
+        public string Blockedby { get; set; }
+        public string Comment { get; set; }
 
         public List<TransactionHistory> Transactions { get; set; }
         public string MapMobileMoneyToNoneMemberMobileMoneyReference { get; set; }

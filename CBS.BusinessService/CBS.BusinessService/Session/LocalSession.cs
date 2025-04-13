@@ -23,7 +23,7 @@ namespace CBS.BusinessService.Session
             _identityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
 
         }
-       
+
         public UserSessionDto GetUserCurrentsession(string sessionCode, string username)
         {
             try
@@ -34,16 +34,34 @@ namespace CBS.BusinessService.Session
                 // Final URL to call (assumes APICallHelper returns the relative path)
                 var fullUrl = $"{APICallHelper.GetUserSessionByUserNameAndCode}{queryParams}";
 
-                // Use the configured GET method on _identityServerBaseUrl
+                // Perform GET request to identity server
                 var response = _identityServerBaseUrl.GetAllowAnonymous<ResponseObject<UserSessionDto>>(fullUrl);
 
-                return response?.ApiResponseData?.Data;
+                // Handle null response or missing data gracefully
+                if (response == null)
+                {
+                    // Optionally log the error
+                    // _logger?.LogWarning("❗Null response from identity server while fetching session.");
+                    return null;
+                }
+
+                if (!response.IsSuccess || response.ApiResponseData == null || response.ApiResponseData.Data == null)
+                {
+                    // Optionally log the reason for failure
+                    // _logger?.LogWarning($"❗Failed to get session: Success={response.IsSuccess}, Error={response.ApiResponseData?.Message}");
+                    return null;
+                }
+
+                return response.ApiResponseData.Data;
             }
             catch (Exception ex)
             {
-                throw;
+                // Optional: Log the exception
+                // _logger?.LogError(ex, "❌ Exception occurred while retrieving user session.");
+                return null;
             }
         }
+
         //GetCurrentIdletimeByBranch
         public async Task<IdleTime> GetCurrentIdletimeByBranch()
         {

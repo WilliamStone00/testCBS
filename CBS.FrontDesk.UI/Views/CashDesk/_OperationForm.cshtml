@@ -501,7 +501,15 @@ else if (ViewBag.Operation == "repayment")
                                             <input type="number" class="form-control amount-input shadow-input-boxes" id="capital-@d.Id" value="0">
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control interest-input shadow-input-boxes" id="interest-@d.Id" value="0" oninput="calculateVat(this, @d.VatRate)">
+                                            <input type="number"
+                                                   class="form-control interest-input shadow-input-boxes"
+                                                   id="interest-@d.Id"
+                                                   value="0"
+                                                   oninput="previewVat('@d.Id', this.value, '@d.VatRate', '@d.LoanAmount')"
+                                                   onblur="applyVatAdjustment('@d.Id')" />
+
+
+
                                         </td>
                                         <td>
                                             <!-- Penalty input field -->

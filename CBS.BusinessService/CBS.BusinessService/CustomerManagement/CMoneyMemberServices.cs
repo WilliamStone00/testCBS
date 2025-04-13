@@ -119,6 +119,7 @@ namespace CBS.BusinessService.CustomerManagement
                 }).OrderByDescending(x => x.ActivationDate).ToList();
         }
 
+  
 
         public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string searchCriterial, bool isByBranch = true)
         {
